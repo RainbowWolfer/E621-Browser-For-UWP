@@ -5,11 +5,29 @@
     xmlns:local="using:E621Downloader"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:data="using:E621Downloader.Models"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Page_Loaded">
 
-	<Grid>
-
-	</Grid>
+	<NavigationView PaneDisplayMode="Top" Name="MyNavigationView">
+		<NavigationView.MenuItems>
+			<NavigationViewItem Icon="Home" Content="Home"/>
+			<NavigationViewItem Icon="Pictures" Content="Picture"/>
+			<NavigationViewItem Icon="SlideShow" Content="SlideShow"/>
+		</NavigationView.MenuItems>
+		<NavigationView.PaneFooter>
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="Current tags: Hello World - Page 1" VerticalAlignment="Center"/>
+				<Button x:Name="SearchButton" Height="40" Width="45" BorderThickness="0" Background="Transparent" FontFamily="Segoe MDL2 Assets" Content="&#xE094;" Tapped="SearchButton_Tapped"/>
+			</StackPanel>
+		</NavigationView.PaneFooter>
+		<Frame x:Name="MyFrame">
+			<Frame.ContentTransitions>
+				<TransitionCollection>
+					<NavigationThemeTransition/>
+				</TransitionCollection>
+			</Frame.ContentTransitions>
+		</Frame>
+	</NavigationView>
 </Page>

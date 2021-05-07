@@ -1,0 +1,24 @@
+﻿<Page
+    x:Class="E621Downloader.Pages.PostsBrowser"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<Grid>
+		<ScrollViewer VerticalScrollMode="Auto">
+			<VariableSizedWrapGrid x:Name="MyWrapGrid" ItemHeight="100" ItemWidth="100" Orientation="Horizontal">
+				<StackPanel VariableSizedWrapGrid.ColumnSpan="3" VariableSizedWrapGrid.RowSpan="2" Margin="20">
+					<TextBlock x:Name="TagsTextBlock" Text="Current Tags Searched: "/>
+					<TextBlock x:Name="ArticlesCountTextBlock" Text="Articles Count: 11"/>
+					<TextBlock Text="Page 1"/>
+					<Button Content="Next Page"/>
+					<Button Content="Previous Page"/>
+				</StackPanel>
+			</VariableSizedWrapGrid>
+		</ScrollViewer>
+	</Grid>
+</Page>

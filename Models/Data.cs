@@ -1,20 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace E621Downloader.Models {
 	public class Data {
+		public const string USERAGENT = "RainbowWolferE621TestApp";
 
+		public static E621Article[] GetPostsByTags(int page, params string[] tags) {
+			if(page <= 0) {
+				throw new Exception("Page not valid");
+			}
+			string url = string.Format("https://e621.net/posts?page={0}&tags=", page);
+			tags.ToList().ForEach((t) => url += t + "+");
 
+			string result = ReadURL(url);
+			var articles = new List<E621Article>();
+			int start = result.IndexOf("<article") + 8;
+			for(int i = start; i < result.Length; i++) {
+				string endTest = result.Substring(i, 10);
+				if(endTest == "</article>") {
+					string allInfo = result.Substring(start, i - start);
+					articles.Add(new E621Article(allInfo));
+					if(result.IndexOf("<article", i) != -1) {
+						start = i + 10;
+						i = start;
+					} else {
+						break;
+					}
+				}
+			}
+			return articles.ToArray();
+		}
+		public static string ReadURL(string url) {
+			var request = (HttpWebRequest)WebRequest.Create(url);
+			request.UserAgent = USERAGENT;
+			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+			Stream dataStream = response.GetResponseStream();
+			StreamReader reader = new StreamReader(dataStream);
+			string data = reader.ReadToEnd();
+			return data;
+		}
+		[Obsolete("", true)]
 		public static Paragraph[] GetCompleteParagraphs(string source) {
 			Paragraph[] paragraphs = GetParallelParagraphs(source);
 			CalculateChilrenParagrah(paragraphs);
 			return paragraphs;
 		}
-
+		[Obsolete("", true)]
 		public static Paragraph[] GetParallelParagraphs(string source) {
 			List<Paragraph> paragraphs = new List<Paragraph>();
 			for(int i = 0; i < source.Length; i++) {
@@ -103,6 +141,7 @@ namespace E621Downloader.Models {
 			}
 			return paragraphs.ToArray();
 		}
+		[Obsolete("", true)]
 		public static void CalculateChilrenParagrah(params Paragraph[] paragraphs) {
 			foreach(Paragraph p in paragraphs) {
 				Paragraph[] pc = GetParallelParagraphs(p.fullContent);
@@ -117,6 +156,7 @@ namespace E621Downloader.Models {
 				}
 			}
 		}
+		[Obsolete("", true)]
 		public static Property[] GetProperties(string source) {
 			string s1 = new string(new char[] { (char)34, (char)34 });
 			string s2 = new string(new char[] { (char)34, (char)32, (char)34 });
@@ -162,6 +202,7 @@ namespace E621Downloader.Models {
 			}
 			return properties.ToArray();
 		}
+		[Obsolete("", true)]
 		public static string GetSubString(string source, int start, int end) {
 			if(start > end || end > source.Length) {
 				throw new Exception();
@@ -173,6 +214,7 @@ namespace E621Downloader.Models {
 			return result;
 		}
 
+		[Obsolete("", true)]
 		public class Paragraph {
 			public bool isClosed;
 			public string tag;
@@ -206,6 +248,7 @@ namespace E621Downloader.Models {
 				return tag + "_" + properties.Length;
 			}
 		}
+		[Obsolete("", true)]
 		public class Property {
 			public string name;
 			public string content;
@@ -218,6 +261,7 @@ namespace E621Downloader.Models {
 				return name + " _ " + content;
 			}
 		}
+		[Obsolete("", true)]
 		public class SourceSet {
 			public class Set {
 				public string address;
@@ -259,4 +303,5 @@ namespace E621Downloader.Models {
 			}
 		}
 	}
+
 }

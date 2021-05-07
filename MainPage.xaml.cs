@@ -1,6 +1,9 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Pages;
+using E621Downloader.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,6 +15,7 @@ using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.System;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -19,57 +23,50 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-using static E621Downloader.Models.Data;
 
 namespace E621Downloader {
 	public sealed partial class MainPage: Page {
-		private string url = "https://e621.net/posts?tags=skyleesfm+order%3Ascore";
+		private const string url = "https://e621.net/posts?tags=skyleesfm+order%3Ascore";
+		public PostsBrowser postsBrowser;
+
 		public MainPage() {
 			this.InitializeComponent();
+			MyFrame.Navigate(typeof(PostsBrowser), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+			
 		}
 
 		private async void Page_Loaded(object sender, RoutedEventArgs e) {
-			//Debug.WriteLine("Start 1");
-			//Debug.WriteLine(DateTime.Now.Second + "_" + DateTime.Now.Millisecond);
-			//string result = await Read1();
-			//Paragraph[] gs = GetCompleteParagraphs(result);
-			//Debug.WriteLine(DateTime.Now.Second + "_" + DateTime.Now.Millisecond);
-
-
-
-
-			//Debug.WriteLine("Start 2");
-			//Debug.WriteLine(DateTime.Now.Second + "_" + DateTime.Now.Millisecond);
 			string result = await ReadFromTestFile();
-			result = result.Replace("<!doctype html>\n", "");
-			Paragraph[] gs = GetCompleteParagraphs(result);
-			//Debug.WriteLine(DateTime.Now.Second + "_" + DateTime.Now.Millisecond);
-
-			Debug.WriteLine("\n\n\n Hello" + gs.Length + "\nHello");
+			//LoadPosts(Data.GetPostsByTags(1, ""));
+			(MyNavigationView.MenuItems[0] as NavigationViewItem).IsSelected = true;
 		}
 
-		private async Task<string> Read1() {
-			HttpResponseMessage responseMessage = await new HttpClient().GetAsync(new Uri(url));
-			string result = await responseMessage.Content.ReadAsStringAsync();
-			return result;
-		}
 		private async Task<string> ReadFromTestFile() {
 			StorageFolder InstallationFolder = Package.Current.InstalledLocation;
 			StorageFile file = await InstallationFolder.GetFileAsync(@"Assets\TestText_Copy.txt");
 			return File.ReadAllText(file.Path);
 		}
-		private string Read2() {
-			var request = (HttpWebRequest)WebRequest.Create(url);
-			request.UserAgent = "RainbowWolferE621TestApp";
-			HttpWebResponse response = null;
-
-			response = (HttpWebResponse)request.GetResponse();
-
-			Stream dataStream = response.GetResponseStream();
-			StreamReader reader = new StreamReader(dataStream);
-			string data = reader.ReadToEnd();
-			return data;
+		private async void SearchButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			var dialog = new ContentDialog() {
+				Title = "Search Section",
+				PrimaryButtonText = "Confirm",
+				SecondaryButtonText = "Cancel",
+			};
+			dialog.Content = new SearchPopup(dialog);
+			dialog.KeyDown += (s, c) => {
+				if(c.Key == VirtualKey.Escape) {
+					dialog.Hide();
+				}
+			};
+			ContentDialogResult result = await dialog.ShowAsync();
+			if(result == ContentDialogResult.Primary) {
+				string text = (dialog.Content as SearchPopup).GetSearchText();
+				//LoadPosts(Data.GetPostsByTags(1, text));
+				PostsBrowser.Instance.LoadPosts(Data.GetPostsByTags(1, text));
+			}
 		}
 	}
 }

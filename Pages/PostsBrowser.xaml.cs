@@ -1,0 +1,56 @@
+﻿using E621Downloader.Models;
+using E621Downloader.Views;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
+
+namespace E621Downloader.Pages {
+	public sealed partial class PostsBrowser: Page {
+		public static PostsBrowser Instance;
+		public readonly ObservableCollection<E621Article> articles;
+		public const float HolderScale = 0.5f;
+		public PostsBrowser() {
+			this.InitializeComponent();
+			Instance = this;
+			articles = new ObservableCollection<E621Article>();
+		}
+
+		protected override void OnNavigatedTo(NavigationEventArgs e) {
+			base.OnNavigatedTo(e);
+			LoadPosts(Data.GetPostsByTags(1, "rating:s", "wallpaper"));
+		}
+		public void LoadPosts(E621Article[] articles) {
+			while(MyWrapGrid.Children.Count > 1) {
+				MyWrapGrid.Children.RemoveAt(1);
+			}
+			this.articles.Clear();
+			articles.ToList().ForEach((p) => this.articles.Add(p));
+			ArticlesCountTextBlock.Text = "Articles Count : " + this.articles.Count;
+			foreach(E621Article item in this.articles) {
+				var holder = new ImageHolder(item);
+				holder.OnImagedLoaded += (b) => {
+					int fixedHeightSpan = b.PixelHeight / 100;
+					int fixedWidthSpan = b.PixelWidth / 100;
+					int span_row = (int)(fixedHeightSpan * HolderScale);
+					int span_col = (int)(fixedWidthSpan * HolderScale);
+					VariableSizedWrapGrid.SetColumnSpan(holder, span_col);
+					VariableSizedWrapGrid.SetRowSpan(holder, span_row);
+				};
+				MyWrapGrid.Children.Add(holder);
+			}
+
+		}
+	}
+}
