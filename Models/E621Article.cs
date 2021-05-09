@@ -10,7 +10,11 @@ namespace E621Downloader.Models {
 		public readonly string[] tags;
 		public readonly string url_source;//data-file-url
 		public readonly string url_preview;//data-preview-file-url
+
+		public bool isLoaded;
+
 		public E621Article(string source) {
+			this.isLoaded = false;
 			this.source = source;
 			this.id = int.Parse(GetProperty("data-id=\""));
 			this.tags = GetProperty("data-tags=\"").Split(' ');

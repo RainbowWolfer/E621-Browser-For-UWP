@@ -21,6 +21,10 @@ namespace E621Downloader.Pages {
 		public static PostsBrowser Instance;
 		public readonly ObservableCollection<E621Article> articles;
 		public const float HolderScale = 0.5f;
+
+		public int currentLoads;
+		public int finishedLoads;
+
 		public PostsBrowser() {
 			this.InitializeComponent();
 			Instance = this;
@@ -29,6 +33,8 @@ namespace E621Downloader.Pages {
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
+			currentLoads = 0;
+			finishedLoads = 0;
 			LoadPosts(Data.GetPostsByTags(1, "rating:s", "wallpaper"));
 		}
 		public void LoadPosts(E621Article[] articles) {
@@ -38,7 +44,14 @@ namespace E621Downloader.Pages {
 			this.articles.Clear();
 			articles.ToList().ForEach((p) => this.articles.Add(p));
 			ArticlesCountTextBlock.Text = "Articles Count : " + this.articles.Count;
-			foreach(E621Article item in this.articles) {
+			for(int i = 0; i < this.articles.Count; i++) {
+				E621Article item = this.articles[i];
+				if(item.isLoaded) {
+					continue;
+				}
+				if(i >= currentLoads) {
+					break;
+				}
 				var holder = new ImageHolder(item);
 				holder.OnImagedLoaded += (b) => {
 					int fixedHeightSpan = b.PixelHeight / 100;
@@ -52,5 +65,9 @@ namespace E621Downloader.Pages {
 			}
 
 		}
+	}
+	public struct LoadsInfo {
+		public int goalLoads;
+		public int cureentLoads;
 	}
 }
