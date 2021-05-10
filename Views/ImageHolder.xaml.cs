@@ -65,7 +65,7 @@ namespace E621Downloader.Views {
 			isLoaded = true;
 		}
 
-		private void LoadingPanel_Tapped(object sender, TappedRoutedEventArgs e) {
+		private void Grid_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(!this.isLoaded) {
 				//open browser;
 			}
@@ -75,6 +75,9 @@ namespace E621Downloader.Views {
 			};
 			dataPackage.SetText(LoadUrl);
 			Clipboard.SetContent(dataPackage);
+
+			MainPage.NavigateToPicturePage(ArticleRef);
+
 		}
 
 		private void MyImage_ImageOpened(object sender, RoutedEventArgs e) {

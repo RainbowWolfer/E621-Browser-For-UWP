@@ -13,7 +13,7 @@
 	<NavigationView PaneDisplayMode="Top" Name="MyNavigationView" IsBackButtonVisible="Auto" SelectionFollowsFocus="Enabled" ItemInvoked="MyNavigationView_ItemInvoked">
 		<NavigationView.MenuItems>
 			<NavigationViewItem Icon="Home" Content="Home" Tag="Home"/>
-			<NavigationViewItem Icon="Pictures" Content="Picture" Tag="Pictures"/>
+			<NavigationViewItem Icon="Pictures" Content="Picture" Tag="Picture"/>
 			<NavigationViewItem Icon="SlideShow" Content="SlideShow" Tag="SlideShow"/>
 		</NavigationView.MenuItems>
 		<NavigationView.PaneFooter>
@@ -22,12 +22,17 @@
 				<Button x:Name="SearchButton" Height="40" Width="45" BorderThickness="0" Background="Transparent" FontFamily="Segoe MDL2 Assets" Content="&#xE094;" Tapped="SearchButton_Tapped"/>
 			</StackPanel>
 		</NavigationView.PaneFooter>
-		<Frame x:Name="MyFrame">
-			<Frame.ContentTransitions>
-				<TransitionCollection>
-					<NavigationThemeTransition/>
-				</TransitionCollection>
-			</Frame.ContentTransitions>
-		</Frame>
+		<NavigationView.Header>
+			<TextBlock Text="Hello World!" HorizontalAlignment="Center"/>
+		</NavigationView.Header>
+		<NavigationView.Content>
+			<Frame x:Name="MyFrame">
+				<Frame.ContentTransitions>
+					<TransitionCollection>
+						<NavigationThemeTransition/>
+					</TransitionCollection>
+				</Frame.ContentTransitions>
+			</Frame>
+		</NavigationView.Content>
 	</NavigationView>
 </Page>

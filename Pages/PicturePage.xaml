@@ -1,0 +1,27 @@
+﻿<Page
+    x:Class="E621Downloader.Pages.PicturePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<Grid>
+		<!--<TextBlock Text="This is Picture Page" FontSize="64"/>-->
+		<Grid.RowDefinitions>
+			<RowDefinition Height="100"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="200"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<TextBlock Grid.Column='1' Text="Posts: 2093212" FontSize="48" VerticalAlignment="Center"/>
+		<ListView Grid.RowSpan="2" SelectionMode="None" ItemsSource="{x:Bind tags}"/>
+		<!--Source="{x:Bind Article.url_source}"-->
+		<Image  Grid.Column="1" Grid.Row="1" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="MainImage" Margin="0,0,40,40" ImageOpened="MainImage_ImageOpened"/>
+		<ProgressRing Name="MyProgressRing" Grid.Row="1" Grid.Column="1" MaxHeight="300" MaxWidth="300" Margin="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>
+	</Grid>
+</Page>

@@ -9,7 +9,7 @@
     d:DesignHeight="200"
     d:DesignWidth="200">
 	<GridViewItem>
-		<Grid  Tapped="LoadingPanel_Tapped">
+		<Grid  Tapped="Grid_Tapped">
 			<StackPanel x:Name="LoadingPanel" Margin="20">
 				<ProgressRing Name="MyProgressRing" Height="50" Width="50" IsActive="True"/>
 				<TextBlock x:Name="MyLoadingTextBlock" Text="Loading from https://e621.nets/posts/" TextWrapping="Wrap" />

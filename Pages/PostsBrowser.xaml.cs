@@ -29,13 +29,15 @@ namespace E621Downloader.Pages {
 			this.InitializeComponent();
 			Instance = this;
 			articles = new ObservableCollection<E621Article>();
+			this.NavigationCacheMode = NavigationCacheMode.Enabled;
+			LoadPosts(Data.GetPostsByTags(1, "rating:s", "wallpaper", "order:score"));
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			currentLoads = 0;
 			finishedLoads = 0;
-			LoadPosts(Data.GetPostsByTags(1, "rating:s", "wallpaper", "order:score"));
+
 		}
 		private int loaded;
 		public void LoadPosts(E621Article[] articles) {
@@ -62,7 +64,7 @@ namespace E621Downloader.Pages {
 					int span_col = (int)(fixedWidthSpan * HolderScale);
 					VariableSizedWrapGrid.SetColumnSpan(holder, span_col);
 					VariableSizedWrapGrid.SetRowSpan(holder, span_row);
-					ArticlesCountTextBlock.Text = "Articles Count : " + loaded++ + "/" + this.articles.Count;
+					ArticlesCountTextBlock.Text = "Articles Count : " + ++loaded + "/" + this.articles.Count;
 				};
 				MyWrapGrid.Children.Add(holder);
 			}

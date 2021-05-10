@@ -29,13 +29,21 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader {
 	public sealed partial class MainPage: Page {
+		public static MainPage Instance;
 		private const string url = "https://e621.net/posts?tags=skyleesfm+order%3Ascore";
 		public PostsBrowser postsBrowser;
 
-		public MainPage() {
-			this.InitializeComponent();
-			MyFrame.Navigate(typeof(PostsBrowser), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+		public const string HOME = "Home";
+		public const string PICTURE = "Picture";
+		public const string SLIDESHOW = "SlideShow";
+		public const string SETTINGS = "Settings";
 
+		public string currentPage;
+
+		public MainPage() {
+			Instance = this;
+			this.InitializeComponent();
+			//MyFrame.Navigate(typeof(PostsBrowser), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
 		}
 
 		private async void Page_Loaded(object sender, RoutedEventArgs e) {
@@ -68,27 +76,40 @@ namespace E621Downloader {
 				PostsBrowser.Instance.LoadPosts(Data.GetPostsByTags(1, text));
 			}
 		}
-
+		public static void NavigateToPicturePage(E621Article article) {
+			SlideNavigationTransitionInfo transitionInfo = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft };
+			if(Instance.currentPage == HOME) {
+				transitionInfo = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
+			}
+			(Instance.MyNavigationView.MenuItems.ToList().Find((i) => (string)(i as NavigationViewItem).Tag == PICTURE) as NavigationViewItem).IsSelected = true;
+			Instance.currentPage = PICTURE;
+			Instance.MyFrame.Navigate(typeof(PicturePage), article, transitionInfo);
+		}
 		private void MyNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
-			string tag = (string)args.InvokedItemContainer.Tag;
-			string currentTag = (string)(sender.MenuItems.ToList().Find((i) => (i as NavigationViewItem).IsSelected) as NavigationViewItem).Tag;
-			if(currentTag == tag) {
+			if(args.IsSettingsInvoked) {
+				if(currentPage == SETTINGS) {
+					return;
+				}
+				MyFrame.Navigate(typeof(SettingsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+				currentPage = SETTINGS;
 				return;
 			}
-			LOR dir;
-			if(tag == "Home") {
-				Navigate(typeof(PostsBrowser), dir);
-			} else if(tag == "Pictures") {
-
-			} else if(tag == "SlideShow") {
-
+			string tag = (string)args.InvokedItemContainer.Tag;
+			if(currentPage == tag) {
+				return;
+			}
+			NavigationTransitionInfo transInfo = currentPage == SETTINGS ? new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft } : args.RecommendedNavigationTransitionInfo;
+			if(tag == HOME) {
+				MyFrame.Navigate(typeof(PostsBrowser), null, transInfo);
+				//MyFrame.Navigate(typeof(GridViewPostsBrowser), null, transInfo);
+			} else if(tag == PICTURE) {
+				MyFrame.Navigate(typeof(PicturePage), null, transInfo);
+			} else if(tag == SLIDESHOW) {
+				MyFrame.Navigate(typeof(SlideshowPage), null, transInfo);
 			} else {
 				throw new Exception("Tag Error");
 			}
-
-		}
-		private void Navigate(Type type, LOR from, object parameter = null) {
-			MyFrame.Navigate(type, parameter, new SlideNavigationTransitionInfo() { Effect = from == LOR.Left ? SlideNavigationTransitionEffect.FromLeft : SlideNavigationTransitionEffect.FromRight });
+			currentPage = tag;
 		}
 	}
 }
