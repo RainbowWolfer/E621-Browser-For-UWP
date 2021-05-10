@@ -35,23 +35,25 @@ namespace E621Downloader.Pages {
 			base.OnNavigatedTo(e);
 			currentLoads = 0;
 			finishedLoads = 0;
-			LoadPosts(Data.GetPostsByTags(1, "rating:s", "wallpaper"));
+			LoadPosts(Data.GetPostsByTags(1, "rating:s", "wallpaper", "order:score"));
 		}
+		private int loaded;
 		public void LoadPosts(E621Article[] articles) {
+			loaded = 0;
 			while(MyWrapGrid.Children.Count > 1) {
 				MyWrapGrid.Children.RemoveAt(1);
 			}
 			this.articles.Clear();
 			articles.ToList().ForEach((p) => this.articles.Add(p));
-			ArticlesCountTextBlock.Text = "Articles Count : " + this.articles.Count;
+			ArticlesCountTextBlock.Text = "Articles Count : 0/" + this.articles.Count;
 			for(int i = 0; i < this.articles.Count; i++) {
 				E621Article item = this.articles[i];
-				if(item.isLoaded) {
-					continue;
-				}
-				if(i >= currentLoads) {
-					break;
-				}
+				//if(item.isLoaded) {
+				//	continue;
+				//}
+				//if(i >= currentLoads) {
+				//	break;
+				//}
 				var holder = new ImageHolder(item);
 				holder.OnImagedLoaded += (b) => {
 					int fixedHeightSpan = b.PixelHeight / 100;
@@ -60,6 +62,7 @@ namespace E621Downloader.Pages {
 					int span_col = (int)(fixedWidthSpan * HolderScale);
 					VariableSizedWrapGrid.SetColumnSpan(holder, span_col);
 					VariableSizedWrapGrid.SetRowSpan(holder, span_row);
+					ArticlesCountTextBlock.Text = "Articles Count : " + loaded++ + "/" + this.articles.Count;
 				};
 				MyWrapGrid.Children.Add(holder);
 			}

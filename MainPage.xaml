@@ -10,11 +10,11 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Page_Loaded">
 
-	<NavigationView PaneDisplayMode="Top" Name="MyNavigationView">
+	<NavigationView PaneDisplayMode="Top" Name="MyNavigationView" IsBackButtonVisible="Auto" SelectionFollowsFocus="Enabled" ItemInvoked="MyNavigationView_ItemInvoked">
 		<NavigationView.MenuItems>
-			<NavigationViewItem Icon="Home" Content="Home"/>
-			<NavigationViewItem Icon="Pictures" Content="Picture"/>
-			<NavigationViewItem Icon="SlideShow" Content="SlideShow"/>
+			<NavigationViewItem Icon="Home" Content="Home" Tag="Home"/>
+			<NavigationViewItem Icon="Pictures" Content="Picture" Tag="Pictures"/>
+			<NavigationViewItem Icon="SlideShow" Content="SlideShow" Tag="SlideShow"/>
 		</NavigationView.MenuItems>
 		<NavigationView.PaneFooter>
 			<StackPanel Orientation="Horizontal">

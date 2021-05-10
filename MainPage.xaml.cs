@@ -35,7 +35,7 @@ namespace E621Downloader {
 		public MainPage() {
 			this.InitializeComponent();
 			MyFrame.Navigate(typeof(PostsBrowser), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-			
+
 		}
 
 		private async void Page_Loaded(object sender, RoutedEventArgs e) {
@@ -67,6 +67,28 @@ namespace E621Downloader {
 				//LoadPosts(Data.GetPostsByTags(1, text));
 				PostsBrowser.Instance.LoadPosts(Data.GetPostsByTags(1, text));
 			}
+		}
+
+		private void MyNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
+			string tag = (string)args.InvokedItemContainer.Tag;
+			string currentTag = (string)(sender.MenuItems.ToList().Find((i) => (i as NavigationViewItem).IsSelected) as NavigationViewItem).Tag;
+			if(currentTag == tag) {
+				return;
+			}
+			LOR dir;
+			if(tag == "Home") {
+				Navigate(typeof(PostsBrowser), dir);
+			} else if(tag == "Pictures") {
+
+			} else if(tag == "SlideShow") {
+
+			} else {
+				throw new Exception("Tag Error");
+			}
+
+		}
+		private void Navigate(Type type, LOR from, object parameter = null) {
+			MyFrame.Navigate(type, parameter, new SlideNavigationTransitionInfo() { Effect = from == LOR.Left ? SlideNavigationTransitionEffect.FromLeft : SlideNavigationTransitionEffect.FromRight });
 		}
 	}
 }

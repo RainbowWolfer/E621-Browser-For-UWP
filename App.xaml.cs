@@ -78,4 +78,7 @@ namespace E621Downloader {
 			deferral.Complete();
 		}
 	}
+	public enum LOR {
+		Left, Right
+	}
 }
