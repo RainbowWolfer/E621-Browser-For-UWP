@@ -36,6 +36,7 @@ namespace E621Downloader.Pages {
 			if(Article == null) {
 				return;
 			}
+			tags.Clear();
 			Article.tags.ToList().ForEach((s) => tags.Add(s));
 			MainImage.Source = new BitmapImage(new Uri(Article.url_source));
 		}

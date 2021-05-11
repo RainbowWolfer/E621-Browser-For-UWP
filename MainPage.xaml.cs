@@ -46,6 +46,14 @@ namespace E621Downloader {
 			//MyFrame.Navigate(typeof(PostsBrowser), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
 		}
 
+		public static async Task<ContentDialogResult> CreatePopupDialog(string title, object content) {
+			ContentDialog dialog = new ContentDialog() {
+				Title = title,
+				Content = content,
+			};
+			return await dialog.ShowAsync();
+		}
+
 		private async void Page_Loaded(object sender, RoutedEventArgs e) {
 			string result = await ReadFromTestFile();
 			//LoadPosts(Data.GetPostsByTags(1, ""));
@@ -73,7 +81,7 @@ namespace E621Downloader {
 			if(result == ContentDialogResult.Primary) {
 				string text = (dialog.Content as SearchPopup).GetSearchText();
 				//LoadPosts(Data.GetPostsByTags(1, text));
-				PostsBrowser.Instance.LoadPosts(Data.GetPostsByTags(1, text));
+				PostsBrowser.Instance.LoadPosts(await Data.GetPostsByTags(1, text));
 			}
 		}
 		public static void NavigateToPicturePage(E621Article article) {

@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -23,7 +24,8 @@ namespace E621Downloader.Pages {
 		public GridViewPostsBrowser() {
 			this.InitializeComponent();
 			articles = new ObservableCollection<E621Article>();
-			LoadPosts(Data.GetPostsByTags(1, "rating:s", "wallpaper", "order:score"));
+			Task.Run(async () => LoadPosts(await Data.GetPostsByTags(1, "rating:s", "wallpaper", "order:score")));
+
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {

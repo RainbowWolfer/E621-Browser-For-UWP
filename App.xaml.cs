@@ -30,6 +30,12 @@ namespace E621Downloader {
 			this.Suspending += OnSuspending;
 			downloadsQueue = new List<Task>();
 			//LoadImage();
+
+			Local.Initialize();
+			Test();
+		}
+		private async void Test() {
+			string[] list = await Local.GetFollowList();
 		}
 
 		//private async void LoadImage() {

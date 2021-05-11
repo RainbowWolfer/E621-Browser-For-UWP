@@ -6,6 +6,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -30,7 +32,12 @@ namespace E621Downloader.Pages {
 			Instance = this;
 			articles = new ObservableCollection<E621Article>();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
-			LoadPosts(Data.GetPostsByTags(1, "rating:s", "wallpaper", "order:score"));
+			//new Thread(async () => ).Start();
+			Initialize();
+		}
+
+		private async void Initialize() {
+			LoadPosts(await Data.GetPostsByTags(1, "rating:s", "wallpaper", "order:score"));
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {

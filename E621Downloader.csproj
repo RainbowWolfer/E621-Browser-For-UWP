@@ -126,6 +126,7 @@
     <Compile Include="Models\E621Article.cs" />
     <Compile Include="Models\HTMLConvertor.cs" />
     <Compile Include="Models\ImageConvertor.cs" />
+    <Compile Include="Models\Local.cs" />
     <Compile Include="Pages\GridViewPostsBrowser.xaml.cs">
       <DependentUpon>GridViewPostsBrowser.xaml</DependentUpon>
     </Compile>
