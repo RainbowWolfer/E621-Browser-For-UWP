@@ -26,6 +26,8 @@ namespace E621Downloader.Models {
 			initialized = true;
 			followListFile = await LocalFolder.CreateFileAsync(FOLLOWLISTNAME, CreationCollisionOption.OpenIfExists);
 			blackListFile = await LocalFolder.CreateFileAsync(BLACKLISTNAME, CreationCollisionOption.OpenIfExists);
+			Debug.WriteLine(followListFile.Path);
+			Debug.WriteLine(blackListFile.Path);
 		}
 		public async static Task<string[]> GetFollowList() => await GetList(followListFile);
 		public async static Task<string[]> GetBlackList() => await GetList(blackListFile);

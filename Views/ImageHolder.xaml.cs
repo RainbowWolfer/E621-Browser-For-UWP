@@ -28,6 +28,8 @@ namespace E621Downloader.Views {
 
 		private string LoadUrl => ArticleRef.url_preview;
 
+		public BitmapImage Image { get; private set; }
+
 		private bool isLoaded;
 
 		private DateTime startTime;
@@ -36,6 +38,7 @@ namespace E621Downloader.Views {
 			this.InitializeComponent();
 			startTime = DateTime.Now;
 			MyLoadingTextBlock.Text = "Loading From : " + LoadUrl;
+			OnImagedLoaded += (b) => this.Image = b;
 			//LoadImageAsync2();
 			//App.Instance.RegisterDonwload(LoadImageAsync());
 		}

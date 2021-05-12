@@ -18,13 +18,13 @@
 		</NavigationView.MenuItems>
 		<NavigationView.PaneFooter>
 			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="Current tags: Hello World - Page 1" VerticalAlignment="Center"/>
+				<TextBlock x:Name="CurrentTagsTextBlock" Text="Current tags: Hello World - Page 1" VerticalAlignment="Center" Margin="0,0,20,0"/>
 				<Button x:Name="SearchButton" Height="40" Width="45" BorderThickness="0" Background="Transparent" FontFamily="Segoe MDL2 Assets" Content="&#xE094;" Tapped="SearchButton_Tapped"/>
 			</StackPanel>
 		</NavigationView.PaneFooter>
-		<NavigationView.Header>
+		<!--<NavigationView.Header>
 			<TextBlock Text="Hello World!" HorizontalAlignment="Center"/>
-		</NavigationView.Header>
+		</NavigationView.Header>-->
 		<NavigationView.Content>
 			<Frame x:Name="MyFrame">
 				<Frame.ContentTransitions>

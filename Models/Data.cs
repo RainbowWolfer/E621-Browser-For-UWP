@@ -11,17 +11,21 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 
 namespace E621Downloader.Models {
-	public class Data {
+	public static class Data {
 		public const string USERAGENT = "RainbowWolferE621TestApp";
 
-		public async static Task<E621Article[]> GetPostsByTags(int page, params string[] tags) {
+		public static E621Article[] GetPostsByTags(int page, params string[] tags) {
 			if(page <= 0) {
 				throw new Exception("Page not valid");
 			}
 			string url = string.Format("https://e621.net/posts?page={0}&tags=", page);
 			tags.ToList().ForEach((t) => url += t + "+");
 
-			string result = await ReadURL(url);
+			string result = ReadURL(url);
+			Debug.WriteLine(result);
+			if(result == null) {
+				return null;
+			}
 			var articles = new List<E621Article>();
 			int start = result.IndexOf("<article") + 8;
 			for(int i = start; i < result.Length; i++) {
@@ -39,15 +43,15 @@ namespace E621Downloader.Models {
 			}
 			return articles.ToArray();
 		}
-		public async static Task<string> ReadURL(string url) {
+		public static string ReadURL(string url) {
 			var request = (HttpWebRequest)WebRequest.Create(url);
 			request.UserAgent = USERAGENT;
-			HttpWebResponse response = null;
+			HttpWebResponse response;
 			try {
 				response = (HttpWebResponse)request.GetResponse();
-			} catch(WebException e) {
-				await MainPage.CreatePopupDialog("WebException Error", e.Message);
-				return e.Message;
+			} catch(Exception e) {
+				Debug.WriteLine(e.Message);
+				return null;
 			}
 			Stream dataStream = response.GetResponseStream();
 			StreamReader reader = new StreamReader(dataStream);

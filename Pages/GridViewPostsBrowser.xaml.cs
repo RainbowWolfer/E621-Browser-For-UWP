@@ -24,7 +24,7 @@ namespace E621Downloader.Pages {
 		public GridViewPostsBrowser() {
 			this.InitializeComponent();
 			articles = new ObservableCollection<E621Article>();
-			Task.Run(async () => LoadPosts(await Data.GetPostsByTags(1, "rating:s", "wallpaper", "order:score")));
+			//Task.Run(() => LoadPosts(Data.GetPostsByTags(1, "rating:s", "wallpaper", "order:score")));
 
 		}
 

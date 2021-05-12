@@ -23,6 +23,9 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader {
 	public sealed partial class App: Application {
 		public static App Instance;
+
+		//public
+
 		public readonly List<Task> downloadsQueue;
 		public App() {
 			Instance = this;

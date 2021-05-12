@@ -46,12 +46,49 @@ namespace E621Downloader {
 			//MyFrame.Navigate(typeof(PostsBrowser), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
 		}
 
-		public static async Task<ContentDialogResult> CreatePopupDialog(string title, object content) {
-			ContentDialog dialog = new ContentDialog() {
+		public static void ChangeCurrenttTags(params string[] strs) {
+			string result = "Current Tags : ";
+			foreach(string item in strs) {
+				result += item + " ";
+			}
+			Instance.CurrentTagsTextBlock.Text = result;
+		}
+
+		public static ContentDialog InstanceDialog { get; private set; }
+		public static bool IsShowingInstanceDialog { get; private set; }
+
+		public async static void CreateInstantDialog(string title, object content) {
+			if(InstanceDialog != null) {
+				return;
+			}
+			IsShowingInstanceDialog = false;
+			InstanceDialog = new ContentDialog() {
 				Title = title,
 				Content = content,
 			};
-			return await dialog.ShowAsync();
+
+			await InstanceDialog.ShowAsync();
+			IsShowingInstanceDialog = true;
+		}
+		public static void HideInstantDialog() {
+			if(InstanceDialog == null) {
+				return;
+			}
+			InstanceDialog.Hide();
+			InstanceDialog = null;
+			IsShowingInstanceDialog = false;
+		}
+
+
+		public static async Task<ContentDialog> CreatePopupDialog(string title, object content, bool enableButton = true) {
+			ContentDialog dialog = new ContentDialog() {
+				Title = title,
+				Content = content,
+				IsPrimaryButtonEnabled = enableButton,
+				PrimaryButtonText = enableButton ? "Back" : "",
+			};
+			await dialog.ShowAsync();
+			return dialog;
 		}
 
 		private async void Page_Loaded(object sender, RoutedEventArgs e) {
@@ -81,7 +118,7 @@ namespace E621Downloader {
 			if(result == ContentDialogResult.Primary) {
 				string text = (dialog.Content as SearchPopup).GetSearchText();
 				//LoadPosts(Data.GetPostsByTags(1, text));
-				PostsBrowser.Instance.LoadPosts(await Data.GetPostsByTags(1, text));
+				PostsBrowser.Instance.LoadPosts(Data.GetPostsByTags(1, text), text);
 			}
 		}
 		public static void NavigateToPicturePage(E621Article article) {
