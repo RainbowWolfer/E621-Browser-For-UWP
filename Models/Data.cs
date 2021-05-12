@@ -21,25 +21,30 @@ namespace E621Downloader.Models {
 			string url = string.Format("https://e621.net/posts?page={0}&tags=", page);
 			tags.ToList().ForEach((t) => url += t + "+");
 
+			var articles = new List<E621Article>();
+
 			string result = ReadURL(url);
 			Debug.WriteLine(result);
 			if(result == null) {
-				return null;
+				return articles.ToArray();
 			}
-			var articles = new List<E621Article>();
-			int start = result.IndexOf("<article") + 8;
-			for(int i = start; i < result.Length; i++) {
-				string endTest = result.Substring(i, 10);
-				if(endTest == "</article>") {
-					string allInfo = result.Substring(start, i - start);
-					articles.Add(new E621Article(allInfo));
-					if(result.IndexOf("<article", i) != -1) {
-						start = i + 10;
-						i = start;
-					} else {
-						break;
+			try {
+				int start = result.IndexOf("<article") + 8;
+				for(int i = start; i < result.Length; i++) {
+					string endTest = result.Substring(i, 10);
+					if(endTest == "</article>") {
+						string allInfo = result.Substring(start, i - start);
+						articles.Add(new E621Article(allInfo));
+						if(result.IndexOf("<article", i) != -1) {
+							start = i + 10;
+							i = start;
+						} else {
+							break;
+						}
 					}
 				}
+			} catch(Exception e) {
+				return articles.ToArray();
 			}
 			return articles.ToArray();
 		}

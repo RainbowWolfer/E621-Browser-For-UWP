@@ -41,7 +41,7 @@ namespace E621Downloader.Pages {
 			Initialize();
 		}
 
-		private async void Initialize() {
+		private void Initialize() {
 			pageInfo = new PageInfo() { currentPage = 1 };
 			string[] tags = { "rating:s", "wallpaper", "order:score" };
 			pageInfo.articles = Data.GetPostsByTags(pageInfo.currentPage, tags);
@@ -72,7 +72,7 @@ namespace E621Downloader.Pages {
 				E621Article item = this.articles[i];
 				var holder = new ImageHolder(item);
 				MyWrapGridSameHeight.Children.Add(holder);
-				holder.OnImagedLoaded += (b) => SetImageItemSize(true, holder, b);
+				holder.OnImagedLoaded += (b) => SetImageItemSize(isHeightFixed, holder, b);
 				holder.OnImagedLoaded += (b) => LoadsTextBlock.Text = "Articles : " + ++loaded + "/" + this.articles.Count;
 			}
 		}
@@ -89,6 +89,9 @@ namespace E621Downloader.Pages {
 		}
 
 		private void SetImageItemSize(bool fixedHeight, ImageHolder holder, BitmapImage b) {
+			if(b == null) {
+				return;
+			}
 			if(fixedHeight) {
 				float ratio_hdw = b.PixelHeight / (float)b.PixelWidth;
 				int span_row = PREFEREDHEIGHT / ItemSize;
@@ -133,6 +136,10 @@ namespace E621Downloader.Pages {
 					CurrentPageTextBlock.Text = "Current Page : " + page;
 					pageInfo.currentPage = page;
 					pageInfo.articles = Data.GetPostsByTags(pageInfo.currentPage, pageInfo.tags);
+					if(pageInfo.articles.Length == 0) {
+						await MainPage.CreatePopupDialog("Articles Error", "Articles return 0");
+						return;
+					}
 					LoadPosts(pageInfo.articles);
 				} else {
 					await MainPage.CreatePopupDialog("Int Parse Error", "Plase Enter a Valid Number");
