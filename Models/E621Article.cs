@@ -1,6 +1,7 @@
 ﻿using System;
 
 namespace E621Downloader.Models {
+	[Obsolete("Use Post Instead", true)]
 	public class E621Article {
 		private readonly string source;
 		public readonly int id;
@@ -50,8 +51,5 @@ namespace E621Downloader.Models {
 			return source.Substring(index_id + 1, indexEnd_id - index_id - 1);
 		}
 
-	}
-	public enum Rating {
-		safe, suggestive, explict
 	}
 }

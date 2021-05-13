@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,9 +37,12 @@ namespace E621Downloader {
 
 			Local.Initialize();
 			Test();
+
 		}
 		private async void Test() {
 			string[] list = await Local.GetFollowList();
+
+
 		}
 
 		//private async void LoadImage() {

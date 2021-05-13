@@ -118,17 +118,17 @@ namespace E621Downloader {
 			if(result == ContentDialogResult.Primary) {
 				string text = (dialog.Content as SearchPopup).GetSearchText();
 				//LoadPosts(Data.GetPostsByTags(1, text));
-				PostsBrowser.Instance.LoadPosts(Data.GetPostsByTags(1, text), text);
+				PostsBrowser.Instance.LoadPosts(Post.GetPostsByTags(1, text), text);
 			}
 		}
-		public static void NavigateToPicturePage(E621Article article) {
+		public static void NavigateToPicturePage(Post post) {
 			SlideNavigationTransitionInfo transitionInfo = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft };
 			if(Instance.currentPage == HOME) {
 				transitionInfo = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
 			}
 			(Instance.MyNavigationView.MenuItems.ToList().Find((i) => (string)(i as NavigationViewItem).Tag == PICTURE) as NavigationViewItem).IsSelected = true;
 			Instance.currentPage = PICTURE;
-			Instance.MyFrame.Navigate(typeof(PicturePage), article, transitionInfo);
+			Instance.MyFrame.Navigate(typeof(PicturePage), post, transitionInfo);
 		}
 		private void MyNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
 			if(args.IsSettingsInvoked) {

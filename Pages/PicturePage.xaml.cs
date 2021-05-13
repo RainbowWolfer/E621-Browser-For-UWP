@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {
 	public sealed partial class PicturePage: Page {
-		public E621Article Article { get; private set; }
+		public Post PostRef { get; private set; }
 		public ObservableCollection<string> tags;
 		public PicturePage() {
 			this.InitializeComponent();
@@ -32,13 +32,13 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			MyProgressRing.IsActive = true;
-			Article = e.Parameter as E621Article;
-			if(Article == null) {
+			PostRef = e.Parameter as Post;
+			if(PostRef == null) {
 				return;
 			}
 			tags.Clear();
-			Article.tags.ToList().ForEach((s) => tags.Add(s));
-			MainImage.Source = new BitmapImage(new Uri(Article.url_source));
+			//PostRef.tags.ToList().ForEach((s) => tags.Add(s));
+			MainImage.Source = new BitmapImage(new Uri(PostRef.file.url));
 		}
 
 		private void MainImage_ImageOpened(object sender, RoutedEventArgs e) {

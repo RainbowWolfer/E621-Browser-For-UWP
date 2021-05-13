@@ -33,7 +33,7 @@
 		<ScrollViewer VerticalScrollMode="Auto" Grid.Row="1">
 			<Grid>
 				<!--<VariableSizedWrapGrid x:Name="MyWrapGrid" ItemHeight="100" ItemWidth="100" Orientation="Horizontal"/>-->
-				<VariableSizedWrapGrid x:Name="MyWrapGridSameHeight" ItemHeight="{x:Bind ItemSize}" ItemWidth="{x:Bind ItemSize}" Orientation="Horizontal"/>
+				<VariableSizedWrapGrid x:Name="MyWrapGrid" ItemHeight="{x:Bind ItemSize}" ItemWidth="{x:Bind ItemSize}" Orientation="Horizontal"/>
 			</Grid>
 		</ScrollViewer>
 	</Grid>

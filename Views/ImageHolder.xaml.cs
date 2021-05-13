@@ -22,28 +22,25 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Views {
 	public delegate void OnImageLoadedEventHandler(BitmapImage bitmap);
 	public sealed partial class ImageHolder: UserControl {
-		public E621Article ArticleRef { get; private set; }
+		public Post PostRef { get; private set; }
 
 		public event OnImageLoadedEventHandler OnImagedLoaded;
 
-		private string LoadUrl => ArticleRef.url_preview;
+		private string LoadUrl => PostRef.sample.url;
 
 		public BitmapImage Image { get; private set; }
 
 		private bool isLoaded;
 
-		private DateTime startTime;
-		public ImageHolder(E621Article article) {
-			this.ArticleRef = article;
+		public ImageHolder(Post post) {
+			this.PostRef = post;
 			this.InitializeComponent();
-			startTime = DateTime.Now;
-			MyLoadingTextBlock.Text = "Loading From : " + LoadUrl;
 			OnImagedLoaded += (b) => this.Image = b;
 			//LoadImageAsync2();
 			//App.Instance.RegisterDonwload(LoadImageAsync());
 		}
 		private async Task LoadImageAsync(/*WriteableBitmap bitmap*/) {
-			Debug.WriteLine(ArticleRef.id + "Start");
+			Debug.WriteLine(PostRef.id + "Start");
 			try {
 				LoadingPanel.Visibility = Visibility.Visible;
 				isLoaded = false;
@@ -53,7 +50,7 @@ namespace E621Downloader.Views {
 			} catch(Exception e) {
 				Debug.WriteLine("ERROR_" + e.Message);
 			}
-			Debug.WriteLine(ArticleRef.id + "End");
+			Debug.WriteLine(PostRef.id + "End");
 		}
 		private async void LoadImageAsync2() {
 			LoadingPanel.Visibility = Visibility.Visible;
@@ -79,7 +76,7 @@ namespace E621Downloader.Views {
 			dataPackage.SetText(LoadUrl);
 			Clipboard.SetContent(dataPackage);
 
-			MainPage.NavigateToPicturePage(ArticleRef);
+			MainPage.NavigateToPicturePage(PostRef);
 
 		}
 
@@ -91,7 +88,7 @@ namespace E621Downloader.Views {
 
 		private void MyImage_ImageFailed(object sender, ExceptionRoutedEventArgs e) {
 			MyProgressRing.IsActive = false;
-			MyLoadingTextBlock.Text = "FAILED";
+			//MyLoadingTextBlock.Text = "FAILED";
 			Debug.WriteLine("FAILED");
 		}
 	}
