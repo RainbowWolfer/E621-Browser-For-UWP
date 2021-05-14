@@ -33,6 +33,7 @@ namespace E621Downloader.Pages {
 		public int ItemSize { get => 50; }
 
 		public bool isHeightFixed;
+		public bool showNullImage = true;
 
 		public PostsBrowser() {
 			Instance = this;
@@ -78,6 +79,30 @@ namespace E621Downloader.Pages {
 			}
 		}
 
+		private void ShowNullImages(bool showNullImages) {
+			if(MyWrapGrid == null) {
+				return;
+			}
+			MyWrapGrid.Visibility = Visibility.Collapsed;
+			foreach(UIElement item in MyWrapGrid.Children) {
+				if(item is ImageHolder holder) {
+					if(holder.LoadUrl != null) {
+						continue;
+					}
+					if(showNullImages) {
+						holder.Visibility = Visibility.Visible;
+						VariableSizedWrapGrid.SetColumnSpan(holder, holder.SpanCol);
+						VariableSizedWrapGrid.SetRowSpan(holder, holder.SpanRow);
+					} else {
+						holder.Visibility = Visibility.Collapsed;
+						VariableSizedWrapGrid.SetColumnSpan(holder, 0);
+						VariableSizedWrapGrid.SetRowSpan(holder, 0);
+					}
+				}
+			}
+			MyWrapGrid.Visibility = Visibility.Visible;
+		}
+
 		private void SetAllItemsSize(bool fixedHeight) {
 			MyWrapGrid.Visibility = Visibility.Collapsed;
 			foreach(UIElement item in MyWrapGrid.Children) {
@@ -96,15 +121,15 @@ namespace E621Downloader.Pages {
 				float ratio_hdw = height / (float)width;
 				int span_row = PREFEREDHEIGHT / ItemSize;
 				int span_col = (int)Math.Round(span_row / ratio_hdw);
-				VariableSizedWrapGrid.SetColumnSpan(holder, span_col);
-				VariableSizedWrapGrid.SetRowSpan(holder, span_row);
+				holder.SpanCol = span_col;
+				holder.SpanRow = span_row;
 			} else {
 				int fixedHeightSpan = width / 100;
 				int fixedWidthSpan = height / 100;
 				int span_row = (int)(fixedHeightSpan * HolderScale);
 				int span_col = (int)(fixedWidthSpan * HolderScale);
-				VariableSizedWrapGrid.SetColumnSpan(holder, span_row);
-				VariableSizedWrapGrid.SetRowSpan(holder, span_col);
+				holder.SpanCol = span_row;
+				holder.SpanRow = span_col;
 			}
 			Debug.WriteLine(VariableSizedWrapGrid.GetRowSpan(holder) + "_" + VariableSizedWrapGrid.GetColumnSpan(holder));
 		}
@@ -170,6 +195,16 @@ namespace E621Downloader.Pages {
 		private void FixedHeightCheckBox_Unchecked(object sender, RoutedEventArgs e) {
 			isHeightFixed = false;
 			SetAllItemsSize(false);
+		}
+
+		private void ShowNullImageCheckBox_Checked(object sender, RoutedEventArgs e) {
+			showNullImage = true;
+			ShowNullImages(true);
+		}
+
+		private void ShowNullImageCheckBox_Unchecked(object sender, RoutedEventArgs e) {
+			showNullImage = false;
+			ShowNullImages(false);
 		}
 	}
 }

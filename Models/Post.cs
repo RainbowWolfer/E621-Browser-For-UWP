@@ -22,8 +22,8 @@ namespace E621Downloader.Models {
 	}
 	public partial class Post {
 		public int id;
-		public DateTime created_at;
-		public DateTime updated_at;
+		public DateTime? created_at;
+		public DateTime? updated_at;
 		public ArticleFile file;
 		public Preview preview;
 		public Sample sample;
@@ -84,9 +84,23 @@ namespace E621Downloader.Models {
 		public List<string> character;
 		public List<string> copyright;
 		public List<string> artist;
-		public List<object> invalid;
-		public List<object> lore;
+		public List<string> invalid;
+		public List<string> lore;
 		public List<string> meta;
+
+		public List<string> GetAllTags() {
+			var result = new List<string>();
+			general.ForEach(s => result.Add(s));
+			species.ForEach(s => result.Add(s));
+			character.ForEach(s => result.Add(s));
+			copyright.ForEach(s => result.Add(s));
+			artist.ForEach(s => result.Add(s));
+			invalid.ForEach(s => result.Add(s));
+			lore.ForEach(s => result.Add(s));
+			meta.ForEach(s => result.Add(s));
+			return result;
+		}
+
 	}
 
 	public class Flags {

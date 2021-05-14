@@ -7,21 +7,49 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+	<Page.Resources>
+		<CollectionViewSource x:Name="ContactsCVS" Source="{x:Bind tags}" IsSourceGrouped="True"/>
+	</Page.Resources>
 	<Grid>
-		<!--<TextBlock Text="This is Picture Page" FontSize="64"/>-->
 		<Grid.RowDefinitions>
 			<RowDefinition Height="100"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="200"/>
+			<ColumnDefinition Width="250"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<TextBlock Grid.Column='1' Text="Posts: 2093212" FontSize="48" VerticalAlignment="Center"/>
-		<ListView Grid.RowSpan="2" SelectionMode="None" ItemsSource="{x:Bind tags}"/>
-		<!--Source="{x:Bind Article.url_source}"-->
-		<Image  Grid.Column="1" Grid.Row="1" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="MainImage" Margin="0,0,40,40" ImageOpened="MainImage_ImageOpened"/>
+
+		<ListView x:Name="TagsListView" ItemsSource="{Binding Source={StaticResource ContactsCVS}}" Grid.RowSpan="2" SelectionMode="None">
+			<ListView.ItemsPanel>
+				<ItemsPanelTemplate>
+					<ItemsStackPanel AreStickyGroupHeadersEnabled="True"/>
+				</ItemsPanelTemplate>
+			</ListView.ItemsPanel>
+			<ListView.ItemTemplate>
+				<DataTemplate x:DataType="x:String">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{x:Bind ToString()}" VerticalAlignment="Center" Margin="0,0,20,0"/>
+						<Button Background="Transparent" Height="30" Width="30" Content="+" BorderThickness="0"/>
+						<Button Background="Transparent" Height="30" Width="30" Content="-" BorderThickness="0"/>
+					</StackPanel>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+			<ListView.GroupStyle>
+				<GroupStyle>
+					<GroupStyle.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Key}" Margin="10,0" FontWeight="Bold" />
+						</DataTemplate>
+					</GroupStyle.HeaderTemplate>
+				</GroupStyle>
+			</ListView.GroupStyle>
+		</ListView>
+
+		<ScrollViewer Grid.Column="1" Grid.Row="1" x:Name="MyScrollViewer" MinZoomFactor="1" DoubleTapped="MyScrollViewer_DoubleTapped" ZoomMode="Enabled">
+			<Image Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="MainImage" Margin="0,0,40,40" ImageOpened="MainImage_ImageOpened"/>
+		</ScrollViewer>
 		<ProgressRing Name="MyProgressRing" Grid.Row="1" Grid.Column="1" MaxHeight="300" MaxWidth="300" Margin="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>
 	</Grid>
 </Page>

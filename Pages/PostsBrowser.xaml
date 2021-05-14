@@ -26,6 +26,7 @@
 			</StackPanel>
 			<TextBlock x:Name="LoadsTextBlock" Text="Articles: 0/0" Margin="5" VerticalAlignment="Center"/>
 			<CheckBox x:Name="FixedHeightCheckBox" Content="Fixed Height" Margin="5" Checked="FixedHeightCheckBox_Checked" Unchecked="FixedHeightCheckBox_Unchecked"/>
+			<CheckBox x:Name="ShowNullImageCheckBox" Content="Show Null Image" Margin="5" Checked="ShowNullImageCheckBox_Checked" Unchecked="ShowNullImageCheckBox_Unchecked" IsChecked="True"/>
 			<Button x:Name="RefreshButton" Content="Refresh" Margin="5" Tapped="RefreshButton_Tapped"/>
 			<Button x:Name="PrevButton" Content="Previous Page" Margin="40,5,5,5" Width="120" Tapped="PrevButton_Tapped"/>
 			<Button x:Name="NextButton" Content="Next Page" Margin="5" Width="120" Tapped="NextButton_Tapped"/>

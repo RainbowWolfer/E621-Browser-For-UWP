@@ -19,11 +19,11 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Pages {
 	public sealed partial class PicturePage: Page {
 		public Post PostRef { get; private set; }
-		public ObservableCollection<string> tags;
+		public ObservableCollection<GroupTagList> tags;
 		public PicturePage() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
-			tags = new ObservableCollection<string>();
+			tags = new ObservableCollection<GroupTagList>();
 		}
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
@@ -36,13 +36,50 @@ namespace E621Downloader.Pages {
 			if(PostRef == null) {
 				return;
 			}
-			tags.Clear();
-			//PostRef.tags.ToList().ForEach((s) => tags.Add(s));
+
 			MainImage.Source = new BitmapImage(new Uri(PostRef.file.url));
+
+			AddNewGroup("Artist", PostRef.tags.artist);
+			AddNewGroup("Copyright", PostRef.tags.copyright);
+			AddNewGroup("Species", PostRef.tags.species);
+			AddNewGroup("General", PostRef.tags.general);
+			AddNewGroup("Character", PostRef.tags.character);
+			AddNewGroup("Meta", PostRef.tags.meta);
+			AddNewGroup("Invalid", PostRef.tags.invalid);
+			AddNewGroup("Lore", PostRef.tags.lore);
+		}
+
+		private void AddNewGroup(string title, List<string> content) {
+			if(content == null) {
+				return;
+			}
+			if(content.Count == 0) {
+				return;
+			}
+			var list = new GroupTagList() {
+				Key = title
+			};
+			foreach(string item in content) {
+				list.Add(item);
+			}
+			tags.Add(list);
 		}
 
 		private void MainImage_ImageOpened(object sender, RoutedEventArgs e) {
 			MyProgressRing.IsActive = false;
 		}
+
+		private void MyScrollViewer_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e) {
+			var scrollViewer = sender as ScrollViewer;
+			if(scrollViewer.ZoomFactor != 1) {
+				scrollViewer.ChangeView(scrollViewer.ActualWidth / 2, scrollViewer.ActualHeight / 2, 1);
+			} else if(scrollViewer.ZoomFactor == 1) {
+				scrollViewer.ChangeView(scrollViewer.ActualWidth / 2, scrollViewer.ActualHeight / 2, 2);
+			}
+		}
 	}
+	public class GroupTagList: List<string> {
+		public string Key { get; set; }
+	}
+
 }

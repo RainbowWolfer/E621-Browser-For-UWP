@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Pages;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,7 +27,23 @@ namespace E621Downloader.Views {
 
 		public event OnImageLoadedEventHandler OnImagedLoaded;
 
-		private string LoadUrl => PostRef.sample.url;
+		private int _spanCol;
+		private int _spanRow;
+		public int SpanCol {
+			get => _spanCol;
+			set {
+				_spanCol = value;
+				VariableSizedWrapGrid.SetColumnSpan(this, value);
+			}
+		}
+		public int SpanRow {
+			get => _spanRow;
+			set {
+				_spanRow = value;
+				VariableSizedWrapGrid.SetRowSpan(this, value);
+			}
+		}
+		public string LoadUrl => PostRef.sample.url;
 
 		public BitmapImage Image { get; private set; }
 
@@ -35,9 +52,27 @@ namespace E621Downloader.Views {
 		public ImageHolder(Post post) {
 			this.PostRef = post;
 			this.InitializeComponent();
+			Debug.WriteLine(LoadUrl);
 			OnImagedLoaded += (b) => this.Image = b;
 			//LoadImageAsync2();
 			//App.Instance.RegisterDonwload(LoadImageAsync());
+			if(LoadUrl != null) {
+				MyImage.Source = new BitmapImage(new Uri(LoadUrl));
+			} else {
+				MyProgressRing.IsActive = false;
+				MyProgressRing.Visibility = Visibility.Collapsed;
+				FailureTextBlock.Text = "Failed";
+				if(PostsBrowser.Instance.showNullImage) {
+					this.Visibility = Visibility.Visible;
+					VariableSizedWrapGrid.SetColumnSpan(this, SpanCol);
+					VariableSizedWrapGrid.SetRowSpan(this, SpanRow);
+				} else {
+					this.Visibility = Visibility.Collapsed;
+					VariableSizedWrapGrid.SetColumnSpan(this, 0);
+					VariableSizedWrapGrid.SetRowSpan(this, 0);
+				}
+			}
+
 		}
 		private async Task LoadImageAsync(/*WriteableBitmap bitmap*/) {
 			Debug.WriteLine(PostRef.id + "Start");
@@ -68,9 +103,13 @@ namespace E621Downloader.Views {
 		private void Grid_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(!this.isLoaded) {
 				//open browser;
+				//return;
+			}
+			if(LoadUrl == null) {
+				return;
 			}
 
-			var dataPackage = new DataPackage {
+			var dataPackage = new DataPackage() {
 				RequestedOperation = DataPackageOperation.Copy
 			};
 			dataPackage.SetText(LoadUrl);

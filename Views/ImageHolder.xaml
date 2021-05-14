@@ -12,8 +12,9 @@
 		<Grid  Tapped="Grid_Tapped">
 			<StackPanel x:Name="LoadingPanel" Margin="20">
 				<ProgressRing Name="MyProgressRing" Height="50" Width="50" IsActive="True"/>
+				<TextBlock x:Name="FailureTextBlock" FontSize="32"/>
 			</StackPanel>
-			<Image Name="MyImage" Source="{x:Bind LoadUrl}" ImageOpened="MyImage_ImageOpened" ImageFailed="MyImage_ImageFailed"/>
+			<Image Name="MyImage" ImageOpened="MyImage_ImageOpened" ImageFailed="MyImage_ImageFailed"/>
 		</Grid>
 	</GridViewItem>
 </UserControl>
