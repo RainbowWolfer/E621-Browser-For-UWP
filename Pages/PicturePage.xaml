@@ -16,10 +16,10 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="250"/>
+			<ColumnDefinition Width="210"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		<TextBlock Margin="20" Grid.Column='1' Text="{x:Bind Title, Mode=OneWay}" FontSize="40" VerticalAlignment="Center"/>
+		<TextBlock Margin="20" Grid.Column='1' Text="{x:Bind Title, Mode=OneWay}" FontSize="40" VerticalAlignment="Center" TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center"/>
 
 		<ListView x:Name="TagsListView" ItemsSource="{Binding Source={StaticResource ContactsCVS}}" Grid.RowSpan="2" SelectionMode="None">
 			<ListView.ItemsPanel>

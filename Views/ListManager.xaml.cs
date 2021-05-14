@@ -23,6 +23,6 @@ namespace E621Downloader.Views {
 				MyTextBox.Text += s + '\n';
 			}
 		}
-		public string[] GetCurrentTags() => MyTextBox.Text.Split('\n');
+		public string[] GetCurrentTags() => MyTextBox.Text.Split('\r').Where(s => s.Length != 0).ToArray();
 	}
 }

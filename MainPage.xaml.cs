@@ -38,6 +38,8 @@ namespace E621Downloader {
 		public const string SLIDESHOW = "SlideShow";
 		public const string SETTINGS = "Settings";
 
+		public object parameter_picture;
+
 		public string currentPage;
 
 		public MainPage() {
@@ -116,20 +118,30 @@ namespace E621Downloader {
 			};
 			ContentDialogResult result = await dialog.ShowAsync();
 			if(result == ContentDialogResult.Primary) {
+				//NavigateToPostsBrowser();
+				SelectNavigationItem(HOME);
 				string text = (dialog.Content as SearchPopup).GetSearchText();
 				//LoadPosts(Data.GetPostsByTags(1, text));
 				PostsBrowser.Instance.LoadPosts(Post.GetPostsByTags(1, text), text);
 			}
 		}
-		public static void NavigateToPicturePage(Post post) {
-			SlideNavigationTransitionInfo transitionInfo = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft };
-			if(Instance.currentPage == HOME) {
-				transitionInfo = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
-			}
-			(Instance.MyNavigationView.MenuItems.ToList().Find((i) => (string)(i as NavigationViewItem).Tag == PICTURE) as NavigationViewItem).IsSelected = true;
-			Instance.currentPage = PICTURE;
-			Instance.MyFrame.Navigate(typeof(PicturePage), post, transitionInfo);
+
+		public static void SelectNavigationItem(string title) {
+			(Instance.MyNavigationView.MenuItems.ToList().Find((i) => (string)(i as NavigationViewItem).Tag == title) as NavigationViewItem).IsSelected = true;
 		}
+		//public static void NavigateToPicturePage(Post post) {
+		//	SlideNavigationTransitionInfo transitionInfo = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft };
+		//	if(Instance.currentPage == HOME) {
+		//		transitionInfo = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
+		//	}
+		//	(Instance.MyNavigationView.MenuItems.ToList().Find((i) => (string)(i as NavigationViewItem).Tag == PICTURE) as NavigationViewItem).IsSelected = true;
+		//	Instance.currentPage = PICTURE;
+		//	Instance.MyFrame.Navigate(typeof(PicturePage), post, transitionInfo);
+		//}
+		//public static void NavigateToPostsBrowser() {
+		//	Instance.MyFrame.Navigate(typeof(PostsBrowser), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+		//}
+
 		private void MyNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
 			if(args.IsSettingsInvoked) {
 				if(currentPage == SETTINGS) {
@@ -148,7 +160,7 @@ namespace E621Downloader {
 				MyFrame.Navigate(typeof(PostsBrowser), null, transInfo);
 				//MyFrame.Navigate(typeof(GridViewPostsBrowser), null, transInfo);
 			} else if(tag == PICTURE) {
-				MyFrame.Navigate(typeof(PicturePage), null, transInfo);
+				MyFrame.Navigate(typeof(PicturePage), parameter_picture, transInfo);
 			} else if(tag == SLIDESHOW) {
 				MyFrame.Navigate(typeof(SlideshowPage), null, transInfo);
 			} else {

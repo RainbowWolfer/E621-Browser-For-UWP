@@ -61,14 +61,17 @@ namespace E621Downloader {
 		//}
 
 		public static bool CompareTwoArray<T>(IEnumerable<T> a, IEnumerable<T> b) {
-			if(a.Count() != b.Count()) {
+			T[] ar = a.ToArray();
+			T[] br = b.ToArray();
+			if(ar.Length != br.Length) {
 				return false;
 			}
-			bool same = true;
-			foreach(var item in a) {
-
+			for(int i = 0; i < ar.Length; i++) {
+				if(!ar[i].Equals(br[i])) {
+					return false;
+				}
 			}
-			return same;
+			return true;
 		}
 
 		protected override void OnLaunched(LaunchActivatedEventArgs e) {
