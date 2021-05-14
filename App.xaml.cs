@@ -25,24 +25,23 @@ namespace E621Downloader {
 	public sealed partial class App: Application {
 		public static App Instance;
 
-		//public
-
-		public readonly List<Task> downloadsQueue;
+		//public readonly List<Task> downloadsQueue;
 		public App() {
 			Instance = this;
 			this.InitializeComponent();
 			this.Suspending += OnSuspending;
-			downloadsQueue = new List<Task>();
-			//LoadImage();
+			//downloadsQueue = new List<Task>();
 
 			Local.Initialize();
-			Test();
 
+			Test();
 		}
 		private async void Test() {
-			string[] list = await Local.GetFollowList();
-
-
+			await Task.Delay(200);
+			string[] list = Local.FollowList;
+			foreach(var item in list) {
+				Debug.Write(item + " ");
+			}
 		}
 
 		//private async void LoadImage() {
@@ -55,10 +54,21 @@ namespace E621Downloader {
 		//		//ImageStudent.Source = bitmapImage;
 		//	}
 		//}
-		public void RegisterDonwload(Task task) {
-			task.Wait();
-			downloadsQueue.Add(task);
-			//downloadsQueue[0].IsCompleted
+		//public void RegisterDonwload(Task task) {
+		//	task.Wait();
+		//	downloadsQueue.Add(task);
+		//	//downloadsQueue[0].IsCompleted
+		//}
+
+		public static bool CompareTwoArray<T>(IEnumerable<T> a, IEnumerable<T> b) {
+			if(a.Count() != b.Count()) {
+				return false;
+			}
+			bool same = true;
+			foreach(var item in a) {
+
+			}
+			return same;
 		}
 
 		protected override void OnLaunched(LaunchActivatedEventArgs e) {

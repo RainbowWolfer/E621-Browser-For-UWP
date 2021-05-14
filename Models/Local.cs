@@ -19,6 +19,9 @@ namespace E621Downloader.Models {
 		private static StorageFile followListFile;
 		private static StorageFile blackListFile;
 
+		public static string[] FollowList { get; private set; }
+		public static string[] BlackList { get; private set; }
+
 		public async static void Initialize() {
 			if(initialized) {
 				throw new Exception("Local has been initialized more than one time!");
@@ -26,11 +29,20 @@ namespace E621Downloader.Models {
 			initialized = true;
 			followListFile = await LocalFolder.CreateFileAsync(FOLLOWLISTNAME, CreationCollisionOption.OpenIfExists);
 			blackListFile = await LocalFolder.CreateFileAsync(BLACKLISTNAME, CreationCollisionOption.OpenIfExists);
+
 			Debug.WriteLine(followListFile.Path);
 			Debug.WriteLine(blackListFile.Path);
+
+			await Reload();
 		}
-		public async static Task<string[]> GetFollowList() => await GetList(followListFile);
-		public async static Task<string[]> GetBlackList() => await GetList(blackListFile);
+
+		public async static Task Reload() {
+			FollowList = await GetList(followListFile);
+			BlackList = await GetList(blackListFile);
+		}
+
+		private async static Task<string[]> GetFollowList() => await GetList(followListFile);
+		private async static Task<string[]> GetBlackList() => await GetList(blackListFile);
 		private async static Task<string[]> GetList(StorageFile file) {
 			Stream stream = await file.OpenStreamForReadAsync();
 			StreamReader reader = new StreamReader(stream);

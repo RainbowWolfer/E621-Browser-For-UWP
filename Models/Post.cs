@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace E621Downloader.Models {
-	public partial class Post {
+	public class Post {
 		public static List<Post> GetPostsByTags(int page, params string[] tags) {
 			var posts = new List<Post>();
 			if(page <= 0) {
@@ -19,8 +19,7 @@ namespace E621Downloader.Models {
 
 			return JsonConvert.DeserializeObject<PostRoot>(data).posts;
 		}
-	}
-	public partial class Post {
+
 		public int id;
 		public DateTime? created_at;
 		public DateTime? updated_at;
@@ -29,7 +28,7 @@ namespace E621Downloader.Models {
 		public Sample sample;
 		public Score score;
 		public Tags tags;
-		public List<object> locked_tags;
+		public List<string> locked_tags;
 		public int change_seq;
 		public Flags flags;
 		public string rating;
@@ -43,7 +42,7 @@ namespace E621Downloader.Models {
 		public int comment_count;
 		public bool is_favorited;
 		public bool has_notes;
-		public object duration;
+		public string duration;
 	}
 
 	public class ArticleFile {
@@ -113,7 +112,7 @@ namespace E621Downloader.Models {
 	}
 
 	public class Relationships {
-		public object parent_id;
+		public string parent_id;
 		public bool has_children;
 		public bool has_active_children;
 		public List<int> children;

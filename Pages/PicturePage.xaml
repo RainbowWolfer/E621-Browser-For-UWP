@@ -12,14 +12,14 @@
 	</Page.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="100"/>
+			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="250"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		<TextBlock Grid.Column='1' Text="Posts: 2093212" FontSize="48" VerticalAlignment="Center"/>
+		<TextBlock Margin="20" Grid.Column='1' Text="{x:Bind Title, Mode=OneWay}" FontSize="40" VerticalAlignment="Center"/>
 
 		<ListView x:Name="TagsListView" ItemsSource="{Binding Source={StaticResource ContactsCVS}}" Grid.RowSpan="2" SelectionMode="None">
 			<ListView.ItemsPanel>
@@ -47,7 +47,7 @@
 			</ListView.GroupStyle>
 		</ListView>
 
-		<ScrollViewer Grid.Column="1" Grid.Row="1" x:Name="MyScrollViewer" MinZoomFactor="1" DoubleTapped="MyScrollViewer_DoubleTapped" ZoomMode="Enabled">
+		<ScrollViewer Grid.Column="1" Grid.Row="1" x:Name="MyScrollViewer" MinZoomFactor="0.3" DoubleTapped="MyScrollViewer_DoubleTapped" ZoomMode="Enabled" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Hidden" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Hidden">
 			<Image Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="MainImage" Margin="0,0,40,40" ImageOpened="MainImage_ImageOpened"/>
 		</ScrollViewer>
 		<ProgressRing Name="MyProgressRing" Grid.Row="1" Grid.Column="1" MaxHeight="300" MaxWidth="300" Margin="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>

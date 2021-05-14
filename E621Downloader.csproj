@@ -147,6 +147,9 @@
     <Compile Include="Views\ImageHolder.xaml.cs">
       <DependentUpon>ImageHolder.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ListManager.xaml.cs">
+      <DependentUpon>ListManager.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -195,6 +198,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ImageHolder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ListManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

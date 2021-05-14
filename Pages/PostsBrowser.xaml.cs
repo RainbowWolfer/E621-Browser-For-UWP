@@ -65,16 +65,13 @@ namespace E621Downloader.Pages {
 				this.tags = tags;
 				MainPage.ChangeCurrenttTags(tags);
 			}
-			//currentPage = 1;
 			loaded = 0;
 			MyWrapGrid.Children.Clear();
 			LoadsTextBlock.Text = "Articles : 0/" + this.posts.Count;
-			for(int i = 0; i < this.posts.Count; i++) {
-				Post item = this.posts[i];
+			foreach(Post item in this.posts) {
 				var holder = new ImageHolder(item);
 				MyWrapGrid.Children.Add(holder);
 				SetImageItemSize(isHeightFixed, holder, item.sample);
-				//holder.OnImagedLoaded += (b) => SetImageItemSize(isHeightFixed, holder, b);
 				holder.OnImagedLoaded += (b) => LoadsTextBlock.Text = "Articles : " + ++loaded + "/" + this.posts.Count;
 			}
 		}
@@ -131,7 +128,7 @@ namespace E621Downloader.Pages {
 				holder.SpanCol = span_row;
 				holder.SpanRow = span_col;
 			}
-			Debug.WriteLine(VariableSizedWrapGrid.GetRowSpan(holder) + "_" + VariableSizedWrapGrid.GetColumnSpan(holder));
+			//Debug.WriteLine(VariableSizedWrapGrid.GetRowSpan(holder) + "_" + VariableSizedWrapGrid.GetColumnSpan(holder));
 		}
 
 		private void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {
