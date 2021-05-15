@@ -34,7 +34,7 @@ namespace E621Downloader {
 
 			Local.Initialize();
 
-			Test();
+			//Test();
 		}
 		private async void Test() {
 			await Task.Delay(200);

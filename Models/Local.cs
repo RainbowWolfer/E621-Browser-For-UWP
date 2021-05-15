@@ -37,8 +37,8 @@ namespace E621Downloader.Models {
 		}
 
 		public async static Task Reload() {
-			FollowList = await GetList(followListFile);
-			BlackList = await GetList(blackListFile);
+			FollowList = await GetFollowList();
+			BlackList = await GetBlackList();
 		}
 
 		private async static Task<string[]> GetFollowList() => await GetList(followListFile);

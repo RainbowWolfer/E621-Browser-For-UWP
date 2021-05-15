@@ -33,6 +33,8 @@ namespace E621Downloader {
 		private const string url = "https://e621.net/posts?tags=skyleesfm+order%3Ascore";
 		public PostsBrowser postsBrowser;
 
+		public PageTag currentTag;
+
 		public const string HOME = "Home";
 		public const string PICTURE = "Picture";
 		public const string SLIDESHOW = "SlideShow";
@@ -126,21 +128,17 @@ namespace E621Downloader {
 			}
 		}
 
+		public NavigationTransitionInfo CalculateTransition(PageTag from, PageTag to) {
+			if((int)from - (int)to < 0) {
+				return new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft };
+			} else {
+				return new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
+			}
+		}
+
 		public static void SelectNavigationItem(string title) {
 			(Instance.MyNavigationView.MenuItems.ToList().Find((i) => (string)(i as NavigationViewItem).Tag == title) as NavigationViewItem).IsSelected = true;
 		}
-		//public static void NavigateToPicturePage(Post post) {
-		//	SlideNavigationTransitionInfo transitionInfo = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft };
-		//	if(Instance.currentPage == HOME) {
-		//		transitionInfo = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
-		//	}
-		//	(Instance.MyNavigationView.MenuItems.ToList().Find((i) => (string)(i as NavigationViewItem).Tag == PICTURE) as NavigationViewItem).IsSelected = true;
-		//	Instance.currentPage = PICTURE;
-		//	Instance.MyFrame.Navigate(typeof(PicturePage), post, transitionInfo);
-		//}
-		//public static void NavigateToPostsBrowser() {
-		//	Instance.MyFrame.Navigate(typeof(PostsBrowser), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-		//}
 
 		private void MyNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
 			if(args.IsSettingsInvoked) {
@@ -168,6 +166,9 @@ namespace E621Downloader {
 			}
 			currentPage = tag;
 		}
+	}
+	public enum PageTag {
+		Home, Picture, ShowSlider, Subscription, Settings
 	}
 }
 
