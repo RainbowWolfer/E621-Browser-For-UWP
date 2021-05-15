@@ -12,9 +12,10 @@
 
 	<NavigationView PaneDisplayMode="Top" Name="MyNavigationView" IsBackButtonVisible="Auto" SelectionFollowsFocus="Enabled" ItemInvoked="MyNavigationView_ItemInvoked">
 		<NavigationView.MenuItems>
-			<NavigationViewItem Icon="Home" Content="Home" Tag="Home"/>
-			<NavigationViewItem Icon="Pictures" Content="Picture" Tag="Picture"/>
-			<NavigationViewItem Icon="SlideShow" Content="SlideShow" Tag="SlideShow"/>
+			<NavigationViewItem Icon="Home" Content="Home" Tag="0"/>
+			<NavigationViewItem Icon="Pictures" Content="Picture" Tag="1"/>
+			<NavigationViewItem Icon="SlideShow" Content="SlideShow" Tag="2"/>
+			<NavigationViewItem Icon="Link" Content="Subcription" Tag="3"/>
 		</NavigationView.MenuItems>
 		<NavigationView.PaneFooter>
 			<StackPanel Orientation="Horizontal">

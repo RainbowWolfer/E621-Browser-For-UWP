@@ -10,7 +10,46 @@
     Width="250">
 
 	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
 		<!--<TextBlock Text="{x:Bind Title}" FontSize="32" Margin="10" Grid.Row="0"/>-->
-		<TextBox x:Name="MyTextBox" Grid.Row="1" Margin="10" ScrollViewer.VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" AcceptsReturn="True"/>
+		<!--<TextBox x:Name="MyTextBox" Grid.Row="1" Margin="10" ScrollViewer.VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" AcceptsReturn="True"/>-->
+		<Grid Grid.Row="0" Margin="5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
+			<DropDownButton Content="Order" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+				<ToolTipService.ToolTip>
+					<ToolTip Name="OrderToolTip" Content="Time"/>
+				</ToolTipService.ToolTip>
+				<DropDownButton.Flyout>
+					<MenuFlyout Placement="Bottom">
+						<MenuFlyoutItem x:Name="TimeOrderItem" Text="Time" Click="TimeOrderItem_Click"/>
+						<MenuFlyoutItem x:Name="AlphaOrderItem" Text="Alpha" Click="AlphaOrderItem_Click"/>
+					</MenuFlyout>
+				</DropDownButton.Flyout>
+			</DropDownButton>
+			<Button x:Name="ExportButton" Content="Export To ClipBoard" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Tapped="ExportButton_Tapped"/>
+		</Grid>
+
+		<ListView Margin="5" ItemsSource="{x:Bind tags}" IsItemClickEnabled="True" SelectionMode="None" Grid.Row="1" ItemClick="ListView_ItemClick">
+			<ListView.ItemTemplate>
+				<DataTemplate x:DataType="x:String">
+					<RelativePanel Width="215">
+						<TextBlock Text="{x:Bind ToString()}" Width="180" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.AlignLeftWithPanel="True" TextWrapping="Wrap"/>
+						<Button x:Name="DeleteButton" Background="Transparent" BorderThickness="0" Width="40" Height="40" RelativePanel.AlignRightWithPanel="True" Tag="{x:Bind ToString()}" Tapped="DeleteButton_Tapped">
+							<Button.Content>
+								<SymbolIcon Symbol="Delete"/>
+							</Button.Content>
+						</Button>
+					</RelativePanel>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
 	</Grid>
 </UserControl>

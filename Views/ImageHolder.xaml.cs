@@ -117,7 +117,7 @@ namespace E621Downloader.Views {
 
 			//MainPage.NavigateToPicturePage(PostRef);
 			MainPage.Instance.parameter_picture = PostRef;
-			MainPage.SelectNavigationItem(MainPage.PICTURE);
+			MainPage.SelectNavigationItem(PageTag.Picture);
 		}
 
 		private void MyImage_ImageOpened(object sender, RoutedEventArgs e) {

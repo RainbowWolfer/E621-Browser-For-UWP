@@ -48,13 +48,13 @@ namespace E621Downloader.Pages {
 
 		private async Task<(ContentDialogResult, string[], string[])> PopUp(string title, string[] list) {
 			string[] oldValue = list;
-			var manager = new ListManager(oldValue);
 			ContentDialog dialog = new ContentDialog() {
 				Title = title,
-				Content = manager,
 				PrimaryButtonText = "Confirm",
 				SecondaryButtonText = "Cancel",
 			};
+			var manager = new ListManager(oldValue, dialog);
+			dialog.Content = manager;
 			ContentDialogResult result = await dialog.ShowAsync();
 			string[] newValue = manager.GetCurrentTags();
 			return (result, oldValue, newValue);

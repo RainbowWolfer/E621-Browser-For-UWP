@@ -1,6 +1,7 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Pages;
 using E621Downloader.Views;
+//using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -35,18 +36,21 @@ namespace E621Downloader {
 
 		public PageTag currentTag;
 
-		public const string HOME = "Home";
-		public const string PICTURE = "Picture";
-		public const string SLIDESHOW = "SlideShow";
-		public const string SETTINGS = "Settings";
+		//private 
+
+		//public const string HOME = "Home";
+		//public const string PICTURE = "Picture";
+		//public const string SLIDESHOW = "SlideShow";
+		//public const string SETTINGS = "Settings";
 
 		public object parameter_picture;
 
-		public string currentPage;
+		//public string currentPage;
 
 		public MainPage() {
 			Instance = this;
 			this.InitializeComponent();
+			currentTag = PageTag.Settings;
 			//MyFrame.Navigate(typeof(PostsBrowser), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
 		}
 
@@ -83,6 +87,19 @@ namespace E621Downloader {
 			IsShowingInstanceDialog = false;
 		}
 
+		public async static void CreateTip(string titile, string subtitle, int delayTime = 5000) {
+			var tip = new Microsoft.UI.Xaml.Controls.TeachingTip() {
+				Title = titile,
+				Subtitle = subtitle,
+				Target = Instance.CurrentTagsTextBlock,
+				IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() {
+					Symbol = Symbol.Accept
+				},
+				IsOpen = true,
+			};
+			await Task.Delay(delayTime);
+			tip.IsOpen = false;
+		}
 
 		public static async Task<ContentDialog> CreatePopupDialog(string title, object content, bool enableButton = true) {
 			ContentDialog dialog = new ContentDialog() {
@@ -120,8 +137,8 @@ namespace E621Downloader {
 			};
 			ContentDialogResult result = await dialog.ShowAsync();
 			if(result == ContentDialogResult.Primary) {
-				//NavigateToPostsBrowser();
-				SelectNavigationItem(HOME);
+				SelectNavigationItem(PageTag.Home);
+				await Task.Delay(100);
 				string text = (dialog.Content as SearchPopup).GetSearchText();
 				//LoadPosts(Data.GetPostsByTags(1, text));
 				PostsBrowser.Instance.LoadPosts(Post.GetPostsByTags(1, text), text);
@@ -130,41 +147,41 @@ namespace E621Downloader {
 
 		public NavigationTransitionInfo CalculateTransition(PageTag from, PageTag to) {
 			if((int)from - (int)to < 0) {
-				return new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft };
-			} else {
 				return new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
+			} else {
+				return new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft };
 			}
 		}
 
-		public static void SelectNavigationItem(string title) {
-			(Instance.MyNavigationView.MenuItems.ToList().Find((i) => (string)(i as NavigationViewItem).Tag == title) as NavigationViewItem).IsSelected = true;
+		public static void SelectNavigationItem(PageTag tag) {
+			(Instance.MyNavigationView.MenuItems.ToList().Find((i) => int.Parse((string)(i as NavigationViewItem).Tag) == (int)tag) as NavigationViewItem).IsSelected = true;
 		}
 
 		private void MyNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
 			if(args.IsSettingsInvoked) {
-				if(currentPage == SETTINGS) {
+				if(currentTag == PageTag.Settings) {
 					return;
 				}
-				MyFrame.Navigate(typeof(SettingsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-				currentPage = SETTINGS;
+				MyFrame.Navigate(typeof(SettingsPage), null, CalculateTransition(currentTag, PageTag.Settings));
+				currentTag = PageTag.Settings;
 				return;
 			}
-			string tag = (string)args.InvokedItemContainer.Tag;
-			if(currentPage == tag) {
+			PageTag tag = (PageTag)int.Parse((string)args.InvokedItemContainer.Tag);
+			if(currentTag == tag) {
 				return;
 			}
-			NavigationTransitionInfo transInfo = currentPage == SETTINGS ? new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft } : args.RecommendedNavigationTransitionInfo;
-			if(tag == HOME) {
-				MyFrame.Navigate(typeof(PostsBrowser), null, transInfo);
-				//MyFrame.Navigate(typeof(GridViewPostsBrowser), null, transInfo);
-			} else if(tag == PICTURE) {
-				MyFrame.Navigate(typeof(PicturePage), parameter_picture, transInfo);
-			} else if(tag == SLIDESHOW) {
-				MyFrame.Navigate(typeof(SlideshowPage), null, transInfo);
+			if(tag == PageTag.Home) {
+				MyFrame.Navigate(typeof(PostsBrowser), null, CalculateTransition(currentTag, PageTag.Home));
+			} else if(tag == PageTag.Picture) {
+				MyFrame.Navigate(typeof(PicturePage), parameter_picture, CalculateTransition(currentTag, PageTag.Picture));
+			} else if(tag == PageTag.ShowSlider) {
+				MyFrame.Navigate(typeof(SlideshowPage), null, CalculateTransition(currentTag, PageTag.ShowSlider));
+			} else if(tag == PageTag.Subscription) {
+
 			} else {
 				throw new Exception("Tag Error");
 			}
-			currentPage = tag;
+			currentTag = tag;
 		}
 	}
 	public enum PageTag {
