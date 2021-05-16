@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace E621Downloader.Models {
 	public class Post {
 		public static List<Post> GetPostsByTags(int page, params string[] tags) {
-			var posts = new List<Post>();
 			if(page <= 0) {
 				throw new Exception("Page not valid");
 			}

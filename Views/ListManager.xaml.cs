@@ -61,10 +61,11 @@ namespace E621Downloader.Views {
 
 		private async void ListView_ItemClick(object sender, ItemClickEventArgs e) {
 			parent.Hide();
-			string tag = (string)e.ClickedItem;
+			string content = (string)e.ClickedItem;
 			MainPage.SelectNavigationItem(PageTag.Home);
 			await Task.Delay(100);
-			PostsBrowser.Instance.LoadPosts(Post.GetPostsByTags(1, tag), tag);
+			//PostsBrowser.Instance.LoadPosts(Post.GetPostsByTags(1, tag), tag);
+			await PostsBrowser.Instance.LoadAsync(1, content);
 		}
 
 		private void DeleteButton_Tapped(object sender, TappedRoutedEventArgs e) {

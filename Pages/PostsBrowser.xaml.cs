@@ -24,9 +24,9 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Pages {
 	public sealed partial class PostsBrowser: Page {
 		public static PostsBrowser Instance;
-		public List<Post> posts;
 		public const float HolderScale = 1;
 
+		public List<Post> posts;
 		public string[] tags;
 		public int currentPage;
 
@@ -43,11 +43,11 @@ namespace E621Downloader.Pages {
 			Initialize();
 		}
 
-		private void Initialize() {
-			currentPage = 1;
+		private async void Initialize() {
 			string[] tags = { "rating:s", "wallpaper", "order:score" };
-			posts = Post.GetPostsByTags(currentPage, tags);
-			LoadPosts(posts, tags);
+			//posts = Post.GetPostsByTags(currentPage, tags);
+			//LoadPosts(posts, tags);
+			await LoadAsync(1, tags);
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
@@ -56,7 +56,7 @@ namespace E621Downloader.Pages {
 
 		private const int PREFEREDHEIGHT = 200;
 		private int loaded;
-		public void LoadPosts(List<Post> posts, params string[] tags) {
+		private void LoadPosts(List<Post> posts, params string[] tags) {
 			if(posts == null) {
 				return;
 			}
@@ -74,6 +74,28 @@ namespace E621Downloader.Pages {
 				SetImageItemSize(isHeightFixed, holder, item.sample);
 				holder.OnImagedLoaded += (b) => LoadsTextBlock.Text = "Articles : " + ++loaded + "/" + this.posts.Count;
 			}
+		}
+
+		public async Task LoadAsync(int page = 1, params string[] tags) {
+			this.currentPage = page;
+			MainPage.CreateInstantDialog("Please Wait", "Loading...");
+			await Task.Delay(20);
+			List<Post> temp = Post.GetPostsByTags(page, tags);
+			if(temp.Count == 0) {
+				MainPage.HideInstantDialog();
+				await MainPage.CreatePopupDialog("Articles Error", "Articles return 0");
+				return;
+			}
+			this.posts = temp;
+			LoadPosts(this.posts, tags);
+			MainPage.HideInstantDialog();
+			CurrentPageTextBlock.Text = "Current Page : " + page;
+		}
+		public async Task Reload() {
+			MainPage.CreateInstantDialog("Please Wait", "Reloading...");
+			await Task.Delay(20);
+			LoadPosts(this.posts, tags);
+			MainPage.HideInstantDialog();
 		}
 
 		private void ShowNullImages(bool showNullImages) {
@@ -131,36 +153,39 @@ namespace E621Downloader.Pages {
 			//Debug.WriteLine(VariableSizedWrapGrid.GetRowSpan(holder) + "_" + VariableSizedWrapGrid.GetColumnSpan(holder));
 		}
 
-		private void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			LoadPosts(posts);
+		private async void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			await Reload();
 		}
 
-		private void PrevButton_Tapped(object sender, TappedRoutedEventArgs e) {
+		private async void PrevButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(currentPage <= 1) {
 				return;
 			}
-			posts = Post.GetPostsByTags(--currentPage, tags);
-			LoadPosts(posts);
-			CurrentPageTextBlock.Text = "Current Page : " + currentPage;
+			await LoadAsync(--currentPage, tags);
+			//posts = Post.GetPostsByTags(--currentPage, tags);
+			//LoadPosts(posts);
+			//CurrentPageTextBlock.Text = "Current Page : " + currentPage;
 		}
 
-		private void NextButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			posts = Post.GetPostsByTags(++currentPage, tags);
-			LoadPosts(posts);
-			CurrentPageTextBlock.Text = "Current Page : " + currentPage;
+		private async void NextButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			await LoadAsync(++currentPage, tags);
+			//posts = Post.GetPostsByTags(++currentPage, tags);
+			//LoadPosts(posts);
+			//CurrentPageTextBlock.Text = "Current Page : " + currentPage;
 		}
 
 		private async void PageJumpTextBox_KeyDown(object sender, KeyRoutedEventArgs e) {
 			if(e.Key == VirtualKey.Enter) {
 				if(int.TryParse(PageJumpTextBox.Text, out int page)) {
-					CurrentPageTextBlock.Text = "Current Page : " + page;
-					currentPage = page;
-					posts = Post.GetPostsByTags(currentPage, tags);
-					if(posts.Count == 0) {
-						await MainPage.CreatePopupDialog("Articles Error", "Articles return 0");
-						return;
-					}
-					LoadPosts(posts);
+					//CurrentPageTextBlock.Text = "Current Page : " + page;
+					//currentPage = page;
+					//posts = Post.GetPostsByTags(currentPage, tags);
+					//if(posts.Count == 0) {
+					//	await MainPage.CreatePopupDialog("Articles Error", "Articles return 0");
+					//	return;
+					//}
+					//LoadPosts(posts);
+					await LoadAsync(page, tags);
 				} else {
 					await MainPage.CreatePopupDialog("Int Parse Error", "Plase Enter a Valid Number");
 				}
@@ -169,18 +194,21 @@ namespace E621Downloader.Pages {
 
 		private async void JumpPageSubmitButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(int.TryParse(PageJumpTextBox.Text, out int page)) {
-				CurrentPageTextBlock.Text = "Current Page : " + page;
-				currentPage = page;
-				MainPage.CreateInstantDialog("Please Wait", "Loading...");
-				//while(!MainPage.IsShowingInstanceDialog) {
-				//	await Task.Delay(20);
-				//}
-				await Task.Delay(20);
-				posts = Post.GetPostsByTags(currentPage, tags);
-				MainPage.HideInstantDialog();
-				LoadPosts(posts);
+				if(page > 750 || page <= 0) {
+					await MainPage.CreatePopupDialog("Error", "Plase Enter a Number Within 0 ~ 750");
+					return;
+				}
+				//CurrentPageTextBlock.Text = "Current Page : " + page;
+				//currentPage = page;
+				//MainPage.CreateInstantDialog("Please Wait", "Loading...");
+				//await Task.Delay(20);
+				//posts = Post.GetPostsByTags(currentPage, tags);
+				//MainPage.HideInstantDialog();
+				//LoadPosts(posts);
+				await LoadAsync(page, tags);
 			} else {
 				await MainPage.CreatePopupDialog("Int Parse Error", "Plase Enter a Valid Number");
+				return;
 			}
 		}
 
@@ -202,6 +230,14 @@ namespace E621Downloader.Pages {
 		private void ShowNullImageCheckBox_Unchecked(object sender, RoutedEventArgs e) {
 			showNullImage = false;
 			ShowNullImages(false);
+		}
+
+		private void ShowBlackListCheckBox_Checked(object sender, RoutedEventArgs e) {
+
+		}
+
+		private void ShowBlackListCheckBox_Unchecked(object sender, RoutedEventArgs e) {
+
 		}
 	}
 }

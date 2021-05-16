@@ -13,24 +13,27 @@
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<StackPanel Orientation="Horizontal" Margin="30,0,0,0">
-			<TextBlock x:Name="CurrentPageTextBlock" Text="Current Page: 1" Margin="5" VerticalAlignment="Center"/>
-			<!--<AutoSuggestBox Margin="5" PlaceholderText="Jump To Page" Width="130" QueryIcon="Accept"/>-->
-			<StackPanel Margin="5" VerticalAlignment="Center" Orientation="Horizontal">
-				<TextBox Width="110" KeyDown="PageJumpTextBox_KeyDown" x:Name="PageJumpTextBox" PlaceholderText="Jump To Page" TextAlignment="Center"/>
-				<Button x:Name="JumpPageSubmitButton" Tapped="JumpPageSubmitButton_Tapped">
-					<Button.Content>
-						<SymbolIcon Symbol="Accept"/>
-					</Button.Content>
-				</Button>
+		<ScrollViewer VerticalScrollMode="Disabled" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Disabled" Margin="10,0,10,0">
+			<StackPanel Orientation="Horizontal">
+				<TextBlock x:Name="CurrentPageTextBlock" Text="Current Page: 1" Margin="5" VerticalAlignment="Center"/>
+				<!--<AutoSuggestBox Margin="5" PlaceholderText="Jump To Page" Width="130" QueryIcon="Accept"/>-->
+				<StackPanel Margin="5" VerticalAlignment="Center" Orientation="Horizontal">
+					<TextBox Width="110" KeyDown="PageJumpTextBox_KeyDown" x:Name="PageJumpTextBox" PlaceholderText="Jump To Page" TextAlignment="Center"/>
+					<Button x:Name="JumpPageSubmitButton" Tapped="JumpPageSubmitButton_Tapped">
+						<Button.Content>
+							<SymbolIcon Symbol="Accept"/>
+						</Button.Content>
+					</Button>
+				</StackPanel>
+				<TextBlock x:Name="LoadsTextBlock" Text="Articles: 0/0" Margin="5" VerticalAlignment="Center"/>
+				<CheckBox x:Name="FixedHeightCheckBox" Content="Fixed Height" Margin="5" Checked="FixedHeightCheckBox_Checked" Unchecked="FixedHeightCheckBox_Unchecked"/>
+				<CheckBox x:Name="ShowNullImageCheckBox" Content="Show Null Image" Margin="5" Checked="ShowNullImageCheckBox_Checked" Unchecked="ShowNullImageCheckBox_Unchecked" IsChecked="True"/>
+				<CheckBox x:Name="ShowBlackListCheckBox" Content="Show BlackListed" Margin="5" Checked="ShowBlackListCheckBox_Checked" Unchecked="ShowBlackListCheckBox_Unchecked" IsChecked="True"/>
+				<Button x:Name="RefreshButton" Content="Refresh" Margin="5" Tapped="RefreshButton_Tapped"/>
+				<Button x:Name="PrevButton" Content="Previous Page" Margin="40,5,5,5" Width="120" Tapped="PrevButton_Tapped"/>
+				<Button x:Name="NextButton" Content="Next Page" Margin="5" Width="120" Tapped="NextButton_Tapped"/>
 			</StackPanel>
-			<TextBlock x:Name="LoadsTextBlock" Text="Articles: 0/0" Margin="5" VerticalAlignment="Center"/>
-			<CheckBox x:Name="FixedHeightCheckBox" Content="Fixed Height" Margin="5" Checked="FixedHeightCheckBox_Checked" Unchecked="FixedHeightCheckBox_Unchecked"/>
-			<CheckBox x:Name="ShowNullImageCheckBox" Content="Show Null Image" Margin="5" Checked="ShowNullImageCheckBox_Checked" Unchecked="ShowNullImageCheckBox_Unchecked" IsChecked="True"/>
-			<Button x:Name="RefreshButton" Content="Refresh" Margin="5" Tapped="RefreshButton_Tapped"/>
-			<Button x:Name="PrevButton" Content="Previous Page" Margin="40,5,5,5" Width="120" Tapped="PrevButton_Tapped"/>
-			<Button x:Name="NextButton" Content="Next Page" Margin="5" Width="120" Tapped="NextButton_Tapped"/>
-		</StackPanel>
+		</ScrollViewer>
 		<ScrollViewer VerticalScrollMode="Auto" Grid.Row="1">
 			<Grid>
 				<!--<VariableSizedWrapGrid x:Name="MyWrapGrid" ItemHeight="100" ItemWidth="100" Orientation="Horizontal"/>-->

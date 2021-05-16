@@ -1,12 +1,16 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -20,6 +24,11 @@ namespace E621Downloader.Pages {
 	public sealed partial class PicturePage: Page {
 		public Post PostRef { get; private set; }
 		public readonly ObservableCollection<GroupTagList> tags;
+
+		public bool isMouseOn;
+		public bool isMousePressed;
+
+		private Point pressStartPosition;
 
 		public string Title {
 			get {
@@ -75,13 +84,7 @@ namespace E621Downloader.Pages {
 			if(content.Count == 0) {
 				return;
 			}
-			var list = new GroupTagList() {
-				Key = title
-			};
-			foreach(string item in content) {
-				list.Add(item);
-			}
-			tags.Add(list);
+			tags.Add(new GroupTagList(title, content));
 		}
 
 		private void MainImage_ImageOpened(object sender, RoutedEventArgs e) {
@@ -96,9 +99,111 @@ namespace E621Downloader.Pages {
 			//	scrollViewer.ChangeView(scrollViewer.ActualWidth / 2, scrollViewer.ActualHeight / 2, 2);
 			//}
 		}
+
+
+		private void MainImage_PointerWheelChanged(object sender, PointerRoutedEventArgs e) {
+			//Debug.WriteLine("PointerWheelChanged");
+		}
+
+		private void MainImage_PointerPressed(object sender, PointerRoutedEventArgs e) {
+			isMousePressed = true;
+			pressStartPosition = e.GetCurrentPoint(sender as UIElement).Position;
+		}
+
+		private void MainImage_PointerReleased(object sender, PointerRoutedEventArgs e) {
+			isMousePressed = false;
+		}
+
+		private void MainImage_PointerMoved(object sender, PointerRoutedEventArgs e) {
+			if(isMouseOn && isMousePressed) {
+				//PointerPoint pointer = e.GetCurrentPoint(sender as UIElement);
+				//Point p = Diff(pointer.Position, pressStartPosition);
+				//Debug.WriteLine(p);
+				//MyScrollViewer.ChangeView(-p.X, -p.Y, null);
+			}
+		}
+
+		private void MainImage_PointerEntered(object sender, PointerRoutedEventArgs e) {
+			isMouseOn = true;
+		}
+
+		private void MainImage_PointerExited(object sender, PointerRoutedEventArgs e) {
+			isMouseOn = false;
+		}
+
+		private static Point Diff(Point a, Point b) {
+			return new Point(a.X - b.X, a.Y - b.Y);
+		}
+
+		private void DeleteButton_Loaded(object sender, RoutedEventArgs e) {
+			if(!Local.FollowList.Contains((string)(sender as Button).Tag)) {
+				(sender as Button).Visibility = Visibility.Collapsed;
+			}
+		}
+
+		private async void TagsListView_ItemClick(object sender, ItemClickEventArgs e) {
+			string tag = e.ClickedItem as string;
+
+			MainPage.SelectNavigationItem(PageTag.Home);
+			await Task.Delay(200);
+
+			await PostsBrowser.Instance.LoadAsync(1, tag);
+		}
+
+		private void BlackListButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			var btn = sender as Button;
+			string tag = btn.Tag as string;
+
+		}
+
+		private void FollowListButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			var btn = sender as Button;
+			string tag = btn.Tag as string;
+
+		}
+
+		private void BlackListButton_Loaded(object sender, RoutedEventArgs e) {
+			var btn = sender as Button;
+			string tag = btn.Tag as string;
+			if(Local.BlackList.Contains(tag)) {
+				btn.Content = "\uEA43";
+				ToolTipService.SetToolTip(btn, "Remove From BlackList");
+			} else {
+				btn.Content = "\uF8AB";
+				ToolTipService.SetToolTip(btn, "Add To BlackList");
+			}
+		}
+
+		private void FollowListButton_Loaded(object sender, RoutedEventArgs e) {
+			var btn = sender as Button;
+			string tag = btn.Tag as string;
+			if(Local.FollowList.Contains(tag)) {
+				btn.Content = "\uE74D";
+				ToolTipService.SetToolTip(btn, "Delete From FollowList");
+			} else {
+				btn.Content = "\uF8AA";
+				ToolTipService.SetToolTip(btn, "Add To FollowList");
+			}
+		}
+
+		private async void DebugButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			var dialog = new ContentDialog() {
+				Title = "Debug Info",
+				Content = new PostDebugView(PostRef),
+				PrimaryButtonText = "Back",
+			};
+			await dialog.ShowAsync();
+		}
 	}
 	public class GroupTagList: List<string> {
 		public string Key { get; set; }
+		public GroupTagList(string key) : base() {
+			this.Key = key;
+		}
+		public GroupTagList(string key, List<string> content) : base() {
+			this.Key = key;
+			content.ForEach(s => this.Add(s));
+		}
 	}
 
 }

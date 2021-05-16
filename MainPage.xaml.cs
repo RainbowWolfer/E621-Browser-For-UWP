@@ -18,6 +18,7 @@ using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -34,6 +35,21 @@ namespace E621Downloader {
 		private const string url = "https://e621.net/posts?tags=skyleesfm+order%3Ascore";
 		public PostsBrowser postsBrowser;
 
+		public bool IsFullScreen {
+			get => ApplicationView.GetForCurrentView().IsFullScreenMode;
+			set {
+				FullScreenButton.Content = value ? "\uE73F" : "\uE740";
+				var view = ApplicationView.GetForCurrentView();
+				if(view.IsFullScreenMode) {
+					view.ExitFullScreenMode();
+					ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
+				} else {
+					if(view.TryEnterFullScreenMode()) {
+						ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
+					}
+				}
+			}
+		}
 		public PageTag currentTag;
 
 		//private 
@@ -141,11 +157,12 @@ namespace E621Downloader {
 				await Task.Delay(100);
 				string text = (dialog.Content as SearchPopup).GetSearchText();
 				//LoadPosts(Data.GetPostsByTags(1, text));
-				PostsBrowser.Instance.LoadPosts(Post.GetPostsByTags(1, text), text);
+				//PostsBrowser.Instance.LoadPosts(Post.GetPostsByTags(1, text), text);
+				await PostsBrowser.Instance.LoadAsync(1, text);
 			}
 		}
 
-		public NavigationTransitionInfo CalculateTransition(PageTag from, PageTag to) {
+		public static NavigationTransitionInfo CalculateTransition(PageTag from, PageTag to) {
 			if((int)from - (int)to < 0) {
 				return new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
 			} else {
@@ -177,11 +194,15 @@ namespace E621Downloader {
 			} else if(tag == PageTag.ShowSlider) {
 				MyFrame.Navigate(typeof(SlideshowPage), null, CalculateTransition(currentTag, PageTag.ShowSlider));
 			} else if(tag == PageTag.Subscription) {
-
+				MyFrame.Navigate(typeof(SubscriptionPage), null, CalculateTransition(currentTag, PageTag.Subscription));
 			} else {
 				throw new Exception("Tag Error");
 			}
 			currentTag = tag;
+		}
+
+		private void FullScreenButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			IsFullScreen = !IsFullScreen;
 		}
 	}
 	public enum PageTag {

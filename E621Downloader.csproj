@@ -124,6 +124,7 @@
     </Compile>
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\E621Article.cs" />
+    <Compile Include="Models\E621Tag.cs" />
     <Compile Include="Models\HTMLConvertor.cs" />
     <Compile Include="Models\ImageConvertor.cs" />
     <Compile Include="Models\Local.cs" />
@@ -134,7 +135,13 @@
     <Compile Include="Pages\PostsBrowser.xaml.cs">
       <DependentUpon>PostsBrowser.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SearchPopup.xaml.cs">
+    <Compile Include="Pages\SubscriptionPage.xaml.cs">
+      <DependentUpon>SubscriptionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PostDebugView.xaml.cs">
+      <DependentUpon>PostDebugView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchPopup.xaml.cs">
       <DependentUpon>SearchPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SettingsPage.xaml.cs">
@@ -185,7 +192,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\SearchPopup.xaml">
+    <Page Include="Pages\SubscriptionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PostDebugView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

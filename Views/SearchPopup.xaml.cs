@@ -13,7 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace E621Downloader.Pages {
+namespace E621Downloader.Views {
 	public sealed partial class SearchPopup: Page {
 		private ContentDialog contentDialog;
 		public SearchPopup(ContentDialog contentDialog) {
