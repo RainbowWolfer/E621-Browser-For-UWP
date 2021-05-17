@@ -60,5 +60,8 @@ namespace E621Downloader.Pages {
 			return (result, oldValue, newValue);
 		}
 
+		private void DownloadPathButton_Tapped(object sender, TappedRoutedEventArgs e) {
+
+		}
 	}
 }

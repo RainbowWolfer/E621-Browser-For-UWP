@@ -50,6 +50,9 @@ namespace E621Downloader.Pages {
 			base.OnNavigatedTo(e);
 			if(e.Parameter == null) {
 				MyProgressRing.IsActive = false;
+				DebugButton.Visibility = Visibility.Collapsed;
+				CopyButton.Visibility = Visibility.Collapsed;
+				DownloadButton.Visibility = Visibility.Collapsed;
 				return;
 			}
 			MyProgressRing.IsActive = true;
@@ -57,6 +60,9 @@ namespace E621Downloader.Pages {
 			if(PostRef == null) {
 				return;
 			}
+			DebugButton.Visibility = Visibility.Visible;
+			CopyButton.Visibility = Visibility.Visible;
+			DownloadButton.Visibility = Visibility.Visible;
 
 			MainImage.Source = new BitmapImage(new Uri(PostRef.file.url));
 
@@ -196,6 +202,14 @@ namespace E621Downloader.Pages {
 				PrimaryButtonText = "Back",
 			};
 			await dialog.ShowAsync();
+		}
+
+		private void DownloadButton_Tapped(object sender, TappedRoutedEventArgs e) {
+
+		}
+
+		private void CopyButton_Tapped(object sender, TappedRoutedEventArgs e) {
+
 		}
 	}
 	public class GroupTagList: List<string> {

@@ -37,6 +37,11 @@
 				<RadioButton Margin="5" Content="Dark"/>
 				<RadioButton Margin="5" Content="Follow System" IsChecked="True"/>
 			</StackPanel>
+			<TextBlock Text="Local: " FontSize="64" Margin="20" TextDecorations="Underline"/>
+			<StackPanel Orientation="Horizontal" Margin="40,0,0,0">
+				<Button x:Name="DownloadPathButton" Content="Select Download Path" FontSize="20" Tapped="DownloadPathButton_Tapped"/>
+				<TextBlock Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="20"/>
+			</StackPanel>
 		</StackPanel>
 
 		<StackPanel Grid.Row="1" Grid.Column="1">
