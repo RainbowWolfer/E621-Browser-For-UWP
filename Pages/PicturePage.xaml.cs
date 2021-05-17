@@ -187,6 +187,9 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void DebugButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(PostRef == null) {
+				return;
+			}
 			var dialog = new ContentDialog() {
 				Title = "Debug Info",
 				Content = new PostDebugView(PostRef),

@@ -79,7 +79,7 @@ namespace E621Downloader.Pages {
 		public async Task LoadAsync(int page = 1, params string[] tags) {
 			this.currentPage = page;
 			MainPage.CreateInstantDialog("Please Wait", "Loading...");
-			await Task.Delay(20);
+			await Task.Delay(200);
 			List<Post> temp = Post.GetPostsByTags(page, tags);
 			if(temp.Count == 0) {
 				MainPage.HideInstantDialog();
