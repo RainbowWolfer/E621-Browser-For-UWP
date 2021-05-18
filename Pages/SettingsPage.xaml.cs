@@ -31,7 +31,7 @@ namespace E621Downloader.Pages {
 			var result = await PopUp("Black List", Local.BlackList);
 			if(result.Item1 == ContentDialogResult.Primary) {
 				if(!App.CompareTwoArray(result.Item2, result.Item3)) {
-					//write in new data
+					Local.WriteBlackList(result.Item3);
 				}
 			}
 		}
@@ -40,7 +40,7 @@ namespace E621Downloader.Pages {
 			var result = await PopUp("Follow List", Local.FollowList);
 			if(result.Item1 == ContentDialogResult.Primary) {
 				if(!App.CompareTwoArray(result.Item2, result.Item3)) {
-					//write in new data
+					Local.WriteFollowList(result.Item3);
 				}
 			}
 		}

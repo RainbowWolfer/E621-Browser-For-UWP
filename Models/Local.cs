@@ -23,6 +23,7 @@ namespace E621Downloader.Models {
 		public static string[] BlackList { get; private set; }
 
 		public async static void Initialize() {
+			Debug.WriteLine(LocalFolder.Path);
 			if(initialized) {
 				throw new Exception("Local has been initialized more than one time!");
 			}
@@ -34,6 +35,13 @@ namespace E621Downloader.Models {
 			Debug.WriteLine(blackListFile.Path);
 
 			await Reload();
+		}
+
+		public async static void WriteFollowList(string[] list) {
+			await FileIO.WriteLinesAsync(followListFile, list);
+		}
+		public async static void WriteBlackList(string[] list) {
+			await FileIO.WriteLinesAsync(blackListFile, list);
 		}
 
 		public async static Task Reload() {

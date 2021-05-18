@@ -3,6 +3,7 @@ using E621Downloader.Pages;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -25,13 +26,17 @@ namespace E621Downloader.Views {
 
 		private ContentDialog parent;
 
+		private string title;
+
 		public ListManager(string[] tags, ContentDialog contentControl) {
 			this.InitializeComponent();
+			this.title = contentControl.Title as string;
 			this.parent = contentControl;
 			this.tags = new ObservableCollection<string>();
 			foreach(string s in tags) {
 				this.tags.Add(s);
 			}
+			parent.Title = title + ": " + tags.Length;
 			OrderToolTip.Content = "Time";
 		}
 
@@ -70,6 +75,20 @@ namespace E621Downloader.Views {
 
 		private void DeleteButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			tags.Remove((string)(sender as Button).Tag);
+			parent.Title = title + ": " + tags.Count;
+		}
+
+		private void Grid_KeyDown(object sender, KeyRoutedEventArgs e) {
+			//MyListView.SelectedItem = MyListView.Items[20];
+			MyListView.ScrollIntoView(MyListView.Items[new Random().Next(0, 100)]);
+
+			string s = e.Key.ToString().ToLower();
+			if(s.Length == 1) {
+				foreach(string item in MyListView.Items) {
+					string str = item.ToLower();
+
+				}
+			}
 		}
 	}
 

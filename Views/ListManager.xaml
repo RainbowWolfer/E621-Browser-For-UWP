@@ -9,7 +9,7 @@
     Height="400"
     Width="250">
 
-	<Grid>
+	<Grid KeyDown="Grid_KeyDown">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
@@ -37,7 +37,7 @@
 			<Button x:Name="ExportButton" Content="Export To ClipBoard" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Tapped="ExportButton_Tapped"/>
 		</Grid>
 
-		<ListView Margin="5" ItemsSource="{x:Bind tags}" IsItemClickEnabled="True" SelectionMode="None" Grid.Row="1" ItemClick="ListView_ItemClick">
+		<ListView x:Name="MyListView" Margin="5" ItemsSource="{x:Bind tags}" IsItemClickEnabled="True" SelectionMode="None" Grid.Row="1" ItemClick="ListView_ItemClick">
 			<ListView.ItemTemplate>
 				<DataTemplate x:DataType="x:String">
 					<RelativePanel Width="215">
