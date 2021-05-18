@@ -177,14 +177,6 @@ namespace E621Downloader.Pages {
 		private async void PageJumpTextBox_KeyDown(object sender, KeyRoutedEventArgs e) {
 			if(e.Key == VirtualKey.Enter) {
 				if(int.TryParse(PageJumpTextBox.Text, out int page)) {
-					//CurrentPageTextBlock.Text = "Current Page : " + page;
-					//currentPage = page;
-					//posts = Post.GetPostsByTags(currentPage, tags);
-					//if(posts.Count == 0) {
-					//	await MainPage.CreatePopupDialog("Articles Error", "Articles return 0");
-					//	return;
-					//}
-					//LoadPosts(posts);
 					await LoadAsync(page, tags);
 				} else {
 					await MainPage.CreatePopupDialog("Int Parse Error", "Plase Enter a Valid Number");
@@ -198,13 +190,6 @@ namespace E621Downloader.Pages {
 					await MainPage.CreatePopupDialog("Error", "Plase Enter a Number Within 0 ~ 750");
 					return;
 				}
-				//CurrentPageTextBlock.Text = "Current Page : " + page;
-				//currentPage = page;
-				//MainPage.CreateInstantDialog("Please Wait", "Loading...");
-				//await Task.Delay(20);
-				//posts = Post.GetPostsByTags(currentPage, tags);
-				//MainPage.HideInstantDialog();
-				//LoadPosts(posts);
 				await LoadAsync(page, tags);
 			} else {
 				await MainPage.CreatePopupDialog("Int Parse Error", "Plase Enter a Valid Number");

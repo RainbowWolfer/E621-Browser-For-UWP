@@ -10,6 +10,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Networking.BackgroundTransfer;
+using Windows.Storage;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -204,8 +206,15 @@ namespace E621Downloader.Pages {
 			await dialog.ShowAsync();
 		}
 
-		private void DownloadButton_Tapped(object sender, TappedRoutedEventArgs e) {
+		private async void DownloadButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			Uri uri = new Uri(PostRef.file.url);
+			string filename = string.Format("{0}.{1}", PostRef.id, PostRef.file.ext);
+			StorageFile file = await Local.downloadFolder.CreateFileAsync(filename, CreationCollisionOption.GenerateUniqueName);
 
+			BackgroundDownloader downloader = new BackgroundDownloader();
+			DownloadOperation operation = downloader.CreateDownload(uri, file);
+			var result = await operation.StartAsync();
+			//handle
 		}
 
 		private void CopyButton_Tapped(object sender, TappedRoutedEventArgs e) {

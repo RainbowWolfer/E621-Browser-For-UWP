@@ -195,6 +195,8 @@ namespace E621Downloader {
 				MyFrame.Navigate(typeof(SlideshowPage), null, CalculateTransition(currentTag, PageTag.ShowSlider));
 			} else if(tag == PageTag.Subscription) {
 				MyFrame.Navigate(typeof(SubscriptionPage), null, CalculateTransition(currentTag, PageTag.Subscription));
+			} else if(tag == PageTag.Download) {
+				MyFrame.Navigate(typeof(DownloadPage), null, CalculateTransition(currentTag, PageTag.Download));
 			} else {
 				throw new Exception("Tag Error");
 			}
@@ -206,7 +208,7 @@ namespace E621Downloader {
 		}
 	}
 	public enum PageTag {
-		Home, Picture, ShowSlider, Subscription, Settings
+		Home, Picture, ShowSlider, Subscription, Download, Settings
 	}
 }
 

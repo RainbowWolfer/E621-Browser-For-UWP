@@ -10,6 +10,9 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.Storage.AccessCache;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -60,8 +63,19 @@ namespace E621Downloader.Pages {
 			return (result, oldValue, newValue);
 		}
 
-		private void DownloadPathButton_Tapped(object sender, TappedRoutedEventArgs e) {
-
+		private async void DownloadPathButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(Local.downloadFolder == null) {
+				Debug.WriteLine("no download path");
+			} else {
+				Debug.WriteLine(Local.downloadFolder.Path);
+			}
+			FolderPicker pick = new FolderPicker();
+			StorageFolder result = await pick.PickSingleFolderAsync();
+			if(result != null) {
+				string token = StorageApplicationPermissions.FutureAccessList.Add(result);
+				Debug.WriteLine(token);
+				Local.WriteToken(token);
+			}
 		}
 	}
 }

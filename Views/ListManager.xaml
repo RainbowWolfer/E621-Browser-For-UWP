@@ -14,14 +14,16 @@
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<!--<TextBlock Text="{x:Bind Title}" FontSize="32" Margin="10" Grid.Row="0"/>-->
-		<!--<TextBox x:Name="MyTextBox" Grid.Row="1" Margin="10" ScrollViewer.VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" AcceptsReturn="True"/>-->
 		<Grid Grid.Row="0" Margin="5">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
 
 			<DropDownButton Content="Order" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
 				<ToolTipService.ToolTip>
@@ -35,6 +37,7 @@
 				</DropDownButton.Flyout>
 			</DropDownButton>
 			<Button x:Name="ExportButton" Content="Export To ClipBoard" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Tapped="ExportButton_Tapped"/>
+			<AutoSuggestBox Name="MySuggestBox" Grid.Row="1" Grid.ColumnSpan="3" Margin="2,5,8,2" QueryIcon="Find" QuerySubmitted="MySuggestBox_QuerySubmitted"/>
 		</Grid>
 
 		<ListView x:Name="MyListView" Margin="5" ItemsSource="{x:Bind tags}" IsItemClickEnabled="True" SelectionMode="None" Grid.Row="1" ItemClick="ListView_ItemClick">

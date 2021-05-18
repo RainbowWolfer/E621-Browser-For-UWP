@@ -123,12 +123,16 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Data.cs" />
+    <Compile Include="Models\DownloadsManager.cs" />
     <Compile Include="Models\E621Article.cs" />
     <Compile Include="Models\E621Tag.cs" />
     <Compile Include="Models\HTMLConvertor.cs" />
     <Compile Include="Models\ImageConvertor.cs" />
     <Compile Include="Models\Local.cs" />
     <Compile Include="Models\Post.cs" />
+    <Compile Include="Pages\DownloadPage.xaml.cs">
+      <DependentUpon>DownloadPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\PicturePage.xaml.cs">
       <DependentUpon>PicturePage.xaml</DependentUpon>
     </Compile>
@@ -183,6 +187,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DownloadPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\PicturePage.xaml">
       <SubType>Designer</SubType>

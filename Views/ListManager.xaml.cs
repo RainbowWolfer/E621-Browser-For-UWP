@@ -22,6 +22,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Views {
 	public sealed partial class ListManager: UserControl {
+		private string[] originTags;
 		public readonly ObservableCollection<string> tags;
 
 		private ContentDialog parent;
@@ -30,6 +31,7 @@ namespace E621Downloader.Views {
 
 		public ListManager(string[] tags, ContentDialog contentControl) {
 			this.InitializeComponent();
+			this.originTags = tags;
 			this.title = contentControl.Title as string;
 			this.parent = contentControl;
 			this.tags = new ObservableCollection<string>();
@@ -61,6 +63,10 @@ namespace E621Downloader.Views {
 
 		private void AlphaOrderItem_Click(object sender, RoutedEventArgs e) {
 			OrderToolTip.Content = "Alpha";
+			List<string> tmp = tags.ToList();
+			tmp.Sort((a, b) => a.CompareTo(b));
+			tags.Clear();
+			tmp.ForEach(s => tags.Add(s));
 		}
 
 
@@ -69,7 +75,6 @@ namespace E621Downloader.Views {
 			string content = (string)e.ClickedItem;
 			MainPage.SelectNavigationItem(PageTag.Home);
 			await Task.Delay(100);
-			//PostsBrowser.Instance.LoadPosts(Post.GetPostsByTags(1, tag), tag);
 			await PostsBrowser.Instance.LoadAsync(1, content);
 		}
 
@@ -79,19 +84,25 @@ namespace E621Downloader.Views {
 		}
 
 		private void Grid_KeyDown(object sender, KeyRoutedEventArgs e) {
-			//MyListView.SelectedItem = MyListView.Items[20];
-			MyListView.ScrollIntoView(MyListView.Items[new Random().Next(0, 100)]);
 
-			string s = e.Key.ToString().ToLower();
-			if(s.Length == 1) {
-				foreach(string item in MyListView.Items) {
-					string str = item.ToLower();
+		}
 
+		private void MySuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) {
+			tags.Clear();
+			if(string.IsNullOrEmpty(args.QueryText)) {
+				foreach(string item in originTags) {
+					tags.Add(item);
+				}
+				return;
+			}
+			foreach(string item in originTags) {
+				if(item.ToLower().Contains(args.QueryText.ToLower())) {
+					tags.Add(item);
 				}
 			}
 		}
 	}
-
+	[Obsolete("Later in Dev", false)]
 	public class TagItem {
 		public string tag;
 		public DateTime addedTime;
