@@ -143,6 +143,9 @@
     <Compile Include="Pages\SubscriptionPage.xaml.cs">
       <DependentUpon>SubscriptionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DownloadProgressBar.xaml.cs">
+      <DependentUpon>DownloadProgressBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PostDebugView.xaml.cs">
       <DependentUpon>PostDebugView.xaml</DependentUpon>
     </Compile>
@@ -202,6 +205,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\SubscriptionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DownloadProgressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

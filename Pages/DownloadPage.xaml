@@ -16,10 +16,10 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<TextBlock Text="This is Download Page" FontSize="64" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-		<ListView Grid.Row="1" x:Name="MyListView" SelectionMode="None" IsItemClickEnabled="True" Margin="10" ItemsSource="{x:Bind instances}">
+		<ListView Grid.Row="1" x:Name="MyListView" SelectionMode="None" IsItemClickEnabled="True" Margin="10" ItemsSource="ss">
 			<ListView.ItemTemplate>
 				<DataTemplate x:DataType="data:DownloadInstance">
-					<ListViewItem HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+					<ListViewItem>
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="auto"/>
