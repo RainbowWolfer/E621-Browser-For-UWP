@@ -211,9 +211,10 @@ namespace E621Downloader.Pages {
 			string filename = string.Format("{0}.{1}", PostRef.id, PostRef.file.ext);
 			StorageFile file = await Local.downloadFolder.CreateFileAsync(filename, CreationCollisionOption.GenerateUniqueName);
 
-			BackgroundDownloader downloader = new BackgroundDownloader();
-			DownloadOperation operation = downloader.CreateDownload(uri, file);
-			var result = await operation.StartAsync();
+			DownloadsManager.RegisterDownload(PostRef, uri, file);
+			//BackgroundDownloader downloader = new BackgroundDownloader();
+			//DownloadOperation operation = downloader.CreateDownload(uri, file);
+			//var result = await operation.StartAsync();
 			//handle
 		}
 

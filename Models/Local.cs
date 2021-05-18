@@ -53,6 +53,10 @@ namespace E621Downloader.Models {
 		public static string GetToken() => token;
 		public async static Task SetToken(string token) {
 			Local.token = token;
+			if(string.IsNullOrEmpty(token)) {
+				//set to download library
+				return;
+			}
 			downloadFolder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync(token);
 		}
 

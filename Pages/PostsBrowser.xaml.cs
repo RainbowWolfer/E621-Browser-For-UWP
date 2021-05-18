@@ -44,7 +44,8 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void Initialize() {
-			string[] tags = { "rating:s", "wallpaper", "order:score" };
+			//string[] tags = { "rating:s", "wallpaper", "order:score" };
+			string[] tags = { "type:webm", "order:score" };
 			//posts = Post.GetPostsByTags(currentPage, tags);
 			//LoadPosts(posts, tags);
 			await LoadAsync(1, tags);

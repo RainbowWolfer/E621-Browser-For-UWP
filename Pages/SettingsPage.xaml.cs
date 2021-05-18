@@ -69,7 +69,7 @@ namespace E621Downloader.Pages {
 			} else {
 				Debug.WriteLine(Local.downloadFolder.Path);
 			}
-			FolderPicker pick = new FolderPicker();
+			FolderPicker pick = new FolderPicker() { FileTypeFilter = { "*" } };
 			StorageFolder result = await pick.PickSingleFolderAsync();
 			if(result != null) {
 				string token = StorageApplicationPermissions.FutureAccessList.Add(result);

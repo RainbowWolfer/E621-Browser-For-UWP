@@ -4,6 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:local="using:E621Downloader.Pages"
 	xmlns:data="using:E621Downloader.Models"
+	xmlns:sys="using:Windows.Networking.BackgroundTransfer"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
@@ -15,7 +16,7 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<TextBlock Text="This is Download Page" FontSize="64" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-		<ListView Grid.Row="1" x:Name="MyListView" SelectionMode="None" IsItemClickEnabled="True" Margin="10" ItemsSource="s s">
+		<ListView Grid.Row="1" x:Name="MyListView" SelectionMode="None" IsItemClickEnabled="True" Margin="10" ItemsSource="{x:Bind instances}">
 			<ListView.ItemTemplate>
 				<DataTemplate x:DataType="data:DownloadInstance">
 					<ListViewItem HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
@@ -29,7 +30,7 @@
 								<RowDefinition Height="*"/>
 							</Grid.RowDefinitions>
 							<TextBlock Text="Hello" FontSize="20" VerticalAlignment="Center"/>
-							<TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="https://e621.net/" FontSize="20" Margin="20,0,0,0" VerticalAlignment="Center"/>
+							<TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{x:Bind DownloadProgress}" FontSize="20" Margin="20,0,0,0" VerticalAlignment="Center"/>
 							<ProgressBar Grid.Column="1" Value="10" Maximum="100" VerticalAlignment="Center" Margin="10"/>
 							<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" >
 								<Button Margin="10">
