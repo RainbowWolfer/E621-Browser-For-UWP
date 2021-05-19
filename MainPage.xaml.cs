@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Pages;
+using E621Downloader.Pages.DownloadSection;
 using E621Downloader.Views;
 //using Microsoft.UI.Xaml.Controls;
 using System;

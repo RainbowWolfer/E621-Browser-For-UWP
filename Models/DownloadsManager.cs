@@ -21,12 +21,12 @@ namespace E621Downloader.Models {
 			downloader = new BackgroundDownloader();
 		}
 
-		public static DownloadInstance RegisterDownload(Post post, Uri uri, IStorageFile file, bool autoStart = true) {
+		public static DownloadInstance RegisterDownload(Post post, Uri uri, IStorageFile file/*, bool autoStart = true*/) {
 			var instance = new DownloadInstance(post, downloader.CreateDownload(uri, file));
 			downloads.Add(instance);
-			if(autoStart) {
-				instance.StartDownload();
-			}
+			//if(autoStart) {
+			//	instance.StartDownload();
+			//}
 			return instance;
 		}
 

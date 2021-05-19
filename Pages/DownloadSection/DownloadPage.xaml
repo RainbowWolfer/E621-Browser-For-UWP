@@ -1,0 +1,53 @@
+﻿<Page
+	x:Class="E621Downloader.Pages.DownloadSection.DownloadPage"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="using:E621Downloader.Pages"
+	xmlns:data="using:E621Downloader.Models"
+	xmlns:sys="using:Windows.Networking.BackgroundTransfer"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<Pivot SelectionChanged="Pivot_SelectionChanged">
+			<PivotItem Header="Downloading"/>
+			<PivotItem Header="Downloaded"/>
+		</Pivot>
+
+		<AutoSuggestBox Grid.Column="1" Margin="20,0,20,0" VerticalAlignment="Center" QueryIcon="Find" QuerySubmitted="AutoSuggestBox_QuerySubmitted" MaxWidth="400"/>
+
+		<Frame x:Name="MainFrame" Grid.Row="1" Margin="5" Grid.ColumnSpan="2">
+			<Frame.ContentTransitions>
+				<TransitionCollection>
+					<NavigationThemeTransition/>
+				</TransitionCollection>
+			</Frame.ContentTransitions>
+		</Frame>
+
+		<!--<ListView Grid.Row="1" x:Name="MyListView" SelectionMode="None" IsItemClickEnabled="True" Margin="10">
+			<ListView.ItemsPanel>
+				<ItemsPanelTemplate>
+					<ItemsStackPanel AreStickyGroupHeadersEnabled="True"/>
+				</ItemsPanelTemplate>
+			</ListView.ItemsPanel>
+			<ListView.ItemContainerStyle>
+				<Style TargetType="ListViewItem">
+					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+					<Setter Property="VerticalContentAlignment" Value="Stretch"/>
+				</Style>
+			</ListView.ItemContainerStyle>
+		</ListView>-->
+	</Grid>
+</Page>

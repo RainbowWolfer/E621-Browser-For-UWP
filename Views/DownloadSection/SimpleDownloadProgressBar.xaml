@@ -1,0 +1,20 @@
+﻿<UserControl
+    x:Class="E621Downloader.Views.DownloadSection.SimpleDownloadProgressBar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Views.DownloadSection"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="30"
+    d:DesignWidth="300">
+
+	<Grid Margin="5">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" />
+		<ProgressBar Grid.Column="1" Margin="5" Value="0.15" Maximum="1"/>
+	</Grid>
+</UserControl>
