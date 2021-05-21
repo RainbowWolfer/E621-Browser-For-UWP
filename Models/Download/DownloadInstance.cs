@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Networking.BackgroundTransfer;
 
-namespace E621Downloader.Models {
+namespace E621Downloader.Models.Download {
 	public class DownloadInstance {
 		public Post PostRef { get; private set; }
 

@@ -1,6 +1,4 @@
-﻿using E621Downloader.Models;
-using E621Downloader.Models.Download;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,12 +13,10 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace E621Downloader.Views.DownloadSection {
-	public sealed partial class DownloadBlock: UserControl {
-		public DownloadInstance Instance { get; private set; }
-		public DownloadBlock(DownloadInstance instance) {
+namespace E621Downloader.Pages.DownloadSection {
+	public sealed partial class DownloadDetailsPage: Page {
+		public DownloadDetailsPage() {
 			this.InitializeComponent();
-			Instance = instance;
 		}
 	}
 }

@@ -17,10 +17,11 @@
 		</Grid.RowDefinitions>
 
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="2*"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 
+		<!--Why need this?-->
 		<Pivot SelectionChanged="Pivot_SelectionChanged">
 			<PivotItem Header="Downloading"/>
 			<PivotItem Header="Downloaded"/>
@@ -36,18 +37,5 @@
 			</Frame.ContentTransitions>
 		</Frame>
 
-		<!--<ListView Grid.Row="1" x:Name="MyListView" SelectionMode="None" IsItemClickEnabled="True" Margin="10">
-			<ListView.ItemsPanel>
-				<ItemsPanelTemplate>
-					<ItemsStackPanel AreStickyGroupHeadersEnabled="True"/>
-				</ItemsPanelTemplate>
-			</ListView.ItemsPanel>
-			<ListView.ItemContainerStyle>
-				<Style TargetType="ListViewItem">
-					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-					<Setter Property="VerticalContentAlignment" Value="Stretch"/>
-				</Style>
-			</ListView.ItemContainerStyle>
-		</ListView>-->
 	</Grid>
 </Page>

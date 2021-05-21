@@ -9,6 +9,8 @@ using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.UI.Popups;
+using Newtonsoft.Json;
+using E621Downloader.Models.Download;
 
 namespace E621Downloader.Models {
 	public static class Local {
@@ -16,6 +18,8 @@ namespace E621Downloader.Models {
 		private const string FOLLOWLISTNAME = "FollowList.txt";
 		private const string BLACKLISTNAME = "BlackList.txt";
 		private const string TOKENNAME = "Token.txt";
+		private const string DOWNLOADSINFONAME = "DownloadsInfo.json";
+
 		private static StorageFolder LocalFolder => ApplicationData.Current.LocalFolder;
 
 		private static StorageFile followListFile;
@@ -23,13 +27,17 @@ namespace E621Downloader.Models {
 
 		private static StorageFile futureAccessTokenFile;
 
+		private static StorageFile downloadsInfoFile;
+
 		public static string[] FollowList { get; private set; }
 		public static string[] BlackList { get; private set; }
+
 		private static string token;
 
 		public static StorageFolder downloadFolder;
 
 		public async static void Initialize() {
+			Debug.WriteLine(LocalFolder.Path);
 			if(initialized) {
 				throw new Exception("Local has been initialized more than one time!");
 			}
@@ -39,11 +47,23 @@ namespace E621Downloader.Models {
 
 			futureAccessTokenFile = await LocalFolder.CreateFileAsync(TOKENNAME, CreationCollisionOption.OpenIfExists);
 
-			Debug.WriteLine(followListFile.Path);
-			Debug.WriteLine(blackListFile.Path);
+			downloadsInfoFile = await LocalFolder.CreateFileAsync(DOWNLOADSINFONAME, CreationCollisionOption.OpenIfExists);
 
 			await Reload();
 		}
+
+		public async static Task<List<DownloadInstance>> GetDownloadsInfo() {
+			Stream stream = await downloadsInfoFile.OpenStreamForReadAsync();
+			StreamReader reader = new StreamReader(stream);
+			var ReList = JsonConvert.DeserializeObject<List<DownloadInstance>>(reader.ReadToEnd());
+			return ReList;
+		}
+
+		public async static void WriteDownloadsInfo() {
+			string json = JsonConvert.SerializeObject(DownloadsManager.downloads);
+			await FileIO.WriteTextAsync(downloadsInfoFile, json);
+		}
+
 
 		public async static void WriteToken(string token) {
 			await FileIO.WriteTextAsync(futureAccessTokenFile, token);
@@ -79,9 +99,9 @@ namespace E621Downloader.Models {
 			return reader.ReadToEnd();
 		}
 
-		private async static Task<string[]> GetFollowList() => await GetList(followListFile);
-		private async static Task<string[]> GetBlackList() => await GetList(blackListFile);
-		private async static Task<string[]> GetList(StorageFile file) {
+		private async static Task<string[]> GetFollowList() => await GetListFromFile(followListFile);
+		private async static Task<string[]> GetBlackList() => await GetListFromFile(blackListFile);
+		private async static Task<string[]> GetListFromFile(StorageFile file) {
 			Stream stream = await file.OpenStreamForReadAsync();
 			StreamReader reader = new StreamReader(stream);
 

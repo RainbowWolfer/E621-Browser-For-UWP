@@ -1,4 +1,5 @@
-﻿using E621Downloader.Views;
+﻿using E621Downloader.Models;
+using E621Downloader.Views;
 using E621Downloader.Views.DownloadSection;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages.DownloadSection {
-	public sealed partial class DownloadingSection: Page {	
+	public sealed partial class DownloadingSection: Page {
 
 		public DownloadingSection() {
 			this.InitializeComponent();
@@ -26,8 +27,9 @@ namespace E621Downloader.Pages.DownloadSection {
 			}
 		}
 
-		protected override void OnNavigatedTo(NavigationEventArgs e) {
+		protected async override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
+			//List<DownloadInstance> list = await Local.GetDownloadsInfo();
 
 		}
 	}
