@@ -38,7 +38,7 @@
 			<TextBlock Text="Local: " FontSize="64" Margin="20" TextDecorations="Underline"/>
 			<StackPanel Orientation="Horizontal" Margin="40,0,0,0">
 				<Button x:Name="DownloadPathButton" Content="Select Download Path" FontSize="20" Tapped="DownloadPathButton_Tapped"/>
-				<TextBlock Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="20"/>
+				<TextBlock Name="DownloadPathTextBlock" Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="20"/>
 			</StackPanel>
 		</StackPanel>
 

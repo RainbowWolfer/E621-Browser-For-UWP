@@ -30,6 +30,11 @@ namespace E621Downloader.Pages {
 			this.InitializeComponent();
 		}
 
+		protected override void OnNavigatedTo(NavigationEventArgs e) {
+			base.OnNavigatedTo(e);
+			DownloadPathTextBlock.Text = Local.downloadFolder == null ? "No Download Path Selected" : Local.downloadFolder.Path;
+		}
+
 		private async void BlackListButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			var result = await PopUp("Black List", Local.BlackList);
 			if(result.Item1 == ContentDialogResult.Primary) {
@@ -74,7 +79,8 @@ namespace E621Downloader.Pages {
 			if(result != null) {
 				string token = StorageApplicationPermissions.FutureAccessList.Add(result);
 				Debug.WriteLine(token);
-				Local.WriteToken(token);
+				await Local.WriteToken(token);
+				DownloadPathTextBlock.Text = Local.downloadFolder.Path;
 			}
 		}
 	}

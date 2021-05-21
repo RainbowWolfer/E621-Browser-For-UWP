@@ -29,6 +29,9 @@ namespace E621Downloader.Pages.DownloadSection {
 			Instance = this;
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
+			//TitlePivot.SelectedItem = null;
+			MainFrame.Navigate(typeof(DownloadingSection), null, new EntranceNavigationTransitionInfo());
+			//GroupPivot.Items
 			//this.bars = new ObservableCollection<DownloadProgressBar>();
 			//this.DataContextChanged += (s, e) => Bindings.Update();
 			//Load();
@@ -64,14 +67,27 @@ namespace E621Downloader.Pages.DownloadSection {
 
 		private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e) {
 			string to = (e.AddedItems[0] as PivotItem).Header as string;
-			if(to == "Downloading") {
-				MainFrame.Navigate(typeof(DownloadingSection), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-			} else if(to == "Downloaded") {
-				MainFrame.Navigate(typeof(DownloadedSection), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-			}
+			//	if(to == "Downloading") {
+			//		MainFrame.Navigate(typeof(DownloadingSection), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+			//	} else if(to == "Downloaded") {
+			//		MainFrame.Navigate(typeof(DownloadedSection), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+			//	}
 		}
 
 		private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) {
+
+		}
+
+		private void GroupPivot_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+
+			TitleButton.IsChecked = false;
+			TitleButton.IsHitTestVisible = true;
+		}
+
+		private void TitleButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			TitleButton.IsChecked = true;
+			TitleButton.IsHitTestVisible = false;
+			//GroupPivot.SelectedItem = null;
 
 		}
 	}

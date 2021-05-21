@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Download;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,7 +16,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace E621Downloader.Views {
+namespace E621Downloader.Views.DownloadSection {
 	public sealed partial class DownloadProgressBar: UserControl {
 		public DownloadInstance Instance { get; private set; }
 		public DownloadProgressBar(DownloadInstance instance) {

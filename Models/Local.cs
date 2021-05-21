@@ -65,7 +65,7 @@ namespace E621Downloader.Models {
 		}
 
 
-		public async static void WriteToken(string token) {
+		public async static Task WriteToken(string token) {
 			await FileIO.WriteTextAsync(futureAccessTokenFile, token);
 			await SetToken(token);
 		}

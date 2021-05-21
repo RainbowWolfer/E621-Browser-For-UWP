@@ -21,11 +21,41 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 
-		<!--Why need this?-->
-		<Pivot SelectionChanged="Pivot_SelectionChanged">
-			<PivotItem Header="Downloading"/>
-			<PivotItem Header="Downloaded"/>
-		</Pivot>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<ToggleButton x:Name="TitleButton" IsChecked="True" Content="Download Groups" Margin="10" Tapped="TitleButton_Tapped" IsHitTestVisible="True"/>
+			<NavigationView Grid.Column="1" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" VerticalAlignment="Center">
+				<NavigationView.Resources>
+					<SolidColorBrush x:Key="NavigationViewTopPaneBackground" Color="Transparent" />
+				</NavigationView.Resources>
+				<NavigationView.MenuItems>
+					<NavigationViewItem Icon="Audio" Content="Individual Downloads"/>
+					<NavigationViewItem Icon="Audio" Content="Individual Downloads"/>
+					<NavigationViewItem Icon="Audio" Content="Individual Downloads"/>
+				</NavigationView.MenuItems>
+			</NavigationView>
+			<!--<Pivot x:Name="GroupPivot" Grid.Column="1" SelectionChanged="GroupPivot_SelectionChanged">
+				<PivotItem>
+					<PivotItem.Header>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Individual Downloads" VerticalAlignment="Center"/>
+							<Button FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="12" Content="&#xE106;" BorderThickness="0" Background="Transparent" VerticalAlignment="Center" Margin="5,0,0,0"/>
+						</StackPanel>
+					</PivotItem.Header>
+				</PivotItem>
+				<PivotItem>
+					<PivotItem.Header>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="rating:s" VerticalAlignment="Center"/>
+							<Button FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="12" Content="&#xE106;" BorderThickness="0" Background="Transparent" VerticalAlignment="Center" Margin="5,0,0,0"/>
+						</StackPanel>
+					</PivotItem.Header>
+				</PivotItem>
+			</Pivot>-->
+		</Grid>
 
 		<AutoSuggestBox Grid.Column="1" Margin="20,0,20,0" VerticalAlignment="Center" QueryIcon="Find" QuerySubmitted="AutoSuggestBox_QuerySubmitted" MaxWidth="400"/>
 
