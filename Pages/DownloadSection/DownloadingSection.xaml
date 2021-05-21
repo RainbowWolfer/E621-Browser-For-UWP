@@ -9,7 +9,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Grid>
-		<GridView x:Name="MainGridView" SelectionMode="None" IsItemClickEnabled="True">
+		<GridView x:Name="MainGridView" SelectionMode="None" IsItemClickEnabled="True" ItemClick="MainGridView_ItemClick">
 			<GridView.ItemContainerStyle>
 				<Style TargetType="GridViewItem">
 					<Setter Property="Margin" Value="20"/>

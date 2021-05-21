@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Download;
 using E621Downloader.Views;
 using E621Downloader.Views.DownloadSection;
 using System;
@@ -22,15 +23,23 @@ namespace E621Downloader.Pages.DownloadSection {
 		public DownloadingSection() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
-			for(int i = 0; i < 15; i++) {
-				MainGridView.Items.Add(new DownloadBlock(null));
+			foreach(DownloadsGroup group in DownloadsManager.groups) {
+				MainGridView.Items.Add(new DownloadBlock(group));
 			}
+			//for(int i = 0; i < 15; i++) {
+			//	MainGridView.Items.Add(new DownloadBlock(null));
+			//}
 		}
 
 		protected async override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			//List<DownloadInstance> list = await Local.GetDownloadsInfo();
 
+		}
+
+		private void MainGridView_ItemClick(object sender, ItemClickEventArgs e) {
+			DownloadBlock block = e.ClickedItem as DownloadBlock;
+			DownloadPage.Instance.NavigateTo(typeof(DownloadDetailsPage), block.Group.downloads);
 		}
 	}
 }

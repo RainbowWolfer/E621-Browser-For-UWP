@@ -11,7 +11,7 @@ namespace E621Downloader.Models.Download {
 	public delegate void OnDownloadFinishEventHandler();
 	public static class DownloadsManager {
 		//public static event OnDownloadFinishEventHandler OnDownloadFinish;
-		public const string DEFULTTITLE = "Individual Downloads";
+		public const string DEFUALTTITLE = "Individual Downloads";
 
 		public readonly static List<DownloadInstance> downloads;
 		public readonly static BackgroundDownloader downloader;
@@ -22,10 +22,17 @@ namespace E621Downloader.Models.Download {
 		static DownloadsManager() {
 			downloads = new List<DownloadInstance>();
 			downloader = new BackgroundDownloader();
-			groups = new List<DownloadsGroup>();
+			groups = new List<DownloadsGroup>() {
+				new DownloadsGroup(DEFUALTTITLE,new List<DownloadInstance>(){ 
+					//new DownloadInstance(),
+				}),
+				new DownloadsGroup("Wallpaper"),
+				new DownloadsGroup("Rating:e"),
+				new DownloadsGroup("Feet Sole"),
+			};
 		}
 
-		public static DownloadInstance RegisterDownload(Post post, Uri uri, IStorageFile file, string groupTitle = DEFULTTITLE) {
+		public static DownloadInstance RegisterDownload(Post post, Uri uri, IStorageFile file, string groupTitle = DEFUALTTITLE) {
 			var instance = new DownloadInstance(post, downloader.CreateDownload(uri, file));
 			downloads.Add(instance);
 			DownloadsGroup group = FindGroup(groupTitle);
@@ -39,7 +46,7 @@ namespace E621Downloader.Models.Download {
 		}
 
 		public static DownloadsGroup FindGroup(string title) {
-			return groups.Find(g => g.Title == DEFULTTITLE);
+			return groups.Find(g => g.Title == DEFUALTTITLE);
 		}
 
 		//public static List<DownloadsGroup> GetDownloadingGroups(){

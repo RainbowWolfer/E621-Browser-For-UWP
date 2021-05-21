@@ -65,6 +65,10 @@ namespace E621Downloader.Pages.DownloadSection {
 		//	}
 		//}
 
+		public void NavigateTo(Type type, object parameter = null) {
+			MainFrame.Navigate(type, parameter);
+		}
+
 		private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e) {
 			string to = (e.AddedItems[0] as PivotItem).Header as string;
 			//	if(to == "Downloading") {

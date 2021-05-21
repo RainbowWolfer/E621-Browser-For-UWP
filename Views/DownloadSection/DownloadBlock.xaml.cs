@@ -17,10 +17,11 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Views.DownloadSection {
 	public sealed partial class DownloadBlock: UserControl {
-		public DownloadInstance Instance { get; private set; }
-		public DownloadBlock(DownloadInstance instance) {
+		public DownloadsGroup Group { get; private set; }
+		public DownloadBlock(DownloadsGroup group) {
 			this.InitializeComponent();
-			Instance = instance;
+			this.DataContextChanged += (s, e) => Bindings.Update();
+			Group = group;
 		}
 	}
 }

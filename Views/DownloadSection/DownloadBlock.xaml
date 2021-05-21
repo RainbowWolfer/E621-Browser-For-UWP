@@ -16,7 +16,7 @@
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
 
-		<TextBlock Text="Individuals Downloads" HorizontalAlignment="Center" FontSize="24"/>
+		<TextBlock Text="{x:Bind Group.Title}" HorizontalAlignment="Center" FontSize="24"/>
 		<StackPanel Grid.Row="1" Margin="5">
 			<local:SimpleDownloadProgressBar/>
 			<local:SimpleDownloadProgressBar/>
