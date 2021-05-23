@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="E621Downloader.Pages.DownloadSection.DownloadedSection"
+    x:Class="E621Downloader.Pages.DownloadSection.DownloadOverview"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:E621Downloader.Pages.DownloadSection"
@@ -8,7 +8,13 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-
-    </Grid>
+	<Grid>
+		<GridView x:Name="MainGridView" SelectionMode="None" IsItemClickEnabled="True" ItemClick="MainGridView_ItemClick">
+			<GridView.ItemContainerStyle>
+				<Style TargetType="GridViewItem">
+					<Setter Property="Margin" Value="20"/>
+				</Style>
+			</GridView.ItemContainerStyle>
+		</GridView>
+	</Grid>
 </Page>

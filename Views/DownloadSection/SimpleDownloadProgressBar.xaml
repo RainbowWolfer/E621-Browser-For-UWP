@@ -15,6 +15,6 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" />
-		<ProgressBar Grid.Column="1" Margin="5" Value="0.15" Maximum="1"/>
+		<ProgressBar x:Name="MyProgressBar" Grid.Column="1" Margin="5" Value="15" Maximum="100"/>
 	</Grid>
 </UserControl>

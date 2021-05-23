@@ -25,23 +25,15 @@ namespace E621Downloader {
 	public sealed partial class App: Application {
 		public static App Instance;
 
-		//public readonly List<Task> downloadsQueue;
+		public static bool showNullImage;
+		public static bool showBlackListed;
+
 		public App() {
 			Instance = this;
 			this.InitializeComponent();
 			this.Suspending += OnSuspending;
-			//downloadsQueue = new List<Task>();
 
 			Local.Initialize();
-
-			//Test();
-		}
-		private async void Test() {
-			await Task.Delay(200);
-			string[] list = Local.FollowList;
-			foreach(var item in list) {
-				Debug.Write(item + " ");
-			}
 		}
 
 		//private async void LoadImage() {

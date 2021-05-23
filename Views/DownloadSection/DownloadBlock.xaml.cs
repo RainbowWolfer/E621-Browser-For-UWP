@@ -22,6 +22,11 @@ namespace E621Downloader.Views.DownloadSection {
 			this.InitializeComponent();
 			this.DataContextChanged += (s, e) => Bindings.Update();
 			Group = group;
+			foreach(DownloadInstance item in Group.downloads) {
+				item.DownloadingAction += () => {
+					Bar1.SetBarValue(item.Percentage);
+				};
+			}
 		}
 	}
 }

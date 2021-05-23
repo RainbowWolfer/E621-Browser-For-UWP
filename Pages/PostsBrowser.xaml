@@ -15,6 +15,8 @@
 		</Grid.RowDefinitions>
 		<ScrollViewer VerticalScrollMode="Disabled" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Disabled" Margin="10,0,10,0">
 			<StackPanel Orientation="Horizontal">
+				<Button x:Name="PrevButton" Content="Previous Page" Margin="5" Width="120" Tapped="PrevButton_Tapped"/>
+				<Button x:Name="NextButton" Content="Next Page" Margin="5" Width="120" Tapped="NextButton_Tapped"/>
 				<TextBlock x:Name="CurrentPageTextBlock" Text="Current Page: 1" Margin="5" VerticalAlignment="Center"/>
 				<!--<AutoSuggestBox Margin="5" PlaceholderText="Jump To Page" Width="130" QueryIcon="Accept"/>-->
 				<StackPanel Margin="5" VerticalAlignment="Center" Orientation="Horizontal">
@@ -27,11 +29,9 @@
 				</StackPanel>
 				<TextBlock x:Name="LoadsTextBlock" Text="Articles: 0/0" Margin="5" VerticalAlignment="Center"/>
 				<CheckBox x:Name="FixedHeightCheckBox" Content="Fixed Height" Margin="5" Checked="FixedHeightCheckBox_Checked" Unchecked="FixedHeightCheckBox_Unchecked"/>
-				<CheckBox x:Name="ShowNullImageCheckBox" Content="Show Null Image" Margin="5" Checked="ShowNullImageCheckBox_Checked" Unchecked="ShowNullImageCheckBox_Unchecked" IsChecked="True"/>
-				<CheckBox x:Name="ShowBlackListCheckBox" Content="Show BlackListed" Margin="5" Checked="ShowBlackListCheckBox_Checked" Unchecked="ShowBlackListCheckBox_Unchecked" IsChecked="True"/>
 				<Button x:Name="RefreshButton" Content="Refresh" Margin="5" Tapped="RefreshButton_Tapped"/>
-				<Button x:Name="PrevButton" Content="Previous Page" Margin="40,5,5,5" Width="120" Tapped="PrevButton_Tapped"/>
-				<Button x:Name="NextButton" Content="Next Page" Margin="5" Width="120" Tapped="NextButton_Tapped"/>
+				<Button x:Name="DownloadButton" Content="Download" Margin="5" Tapped="DownloadButton_Tapped"/>
+				
 			</StackPanel>
 		</ScrollViewer>
 		<ScrollViewer VerticalScrollMode="Auto" Grid.Row="1">

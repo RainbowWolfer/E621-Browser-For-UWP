@@ -62,7 +62,7 @@ namespace E621Downloader.Views {
 				MyProgressRing.IsActive = false;
 				MyProgressRing.Visibility = Visibility.Collapsed;
 				FailureTextBlock.Text = "Failed";
-				if(PostsBrowser.Instance.showNullImage) {
+				if(PostsBrowser.Instance.ShowNullImage) {
 					this.Visibility = Visibility.Visible;
 					VariableSizedWrapGrid.SetColumnSpan(this, SpanCol);
 					VariableSizedWrapGrid.SetRowSpan(this, SpanRow);

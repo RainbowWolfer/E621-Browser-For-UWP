@@ -143,14 +143,11 @@
     <Compile Include="Pages\DownloadSection\DownloadDetailsPage.xaml.cs">
       <DependentUpon>DownloadDetailsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\DownloadSection\DownloadedSection.xaml.cs">
-      <DependentUpon>DownloadedSection.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\DownloadSection\DownloadPage.xaml.cs">
       <DependentUpon>DownloadPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\DownloadSection\DownloadingSection.xaml.cs">
-      <DependentUpon>DownloadingSection.xaml</DependentUpon>
+    <Compile Include="Pages\DownloadSection\DownloadOverview.xaml.cs">
+      <DependentUpon>DownloadOverview.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\PicturePage.xaml.cs">
       <DependentUpon>PicturePage.xaml</DependentUpon>
@@ -220,15 +217,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\DownloadSection\DownloadedSection.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\DownloadSection\DownloadPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\DownloadSection\DownloadingSection.xaml">
+    <Page Include="Pages\DownloadSection\DownloadOverview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

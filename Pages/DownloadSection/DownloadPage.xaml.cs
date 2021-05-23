@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Download;
 using E621Downloader.Views;
 using System;
 using System.Collections.Generic;
@@ -23,75 +24,50 @@ namespace E621Downloader.Pages.DownloadSection {
 	public sealed partial class DownloadPage: Page {
 		public static DownloadPage Instance;
 
-		//public readonly ObservableCollection<DownloadProgressBar> bars;
-
 		public DownloadPage() {
 			Instance = this;
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
-			//TitlePivot.SelectedItem = null;
-			MainFrame.Navigate(typeof(DownloadingSection), null, new EntranceNavigationTransitionInfo());
-			//GroupPivot.Items
-			//this.bars = new ObservableCollection<DownloadProgressBar>();
-			//this.DataContextChanged += (s, e) => Bindings.Update();
-			//Load();
+			MainFrame.Navigate(typeof(DownloadOverview), null, new EntranceNavigationTransitionInfo());
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
-			//check bars
-
-			//foreach(DownloadInstance item in DownloadsManager.downloads) {
-			//	bool contian = false;
-			//	foreach(DownloadProgressBar bar in bars) {
-			//		if(bar.Instance == item) {
-			//			contian = true;
-			//			break;
-			//		}
-			//	}
-			//	if(!contian) {
-			//		var bar = new DownloadProgressBar(item);
-			//		bars.Insert(0, bar);
-			//		MyListView.Items.Insert(0, bar);
-			//	}
-			//}
+			Debug.WriteLine(MainFrame.GetNavigationState());
+			//MainFrame.Navigate();
 		}
-
-		//private void Load() {
-		//	foreach(DownloadInstance item in DownloadsManager.downloads) {
-		//		var bar = new DownloadProgressBar(item);
-		//		bars.Insert(0, bar);
-		//		//MyListView.Items.Insert(0, bar);
-		//	}
-		//}
 
 		public void NavigateTo(Type type, object parameter = null) {
 			MainFrame.Navigate(type, parameter);
-		}
-
-		private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			string to = (e.AddedItems[0] as PivotItem).Header as string;
-			//	if(to == "Downloading") {
-			//		MainFrame.Navigate(typeof(DownloadingSection), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-			//	} else if(to == "Downloaded") {
-			//		MainFrame.Navigate(typeof(DownloadedSection), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-			//	}
 		}
 
 		private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) {
 
 		}
 
-		private void GroupPivot_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-
-			TitleButton.IsChecked = false;
-			TitleButton.IsHitTestVisible = true;
-		}
-
 		private void TitleButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			TitleButton.IsChecked = true;
 			TitleButton.IsHitTestVisible = false;
-			//GroupPivot.SelectedItem = null;
+			MyNavigationView.SelectedItem = null;
+
+			MainFrame.Navigate(typeof(DownloadOverview), null, new EntranceNavigationTransitionInfo());
+
+		}
+
+		private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
+			TitleButton.IsChecked = false;
+			TitleButton.IsHitTestVisible = true;
+
+			DownloadsGroup group = DownloadsManager.FindGroup(args.InvokedItemContainer.Content as string);
+			MainFrame.Navigate(typeof(DownloadDetailsPage), group.downloads, new EntranceNavigationTransitionInfo());
+
+		}
+
+		private void MainFrame_Navigating(object sender, NavigatingCancelEventArgs e) {
+
+		}
+
+		private void MainFrame_Navigated(object sender, NavigationEventArgs e) {
 
 		}
 	}

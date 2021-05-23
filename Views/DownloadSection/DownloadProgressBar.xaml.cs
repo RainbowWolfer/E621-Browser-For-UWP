@@ -25,7 +25,7 @@ namespace E621Downloader.Views.DownloadSection {
 
 			NameTextBlock.Text = "Posts: " + instance.PostRef.id;
 
-			instance.StartDownload(e => {
+			instance.StartDownload(() => {
 				Debug.WriteLine(Instance.PostRef.id + " : " + Instance.Progress);
 
 				InfoTextBlock.Text = instance.PostRef.file.url;

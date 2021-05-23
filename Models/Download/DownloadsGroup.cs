@@ -30,5 +30,13 @@ namespace E621Downloader.Models.Download {
 		public void AddInstance(DownloadInstance instance) {
 			downloads.Add(instance);
 		}
+
+		public static string GetGroupTitle(IEnumerable<string> tags) {
+			string result = "";
+			foreach(string item in tags) {
+				result += item + ' ';
+			}
+			return result.Trim();
+		}
 	}
 }

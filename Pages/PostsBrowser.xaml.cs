@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Download;
 using E621Downloader.Views;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace E621Downloader.Pages {
 		public int ItemSize { get => 50; }
 
 		public bool isHeightFixed;
-		public bool showNullImage = true;
+		public bool ShowNullImage => App.showNullImage;
 
 		public PostsBrowser() {
 			Instance = this;
@@ -177,16 +178,18 @@ namespace E621Downloader.Pages {
 
 		private async void PageJumpTextBox_KeyDown(object sender, KeyRoutedEventArgs e) {
 			if(e.Key == VirtualKey.Enter) {
-				if(int.TryParse(PageJumpTextBox.Text, out int page)) {
-					await LoadAsync(page, tags);
-				} else {
-					await MainPage.CreatePopupDialog("Int Parse Error", "Plase Enter a Valid Number");
-				}
+				await JumpPageAction(PageJumpTextBox);
 			}
 		}
 
 		private async void JumpPageSubmitButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(int.TryParse(PageJumpTextBox.Text, out int page)) {
+			await JumpPageAction(PageJumpTextBox);
+		}
+		private async Task JumpPageAction(TextBox sender) {
+			if(int.TryParse(sender.Text, out int page)) {
+				if(page == currentPage) {
+					return;
+				}
 				if(page > 750 || page <= 0) {
 					await MainPage.CreatePopupDialog("Error", "Plase Enter a Number Within 0 ~ 750");
 					return;
@@ -208,22 +211,34 @@ namespace E621Downloader.Pages {
 			SetAllItemsSize(false);
 		}
 
-		private void ShowNullImageCheckBox_Checked(object sender, RoutedEventArgs e) {
-			showNullImage = true;
-			ShowNullImages(true);
-		}
-
-		private void ShowNullImageCheckBox_Unchecked(object sender, RoutedEventArgs e) {
-			showNullImage = false;
-			ShowNullImages(false);
-		}
-
-		private void ShowBlackListCheckBox_Checked(object sender, RoutedEventArgs e) {
-
-		}
-
-		private void ShowBlackListCheckBox_Unchecked(object sender, RoutedEventArgs e) {
-
+		private async void DownloadButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			var dialog = new ContentDialog() {
+				Title = "Download Selection",
+				Content = new TextBlock() {
+					Text = "Do you want to download for current page or for whole tag(s)?",
+					TextWrapping = TextWrapping.WrapWholeWords,
+					FontSize = 24,
+				},
+				CloseButtonText = "Back",
+				PrimaryButtonText = "Whole Tag(s)",
+				SecondaryButtonText = "Current Page",
+			};
+			ContentDialogResult result = await dialog.ShowAsync();
+			switch(result) {
+				case ContentDialogResult.None:
+					break;
+				case ContentDialogResult.Primary:
+					//get all posts
+					break;
+				case ContentDialogResult.Secondary:
+					//get currentpage posts
+					foreach(Post item in posts) {
+						DownloadsManager.RegisterDownload(item, tags);
+					}
+					break;
+				default:
+					throw new Exception();
+			}
 		}
 	}
 }

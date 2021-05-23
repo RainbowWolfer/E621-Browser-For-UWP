@@ -27,7 +27,7 @@
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 			<ToggleButton x:Name="TitleButton" IsChecked="True" Content="Download Groups" Margin="10" Tapped="TitleButton_Tapped" IsHitTestVisible="True"/>
-			<NavigationView Grid.Column="1" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" VerticalAlignment="Center">
+			<NavigationView Name="MyNavigationView" Grid.Column="1" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" VerticalAlignment="Center" ItemInvoked="NavigationView_ItemInvoked">
 				<NavigationView.Resources>
 					<SolidColorBrush x:Key="NavigationViewTopPaneBackground" Color="Transparent" />
 				</NavigationView.Resources>
@@ -59,7 +59,7 @@
 
 		<AutoSuggestBox Grid.Column="1" Margin="20,0,20,0" VerticalAlignment="Center" QueryIcon="Find" QuerySubmitted="AutoSuggestBox_QuerySubmitted" MaxWidth="400"/>
 
-		<Frame x:Name="MainFrame" Grid.Row="1" Margin="5" Grid.ColumnSpan="2">
+		<Frame x:Name="MainFrame" Grid.Row="1" Margin="5" Grid.ColumnSpan="2" Navigating="MainFrame_Navigating" Navigated="MainFrame_Navigated">
 			<Frame.ContentTransitions>
 				<TransitionCollection>
 					<NavigationThemeTransition/>

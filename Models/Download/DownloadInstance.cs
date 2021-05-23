@@ -30,13 +30,18 @@ namespace E621Downloader.Models.Download {
 		public string ReceivedKB => (Operation.Progress.BytesReceived / 1000).ToString();
 		public string TotalKB => (Operation.Progress.TotalBytesToReceive / 1000).ToString();
 
+		public Action DownloadingAction { get; set; }
+
 		public DownloadInstance(Post post, DownloadOperation operation) {
 			PostRef = post;
 			Operation = operation;
 		}
 
-		public async void StartDownload(Action<DownloadOperation> action) {
-			await Operation.StartAsync().AsTask(new CancellationTokenSource().Token, new Progress<DownloadOperation>(action));
+		public async void StartDownload(Action action) {
+			DownloadingAction = action;
+			await Operation.StartAsync().AsTask(new CancellationTokenSource().Token, new Progress<DownloadOperation>(o => {
+				DownloadingAction?.Invoke();
+			}));
 		}
 
 	}

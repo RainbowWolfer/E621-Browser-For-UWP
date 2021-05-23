@@ -18,9 +18,9 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages.DownloadSection {
-	public sealed partial class DownloadingSection: Page {
+	public sealed partial class DownloadOverview: Page {
 
-		public DownloadingSection() {
+		public DownloadOverview() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			foreach(DownloadsGroup group in DownloadsManager.groups) {
@@ -31,10 +31,13 @@ namespace E621Downloader.Pages.DownloadSection {
 			//}
 		}
 
-		protected async override void OnNavigatedTo(NavigationEventArgs e) {
+		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			//List<DownloadInstance> list = await Local.GetDownloadsInfo();
-
+			MainGridView.Items.Clear();
+			foreach(DownloadsGroup group in DownloadsManager.groups) {
+				MainGridView.Items.Add(new DownloadBlock(group));
+			}
 		}
 
 		private void MainGridView_ItemClick(object sender, ItemClickEventArgs e) {

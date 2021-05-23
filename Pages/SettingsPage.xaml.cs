@@ -83,5 +83,13 @@ namespace E621Downloader.Pages {
 				DownloadPathTextBlock.Text = Local.downloadFolder.Path;
 			}
 		}
+
+		private void BlackListToggle_Toggled(object sender, RoutedEventArgs e) {
+			App.showBlackListed = (sender as ToggleSwitch).IsOn;
+		}
+
+		private void NullImageToggle_Toggled(object sender, RoutedEventArgs e) {
+			App.showNullImage = (sender as ToggleSwitch).IsOn;
+		}
 	}
 }
