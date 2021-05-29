@@ -15,6 +15,9 @@ namespace E621Downloader.Models {
 			tags.ToList().ForEach((t) => url += t + "+");
 
 			string data = Data.ReadURL(url);
+			if(data == null) {
+				return new List<Post>();
+			}
 
 			return JsonConvert.DeserializeObject<PostRoot>(data).posts;
 		}

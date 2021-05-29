@@ -19,12 +19,12 @@
 		<TextBlock Text="{x:Bind Group.Title}" HorizontalAlignment="Center" FontSize="24"/>
 		<StackPanel Grid.Row="1" Margin="5">
 			<local:SimpleDownloadProgressBar x:Name="Bar1"/>
-			<local:SimpleDownloadProgressBar/>
-			<local:SimpleDownloadProgressBar/>
-			<local:SimpleDownloadProgressBar/>
-			<local:SimpleDownloadProgressBar/>
-			<local:SimpleDownloadProgressBar/>
-			<local:SimpleDownloadProgressBar/>
+			<local:SimpleDownloadProgressBar x:Name="Bar2"/>
+			<local:SimpleDownloadProgressBar x:Name="Bar3"/>
+			<local:SimpleDownloadProgressBar x:Name="Bar4"/>
+			<local:SimpleDownloadProgressBar x:Name="Bar5"/>
+			<local:SimpleDownloadProgressBar x:Name="Bar6"/>
+			<local:SimpleDownloadProgressBar x:Name="Bar7"/>
 		</StackPanel>
 
 		<Grid Grid.Row="2" Margin="5,5,5,15">

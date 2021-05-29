@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -53,6 +54,7 @@ namespace E621Downloader.Models.Download {
 				group.AddInstance(instance);
 			}
 			//Local.WriteDownloadsInfo();
+			instance.StartDownload();
 			return instance;
 		}
 

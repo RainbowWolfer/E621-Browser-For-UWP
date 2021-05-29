@@ -33,7 +33,7 @@ namespace E621Downloader.Pages.DownloadSection {
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
-			Debug.WriteLine(MainFrame.GetNavigationState());
+			//Debug.WriteLine(MainFrame.GetNavigationState());
 			//MainFrame.Navigate();
 		}
 
@@ -59,8 +59,9 @@ namespace E621Downloader.Pages.DownloadSection {
 			TitleButton.IsHitTestVisible = true;
 
 			DownloadsGroup group = DownloadsManager.FindGroup(args.InvokedItemContainer.Content as string);
-			MainFrame.Navigate(typeof(DownloadDetailsPage), group.downloads, new EntranceNavigationTransitionInfo());
-
+			if(group != null) {
+				MainFrame.Navigate(typeof(DownloadDetailsPage), group.downloads, new EntranceNavigationTransitionInfo());
+			}
 		}
 
 		private void MainFrame_Navigating(object sender, NavigatingCancelEventArgs e) {

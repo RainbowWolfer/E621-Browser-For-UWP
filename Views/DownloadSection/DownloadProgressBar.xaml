@@ -20,7 +20,7 @@
 			<ColumnDefinition Width="auto"/>
 		</Grid.ColumnDefinitions>
 		<TextBlock x:Name="NameTextBlock" Text="Post : 2912928" FontSize="20" VerticalAlignment="Center" Margin="10,0,10,0"/>
-		<TextBlock x:Name="InfoTextBlock" Grid.Row="1" Grid.ColumnSpan="2" Text="" FontSize="20" Margin="20,0,0,0" VerticalAlignment="Center"/>
+		<TextBlock x:Name="InfoTextBlock" Grid.Row="1" Grid.ColumnSpan="2" Text="" FontSize="20" Margin="20,0,120,0" VerticalAlignment="Center"/>
 		<TextBlock x:Name="PercentageTextBlok" Grid.Column="2" Text="Pending..." VerticalAlignment="Center" Margin="10"/>
 		<ProgressBar x:Name="MyProgressBar" Grid.Column="1" Value="0" Maximum="1" VerticalAlignment="Center" Margin="10" ShowPaused="False" ShowError="False"/>
 		<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Right" >

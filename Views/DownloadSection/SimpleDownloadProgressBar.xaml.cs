@@ -23,6 +23,9 @@ namespace E621Downloader.Views.DownloadSection {
 		public SimpleDownloadProgressBar() {
 			this.InitializeComponent();
 		}
+		public void SetIcon() {
+
+		}
 
 		public void SetBarValue(int percentage) {
 			MyProgressBar.Value = percentage;
