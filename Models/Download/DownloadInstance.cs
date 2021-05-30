@@ -8,23 +8,13 @@ using Windows.Networking.BackgroundTransfer;
 namespace E621Downloader.Models.Download {
 	public class DownloadInstance {
 		public Post PostRef { get; private set; }
+		public string GroupName { get; set; }
 
 		public DownloadOperation Operation { get; private set; }
 
-		public BackgroundTransferStatus Status { get => Operation.Progress.Status; }
-
-		//public double Progress {
-		//	get {
-		//		ulong received = Operation.Progress.BytesReceived;
-		//		ulong total = Operation.Progress.TotalBytesToReceive;
-		//		if(total == 0) {
-		//			return 0;
-		//		} else {
-		//			return received / (double)total;
-		//		}
-		//	}
-		//}
 		public double DownloadProgress { get; private set; }
+
+		public BackgroundTransferStatus Status => Operation.Progress.Status;
 
 		public int Percentage => (int)Math.Ceiling(DownloadProgress * 100);
 

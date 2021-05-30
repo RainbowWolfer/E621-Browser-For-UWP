@@ -63,6 +63,7 @@
 			</ListView.GroupStyle>
 		</ListView>
 
+		<MediaPlayerElement x:Name="MyMediaPlayer" Grid.Column="1" Grid.Row="1" AutoPlay="False" AreTransportControlsEnabled="True" Margin="0,0,40,40"/>
 		<ScrollViewer Grid.Column="1" Grid.Row="1" x:Name="MyScrollViewer" MinZoomFactor="0.3" DoubleTapped="MyScrollViewer_DoubleTapped" ZoomMode="Enabled" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Hidden" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Hidden">
 			<Image PointerWheelChanged="MainImage_PointerWheelChanged" PointerPressed="MainImage_PointerPressed" PointerReleased="MainImage_PointerReleased" PointerMoved="MainImage_PointerMoved" PointerEntered="MainImage_PointerEntered" PointerExited="MainImage_PointerExited" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="MainImage" Margin="0,0,40,40" ImageOpened="MainImage_ImageOpened"/>
 		</ScrollViewer>

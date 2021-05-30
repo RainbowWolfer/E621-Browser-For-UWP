@@ -46,13 +46,16 @@ namespace E621Downloader.Models.Download {
 
 		public static DownloadInstance RegisterDownload(Post post, Uri uri, IStorageFile file, string groupTitle = DEFAULTTITLE) {
 			var instance = new DownloadInstance(post, downloader.CreateDownload(uri, file));
-			downloads.Add(instance);
 			DownloadsGroup group = FindGroup(groupTitle);
 			if(group == null) {
 				groups.Add(new DownloadsGroup(groupTitle, instance));
 			} else {
+				if(group.FindByPost(post) != null) {
+					return null;
+				}
 				group.AddInstance(instance);
 			}
+			downloads.Add(instance);
 			//Local.WriteDownloadsInfo();
 			instance.StartDownload();
 			return instance;

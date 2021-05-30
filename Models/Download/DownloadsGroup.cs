@@ -24,7 +24,17 @@ namespace E621Downloader.Models.Download {
 			this.downloads = new List<DownloadInstance>();
 			foreach(var item in downloads) {
 				this.downloads.Add(item);
+				item.GroupName = title;
 			}
+		}
+
+		public DownloadInstance FindByPost(Post post) {
+			foreach(DownloadInstance item in downloads) {
+				if(post == item.PostRef) {
+					return item;
+				}
+			}
+			return null;
 		}
 
 		public void AddInstance(DownloadInstance instance) {

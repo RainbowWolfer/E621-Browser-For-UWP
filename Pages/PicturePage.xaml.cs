@@ -11,6 +11,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.Core;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 using Windows.UI.Input;
@@ -58,7 +59,9 @@ namespace E621Downloader.Pages {
 				DownloadButton.Visibility = Visibility.Collapsed;
 				return;
 			}
-			MyProgressRing.IsActive = true;
+			if(PostRef == e.Parameter as Post) {
+				return;
+			}
 			PostRef = e.Parameter as Post;
 			if(PostRef == null) {
 				return;
@@ -66,8 +69,17 @@ namespace E621Downloader.Pages {
 			DebugButton.Visibility = Visibility.Visible;
 			CopyButton.Visibility = Visibility.Visible;
 			DownloadButton.Visibility = Visibility.Visible;
-
-			MainImage.Source = new BitmapImage(new Uri(PostRef.file.url));
+			if(PostRef.file.ext.ToLower().Trim() == "webm") {
+				MyProgressRing.IsActive = false;
+				MyMediaPlayer.Visibility = Visibility.Visible;
+				MyScrollViewer.Visibility = Visibility.Collapsed;
+				MyMediaPlayer.Source = MediaSource.CreateFromUri(new Uri(PostRef.file.url));
+			} else {
+				MyProgressRing.IsActive = true;
+				MyMediaPlayer.Visibility = Visibility.Collapsed;
+				MyScrollViewer.Visibility = Visibility.Visible;
+				MainImage.Source = new BitmapImage(new Uri(PostRef.file.url));
+			}
 
 			TagsListView.ScrollIntoView(TagsListView.Items[0]);
 

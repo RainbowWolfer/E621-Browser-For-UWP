@@ -123,6 +123,7 @@ namespace E621Downloader.Views {
 				Text = content == null ? "NULL" : content.ToString(),
 				FontSize = FONTSIZE,
 				Margin = new Thickness(2, 0, 2, 0),
+				TextWrapping = TextWrapping.Wrap,
 			};
 			panel.Children.Add(titleTB);
 			panel.Children.Add(contentTB);
