@@ -2,6 +2,7 @@
 using E621Downloader.Models.Download;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -26,26 +27,30 @@ namespace E621Downloader.Views.DownloadSection {
 		public DownloadBlock(DownloadsGroup group) {
 			this.InitializeComponent();
 			this.DataContextChanged += (s, e) => Bindings.Update();
-			Group = group;
-			Bar1.Visibility = Visibility.Collapsed;
+			this.Group = group;
 
 			int i;
 			for(i = 0; i < Math.Min(group.downloads.Count, 7); i++) {
-				var instance = group.downloads[0];
-				var b = Bars[i];
+				DownloadInstance instance = group.downloads[i];
+				SimpleDownloadProgressBar b = Bars[i];
 
-				b.SetBarValue(instance.Percentage);
-				b.SetIcon();
+				b.SetBarValue(instance.DownloadProgress);
+				b.SetIcon(instance);
+				b.SetVisible(true);
+				instance.DownloadingAction = (p) => {
+					b.SetBarValue(instance.DownloadProgress);
+					b.SetIcon(instance);
+				};
 			}
+
 			for(int j = i; j < 7; j++) {//rest
-				//Bars[i].
+				Bars[j].SetVisible(false);
 			}
-			//bar
-			//foreach(DownloadInstance item in Group.downloads) {
-			//	item.DownloadingAction += () => {
-			//		Bar1.SetBarValue(item.Percentage);
-			//	};
-			//}
 		}
+
+		public void Update(){
+
+		}
+
 	}
 }

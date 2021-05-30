@@ -26,13 +26,20 @@
 				<ColumnDefinition Width="auto"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<ToggleButton x:Name="TitleButton" IsChecked="True" Content="Download Groups" Margin="10" Tapped="TitleButton_Tapped" IsHitTestVisible="True"/>
+			<ToggleButton x:Name="TitleButton" IsChecked="True" Content="Download Groups" Margin="10" Tapped="TitleButton_Tapped" IsHitTestVisible="False"/>
 			<NavigationView Name="MyNavigationView" Grid.Column="1" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" VerticalAlignment="Center" ItemInvoked="NavigationView_ItemInvoked">
 				<NavigationView.Resources>
 					<SolidColorBrush x:Key="NavigationViewTopPaneBackground" Color="Transparent" />
 				</NavigationView.Resources>
 				<NavigationView.MenuItems>
-					<NavigationViewItem Icon="Audio" Content="Individual Downloads"/>
+					<NavigationViewItem Icon="Document">
+						<NavigationViewItem.Content>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="Individual Downloads"/>
+								<Button Background="Transparent" BorderThickness="0" FontFamily="Segoe MDL2 Assets" Content="&#xE10A;" Foreground="{ThemeResource AppBarToggleButtonCheckedPointerOverBorderThemeBrush}"/>
+							</StackPanel>
+						</NavigationViewItem.Content>
+					</NavigationViewItem>
 					<NavigationViewItem Icon="Audio" Content="Individual Downloads"/>
 					<NavigationViewItem Icon="Audio" Content="Individual Downloads"/>
 				</NavigationView.MenuItems>

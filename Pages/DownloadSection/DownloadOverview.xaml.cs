@@ -19,30 +19,36 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages.DownloadSection {
 	public sealed partial class DownloadOverview: Page {
+		public static DownloadOverview Instance;
 
 		public DownloadOverview() {
+			Instance = this;
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
-			foreach(DownloadsGroup group in DownloadsManager.groups) {
-				MainGridView.Items.Add(new DownloadBlock(group));
-			}
-			//for(int i = 0; i < 15; i++) {
-			//	MainGridView.Items.Add(new DownloadBlock(null));
-			//}
+
+			Refresh();
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			//List<DownloadInstance> list = await Local.GetDownloadsInfo();
+			Refresh();
+		}
+
+		public void Refresh() {
 			MainGridView.Items.Clear();
 			foreach(DownloadsGroup group in DownloadsManager.groups) {
 				MainGridView.Items.Add(new DownloadBlock(group));
 			}
+			TitleTextBlock.Visibility = MainGridView.Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 		}
 
 		private void MainGridView_ItemClick(object sender, ItemClickEventArgs e) {
 			DownloadBlock block = e.ClickedItem as DownloadBlock;
 			DownloadPage.Instance.NavigateTo(typeof(DownloadDetailsPage), block.Group.downloads);
+			DownloadPage.Instance.EnableTitleButton(true);
+			DownloadPage.Instance.SelectTitle(block.Group.Title);
+
 		}
 	}
 }

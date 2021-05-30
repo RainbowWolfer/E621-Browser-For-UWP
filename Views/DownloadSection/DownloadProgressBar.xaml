@@ -24,15 +24,15 @@
 		<TextBlock x:Name="PercentageTextBlok" Grid.Column="2" Text="Pending..." VerticalAlignment="Center" Margin="10"/>
 		<ProgressBar x:Name="MyProgressBar" Grid.Column="1" Value="0" Maximum="1" VerticalAlignment="Center" Margin="10" ShowPaused="False" ShowError="False"/>
 		<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Right" >
-			<Button Margin="10">
+			<Button x:Name="PauseButton" Tapped="PauseButton_Tapped" Margin="10">
 				<Button.Content>
 					<StackPanel Orientation="Horizontal">
-						<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE769;" Margin="1" FontSize="14"/>
-						<TextBlock Text="Pause" FontSize="14" Margin="1"/>
+						<FontIcon x:Name="FontIcon_PauseButton" FontFamily="Segoe MDL2 Assets" Glyph="&#xE769;" Margin="1" FontSize="14"/>
+						<TextBlock x:Name="TextBlock_PauseButton" Text="Pause" FontSize="14" Margin="1"/>
 					</StackPanel>
 				</Button.Content>
 			</Button>
-			<Button Margin="10">
+			<Button x:Name="CancelButton" Tapped="CancelButton_Tapped" Margin="10">
 				<Button.Content>
 					<StackPanel Orientation="Horizontal">
 						<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE711;" Margin="1" FontSize="14"/>

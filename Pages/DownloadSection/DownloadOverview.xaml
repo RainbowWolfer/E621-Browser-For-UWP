@@ -9,6 +9,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Grid>
+		<TextBlock x:Name="TitleTextBlock" Text="No Downloads Currently" FontSize="48" HorizontalAlignment="Center" Visibility="Visible"/>
 		<GridView x:Name="MainGridView" SelectionMode="None" IsItemClickEnabled="True" ItemClick="MainGridView_ItemClick">
 			<GridView.ItemContainerStyle>
 				<Style TargetType="GridViewItem">

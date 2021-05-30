@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Networking.BackgroundTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -26,25 +27,41 @@ namespace E621Downloader.Views.DownloadSection {
 			NameTextBlock.Text = "Posts: " + instance.PostRef.id;
 			InfoTextBlock.Text = instance.PostRef.file.url;
 
-			//this.DataContextChanged += (s, c) => Bindings.Update();
-			Instance.DownloadingAction = (p) => {
-				UpdateInfo();
-			};
-			//instance.StartDownload((p) => {
-			//	Debug.WriteLine(Instance.PostRef.id + " : " + Instance.DownloadProgress);
+			Instance.DownloadingAction = (p) => UpdateInfo();
+			Debug.WriteLine(Instance.Status);
+			if(Instance.Status == BackgroundTransferStatus.Running) {
+				TextBlock_PauseButton.Text = "Pause";
+				FontIcon_PauseButton.Glyph = "\uE769";
+			} else {
+				TextBlock_PauseButton.Text = "Resume";
+				FontIcon_PauseButton.Glyph = "\uE102";
+			}
 
-			//	InfoTextBlock.Text = instance.PostRef.file.url;
-
-			//	PercentageTextBlok.Text = string.Format("{0}%   {1} KB / {2} KB", Instance.Percentage, instance.ReceivedKB, instance.TotalKB);
-			//	MyProgressBar.Value = instance.DownloadProgress;
-			//});
 		}
 
-		private void UpdateInfo(){
+		private void UpdateInfo() {
 			MyProgressBar.Value = Instance.DownloadProgress;
 			//InfoTextBlock.Text = Instance.PostRef.file.url;
 			PercentageTextBlok.Text = string.Format("{0}%   {1} KB / {2} KB", Instance.Percentage, Instance.ReceivedKB, Instance.TotalKB);
 		}
 
+		private void PauseButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(e.Handled) {
+				return;
+			}
+			if(Instance.Status == BackgroundTransferStatus.Running) {
+				Instance.Pause();
+				TextBlock_PauseButton.Text = "Resume";
+				FontIcon_PauseButton.Glyph = "\uE102";
+			} else {
+				Instance.Resume();
+				TextBlock_PauseButton.Text = "Pause";
+				FontIcon_PauseButton.Glyph = "\uE769";
+			}
+		}
+
+		private void CancelButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			
+		}
 	}
 }

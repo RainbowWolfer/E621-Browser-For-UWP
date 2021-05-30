@@ -28,8 +28,11 @@ namespace E621Downloader.Models.Download {
 
 		public int Percentage => (int)Math.Ceiling(DownloadProgress * 100);
 
-		public string ReceivedKB => (Operation.Progress.BytesReceived / 1000).ToString();
-		public string TotalKB => (Operation.Progress.TotalBytesToReceive / 1000).ToString();
+		public ulong BytesReceived => Operation.Progress.BytesReceived;
+		public ulong TotalBytesToReceive => Operation.Progress.TotalBytesToReceive;
+
+		public string ReceivedKB => (BytesReceived / 1000).ToString();
+		public string TotalKB => (TotalBytesToReceive / 1000).ToString();
 
 		public Action<double> DownloadingAction { get; set; }
 
@@ -49,6 +52,25 @@ namespace E621Downloader.Models.Download {
 				}
 				DownloadingAction?.Invoke(DownloadProgress);
 			}));
+		}
+
+		public void Pause() {
+			Operation.Pause();
+		}
+
+		public void Resume() {
+			if(Status == BackgroundTransferStatus.Running) {
+				return;
+			}
+			try {
+				Operation.Resume();
+			} catch(InvalidOperationException ex) {
+				Debug.WriteLine(ex);
+			}
+		}
+
+		public void Cancel() {
+			//Operation.
 		}
 
 	}

@@ -11,6 +11,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Networking.BackgroundTransfer;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -29,16 +30,67 @@ namespace E621Downloader.Pages.DownloadSection {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			MainFrame.Navigate(typeof(DownloadOverview), null, new EntranceNavigationTransitionInfo());
+			MyNavigationView.MenuItems.Clear();
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
-			//Debug.WriteLine(MainFrame.GetNavigationState());
-			//MainFrame.Navigate();
+			if(MainFrame.Content is DownloadOverview overview) {
+				overview.Refresh();
+			} else if(MainFrame.Content is DownloadDetailsPage details) {
+				details.Refresh();
+			} else {
+				Debug.WriteLine("NOTHING");
+			}
 		}
 
 		public void NavigateTo(Type type, object parameter = null) {
-			MainFrame.Navigate(type, parameter);
+			MainFrame.Navigate(type, parameter, new EntranceNavigationTransitionInfo());
+
+		}
+
+		public void EnableTitleButton(bool enable) {
+			TitleButton.IsChecked = !enable;
+			TitleButton.IsHitTestVisible = enable;
+		}
+
+		public void SelectTitle(string title) {
+			if(!(MyNavigationView.MenuItems.ToList().Find(i => ((i as NavigationViewItem).Content as StackPanel).Tag as string == title) is NavigationViewItem found)) {
+				var stackPanel = new StackPanel() {
+					Orientation = Orientation.Horizontal,
+					Tag = title,
+				};
+				stackPanel.Children.Add(new TextBlock() {
+					Text = title
+				});
+				var closeButton = new Button() {
+					Background = new SolidColorBrush(Colors.Transparent),
+					BorderThickness = new Thickness(0),
+					FontFamily = new FontFamily("Segoe MDL2 Assets"),
+					Content = "\uE10A",
+				};
+				stackPanel.Children.Add(closeButton);
+				found = new NavigationViewItem() {
+					Icon = new FontIcon {
+						FontFamily = new FontFamily("Segoe MDL2 Assets"),
+						Glyph = "\uE9F9",
+					},
+					Content = stackPanel
+				};
+
+
+				closeButton.Tapped += (s, e) => {
+					MyNavigationView.MenuItems.Remove(found);
+					if(MyNavigationView.MenuItems.Count >= 1) {
+						MyNavigationView.SelectedItem = MyNavigationView.MenuItems[0];
+					} else {
+						MainFrame.Navigate(typeof(DownloadOverview), null, new EntranceNavigationTransitionInfo());
+					}
+				};
+
+				MyNavigationView.MenuItems.Add(found);
+			}
+			MyNavigationView.SelectedItem = found;
 		}
 
 		private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) {
@@ -46,8 +98,7 @@ namespace E621Downloader.Pages.DownloadSection {
 		}
 
 		private void TitleButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			TitleButton.IsChecked = true;
-			TitleButton.IsHitTestVisible = false;
+			EnableTitleButton(false);
 			MyNavigationView.SelectedItem = null;
 
 			MainFrame.Navigate(typeof(DownloadOverview), null, new EntranceNavigationTransitionInfo());
@@ -55,10 +106,8 @@ namespace E621Downloader.Pages.DownloadSection {
 		}
 
 		private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
-			TitleButton.IsChecked = false;
-			TitleButton.IsHitTestVisible = true;
-
-			DownloadsGroup group = DownloadsManager.FindGroup(args.InvokedItemContainer.Content as string);
+			EnableTitleButton(true);
+			DownloadsGroup group = DownloadsManager.FindGroup((args.InvokedItemContainer.Content as StackPanel).Tag as string);
 			if(group != null) {
 				MainFrame.Navigate(typeof(DownloadDetailsPage), group.downloads, new EntranceNavigationTransitionInfo());
 			}
