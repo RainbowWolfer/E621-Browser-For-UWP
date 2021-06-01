@@ -8,53 +8,87 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+	<Page.Resources>
+		<Style x:Key="TestKey" TargetType="TextBlock">
+			<Setter Property="FontSize" Value="48"/>
+		</Style>
+	</Page.Resources>
+
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/>
-			<ColumnDefinition Width="*"/>
-		</Grid.ColumnDefinitions>
+
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup>
+				<VisualState x:Name="WideLayout">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="600"/>
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<!--<Setter Target="" Value=""/>-->
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="NarrowLayout">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="0"/>
+					</VisualState.StateTriggers>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+
 		<TextBlock Grid.ColumnSpan="2" Text="Settings Page" FontSize="48" HorizontalAlignment="Center" Margin="10"/>
 
-		<StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical">
-			<TextBlock Text="Listing: " FontSize="64" Margin="20" TextDecorations="Underline"/>
-			<StackPanel Orientation="Horizontal" Margin="50,0,0,0">
-				<TextBlock Text="Black List" VerticalAlignment="Center" FontSize="20" Margin="10"/>
-				<Button Content="Manage" VerticalAlignment="Center" Margin="10" FontSize="20" Tapped="BlackListButton_Tapped"/>
-			</StackPanel>
-			<StackPanel Orientation="Horizontal" Margin="50,0,0,0">
-				<TextBlock Text="Follow List" VerticalAlignment="Center" FontSize="20" Margin="10"/>
-				<Button Content="Manage" VerticalAlignment="Center" Margin="10" FontSize="20" Tapped="FollowListButton_Tapped"/>
-			</StackPanel>
-			<TextBlock Text="Theme: " FontSize="64" Margin="20" TextDecorations="Underline"/>
-			<StackPanel Margin="40,0,0,0">
-				<RadioButton Margin="5" Content="Light"/>
-				<RadioButton Margin="5" Content="Dark"/>
-				<RadioButton Margin="5" Content="Follow System" IsChecked="True"/>
-			</StackPanel>
-			<TextBlock Text="Local: " FontSize="64" Margin="20" TextDecorations="Underline"/>
-			<StackPanel Orientation="Horizontal" Margin="40,0,0,0">
-				<Button x:Name="DownloadPathButton" Content="Select Download Path" FontSize="20" Tapped="DownloadPathButton_Tapped"/>
-				<TextBlock Name="DownloadPathTextBlock" Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="20"/>
-			</StackPanel>
-		</StackPanel>
+		<ScrollViewer Grid.Row="1">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+				</Grid.RowDefinitions>
 
-		<StackPanel Grid.Row="1" Grid.Column="1">
-			<TextBlock Text="General: " FontSize="64" Margin="20" TextDecorations="Underline"/>
-			<StackPanel Margin="40,0,0,0">
-				<ToggleSwitch x:Name="NullImageToggle" OffContent="Show NULL Image" OnContent="Show NULL Image" Margin="0,5,0,5" Toggled="NullImageToggle_Toggled"/>
-				<ToggleSwitch x:Name="BlackListToggle" OffContent="Show Blacklisted" OnContent="Show Blacklisted" Margin="0,5,0,5" Toggled="BlackListToggle_Toggled"/>
-			</StackPanel>
-			<TextBlock Text="About: " FontSize="64" Margin="20" TextDecorations="Underline"/>
-			<StackPanel Margin="40,0,0,0">
-				<TextBlock FontSize="18" Text="Made By : RainbowWolfer"/>
-				<TextBlock FontSize="18" Text="Source From : e621.net"/>
-				<TextBlock FontSize="18" Text="{x:Bind Version}"/>
-			</StackPanel>
-		</StackPanel>
+				<StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical">
+					<TextBlock Text="Listing: " FontSize="64" Margin="20" TextDecorations="Underline"/>
+					<StackPanel Orientation="Horizontal" Margin="50,0,0,0">
+						<TextBlock Text="Black List" VerticalAlignment="Center" FontSize="20" Margin="10"/>
+						<Button Content="Manage" VerticalAlignment="Center" Margin="10" FontSize="20" Tapped="BlackListButton_Tapped"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Margin="50,0,0,0">
+						<TextBlock Text="Follow List" VerticalAlignment="Center" FontSize="20" Margin="10"/>
+						<Button Content="Manage" VerticalAlignment="Center" Margin="10" FontSize="20" Tapped="FollowListButton_Tapped"/>
+					</StackPanel>
+					<TextBlock Text="Theme: " FontSize="64" Margin="20" TextDecorations="Underline"/>
+					<StackPanel Margin="40,0,0,0">
+						<RadioButton Margin="5" Content="Light"/>
+						<RadioButton Margin="5" Content="Dark"/>
+						<RadioButton Margin="5" Content="Follow System" IsChecked="True"/>
+					</StackPanel>
+					<TextBlock Text="Local: " FontSize="64" Margin="20" TextDecorations="Underline"/>
+					<StackPanel Orientation="Horizontal" Margin="40,0,0,0">
+						<Button x:Name="DownloadPathButton" Content="Select Download Path" FontSize="20" Tapped="DownloadPathButton_Tapped"/>
+						<TextBlock Name="DownloadPathTextBlock" Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="20"/>
+					</StackPanel>
+				</StackPanel>
 
+				<StackPanel Grid.Row="1" Grid.Column="1">
+					<TextBlock Text="General: " FontSize="64" Margin="20" TextDecorations="Underline"/>
+					<StackPanel Margin="40,0,0,0">
+						<ToggleSwitch x:Name="NullImageToggle" OffContent="Show NULL Image" OnContent="Show NULL Image" Margin="0,5,0,5" Toggled="NullImageToggle_Toggled"/>
+						<ToggleSwitch x:Name="BlackListToggle" OffContent="Show Blacklisted" OnContent="Show Blacklisted" Margin="0,5,0,5" Toggled="BlackListToggle_Toggled"/>
+						<ToggleSwitch x:Name="SafeModeToggle" OffContent="Enable Safe Mode" OnContent="Enable Safe Mode" Margin="0,5,0,5" Toggled="SafeModeToggle_Toggled"/>
+					</StackPanel>
+					<TextBlock Text="About: " FontSize="64" Margin="20" TextDecorations="Underline"/>
+					<StackPanel Margin="40,0,0,0">
+						<TextBlock FontSize="18" Text="Made By : RainbowWolfer"/>
+						<TextBlock FontSize="18" Text="Source From : e621.net"/>
+						<TextBlock FontSize="18" Text="{x:Bind Version}"/>
+					</StackPanel>
+				</StackPanel>
+			</Grid>
+		</ScrollViewer>
 	</Grid>
 </Page>

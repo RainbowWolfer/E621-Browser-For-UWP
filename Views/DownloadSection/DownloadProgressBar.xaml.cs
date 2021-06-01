@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
+using E621Downloader.Pages.DownloadSection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,15 +20,24 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Views.DownloadSection {
 	public sealed partial class DownloadProgressBar: UserControl {
+		public DownloadDetailsPage PageParent { get; private set; }
 		public DownloadInstance Instance { get; private set; }
-		public DownloadProgressBar(DownloadInstance instance) {
+		public DownloadProgressBar(DownloadDetailsPage parent, DownloadInstance instance) {
 			this.InitializeComponent();
+			PageParent = parent;
 			Instance = instance;
 			UpdateInfo();
 			NameTextBlock.Text = "Posts: " + instance.PostRef.id;
 			InfoTextBlock.Text = instance.PostRef.file.url;
 
-			Instance.DownloadingAction = (p) => UpdateInfo();
+			Instance.DownloadingAction = (p) => {
+				UpdateInfo();
+				if(p >= 1) {
+					//Debugger.Break();
+					Debug.WriteLine("Downloaded" + p);
+					PageParent.MoveToDownloaded(instance);
+				}
+			};
 			Debug.WriteLine(Instance.Status);
 			if(Instance.Status == BackgroundTransferStatus.Running) {
 				TextBlock_PauseButton.Text = "Pause";
@@ -43,12 +53,16 @@ namespace E621Downloader.Views.DownloadSection {
 			MyProgressBar.Value = Instance.DownloadProgress;
 			//InfoTextBlock.Text = Instance.PostRef.file.url;
 			PercentageTextBlok.Text = string.Format("{0}%   {1} KB / {2} KB", Instance.Percentage, Instance.ReceivedKB, Instance.TotalKB);
+			if(Instance.TotalBytesToReceive == Instance.BytesReceived && Instance.TotalBytesToReceive != 0) {
+				DownloadingPanel.Visibility = Visibility.Collapsed;
+				DownloadedPanel.Visibility = Visibility.Visible;
+			}
 		}
 
 		private void PauseButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(e.Handled) {
-				return;
-			}
+			//if(e.Handled) {
+			//	return;
+			//}
 			if(Instance.Status == BackgroundTransferStatus.Running) {
 				Instance.Pause();
 				TextBlock_PauseButton.Text = "Resume";
@@ -61,7 +75,7 @@ namespace E621Downloader.Views.DownloadSection {
 		}
 
 		private void CancelButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			
+
 		}
 	}
 }

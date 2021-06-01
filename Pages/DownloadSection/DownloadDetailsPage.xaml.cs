@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Networking.BackgroundTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -32,10 +33,53 @@ namespace E621Downloader.Pages.DownloadSection {
 			list = e.Parameter as List<DownloadInstance>;
 			Refresh();
 		}
-		public void Refresh() {
+		public void Refresh(Predicate<DownloadInstance> p = null) {
+			MyListView.Items.Clear();
 			foreach(DownloadInstance item in list) {
-				MyListView.Items.Add(new DownloadProgressBar(item));
+				if(p == null || p.Invoke(item)) {
+					MyListView.Items.Add(new DownloadProgressBar(this, item));
+				}
 			}
+		}
+
+		private MyTag currentTag = MyTag.All;
+
+		private void RadioButton_Checked(object sender, RoutedEventArgs e) {
+			if((sender as RadioButton).Tag == null) {
+				return;
+			}
+			int index = int.Parse((sender as RadioButton).Tag as string);
+			currentTag = (MyTag)index;
+			switch(currentTag) {
+				case MyTag.All:
+					Refresh(p => true);
+					break;
+				case MyTag.Downloading:
+					Refresh(p => p.Status != BackgroundTransferStatus.Completed);
+					break;
+				case MyTag.Downloaded:
+					Refresh(p => p.Status == BackgroundTransferStatus.Completed);
+					break;
+				default:
+					throw new Exception();
+			}
+		}
+
+		public void MoveToDownloaded(DownloadInstance instance) {
+			if(currentTag == MyTag.Downloading) {
+				for(int i = 0; i < MyListView.Items.Count; i++) {
+					var bar = MyListView.Items[i] as DownloadProgressBar;
+					if(bar.Instance == instance) {
+						MyListView.Items.RemoveAt(i);
+						break;
+					}
+				}
+			} else if(currentTag == MyTag.Downloaded) {
+				MyListView.Items.Add(new DownloadProgressBar(this, instance));
+			}
+		}
+		private enum MyTag {
+			All = 0, Downloading = 1, Downloaded = 2,
 		}
 	}
 }

@@ -19,16 +19,40 @@
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="auto"/>
 		</Grid.ColumnDefinitions>
+
 		<TextBlock x:Name="NameTextBlock" Text="Post : 2912928" FontSize="20" VerticalAlignment="Center" Margin="10,0,10,0"/>
 		<TextBlock x:Name="InfoTextBlock" Grid.Row="1" Grid.ColumnSpan="2" Text="" FontSize="20" Margin="20,0,120,0" VerticalAlignment="Center"/>
-		<TextBlock x:Name="PercentageTextBlok" Grid.Column="2" Text="Pending..." VerticalAlignment="Center" Margin="10"/>
+		<TextBlock x:Name="PercentageTextBlok" Grid.Column="2" Text="Pending..." HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
 		<ProgressBar x:Name="MyProgressBar" Grid.Column="1" Value="0" Maximum="1" VerticalAlignment="Center" Margin="10" ShowPaused="False" ShowError="False"/>
-		<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Right" >
+
+		<StackPanel Orientation="Horizontal" Grid.Row="1" Margin="10" Grid.ColumnSpan="2">
+
+		</StackPanel>
+
+		<StackPanel x:Name="DownloadedPanel" Visibility="Collapsed" Orientation="Horizontal" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right">
+			<Button Margin="10">
+				<Button.Content>
+					<StackPanel Orientation="Horizontal">
+						<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE1A5;" Margin="1" FontSize="14"/>
+						<TextBlock Text="Open" FontSize="14" Margin="5,2,2,2"/>
+					</StackPanel>
+				</Button.Content>
+			</Button>
+			<Button Margin="10">
+				<Button.Content>
+					<StackPanel Orientation="Horizontal">
+						<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE107;" Margin="1" FontSize="14"/>
+						<TextBlock Text="Remove" FontSize="14" Margin="5,2,2,2"/>
+					</StackPanel>
+				</Button.Content>
+			</Button>
+		</StackPanel>
+		<StackPanel x:Name="DownloadingPanel" Visibility="Visible" Orientation="Horizontal" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" >
 			<Button x:Name="PauseButton" Tapped="PauseButton_Tapped" Margin="10">
 				<Button.Content>
 					<StackPanel Orientation="Horizontal">
 						<FontIcon x:Name="FontIcon_PauseButton" FontFamily="Segoe MDL2 Assets" Glyph="&#xE769;" Margin="1" FontSize="14"/>
-						<TextBlock x:Name="TextBlock_PauseButton" Text="Pause" FontSize="14" Margin="1"/>
+						<TextBlock x:Name="TextBlock_PauseButton" Text="Pause" FontSize="14" Margin="5,2,2,2"/>
 					</StackPanel>
 				</Button.Content>
 			</Button>
@@ -36,7 +60,7 @@
 				<Button.Content>
 					<StackPanel Orientation="Horizontal">
 						<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE711;" Margin="1" FontSize="14"/>
-						<TextBlock Text="Cancel" FontSize="14" Margin="1"/>
+						<TextBlock Text="Cancel" FontSize="14" Margin="5,2,2,2"/>
 					</StackPanel>
 				</Button.Content>
 			</Button>

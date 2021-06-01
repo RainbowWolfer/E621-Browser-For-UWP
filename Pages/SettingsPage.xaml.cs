@@ -91,5 +91,9 @@ namespace E621Downloader.Pages {
 		private void NullImageToggle_Toggled(object sender, RoutedEventArgs e) {
 			App.showNullImage = (sender as ToggleSwitch).IsOn;
 		}
+
+		private void SafeModeToggle_Toggled(object sender, RoutedEventArgs e) {
+			App.safemode = (sender as ToggleSwitch).IsOn;
+		}
 	}
 }
