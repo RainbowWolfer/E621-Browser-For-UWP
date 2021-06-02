@@ -132,6 +132,7 @@
     </Compile>
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\Download\DownloadInstance.cs" />
+    <Compile Include="Models\Download\DownloadInstanceLocalManager.cs" />
     <Compile Include="Models\Download\DownloadsGroup.cs" />
     <Compile Include="Models\Download\DownloadsManager.cs" />
     <Compile Include="Models\E621Article.cs" />

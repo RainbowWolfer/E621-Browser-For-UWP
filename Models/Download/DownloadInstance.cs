@@ -62,6 +62,5 @@ namespace E621Downloader.Models.Download {
 		public void Cancel() {
 			//Operation.
 		}
-
 	}
 }

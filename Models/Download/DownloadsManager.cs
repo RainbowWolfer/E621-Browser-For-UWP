@@ -23,14 +23,7 @@ namespace E621Downloader.Models.Download {
 		static DownloadsManager() {
 			downloads = new List<DownloadInstance>();
 			downloader = new BackgroundDownloader();
-			groups = new List<DownloadsGroup>() {
-				//new DownloadsGroup(DEFUALTTITLE,new List<DownloadInstance>(){ 
-				//	//new DownloadInstance(),
-				//}),
-				//new DownloadsGroup("Wallpaper"),
-				//new DownloadsGroup("Rating:e"),
-				//new DownloadsGroup("Feet Sole"),
-			};
+			groups = new List<DownloadsGroup>();
 		}
 		public static void RegisterDownload(Post post, IEnumerable<string> tags) {
 			RegisterDownload(post, DownloadsGroup.GetGroupTitle(tags));
@@ -63,6 +56,17 @@ namespace E621Downloader.Models.Download {
 
 		public static DownloadsGroup FindGroup(string title) {
 			return groups.Find(g => g.Title == title);
+		}
+
+		public static void Sort() {
+			foreach(DownloadsGroup g in groups) {
+				g.downloads.Sort((a, b) => {
+					if(a == b) {
+						return 0;
+					}
+					return 1;
+				});
+			}
 		}
 
 		//public static List<DownloadsGroup> GetDownloadingGroups(){
