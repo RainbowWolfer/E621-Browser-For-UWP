@@ -192,8 +192,8 @@ namespace E621Downloader {
 				MyFrame.Navigate(typeof(PostsBrowser), null, CalculateTransition(currentTag, PageTag.Home));
 			} else if(tag == PageTag.Picture) {
 				MyFrame.Navigate(typeof(PicturePage), parameter_picture, CalculateTransition(currentTag, PageTag.Picture));
-			} else if(tag == PageTag.ShowSlider) {
-				MyFrame.Navigate(typeof(SlideshowPage), null, CalculateTransition(currentTag, PageTag.ShowSlider));
+			} else if(tag == PageTag.Library) {
+				MyFrame.Navigate(typeof(SlideshowPage), null, CalculateTransition(currentTag, PageTag.Library));
 			} else if(tag == PageTag.Subscription) {
 				MyFrame.Navigate(typeof(SubscriptionPage), null, CalculateTransition(currentTag, PageTag.Subscription));
 			} else if(tag == PageTag.Download) {
@@ -209,7 +209,7 @@ namespace E621Downloader {
 		}
 	}
 	public enum PageTag {
-		Home, Picture, ShowSlider, Subscription, Download, Settings
+		Home, Picture, Library, Subscription, Download, Settings
 	}
 }
 

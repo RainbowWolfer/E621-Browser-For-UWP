@@ -139,7 +139,8 @@
     <Compile Include="Models\E621Tag.cs" />
     <Compile Include="Models\HTMLConvertor.cs" />
     <Compile Include="Models\ImageConvertor.cs" />
-    <Compile Include="Models\Local.cs" />
+    <Compile Include="Models\Locals\Local.cs" />
+    <Compile Include="Models\Locals\MetaFile.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Pages\DownloadSection\DownloadDetailsPage.xaml.cs">
       <DependentUpon>DownloadDetailsPage.xaml</DependentUpon>

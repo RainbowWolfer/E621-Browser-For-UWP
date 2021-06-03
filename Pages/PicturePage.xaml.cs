@@ -52,19 +52,23 @@ namespace E621Downloader.Pages {
 		}
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
-			if(e.Parameter == null) {
-				MyProgressRing.IsActive = false;
-				DebugButton.Visibility = Visibility.Collapsed;
-				CopyButton.Visibility = Visibility.Collapsed;
-				DownloadButton.Visibility = Visibility.Collapsed;
-				return;
-			}
-			if(PostRef == e.Parameter as Post) {
-				return;
-			}
-			PostRef = e.Parameter as Post;
-			if(PostRef == null) {
-				return;
+			if(PostRef == null && PostsBrowser.Instance.posts != null && PostsBrowser.Instance.posts.Count > 0) {
+				PostRef = PostsBrowser.Instance.posts[0];
+			} else {
+				if(e.Parameter == null) {
+					MyProgressRing.IsActive = false;
+					DebugButton.Visibility = Visibility.Collapsed;
+					CopyButton.Visibility = Visibility.Collapsed;
+					DownloadButton.Visibility = Visibility.Collapsed;
+					return;
+				}
+				if(PostRef == e.Parameter as Post) {
+					return;
+				}
+				PostRef = e.Parameter as Post;
+				if(PostRef == null) {
+					return;
+				}
 			}
 			DebugButton.Visibility = Visibility.Visible;
 			CopyButton.Visibility = Visibility.Visible;
@@ -219,16 +223,8 @@ namespace E621Downloader.Pages {
 			await dialog.ShowAsync();
 		}
 
-		private async void DownloadButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			Uri uri = new Uri(PostRef.file.url);
-			string filename = string.Format("{0}.{1}", PostRef.id, PostRef.file.ext);
-			StorageFile file = await Local.downloadFolder.CreateFileAsync(filename, CreationCollisionOption.GenerateUniqueName);
-
-			DownloadsManager.RegisterDownload(PostRef, uri, file);
-			//BackgroundDownloader downloader = new BackgroundDownloader();
-			//DownloadOperation operation = downloader.CreateDownload(uri, file);
-			//var result = await operation.StartAsync();
-			//handle
+		private void DownloadButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			DownloadsManager.RegisterDownload(PostRef);
 		}
 
 		private void CopyButton_Tapped(object sender, TappedRoutedEventArgs e) {

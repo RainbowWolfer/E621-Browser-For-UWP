@@ -14,7 +14,7 @@
 		<NavigationView.MenuItems>
 			<NavigationViewItem Icon="Home" Content="Home" Tag="0"/>
 			<NavigationViewItem Icon="Pictures" Content="Picture" Tag="1"/>
-			<NavigationViewItem Icon="SlideShow" Content="SlideShow" Tag="2"/>
+			<NavigationViewItem Icon="Library" Content="Library" Tag="2"/>
 			<NavigationViewItem Icon="Link" Content="Subcription" Tag="3"/>
 			<NavigationViewItem Icon="Download" Content="Download" Tag="4"/>
 		</NavigationView.MenuItems>

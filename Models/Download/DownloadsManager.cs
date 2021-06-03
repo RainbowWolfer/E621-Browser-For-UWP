@@ -32,12 +32,12 @@ namespace E621Downloader.Models.Download {
 			if(string.IsNullOrEmpty(post.file.url)) {
 				return;
 			}
-			string filename = string.Format("{0}.{1}", post.id, post.file.ext);
+			string filename = $"{post.id}.{post.file.ext}";
 			StorageFile file = await Local.downloadFolder.CreateFileAsync(filename, CreationCollisionOption.GenerateUniqueName);
 			RegisterDownload(post, new Uri(post.file.url), file, groupTitle);
 		}
 
-		public static DownloadInstance RegisterDownload(Post post, Uri uri, IStorageFile file, string groupTitle = DEFAULTTITLE) {
+		public static DownloadInstance RegisterDownload(Post post, Uri uri, StorageFile file, string groupTitle = DEFAULTTITLE) {
 			var instance = new DownloadInstance(post, downloader.CreateDownload(uri, file));
 			DownloadsGroup group = FindGroup(groupTitle);
 			if(group == null) {
@@ -49,9 +49,16 @@ namespace E621Downloader.Models.Download {
 				group.AddInstance(instance);
 			}
 			downloads.Add(instance);
+			Local.CreateMetaFile(file, post, groupTitle);
+			//DownloadInstanceLocalManager.SaveLocal();
 			//Local.WriteDownloadsInfo();
 			instance.StartDownload();
 			return instance;
+		}
+
+		public static DownloadInstance RestoreCompletedDownload(Post post) {
+			
+			return null;
 		}
 
 		public static DownloadsGroup FindGroup(string title) {

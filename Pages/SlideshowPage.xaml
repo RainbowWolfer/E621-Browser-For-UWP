@@ -9,6 +9,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Grid>
-		<TextBlock Text="This is Slide Show" FontSize="64"/>
+		<TextBlock Text="This is Slide Show" FontSize="64" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 	</Grid>
 </Page>

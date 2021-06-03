@@ -52,6 +52,8 @@ namespace E621Downloader.Models {
 		public static string ReadURL(string url) {
 			var request = (HttpWebRequest)WebRequest.Create(url);
 			request.UserAgent = USERAGENT;
+			request.Headers.Add("login", "rainbowwolfer");
+			request.Headers.Add("api_key", "WUwPNbGDrfXnQoHfvU1nR3TD");
 			HttpWebResponse response;
 			try {
 				response = (HttpWebResponse)request.GetResponse();
