@@ -9,12 +9,22 @@ using System.Threading.Tasks;
 namespace E621Downloader.Models.Locals {
 	public class MetaFile {
 		public string FilePath { get; set; }
+		public string Group { get; set; }
 		public bool FinishedDownloading { get; set; }
 		public SimplePost MyPost { get; set; }
-		public MetaFile(string filePath, Post post) {
+		public MetaFile(string filePath, string group, Post post) {
 			FilePath = filePath;
+			Group = group;
 			FinishedDownloading = false;
 			MyPost = new SimplePost(post);
+		}
+
+		[JsonConstructor]
+		public MetaFile(string filePath, string group, bool finishedDownloading, SimplePost myPost) {
+			FilePath = filePath;
+			Group = group;
+			FinishedDownloading = finishedDownloading;
+			MyPost = myPost;
 		}
 
 		public string ConvertJson() {

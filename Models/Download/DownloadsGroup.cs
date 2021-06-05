@@ -25,7 +25,6 @@ namespace E621Downloader.Models.Download {
 			this.downloads = new List<DownloadInstance>();
 			foreach(var item in downloads) {
 				this.downloads.Add(item);
-				item.GroupName = title;
 			}
 		}
 

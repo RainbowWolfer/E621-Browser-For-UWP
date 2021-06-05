@@ -35,7 +35,7 @@ namespace E621Downloader.Models.Locals {
 
 		private static string token;
 
-		public static StorageFolder downloadFolder;
+		public static StorageFolder DownloadFolder { get; private set; }
 
 		public async static void Initialize() {
 			Debug.WriteLine(LocalFolder.Path);
@@ -78,7 +78,7 @@ namespace E621Downloader.Models.Locals {
 				//set to download library
 				return;
 			}
-			downloadFolder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync(token);
+			DownloadFolder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync(token);
 		}
 
 		public async static void WriteFollowList(string[] list) {
@@ -125,29 +125,58 @@ namespace E621Downloader.Models.Locals {
 			return list.ToArray();
 		}
 
-		public async static void CreateMetaFile(StorageFile file, Post post, string groupName) {
+		public static MetaFile CreateMetaFile(StorageFile file, Post post, string groupName) {
+			MetaFile meta = new MetaFile(file.Path, groupName, post);
+			WriteMetaFile(meta, file, post);
+			return meta;
+		}
+		private async static void WriteMetaFile(MetaFile meta, StorageFile file, Post post) {
 			StorageFolder folder = await file.GetParentAsync();
 			StorageFile target = await folder.CreateFileAsync($"{post.id}.meta", CreationCollisionOption.ReplaceExisting);
-
-			MetaFile meta = new MetaFile(file.Path, post);
-
 			await FileIO.WriteTextAsync(target, meta.ConvertJson());
 		}
+		public async static void WriteMetaFile(MetaFile meta, Post post, string groupName) {
+			(MetaFile, StorageFile) file = await GetMetaFile(post.id.ToString(), groupName);
+			WriteMetaFile(meta, file.Item2, post);
+		}
 
-		public async static Task<MetaFile> GetMetaFile(string postID, string groupName) {
-			StorageFolder folder = await downloadFolder.GetFolderAsync(groupName);
+		public async static Task<(MetaFile, StorageFile)> GetMetaFile(string postID, string groupName) {
+			StorageFolder folder = await DownloadFolder.GetFolderAsync(groupName);
 			StorageFile file = await folder.GetFileAsync($"{postID}.meta");
 			using(Stream stream = await file.OpenStreamForReadAsync()) {
 				using(StreamReader reader = new StreamReader(stream)) {
-					return JsonConvert.DeserializeObject(reader.ReadToEnd()) as MetaFile;
+					return (JsonConvert.DeserializeObject(reader.ReadToEnd()) as MetaFile, file);
 				}
 			}
+		}
+
+		public async static Task<List<MetaFile>> GetAllMetaFiles() {
+			var metas = new List<MetaFile>();
+			foreach(StorageFolder folder in await DownloadFolder.GetFoldersAsync()) {
+				foreach(StorageFile file in await folder.GetFilesAsync()) {
+					if(file.FileType != ".meta") {
+						continue;
+					}
+					using(Stream stream = await file.OpenStreamForReadAsync()) {
+						using(StreamReader reader = new StreamReader(stream)) {
+							string content = reader.ReadToEnd();
+							metas.Add(JsonConvert.DeserializeObject<MetaFile>(content));
+						}
+					}
+				}
+			};
+			return metas;
+		}
+
+
+		public async static void UpdateMetaFile(StorageFile file, MetaFile meta) {
+			await FileIO.WriteTextAsync(file, meta.ConvertJson());
 		}
 
 		public async static Task<List<MetaFile>> FindAllMetaFiles() {
 			var result = new List<MetaFile>();
 
-			foreach(StorageFolder folder in await downloadFolder.GetFoldersAsync()) {
+			foreach(StorageFolder folder in await DownloadFolder.GetFoldersAsync()) {
 				foreach(StorageFile item in await folder.GetFilesAsync()) {
 					using(Stream stream = await item.OpenStreamForReadAsync()) {
 						using(StreamReader reader = new StreamReader(stream)) {

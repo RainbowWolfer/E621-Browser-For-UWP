@@ -33,7 +33,7 @@ namespace E621Downloader.Pages {
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
-			DownloadPathTextBlock.Text = Local.downloadFolder == null ? "No Download Path Selected" : Local.downloadFolder.Path;
+			DownloadPathTextBlock.Text = Local.DownloadFolder == null ? "No Download Path Selected" : Local.DownloadFolder.Path;
 		}
 
 		private async void BlackListButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -70,10 +70,10 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void DownloadPathButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(Local.downloadFolder == null) {
+			if(Local.DownloadFolder == null) {
 				Debug.WriteLine("no download path");
 			} else {
-				Debug.WriteLine(Local.downloadFolder.Path);
+				Debug.WriteLine(Local.DownloadFolder.Path);
 			}
 			FolderPicker pick = new FolderPicker() { FileTypeFilter = { "*" } };
 			StorageFolder result = await pick.PickSingleFolderAsync();
@@ -81,7 +81,7 @@ namespace E621Downloader.Pages {
 				string token = StorageApplicationPermissions.FutureAccessList.Add(result);
 				Debug.WriteLine(token);
 				await Local.WriteToken(token);
-				DownloadPathTextBlock.Text = Local.downloadFolder.Path;
+				DownloadPathTextBlock.Text = Local.DownloadFolder.Path;
 			}
 		}
 

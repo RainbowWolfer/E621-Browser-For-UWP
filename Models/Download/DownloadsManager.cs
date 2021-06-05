@@ -35,13 +35,13 @@ namespace E621Downloader.Models.Download {
 				return;
 			}
 			string filename = $"{post.id}.{post.file.ext}";
-			StorageFolder folder = await Local.downloadFolder.CreateFolderAsync(groupTitle, CreationCollisionOption.OpenIfExists);
+			StorageFolder folder = await Local.DownloadFolder.CreateFolderAsync(groupTitle, CreationCollisionOption.OpenIfExists);
 			StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.GenerateUniqueName);
 			RegisterDownload(post, new Uri(post.file.url), file, groupTitle);
 		}
 
 		public static DownloadInstance RegisterDownload(Post post, Uri uri, StorageFile file, string groupTitle = DEFAULTTITLE) {
-			var instance = new DownloadInstance(post, downloader.CreateDownload(uri, file));
+			var instance = new DownloadInstance(post, groupTitle, downloader.CreateDownload(uri, file));
 			DownloadsGroup group = FindGroup(groupTitle);
 			if(group == null) {
 				groups.Add(new DownloadsGroup(groupTitle, instance));
@@ -52,7 +52,8 @@ namespace E621Downloader.Models.Download {
 				group.AddInstance(instance);
 			}
 			downloads.Add(instance);
-			Local.CreateMetaFile(file, post, groupTitle);
+			MetaFile meta = Local.CreateMetaFile(file, post, groupTitle);
+			instance.metaFile = meta;
 			//DownloadInstanceLocalManager.SaveLocal();
 			//Local.WriteDownloadsInfo();
 			instance.StartDownload();

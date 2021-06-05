@@ -36,6 +36,17 @@ namespace E621Downloader {
 			this.Suspending += OnSuspending;
 
 			Local.Initialize();
+
+			Test();
+		}
+
+		private async void Test() {
+			while(Local.DownloadFolder == null) {
+				await Task.Delay(10);
+			}
+			Debug.WriteLine($"{DateTime.Now.Second}.{DateTime.Now.Millisecond}");
+			List<MetaFile> metas = await Local.GetAllMetaFiles();
+			Debug.WriteLine($"{DateTime.Now.Second}.{DateTime.Now.Millisecond}");
 		}
 
 		//private async void LoadImage() {

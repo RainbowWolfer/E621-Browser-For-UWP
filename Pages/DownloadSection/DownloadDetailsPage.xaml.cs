@@ -91,7 +91,7 @@ namespace E621Downloader.Pages.DownloadSection {
 		}
 
 		private async void OpenFolderButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			await Launcher.LaunchFolderAsync(await Local.downloadFolder.GetFolderAsync(group.Title), new FolderLauncherOptions() {
+			await Launcher.LaunchFolderAsync(await Local.DownloadFolder.GetFolderAsync(group.Title), new FolderLauncherOptions() {
 				DesiredRemainingView = ViewSizePreference.UseMore
 			});
 		}

@@ -30,8 +30,9 @@ namespace E621Downloader.Models.Download {
 
 		public Action<double> DownloadingAction { get; set; }
 
-		public DownloadInstance(Post post, DownloadOperation operation) {
+		public DownloadInstance(Post post, string groupName, DownloadOperation operation) {
 			PostRef = post;
+			GroupName = groupName;
 			Operation = operation;
 		}
 
@@ -47,6 +48,7 @@ namespace E621Downloader.Models.Download {
 				DownloadingAction?.Invoke(DownloadProgress);
 				if(DownloadProgress == 1 || Status == BackgroundTransferStatus.Completed) {
 					metaFile.FinishedDownloading = true;
+					Local.WriteMetaFile(metaFile, PostRef, GroupName);
 				}
 			}));
 		}
