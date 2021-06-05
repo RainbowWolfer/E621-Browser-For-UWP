@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using E621Downloader.Models.Locals;
+using E621Downloader.Models.Posts;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;

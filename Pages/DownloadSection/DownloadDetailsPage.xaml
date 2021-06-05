@@ -21,8 +21,8 @@
 				<RadioButton Content="Downloaded" Margin="10,0,10,0" Tag="2" Checked="RadioButton_Checked"/>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-				<TextBlock Text="Downloads 20/400" FontSize="20" VerticalAlignment="Center" Margin="5,0,5,0"/>
-				<Button Margin="10,0,10,0" VerticalAlignment="Center">
+				<TextBlock x:Name="DownloadsInfoBlock" Text="Downloads 20/400" FontSize="20" VerticalAlignment="Center" Margin="5,0,5,0"/>
+				<Button x:Name="OpenFolderButton" Margin="10,0,10,0" VerticalAlignment="Center" Tapped="OpenFolderButton_Tapped">
 					<Button.Content>
 						<StackPanel Orientation="Horizontal">
 							<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC51;" Margin="1" FontSize="14"/>

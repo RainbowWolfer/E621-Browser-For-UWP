@@ -1,5 +1,7 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
+using E621Downloader.Models.Locals;
+using E621Downloader.Models.Posts;
 using E621Downloader.Views;
 using System;
 using System.Collections.Generic;
@@ -52,7 +54,7 @@ namespace E621Downloader.Pages {
 		}
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
-			if(PostRef == null && PostsBrowser.Instance.posts != null && PostsBrowser.Instance.posts.Count > 0) {
+			if(PostRef == null && e.Parameter as Post == null && PostsBrowser.Instance.posts != null && PostsBrowser.Instance.posts.Count > 0) {
 				PostRef = PostsBrowser.Instance.posts[0];
 			} else {
 				if(e.Parameter == null) {

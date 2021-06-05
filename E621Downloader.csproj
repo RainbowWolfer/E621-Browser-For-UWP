@@ -130,7 +130,7 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Data.cs" />
+    <Compile Include="Models\Networks\Data.cs" />
     <Compile Include="Models\Download\DownloadInstance.cs" />
     <Compile Include="Models\Download\DownloadInstanceLocalManager.cs" />
     <Compile Include="Models\Download\DownloadsGroup.cs" />
@@ -141,7 +141,8 @@
     <Compile Include="Models\ImageConvertor.cs" />
     <Compile Include="Models\Locals\Local.cs" />
     <Compile Include="Models\Locals\MetaFile.cs" />
-    <Compile Include="Models\Post.cs" />
+    <Compile Include="Models\Posts\Post.cs" />
+    <Compile Include="Models\Posts\SimplePost.cs" />
     <Compile Include="Pages\DownloadSection\DownloadDetailsPage.xaml.cs">
       <DependentUpon>DownloadDetailsPage.xaml</DependentUpon>
     </Compile>

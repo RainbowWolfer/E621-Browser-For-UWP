@@ -1,4 +1,6 @@
-﻿using E621Downloader.Models.Download;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Download;
+using E621Downloader.Models.Locals;
 using E621Downloader.Views.DownloadSection;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Networking.BackgroundTransfer;
+using Windows.System;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -19,6 +23,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages.DownloadSection {
 	public sealed partial class DownloadDetailsPage: Page {
+		public DownloadsGroup group;
 		public List<DownloadInstance> list;
 		public DownloadDetailsPage() {
 			this.InitializeComponent();
@@ -30,7 +35,8 @@ namespace E621Downloader.Pages.DownloadSection {
 			if(e.Parameter == null) {
 				return;
 			}
-			list = e.Parameter as List<DownloadInstance>;
+			group = e.Parameter as DownloadsGroup;
+			list = group.downloads;
 			Refresh();
 		}
 		public void Refresh(Predicate<DownloadInstance> p = null) {
@@ -40,6 +46,7 @@ namespace E621Downloader.Pages.DownloadSection {
 					MyListView.Items.Add(new DownloadProgressBar(this, item));
 				}
 			}
+			UpdateDownloadsInfo();
 		}
 
 		private MyTag currentTag = MyTag.All;
@@ -78,6 +85,17 @@ namespace E621Downloader.Pages.DownloadSection {
 				MyListView.Items.Add(new DownloadProgressBar(this, instance));
 			}
 		}
+
+		public void UpdateDownloadsInfo() {
+			DownloadsInfoBlock.Text = $"Downloads {list.Count(d => d.Status == BackgroundTransferStatus.Completed)}/{list.Count}";
+		}
+
+		private async void OpenFolderButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			await Launcher.LaunchFolderAsync(await Local.downloadFolder.GetFolderAsync(group.Title), new FolderLauncherOptions() {
+				DesiredRemainingView = ViewSizePreference.UseMore
+			});
+		}
+
 		private enum MyTag {
 			All = 0, Downloading = 1, Downloaded = 2,
 		}

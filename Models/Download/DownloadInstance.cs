@@ -1,4 +1,6 @@
-﻿using System;
+﻿using E621Downloader.Models.Locals;
+using E621Downloader.Models.Posts;
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +11,8 @@ namespace E621Downloader.Models.Download {
 	public class DownloadInstance {
 		public Post PostRef { get; private set; }
 		public string GroupName { get; set; }
+
+		public MetaFile metaFile;
 
 		public DownloadOperation Operation { get; private set; }
 
@@ -41,6 +45,9 @@ namespace E621Downloader.Models.Download {
 					DownloadProgress = received / (double)total;
 				}
 				DownloadingAction?.Invoke(DownloadProgress);
+				if(DownloadProgress == 1 || Status == BackgroundTransferStatus.Completed) {
+					metaFile.FinishedDownloading = true;
+				}
 			}));
 		}
 

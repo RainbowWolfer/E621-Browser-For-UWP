@@ -1,4 +1,6 @@
-﻿using System;
+﻿using E621Downloader.Models.Locals;
+using E621Downloader.Models.Posts;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -33,7 +35,8 @@ namespace E621Downloader.Models.Download {
 				return;
 			}
 			string filename = $"{post.id}.{post.file.ext}";
-			StorageFile file = await Local.downloadFolder.CreateFileAsync(filename, CreationCollisionOption.GenerateUniqueName);
+			StorageFolder folder = await Local.downloadFolder.CreateFolderAsync(groupTitle, CreationCollisionOption.OpenIfExists);
+			StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.GenerateUniqueName);
 			RegisterDownload(post, new Uri(post.file.url), file, groupTitle);
 		}
 
@@ -57,7 +60,7 @@ namespace E621Downloader.Models.Download {
 		}
 
 		public static DownloadInstance RestoreCompletedDownload(Post post) {
-			
+
 			return null;
 		}
 

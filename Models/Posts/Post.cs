@@ -1,17 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using E621Downloader.Models.Networks;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace E621Downloader.Models {
+namespace E621Downloader.Models.Posts {
 	public class Post {
 		public static List<Post> GetPostsByTags(int page, params string[] tags) {
 			if(page <= 0) {
 				throw new Exception("Page not valid");
 			}
-			string url = string.Format("https://e621.net/posts.json?page={0}&tags=", page);
+			string url = $"https://e621.net/posts.json?page={page}&tags=";
 			tags.ToList().ForEach((t) => url += t + "+");
 
 			string data = Data.ReadURL(url);

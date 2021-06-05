@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using System;
 using System.Collections.Generic;

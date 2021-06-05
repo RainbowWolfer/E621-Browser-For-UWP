@@ -45,7 +45,7 @@ namespace E621Downloader.Pages.DownloadSection {
 
 		private void MainGridView_ItemClick(object sender, ItemClickEventArgs e) {
 			DownloadBlock block = e.ClickedItem as DownloadBlock;
-			DownloadPage.Instance.NavigateTo(typeof(DownloadDetailsPage), block.Group.downloads);
+			DownloadPage.Instance.NavigateTo(typeof(DownloadDetailsPage), block.Group);
 			DownloadPage.Instance.EnableTitleButton(true);
 			DownloadPage.Instance.SelectTitle(block.Group.Title);
 

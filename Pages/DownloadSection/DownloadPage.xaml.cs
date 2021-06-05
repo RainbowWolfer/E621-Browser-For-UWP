@@ -109,7 +109,7 @@ namespace E621Downloader.Pages.DownloadSection {
 			EnableTitleButton(true);
 			DownloadsGroup group = DownloadsManager.FindGroup((args.InvokedItemContainer.Content as StackPanel).Tag as string);
 			if(group != null) {
-				MainFrame.Navigate(typeof(DownloadDetailsPage), group.downloads, new EntranceNavigationTransitionInfo());
+				MainFrame.Navigate(typeof(DownloadDetailsPage), group, new EntranceNavigationTransitionInfo());
 			}
 		}
 

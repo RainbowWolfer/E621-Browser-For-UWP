@@ -12,8 +12,9 @@ using Windows.UI.Popups;
 using Newtonsoft.Json;
 using E621Downloader.Models.Download;
 using E621Downloader.Models.Locals;
+using E621Downloader.Models.Posts;
 
-namespace E621Downloader.Models {
+namespace E621Downloader.Models.Locals {
 	public static class Local {
 		private static bool initialized = false;
 		private const string FOLLOWLISTNAME = "FollowList.txt";
@@ -128,7 +129,7 @@ namespace E621Downloader.Models {
 			StorageFolder folder = await file.GetParentAsync();
 			StorageFile target = await folder.CreateFileAsync($"{post.id}.meta", CreationCollisionOption.ReplaceExisting);
 
-			MetaFile meta = new MetaFile(file.Path, post.file.ext, post.id.ToString(), groupName, post.tags.GetAllTags().ToArray());
+			MetaFile meta = new MetaFile(file.Path, post);
 
 			await FileIO.WriteTextAsync(target, meta.ConvertJson());
 		}

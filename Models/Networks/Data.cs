@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 
-namespace E621Downloader.Models {
+namespace E621Downloader.Models.Networks {
 	public static class Data {
 		public const string USERAGENT = "RainbowWolferE621TestApp";
 		/*

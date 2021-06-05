@@ -36,6 +36,7 @@ namespace E621Downloader.Views.DownloadSection {
 					//Debugger.Break();
 					Debug.WriteLine("Downloaded" + p);
 					PageParent.MoveToDownloaded(instance);
+					PageParent.UpdateDownloadsInfo();
 				}
 			};
 			Debug.WriteLine(Instance.Status);

@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Locals;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

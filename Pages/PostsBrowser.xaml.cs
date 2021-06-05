@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
+using E621Downloader.Models.Posts;
 using E621Downloader.Views;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Locals;
 using E621Downloader.Views;
 using System;
 using System.Collections.Generic;
