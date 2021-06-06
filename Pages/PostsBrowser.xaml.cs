@@ -46,8 +46,9 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void Initialize() {
-			string[] tags = { "rating:s", "wallpaper", "order:score" };
+			//string[] tags = { "rating:s", "wallpaper", "order:score" };
 			//string[] tags = { "type:webm", "order:score" };
+			string[] tags = { "type:webm"};
 			//posts = Post.GetPostsByTags(currentPage, tags);
 			//LoadPosts(posts, tags);
 			await LoadAsync(1, tags);
@@ -92,7 +93,7 @@ namespace E621Downloader.Pages {
 			this.posts = temp;
 			LoadPosts(this.posts, tags);
 			MainPage.HideInstantDialog();
-			CurrentPageTextBlock.Text = "Current Page : " + page;
+			CurrentPageTextBlock.Text = $"Current Page : {page}";
 		}
 		public async Task Reload() {
 			MainPage.CreateInstantDialog("Please Wait", "Reloading...");
@@ -233,9 +234,13 @@ namespace E621Downloader.Pages {
 					break;
 				case ContentDialogResult.Secondary:
 					//get currentpage posts
+					MainPage.CreateInstantDialog("Please Wait","Handling Downloads");
+					await Task.Delay(50);
 					foreach(Post item in posts) {
 						DownloadsManager.RegisterDownload(item, tags);
+						await Task.Delay(5);
 					}
+					MainPage.HideInstantDialog();
 					break;
 				default:
 					throw new Exception();

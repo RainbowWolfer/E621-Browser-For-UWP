@@ -1,8 +1,10 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Download;
+using E621Downloader.Models.Locals;
 using E621Downloader.Pages;
 using E621Downloader.Pages.DownloadSection;
+using E621Downloader.Pages.LibrarySection;
 using E621Downloader.Views;
-//using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -53,22 +55,24 @@ namespace E621Downloader {
 		}
 		public PageTag currentTag;
 
-		//private 
-
-		//public const string HOME = "Home";
-		//public const string PICTURE = "Picture";
-		//public const string SLIDESHOW = "SlideShow";
-		//public const string SETTINGS = "Settings";
-
 		public object parameter_picture;
 
-		//public string currentPage;
 
 		public MainPage() {
 			Instance = this;
 			this.InitializeComponent();
 			currentTag = PageTag.Settings;
-			//MyFrame.Navigate(typeof(PostsBrowser), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+		}
+
+		protected async override void OnNavigatedTo(NavigationEventArgs e) {
+			base.OnNavigatedTo(e);
+			CreateInstantDialog("Please Wait", "Initializing Local Program");
+			while(Local.DownloadFolder == null) {
+				await Task.Delay(10);
+			}
+			await DownloadsManager.RestoreIncompletedDownloas();
+			HideInstantDialog();
+			(MyNavigationView.MenuItems[0] as NavigationViewItem).IsSelected = true;
 		}
 
 		public static void ChangeCurrenttTags(params string[] strs) {
@@ -129,17 +133,16 @@ namespace E621Downloader {
 			return dialog;
 		}
 
-		private async void Page_Loaded(object sender, RoutedEventArgs e) {
-			string result = await ReadFromTestFile();
+		private void Page_Loaded(object sender, RoutedEventArgs e) {
+			//string result = await ReadFromTestFile();
 			//LoadPosts(Data.GetPostsByTags(1, ""));
-			(MyNavigationView.MenuItems[0] as NavigationViewItem).IsSelected = true;
 		}
 
-		private async Task<string> ReadFromTestFile() {
-			StorageFolder InstallationFolder = Package.Current.InstalledLocation;
-			StorageFile file = await InstallationFolder.GetFileAsync(@"Assets\TestText_Copy.txt");
-			return File.ReadAllText(file.Path);
-		}
+		//private async Task<string> ReadFromTestFile() {
+		//	StorageFolder InstallationFolder = Package.Current.InstalledLocation;
+		//	StorageFile file = await InstallationFolder.GetFileAsync(@"Assets\TestText_Copy.txt");
+		//	return File.ReadAllText(file.Path);
+		//}
 		private async void SearchButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			var dialog = new ContentDialog() {
 				Title = "Search Section",
@@ -193,7 +196,7 @@ namespace E621Downloader {
 			} else if(tag == PageTag.Picture) {
 				MyFrame.Navigate(typeof(PicturePage), parameter_picture, CalculateTransition(currentTag, PageTag.Picture));
 			} else if(tag == PageTag.Library) {
-				MyFrame.Navigate(typeof(SlideshowPage), null, CalculateTransition(currentTag, PageTag.Library));
+				MyFrame.Navigate(typeof(LibraryPage), null, CalculateTransition(currentTag, PageTag.Library));
 			} else if(tag == PageTag.Subscription) {
 				MyFrame.Navigate(typeof(SubscriptionPage), null, CalculateTransition(currentTag, PageTag.Subscription));
 			} else if(tag == PageTag.Download) {

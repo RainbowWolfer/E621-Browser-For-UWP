@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
+using E621Downloader.Pages.DownloadSection;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -51,6 +52,9 @@ namespace E621Downloader.Models.Download {
 					Local.WriteMetaFile(metaFile, PostRef, GroupName);
 				}
 			}));
+			//if(MainPage.Instance.currentTag == PageTag.Download && DownloadPage.Instance != null) {
+			//	DownloadPage.Instance.RefreshCurrentContent();
+			//}
 		}
 
 		public void Pause() {

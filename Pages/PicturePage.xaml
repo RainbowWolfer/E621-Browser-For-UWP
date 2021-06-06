@@ -34,6 +34,7 @@
 			<StackPanel Orientation="Horizontal" Margin="5">
 				<Button x:Name="DownloadButton" Content="Download" FontSize="18" Margin="5" Tapped="DownloadButton_Tapped"/>
 				<Button x:Name="CopyButton" Content="Copy" FontSize="18" Margin="5" Tapped="CopyButton_Tapped"/>
+				<Button x:Name="BrowserButton" Content="Open In Default Browser" FontSize="18" Margin="5" Tapped="BrowserButton_Tapped"/>
 			</StackPanel>
 		</StackPanel>
 

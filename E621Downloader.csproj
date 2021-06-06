@@ -152,6 +152,9 @@
     <Compile Include="Pages\DownloadSection\DownloadOverview.xaml.cs">
       <DependentUpon>DownloadOverview.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\LibrarySection\Explorer.xaml.cs">
+      <DependentUpon>Explorer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\PicturePage.xaml.cs">
       <DependentUpon>PicturePage.xaml</DependentUpon>
     </Compile>
@@ -179,8 +182,8 @@
     <Compile Include="Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SlideshowPage.xaml.cs">
-      <DependentUpon>SlideshowPage.xaml</DependentUpon>
+    <Compile Include="Pages\LibrarySection\LibraryPage.xaml.cs">
+      <DependentUpon>LibraryPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\ImageHolder.xaml.cs">
@@ -228,6 +231,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\LibrarySection\Explorer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\PicturePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -264,7 +271,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\SlideshowPage.xaml">
+    <Page Include="Pages\LibrarySection\LibraryPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

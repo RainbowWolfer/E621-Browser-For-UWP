@@ -1,0 +1,73 @@
+﻿<Page
+    x:Class="E621Downloader.Pages.LibrarySection.LibraryPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<SplitView x:Name="MySplitView" DisplayMode="CompactInline" PanePlacement="Left" CompactPaneLength="40" OpenPaneLength="400">
+		<SplitView.Pane>
+			<Grid>
+				<Button x:Name="HamburgerButton" Tapped="HamburgerButton_Tapped" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" VerticalAlignment="Top" Margin="0" Background="Transparent" BorderThickness="0" Width="40" Height="40" FontSize="20"/>
+				<TextBlock VerticalAlignment="Top" Text="Your Opened Tabs" FontSize="18" Margin="50,8,0,0"/>
+				<ListView Margin="0,50,0,0" SelectionMode="None" IsItemClickEnabled="True" ItemClick="ListView_ItemClick" ItemsSource="{x:Bind tabs}">
+					<ListView.ItemContainerStyle>
+						<Style TargetType="ListViewItem">
+							<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+							<Setter Property="VerticalContentAlignment" Value="Stretch"/>
+							<Setter Property="Margin" Value="-10,2,-10,2"/>
+						</Style>
+					</ListView.ItemContainerStyle>
+					<ListView.ItemTemplate>
+						<DataTemplate x:DataType="x:String">
+							<Grid Margin="-2,0,0,0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="40"/>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="40"/>
+								</Grid.ColumnDefinitions>
+								<SymbolIcon Symbol="Emoji2"/>
+								<TextBlock Grid.Column="1" Text="Hello World" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="18"/>
+								<Button Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderThickness="0" FontFamily="Segoe MDL2 Assets" Content="&#xE10A;"/>
+							</Grid>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+					<ListViewItem>
+						<Grid Margin="-2,0,0,0">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="40"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<SymbolIcon Symbol="Home"/>
+							<TextBlock Grid.Column="1" Text="Root" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="18"/>
+						</Grid>
+					</ListViewItem>
+				</ListView>
+			</Grid>
+		</SplitView.Pane>
+		<SplitView.Content>
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<RelativePanel Height="40">
+					<TextBlock Text="Hello World" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Margin="10,0,0,0"/>
+					<AutoSuggestBox RelativePanel.AlignRightWithPanel="True" MinWidth="300" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,0,10,0" QueryIcon="Find"/>
+				</RelativePanel>
+				<Rectangle Grid.Row="1" HorizontalAlignment="Stretch" Height="2" Fill="DarkGray" Margin="10,0,10,5"/>
+				<Frame Grid.Row="2" x:Name="MainFrame">
+					<Frame.ContentTransitions>
+						<TransitionCollection>
+							<NavigationThemeTransition/>
+						</TransitionCollection>
+					</Frame.ContentTransitions>
+				</Frame>
+			</Grid>
+		</SplitView.Content>
+	</SplitView>
+</Page>

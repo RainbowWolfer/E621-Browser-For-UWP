@@ -32,8 +32,7 @@ namespace E621Downloader.Views.DownloadSection {
 
 			Instance.DownloadingAction = (p) => {
 				UpdateInfo();
-				if(p >= 1) {
-					//Debugger.Break();
+				if(p >= 1 || instance.Status == BackgroundTransferStatus.Completed) {
 					Debug.WriteLine("Downloaded" + p);
 					PageParent.MoveToDownloaded(instance);
 					PageParent.UpdateDownloadsInfo();

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
+	[Obsolete("Use Post Instead", true)]
 	public class SimplePost {
 		public int id;
 		public DateTime? created_at;

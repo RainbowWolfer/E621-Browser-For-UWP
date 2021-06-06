@@ -16,6 +16,7 @@ using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
+using Windows.System;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -231,6 +232,10 @@ namespace E621Downloader.Pages {
 
 		private void CopyButton_Tapped(object sender, TappedRoutedEventArgs e) {
 
+		}
+
+		private async void BrowserButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			bool success = await Launcher.LaunchUriAsync(new Uri($"https://e621.net/posts/{PostRef.id}"));
 		}
 	}
 	public class GroupTagList: List<string> {

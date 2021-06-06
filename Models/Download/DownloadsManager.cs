@@ -34,13 +34,14 @@ namespace E621Downloader.Models.Download {
 			if(string.IsNullOrEmpty(post.file.url)) {
 				return;
 			}
+			groupTitle = groupTitle.Replace(":", ";");
 			string filename = $"{post.id}.{post.file.ext}";
 			StorageFolder folder = await Local.DownloadFolder.CreateFolderAsync(groupTitle, CreationCollisionOption.OpenIfExists);
-			StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.GenerateUniqueName);
+			StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 			RegisterDownload(post, new Uri(post.file.url), file, groupTitle);
 		}
 
-		public static DownloadInstance RegisterDownload(Post post, Uri uri, StorageFile file, string groupTitle = DEFAULTTITLE) {
+		private static DownloadInstance RegisterDownload(Post post, Uri uri, StorageFile file, string groupTitle = DEFAULTTITLE) {
 			var instance = new DownloadInstance(post, groupTitle, downloader.CreateDownload(uri, file));
 			DownloadsGroup group = FindGroup(groupTitle);
 			if(group == null) {
@@ -54,8 +55,6 @@ namespace E621Downloader.Models.Download {
 			downloads.Add(instance);
 			MetaFile meta = Local.CreateMetaFile(file, post, groupTitle);
 			instance.metaFile = meta;
-			//DownloadInstanceLocalManager.SaveLocal();
-			//Local.WriteDownloadsInfo();
 			instance.StartDownload();
 			return instance;
 		}
@@ -63,6 +62,17 @@ namespace E621Downloader.Models.Download {
 		public static DownloadInstance RestoreCompletedDownload(Post post) {
 
 			return null;
+		}
+
+		public static async Task RestoreIncompletedDownloas() {
+			foreach(MetaFile meta in await Local.GetAllMetaFiles()) {
+				if(meta.FinishedDownloading) {
+					continue;
+				}
+				Post post = meta.MyPost;
+				string groupName = meta.Group;
+				RegisterDownload(post, groupName);
+			}
 		}
 
 		public static DownloadsGroup FindGroup(string title) {

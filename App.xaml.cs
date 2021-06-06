@@ -12,6 +12,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Networking.BackgroundTransfer;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -41,29 +42,11 @@ namespace E621Downloader {
 		}
 
 		private async void Test() {
-			while(Local.DownloadFolder == null) {
-				await Task.Delay(10);
-			}
-			Debug.WriteLine($"{DateTime.Now.Second}.{DateTime.Now.Millisecond}");
-			List<MetaFile> metas = await Local.GetAllMetaFiles();
-			Debug.WriteLine($"{DateTime.Now.Second}.{DateTime.Now.Millisecond}");
+			//while(Local.DownloadFolder == null) {
+			//	await Task.Delay(10);
+			//}
+			//List<MetaFile> metas = await Local.GetAllMetaFiles();
 		}
-
-		//private async void LoadImage() {
-		//	string url = "https://3er1viui9wo30pkxh1v2nh4w-wpengine.netdna-ssl.com/wp-content/uploads/prod/2014/08/BillGatesHeadshot-BOD.jpg";
-
-		//	var rass = RandomAccessStreamReference.CreateFromUri(new Uri(url));
-		//	using(IRandomAccessStream stream = await rass.OpenReadAsync()) {
-		//		var bitmapImage = new BitmapImage();
-		//		bitmapImage.SetSource(stream);
-		//		//ImageStudent.Source = bitmapImage;
-		//	}
-		//}
-		//public void RegisterDonwload(Task task) {
-		//	task.Wait();
-		//	downloadsQueue.Add(task);
-		//	//downloadsQueue[0].IsCompleted
-		//}
 
 		public static bool CompareTwoArray<T>(IEnumerable<T> a, IEnumerable<T> b) {
 			T[] ar = a.ToArray();

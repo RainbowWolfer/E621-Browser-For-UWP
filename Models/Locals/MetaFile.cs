@@ -11,16 +11,16 @@ namespace E621Downloader.Models.Locals {
 		public string FilePath { get; set; }
 		public string Group { get; set; }
 		public bool FinishedDownloading { get; set; }
-		public SimplePost MyPost { get; set; }
+		public Post MyPost { get; set; }
 		public MetaFile(string filePath, string group, Post post) {
 			FilePath = filePath;
 			Group = group;
 			FinishedDownloading = false;
-			MyPost = new SimplePost(post);
+			MyPost = post;
 		}
 
 		[JsonConstructor]
-		public MetaFile(string filePath, string group, bool finishedDownloading, SimplePost myPost) {
+		public MetaFile(string filePath, string group, bool finishedDownloading, Post myPost) {
 			FilePath = filePath;
 			Group = group;
 			FinishedDownloading = finishedDownloading;

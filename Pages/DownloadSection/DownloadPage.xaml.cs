@@ -35,6 +35,10 @@ namespace E621Downloader.Pages.DownloadSection {
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
+			RefreshCurrentContent();
+		}
+
+		public void RefreshCurrentContent() {
 			if(MainFrame.Content is DownloadOverview overview) {
 				overview.Refresh();
 			} else if(MainFrame.Content is DownloadDetailsPage details) {
