@@ -13,6 +13,9 @@ using Newtonsoft.Json;
 using E621Downloader.Models.Download;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.Storage.Streams;
 
 namespace E621Downloader.Models.Locals {
 	public static class Local {
@@ -138,6 +141,81 @@ namespace E621Downloader.Models.Locals {
 		public async static void WriteMetaFile(MetaFile meta, Post post, string groupName) {
 			(MetaFile, StorageFile) file = await GetMetaFile(post.id.ToString(), groupName);
 			WriteMetaFile(meta, file.Item2, post);
+		}
+
+		public async static Task<StorageFolder[]> GetDownloadsFolders() {
+			return (await DownloadFolder.GetFoldersAsync()).ToArray();
+		}
+		public async static Task<List<(MetaFile, ImageSource)>> GetAllMetaFiles(string folderName) {
+			StorageFolder folder = await DownloadFolder.GetFolderAsync(folderName);
+			if(folder == null) {
+				return null;
+			}
+			var pairs = new List<Pair>();
+
+			foreach(StorageFile file in await folder.GetFilesAsync()) {
+				await file.GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.PicturesView);
+				if(file.FileType == ".meta") {
+					using(Stream stream = await file.OpenStreamForReadAsync()) {
+						using(StreamReader reader = new StreamReader(stream)) {
+							MetaFile t = JsonConvert.DeserializeObject<MetaFile>(reader.ReadToEnd());
+							Pair.Add(pairs, t);
+						}
+					}
+				} else {//all other images and videos
+					await Pair.Add(pairs, file);
+				}
+			}
+			var re = Pair.Convert(pairs, p => p.IsValid);
+			return re;
+		}
+		private class Pair {
+			public MetaFile meta;
+			public ImageSource source;
+			public string sourceID;
+
+			public bool IsValid => meta != null /*&& source != null */&& sourceID != null;
+
+			public static void Add(List<Pair> list, MetaFile meta) {
+				foreach(var item in list) {
+					if(item.sourceID == meta.MyPost.id.ToString()) {
+						item.meta = meta;
+						return;
+					}
+				}
+				list.Add(new Pair() { meta = meta });
+			}
+			public async static Task Add(List<Pair> list, StorageFile file) {
+				BitmapImage result = null;
+				if(new string[] { ".jpg", ".png", }.Contains(file.FileType)) {
+					//using(IRandomAccessStream randomAccessStream = await file.OpenAsync(FileAccessMode.Read)) {
+					//	result = new BitmapImage();
+					//	await result.SetSourceAsync(randomAccessStream);
+					//}
+				}
+				foreach(var item in list) {
+					if(item.meta != null && item.meta.MyPost.id.ToString() == file.DisplayName) {
+						item.sourceID = item.meta.MyPost.id.ToString();
+						item.source = result;
+						return;
+					}
+				}
+				list.Add(new Pair() { sourceID = file.DisplayName, source = result });
+			}
+
+			public static (MetaFile, ImageSource) Convert(Pair pair) {
+				return (pair.meta, pair.source);
+			}
+
+			public static List<(MetaFile, ImageSource)> Convert(List<Pair> list, Func<Pair, bool> check) {
+				var result = new List<(MetaFile, ImageSource)>();
+				foreach(Pair item in list) {
+					if((check?.Invoke(item)).Value) {
+						result.Add((item.meta, item.source));
+					}
+				}
+				return result;
+			}
 		}
 
 		public async static Task<(MetaFile, StorageFile)> GetMetaFile(string postID, string groupName) {

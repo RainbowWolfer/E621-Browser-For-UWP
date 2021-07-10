@@ -8,7 +8,29 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-
-    </Grid>
+	<Grid>
+		<!--<TextBlock Text="Hello World" FontSize="64"/>-->
+		<GridView x:Name="MyGridView" ItemsSource="{x:Bind items}" SelectionMode="None" ItemClick="MyGridView_ItemClick" IsItemClickEnabled="True">
+			<!---->
+			<GridView.ItemContainerStyle>
+				<Style TargetType="GridViewItem">
+					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+					<Setter Property="VerticalContentAlignment" Value="Stretch"/>
+				</Style>
+			</GridView.ItemContainerStyle>
+			<GridView.ItemTemplate>
+				<DataTemplate x:DataType="local:ItemBlock">
+					<Grid Height="200" Width="200" Margin="10">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="*"/>
+							<RowDefinition Height="30"/>
+						</Grid.RowDefinitions>
+						<FontIcon Visibility="{x:Bind FolderIconVisibility}" Glyph="&#xED43;" Foreground="Yellow" FontSize="120"/>
+						<Image Visibility="{x:Bind ImagePreviewVisibility}" Source="{x:Bind image}"/>
+						<TextBlock Grid.Row="1" Text="{x:Bind name}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+					</Grid>
+				</DataTemplate>
+			</GridView.ItemTemplate>
+		</GridView>
+	</Grid>
 </Page>

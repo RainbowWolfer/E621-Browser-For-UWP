@@ -52,6 +52,7 @@ namespace E621Downloader.Pages {
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			tags = new ObservableCollection<GroupTagList>();
 			this.DataContextChanged += (s, c) => Bindings.Update();
+			MyMediaPlayer.MediaPlayer.IsLoopingEnabled = true;
 		}
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
