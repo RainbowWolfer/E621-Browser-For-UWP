@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages.LibrarySection {
@@ -28,18 +29,22 @@ namespace E621Downloader.Pages.LibrarySection {
 		protected async override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			if(e.Parameter is object[] objs) {
-				if(objs.Length == 2 && objs[1] is LibraryPage libraryPage) {
+				if(objs.Length >= 2 && objs[1] is LibraryPage libraryPage) {
 					this.libraryPage = libraryPage;
-					if(objs[0] is string str && str == "Home") {
-						foreach(StorageFolder folder in await Local.GetDownloadsFolders()) {
-							items.Add(new ItemBlock() {
-								isFolder = true,
-								name = folder.Name,
-								parent = null,
-							});
+					if(objs[0] is LibraryTab tab) {
+						if(tab.title == "Home") {
+							foreach(StorageFolder folder in await Local.GetDownloadsFolders()) {
+								items.Add(new ItemBlock() {
+									isFolder = true,
+									name = folder.Name,
+									parent = null,
+								});
+							}
+						} else {
+
 						}
 					} else if(objs[0] is ItemBlock parent) {
-						var v = await Local.GetAllMetaFiles(parent.name);
+						List<(MetaFile, BitmapImage)> v = await Local.GetMetaFiles(parent.name);
 						foreach(var item in v) {
 							items.Add(new ItemBlock() {
 								isFolder = false,
@@ -59,6 +64,7 @@ namespace E621Downloader.Pages.LibrarySection {
 			var target = e.ClickedItem as ItemBlock;
 			if(target.isFolder) {
 				libraryPage.Navigate(typeof(Explorer), new object[] { target, libraryPage });
+				libraryPage.ToTab(target.name);
 			}
 		}
 	}

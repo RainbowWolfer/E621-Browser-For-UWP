@@ -31,7 +31,7 @@
 								</Grid.ColumnDefinitions>
 								<SymbolIcon Symbol="{x:Bind icon}"/>
 								<TextBlock Grid.Column="1" Text="{x:Bind title}" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="18"/>
-								<Button Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderThickness="0" FontFamily="Segoe MDL2 Assets" Content="&#xE10A;" Visibility="{x:Bind closeButtonVisibility}"/>
+								<Button Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderThickness="0" FontFamily="Segoe MDL2 Assets" Content="&#xE10A;" Visibility="{x:Bind closeButtonVisibility}" Tapped="Button_Tapped"/>
 							</Grid>
 						</DataTemplate>
 					</ListView.ItemTemplate>
@@ -60,7 +60,7 @@
 					<AutoSuggestBox RelativePanel.AlignRightWithPanel="True" MinWidth="300" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,0,10,0" QueryIcon="Find"/>
 				</RelativePanel>
 				<Rectangle Grid.Row="1" HorizontalAlignment="Stretch" Height="2" Fill="DarkGray" Margin="10,0,10,5"/>
-				<!--<Image Source="F:/E621/Individual Downloads/2770201.png"/>-->
+				
 				<Frame Grid.Row="2" x:Name="MainFrame" Visibility="Visible">
 					<Frame.ContentTransitions>
 						<TransitionCollection>

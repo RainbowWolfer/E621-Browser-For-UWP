@@ -16,6 +16,7 @@ using E621Downloader.Models.Posts;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Storage.Streams;
+using Windows.Storage.FileProperties;
 
 namespace E621Downloader.Models.Locals {
 	public static class Local {
@@ -146,32 +147,9 @@ namespace E621Downloader.Models.Locals {
 		public async static Task<StorageFolder[]> GetDownloadsFolders() {
 			return (await DownloadFolder.GetFoldersAsync()).ToArray();
 		}
-		public async static Task<List<(MetaFile, ImageSource)>> GetAllMetaFiles(string folderName) {
-			StorageFolder folder = await DownloadFolder.GetFolderAsync(folderName);
-			if(folder == null) {
-				return null;
-			}
-			var pairs = new List<Pair>();
-
-			foreach(StorageFile file in await folder.GetFilesAsync()) {
-				await file.GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.PicturesView);
-				if(file.FileType == ".meta") {
-					using(Stream stream = await file.OpenStreamForReadAsync()) {
-						using(StreamReader reader = new StreamReader(stream)) {
-							MetaFile t = JsonConvert.DeserializeObject<MetaFile>(reader.ReadToEnd());
-							Pair.Add(pairs, t);
-						}
-					}
-				} else {//all other images and videos
-					await Pair.Add(pairs, file);
-				}
-			}
-			var re = Pair.Convert(pairs, p => p.IsValid);
-			return re;
-		}
 		private class Pair {
 			public MetaFile meta;
-			public ImageSource source;
+			public BitmapImage source;
 			public string sourceID;
 
 			public bool IsValid => meta != null /*&& source != null */&& sourceID != null;
@@ -185,30 +163,23 @@ namespace E621Downloader.Models.Locals {
 				}
 				list.Add(new Pair() { meta = meta });
 			}
-			public async static Task Add(List<Pair> list, StorageFile file) {
-				BitmapImage result = null;
-				if(new string[] { ".jpg", ".png", }.Contains(file.FileType)) {
-					//using(IRandomAccessStream randomAccessStream = await file.OpenAsync(FileAccessMode.Read)) {
-					//	result = new BitmapImage();
-					//	await result.SetSourceAsync(randomAccessStream);
-					//}
-				}
+			public static void Add(List<Pair> list, BitmapImage source, string id) {
 				foreach(var item in list) {
-					if(item.meta != null && item.meta.MyPost.id.ToString() == file.DisplayName) {
+					if(item.meta != null && item.meta.MyPost.id.ToString() == id) {
 						item.sourceID = item.meta.MyPost.id.ToString();
-						item.source = result;
+						item.source = source;
 						return;
 					}
 				}
-				list.Add(new Pair() { sourceID = file.DisplayName, source = result });
+				list.Add(new Pair() { sourceID = id, source = source });
 			}
 
-			public static (MetaFile, ImageSource) Convert(Pair pair) {
+			public static (MetaFile, BitmapImage) Convert(Pair pair) {
 				return (pair.meta, pair.source);
 			}
 
-			public static List<(MetaFile, ImageSource)> Convert(List<Pair> list, Func<Pair, bool> check) {
-				var result = new List<(MetaFile, ImageSource)>();
+			public static List<(MetaFile, BitmapImage)> Convert(List<Pair> list, Func<Pair, bool> check) {
+				var result = new List<(MetaFile, BitmapImage)>();
 				foreach(Pair item in list) {
 					if((check?.Invoke(item)).Value) {
 						result.Add((item.meta, item.source));
@@ -218,12 +189,45 @@ namespace E621Downloader.Models.Locals {
 			}
 		}
 
+		public async static Task<List<(MetaFile, BitmapImage)>> GetMetaFiles(string folderName) {
+			var result = new List<(MetaFile, BitmapImage)>();
+			StorageFolder folder = await DownloadFolder.GetFolderAsync(folderName);
+			var pairs = new List<Pair>();
+			foreach(StorageFile file in await folder.GetFilesAsync()) {
+				if(file.FileType == ".meta") {
+					MetaFile meta;
+					using(Stream stream = await file.OpenStreamForReadAsync()) {
+						using(StreamReader reader = new StreamReader(stream)) {
+							meta = JsonConvert.DeserializeObject<MetaFile>(reader.ReadToEnd());
+						}
+					}
+					Pair.Add(pairs, meta);
+				} else {
+					BitmapImage bitmap = new BitmapImage();
+					ThumbnailMode mode = ThumbnailMode.DocumentsView;
+					if(new string[] { ".webm" }.Contains(file.FileType)) {
+						mode = ThumbnailMode.SingleItem;
+					} else if(new string[] { ".jpg", ".png" }.Contains(file.FileType)) {
+						mode = ThumbnailMode.PicturesView;
+					}
+					//Debug.WriteLine(mode);
+					using(StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(mode)) {
+						using(Stream stream = thumbnail.AsStreamForRead()) {
+							bitmap.SetSource(stream.AsRandomAccessStream());
+						}
+					}
+					Pair.Add(pairs, bitmap, file.DisplayName);
+				}
+			}
+			return Pair.Convert(pairs, p => p.IsValid);
+		}
+
 		public async static Task<(MetaFile, StorageFile)> GetMetaFile(string postID, string groupName) {
 			StorageFolder folder = await DownloadFolder.GetFolderAsync(groupName);
 			StorageFile file = await folder.GetFileAsync($"{postID}.meta");
 			using(Stream stream = await file.OpenStreamForReadAsync()) {
 				using(StreamReader reader = new StreamReader(stream)) {
-					return (JsonConvert.DeserializeObject(reader.ReadToEnd()) as MetaFile, file);
+					return (JsonConvert.DeserializeObject<MetaFile>(reader.ReadToEnd()), file);
 				}
 			}
 		}
