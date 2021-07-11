@@ -13,7 +13,7 @@
 			<Grid>
 				<Button x:Name="HamburgerButton" Tapped="HamburgerButton_Tapped" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" VerticalAlignment="Top" Margin="0" Background="Transparent" BorderThickness="0" Width="40" Height="40" FontSize="20"/>
 				<TextBlock VerticalAlignment="Top" Text="Your Opened Tabs" FontSize="18" Margin="50,8,0,0"/>
-				<ListView x:Name="TabsListView" Margin="0,50,0,0" SelectionMode="Single" IsItemClickEnabled="True" ItemsSource="{x:Bind tabs}" SelectionChanged="TabsListView_SelectionChanged">
+				<ListView x:Name="TabsListView" Margin="0,50,0,0" SelectionMode="Single" IsItemClickEnabled="True" ItemsSource="{x:Bind tabs}" ItemClick="TabsListView_ItemClick">
 					<ListView.ItemContainerStyle>
 						<Style TargetType="ListViewItem">
 							<Setter Property="HorizontalContentAlignment" Value="Stretch"/>

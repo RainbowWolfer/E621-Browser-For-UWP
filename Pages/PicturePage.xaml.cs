@@ -2,6 +2,7 @@
 using E621Downloader.Models.Download;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
+using E621Downloader.Pages.LibrarySection;
 using E621Downloader.Views;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.System;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
@@ -54,52 +56,91 @@ namespace E621Downloader.Pages {
 			this.DataContextChanged += (s, c) => Bindings.Update();
 			MyMediaPlayer.MediaPlayer.IsLoopingEnabled = true;
 		}
-		protected override void OnNavigatedTo(NavigationEventArgs e) {
+		protected async override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
-			if(PostRef == null && e.Parameter as Post == null && PostsBrowser.Instance.posts != null && PostsBrowser.Instance.posts.Count > 0) {
-				PostRef = PostsBrowser.Instance.posts[0];
-			} else {
-				if(e.Parameter == null) {
+			object p = e.Parameter;
+			if(p == null && PostRef == null && PostsBrowser.Instance.posts != null && PostsBrowser.Instance.posts.Count > 0) {
+				p = PostsBrowser.Instance.posts[0];
+			}
+			if(p is Post post) {
+				if(PostRef == post) {
+					return;
+				}
+				PostRef = post;
+				DebugButton.Visibility = Visibility.Visible;
+				CopyButton.Visibility = Visibility.Visible;
+				DownloadButton.Visibility = Visibility.Visible;
+				DownloadButton.Content = "Download";
+				DownloadButton.IsEnabled = true;
+				if(PostRef.file.ext.ToLower().Trim() == "webm") {
 					MyProgressRing.IsActive = false;
-					DebugButton.Visibility = Visibility.Collapsed;
-					CopyButton.Visibility = Visibility.Collapsed;
-					DownloadButton.Visibility = Visibility.Collapsed;
+					MyMediaPlayer.Visibility = Visibility.Visible;
+					MyScrollViewer.Visibility = Visibility.Collapsed;
+					MyMediaPlayer.Source = MediaSource.CreateFromUri(new Uri(PostRef.file.url));
+				} else {
+					MyProgressRing.IsActive = true;
+					MyMediaPlayer.Visibility = Visibility.Collapsed;
+					MyScrollViewer.Visibility = Visibility.Visible;
+					MainImage.Source = new BitmapImage(new Uri(PostRef.file.url));
+				}
+
+				TagsListView.ScrollIntoView(TagsListView.Items[0]);
+
+				RemoveGroup();
+				AddNewGroup("Artist", PostRef.tags.artist);
+				AddNewGroup("Copyright", PostRef.tags.copyright);
+				AddNewGroup("Species", PostRef.tags.species);
+				AddNewGroup("General", PostRef.tags.general);
+				AddNewGroup("Character", PostRef.tags.character);
+				AddNewGroup("Meta", PostRef.tags.meta);
+				AddNewGroup("Invalid", PostRef.tags.invalid);
+				AddNewGroup("Lore", PostRef.tags.lore);
+			} else if(p is ItemBlock itemBlock) {
+				if(PostRef == itemBlock.meta.MyPost) {
 					return;
 				}
-				if(PostRef == e.Parameter as Post) {
-					return;
+				PostRef = itemBlock.meta.MyPost;
+				DebugButton.Visibility = Visibility.Visible;
+				CopyButton.Visibility = Visibility.Visible;
+				DownloadButton.Visibility = Visibility.Visible;
+				DownloadButton.Content = "Local";
+				DownloadButton.IsEnabled = false;
+				if(PostRef.file.ext.ToLower().Trim() == "webm") {
+					MyProgressRing.IsActive = false;
+					MyMediaPlayer.Visibility = Visibility.Visible;
+					MyScrollViewer.Visibility = Visibility.Collapsed;
+
+					MyMediaPlayer.Source = MediaSource.CreateFromStorageFile(itemBlock.imageFile);
+				} else {
+					MyProgressRing.IsActive = true;
+					MyMediaPlayer.Visibility = Visibility.Collapsed;
+					MyScrollViewer.Visibility = Visibility.Visible;
+
+					using(IRandomAccessStream randomAccessStream = await itemBlock.imageFile.OpenAsync(FileAccessMode.Read)) {
+						BitmapImage result = new BitmapImage();
+						await result.SetSourceAsync(randomAccessStream);
+						MainImage.Source = result;
+					}
+					MyProgressRing.IsActive = false;
 				}
-				PostRef = e.Parameter as Post;
-				if(PostRef == null) {
-					return;
-				}
-			}
-			DebugButton.Visibility = Visibility.Visible;
-			CopyButton.Visibility = Visibility.Visible;
-			DownloadButton.Visibility = Visibility.Visible;
-			if(PostRef.file.ext.ToLower().Trim() == "webm") {
+				TagsListView.ScrollIntoView(TagsListView.Items[0]);
+
+				RemoveGroup();
+				AddNewGroup("Artist", PostRef.tags.artist);
+				AddNewGroup("Copyright", PostRef.tags.copyright);
+				AddNewGroup("Species", PostRef.tags.species);
+				AddNewGroup("General", PostRef.tags.general);
+				AddNewGroup("Character", PostRef.tags.character);
+				AddNewGroup("Meta", PostRef.tags.meta);
+				AddNewGroup("Invalid", PostRef.tags.invalid);
+				AddNewGroup("Lore", PostRef.tags.lore);
+			} else if(p == null) {
 				MyProgressRing.IsActive = false;
-				MyMediaPlayer.Visibility = Visibility.Visible;
-				MyScrollViewer.Visibility = Visibility.Collapsed;
-				MyMediaPlayer.Source = MediaSource.CreateFromUri(new Uri(PostRef.file.url));
-			} else {
-				MyProgressRing.IsActive = true;
-				MyMediaPlayer.Visibility = Visibility.Collapsed;
-				MyScrollViewer.Visibility = Visibility.Visible;
-				MainImage.Source = new BitmapImage(new Uri(PostRef.file.url));
+				DebugButton.Visibility = Visibility.Collapsed;
+				CopyButton.Visibility = Visibility.Collapsed;
+				DownloadButton.Visibility = Visibility.Collapsed;
 			}
 
-			TagsListView.ScrollIntoView(TagsListView.Items[0]);
-
-			RemoveGroup();
-			AddNewGroup("Artist", PostRef.tags.artist);
-			AddNewGroup("Copyright", PostRef.tags.copyright);
-			AddNewGroup("Species", PostRef.tags.species);
-			AddNewGroup("General", PostRef.tags.general);
-			AddNewGroup("Character", PostRef.tags.character);
-			AddNewGroup("Meta", PostRef.tags.meta);
-			AddNewGroup("Invalid", PostRef.tags.invalid);
-			AddNewGroup("Lore", PostRef.tags.lore);
 		}
 
 		private void RemoveGroup() {
@@ -236,6 +277,9 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void BrowserButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(PostRef == null) {
+				return;
+			}
 			bool success = await Launcher.LaunchUriAsync(new Uri($"https://e621.net/posts/{PostRef.id}"));
 		}
 	}

@@ -25,21 +25,16 @@ namespace E621Downloader.Pages.LibrarySection {
 		public LibraryPage() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
+			var first = new LibraryTab(null, Symbol.Home, HOMESTRING, false);
 			tabs = new ObservableCollection<LibraryTab>() {
-				new LibraryTab(null, Symbol.Home, HOMESTRING, false),
+				first,
 			};
 			TabsListView.SelectedIndex = 0;
+			Navigate(typeof(Explorer), new object[] { first, this });
 		}
 
 		private void HamburgerButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
-		}
-
-		private void TabsListView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			if(e.AddedItems != null && e.AddedItems.Count > 0) {
-				var target = e.AddedItems[0] as LibraryTab;
-				Navigate(typeof(Explorer), new object[] { target, this });
-			}
 		}
 
 		public void Navigate(Type targetPage, object param) {
@@ -60,6 +55,13 @@ namespace E621Downloader.Pages.LibrarySection {
 		private void Button_Tapped(object sender, TappedRoutedEventArgs e) {
 			Button b = sender as Button;
 			Debug.WriteLine(b.Parent);
+		}
+
+		private void TabsListView_ItemClick(object sender, ItemClickEventArgs e) {
+			if(e.ClickedItem != null) {
+				var target = e.ClickedItem as LibraryTab;
+				Navigate(typeof(Explorer), new object[] { target, this });
+			}
 		}
 	}
 	public class LibraryTab {

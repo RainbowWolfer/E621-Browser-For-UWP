@@ -26,8 +26,8 @@
 							<RowDefinition Height="30"/>
 						</Grid.RowDefinitions>
 						<FontIcon Visibility="{x:Bind FolderIconVisibility}" Glyph="&#xED43;" Foreground="Yellow" FontSize="120"/>
-						<Image Visibility="{x:Bind ImagePreviewVisibility}" Source="{x:Bind image}"/>
-						<TextBlock Grid.Row="1" Text="{x:Bind name}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+						<Image Visibility="{x:Bind ImagePreviewVisibility}" Source="{x:Bind thumbnail}"/>
+						<TextBlock Grid.Row="1" Text="{x:Bind Name}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
 					</Grid>
 				</DataTemplate>
 			</GridView.ItemTemplate>

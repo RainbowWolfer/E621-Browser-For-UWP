@@ -150,46 +150,47 @@ namespace E621Downloader.Models.Locals {
 		private class Pair {
 			public MetaFile meta;
 			public BitmapImage source;
-			public string sourceID;
+			public StorageFile file;
+			public string SourceID => file.DisplayName;
 
-			public bool IsValid => meta != null /*&& source != null */&& sourceID != null;
+			public bool IsValid => meta != null /*&& source != null */&& SourceID != null;
 
 			public static void Add(List<Pair> list, MetaFile meta) {
 				foreach(var item in list) {
-					if(item.sourceID == meta.MyPost.id.ToString()) {
+					if(item.SourceID == meta.MyPost.id.ToString()) {
 						item.meta = meta;
 						return;
 					}
 				}
 				list.Add(new Pair() { meta = meta });
 			}
-			public static void Add(List<Pair> list, BitmapImage source, string id) {
+			public static void Add(List<Pair> list, BitmapImage source, StorageFile file) {
 				foreach(var item in list) {
-					if(item.meta != null && item.meta.MyPost.id.ToString() == id) {
-						item.sourceID = item.meta.MyPost.id.ToString();
+					if(item.meta != null && item.meta.MyPost.id.ToString() == file.DisplayName) {
+						item.file = file;
 						item.source = source;
 						return;
 					}
 				}
-				list.Add(new Pair() { sourceID = id, source = source });
+				list.Add(new Pair() { file = file, source = source });
 			}
 
-			public static (MetaFile, BitmapImage) Convert(Pair pair) {
-				return (pair.meta, pair.source);
+			public static (MetaFile, BitmapImage, StorageFile) Convert(Pair pair) {
+				return (pair.meta, pair.source, pair.file);
 			}
 
-			public static List<(MetaFile, BitmapImage)> Convert(List<Pair> list, Func<Pair, bool> check) {
-				var result = new List<(MetaFile, BitmapImage)>();
+			public static List<(MetaFile, BitmapImage, StorageFile)> Convert(List<Pair> list, Func<Pair, bool> check) {
+				var result = new List<(MetaFile, BitmapImage, StorageFile)>();
 				foreach(Pair item in list) {
 					if((check?.Invoke(item)).Value) {
-						result.Add((item.meta, item.source));
+						result.Add((item.meta, item.source, item.file));
 					}
 				}
 				return result;
 			}
 		}
 
-		public async static Task<List<(MetaFile, BitmapImage)>> GetMetaFiles(string folderName) {
+		public async static Task<List<(MetaFile, BitmapImage, StorageFile)>> GetMetaFiles(string folderName) {
 			var result = new List<(MetaFile, BitmapImage)>();
 			StorageFolder folder = await DownloadFolder.GetFolderAsync(folderName);
 			var pairs = new List<Pair>();
@@ -216,7 +217,7 @@ namespace E621Downloader.Models.Locals {
 							bitmap.SetSource(stream.AsRandomAccessStream());
 						}
 					}
-					Pair.Add(pairs, bitmap, file.DisplayName);
+					Pair.Add(pairs, bitmap, file);
 				}
 			}
 			return Pair.Convert(pairs, p => p.IsValid);
