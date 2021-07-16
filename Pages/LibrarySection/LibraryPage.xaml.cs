@@ -22,15 +22,24 @@ namespace E621Downloader.Pages.LibrarySection {
 		public const string HOMESTRING = "Home";
 		public ObservableCollection<LibraryTab> tabs;
 
+		private readonly LibraryTab first;
 		public LibraryPage() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
-			var first = new LibraryTab(null, Symbol.Home, HOMESTRING, false);
+			first = new LibraryTab(null, Symbol.Home, HOMESTRING, false);
 			tabs = new ObservableCollection<LibraryTab>() {
 				first,
 			};
 			TabsListView.SelectedIndex = 0;
 			Navigate(typeof(Explorer), new object[] { first, this });
+			SettingsPage.isDownloadPathChangingHandled = true;
+		}
+		protected override void OnNavigatedTo(NavigationEventArgs e) {
+			base.OnNavigatedTo(e);
+			if(!SettingsPage.isDownloadPathChangingHandled) {
+				Navigate(typeof(Explorer), new object[] { first, this });
+				SettingsPage.isDownloadPathChangingHandled = true;
+			}
 		}
 
 		private void HamburgerButton_Tapped(object sender, TappedRoutedEventArgs e) {

@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Download;
 using E621Downloader.Models.Locals;
 using E621Downloader.Views;
 using System;
@@ -24,11 +25,13 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {
 	public sealed partial class SettingsPage: Page {
+		public static bool isDownloadPathChangingHandled;
 		public string Version {
 			get => "Version: " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 		}
 		public SettingsPage() {
 			this.InitializeComponent();
+			ClearDownloadPathButton.IsEnabled = Local.DownloadFolder != null;
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
@@ -80,9 +83,23 @@ namespace E621Downloader.Pages {
 			if(result != null) {
 				string token = StorageApplicationPermissions.FutureAccessList.Add(result);
 				Debug.WriteLine(token);
-				await Local.WriteToken(token);
+				await Local.WriteTokenToFile(token);
 				DownloadPathTextBlock.Text = Local.DownloadFolder.Path;
+				ClearDownloadPathButton.IsEnabled = true;
 			}
+			isDownloadPathChangingHandled = false;
+		}
+
+		private async void ClearDownloadPathButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(DownloadsManager.HasDownloading()) {
+				await MainPage.CreatePopupDialog("Warning", "There is something downloading.\ncannot clear download path.");
+				return;
+			}
+			Local.ClearToken(Local.GetToken());
+			if(Local.GetToken() == null) {
+				ClearDownloadPathButton.IsEnabled = false;
+			}
+			DownloadPathTextBlock.Text = "No Path Selected";
 		}
 
 		private void BlackListToggle_Toggled(object sender, RoutedEventArgs e) {
@@ -96,5 +113,6 @@ namespace E621Downloader.Pages {
 		private void SafeModeToggle_Toggled(object sender, RoutedEventArgs e) {
 			App.safemode = (sender as ToggleSwitch).IsOn;
 		}
+
 	}
 }

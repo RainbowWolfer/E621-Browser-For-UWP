@@ -82,6 +82,7 @@ namespace E621Downloader.Pages {
 					MyMediaPlayer.Visibility = Visibility.Collapsed;
 					MyScrollViewer.Visibility = Visibility.Visible;
 					MainImage.Source = new BitmapImage(new Uri(PostRef.file.url));
+					MyMediaPlayer.MediaPlayer.Source = null;
 				}
 
 				TagsListView.ScrollIntoView(TagsListView.Items[0]);

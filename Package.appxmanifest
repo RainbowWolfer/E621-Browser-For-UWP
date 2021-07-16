@@ -8,7 +8,7 @@
 
   <Identity
     Name="06a716be-21c1-4061-ad25-8ca9a78a8aa2"
-    Publisher="CN=rainb"
+    Publisher="CN=RainbowWolfer"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="06a716be-21c1-4061-ad25-8ca9a78a8aa2" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>

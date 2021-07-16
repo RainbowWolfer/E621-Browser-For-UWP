@@ -5,6 +5,7 @@ using E621Downloader.Pages;
 using E621Downloader.Pages.DownloadSection;
 using E621Downloader.Pages.LibrarySection;
 using E621Downloader.Views;
+using E621Downloader.Views.TagsManagementSection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -67,10 +68,19 @@ namespace E621Downloader {
 		protected async override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			CreateInstantDialog("Please Wait", "Initializing Local Program");
+			int time = 0;
 			while(Local.DownloadFolder == null) {
 				await Task.Delay(10);
+				time += 1;
+				if(time >= 200) {
+					HideInstantDialog();
+					//await CreatePopupDialog("Warning", "Download Folder Not Found", true);
+					break;
+				}
 			}
-			await DownloadsManager.RestoreIncompletedDownloas();
+			if(Local.DownloadFolder != null) {
+				await DownloadsManager.RestoreIncompletedDownloas();
+			}
 			HideInstantDialog();
 			(MyNavigationView.MenuItems[0] as NavigationViewItem).IsSelected = true;
 		}
@@ -80,7 +90,7 @@ namespace E621Downloader {
 			foreach(string item in strs) {
 				result += item + " ";
 			}
-			Instance.CurrentTagsTextBlock.Text = result;
+			Instance.TextBlockSearchTags.Text = result;
 		}
 
 		public static ContentDialog InstanceDialog { get; private set; }
@@ -112,7 +122,7 @@ namespace E621Downloader {
 			var tip = new Microsoft.UI.Xaml.Controls.TeachingTip() {
 				Title = titile,
 				Subtitle = subtitle,
-				Target = Instance.CurrentTagsTextBlock,
+				Target = Instance.CurrentTagsButton,
 				IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() {
 					Symbol = Symbol.Accept
 				},
@@ -122,12 +132,12 @@ namespace E621Downloader {
 			tip.IsOpen = false;
 		}
 
-		public static async Task<ContentDialog> CreatePopupDialog(string title, object content, bool enableButton = true) {
+		public static async Task<ContentDialog> CreatePopupDialog(string title, object content, bool enableButton = true, string backButtonContent = "Back") {
 			ContentDialog dialog = new ContentDialog() {
 				Title = title,
 				Content = content,
 				IsPrimaryButtonEnabled = enableButton,
-				PrimaryButtonText = enableButton ? "Back" : "",
+				PrimaryButtonText = enableButton ? backButtonContent : "",
 			};
 			await dialog.ShowAsync();
 			return dialog;
@@ -143,28 +153,28 @@ namespace E621Downloader {
 		//	StorageFile file = await InstallationFolder.GetFileAsync(@"Assets\TestText_Copy.txt");
 		//	return File.ReadAllText(file.Path);
 		//}
-		private async void SearchButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			var dialog = new ContentDialog() {
-				Title = "Search Section",
-				PrimaryButtonText = "Confirm",
-				SecondaryButtonText = "Cancel",
-			};
-			dialog.Content = new SearchPopup(dialog);
-			dialog.KeyDown += (s, c) => {
-				if(c.Key == VirtualKey.Escape) {
-					dialog.Hide();
-				}
-			};
-			ContentDialogResult result = await dialog.ShowAsync();
-			if(result == ContentDialogResult.Primary) {
-				SelectNavigationItem(PageTag.Home);
-				await Task.Delay(100);
-				string text = (dialog.Content as SearchPopup).GetSearchText();
-				//LoadPosts(Data.GetPostsByTags(1, text));
-				//PostsBrowser.Instance.LoadPosts(Post.GetPostsByTags(1, text), text);
-				await PostsBrowser.Instance.LoadAsync(1, text);
-			}
-		}
+		//private async void SearchButton_Tapped(object sender, TappedRoutedEventArgs e) {
+		//	var dialog = new ContentDialog() {
+		//		Title = "Search Section",
+		//		PrimaryButtonText = "Confirm",
+		//		SecondaryButtonText = "Cancel",
+		//	};
+		//	dialog.Content = new SearchPopup(dialog);
+		//	dialog.KeyDown += (s, c) => {
+		//		if(c.Key == VirtualKey.Escape) {
+		//			dialog.Hide();
+		//		}
+		//	};
+		//	ContentDialogResult result = await dialog.ShowAsync();
+		//	if(result == ContentDialogResult.Primary) {
+		//		SelectNavigationItem(PageTag.Home);
+		//		await Task.Delay(100);
+		//		string text = (dialog.Content as SearchPopup).GetSearchText();
+		//		//LoadPosts(Data.GetPostsByTags(1, text));
+		//		//PostsBrowser.Instance.LoadPosts(Post.GetPostsByTags(1, text), text);
+		//		await PostsBrowser.Instance.LoadAsync(1, text);
+		//	}
+		//}
 
 		public static NavigationTransitionInfo CalculateTransition(PageTag from, PageTag to) {
 			if((int)from - (int)to < 0) {
@@ -209,6 +219,24 @@ namespace E621Downloader {
 
 		private void FullScreenButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			IsFullScreen = !IsFullScreen;
+		}
+
+		private async void CurrentTagsButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			var dialog = new ContentDialog() {
+				Title = "Manage Your Search Tags",
+			};
+
+			var frame = new Frame();
+			dialog.Content = frame;
+			frame.Navigate(typeof(TagsSelectionView), new object[] { dialog, PostsBrowser.Instance.tags });
+			await dialog.ShowAsync();
+
+			var content = (dialog.Content as Frame).Content as TagsSelectionView;
+			if(content.handleSearch) {
+				SelectNavigationItem(PageTag.Home);
+				await Task.Delay(100);
+				await PostsBrowser.Instance.LoadAsync(1, content.tags.ToArray());
+			}
 		}
 	}
 	public enum PageTag {

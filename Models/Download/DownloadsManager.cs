@@ -27,18 +27,33 @@ namespace E621Downloader.Models.Download {
 			downloader = new BackgroundDownloader();
 			groups = new List<DownloadsGroup>();
 		}
+
+		public static bool HasDownloading() {
+			foreach(DownloadInstance item in downloads) {
+				if(item.Status != BackgroundTransferStatus.Completed) {
+					return true;
+				}
+			}
+			return false;
+		}
+
 		public static void RegisterDownload(Post post, IEnumerable<string> tags) {
 			RegisterDownload(post, DownloadsGroup.GetGroupTitle(tags));
 		}
+
 		public async static void RegisterDownload(Post post, string groupTitle = DEFAULTTITLE) {
 			if(string.IsNullOrEmpty(post.file.url)) {
 				return;
 			}
-			groupTitle = groupTitle.Replace(":", ";");
-			string filename = $"{post.id}.{post.file.ext}";
-			StorageFolder folder = await Local.DownloadFolder.CreateFolderAsync(groupTitle, CreationCollisionOption.OpenIfExists);
-			StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
-			RegisterDownload(post, new Uri(post.file.url), file, groupTitle);
+			if(Local.DownloadFolder == null) {
+				await MainPage.CreatePopupDialog("Error", "No Download Folder Selected.\nGo to Settings and choose your download folder.", true, "Confirm");
+			} else {
+				groupTitle = groupTitle.Replace(":", ";");
+				string filename = $"{post.id}.{post.file.ext}";
+				StorageFolder folder = await Local.DownloadFolder.CreateFolderAsync(groupTitle, CreationCollisionOption.OpenIfExists);
+				StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+				RegisterDownload(post, new Uri(post.file.url), file, groupTitle);
+			}
 		}
 
 		private static DownloadInstance RegisterDownload(Post post, Uri uri, StorageFile file, string groupTitle = DEFAULTTITLE) {

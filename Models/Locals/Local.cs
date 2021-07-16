@@ -70,7 +70,7 @@ namespace E621Downloader.Models.Locals {
 		//}
 
 
-		public async static Task WriteToken(string token) {
+		public async static Task WriteTokenToFile(string token) {
 			await FileIO.WriteTextAsync(FutureAccessTokenFile, token);
 			await SetToken(token);
 		}
@@ -82,7 +82,24 @@ namespace E621Downloader.Models.Locals {
 				//set to download library
 				return;
 			}
-			DownloadFolder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync(token);
+			try {
+				DownloadFolder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync(token);
+			} catch(ArgumentException e) {
+				Debug.WriteLine(e);
+			}
+		}
+
+		public async static void ClearToken(string token) {
+			StorageApplicationPermissions.FutureAccessList.Remove(token);
+			Local.token = null;
+			DownloadFolder = null;
+			await FileIO.WriteTextAsync(FutureAccessTokenFile, "");
+		}
+
+		private async static Task<string> GetTokenFromFile() {
+			Stream stream = await FutureAccessTokenFile.OpenStreamForReadAsync();
+			StreamReader reader = new StreamReader(stream);
+			return reader.ReadToEnd();
 		}
 
 		public async static void WriteFollowList(string[] list) {
@@ -96,12 +113,6 @@ namespace E621Downloader.Models.Locals {
 			FollowList = await GetFollowList();
 			BlackList = await GetBlackList();
 			await SetToken(await GetTokenFromFile());
-		}
-
-		private async static Task<string> GetTokenFromFile() {
-			Stream stream = await FutureAccessTokenFile.OpenStreamForReadAsync();
-			StreamReader reader = new StreamReader(stream);
-			return reader.ReadToEnd();
 		}
 
 		private async static Task<string[]> GetFollowList() => await GetListFromFile(FollowListFile);
@@ -145,6 +156,9 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public async static Task<StorageFolder[]> GetDownloadsFolders() {
+			if(DownloadFolder == null) {
+				return Array.Empty<StorageFolder>();
+			}
 			return (await DownloadFolder.GetFoldersAsync()).ToArray();
 		}
 		private class Pair {

@@ -43,6 +43,9 @@ namespace E621Downloader.Pages.LibrarySection {
 									parent = null,
 								});
 							}
+							if(folders.Count == 0) {
+								HintText.Visibility = Visibility.Visible;
+							}
 						} else {
 							List<(MetaFile, BitmapImage, StorageFile)> v = await Local.GetMetaFiles(tab.folder.DisplayName);
 							foreach(var item in v) {

@@ -14,6 +14,9 @@ namespace E621Downloader.Models.Posts {
 			}
 			string url = $"https://e621.net/posts.json?page={page}&tags=";
 			tags.ToList().ForEach((t) => url += t + "+");
+			if(App.safemode) {
+				url += "rating:s";
+			}
 
 			string data = Data.ReadURL(url);
 			if(data == null) {
