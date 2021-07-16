@@ -145,6 +145,7 @@
     <Compile Include="Models\Download\DownloadsGroup.cs" />
     <Compile Include="Models\Download\DownloadsManager.cs" />
     <Compile Include="Models\E621Article.cs" />
+    <Compile Include="Models\Posts\E621Paginator.cs" />
     <Compile Include="Models\Posts\E621Tag.cs" />
     <Compile Include="Models\HTMLConvertor.cs" />
     <Compile Include="Models\ImageConvertor.cs" />

@@ -1,6 +1,7 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
 using E621Downloader.Models.Locals;
+using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using E621Downloader.Pages.DownloadSection;
 using E621Downloader.Pages.LibrarySection;
