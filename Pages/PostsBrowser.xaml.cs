@@ -42,6 +42,8 @@ namespace E621Downloader.Pages {
 		public bool isHeightFixed;
 		public bool ShowNullImage => App.showNullImage;
 
+		public bool multipleSelectionMode;
+
 		public PostsBrowser() {
 			Instance = this;
 			this.InitializeComponent();
@@ -89,6 +91,7 @@ namespace E621Downloader.Pages {
 			this.currentPage = page;
 			MainPage.CreateInstantDialog("Please Wait", "Loading...");
 			await Task.Delay(200);
+			SelectToggleButton.IsChecked = false;
 			List<Post> temp = Post.GetPostsByTags(page, tags);
 			if(temp.Count == 0) {
 				MainPage.HideInstantDialog();
@@ -230,6 +233,10 @@ namespace E621Downloader.Pages {
 			PaginatorPanel.Children.Add(box);
 		}
 
+		public void SelectFeedBack(ImageHolder imageHolder) {
+			SelectionCountTextBlock.Text = $"{GetSelected().Count}/{posts.Count}";
+		}
+
 		private void ShowNullImages(bool showNullImages) {
 			if(MyWrapGrid == null) {
 				return;
@@ -342,49 +349,84 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void DownloadButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			var dialog = new ContentDialog() {
-				Title = "Download Selection",
-				Content = new TextBlock() {
-					Text = "Do you want to download for current page or for whole tag(s)?",
-					TextWrapping = TextWrapping.WrapWholeWords,
-					FontSize = 24,
-				},
-				CloseButtonText = "Back",
-				PrimaryButtonText = "Whole Tag(s)",
-				SecondaryButtonText = "Current Page",
-			};
-			ContentDialogResult result = await dialog.ShowAsync();
-			switch(result) {
-				case ContentDialogResult.None:
-					break;
-				case ContentDialogResult.Primary:
-					//get all posts
-					break;
-				case ContentDialogResult.Secondary:
-					//get currentpage posts
+			if(multipleSelectionMode) {
+				if(await new ContentDialog() {
+					Title = "Download Selection",
+					Content = "Do you want to download the selected",
+					PrimaryButtonText = "Yes",
+					CloseButtonText = "No",
+				}.ShowAsync() == ContentDialogResult.Primary) {
 					MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
 					await Task.Delay(50);
-					foreach(Post item in posts) {
-						DownloadsManager.RegisterDownload(item, tags);
-						await Task.Delay(5);
+					foreach(ImageHolder item in GetSelected()) {
+						DownloadsManager.RegisterDownload(item.PostRef, tags);
+						await Task.Delay(2);
 					}
 					MainPage.HideInstantDialog();
-					break;
-				default:
-					throw new Exception();
+					SelectToggleButton.IsChecked = false;
+				}
+			} else {
+				var dialog = new ContentDialog() {
+					Title = "Download Selection",
+					Content = new TextBlock() {
+						Text = "Do you want to download for current page or for whole tag(s)?",
+						TextWrapping = TextWrapping.WrapWholeWords,
+						FontSize = 24,
+					},
+					CloseButtonText = "Back",
+					PrimaryButtonText = "Whole Tag(s)",
+					SecondaryButtonText = "Current Page",
+				};
+				ContentDialogResult result = await dialog.ShowAsync();
+				switch(result) {
+					case ContentDialogResult.None:
+						break;
+					case ContentDialogResult.Primary:
+						//get all posts
+						break;
+					case ContentDialogResult.Secondary:
+						//get currentpage posts
+						MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
+						await Task.Delay(50);
+						foreach(Post item in posts) {
+							DownloadsManager.RegisterDownload(item, tags);
+							await Task.Delay(2);
+						}
+						MainPage.HideInstantDialog();
+						break;
+					default:
+						throw new Exception();
+				}
 			}
 		}
 
-		private void MyPageInputBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) {
-
+		public List<ImageHolder> GetSelected() {
+			if(!multipleSelectionMode) {
+				return new List<ImageHolder>();
+			}
+			var result = new List<ImageHolder>();
+			foreach(UIElement item in MyWrapGrid.Children) {
+				if(item is ImageHolder holder && holder.IsSelected) {
+					result.Add(holder);
+				}
+			}
+			return result;
 		}
 
 		private void SelectToggleButton_Checked(object sender, RoutedEventArgs e) {
-
+			multipleSelectionMode = true;
+			SelectionCountTextBlock.Visibility = Visibility.Visible;
+			SelectionCountTextBlock.Text = $"0/{posts.Count}";
 		}
 
 		private void SelectToggleButton_Unchecked(object sender, RoutedEventArgs e) {
-
+			multipleSelectionMode = false;
+			SelectionCountTextBlock.Visibility = Visibility.Collapsed;
+			foreach(UIElement item in MyWrapGrid.Children) {
+				if(item is ImageHolder holder) {
+					holder.IsSelected = false;
+				}
+			}
 		}
 	}
 }

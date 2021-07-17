@@ -46,6 +46,15 @@ namespace E621Downloader.Views {
 		}
 		public string LoadUrl => PostRef.sample.url;
 
+		private bool _isSelected;
+		public bool IsSelected {
+			get => _isSelected;
+			set {
+				_isSelected = value;
+				BorderGrid.BorderThickness = new Thickness(value ? 4 : 0);
+			}
+		}
+
 		public BitmapImage Image { get; private set; }
 
 		private bool isLoaded;
@@ -53,11 +62,19 @@ namespace E621Downloader.Views {
 		public ImageHolder(Post post) {
 			this.PostRef = post;
 			this.InitializeComponent();
-			Debug.WriteLine(LoadUrl);
 			OnImagedLoaded += (b) => this.Image = b;
-			//LoadImageAsync2();
-			//App.Instance.RegisterDonwload(LoadImageAsync());
 			if(LoadUrl != null) {
+				if(post.file.ext == "webm") {
+					TypeBorder.Visibility = Visibility.Visible;
+					TypeTextBlock.Text = "WEBM";
+				} else if(post.file.ext == "anim") {
+					TypeBorder.Visibility = Visibility.Visible;
+					TypeTextBlock.Text = "ANIM";
+				} else {
+					TypeBorder.Visibility = Visibility.Collapsed;
+					TypeTextBlock.Text = "";
+				}
+				Debug.WriteLine(post.file.ext);
 				MyImage.Source = new BitmapImage(new Uri(LoadUrl));
 			} else {
 				MyProgressRing.IsActive = false;
@@ -75,7 +92,8 @@ namespace E621Downloader.Views {
 			}
 
 		}
-		private async Task LoadImageAsync(/*WriteableBitmap bitmap*/) {
+		/**
+		private async Task LoadImageAsync(WriteableBitmap bitmap) {
 			Debug.WriteLine(PostRef.id + "Start");
 			try {
 				LoadingPanel.Visibility = Visibility.Visible;
@@ -100,7 +118,7 @@ namespace E621Downloader.Views {
 			LoadingPanel.Visibility = Visibility.Collapsed;
 			isLoaded = true;
 		}
-
+		*/
 		private void Grid_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(!this.isLoaded) {
 				//open browser;
@@ -109,16 +127,20 @@ namespace E621Downloader.Views {
 			if(LoadUrl == null) {
 				return;
 			}
+			if(PostsBrowser.Instance.multipleSelectionMode) {
+				IsSelected = !IsSelected;
+				PostsBrowser.Instance.SelectFeedBack(this);
+			} else {
+				var dataPackage = new DataPackage() {
+					RequestedOperation = DataPackageOperation.Copy
+				};
+				dataPackage.SetText(LoadUrl);
+				Clipboard.SetContent(dataPackage);
 
-			var dataPackage = new DataPackage() {
-				RequestedOperation = DataPackageOperation.Copy
-			};
-			dataPackage.SetText(LoadUrl);
-			Clipboard.SetContent(dataPackage);
-
-			//MainPage.NavigateToPicturePage(PostRef);
-			MainPage.Instance.parameter_picture = PostRef;
-			MainPage.SelectNavigationItem(PageTag.Picture);
+				//MainPage.NavigateToPicturePage(PostRef);
+				MainPage.Instance.parameter_picture = PostRef;
+				MainPage.SelectNavigationItem(PageTag.Picture);
+			}
 		}
 
 		private void MyImage_ImageOpened(object sender, RoutedEventArgs e) {

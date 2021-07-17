@@ -19,7 +19,8 @@
 			<CheckBox x:Name="FixedHeightCheckBox" Content="Fixed Height" Margin="5" Checked="FixedHeightCheckBox_Checked" Unchecked="FixedHeightCheckBox_Unchecked"/>
 			<Button x:Name="RefreshButton" Content="Refresh" Margin="5" Tapped="RefreshButton_Tapped"/>
 			<Button x:Name="DownloadButton" Content="Download" Margin="5" Tapped="DownloadButton_Tapped"/>
-			<ToggleButton x:Name="SelectToggleButton" Content="Select" Checked="SelectToggleButton_Checked" Unchecked="SelectToggleButton_Unchecked"/>
+			<ToggleButton x:Name="SelectToggleButton" Content="Select" Checked="SelectToggleButton_Checked" Unchecked="SelectToggleButton_Unchecked" Margin="5"/>
+			<TextBlock x:Name="SelectionCountTextBlock" Text="2/75" VerticalAlignment="Center" Margin="5" FontSize="18" Visibility="Collapsed"/>
 		</StackPanel>
 		<ScrollViewer VerticalScrollMode="Auto" Grid.Row="1">
 			<Grid>
