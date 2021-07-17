@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// evolve_(copyright)
+/// </summary>
 namespace E621Downloader.Models.Posts {
 	public class E621Tag {
 		public static E621Tag[] Get(string tag) {

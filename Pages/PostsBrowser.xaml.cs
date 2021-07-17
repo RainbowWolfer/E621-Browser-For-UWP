@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
+using Windows.UI;
+using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -31,6 +33,9 @@ namespace E621Downloader.Pages {
 		public List<Post> posts;
 		public string[] tags;
 		public int currentPage;
+		public int maxPage;
+
+		private TextBlock tb_ArticlesLoadCount;
 
 		public int ItemSize { get => 50; }
 
@@ -48,7 +53,7 @@ namespace E621Downloader.Pages {
 		private async void Initialize() {
 			//string[] tags = { "rating:s", "wallpaper", "order:score" };
 			//string[] tags = { "type:webm", "order:score" };
-			string[] tags = { "type:webm"};
+			string[] tags = { "type:webm" };
 			//posts = Post.GetPostsByTags(currentPage, tags);
 			//LoadPosts(posts, tags);
 			await LoadAsync(1, tags);
@@ -71,12 +76,12 @@ namespace E621Downloader.Pages {
 			}
 			loaded = 0;
 			MyWrapGrid.Children.Clear();
-			LoadsTextBlock.Text = "Articles : 0/" + this.posts.Count;
+			tb_ArticlesLoadCount.Text = "Posts : 0/" + this.posts.Count;
 			foreach(Post item in this.posts) {
 				var holder = new ImageHolder(item);
 				MyWrapGrid.Children.Add(holder);
 				SetImageItemSize(isHeightFixed, holder, item.sample);
-				holder.OnImagedLoaded += (b) => LoadsTextBlock.Text = "Articles : " + ++loaded + "/" + this.posts.Count;
+				holder.OnImagedLoaded += (b) => tb_ArticlesLoadCount.Text = "Posts : " + ++loaded + "/" + this.posts.Count;
 			}
 		}
 
@@ -91,15 +96,138 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			this.posts = temp;
+			maxPage = E621Paginator.Get(tags).GetMaxPage();
+			UpdatePaginator();
 			LoadPosts(this.posts, tags);
 			MainPage.HideInstantDialog();
-			CurrentPageTextBlock.Text = $"Current Page : {page}";
 		}
 		public async Task Reload() {
 			MainPage.CreateInstantDialog("Please Wait", "Reloading...");
 			await Task.Delay(20);
 			LoadPosts(this.posts, tags);
 			MainPage.HideInstantDialog();
+		}
+		public void UpdatePaginator() {
+			PaginatorPanel.Children.Clear();
+			//currentPage
+			//maxPage
+			//minPage = 1
+			//left 4 right 4
+
+			tb_ArticlesLoadCount = new TextBlock() {
+				Text = "Posts: 0/75",
+				Width = 130,
+				VerticalAlignment = VerticalAlignment.Center,
+				HorizontalAlignment = HorizontalAlignment.Center,
+				TextAlignment = TextAlignment.Center,
+				FontSize = 20,
+			};
+			PaginatorPanel.Children.Add(tb_ArticlesLoadCount);
+
+			FrameworkElement CreateButton(object content, Action<Button> action = null) {
+				FrameworkElement result;
+				if(action != null) {
+					result = new Button() {
+						Content = content.ToString(),
+						Background = new SolidColorBrush(Colors.Transparent),
+						BorderThickness = new Thickness(0),
+						Height = 40,
+						Width = 40,
+					};
+					result.Tapped += (s, e) => action.Invoke(s as Button);
+				} else {
+					//button.IsEnabled = false;
+					result = new TextBlock() {
+						Text = content.ToString(),
+						Height = 40,
+						Width = 40,
+						TextAlignment = TextAlignment.Center,
+						Margin = new Thickness(0, 0, 0, -20),
+					};
+				}
+				if(content is int page && page == currentPage) {
+					if(result is Button button) {
+						button.FontWeight = FontWeights.ExtraBold;
+						button.FontSize += 2;
+						button.Margin = new Thickness(0, 0, 0, -15);
+					} else if(result is TextBlock tb) {
+						tb.FontWeight = FontWeights.ExtraBold;
+						tb.FontSize += 2;
+						tb.Margin = new Thickness(0, 0, 0, -15);
+					}
+				}
+				PaginatorPanel.Children.Add(result);
+				return result;
+			}
+			async Task NavigatePage(int i) {
+				int page;
+				if(i == -1) {
+					page = Math.Clamp(currentPage - 1, 1, maxPage);
+				} else if(i == -2) {
+					page = Math.Clamp(currentPage + 1, 1, maxPage);
+				} else {
+					page = i;
+				}
+				await LoadAsync(page, tags);
+			}
+
+			async void P1(Button b) => await NavigatePage(-1);
+			async void P2(Button b) => await NavigatePage(-2);
+
+			var btns = new List<FrameworkElement> {
+				CreateButton('<', currentPage > 1 ? (Action<Button>)P1 : null)
+			};
+
+			if(currentPage > 6) {
+				btns.Add(CreateButton('1', async b => await NavigatePage(1)));
+				btns.Add(CreateButton("..."));
+				btns.Add(CreateButton(currentPage - 4, async b => await NavigatePage(currentPage - 4)));
+				btns.Add(CreateButton(currentPage - 3, async b => await NavigatePage(currentPage - 3)));
+				btns.Add(CreateButton(currentPage - 2, async b => await NavigatePage(currentPage - 2)));
+				btns.Add(CreateButton(currentPage - 1, async b => await NavigatePage(currentPage - 1)));
+			} else {
+				for(int i = 1; i < currentPage; i++) {
+					btns.Add(CreateButton(i, async b => await NavigatePage(i)));
+				}
+			}
+
+			btns.Add(CreateButton(currentPage));
+
+			if(maxPage - currentPage > 6) {
+				btns.Add(CreateButton(currentPage + 1, async b => await NavigatePage(currentPage + 1)));
+				btns.Add(CreateButton(currentPage + 2, async b => await NavigatePage(currentPage + 2)));
+				btns.Add(CreateButton(currentPage + 3, async b => await NavigatePage(currentPage + 3)));
+				btns.Add(CreateButton(currentPage + 4, async b => await NavigatePage(currentPage + 4)));
+				btns.Add(CreateButton("..."));
+			} else {
+				for(int i = currentPage + 1; i < maxPage; i++) {
+					btns.Add(CreateButton(i, async b => await NavigatePage(i)));
+				}
+			}
+			if(currentPage != maxPage) {
+				btns.Add(CreateButton(maxPage, async b => await NavigatePage(maxPage)));
+			}
+
+			btns.Add(CreateButton('>', currentPage < maxPage ? (Action<Button>)P2 : null));
+
+			AutoSuggestBox box = new AutoSuggestBox() {
+				QueryIcon = new SymbolIcon(Symbol.Forward),
+				VerticalAlignment = VerticalAlignment.Center,
+				MinWidth = 130,
+				PlaceholderText = "Jump To Page",
+			};
+			box.QuerySubmitted += async (s, e) => {
+				if(int.TryParse(s.Text, out int page)) {
+					if(page < 1 || page > maxPage) {
+						await MainPage.CreatePopupDialog("Error", $"({page}) can only be in 1-{maxPage}");
+					} else {
+						await LoadAsync(page, tags);
+					}
+				} else {
+					await MainPage.CreatePopupDialog("Error", $"({s.Text}) is not a valid number");
+				}
+			};
+			PaginatorPanel.Children.Add(box);
 		}
 
 		private void ShowNullImages(bool showNullImages) {
@@ -161,47 +289,47 @@ namespace E621Downloader.Pages {
 			await Reload();
 		}
 
-		private async void PrevButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(currentPage <= 1) {
-				return;
-			}
-			await LoadAsync(--currentPage, tags);
-			//posts = Post.GetPostsByTags(--currentPage, tags);
-			//LoadPosts(posts);
-			//CurrentPageTextBlock.Text = "Current Page : " + currentPage;
-		}
+		//private async void PrevButton_Tapped(object sender, TappedRoutedEventArgs e) {
+		//	if(currentPage <= 1) {
+		//		return;
+		//	}
+		//	await LoadAsync(--currentPage, tags);
+		//	//posts = Post.GetPostsByTags(--currentPage, tags);
+		//	//LoadPosts(posts);
+		//	//CurrentPageTextBlock.Text = "Current Page : " + currentPage;
+		//}
 
-		private async void NextButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			await LoadAsync(++currentPage, tags);
-			//posts = Post.GetPostsByTags(++currentPage, tags);
-			//LoadPosts(posts);
-			//CurrentPageTextBlock.Text = "Current Page : " + currentPage;
-		}
+		//private async void NextButton_Tapped(object sender, TappedRoutedEventArgs e) {
+		//	await LoadAsync(++currentPage, tags);
+		//	//posts = Post.GetPostsByTags(++currentPage, tags);
+		//	//LoadPosts(posts);
+		//	//CurrentPageTextBlock.Text = "Current Page : " + currentPage;
+		//}
 
-		private async void PageJumpTextBox_KeyDown(object sender, KeyRoutedEventArgs e) {
-			if(e.Key == VirtualKey.Enter) {
-				await JumpPageAction(PageJumpTextBox);
-			}
-		}
+		//private async void PageJumpTextBox_KeyDown(object sender, KeyRoutedEventArgs e) {
+		//	if(e.Key == VirtualKey.Enter) {
+		//		await JumpPageAction(PageJumpTextBox);
+		//	}
+		//}
 
-		private async void JumpPageSubmitButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			await JumpPageAction(PageJumpTextBox);
-		}
-		private async Task JumpPageAction(TextBox sender) {
-			if(int.TryParse(sender.Text, out int page)) {
-				if(page == currentPage) {
-					return;
-				}
-				if(page > 750 || page <= 0) {
-					await MainPage.CreatePopupDialog("Error", "Plase Enter a Number Within 0 ~ 750");
-					return;
-				}
-				await LoadAsync(page, tags);
-			} else {
-				await MainPage.CreatePopupDialog("Int Parse Error", "Plase Enter a Valid Number");
-				return;
-			}
-		}
+		//private async void JumpPageSubmitButton_Tapped(object sender, TappedRoutedEventArgs e) {
+		//	await JumpPageAction(PageJumpTextBox);
+		//}
+		//private async Task JumpPageAction(TextBox sender) {
+		//	if(int.TryParse(sender.Text, out int page)) {
+		//		if(page == currentPage) {
+		//			return;
+		//		}
+		//		if(page > 750 || page <= 0) {
+		//			await MainPage.CreatePopupDialog("Error", "Plase Enter a Number Within 0 ~ 750");
+		//			return;
+		//		}
+		//		await LoadAsync(page, tags);
+		//	} else {
+		//		await MainPage.CreatePopupDialog("Int Parse Error", "Plase Enter a Valid Number");
+		//		return;
+		//	}
+		//}
 
 		private void FixedHeightCheckBox_Checked(object sender, RoutedEventArgs e) {
 			isHeightFixed = true;
@@ -234,7 +362,7 @@ namespace E621Downloader.Pages {
 					break;
 				case ContentDialogResult.Secondary:
 					//get currentpage posts
-					MainPage.CreateInstantDialog("Please Wait","Handling Downloads");
+					MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
 					await Task.Delay(50);
 					foreach(Post item in posts) {
 						DownloadsManager.RegisterDownload(item, tags);
@@ -245,6 +373,18 @@ namespace E621Downloader.Pages {
 				default:
 					throw new Exception();
 			}
+		}
+
+		private void MyPageInputBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) {
+
+		}
+
+		private void SelectToggleButton_Checked(object sender, RoutedEventArgs e) {
+
+		}
+
+		private void SelectToggleButton_Unchecked(object sender, RoutedEventArgs e) {
+
 		}
 	}
 }

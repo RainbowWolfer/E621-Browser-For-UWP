@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
 	public class E621Paginator {
-		public static E621Paginator Get(string tag, int page = 1) {
+		public static E621Paginator Get(string[] tags, int page = 1) {
+			string tag = "";
+			foreach(var item in tags) {
+				tag += item + " ";
+			}
 			string url = $"https://e621.net/posts?tags={tag}&page={page}";
 			string data = Data.ReadURL(url);
 			int startIndex = data.IndexOf("paginator");
@@ -63,5 +67,14 @@ namespace E621Downloader.Models.Posts {
 
 		public int currentPage;
 		public int[] pages;
+		public int GetMaxPage() {
+			int max = -1;
+			foreach(int item in pages) {
+				if(item > max) {
+					max = item;
+				}
+			}
+			return max;
+		}
 	}
 }

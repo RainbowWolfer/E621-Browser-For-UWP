@@ -9,41 +9,42 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Page_Loaded">
-
-	<NavigationView PaneDisplayMode="Top" Name="MyNavigationView" IsBackButtonVisible="Auto" SelectionFollowsFocus="Enabled" ItemInvoked="MyNavigationView_ItemInvoked">
-		<NavigationView.MenuItems>
-			<NavigationViewItem Icon="Home" Content="Home" Tag="0"/>
-			<NavigationViewItem Icon="Pictures" Content="Picture" Tag="1"/>
-			<NavigationViewItem Icon="Library" Content="Library" Tag="2"/>
-			<NavigationViewItem Icon="Link" Content="Subcription" Tag="3"/>
-			<NavigationViewItem Icon="Download" Content="Download" Tag="4"/>
-		</NavigationView.MenuItems>
-		<NavigationView.PaneFooter>
-			<StackPanel Orientation="Horizontal">
-				<Button x:Name="CurrentTagsButton" VerticalAlignment="Center" Height="40" Background="Transparent" BorderThickness="0" Tapped="CurrentTagsButton_Tapped">
-					<Button.Content>
-						<StackPanel Orientation="Horizontal">
-							<TextBlock x:Name="TextBlockSearchTags" Text="type:webm" Margin="5,0,5,0"/>
-							<FontIcon Glyph="&#xE094;" FontSize="16" Margin="5,0,5,0"/>
-						</StackPanel>
-					</Button.Content>
-				</Button>
-				<Button x:Name="FullScreenButton" Background="Transparent" BorderThickness="0" Height="40" Width="45" FontFamily="Segoe MDL2 Assets" Content="&#xE740;" Tapped="FullScreenButton_Tapped"  ToolTipService.ToolTip="Switch FullScreen"/>
-				<!--<Button x:Name="SearchButton" Height="40" Width="45" BorderThickness="0" Background="Transparent" FontFamily="Segoe MDL2 Assets" Content="&#xE094;" Tapped="SearchButton_Tapped" ToolTipService.ToolTip="Search Tags"/>-->
-				<!--<FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE740;" />-->
-			</StackPanel>
-		</NavigationView.PaneFooter>
-		<!--<NavigationView.Header>
+	<Grid>
+		<NavigationView PaneDisplayMode="Top" Name="MyNavigationView" IsBackButtonVisible="Auto" SelectionFollowsFocus="Enabled" ItemInvoked="MyNavigationView_ItemInvoked">
+			<NavigationView.MenuItems>
+				<NavigationViewItem Icon="Home" Content="Home" Tag="0"/>
+				<NavigationViewItem Icon="Pictures" Content="Picture" Tag="1"/>
+				<NavigationViewItem Icon="Library" Content="Library" Tag="2"/>
+				<NavigationViewItem Icon="Link" Content="Subcription" Tag="3"/>
+				<NavigationViewItem Icon="Download" Content="Download" Tag="4"/>
+			</NavigationView.MenuItems>
+			<NavigationView.PaneFooter>
+				<StackPanel Orientation="Horizontal">
+					<Button x:Name="CurrentTagsButton" VerticalAlignment="Center" Height="40" Background="Transparent" BorderThickness="0" Tapped="CurrentTagsButton_Tapped">
+						<Button.Content>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock x:Name="TextBlockSearchTags" Text="type:webm" Margin="5,0,5,0"/>
+								<FontIcon Glyph="&#xE094;" FontSize="16" Margin="5,0,5,0"/>
+							</StackPanel>
+						</Button.Content>
+					</Button>
+					<Button x:Name="FullScreenButton" Background="Transparent" BorderThickness="0" Height="40" Width="45" FontFamily="Segoe MDL2 Assets" Content="&#xE740;" Tapped="FullScreenButton_Tapped"  ToolTipService.ToolTip="Switch FullScreen"/>
+					<!--<Button x:Name="SearchButton" Height="40" Width="45" BorderThickness="0" Background="Transparent" FontFamily="Segoe MDL2 Assets" Content="&#xE094;" Tapped="SearchButton_Tapped" ToolTipService.ToolTip="Search Tags"/>-->
+					<!--<FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE740;" />-->
+				</StackPanel>
+			</NavigationView.PaneFooter>
+			<!--<NavigationView.Header>
 			<TextBlock Text="Hello World!" HorizontalAlignment="Center"/>
 		</NavigationView.Header>-->
-		<NavigationView.Content>
-			<Frame x:Name="MyFrame">
-				<Frame.ContentTransitions>
-					<TransitionCollection>
-						<NavigationThemeTransition/>
-					</TransitionCollection>
-				</Frame.ContentTransitions>
-			</Frame>
-		</NavigationView.Content>
-	</NavigationView>
+			<NavigationView.Content>
+				<Frame x:Name="MyFrame">
+					<Frame.ContentTransitions>
+						<TransitionCollection>
+							<NavigationThemeTransition/>
+						</TransitionCollection>
+					</Frame.ContentTransitions>
+				</Frame>
+			</NavigationView.Content>
+		</NavigationView>
+	</Grid>
 </Page>

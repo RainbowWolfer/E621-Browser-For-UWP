@@ -14,27 +14,13 @@
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
-		<ScrollViewer VerticalScrollMode="Disabled" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Disabled" Margin="10,0,10,0">
-			<StackPanel Orientation="Horizontal">
-				<Button x:Name="PrevButton" Content="Previous Page" Margin="5" Width="120" Tapped="PrevButton_Tapped"/>
-				<Button x:Name="NextButton" Content="Next Page" Margin="5" Width="120" Tapped="NextButton_Tapped"/>
-				<TextBlock x:Name="CurrentPageTextBlock" Text="Current Page: 1" Margin="5" VerticalAlignment="Center"/>
-				<!--<AutoSuggestBox Margin="5" PlaceholderText="Jump To Page" Width="130" QueryIcon="Accept"/>-->
-				<StackPanel Margin="5" VerticalAlignment="Center" Orientation="Horizontal">
-					<TextBox Width="110" KeyDown="PageJumpTextBox_KeyDown" x:Name="PageJumpTextBox" PlaceholderText="Jump To Page" TextAlignment="Center"/>
-					<Button x:Name="JumpPageSubmitButton" Tapped="JumpPageSubmitButton_Tapped">
-						<Button.Content>
-							<SymbolIcon Symbol="Accept"/>
-						</Button.Content>
-					</Button>
-				</StackPanel>
-				<TextBlock x:Name="LoadsTextBlock" Text="Articles: 0/0" Margin="5" VerticalAlignment="Center"/>
-				<CheckBox x:Name="FixedHeightCheckBox" Content="Fixed Height" Margin="5" Checked="FixedHeightCheckBox_Checked" Unchecked="FixedHeightCheckBox_Unchecked"/>
-				<Button x:Name="RefreshButton" Content="Refresh" Margin="5" Tapped="RefreshButton_Tapped"/>
-				<Button x:Name="DownloadButton" Content="Download" Margin="5" Tapped="DownloadButton_Tapped"/>
-
-			</StackPanel>
-		</ScrollViewer>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+			<!--<TextBlock x:Name="LoadsTextBlock" Text="Articles: 0/0" Margin="5" VerticalAlignment="Center"/>-->
+			<CheckBox x:Name="FixedHeightCheckBox" Content="Fixed Height" Margin="5" Checked="FixedHeightCheckBox_Checked" Unchecked="FixedHeightCheckBox_Unchecked"/>
+			<Button x:Name="RefreshButton" Content="Refresh" Margin="5" Tapped="RefreshButton_Tapped"/>
+			<Button x:Name="DownloadButton" Content="Download" Margin="5" Tapped="DownloadButton_Tapped"/>
+			<ToggleButton x:Name="SelectToggleButton" Content="Select" Checked="SelectToggleButton_Checked" Unchecked="SelectToggleButton_Unchecked"/>
+		</StackPanel>
 		<ScrollViewer VerticalScrollMode="Auto" Grid.Row="1">
 			<Grid>
 				<!--<VariableSizedWrapGrid x:Name="MyWrapGrid" ItemHeight="100" ItemWidth="100" Orientation="Horizontal"/>-->
@@ -44,13 +30,10 @@
 		<Grid Grid.Row="2">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="3*"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			
-
+			<StackPanel x:Name="PaginatorPanel" Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Center"/>
 		</Grid>
 	</Grid>
 </Page>
