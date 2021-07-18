@@ -57,7 +57,7 @@ namespace E621Downloader.Views {
 
 		public BitmapImage Image { get; private set; }
 
-		private bool isLoaded;
+		//private bool isLoaded;
 
 		public ImageHolder(Post post) {
 			this.PostRef = post;
@@ -120,10 +120,10 @@ namespace E621Downloader.Views {
 		}
 		*/
 		private void Grid_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(!this.isLoaded) {
+			//if(!this.isLoaded) {
 				//open browser;
 				//return;
-			}
+			//}
 			if(LoadUrl == null) {
 				return;
 			}

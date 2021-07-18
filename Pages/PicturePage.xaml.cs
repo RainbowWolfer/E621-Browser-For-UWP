@@ -283,6 +283,30 @@ namespace E621Downloader.Pages {
 			}
 			bool success = await Launcher.LaunchUriAsync(new Uri($"https://e621.net/posts/{PostRef.id}"));
 		}
+
+		private void MoreInfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			MainSplitView.IsPaneOpen = !MainSplitView.IsPaneOpen;
+		}
+
+		private async void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			string tag = (sender as Button).Tag as string;
+			E621Tag[] e621tags = E621Tag.Get(tag);
+			string name = tag;
+			string count = "0";
+			string description = "not found";
+			if(e621tags != null & e621tags.Length > 0) {
+				count = e621tags[0].post_count.ToString();
+				E621Wiki[] e621wikies = E621Wiki.Get(tag);
+				if(e621wikies != null && e621wikies.Length > 0) {
+					description = e621wikies[0].body;
+				}
+			}
+			await new ContentDialog() {
+				Title = $"Tag Information: {name}",
+				Content = $"Count: {count}\nDescription: {description}",
+				CloseButtonText = "Back",
+			}.ShowAsync();
+		}
 	}
 	public class GroupTagList: List<string> {
 		public string Key { get; set; }

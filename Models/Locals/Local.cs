@@ -216,10 +216,12 @@ namespace E621Downloader.Models.Locals {
 							meta = JsonConvert.DeserializeObject<MetaFile>(reader.ReadToEnd());
 						}
 					}
-					Pair.Add(pairs, meta);
+					if(meta != null) {
+						Pair.Add(pairs, meta);
+					}
 				} else {
 					BitmapImage bitmap = new BitmapImage();
-					ThumbnailMode mode = ThumbnailMode.DocumentsView;
+					ThumbnailMode mode = ThumbnailMode.SingleItem;
 					if(new string[] { ".webm" }.Contains(file.FileType)) {
 						mode = ThumbnailMode.SingleItem;
 					} else if(new string[] { ".jpg", ".png" }.Contains(file.FileType)) {
@@ -227,8 +229,10 @@ namespace E621Downloader.Models.Locals {
 					}
 					//Debug.WriteLine(mode);
 					using(StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(mode)) {
-						using(Stream stream = thumbnail.AsStreamForRead()) {
-							bitmap.SetSource(stream.AsRandomAccessStream());
+						if(thumbnail != null) {
+							using(Stream stream = thumbnail.AsStreamForRead()) {
+								bitmap.SetSource(stream.AsRandomAccessStream());
+							}
 						}
 					}
 					Pair.Add(pairs, bitmap, file);
@@ -257,7 +261,11 @@ namespace E621Downloader.Models.Locals {
 					using(Stream stream = await file.OpenStreamForReadAsync()) {
 						using(StreamReader reader = new StreamReader(stream)) {
 							string content = reader.ReadToEnd();
-							metas.Add(JsonConvert.DeserializeObject<MetaFile>(content));
+							MetaFile meta = JsonConvert.DeserializeObject<MetaFile>(content);
+							if(meta == null) {
+								continue;
+							}
+							metas.Add(meta);
 						}
 					}
 				}

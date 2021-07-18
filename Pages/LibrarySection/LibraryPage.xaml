@@ -35,16 +35,6 @@
 							</Grid>
 						</DataTemplate>
 					</ListView.ItemTemplate>
-					<!--<ListViewItem>
-						<Grid Margin="-2,0,0,0">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="40"/>
-								<ColumnDefinition Width="*"/>
-							</Grid.ColumnDefinitions>
-							<SymbolIcon Symbol="Home"/>
-							<TextBlock Grid.Column="1" Text="Root" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="18"/>
-						</Grid>
-					</ListViewItem>-->
 				</ListView>
 			</Grid>
 		</SplitView.Pane>
@@ -52,16 +42,15 @@
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="auto"/>
-					<RowDefinition Height="auto"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 				<RelativePanel Height="40">
-					<TextBlock Text="Hello World" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Margin="10,0,0,0"/>
-					<AutoSuggestBox RelativePanel.AlignRightWithPanel="True" MinWidth="300" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,0,10,0" QueryIcon="Find"/>
+					<TextBlock x:Name="TitleTextBlock" Text="Hello World" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Margin="10,0,0,0"/>
+					<AutoSuggestBox x:Name="MySearchBox" RelativePanel.AlignRightWithPanel="True" MinWidth="300" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,0,10,0" QueryIcon="Find"/>
 				</RelativePanel>
-				<Rectangle Grid.Row="1" HorizontalAlignment="Stretch" Height="2" Fill="DarkGray" Margin="10,0,10,5"/>
+				<!--<Rectangle Grid.Row="1" HorizontalAlignment="Stretch" Height="2" Fill="DarkGray" Margin="10,0,10,5"/>-->
 				
-				<Frame Grid.Row="2" x:Name="MainFrame" Visibility="Visible">
+				<Frame Grid.Row="1" x:Name="MainFrame" Visibility="Visible">
 					<Frame.ContentTransitions>
 						<TransitionCollection>
 							<NavigationThemeTransition/>

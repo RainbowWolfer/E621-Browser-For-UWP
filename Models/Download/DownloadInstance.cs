@@ -1,6 +1,7 @@
 ﻿using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages.DownloadSection;
+using E621Downloader.Pages.LibrarySection;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -50,6 +51,9 @@ namespace E621Downloader.Models.Download {
 				if(DownloadProgress == 1 || Status == BackgroundTransferStatus.Completed) {
 					metaFile.FinishedDownloading = true;
 					Local.WriteMetaFile(metaFile, PostRef, GroupName);
+					if(LibraryPage.Instance != null && LibraryPage.Instance.current != null) {
+						LibraryPage.Instance.current.RefreshRequest();
+					}
 				}
 			}));
 			//if(MainPage.Instance.currentTag == PageTag.Download && DownloadPage.Instance != null) {

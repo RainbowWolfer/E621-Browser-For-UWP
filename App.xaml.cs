@@ -38,15 +38,15 @@ namespace E621Downloader {
 
 			Local.Initialize();
 
-			Test();
+			//Test();
 		}
 
-		private async void Test() {
-			//while(Local.DownloadFolder == null) {
-			//	await Task.Delay(10);
-			//}
-			//List<MetaFile> metas = await Local.GetAllMetaFiles();
-		}
+		//private async void Test() {
+		//while(Local.DownloadFolder == null) {
+		//	await Task.Delay(10);
+		//}
+		//List<MetaFile> metas = await Local.GetAllMetaFiles();
+		//}
 
 		public static bool CompareTwoArray<T>(IEnumerable<T> a, IEnumerable<T> b) {
 			T[] ar = a.ToArray();

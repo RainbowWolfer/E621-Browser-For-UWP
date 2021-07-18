@@ -10,6 +10,7 @@
 
 	<Grid>
 		<TextBlock Visibility="Collapsed" x:Name="HintText" Text="You have not select your download folder&#x0a;Please go to the settings page and choose your download folder" FontSize="64" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
+		<ProgressRing Name="MyProgressRing" Margin="300" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>
 		<GridView x:Name="MyGridView" ItemsSource="{x:Bind items}" SelectionMode="None" ItemClick="MyGridView_ItemClick" IsItemClickEnabled="True">
 			<!---->
 			<GridView.ItemContainerStyle>

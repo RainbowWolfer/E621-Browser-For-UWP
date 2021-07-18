@@ -23,19 +23,27 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="210"/>
+			<ColumnDefinition Width="250"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<StackPanel Grid.Column="1">
 			<StackPanel Orientation="Horizontal">
 				<Button x:Name="DebugButton" Content="Debug Post Info" FontSize="18" Margin="10" Tapped="DebugButton_Tapped"/>
-				<TextBlock Margin="10" Text="{x:Bind Title, Mode=OneWay}" FontSize="30" VerticalAlignment="Center" TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center"/>
+				<TextBlock Margin="10" Text="{x:Bind Title}" FontSize="30" VerticalAlignment="Center" TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center"/>
 			</StackPanel>
-			<StackPanel Orientation="Horizontal" Margin="5">
+			<RelativePanel Margin="5">
 				<Button x:Name="DownloadButton" Content="Download" FontSize="18" Margin="5" Tapped="DownloadButton_Tapped"/>
-				<Button x:Name="CopyButton" Content="Copy" FontSize="18" Margin="5" Tapped="CopyButton_Tapped"/>
-				<Button x:Name="BrowserButton" Content="Open In Default Browser" FontSize="18" Margin="5" Tapped="BrowserButton_Tapped"/>
-			</StackPanel>
+				<Button x:Name="CopyButton" Content="Copy" FontSize="18" Margin="5" Tapped="CopyButton_Tapped" RelativePanel.RightOf="DownloadButton"/>
+				<Button x:Name="BrowserButton" Content="Open In Default Browser" FontSize="18" Margin="5" Tapped="BrowserButton_Tapped" RelativePanel.RightOf="CopyButton"/>
+				<Button x:Name="MoreInfoButton" RelativePanel.AlignRightWithPanel="True" FontSize="18" Background="Transparent" BorderThickness="0" Height="38" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="MoreInfoButton_Tapped">
+					<Button.Content>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="More Info" Margin="5"/>
+							<FontIcon Glyph="&#xE169;" Margin="5"/>
+						</StackPanel>
+					</Button.Content>
+				</Button>
+			</RelativePanel>
 		</StackPanel>
 
 		<ListView x:Name="TagsListView" ItemsSource="{Binding Source={StaticResource ContactsCVS}}" Grid.RowSpan="2" SelectionMode="None" IsItemClickEnabled="True" ItemClick="TagsListView_ItemClick">
@@ -46,8 +54,9 @@
 			</ListView.ItemsPanel>
 			<ListView.ItemTemplate>
 				<DataTemplate x:DataType="x:String">
-					<RelativePanel Width="185">
-						<TextBlock Text="{x:Bind ToString()}" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,0,20,0" TextWrapping="Wrap" Width="100"/>
+					<RelativePanel Width="225">
+						<Button x:Name="InfoButton" FontFamily="Segoe MDL2 Assets" Content="&#xE946;" RelativePanel.AlignVerticalCenterWithPanel="True" Style="{StaticResource TagButton}" Tapped="InfoButton_Tapped" Tag="{x:Bind ToString()}"/>
+						<TextBlock Text="{x:Bind ToString()}" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="2,0,20,0" TextWrapping="Wrap" Width="100" RelativePanel.RightOf="InfoButton"/>
 						<Button x:Name="BlackListButton" Style="{StaticResource TagButton}" Content="&#xF8AB;" Tag="{x:Bind ToString()}" RelativePanel.LeftOf="FollowListButton" Tapped="BlackListButton_Tapped" Loaded="BlackListButton_Loaded"/>
 						<Button x:Name="FollowListButton" Style="{StaticResource TagButton}" Content="&#xF8AA;" Tag="{x:Bind ToString()}" RelativePanel.AlignRightWithPanel="True" Tapped="FollowListButton_Tapped" Loaded="FollowListButton_Loaded"/>
 					</RelativePanel>
@@ -63,11 +72,22 @@
 				</GroupStyle>
 			</ListView.GroupStyle>
 		</ListView>
+		<SplitView x:Name="MainSplitView" Grid.Column="1" Grid.Row="1" PanePlacement="Right">
+			<SplitView.Pane>
+				<Grid>
+					<TextBlock Text="{x:Bind PostRef.description}" TextWrapping="Wrap" FontSize="18" Margin="20"/>
+				</Grid>
+			</SplitView.Pane>
+			<SplitView.Content>
+				<Grid>
+					<MediaPlayerElement x:Name="MyMediaPlayer" AutoPlay="False" AreTransportControlsEnabled="True" Margin="0,0,40,40"/>
+					<ScrollViewer x:Name="MyScrollViewer" MinZoomFactor="0.3" DoubleTapped="MyScrollViewer_DoubleTapped" ZoomMode="Enabled" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Hidden" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Hidden">
+						<Image PointerWheelChanged="MainImage_PointerWheelChanged" PointerPressed="MainImage_PointerPressed" PointerReleased="MainImage_PointerReleased" PointerMoved="MainImage_PointerMoved" PointerEntered="MainImage_PointerEntered" PointerExited="MainImage_PointerExited" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="MainImage" Margin="0,0,40,40" ImageOpened="MainImage_ImageOpened"/>
+					</ScrollViewer>
+					<ProgressRing Name="MyProgressRing" MaxHeight="300" MaxWidth="300" Margin="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>
+				</Grid>
+			</SplitView.Content>
+		</SplitView>
 
-		<MediaPlayerElement x:Name="MyMediaPlayer" Grid.Column="1" Grid.Row="1" AutoPlay="False" AreTransportControlsEnabled="True" Margin="0,0,40,40"/>
-		<ScrollViewer Grid.Column="1" Grid.Row="1" x:Name="MyScrollViewer" MinZoomFactor="0.3" DoubleTapped="MyScrollViewer_DoubleTapped" ZoomMode="Enabled" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Hidden" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Hidden">
-			<Image PointerWheelChanged="MainImage_PointerWheelChanged" PointerPressed="MainImage_PointerPressed" PointerReleased="MainImage_PointerReleased" PointerMoved="MainImage_PointerMoved" PointerEntered="MainImage_PointerEntered" PointerExited="MainImage_PointerExited" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="MainImage" Margin="0,0,40,40" ImageOpened="MainImage_ImageOpened"/>
-		</ScrollViewer>
-		<ProgressRing Name="MyProgressRing" Grid.Row="1" Grid.Column="1" MaxHeight="300" MaxWidth="300" Margin="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>
 	</Grid>
 </Page>

@@ -19,25 +19,34 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages.LibrarySection {
 	public sealed partial class LibraryPage: Page {
+		public static LibraryPage Instance;
 		public const string HOMESTRING = "Home";
+		public const string FILTERSTRING = "Filter";
 		public ObservableCollection<LibraryTab> tabs;
 
-		private readonly LibraryTab first;
+		public Explorer current;
+
+		private readonly LibraryTab home;
+		private readonly LibraryTab filter;
 		public LibraryPage() {
+			Instance = this;
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
-			first = new LibraryTab(null, Symbol.Home, HOMESTRING, false);
+			home = new LibraryTab(null, Symbol.Home, HOMESTRING, false);
+			filter = new LibraryTab(null, Symbol.Filter, FILTERSTRING, false);
 			tabs = new ObservableCollection<LibraryTab>() {
-				first,
+				filter,
+				home,
 			};
 			TabsListView.SelectedIndex = 0;
-			Navigate(typeof(Explorer), new object[] { first, this });
+			Navigate(typeof(Explorer), new object[] { home, this });
 			SettingsPage.isDownloadPathChangingHandled = true;
 		}
+
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			if(!SettingsPage.isDownloadPathChangingHandled) {
-				Navigate(typeof(Explorer), new object[] { first, this });
+				Navigate(typeof(Explorer), new object[] { home, this });
 				SettingsPage.isDownloadPathChangingHandled = true;
 			}
 		}
@@ -48,6 +57,13 @@ namespace E621Downloader.Pages.LibrarySection {
 
 		public void Navigate(Type targetPage, object param) {
 			MainFrame.Navigate(targetPage, param, new DrillInNavigationTransitionInfo());
+			if(param is object[] objs && objs.Length > 0) {
+				if(objs[0] is LibraryTab tab) {
+					TitleTextBlock.Text = tab.title;
+				} else if(objs[0] is ItemBlock block) {
+					TitleTextBlock.Text = block.Name;
+				}
+			}
 		}
 
 		public void ToTab(StorageFolder folder, string tabName) {
