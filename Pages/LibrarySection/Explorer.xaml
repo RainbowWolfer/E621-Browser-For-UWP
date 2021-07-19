@@ -7,7 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+	<Page.Resources>
+		<SolidColorBrush x:Key="TransparentBackground" Color="Gray" Opacity="0.6"/>
+	</Page.Resources>
 	<Grid>
 		<TextBlock Visibility="Collapsed" x:Name="HintText" Text="You have not select your download folder&#x0a;Please go to the settings page and choose your download folder" FontSize="64" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
 		<ProgressRing Name="MyProgressRing" Margin="300" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>
@@ -21,7 +23,7 @@
 			</GridView.ItemContainerStyle>
 			<GridView.ItemTemplate>
 				<DataTemplate x:DataType="local:ItemBlock">
-					<Grid Height="200" Width="200" Margin="10">
+					<Grid Height="170" Width="200" Margin="10">
 						<Grid.RowDefinitions>
 							<RowDefinition Height="*"/>
 							<RowDefinition Height="30"/>
@@ -29,6 +31,9 @@
 						<FontIcon Visibility="{x:Bind FolderIconVisibility}" Glyph="&#xED43;" Foreground="Yellow" FontSize="120"/>
 						<Image Visibility="{x:Bind ImagePreviewVisibility}" Source="{x:Bind thumbnail}"/>
 						<TextBlock Grid.Row="1" Text="{x:Bind Name}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+						<Border x:Name="TypeBorder" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="2" Background="{StaticResource TransparentBackground}" Visibility="{x:Bind TypeBorderVisibility}">
+							<TextBlock x:Name="TypeTextBlock" Text="WEBM" Margin="4,2,4,2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
 					</Grid>
 				</DataTemplate>
 			</GridView.ItemTemplate>

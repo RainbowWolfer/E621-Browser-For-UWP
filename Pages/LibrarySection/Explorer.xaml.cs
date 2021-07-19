@@ -28,6 +28,8 @@ namespace E621Downloader.Pages.LibrarySection {
 		private LibraryTab libraryTab;
 		private ItemBlock itemBlock;
 
+		private bool refreshNeeded;
+
 		public Explorer() {
 			this.InitializeComponent();
 			items = new ObservableCollection<ItemBlock>();
@@ -40,10 +42,7 @@ namespace E621Downloader.Pages.LibrarySection {
 				if(objs.Length >= 2 && objs[1] is LibraryPage libraryPage) {
 					this.libraryPage = libraryPage;
 					libraryPage.current = this;
-					//await LoadAsync(objs[0] as LibraryTab, objs[0] as ItemBlock);
-					LibraryTab tab = objs[0] as LibraryTab;
-					ItemBlock parent = objs[0] as ItemBlock;
-					if(tab != null) {
+					if(objs[0] is LibraryTab tab) {
 						libraryTab = tab;
 						if(tab.title == "Home") {
 							foreach(StorageFolder folder in await Local.GetDownloadsFolders()) {
@@ -63,9 +62,7 @@ namespace E621Downloader.Pages.LibrarySection {
 							Debug.WriteLine("Filter VIEW");
 						} else {
 							List<(MetaFile, BitmapImage, StorageFile)> v = await Local.GetMetaFiles(tab.folder.DisplayName);
-							Debug.WriteLine("111Count" + v.Count);
 							foreach((MetaFile, BitmapImage, StorageFile) item in v) {
-								Debug.WriteLine($"First_ {item.Item1},{item.Item2},{item.Item3}");
 								items.Add(new ItemBlock() {
 									meta = item.Item1,
 									thumbnail = item.Item2,
@@ -73,13 +70,10 @@ namespace E621Downloader.Pages.LibrarySection {
 								});
 							}
 						}
-					} else if(parent != null) {
+					} else if(objs[0] is ItemBlock parent) {
 						itemBlock = parent;
 						List<(MetaFile, BitmapImage, StorageFile)> v = await Local.GetMetaFiles(parent.Name);
-
-						Debug.WriteLine("222Count" + v.Count);
 						foreach((MetaFile, BitmapImage, StorageFile) item in v) {
-							Debug.WriteLine($"Second_ {item.Item1},{item.Item2},{item.Item3}");
 							items.Add(new ItemBlock() {
 								meta = item.Item1,
 								thumbnail = item.Item2,
@@ -92,10 +86,8 @@ namespace E621Downloader.Pages.LibrarySection {
 					}
 				}
 			}
+			refreshNeeded = false;
 			MyProgressRing.IsActive = false;
-		}
-		private async Task LoadAsync(LibraryTab tab, ItemBlock parent) {
-
 		}
 
 		private void MyGridView_ItemClick(object sender, ItemClickEventArgs e) {
@@ -116,7 +108,7 @@ namespace E621Downloader.Pages.LibrarySection {
 		//}
 
 		public void RefreshRequest() {
-
+			refreshNeeded = true;
 		}
 	}
 
@@ -133,5 +125,7 @@ namespace E621Downloader.Pages.LibrarySection {
 		public Visibility FolderIconVisibility => IsFolder ? Visibility.Visible : Visibility.Collapsed;
 		public Visibility ImagePreviewVisibility => IsFolder ? Visibility.Collapsed : Visibility.Visible;
 
+		public Visibility TypeBorderVisibility => meta != null && new string[] { "webm", "gif", "anim" }.Contains(meta.MyPost?.file?.ext?.ToLower()) ? Visibility.Visible : Visibility.Collapsed;
+		public string TypeText => meta != null && meta.MyPost != null && meta.MyPost.file != null ? meta.MyPost.file.ext : "UNDEFINED";
 	}
 }

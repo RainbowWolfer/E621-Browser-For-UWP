@@ -4,7 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:E621Downloader.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:librarysection="using:E621Downloader.Pages.LibrarySection"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:librarysection="using:E621Downloader.Pages.LibrarySection"
 	mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -46,10 +47,26 @@
 				</Grid.RowDefinitions>
 				<RelativePanel Height="40">
 					<TextBlock x:Name="TitleTextBlock" Text="Hello World" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Margin="10,0,0,0"/>
+					<SplitButton RelativePanel.LeftOf="MySearchBox" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,2,10,2">
+						<SplitButton.Content>
+							<StackPanel Orientation="Horizontal">
+								<FontIcon Glyph="&#xE74A;&#xE74B;" Margin="0,0,10,0" FontSize="14"/>
+								<TextBlock Text="Order Desc : Name"/>
+							</StackPanel>
+						</SplitButton.Content>
+						<SplitButton.Flyout>
+							<MenuFlyout>
+								<MenuFlyoutItem Text="Name" Tapped="MenuFlyoutItem_Tapped"/>
+								<MenuFlyoutItem Text="Date" Tapped="MenuFlyoutItem_Tapped"/>
+								<MenuFlyoutItem Text="Size" Tapped="MenuFlyoutItem_Tapped"/>
+								<MenuFlyoutItem Text="Type - Date" Tapped="MenuFlyoutItem_Tapped"/>
+							</MenuFlyout>
+						</SplitButton.Flyout>
+					</SplitButton>
 					<AutoSuggestBox x:Name="MySearchBox" RelativePanel.AlignRightWithPanel="True" MinWidth="300" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,0,10,0" QueryIcon="Find"/>
 				</RelativePanel>
 				<!--<Rectangle Grid.Row="1" HorizontalAlignment="Stretch" Height="2" Fill="DarkGray" Margin="10,0,10,5"/>-->
-				
+
 				<Frame Grid.Row="1" x:Name="MainFrame" Visibility="Visible">
 					<Frame.ContentTransitions>
 						<TransitionCollection>

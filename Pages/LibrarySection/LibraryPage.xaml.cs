@@ -88,6 +88,66 @@ namespace E621Downloader.Pages.LibrarySection {
 				Navigate(typeof(Explorer), new object[] { target, this });
 			}
 		}
+
+		private void MenuFlyoutItem_Tapped(object sender, TappedRoutedEventArgs e) {
+			var item = sender as MenuFlyoutItem;
+			switch(item.Text) {
+				case "Name":
+					if(item.Text == "Order : Name") {
+						break;
+					}
+					item.Text = "Order : Name";
+					Order(OrderType.Name);
+					break;
+				case "Date":
+					if(item.Text == "Order : Date") {
+						break;
+					}
+					item.Text = "Order : Date";
+					Order(OrderType.Date);
+					break;
+				case "Size":
+					if(item.Text == "Order : Size") {
+						break;
+					}
+					item.Text = "Order : Size";
+					Order(OrderType.Size);
+					break;
+				case "Type - Date":
+					if(item.Text == "Order : Type - Date") {
+						break;
+					}
+					item.Text = "Order : Type - Date";
+					Order(OrderType.Type);
+					break;
+				default:
+					throw new Exception(item.Text + "not found");
+			}
+		}
+		private void Order(OrderType order) {
+			if(current == null) {
+				return;
+			}
+			switch(order) {
+				case OrderType.Name:
+					foreach(ItemBlock item in current.items) {
+						//item.meta.MyPost.file.size
+
+					}
+					break;
+				case OrderType.Date:
+					break;
+				case OrderType.Size:
+					break;
+				case OrderType.Type:
+					break;
+				default:
+					throw new Exception();
+			}
+		}
+		private enum OrderType {
+			Name, Date, Size, Type
+		}
 	}
 	public class LibraryTab {
 		public Symbol icon;
@@ -102,3 +162,4 @@ namespace E621Downloader.Pages.LibrarySection {
 		}
 	}
 }
+
