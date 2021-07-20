@@ -246,7 +246,7 @@ namespace E621Downloader.Models.Locals {
 			StorageFile file = await folder.GetFileAsync($"{postID}.meta");
 			using(Stream stream = await file.OpenStreamForReadAsync()) {
 				using(StreamReader reader = new StreamReader(stream)) {
-					return (JsonConvert.DeserializeObject<MetaFile>(reader.ReadToEnd()), file);
+					return (JsonConvert.DeserializeObject<MetaFile>(await reader.ReadToEndAsync()), file);
 				}
 			}
 		}

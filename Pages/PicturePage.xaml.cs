@@ -76,7 +76,9 @@ namespace E621Downloader.Pages {
 					MyProgressRing.IsActive = false;
 					MyMediaPlayer.Visibility = Visibility.Visible;
 					MyScrollViewer.Visibility = Visibility.Collapsed;
-					MyMediaPlayer.Source = MediaSource.CreateFromUri(new Uri(PostRef.file.url));
+					if(!string.IsNullOrEmpty(PostRef.file.url)) {
+						MyMediaPlayer.Source = MediaSource.CreateFromUri(new Uri(PostRef.file.url));
+					}
 				} else {
 					MyProgressRing.IsActive = true;
 					MyMediaPlayer.Visibility = Visibility.Collapsed;

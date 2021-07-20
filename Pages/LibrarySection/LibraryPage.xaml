@@ -32,7 +32,7 @@
 								</Grid.ColumnDefinitions>
 								<SymbolIcon Symbol="{x:Bind icon}"/>
 								<TextBlock Grid.Column="1" Text="{x:Bind title}" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="18"/>
-								<Button Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderThickness="0" FontFamily="Segoe MDL2 Assets" Content="&#xE10A;" Visibility="{x:Bind closeButtonVisibility}" Tapped="Button_Tapped"/>
+								<Button x:Name="CloseButton" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderThickness="0" FontFamily="Segoe MDL2 Assets" Content="&#xE10A;" Visibility="{x:Bind closeButtonVisibility}" Tapped="CloseButton_Tapped"/>
 							</Grid>
 						</DataTemplate>
 					</ListView.ItemTemplate>
@@ -47,11 +47,28 @@
 				</Grid.RowDefinitions>
 				<RelativePanel Height="40">
 					<TextBlock x:Name="TitleTextBlock" Text="Hello World" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Margin="10,0,0,0"/>
-					<SplitButton RelativePanel.LeftOf="MySearchBox" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,2,10,2">
+					<StackPanel x:Name="RefreshPanel" Orientation="Horizontal" RelativePanel.RightOf="TitleTextBlock" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,0,10,0">
+						<Button x:Name="RefreshButton" Content="Refresh" Tapped="RefreshButton_Tapped"/>
+						<TextBlock Text="Local Changdes has been Made &#10;Please Refresh to view new Downloaded Files" Margin="5,0,0,0"/>
+					</StackPanel>
+					<StackPanel RelativePanel.LeftOf="MySearchBox" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,2,10,2" Orientation="Horizontal">
+						<Button x:Name="OrderButton" Content="Order Desc : Name" Height="36">
+							<Button.Flyout>
+								<MenuFlyout Placement="BottomEdgeAlignedRight">
+									<MenuFlyoutItem Text="Name" Click="MenuFlyoutItem_Click"/>
+									<MenuFlyoutItem Text="Date" Click="MenuFlyoutItem_Click"/>
+									<MenuFlyoutItem Text="Size" Click="MenuFlyoutItem_Click" Name="FlyoutItem_Size"/>
+									<MenuFlyoutItem Text="Type - Date" Click="MenuFlyoutItem_Click" Name="FlyoutItem_Type"/>
+								</MenuFlyout>
+							</Button.Flyout>
+						</Button>
+						<Button x:Name="OrderEnumButton" Content="&#xE74A;" FontFamily="Segoe MDL2 Assets" Height="36" Tapped="OrderEnumButton_Tapped"/>
+					</StackPanel>
+					<!--<SplitButton RelativePanel.LeftOf="MySearchBox" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,2,10,2" Tapped="SplitButton_Tapped">
 						<SplitButton.Content>
 							<StackPanel Orientation="Horizontal">
-								<FontIcon Glyph="&#xE74A;&#xE74B;" Margin="0,0,10,0" FontSize="14"/>
-								<TextBlock Text="Order Desc : Name"/>
+								<FontIcon Name="AscDescIcon" Glyph="&#xE74A;&#xE74B;" Margin="0,0,10,0" FontSize="14"/>
+								<TextBlock x:Name="OrderTextBlock" Text="Order Desc : Name"/>
 							</StackPanel>
 						</SplitButton.Content>
 						<SplitButton.Flyout>
@@ -62,8 +79,8 @@
 								<MenuFlyoutItem Text="Type - Date" Tapped="MenuFlyoutItem_Tapped"/>
 							</MenuFlyout>
 						</SplitButton.Flyout>
-					</SplitButton>
-					<AutoSuggestBox x:Name="MySearchBox" RelativePanel.AlignRightWithPanel="True" MinWidth="300" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,0,10,0" QueryIcon="Find"/>
+					</SplitButton>-->
+					<AutoSuggestBox x:Name="MySearchBox" RelativePanel.AlignRightWithPanel="True" MinWidth="300" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,0,10,0" QueryIcon="Find" QuerySubmitted="MySearchBox_QuerySubmitted"/>
 				</RelativePanel>
 				<!--<Rectangle Grid.Row="1" HorizontalAlignment="Stretch" Height="2" Fill="DarkGray" Margin="10,0,10,5"/>-->
 

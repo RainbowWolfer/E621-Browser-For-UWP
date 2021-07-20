@@ -56,6 +56,7 @@ namespace E621Downloader.Pages.DownloadSection {
 		public void EnableTitleButton(bool enable) {
 			TitleButton.IsChecked = !enable;
 			TitleButton.IsHitTestVisible = enable;
+			TitleButton.BorderThickness = new Thickness(enable ? 2 : 0);
 		}
 
 		public void SelectTitle(string title) {

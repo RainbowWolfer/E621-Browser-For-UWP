@@ -24,11 +24,12 @@ namespace E621Downloader.Pages.LibrarySection {
 		private LibraryPage libraryPage;
 		private readonly List<StorageFolder> folders;
 		public ObservableCollection<ItemBlock> items;
+		private readonly List<ItemBlock> original;
 
-		private LibraryTab libraryTab;
-		private ItemBlock itemBlock;
+		public LibraryTab CurrentLibraryTab { get; private set; }
+		public ItemBlock CurrentItemBlock { get; private set; }
 
-		private bool refreshNeeded;
+		//private bool refreshNeeded;
 
 		public Explorer() {
 			this.InitializeComponent();
@@ -43,7 +44,7 @@ namespace E621Downloader.Pages.LibrarySection {
 					this.libraryPage = libraryPage;
 					libraryPage.current = this;
 					if(objs[0] is LibraryTab tab) {
-						libraryTab = tab;
+						CurrentLibraryTab = tab;
 						if(tab.title == "Home") {
 							foreach(StorageFolder folder in await Local.GetDownloadsFolders()) {
 								if(folder == null) {
@@ -71,7 +72,7 @@ namespace E621Downloader.Pages.LibrarySection {
 							}
 						}
 					} else if(objs[0] is ItemBlock parent) {
-						itemBlock = parent;
+						CurrentItemBlock = parent;
 						List<(MetaFile, BitmapImage, StorageFile)> v = await Local.GetMetaFiles(parent.Name);
 						foreach((MetaFile, BitmapImage, StorageFile) item in v) {
 							items.Add(new ItemBlock() {
@@ -86,8 +87,9 @@ namespace E621Downloader.Pages.LibrarySection {
 					}
 				}
 			}
-			refreshNeeded = false;
+			//refreshNeeded = false;
 			MyProgressRing.IsActive = false;
+			libraryPage.EnableRefreshButton(false);
 		}
 
 		private void MyGridView_ItemClick(object sender, ItemClickEventArgs e) {
@@ -101,14 +103,16 @@ namespace E621Downloader.Pages.LibrarySection {
 			}
 		}
 
-		//public async void Refresh() {
-		//	MyProgressRing.IsActive = true;
-		//	items.Clear();
-		//	await LoadAsync(libraryTab, itemBlock);
-		//}
+		public void Search(string content){
+
+		}
+		public void ClearSearch(){
+			
+		}
 
 		public void RefreshRequest() {
-			refreshNeeded = true;
+			//refreshNeeded = true;
+			libraryPage.EnableRefreshButton(true);
 		}
 	}
 

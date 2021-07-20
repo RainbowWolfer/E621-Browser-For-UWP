@@ -26,6 +26,9 @@ namespace E621Downloader.Pages.LibrarySection {
 
 		public Explorer current;
 
+		private OrderEnum order = OrderEnum.Asc;
+		private OrderType orderType = OrderType.Name;
+
 		private readonly LibraryTab home;
 		private readonly LibraryTab filter;
 		public LibraryPage() {
@@ -38,9 +41,11 @@ namespace E621Downloader.Pages.LibrarySection {
 				filter,
 				home,
 			};
-			TabsListView.SelectedIndex = 0;
-			Navigate(typeof(Explorer), new object[] { home, this });
+			TabsListView.SelectedIndex = 1;
+			NavigateToHome();
 			SettingsPage.isDownloadPathChangingHandled = true;
+
+			UpdateOrderText();
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
@@ -55,13 +60,26 @@ namespace E621Downloader.Pages.LibrarySection {
 			MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
 		}
 
+		public void NavigateToHome() {
+			Navigate(typeof(Explorer), new object[] { home, this });
+		}
+
 		public void Navigate(Type targetPage, object param) {
 			MainFrame.Navigate(targetPage, param, new DrillInNavigationTransitionInfo());
 			if(param is object[] objs && objs.Length > 0) {
 				if(objs[0] is LibraryTab tab) {
 					TitleTextBlock.Text = tab.title;
+					if(tab.folder != null) {
+						FlyoutItem_Size.Visibility = Visibility.Visible;
+						FlyoutItem_Type.Visibility = Visibility.Visible;
+					} else {
+						FlyoutItem_Size.Visibility = Visibility.Collapsed;
+						FlyoutItem_Type.Visibility = Visibility.Collapsed;
+					}
 				} else if(objs[0] is ItemBlock block) {
 					TitleTextBlock.Text = block.Name;
+					FlyoutItem_Size.Visibility = Visibility.Visible;
+					FlyoutItem_Type.Visibility = Visibility.Visible;
 				}
 			}
 		}
@@ -77,11 +95,6 @@ namespace E621Downloader.Pages.LibrarySection {
 			TabsListView.SelectedIndex = TabsListView.Items.Count - 1;
 		}
 
-		private void Button_Tapped(object sender, TappedRoutedEventArgs e) {
-			Button b = sender as Button;
-			Debug.WriteLine(b.Parent);
-		}
-
 		private void TabsListView_ItemClick(object sender, ItemClickEventArgs e) {
 			if(e.ClickedItem != null) {
 				var target = e.ClickedItem as LibraryTab;
@@ -89,64 +102,155 @@ namespace E621Downloader.Pages.LibrarySection {
 			}
 		}
 
-		private void MenuFlyoutItem_Tapped(object sender, TappedRoutedEventArgs e) {
-			var item = sender as MenuFlyoutItem;
-			switch(item.Text) {
-				case "Name":
-					if(item.Text == "Order : Name") {
-						break;
-					}
-					item.Text = "Order : Name";
-					Order(OrderType.Name);
-					break;
-				case "Date":
-					if(item.Text == "Order : Date") {
-						break;
-					}
-					item.Text = "Order : Date";
-					Order(OrderType.Date);
-					break;
-				case "Size":
-					if(item.Text == "Order : Size") {
-						break;
-					}
-					item.Text = "Order : Size";
-					Order(OrderType.Size);
-					break;
-				case "Type - Date":
-					if(item.Text == "Order : Type - Date") {
-						break;
-					}
-					item.Text = "Order : Type - Date";
-					Order(OrderType.Type);
-					break;
-				default:
-					throw new Exception(item.Text + "not found");
-			}
-		}
-		private void Order(OrderType order) {
-			if(current == null) {
-				return;
-			}
+		private void UpdateOrderText() {
+			string first;
 			switch(order) {
-				case OrderType.Name:
-					foreach(ItemBlock item in current.items) {
-						//item.meta.MyPost.file.size
-
-					}
+				case OrderEnum.Asc:
+					first = "Order Asc : ";
 					break;
-				case OrderType.Date:
-					break;
-				case OrderType.Size:
-					break;
-				case OrderType.Type:
+				case OrderEnum.Desc:
+					first = "Order Desc : ";
 					break;
 				default:
 					throw new Exception();
 			}
+			string second;
+			switch(orderType) {
+				case OrderType.Name:
+					second = "Name";
+					break;
+				case OrderType.Date:
+					second = "Date";
+					break;
+				case OrderType.Size:
+					second = "Size";
+					break;
+				case OrderType.Type:
+					second = "Type - Date";
+					break;
+				default:
+					throw new Exception();
+			}
+			OrderButton.Content = first + second;
+		}
+		private void Order() {
+			Order(this.order, this.orderType);
+		}
+		private void Order(OrderEnum order, OrderType type) {
+			if(current == null) {
+				return;
+			}
+
+			Func<ItemBlock, string> keySelector;
+			switch(type) {
+				case OrderType.Name:
+					keySelector = o => o.IsFolder ? o.Name : o.imageFile.DisplayName;
+					break;
+				case OrderType.Date:
+					keySelector = o => o.IsFolder ? o.parentFolder.DateCreated.ToString() : o.imageFile.DateCreated.ToString();
+					break;
+				case OrderType.Size:
+					keySelector = o => o.meta.MyPost.file.size.ToString();
+					break;
+				case OrderType.Type:
+					keySelector = o => o.meta.MyPost.file.ext;
+					break;
+				default:
+					throw new Exception();
+			}
+
+			List<ItemBlock> newList;
+			switch(order) {
+				case OrderEnum.Asc:
+					newList = current.items.OrderBy(keySelector).ToList();
+					break;
+				case OrderEnum.Desc:
+					newList = current.items.OrderByDescending(keySelector).ToList();
+					break;
+				default:
+					throw new Exception();
+			}
+			for(int i = 0; i < newList.Count; i++) {
+				current.items.Move(current.items.IndexOf(newList[i]), i);
+			}
 		}
 		private enum OrderType {
 			Name, Date, Size, Type
+		}
+		private enum OrderEnum {
+			Asc, Desc
+		}
+
+		private void OrderEnumButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(order == OrderEnum.Asc) {
+				order = OrderEnum.Desc;
+				OrderEnumButton.Content = "\uE74A";
+			} else {
+				order = OrderEnum.Asc;
+				OrderEnumButton.Content = "\uE74B";
+			}
+			UpdateOrderText();
+			Order();
+		}
+
+		private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e) {
+			var item = sender as MenuFlyoutItem;
+			OrderType target;
+			switch(item.Text) {
+				case "Name":
+					target = OrderType.Name;
+					break;
+				case "Date":
+					target = OrderType.Date;
+					break;
+				case "Size":
+					target = OrderType.Size;
+					break;
+				case "Type - Date":
+					target = OrderType.Type;
+					break;
+				default:
+					throw new Exception(item.Text + "not found");
+			}
+			if(orderType == target) {
+				return;
+			}
+			orderType = target;
+			UpdateOrderText();
+			Order();
+		}
+
+		private void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(current == null) {
+				return;
+			}
+			object param;
+			if(current.CurrentItemBlock != null && current.CurrentLibraryTab != null) {
+				throw new Exception();
+			} else if(current.CurrentItemBlock != null) {
+				param = current.CurrentItemBlock;
+			} else if(current.CurrentLibraryTab != null) {
+				param = current.CurrentLibraryTab;
+			} else {
+				throw new Exception();
+			}
+
+			Navigate(typeof(Explorer), new object[] { param, this });
+		}
+
+		public void EnableRefreshButton(bool b) {
+			RefreshPanel.Visibility = b ? Visibility.Visible : Visibility.Collapsed;
+		}
+
+		private void CloseButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			Button b = sender as Button;
+			Debug.WriteLine(b.Parent);
+		}
+
+		private void MySearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) {
+			if(current != null && current.items != null) {
+				
+			}
 		}
 	}
 	public class LibraryTab {
