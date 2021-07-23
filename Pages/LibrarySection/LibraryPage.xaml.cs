@@ -51,7 +51,7 @@ namespace E621Downloader.Pages.LibrarySection {
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			if(!SettingsPage.isDownloadPathChangingHandled) {
-				Navigate(typeof(Explorer), new object[] { home, this });
+				NavigateToHome();
 				SettingsPage.isDownloadPathChangingHandled = true;
 			}
 		}
@@ -248,8 +248,8 @@ namespace E621Downloader.Pages.LibrarySection {
 		}
 
 		private void MySearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) {
-			if(current != null && current.items != null) {
-				
+			if(current != null) {
+				current.Search(args.QueryText);
 			}
 		}
 	}

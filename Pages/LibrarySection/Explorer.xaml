@@ -11,9 +11,36 @@
 		<SolidColorBrush x:Key="TransparentBackground" Color="Gray" Opacity="0.6"/>
 	</Page.Resources>
 	<Grid>
-		<TextBlock Visibility="Collapsed" x:Name="HintText" Text="You have not select your download folder&#x0a;Please go to the settings page and choose your download folder" FontSize="64" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
-		<ProgressRing Name="MyProgressRing" Margin="300" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>
-		<GridView x:Name="MyGridView" ItemsSource="{x:Bind items}" SelectionMode="None" ItemClick="MyGridView_ItemClick" IsItemClickEnabled="True">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<StackPanel x:Name="FilterGrid" Visibility="Visible" Margin="10">
+			<RelativePanel>
+				<Button x:Name="FoldersButton" Tapped="FoldersButton_Tapped" Margin="5">
+					<Button.Content>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Active Folders: soles cum_on_feet" FontSize="18"/>
+							<FontIcon Glyph="&#xF12B;" Margin="10,0,10,0" FontSize="24"/>
+							<TextBlock Text="2" FontSize="18"/>
+						</StackPanel>
+					</Button.Content>
+				</Button>
+				<Button x:Name="TagsButton" Tapped="TagsButton_Tapped" Margin="5" RelativePanel.AlignRightWithPanel="True">
+					<Button.Content>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Current Tags: feet type:webm" FontSize="18"/>
+							<FontIcon Glyph="&#xE8EC;" Margin="10,0,10,0" FontSize="24"/>
+							<TextBlock Text="3" FontSize="18"/>
+						</StackPanel>
+					</Button.Content>
+				</Button>
+			</RelativePanel>
+
+		</StackPanel>
+		<TextBlock Visibility="Collapsed" x:Name="HintText" Text="You have not select your download folder&#x0a;Please go to the settings page and choose your download folder" FontSize="64" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Grid.Row="1"/>
+		<ProgressRing Name="MyProgressRing" Margin="300" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True" Grid.Row="1"/>
+		<GridView x:Name="MyGridView" ItemsSource="{x:Bind items}" SelectionMode="None" ItemClick="MyGridView_ItemClick" IsItemClickEnabled="True" Grid.Row="1">
 			<!---->
 			<GridView.ItemContainerStyle>
 				<Style TargetType="GridViewItem">

@@ -1,4 +1,6 @@
 ﻿using E621Downloader.Models.Locals;
+using E621Downloader.Views.FoldersSelectionSection;
+using E621Downloader.Views.TagsManagementSection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -35,52 +37,63 @@ namespace E621Downloader.Pages.LibrarySection {
 			this.InitializeComponent();
 			items = new ObservableCollection<ItemBlock>();
 			folders = new List<StorageFolder>();
+			original = new List<ItemBlock>();
 		}
 
 		protected async override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
+			FilterGrid.Visibility = Visibility.Collapsed;
 			if(e.Parameter is object[] objs) {
 				if(objs.Length >= 2 && objs[1] is LibraryPage libraryPage) {
 					this.libraryPage = libraryPage;
 					libraryPage.current = this;
-					if(objs[0] is LibraryTab tab) {
+					if(objs[0] is LibraryTab tab) {//side tab
 						CurrentLibraryTab = tab;
-						if(tab.title == "Home") {
+						if(tab.title == "Home") {//click home
 							foreach(StorageFolder folder in await Local.GetDownloadsFolders()) {
-								if(folder == null) {
-									Debug.WriteLine("1");
-								}
 								folders.Add(folder);
-								items.Add(new ItemBlock() {
+								var myitem = new ItemBlock() {
 									parentFolder = folder,
 									parent = null,
-								});
+								};
+								items.Add(myitem);
+								original.Add(myitem);
 							}
 							if(folders.Count == 0) {
 								HintText.Visibility = Visibility.Visible;
 							}
-						} else if(tab.title == "Filter") {
+						} else if(tab.title == "Filter") {//click filter page
 							Debug.WriteLine("Filter VIEW");
-						} else {
+							FilterGrid.Visibility = Visibility.Visible;
+							foreach(StorageFolder folder in await Local.GetDownloadsFolders()) {
+								folders.Add(folder);
+							}
+
+
+						} else {//click folder
 							List<(MetaFile, BitmapImage, StorageFile)> v = await Local.GetMetaFiles(tab.folder.DisplayName);
 							foreach((MetaFile, BitmapImage, StorageFile) item in v) {
-								items.Add(new ItemBlock() {
+								var myitem = new ItemBlock() {
 									meta = item.Item1,
 									thumbnail = item.Item2,
 									imageFile = item.Item3,
-								});
+								};
+								items.Add(myitem);
+								original.Add(myitem);
 							}
 						}
-					} else if(objs[0] is ItemBlock parent) {
+					} else if(objs[0] is ItemBlock parent) {//click folder in page
 						CurrentItemBlock = parent;
 						List<(MetaFile, BitmapImage, StorageFile)> v = await Local.GetMetaFiles(parent.Name);
 						foreach((MetaFile, BitmapImage, StorageFile) item in v) {
-							items.Add(new ItemBlock() {
+							var myitem = new ItemBlock() {
 								meta = item.Item1,
 								thumbnail = item.Item2,
 								imageFile = item.Item3,
 								parent = parent,
-							});
+							};
+							items.Add(myitem);
+							original.Add(myitem);
 						}
 					} else {
 						throw new Exception("?");
@@ -103,16 +116,91 @@ namespace E621Downloader.Pages.LibrarySection {
 			}
 		}
 
-		public void Search(string content){
+		public void Search(string content) {
+			foreach(ItemBlock o in original) {
+				if(o.Name.Contains(content)) {
+					if(!items.Contains(o)) {
+						items.Add(o);
+					}
+				} else {
+					if(items.Contains(o)) {
+						items.Remove(o);
+					}
+				}
+			}
 
 		}
-		public void ClearSearch(){
-			
+		public void ClearSearch() {
+
 		}
 
 		public void RefreshRequest() {
 			//refreshNeeded = true;
 			libraryPage.EnableRefreshButton(true);
+		}
+
+		private async void TagsButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			List<LocalTagsInfo> list = (await GetLocalTagsInfo()).OrderByDescending(s => s.count).ToList();
+			foreach(var item in list) {
+				Debug.WriteLine($"{item.name}_{item.count}");
+			}
+			var dialog = new ContentDialog() {
+				Title = "Manage Your Search Tags",
+			};
+
+			var frame = new Frame();
+			dialog.Content = frame;
+			frame.Navigate(typeof(TagsSelectionView), new object[] { dialog, PostsBrowser.Instance.tags });
+			await dialog.ShowAsync();
+
+			var content = (dialog.Content as Frame).Content as TagsSelectionView;
+			if(content.handleSearch) {
+				Debug.WriteLine(content.tags.Count);
+			}
+		}
+
+		private async void FoldersButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(folders == null | folders.Count == 0) {
+				return;
+			}
+			var foldersView = new FoldersSelectionView(folders);
+			if(await new ContentDialog() {
+				Title = "Manage Your Search Tags",
+				Content = foldersView,
+				PrimaryButtonText = "Confirm",
+				CloseButtonText = "Back",
+			}.ShowAsync() == ContentDialogResult.Primary) {
+
+			}
+		}
+
+		private async Task<List<LocalTagsInfo>> GetLocalTagsInfo() {
+			var tags = new List<LocalTagsInfo>();
+			foreach(MetaFile item in await Local.GetAllMetaFiles()) {
+				foreach(string t in item.MyPost.tags.GetAllTags()) {
+					LocalTagsInfo.AddToList(tags, new LocalTagsInfo(t));
+				}
+			}
+			return tags;
+		}
+
+	}
+	public class LocalTagsInfo {
+		public string name;
+		public int count = 1;
+
+		public LocalTagsInfo(string name) {
+			this.name = name;
+		}
+
+		public static void AddToList(List<LocalTagsInfo> list, LocalTagsInfo newOne) {
+			foreach(LocalTagsInfo item in list) {
+				if(item.name == newOne.name) {
+					item.count++;
+					return;
+				}
+			}
+			list.Add(newOne);
 		}
 	}
 
