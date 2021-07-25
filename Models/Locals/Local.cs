@@ -148,7 +148,11 @@ namespace E621Downloader.Models.Locals {
 		private async static void WriteMetaFile(MetaFile meta, StorageFile file, Post post) {
 			StorageFolder folder = await file.GetParentAsync();
 			StorageFile target = await folder.CreateFileAsync($"{post.id}.meta", CreationCollisionOption.ReplaceExisting);
-			await FileIO.WriteTextAsync(target, meta.ConvertJson());
+			try {
+				await FileIO.WriteTextAsync(target, meta.ConvertJson());
+			} catch(Exception e) {
+				Debug.WriteLine(e.Message);
+			}
 		}
 		public async static void WriteMetaFile(MetaFile meta, Post post, string groupName) {
 			(MetaFile, StorageFile) file = await GetMetaFile(post.id.ToString(), groupName);
