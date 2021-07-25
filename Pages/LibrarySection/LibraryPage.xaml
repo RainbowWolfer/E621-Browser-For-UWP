@@ -14,7 +14,7 @@
 			<Grid>
 				<Button x:Name="HamburgerButton" Tapped="HamburgerButton_Tapped" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" VerticalAlignment="Top" Margin="0" Background="Transparent" BorderThickness="0" Width="40" Height="40" FontSize="20"/>
 				<TextBlock VerticalAlignment="Top" Text="Your Opened Tabs" FontSize="18" Margin="50,8,0,0"/>
-				<ListView x:Name="TabsListView" Margin="0,50,0,0" SelectionMode="Single" IsItemClickEnabled="True" ItemsSource="{x:Bind tabs}" ItemClick="TabsListView_ItemClick">
+				<ListView x:Name="TabsListView" Margin="0,50,0,40" SelectionMode="Single" IsItemClickEnabled="True" ItemsSource="{x:Bind tabs}" ItemClick="TabsListView_ItemClick">
 					<ListView.ItemContainerStyle>
 						<Style TargetType="ListViewItem">
 							<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -37,6 +37,8 @@
 						</DataTemplate>
 					</ListView.ItemTemplate>
 				</ListView>
+				<RepeatButton x:Name="SizeButton" Width="40" Height="40" FontFamily="Segoe MDL2 Assets" Content="&#xE2B2;" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Background="Transparent" BorderThickness="0" Click="SizeButton_Click" ToolTipService.ToolTip="Current Size : 200"/>
+				<Slider x:Name="SizeSlider" Minimum="100" Maximum="500" Value="200" VerticalAlignment="Bottom" Margin="50,0,10,-5" Height="40" StepFrequency="10" ValueChanged="SizeSlider_ValueChanged"/>
 			</Grid>
 		</SplitView.Pane>
 		<SplitView.Content>

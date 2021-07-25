@@ -175,6 +175,9 @@
     <Compile Include="Pages\SubscriptionPage.xaml.cs">
       <DependentUpon>SubscriptionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\WelcomePage.xaml.cs">
+      <DependentUpon>WelcomePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DownloadSection\DownloadProgressBar.xaml.cs">
       <DependentUpon>DownloadProgressBar.xaml</DependentUpon>
     </Compile>
@@ -186,6 +189,9 @@
     </Compile>
     <Compile Include="Views\FoldersSelectionSection\FoldersSelectionView.xaml.cs">
       <DependentUpon>FoldersSelectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LocalTagsManagementSection\LocalTagsManagementView.xaml.cs">
+      <DependentUpon>LocalTagsManagementView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PostDebugView.xaml.cs">
       <DependentUpon>PostDebugView.xaml</DependentUpon>
@@ -219,6 +225,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\esix2.jpg" />
     <Content Include="Assets\TestText_Copy.txt" />
     <Content Include="Assets\TestText.txt" />
     <Content Include="Properties\Default.rd.xml" />
@@ -267,6 +274,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\WelcomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DownloadSection\DownloadProgressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -280,6 +291,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FoldersSelectionSection\FoldersSelectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LocalTagsManagementSection\LocalTagsManagementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -324,7 +339,7 @@
       <Version>6.2.9</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.5.0</Version>
+      <Version>2.6.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>

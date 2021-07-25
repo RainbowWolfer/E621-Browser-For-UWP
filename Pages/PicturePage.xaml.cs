@@ -59,7 +59,7 @@ namespace E621Downloader.Pages {
 		protected async override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			object p = e.Parameter;
-			if(p == null && PostRef == null && PostsBrowser.Instance.posts != null && PostsBrowser.Instance.posts.Count > 0) {
+			if(p == null && PostRef == null && PostsBrowser.Instance != null && PostsBrowser.Instance.posts != null && PostsBrowser.Instance.posts.Count > 0) {
 				p = PostsBrowser.Instance.posts[0];
 			}
 			if(p is Post post) {
@@ -310,7 +310,7 @@ namespace E621Downloader.Pages {
 			}.ShowAsync();
 		}
 	}
-	public class GroupTagList: List<string> {
+	public class GroupTagList: ObservableCollection<string> {
 		public string Key { get; set; }
 		public GroupTagList(string key) : base() {
 			this.Key = key;

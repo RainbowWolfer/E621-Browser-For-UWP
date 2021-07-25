@@ -24,6 +24,17 @@ namespace E621Downloader.Pages.LibrarySection {
 		public const string FILTERSTRING = "Filter";
 		public ObservableCollection<LibraryTab> tabs;
 
+		private int _size;
+		public int Size {
+			get {
+				return _size;
+			}
+			private set {
+				_size = value;
+				current?.UpdateSize(value, value - 30);
+			}
+		}
+
 		public Explorer current;
 
 		private OrderEnum order = OrderEnum.Asc;
@@ -44,7 +55,7 @@ namespace E621Downloader.Pages.LibrarySection {
 			TabsListView.SelectedIndex = 1;
 			NavigateToHome();
 			SettingsPage.isDownloadPathChangingHandled = true;
-
+			Size = 200;
 			UpdateOrderText();
 		}
 
@@ -251,6 +262,21 @@ namespace E621Downloader.Pages.LibrarySection {
 			if(current != null) {
 				current.Search(args.QueryText);
 			}
+		}
+
+		private void SizeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
+			Size = (int)e.NewValue;
+			ToolTipService.SetToolTip(SizeButton, "Current Size : " + Size);
+		}
+
+		private void SizeButton_Click(object sender, RoutedEventArgs e) {
+			int s = Size;
+			if(s + 25 > 500) {
+				s = 100;
+			} else {
+				s += 25;
+			}
+			SizeSlider.Value = s;
 		}
 	}
 	public class LibraryTab {

@@ -1,6 +1,7 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
 using E621Downloader.Models.Locals;
+using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using E621Downloader.Pages.DownloadSection;
@@ -75,15 +76,27 @@ namespace E621Downloader {
 				time += 1;
 				if(time >= 200) {
 					HideInstantDialog();
-					//await CreatePopupDialog("Warning", "Download Folder Not Found", true);
+					await CreatePopupDialog("Warning", "Download Folder Not Found", true);
 					break;
 				}
 			}
 			if(Local.DownloadFolder != null) {
 				await DownloadsManager.RestoreIncompletedDownloas();
 			}
+			string data = await Data.ReadURLAsync("https://e621.net/");
+			int start = data.IndexOf("Serving ") + 8;
+			string result = "";
+			for(int i = start; i < data.Length; i++) {
+				if(data[i] == ',') {
+					continue;
+				}
+				if(char.IsDigit(data[i])) {
+					result += data[i];
+				}
+			}
 			HideInstantDialog();
-			(MyNavigationView.MenuItems[0] as NavigationViewItem).IsSelected = true;
+			MyFrame.Navigate(typeof(WelcomePage), long.Parse(result));
+			//(MyNavigationView.MenuItems[0] as NavigationViewItem).IsSelected = true;
 		}
 
 		public static void ChangeCurrenttTags(params string[] strs) {
@@ -229,7 +242,7 @@ namespace E621Downloader {
 
 			var frame = new Frame();
 			dialog.Content = frame;
-			frame.Navigate(typeof(TagsSelectionView), new object[] { dialog, PostsBrowser.Instance.tags });
+			frame.Navigate(typeof(TagsSelectionView), new object[] { dialog, PostsBrowser.Instance == null ? Array.Empty<string>() : PostsBrowser.Instance.tags });
 			await dialog.ShowAsync();
 
 			var content = (dialog.Content as Frame).Content as TagsSelectionView;

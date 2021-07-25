@@ -16,7 +16,7 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<Button x:Name="ReverseSelectionButton" Content="Reverse Selection" HorizontalAlignment="Stretch" VerticalAlignment="Center" Tapped="ReverseSelectionButton_Tapped"/>
-		<ListView x:Name="MyListView" ItemsSource="{x:Bind folders}" SelectionMode="Multiple" IsItemClickEnabled="False" Grid.Row="1">
+		<ListView x:Name="MyListView" ItemsSource="{x:Bind folders}" SelectionMode="Multiple" IsItemClickEnabled="False" Grid.Row="1" Loaded="MyListView_Loaded">
 			<ListView.ItemTemplate>
 				<DataTemplate x:DataType="storage:StorageFolder">
 					<Grid>

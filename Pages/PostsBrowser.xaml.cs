@@ -49,13 +49,14 @@ namespace E621Downloader.Pages {
 			this.InitializeComponent();
 			this.posts = new List<Post>();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
+			this.tags = Array.Empty<string>();
 			Initialize();
 		}
 
 		private async void Initialize() {
 			//string[] tags = { "rating:s", "wallpaper", "order:score" };
 			//string[] tags = { "type:webm", "order:score" };
-			string[] tags = { "type:webm" };
+			string[] tags = { "" };
 			//posts = Post.GetPostsByTags(currentPage, tags);
 			//LoadPosts(posts, tags);
 			await LoadAsync(1, tags);
