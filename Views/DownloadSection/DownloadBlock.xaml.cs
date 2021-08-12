@@ -41,6 +41,12 @@ namespace E621Downloader.Views.DownloadSection {
 					b.SetBarValue(instance.DownloadProgress);
 					b.SetIcon(instance);
 				};
+				instance.DownloadCompleteAction = () => {
+					int l = group.downloads.Count(d => d.metaFile.FinishedDownloading);
+					int r = group.downloads.Count;
+					Debug.WriteLine($"Block   {l} _ {r}");
+					CountOverview.Text = $"Downloading... {l}/{r}";
+				};
 			}
 
 			for(int j = i; j < 7; j++) {//rest
@@ -48,7 +54,7 @@ namespace E621Downloader.Views.DownloadSection {
 			}
 		}
 
-		public void Update(){
+		public void Update() {
 
 		}
 

@@ -31,6 +31,7 @@ namespace E621Downloader.Models.Download {
 		public string TotalKB => (TotalBytesToReceive / 1000).ToString();
 
 		public Action<double> DownloadingAction { get; set; }
+		public Action DownloadCompleteAction { get; set; }
 
 		public DownloadInstance(Post post, string groupName, DownloadOperation operation) {
 			PostRef = post;
@@ -49,6 +50,7 @@ namespace E621Downloader.Models.Download {
 				}
 				DownloadingAction?.Invoke(DownloadProgress);
 				if(DownloadProgress == 1 || Status == BackgroundTransferStatus.Completed) {
+					DownloadCompleteAction?.Invoke();
 					metaFile.FinishedDownloading = true;
 					Local.WriteMetaFile(metaFile, PostRef, GroupName);
 					if(LibraryPage.Instance != null && LibraryPage.Instance.current != null) {

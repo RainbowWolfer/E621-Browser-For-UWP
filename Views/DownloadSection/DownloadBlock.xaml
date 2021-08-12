@@ -32,7 +32,7 @@
 				<ColumnDefinition Width="3*"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<TextBlock Text="Downloading... 2/20" FontSize="20" HorizontalAlignment="Center"/>
+			<TextBlock x:Name="CountOverview" Text="Downloading... 0/0" FontSize="20" HorizontalAlignment="Center"/>
 			<Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="&#xE10C;" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0">
 				<Button.Flyout>
 					<MenuFlyout Placement="BottomEdgeAlignedLeft">

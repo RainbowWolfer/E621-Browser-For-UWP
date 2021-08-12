@@ -145,12 +145,14 @@
     <Compile Include="Models\Download\DownloadsGroup.cs" />
     <Compile Include="Models\Download\DownloadsManager.cs" />
     <Compile Include="Models\E621Article.cs" />
+    <Compile Include="Models\Posts\E621Comments.cs" />
     <Compile Include="Models\Posts\E621Paginator.cs" />
     <Compile Include="Models\Posts\E621Tag.cs" />
     <Compile Include="Models\HTMLConvertor.cs" />
     <Compile Include="Models\ImageConvertor.cs" />
     <Compile Include="Models\Locals\Local.cs" />
     <Compile Include="Models\Locals\MetaFile.cs" />
+    <Compile Include="Models\Posts\E621User.cs" />
     <Compile Include="Models\Posts\E621Wiki.cs" />
     <Compile Include="Models\Posts\Post.cs" />
     <Compile Include="Models\Posts\SimplePost.cs" />
