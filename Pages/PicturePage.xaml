@@ -75,7 +75,20 @@
 		<SplitView x:Name="MainSplitView" Grid.Column="1" Grid.Row="1" PanePlacement="Right">
 			<SplitView.Pane>
 				<Grid>
-					<TextBlock Text="{x:Bind PostRef.description}" TextWrapping="Wrap" FontSize="18" Margin="20"/>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto" MaxHeight="250"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					<ScrollViewer>
+						<TextBlock Text="{x:Bind PostRef.description}" TextWrapping="Wrap" FontSize="18" Margin="20"/>
+					</ScrollViewer>
+					<StackPanel x:Name="LoadingSection" Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+						<TextBlock Text="Loading Comments" FontSize="22" Margin="5"/>
+						<ProgressBar IsIndeterminate="True" Margin="5"/>
+					</StackPanel>
+					<ListView Grid.Row="1">
+
+					</ListView>
 				</Grid>
 			</SplitView.Pane>
 			<SplitView.Content>

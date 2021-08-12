@@ -160,6 +160,13 @@ namespace E621Downloader.Pages {
 			tags.Add(new GroupTagList(title, content));
 		}
 
+		private async void LoadCommentsAsync() {
+			LoadingSection.Visibility = Visibility.Visible;
+			E621Comment[] comments = await E621Comment.GetAsync(PostRef.id);
+
+			LoadingSection.Visibility = Visibility.Collapsed;
+		}
+
 		private void MainImage_ImageOpened(object sender, RoutedEventArgs e) {
 			MyProgressRing.IsActive = false;
 		}
