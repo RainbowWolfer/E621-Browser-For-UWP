@@ -226,8 +226,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\esix2.jpg" />
-    <Content Include="Assets\TestText_Copy.txt" />
-    <Content Include="Assets\TestText.txt" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

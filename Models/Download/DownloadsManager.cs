@@ -79,7 +79,7 @@ namespace E621Downloader.Models.Download {
 			return null;
 		}
 
-		public static async Task RestoreIncompletedDownloas() {
+		public static async Task RestoreIncompletedDownloads() {
 			var list = await Local.GetAllMetaFiles();
 			foreach(MetaFile meta in list) {
 				if(meta.FinishedDownloading) {

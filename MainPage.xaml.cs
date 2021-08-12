@@ -80,9 +80,6 @@ namespace E621Downloader {
 					break;
 				}
 			}
-			if(Local.DownloadFolder != null) {
-				await DownloadsManager.RestoreIncompletedDownloas();
-			}
 			string data = await Data.ReadURLAsync("https://e621.net/");
 			int start = data.IndexOf("Serving ") + 8;
 			string result = "";
@@ -95,6 +92,14 @@ namespace E621Downloader {
 				}
 			}
 			HideInstantDialog();
+			await Task.Delay(20);
+
+			CreateInstantDialog("Please Wait", "Checking Unfinished Downloads");
+			if(Local.DownloadFolder != null) {
+				await DownloadsManager.RestoreIncompletedDownloads();
+			}
+			HideInstantDialog();
+
 			MyFrame.Navigate(typeof(WelcomePage), long.Parse(result));
 			//(MyNavigationView.MenuItems[0] as NavigationViewItem).IsSelected = true;
 		}

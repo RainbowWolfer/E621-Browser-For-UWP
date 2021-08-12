@@ -95,6 +95,9 @@ namespace E621Downloader.Pages.LibrarySection {
 						} else {//click folder
 							List<(MetaFile, BitmapImage, StorageFile)> v = await Local.GetMetaFiles(tab.folder.DisplayName);
 							foreach((MetaFile, BitmapImage, StorageFile) item in v) {
+								if(!item.Item1.FinishedDownloading){
+									continue;
+								}
 								var myitem = new ItemBlock() {
 									meta = item.Item1,
 									thumbnail = item.Item2,
@@ -108,6 +111,9 @@ namespace E621Downloader.Pages.LibrarySection {
 						CurrentItemBlock = parent;
 						List<(MetaFile, BitmapImage, StorageFile)> v = await Local.GetMetaFiles(parent.Name);
 						foreach((MetaFile, BitmapImage, StorageFile) item in v) {
+							if(!item.Item1.FinishedDownloading) {
+								continue;
+							}
 							var myitem = new ItemBlock() {
 								meta = item.Item1,
 								thumbnail = item.Item2,

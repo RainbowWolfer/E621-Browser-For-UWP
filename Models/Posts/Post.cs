@@ -25,6 +25,10 @@ namespace E621Downloader.Models.Posts {
 
 			return JsonConvert.DeserializeObject<PostRoot>(data).posts;
 		}
+		public static async Task<List<Post>> GetPostsByTagsAsync(int page, params string[] tags) {
+			await Task.Delay(20);
+			return null;
+		}
 
 		public int id;
 		public DateTime? created_at;

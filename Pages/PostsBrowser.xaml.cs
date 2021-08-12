@@ -85,6 +85,7 @@ namespace E621Downloader.Pages {
 				MyWrapGrid.Children.Add(holder);
 				SetImageItemSize(isHeightFixed, holder, item.sample);
 				holder.OnImagedLoaded += (b) => tb_ArticlesLoadCount.Text = "Posts : " + ++loaded + "/" + this.posts.Count;
+				ToolTipService.SetToolTip(holder, $"ID: {item.id}\nScore: {item.score.total}");
 			}
 		}
 
@@ -383,7 +384,18 @@ namespace E621Downloader.Pages {
 					case ContentDialogResult.None:
 						break;
 					case ContentDialogResult.Primary:
-						//get all posts
+						MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
+						await Task.Delay(20);
+						var all = new List<Post>();
+						for(int i = 1; i <= maxPage; i++) {
+							List<Post> p = Post.GetPostsByTags(i, tags);
+							all.AddRange(p);
+						}
+						foreach(Post item in all) {
+							DownloadsManager.RegisterDownload(item, tags);
+							await Task.Delay(2);
+						}
+						MainPage.HideInstantDialog();
 						break;
 					case ContentDialogResult.Secondary:
 						//get currentpage posts
