@@ -50,6 +50,9 @@ namespace E621Downloader.Models.Download {
 			} else {
 				groupTitle = groupTitle.Replace(":", ";");
 				string filename = $"{post.id}.{post.file.ext}";
+				if(string.IsNullOrEmpty(groupTitle)) {
+					groupTitle = DEFAULTTITLE;
+				}
 				StorageFolder folder = await Local.DownloadFolder.CreateFolderAsync(groupTitle, CreationCollisionOption.OpenIfExists);
 				StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 				RegisterDownload(post, new Uri(post.file.url), file, groupTitle);

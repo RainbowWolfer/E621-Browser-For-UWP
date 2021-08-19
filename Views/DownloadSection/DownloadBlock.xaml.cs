@@ -28,6 +28,7 @@ namespace E621Downloader.Views.DownloadSection {
 			this.InitializeComponent();
 			this.DataContextChanged += (s, e) => Bindings.Update();
 			this.Group = group;
+			UpdateCount();
 
 			int i;
 			for(i = 0; i < Math.Min(group.downloads.Count, 7); i++) {
@@ -42,10 +43,7 @@ namespace E621Downloader.Views.DownloadSection {
 					b.SetIcon(instance);
 				};
 				instance.DownloadCompleteAction = () => {
-					int l = group.downloads.Count(d => d.metaFile.FinishedDownloading);
-					int r = group.downloads.Count;
-					Debug.WriteLine($"Block   {l} _ {r}");
-					CountOverview.Text = $"Downloading... {l}/{r}";
+					UpdateCount();
 				};
 			}
 
@@ -54,8 +52,11 @@ namespace E621Downloader.Views.DownloadSection {
 			}
 		}
 
-		public void Update() {
-
+		private void UpdateCount() {
+			int l = Group.downloads.Count(d => d.metaFile.FinishedDownloading);
+			int r = Group.downloads.Count;
+			//Debug.WriteLine($"Block   {l} _ {r}");
+			CountOverview.Text = $"Downloading... {l}/{r}";
 		}
 
 	}

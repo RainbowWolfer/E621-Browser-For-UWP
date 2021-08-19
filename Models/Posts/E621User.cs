@@ -1,11 +1,29 @@
-﻿using System;
+﻿using E621Downloader.Models.Networks;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace E621Downloader.Models.Posts {
 	public class E621User {
+		//https://e621.net/users/306106.json
+		public static async Task<E621User> GetAsync(int id) {
+			string url = $"https://e621.net/users/{id}.json";
+			string data = await Data.ReadURLAsync(url);
+			return JsonConvert.DeserializeObject<E621User>(data);
+		}
+
+		public static async Task<string> GetAvatorURL(E621User user) {
+			string url = $"https://e621.net/posts/{user.avatar_id}.json";
+			string data = await Data.ReadURLAsync(url);
+			var post = JsonConvert.DeserializeObject<Post>(data);
+			string preview = post.preview.url;
+			return preview;
+		}
+
 		public int wiki_page_version_count;
 		public int artist_version_count;
 		public int pool_version_count;

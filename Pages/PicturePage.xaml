@@ -86,7 +86,7 @@
 						<TextBlock Text="Loading Comments" FontSize="22" Margin="5"/>
 						<ProgressBar IsIndeterminate="True" Margin="5"/>
 					</StackPanel>
-					<ListView Grid.Row="1">
+					<ListView x:Name="CommentsListView" Grid.Row="1">
 
 					</ListView>
 				</Grid>
