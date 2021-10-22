@@ -18,10 +18,20 @@ namespace E621Downloader.Models.Posts {
 			}
 			try {
 				return JsonConvert.DeserializeObject<E621Comment[]>(data);
-			} catch {
+			} catch(Exception) {
 				return JsonConvert.DeserializeObject<CommentRoot>(data).comments;
 			}
 		}
+
+		public async void LoadAvatar() {
+			User = await E621User.GetAsync(creator_id);
+			if(User != null) {
+				AvatarURL = await E621User.GetAvatorURL(User);
+			}
+		}
+
+		public E621User User { get; private set; }
+		public string AvatarURL { get; private set; }
 
 		public int id;
 		public DateTime created_at;

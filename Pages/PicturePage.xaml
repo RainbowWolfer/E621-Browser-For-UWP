@@ -120,7 +120,7 @@
 													<RowDefinition Height="auto" />
 													<RowDefinition Height="auto" />
 												</Grid.RowDefinitions>
-												<Image VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" Height="120" Width="120" Source="/Assets/StoreLogo.png" />
+												<!--<Image VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" Height="120" Width="120" Source="{x:Bind AvatarURL}" />-->
 												<TextBlock VerticalAlignment="Top" FontSize="14" Grid.Column="0" Grid.Row="1" Text="{x:Bind creator_name}" HorizontalAlignment="Center" />
 												<Grid Grid.Column="0" Grid.Row="2" Margin="10,0,10,0">
 													<Grid.ColumnDefinitions>

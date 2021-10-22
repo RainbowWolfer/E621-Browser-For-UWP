@@ -24,7 +24,7 @@ namespace E621Downloader.Models.Posts {
 				return new List<Post>();
 			}
 
-			return JsonConvert.DeserializeObject<PostRoot>(data).posts;
+			return JsonConvert.DeserializeObject<PostsRoot>(data).posts;
 		}
 		public static async Task<List<Post>> GetPostsByTagsAsync(int page, params string[] tags) {
 			await Task.Delay(20);
@@ -130,8 +130,12 @@ namespace E621Downloader.Models.Posts {
 	}
 
 
-	public class PostRoot {
+	public class PostsRoot {
 		public List<Post> posts;
+	}
+
+	public class PostRoot {
+		public Post post;
 	}
 
 

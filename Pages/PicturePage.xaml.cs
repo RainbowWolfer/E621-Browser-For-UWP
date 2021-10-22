@@ -165,8 +165,9 @@ namespace E621Downloader.Pages {
 
 		private async void LoadCommentsAsync() {
 			LoadingSection.Visibility = Visibility.Visible;
-			foreach(E621Comment item in await E621Comment.GetAsync(PostRef.id)) {
+			foreach(E621Comment item in await E621Comment.GetAsync(PostRef.id) ?? Array.Empty<E621Comment>()) {
 				comments.Add(item);
+				item.LoadAvatar();
 			}
 			LoadingSection.Visibility = Visibility.Collapsed;
 		}

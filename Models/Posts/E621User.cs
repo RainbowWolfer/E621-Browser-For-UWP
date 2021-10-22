@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,13 +14,20 @@ namespace E621Downloader.Models.Posts {
 		public static async Task<E621User> GetAsync(int id) {
 			string url = $"https://e621.net/users/{id}.json";
 			string data = await Data.ReadURLAsync(url);
+			if(string.IsNullOrEmpty(data)) {
+				Debug.WriteLine("?????");
+				return null;
+			}
 			return JsonConvert.DeserializeObject<E621User>(data);
 		}
 
 		public static async Task<string> GetAvatorURL(E621User user) {
 			string url = $"https://e621.net/posts/{user.avatar_id}.json";
 			string data = await Data.ReadURLAsync(url);
-			var post = JsonConvert.DeserializeObject<Post>(data);
+			if(string.IsNullOrEmpty(data)) {
+				return "/Assets/esix2.jpg";
+			}
+			Post post = JsonConvert.DeserializeObject<PostRoot>(data).post;
 			string preview = post.preview.url;
 			return preview;
 		}
@@ -37,7 +45,7 @@ namespace E621Downloader.Models.Posts {
 		public int upload_limit;
 		public int id;
 		public DateTime created_at;
-		public string name;
+		public object name;
 		public int level;
 		public int base_upload_limit;
 		public int post_upload_count;
@@ -47,6 +55,6 @@ namespace E621Downloader.Models.Posts {
 		public bool can_approve_posts;
 		public bool can_upload_free;
 		public string level_string;
-		public int avatar_id;
+		public int? avatar_id;
 	}
 }
