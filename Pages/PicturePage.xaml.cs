@@ -33,6 +33,7 @@ namespace E621Downloader.Pages {
 	public sealed partial class PicturePage: Page {
 		public Post PostRef { get; private set; }
 		public readonly ObservableCollection<GroupTagList> tags;
+		public readonly ObservableCollection<E621Comment> comments;
 
 		public bool isMouseOn;
 		public bool isMousePressed;
@@ -53,9 +54,11 @@ namespace E621Downloader.Pages {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			tags = new ObservableCollection<GroupTagList>();
+			comments = new ObservableCollection<E621Comment>();
 			this.DataContextChanged += (s, c) => Bindings.Update();
 			MyMediaPlayer.MediaPlayer.IsLoopingEnabled = true;
 		}
+
 		protected async override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			object p = e.Parameter;
@@ -143,7 +146,7 @@ namespace E621Downloader.Pages {
 				CopyButton.Visibility = Visibility.Collapsed;
 				DownloadButton.Visibility = Visibility.Collapsed;
 			}
-
+			LoadCommentsAsync();
 		}
 
 		private void RemoveGroup() {
@@ -162,8 +165,9 @@ namespace E621Downloader.Pages {
 
 		private async void LoadCommentsAsync() {
 			LoadingSection.Visibility = Visibility.Visible;
-			E621Comment[] comments = await E621Comment.GetAsync(PostRef.id);
-
+			foreach(E621Comment item in await E621Comment.GetAsync(PostRef.id)) {
+				comments.Add(item);
+			}
 			LoadingSection.Visibility = Visibility.Collapsed;
 		}
 

@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Locals {
-	public class LocalSettingsJson {
+	public class LocalSettings {
+		public static LocalSettings Current { get; set; }
+
 		public bool safeMode;
 	}
 }

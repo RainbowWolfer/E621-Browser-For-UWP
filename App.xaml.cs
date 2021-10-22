@@ -30,7 +30,6 @@ namespace E621Downloader {
 
 		public static bool showNullImage;
 		public static bool showBlackListed;
-		public static bool safemode;
 
 		public App() {
 			Instance = this;

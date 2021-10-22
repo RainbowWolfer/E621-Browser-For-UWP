@@ -64,7 +64,7 @@ namespace E621Downloader {
 		public MainPage() {
 			Instance = this;
 			this.InitializeComponent();
-			currentTag = PageTag.Settings;
+			currentTag = PageTag.Welcome;
 		}
 
 		protected async override void OnNavigatedTo(NavigationEventArgs e) {
@@ -77,6 +77,7 @@ namespace E621Downloader {
 				if(time >= 200) {
 					HideInstantDialog();
 					await CreatePopupDialog("Warning", "Download Folder Not Found", true);
+					CreateInstantDialog("Please Wait", "Initializing Local Program");
 					break;
 				}
 			}
@@ -96,7 +97,7 @@ namespace E621Downloader {
 
 			CreateInstantDialog("Please Wait", "Checking Unfinished Downloads");
 			if(Local.DownloadFolder != null) {
-				await DownloadsManager.RestoreIncompletedDownloads();
+				//await DownloadsManager.RestoreIncompletedDownloads();
 			}
 			HideInstantDialog();
 
@@ -259,7 +260,7 @@ namespace E621Downloader {
 		}
 	}
 	public enum PageTag {
-		Home, Picture, Library, Subscription, Download, Settings
+		Home, Picture, Library, Subscription, Download, Settings, Welcome,
 	}
 }
 

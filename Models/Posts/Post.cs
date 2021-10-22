@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Networks;
+﻿using E621Downloader.Models.Locals;
+using E621Downloader.Models.Networks;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace E621Downloader.Models.Posts {
 			}
 			string url = $"https://e621.net/posts.json?page={page}&tags=";
 			tags.ToList().ForEach((t) => url += t + "+");
-			if(App.safemode) {
+			if(LocalSettings.Current.safeMode) {
 				url += "rating:s";
 			}
 

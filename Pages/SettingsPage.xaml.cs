@@ -37,6 +37,7 @@ namespace E621Downloader.Pages {
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			DownloadPathTextBlock.Text = Local.DownloadFolder == null ? "No Download Path Selected" : Local.DownloadFolder.Path;
+			SafeModeToggle.IsOn = LocalSettings.Current.safeMode;
 		}
 
 		private async void BlackListButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -111,7 +112,8 @@ namespace E621Downloader.Pages {
 		}
 
 		private void SafeModeToggle_Toggled(object sender, RoutedEventArgs e) {
-			App.safemode = (sender as ToggleSwitch).IsOn;
+			LocalSettings.Current.safeMode = (sender as ToggleSwitch).IsOn;
+			Local.WriteLocalSettings();
 		}
 
 	}

@@ -138,7 +138,7 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Locals\LocalSettingsJson.cs" />
+    <Compile Include="Models\Locals\LocalSettings.cs" />
     <Compile Include="Models\Networks\Data.cs" />
     <Compile Include="Models\Download\DownloadInstance.cs" />
     <Compile Include="Models\Download\DownloadInstanceLocalManager.cs" />

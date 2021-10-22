@@ -112,6 +112,7 @@ namespace E621Downloader.Models.Locals {
 		public async static Task Reload() {
 			FollowList = await GetFollowList();
 			BlackList = await GetBlackList();
+			await ReadLocalSettings();
 			await SetToken(await GetTokenFromFile());
 		}
 
@@ -161,7 +162,7 @@ namespace E621Downloader.Models.Locals {
 
 		public async static Task<StorageFolder[]> GetDownloadsFolders() {
 			if(DownloadFolder == null) {
-				return Array.Empty<StorageFolder>();
+				return null;
 			}
 			return (await DownloadFolder.GetFoldersAsync()).ToArray();
 		}
@@ -295,6 +296,26 @@ namespace E621Downloader.Models.Locals {
 				}
 			}
 			return result;
+		}
+
+		public async static void WriteLocalSettings() {
+			StorageFile file = await LocalFolder.CreateFileAsync("LocalSettings", CreationCollisionOption.ReplaceExisting);
+			await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(LocalSettings.Current));
+		}
+
+		public async static Task ReadLocalSettings() {
+			StorageFile file = await LocalFolder.CreateFileAsync("LocalSettings", CreationCollisionOption.OpenIfExists);
+			using(Stream stream = await file.OpenStreamForReadAsync()) {
+				using(StreamReader reader = new StreamReader(stream)) {
+					LocalSettings.Current = JsonConvert.DeserializeObject<LocalSettings>(await reader.ReadToEndAsync());
+				}
+			}
+			if(LocalSettings.Current == null) {
+				LocalSettings.Current = new LocalSettings() {
+					safeMode = true,
+				};
+				WriteLocalSettings();
+			}
 		}
 	}
 }

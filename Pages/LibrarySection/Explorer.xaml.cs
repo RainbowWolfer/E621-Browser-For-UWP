@@ -71,17 +71,24 @@ namespace E621Downloader.Pages.LibrarySection {
 					if(objs[0] is LibraryTab tab) {//side tab
 						CurrentLibraryTab = tab;
 						if(tab.title == "Home") {//click home
-							foreach(StorageFolder folder in await Local.GetDownloadsFolders()) {
-								folders.Add(folder);
-								var myitem = new ItemBlock() {
-									parentFolder = folder,
-									parent = null,
-								};
-								items.Add(myitem);
-								originalItems.Add(myitem);
-							}
-							if(folders.Count == 0) {
+							StorageFolder[] downloadsFolders = await Local.GetDownloadsFolders();
+							if(downloadsFolders == null) {
+								HintText.Text = "You have not select your download folder\nPlease go to the settings page and choose your download folder";
 								HintText.Visibility = Visibility.Visible;
+							} else {
+								foreach(StorageFolder folder in downloadsFolders) {
+									folders.Add(folder);
+									var myitem = new ItemBlock() {
+										parentFolder = folder,
+										parent = null,
+									};
+									items.Add(myitem);
+									originalItems.Add(myitem);
+								}
+								if(folders.Count == 0) {
+									HintText.Text = "No Download Folders Found";
+									HintText.Visibility = Visibility.Visible;
+								}
 							}
 						} else if(tab.title == "Filter") {//click filter page
 							Debug.WriteLine("Filter VIEW");
@@ -95,7 +102,7 @@ namespace E621Downloader.Pages.LibrarySection {
 						} else {//click folder
 							List<(MetaFile, BitmapImage, StorageFile)> v = await Local.GetMetaFiles(tab.folder.DisplayName);
 							foreach((MetaFile, BitmapImage, StorageFile) item in v) {
-								if(!item.Item1.FinishedDownloading){
+								if(!item.Item1.FinishedDownloading) {
 									continue;
 								}
 								var myitem = new ItemBlock() {
