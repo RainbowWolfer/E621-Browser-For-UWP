@@ -25,7 +25,7 @@ namespace E621Downloader.Models.Posts {
 			string url = $"https://e621.net/posts/{user.avatar_id}.json";
 			string data = await Data.ReadURLAsync(url);
 			if(string.IsNullOrEmpty(data)) {
-				return "/Assets/esix2.jpg";
+				return "ms - appx:///Assets/esix2.jpg";
 			}
 			Post post = JsonConvert.DeserializeObject<PostRoot>(data).post;
 			string preview = post.preview.url;

@@ -5,7 +5,7 @@
 	xmlns:local="using:E621Downloader.Pages"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:posts="using:E621Downloader.Models.Posts"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:commentssection="using:E621Downloader.Views.CommentsSection"
 	mc:Ignorable="d"
 	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 	<Page.Resources>
@@ -47,6 +47,8 @@
 				<Button x:Name="DownloadButton" Content="Download" FontSize="18" Margin="5" Tapped="DownloadButton_Tapped"/>
 				<Button x:Name="CopyButton" Content="Copy" FontSize="18" Margin="5" Tapped="CopyButton_Tapped" RelativePanel.RightOf="DownloadButton"/>
 				<Button x:Name="BrowserButton" Content="Open In Default Browser" FontSize="18" Margin="5" Tapped="BrowserButton_Tapped" RelativePanel.RightOf="CopyButton"/>
+
+				<ToggleSwitch x:Name="SplitViewModeSwitch" IsOn="True" OnContent="Overlay" OffContent="Inline" FlowDirection="RightToLeft" Margin="0,0,10,0" Toggled="SplitViewModeSwitch_Toggled" RelativePanel.LeftOf="MoreInfoButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
 				<Button x:Name="MoreInfoButton" RelativePanel.AlignRightWithPanel="True" FontSize="18" Background="Transparent" BorderThickness="0" Height="38" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="MoreInfoButton_Tapped">
 					<Button.Content>
 						<StackPanel Orientation="Horizontal">
@@ -100,55 +102,12 @@
 									<ProgressBar IsIndeterminate="True" Margin="5" />
 								</StackPanel>
 
-								<ListView x:Name="CommentsListView" ItemsSource="{x:Bind comments}" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="False">
+								<ListView x:Name="CommentsListView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="False">
 									<ListView.ItemContainerStyle>
 										<Style TargetType="ListViewItem">
 											<Setter Property="HorizontalContentAlignment" Value="Stretch" />
 										</Style>
 									</ListView.ItemContainerStyle>
-									<ListView.ItemTemplate>
-										<DataTemplate x:DataType="posts:E621Comment">
-											<Grid>
-												<Grid.ColumnDefinitions>
-													<ColumnDefinition Width="140" />
-													<ColumnDefinition Width="*" />
-												</Grid.ColumnDefinitions>
-												<Grid.RowDefinitions>
-													<RowDefinition Height="auto" />
-													<RowDefinition Height="*" />
-													<RowDefinition Height="auto" />
-													<RowDefinition Height="auto" />
-													<RowDefinition Height="auto" />
-												</Grid.RowDefinitions>
-												<!--<Image VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" Height="120" Width="120" Source="{x:Bind AvatarURL}" />-->
-												<TextBlock VerticalAlignment="Top" FontSize="14" Grid.Column="0" Grid.Row="1" Text="{x:Bind creator_name}" HorizontalAlignment="Center" />
-												<Grid Grid.Column="0" Grid.Row="2" Margin="10,0,10,0">
-													<Grid.ColumnDefinitions>
-														<ColumnDefinition Width="*" />
-														<ColumnDefinition Width="*" />
-														<ColumnDefinition Width="*" />
-													</Grid.ColumnDefinitions>
-													<Button Content="&#xE96D;" Style="{StaticResource ScoreButton}" Grid.Column="0" />
-													<TextBlock Text="{x:Bind score}" Grid.Column="1" FontSize="16" HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center"/>
-													<Button Content="&#xE96E;" Style="{StaticResource ScoreButton}" Grid.Column="2" />
-												</Grid>
-												<Grid Grid.Row="3">
-													<Grid.ColumnDefinitions>
-														<ColumnDefinition Width="*" />
-														<ColumnDefinition Width="*" />
-													</Grid.ColumnDefinitions>
-													<Button HorizontalAlignment="Stretch" Content="Reply" Grid.Column="0" Margin="5" />
-													<Button HorizontalAlignment="Stretch" Content="Report" Grid.Column="1" Margin="5" />
-												</Grid>
-												<Grid Grid.Row="4" Grid.ColumnSpan="2">
-													<Rectangle HorizontalAlignment="Stretch" Fill="Gray" Height="2" Margin="0,5,0,10" />
-												</Grid>
-												<Grid Grid.Column="1" Grid.RowSpan="4">
-													<TextBlock Margin="5" FontSize="22" Text="{x:Bind body}" TextWrapping="Wrap" />
-												</Grid>
-											</Grid>
-										</DataTemplate>
-									</ListView.ItemTemplate>
 								</ListView>
 							</Grid>
 						</PivotItem>

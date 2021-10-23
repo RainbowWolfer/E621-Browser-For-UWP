@@ -23,15 +23,15 @@ namespace E621Downloader.Models.Posts {
 			}
 		}
 
-		public async void LoadAvatar() {
+		public async Task<string> LoadAvatar() {
 			User = await E621User.GetAsync(creator_id);
 			if(User != null) {
-				AvatarURL = await E621User.GetAvatorURL(User);
+				return await E621User.GetAvatorURL(User);
 			}
+			return null;
 		}
 
 		public E621User User { get; private set; }
-		public string AvatarURL { get; private set; }
 
 		public int id;
 		public DateTime created_at;
@@ -49,6 +49,7 @@ namespace E621Downloader.Models.Posts {
 		public string creator_name;
 		public string updater_name;
 
+		public E621Comment ToSelf() => this;
 		public class CommentRoot {
 			public E621Comment[] comments;
 		}

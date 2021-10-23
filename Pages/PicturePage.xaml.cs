@@ -4,6 +4,7 @@ using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages.LibrarySection;
 using E621Downloader.Views;
+using E621Downloader.Views.CommentsSection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -33,7 +34,7 @@ namespace E621Downloader.Pages {
 	public sealed partial class PicturePage: Page {
 		public Post PostRef { get; private set; }
 		public readonly ObservableCollection<GroupTagList> tags;
-		public readonly ObservableCollection<E621Comment> comments;
+		public readonly List<E621Comment> comments;
 
 		public bool isMouseOn;
 		public bool isMousePressed;
@@ -54,7 +55,7 @@ namespace E621Downloader.Pages {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			tags = new ObservableCollection<GroupTagList>();
-			comments = new ObservableCollection<E621Comment>();
+			comments = new List<E621Comment>();
 			this.DataContextChanged += (s, c) => Bindings.Update();
 			MyMediaPlayer.MediaPlayer.IsLoopingEnabled = true;
 		}
@@ -111,12 +112,17 @@ namespace E621Downloader.Pages {
 				DownloadButton.Visibility = Visibility.Visible;
 				DownloadButton.Content = "Local";
 				DownloadButton.IsEnabled = false;
-				if(PostRef.file.ext.ToLower().Trim() == "webm") {
+				string type = PostRef.file.ext.ToLower().Trim();
+				if(type == "webm") {
 					MyProgressRing.IsActive = false;
 					MyMediaPlayer.Visibility = Visibility.Visible;
 					MyScrollViewer.Visibility = Visibility.Collapsed;
 
 					MyMediaPlayer.Source = MediaSource.CreateFromStorageFile(itemBlock.imageFile);
+				} else if(type == "anim") {
+					MyMediaPlayer.Visibility = Visibility.Collapsed;
+					MyScrollViewer.Visibility = Visibility.Collapsed;
+					MyProgressRing.IsActive = false;
 				} else {
 					MyProgressRing.IsActive = true;
 					MyMediaPlayer.Visibility = Visibility.Collapsed;
@@ -146,7 +152,9 @@ namespace E621Downloader.Pages {
 				CopyButton.Visibility = Visibility.Collapsed;
 				DownloadButton.Visibility = Visibility.Collapsed;
 			}
-			LoadCommentsAsync();
+			if(PostRef != null) {
+				LoadCommentsAsync();
+			}
 		}
 
 		private void RemoveGroup() {
@@ -164,10 +172,12 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void LoadCommentsAsync() {
+			comments.Clear();
+			CommentsListView.Items.Clear();
 			LoadingSection.Visibility = Visibility.Visible;
 			foreach(E621Comment item in await E621Comment.GetAsync(PostRef.id) ?? Array.Empty<E621Comment>()) {
 				comments.Add(item);
-				item.LoadAvatar();
+				CommentsListView.Items.Add(new CommentView(item));
 			}
 			LoadingSection.Visibility = Visibility.Collapsed;
 		}
@@ -320,6 +330,13 @@ namespace E621Downloader.Pages {
 				Content = $"Count: {count}\nDescription: {description}",
 				CloseButtonText = "Back",
 			}.ShowAsync();
+		}
+
+		private void SplitViewModeSwitch_Toggled(object sender, RoutedEventArgs e) {
+			if(MainSplitView == null) {
+				return;
+			}
+			MainSplitView.DisplayMode = SplitViewModeSwitch.IsOn ? SplitViewDisplayMode.Overlay : SplitViewDisplayMode.Inline;
 		}
 	}
 	public class GroupTagList: ObservableCollection<string> {

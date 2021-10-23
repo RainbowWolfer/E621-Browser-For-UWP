@@ -176,6 +176,9 @@ namespace E621Downloader.Models.Locals {
 
 			public static void Add(List<Pair> list, MetaFile meta) {
 				foreach(var item in list) {
+					if(item.file == null) {//not sure
+						continue;
+					}
 					if(item.SourceID == meta.MyPost.id.ToString()) {
 						item.meta = meta;
 						return;
