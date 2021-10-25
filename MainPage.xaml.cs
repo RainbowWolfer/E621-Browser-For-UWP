@@ -197,15 +197,17 @@ namespace E621Downloader {
 		//}
 
 		public static NavigationTransitionInfo CalculateTransition(PageTag from, PageTag to) {
-			if((int)from - (int)to < 0) {
-				return new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
-			} else {
-				return new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft };
-			}
+			return (int)from - (int)to < 0
+				? new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight }
+				: new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft };
 		}
 
 		public static void SelectNavigationItem(PageTag tag) {
 			(Instance.MyNavigationView.MenuItems.ToList().Find((i) => int.Parse((string)(i as NavigationViewItem).Tag) == (int)tag) as NavigationViewItem).IsSelected = true;
+		}
+
+		public static void NavigateToPicturePage() {
+			Instance.MyFrame.Navigate(typeof(PicturePage), Instance.parameter_picture, CalculateTransition(Instance.currentTag, PageTag.Picture));
 		}
 
 		private void MyNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {

@@ -39,7 +39,9 @@ namespace E621Downloader {
 			Local.Initialize();
 
 			//Test();
+
 		}
+
 
 		//private async void Test() {
 		//while(Local.DownloadFolder == null) {

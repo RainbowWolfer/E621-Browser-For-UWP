@@ -92,7 +92,7 @@
 					<Pivot>
 						<PivotItem Header="Description">
 							<ScrollViewer>
-								<TextBlock Text="{x:Bind PostRef.description}" TextWrapping="Wrap" FontSize="18" Margin="20" />
+								<TextBlock x:Name="DescriptionText" Text="No Description" TextWrapping="Wrap" FontSize="18" Margin="20" />
 							</ScrollViewer>
 						</PivotItem>
 						<PivotItem Header="Comments">

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 /// </summary>
 namespace E621Downloader.Models.Posts {
 	public class E621Tag {
-		public async static Task<E621Tag[]> GetAsync(string tag) {
+		public static async Task<E621Tag[]> GetAsync(string tag) {
 			string url = $"https://e621.net/tags.json?search[name_matches]={tag}";
 			string content = await Data.ReadURLAsync(url);
 			if(content == "{\"tags\":[]}") {
@@ -21,7 +21,20 @@ namespace E621Downloader.Models.Posts {
 			try {
 				return JsonConvert.DeserializeObject<E621Tag[]>(content);
 			} catch {
-				Debug.WriteLine("!");
+				Debug.WriteLine("Tags Error");
+				return null;
+			}
+		}
+		public static E621Tag[] Get(string tag) {
+			string url = $"https://e621.net/tags.json?search[name_matches]={tag}";
+			string content = Data.ReadURL(url);
+			if(content == "{\"tags\":[]}") {
+				return null;
+			}
+			try {
+				return JsonConvert.DeserializeObject<E621Tag[]>(content);
+			} catch {
+				Debug.WriteLine("Tags Error");
 				return null;
 			}
 		}

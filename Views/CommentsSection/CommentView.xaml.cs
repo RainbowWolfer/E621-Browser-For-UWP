@@ -1,10 +1,12 @@
 ﻿using E621Downloader.Models.Posts;
+using E621Downloader.Pages;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Core;
@@ -41,29 +43,17 @@ namespace E621Downloader.Views.CommentsSection {
 				};
 				//Debug.WriteLine($"avatar {url}");
 
-				Avatar.RightTapped += (sender, e) => {
-					MenuFlyout myFlyout = new MenuFlyout();
-					//if(sourceSet != null) {
-					//	for(int i = 0; i < sourceSet.sets.Length; i++) {
-					//		SourceSet.Set ss = sourceSet.sets[i];
-					//		MenuFlyoutItem fly = new MenuFlyoutItem { Text = "复制图片地址： 品质 " + ss.quality + "w" };
-					//		fly.Click += (s, c) => {
-					//			DataPackage dataPackage = new DataPackage();
-					//			dataPackage.SetText(ss.address);
-					//			Clipboard.SetContent(dataPackage);
-					//		};
-					//		myFlyout.Items.Add(fly);
-					//	}
-					//} else {
-					//	//myFlyout.Items.Add(new TextBlock() { Text = "" });
-					//}
-					//myFlyout.Placement = FlyoutPlacementMode.Left;
-					//if(myFlyout.Items.Count != 0) {
-					//	FrameworkElement senderElement = sender as FrameworkElement;
-					//	myFlyout.ShowAt(sender as UIElement, e.GetPosition(sender as UIElement));
-					//}
+				Avatar.Tapped += async (sender, e) => {
+					if(User == null || User.avatar_id == null) {
+						return;
+					}
+					MainPage.CreateInstantDialog("Please Wait...", $"Loading Post: {User.avatar_id}");
+					Post post = await Post.GetPostByID(User.avatar_id.Value);
+					MainPage.HideInstantDialog();
+					MainPage.Instance.parameter_picture = post;
+					MainPage.NavigateToPicturePage();
 				};
-
+				ToolTipService.SetToolTip(Avatar, $"Post: {User.avatar_id}");
 			} else {
 				bi = new BitmapImage(new Uri("ms-appx:///Assets/esix2.jpg"));//not working
 			}

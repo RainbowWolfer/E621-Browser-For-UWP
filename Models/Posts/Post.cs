@@ -30,6 +30,11 @@ namespace E621Downloader.Models.Posts {
 			await Task.Delay(20);
 			return null;
 		}
+		public static async Task<Post> GetPostByID(int id) {
+			string url = $"https://e621.net/posts/{id}.json";
+			string data = await Data.ReadURLAsync(url);
+			return JsonConvert.DeserializeObject<PostRoot>(data).post;
+		}
 
 		public int id;
 		public DateTime? created_at;

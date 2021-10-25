@@ -87,6 +87,7 @@ namespace E621Downloader.Pages {
 				holder.OnImagedLoaded += (b) => tb_ArticlesLoadCount.Text = "Posts : " + ++loaded + "/" + this.posts.Count;
 				ToolTipService.SetToolTip(holder, $"ID: {item.id}\nScore: {item.score.total}");
 			}
+
 		}
 
 		public async Task LoadAsync(int page = 1, params string[] tags) {
