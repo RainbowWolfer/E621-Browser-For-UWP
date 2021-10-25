@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 /// </summary>
 namespace E621Downloader.Models.Posts {
 	public class E621Tag {
-		public static E621Tag[] Get(string tag) {
+		public async static Task<E621Tag[]> GetAsync(string tag) {
 			string url = $"https://e621.net/tags.json?search[name_matches]={tag}";
-			string content = Data.ReadURL(url);
+			string content = await Data.ReadURLAsync(url);
 			if(content == "{\"tags\":[]}") {
 				return null;
 			}
@@ -34,5 +34,9 @@ namespace E621Downloader.Models.Posts {
 		public bool is_locked;
 		public DateTime created_at;
 		public DateTime updated_at;
+
+		public override string ToString() {
+			return $"E621Tags:({id})({name})({related_tags})({post_count})({category})";
+		}
 	}
 }

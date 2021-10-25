@@ -314,7 +314,7 @@ namespace E621Downloader.Pages {
 
 		private async void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			string tag = (sender as Button).Tag as string;
-			E621Tag[] e621tags = E621Tag.Get(tag);
+			E621Tag[] e621tags = await E621Tag.GetAsync(tag);
 			string name = tag;
 			string count = "0";
 			string description = "not found";

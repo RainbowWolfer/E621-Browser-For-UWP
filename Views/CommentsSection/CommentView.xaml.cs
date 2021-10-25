@@ -34,16 +34,45 @@ namespace E621Downloader.Views.CommentsSection {
 			if(User != null) {
 				url = await E621User.GetAvatorURL(User);
 			}
+			BitmapImage bi;
 			if(!string.IsNullOrEmpty(url)) {
-				BitmapImage bi = new BitmapImage {
+				bi = new BitmapImage() {
 					UriSource = new Uri(this.BaseUri, url)
 				};
-				Avatar.Source = bi;
+				//Debug.WriteLine($"avatar {url}");
+
+				Avatar.RightTapped += (sender, e) => {
+					MenuFlyout myFlyout = new MenuFlyout();
+					//if(sourceSet != null) {
+					//	for(int i = 0; i < sourceSet.sets.Length; i++) {
+					//		SourceSet.Set ss = sourceSet.sets[i];
+					//		MenuFlyoutItem fly = new MenuFlyoutItem { Text = "复制图片地址： 品质 " + ss.quality + "w" };
+					//		fly.Click += (s, c) => {
+					//			DataPackage dataPackage = new DataPackage();
+					//			dataPackage.SetText(ss.address);
+					//			Clipboard.SetContent(dataPackage);
+					//		};
+					//		myFlyout.Items.Add(fly);
+					//	}
+					//} else {
+					//	//myFlyout.Items.Add(new TextBlock() { Text = "" });
+					//}
+					//myFlyout.Placement = FlyoutPlacementMode.Left;
+					//if(myFlyout.Items.Count != 0) {
+					//	FrameworkElement senderElement = sender as FrameworkElement;
+					//	myFlyout.ShowAt(sender as UIElement, e.GetPosition(sender as UIElement));
+					//}
+				};
+
+			} else {
+				bi = new BitmapImage(new Uri("ms-appx:///Assets/esix2.jpg"));//not working
 			}
+			Avatar.Source = bi;
 		}
 
 		private void Avatar_ImageOpened(object sender, RoutedEventArgs e) {
 			AvatorLoadingRing.IsActive = false;
+			//Debug.WriteLine((sender as Image).Source);
 		}
 
 		private void DownVoteButton_Tapped(object sender, TappedRoutedEventArgs e) {

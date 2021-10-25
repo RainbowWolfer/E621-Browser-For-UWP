@@ -25,10 +25,12 @@ namespace E621Downloader.Models.Networks {
 				Debug.WriteLine(e.Message);
 				return null;
 			}
-			Stream dataStream = response.GetResponseStream();
-			StreamReader reader = new StreamReader(dataStream);
-			string data = reader.ReadToEnd();
-			return data;
+			using(Stream dataStream = response.GetResponseStream()) {
+				using(StreamReader reader = new StreamReader(dataStream)) {
+					string data = reader.ReadToEnd();
+					return data;
+				}
+			}
 		}
 		public static async Task<string> ReadURLAsync(string url) {
 			var request = (HttpWebRequest)WebRequest.Create(url);

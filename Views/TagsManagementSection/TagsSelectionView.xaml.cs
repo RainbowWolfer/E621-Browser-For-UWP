@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -50,14 +51,25 @@ namespace E621Downloader.Views.TagsManagementSection {
 				this.tags.Add(item);
 			}
 			//}
+			string last = this.tags.LastOrDefault();
+			if(!string.IsNullOrWhiteSpace(last)) {
+				//E621Tag[] found = await E621Tag.GetAsync(last);
+				//if(found != null) {
+				//	Debug.Write("Tags : ");
+				//	foreach(E621Tag item in found) {
+				//		Debug.Write(item + " ");
+				//	}
+				//	Debug.WriteLine("");
+				//}
+			}
 		}
 
-		private void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
+		private async void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			//MainSplitView.IsPaneOpen = true;
 			E621Tag e621tag = null;
 			E621Wiki e621wiki = null;
 			string tag = (sender as Button).Tag as string;
-			E621Tag[] e621tags = E621Tag.Get(tag);
+			E621Tag[] e621tags = await E621Tag.GetAsync(tag);
 			if(e621tags != null && e621tags.Length > 0) {
 				e621tag = e621tags[0];
 				E621Wiki[] e621wikis = E621Wiki.Get(tag);
