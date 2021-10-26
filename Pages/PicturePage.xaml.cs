@@ -155,7 +155,7 @@ namespace E621Downloader.Pages {
 			if(PostRef != null) {
 				LoadCommentsAsync();
 			}
-			DescriptionText.Text = PostRef != null && string.IsNullOrWhiteSpace(PostRef.description) ? PostRef.description : "No Description";
+			DescriptionText.Text = PostRef != null && !string.IsNullOrEmpty(PostRef.description) ? PostRef.description : "No Description";
 		}
 
 		private void RemoveGroup() {
@@ -315,22 +315,29 @@ namespace E621Downloader.Pages {
 
 		private async void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			string tag = (sender as Button).Tag as string;
-			E621Tag[] e621tags = E621Tag.Get(tag);
 			string name = tag;
-			string count = "0";
-			string description = "not found";
-			if(e621tags != null && e621tags.Length > 0) {
-				count = e621tags[0].post_count.ToString();
-				E621Wiki[] e621wikies = E621Wiki.Get(tag);
-				if(e621wikies != null && e621wikies.Length > 0) {
-					description = e621wikies[0].body;
-				}
-			}
-			await new ContentDialog() {
+			var dialog = new ContentDialog() {
 				Title = $"Tag Information: {name}",
-				Content = $"Count: {count}\nDescription: {description}",
 				CloseButtonText = "Back",
-			}.ShowAsync();
+			};
+			dialog.Content = new TagInformationDisplay(dialog, tag);
+			await dialog.ShowAsync();
+
+			//E621Tag[] e621tags = E621Tag.Get(tag);
+			//string count = "0";
+			//string description = "not found";
+			//if(e621tags != null && e621tags.Length > 0) {
+			//	count = e621tags[0].post_count.ToString();
+			//	E621Wiki[] e621wikies = E621Wiki.Get(tag);
+			//	if(e621wikies != null && e621wikies.Length > 0) {
+			//		description = e621wikies[0].body;
+			//	}
+			//}
+			//await new ContentDialog() {
+			//	Title = $"Tag Information: {name}",
+			//	Content = $"Count: {count}\nDescription: {description}",
+			//	CloseButtonText = "Back",
+			//}.ShowAsync();
 		}
 
 		private void SplitViewModeSwitch_Toggled(object sender, RoutedEventArgs e) {

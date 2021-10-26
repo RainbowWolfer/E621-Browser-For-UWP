@@ -18,10 +18,25 @@ namespace E621Downloader.Models.Posts {
 			try {
 				return JsonConvert.DeserializeObject<E621Wiki[]>(data);
 			} catch {
-				Debug.WriteLine("!");
+				Debug.WriteLine("Wiki Error");
 				return null;
 			}
 		}
+
+		public static async Task<E621Wiki[]> GetAsync(string tag) {
+			string url = $"https://e621.net/wiki_pages.json?search[title]={tag}";
+			string data = await Data.ReadURLAsync(url);
+			if(data == "[]") {
+				return null;
+			}
+			try {
+				return JsonConvert.DeserializeObject<E621Wiki[]>(data);
+			} catch {
+				Debug.WriteLine("Wiki Error");
+				return null;
+			}
+		}
+
 		public int id;
 		public DateTime created_at;
 		public DateTime updated_at;
