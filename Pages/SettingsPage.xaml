@@ -12,6 +12,13 @@
 		<Style x:Key="TestKey" TargetType="TextBlock">
 			<Setter Property="FontSize" Value="48"/>
 		</Style>
+		<Style x:Key="SectionTitle" TargetType="TextBlock">
+			<Setter Property="HorizontalAlignment" Value="Center"/>
+			<Setter Property="TextDecorations" Value="Underline"/>
+			<Setter Property="FontSize" Value="64"/>
+			<Setter Property="Margin" Value="30,10,20,10"/>
+			<Setter Property="HorizontalAlignment" Value="Left"/>
+		</Style>
 	</Page.Resources>
 
 	<Grid>
@@ -24,16 +31,23 @@
 			<VisualStateGroup>
 				<VisualState x:Name="WideLayout">
 					<VisualState.StateTriggers>
-						<AdaptiveTrigger MinWindowWidth="600"/>
+						<AdaptiveTrigger MinWindowWidth="800"/>
 					</VisualState.StateTriggers>
 					<VisualState.Setters>
-						<!--<Setter Target="" Value=""/>-->
+						<Setter Target="SecondCol.(Grid.Row)" Value="0"/>
+						<Setter Target="SecondCol.(Grid.Column)" Value="1"/>
+						<Setter Target="SecondColumn.Width" Value="*"/>
 					</VisualState.Setters>
 				</VisualState>
 				<VisualState x:Name="NarrowLayout">
 					<VisualState.StateTriggers>
 						<AdaptiveTrigger MinWindowWidth="0"/>
 					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="SecondCol.(Grid.Row)" Value="1"/>
+						<Setter Target="SecondCol.(Grid.Column)" Value="0"/>
+						<Setter Target="SecondColumn.Width" Value="0"/>
+					</VisualState.Setters>
 				</VisualState>
 			</VisualStateGroup>
 		</VisualStateManager.VisualStateGroups>
@@ -44,15 +58,15 @@
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="*"/>
+					<ColumnDefinition x:Name="SecondColumn" Width="*"/>
 				</Grid.ColumnDefinitions>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="auto"/>
 					<RowDefinition Height="auto"/>
 				</Grid.RowDefinitions>
 
-				<StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical">
-					<TextBlock Text="Listing: " FontSize="64" Margin="20" TextDecorations="Underline"/>
+				<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
+					<TextBlock Text="Listing: " Style="{StaticResource SectionTitle}"/>
 					<StackPanel Orientation="Horizontal" Margin="50,0,0,0">
 						<TextBlock Text="Black List" VerticalAlignment="Center" FontSize="20" Margin="10"/>
 						<Button Content="Manage" VerticalAlignment="Center" Margin="10" FontSize="20" Tapped="BlackListButton_Tapped"/>
@@ -61,28 +75,28 @@
 						<TextBlock Text="Follow List" VerticalAlignment="Center" FontSize="20" Margin="10"/>
 						<Button Content="Manage" VerticalAlignment="Center" Margin="10" FontSize="20" Tapped="FollowListButton_Tapped"/>
 					</StackPanel>
-					<TextBlock Text="Theme: " FontSize="64" Margin="20" TextDecorations="Underline"/>
+					<TextBlock Text="Theme: " Style="{StaticResource SectionTitle}"/>
 					<StackPanel Margin="40,0,0,0">
 						<RadioButton Margin="5" Content="Light"/>
 						<RadioButton Margin="5" Content="Dark"/>
 						<RadioButton Margin="5" Content="Follow System" IsChecked="True"/>
 					</StackPanel>
-					<TextBlock Text="Local: " FontSize="64" Margin="20" TextDecorations="Underline"/>
-					<StackPanel Orientation="Horizontal" Margin="40,0,0,0">
-						<Button x:Name="DownloadPathButton" Content="Select Download Path" FontSize="20" Tapped="DownloadPathButton_Tapped"/>
-						<Button x:Name="ClearDownloadPathButton" Content="Clear" FontSize="20" Tapped="ClearDownloadPathButton_Tapped" Margin="10,0,10,0"/>
-						<TextBlock Name="DownloadPathTextBlock" Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="20"/>
+					<TextBlock Text="Local: " Style="{StaticResource SectionTitle}"/>
+					<StackPanel Orientation="Vertical" Margin="40,0,0,0">
+						<Button x:Name="DownloadPathButton" Content="Select Download Path" FontSize="20" Tapped="DownloadPathButton_Tapped" Margin="20,10,0,10" />
+						<Button x:Name="ClearDownloadPathButton" Content="Clear" FontSize="20" Tapped="ClearDownloadPathButton_Tapped" Margin="20,0,0,10" />
+						<TextBlock Name="DownloadPathTextBlock" Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,10" FontSize="20"/>
 					</StackPanel>
 				</StackPanel>
 
-				<StackPanel Grid.Row="1" Grid.Column="1">
-					<TextBlock Text="General: " FontSize="64" Margin="20" TextDecorations="Underline"/>
+				<StackPanel x:Name="SecondCol" Grid.Row="0" Grid.Column="1">
+					<TextBlock Text="General: " Style="{StaticResource SectionTitle}"/>
 					<StackPanel Margin="40,0,0,0">
 						<ToggleSwitch x:Name="NullImageToggle" OffContent="Show NULL Image" OnContent="Show NULL Image" Margin="0,5,0,5" Toggled="NullImageToggle_Toggled"/>
 						<ToggleSwitch x:Name="BlackListToggle" OffContent="Show Blacklisted" OnContent="Show Blacklisted" Margin="0,5,0,5" Toggled="BlackListToggle_Toggled"/>
 						<ToggleSwitch x:Name="SafeModeToggle" OffContent="Enable Safe Mode" OnContent="Enable Safe Mode" Margin="0,5,0,5" Toggled="SafeModeToggle_Toggled"/>
 					</StackPanel>
-					<TextBlock Text="About: " FontSize="64" Margin="20" TextDecorations="Underline"/>
+					<TextBlock Text="About: " Style="{StaticResource SectionTitle}"/>
 					<StackPanel Margin="40,0,0,0">
 						<TextBlock FontSize="18" Text="Made By : RainbowWolfer"/>
 						<TextBlock FontSize="18" Text="Source From : e621.net"/>

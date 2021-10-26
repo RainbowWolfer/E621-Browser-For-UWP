@@ -26,9 +26,7 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Pages {
 	public sealed partial class SettingsPage: Page {
 		public static bool isDownloadPathChangingHandled;
-		public string Version {
-			get => "Version: " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
-		}
+		public string Version => "Version: " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 		public SettingsPage() {
 			this.InitializeComponent();
 			ClearDownloadPathButton.IsEnabled = Local.DownloadFolder != null;

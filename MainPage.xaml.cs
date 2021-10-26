@@ -82,6 +82,12 @@ namespace E621Downloader {
 				}
 			}
 			string data = await Data.ReadURLAsync("https://e621.net/");
+			while(string.IsNullOrEmpty(data)) {
+				HideInstantDialog();
+				await CreatePopupDialog("Error", "No Internet Connection", true, "Retry");
+				CreateInstantDialog("Please Wait", "Checking Internet");
+				data = await Data.ReadURLAsync("https://e621.net/");
+			}
 			int start = data.IndexOf("Serving ") + 8;
 			string result = "";
 			for(int i = start; i < data.Length; i++) {

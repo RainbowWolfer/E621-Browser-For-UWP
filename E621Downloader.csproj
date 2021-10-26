@@ -175,9 +175,6 @@
     <Compile Include="Pages\PostsBrowser.xaml.cs">
       <DependentUpon>PostsBrowser.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SettingsPage2.xaml.cs">
-      <DependentUpon>SettingsPage2.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\SubscriptionPage.xaml.cs">
       <DependentUpon>SubscriptionPage.xaml</DependentUpon>
     </Compile>
@@ -274,10 +271,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\PostsBrowser.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\SettingsPage2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
