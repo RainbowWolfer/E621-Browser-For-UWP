@@ -344,7 +344,8 @@ namespace E621Downloader.Pages {
 		}
 
 		private void LeftButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			Debug.WriteLine(App.PostsList.Count);
+			MainPage.Instance.parameter_picture = App.postsList.GoLeft();
+			MainPage.NavigateToPicturePage();
 		}
 
 		private void RightButton_PointerEntered(object sender, PointerRoutedEventArgs e) {
@@ -356,7 +357,8 @@ namespace E621Downloader.Pages {
 		}
 
 		private void RightButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			Debug.WriteLine(App.PostsList.Count);
+			MainPage.Instance.parameter_picture = App.postsList.GoRight();
+			MainPage.NavigateToPicturePage();
 		}
 	}
 	public class GroupTagList: ObservableCollection<string> {

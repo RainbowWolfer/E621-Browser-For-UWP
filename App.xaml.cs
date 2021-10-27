@@ -1,6 +1,7 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
+using E621Downloader.Pages.LibrarySection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -32,31 +33,16 @@ namespace E621Downloader {
 		public static bool showNullImage;
 		public static bool showBlackListed;
 
-		public static Post currentViewing;
-		public static List<PostsListItem> PostsList { get; private set; }
+		public static PostsList postsList { get; private set; }
 
 		public App() {
 			Instance = this;
 			this.InitializeComponent();
 			this.Suspending += OnSuspending;
 
-			PostsList = new List<PostsListItem>();
+			postsList = new PostsList();
 			Local.Initialize();
 
-		}
-
-		public static void UpdatePostsList(List<Post> posts) {
-			PostsList.Clear();
-			foreach(Post item in posts) {
-				PostsList.Add(new PostsListItem(item, null));
-			}
-		}
-
-		public static void UpdatePostsList(List<MetaFile> metas) {
-			PostsList.Clear();
-			foreach(MetaFile item in metas) {
-				PostsList.Add(new PostsListItem(item.MyPost, item.FilePath));
-			}
 		}
 
 		public static bool CompareTwoArray<T>(IEnumerable<T> a, IEnumerable<T> b) {
@@ -105,43 +91,43 @@ namespace E621Downloader {
 	}
 
 	public class PostsList {
-		private List<(Post, string)> items;//post,filepath
-		public Post current;
+		private List<object> items;//post,filepath
+		public object Current { private get; set; }
+		public int Count => items.Count;
 
-		public int GetIndex() => items.Select(i => i.Item1).ToList().IndexOf(current);
+		public int GetCurrentIndex() => items.IndexOf(Current);
+
+		public object GoLeft() {
+			Debug.WriteLine(Count);
+			int index = GetCurrentIndex();
+			if(index == -1) {
+				return Current;
+			}
+			Current = items[Math.Clamp(index - 1, 0, Count - 1)];
+			return Current;
+		}
+		public object GoRight() {
+			Debug.WriteLine(Count);
+			int index = GetCurrentIndex();
+			if(index == -1) {
+				return Current;
+			}
+			Current = items[Math.Clamp(index + 1, 0, Count - 1)];
+			return Current;
+		}
 
 		public void UpdatePostsList(List<Post> posts) {
 			items.Clear();
-			foreach(Post item in posts) {
-				items.Add((item, null));
-			}
+			items.AddRange(posts);
 		}
 
-		public void UpdatePostsList(List<MetaFile> metas) {
+		public void UpdatePostsList(List<ItemBlock> block) {
 			items.Clear();
-			foreach(MetaFile item in metas) {
-				items.Add((item.MyPost, item.FilePath));
-			}
+			items.AddRange(block);
 		}
 
 		public PostsList() {
-			items = new List<(Post, string)>();
-		}
-	}
-
-	public class PostsListItem {
-		public Post Post { get; private set; }
-		public string FilePath { get; private set; }
-
-		public bool IsLocal => !string.IsNullOrEmpty(FilePath);
-
-		public PostsListItem(Post post, string filePath) {
-			Post = post;
-			FilePath = filePath;
-		}
-
-		public override string ToString() {
-			return $"Item: {Post} {FilePath}";
+			items = new List<object>();
 		}
 	}
 

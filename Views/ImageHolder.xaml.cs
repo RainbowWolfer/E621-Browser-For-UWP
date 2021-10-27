@@ -137,7 +137,8 @@ namespace E621Downloader.Views {
 				dataPackage.SetText(LoadUrl);
 				Clipboard.SetContent(dataPackage);
 
-				App.UpdatePostsList(PostsBrowser.Instance.posts);
+				App.postsList.UpdatePostsList(PostsBrowser.Instance.posts);
+				App.postsList.Current = PostRef;
 				//MainPage.NavigateToPicturePage(PostRef);
 				MainPage.Instance.parameter_picture = PostRef;
 				MainPage.SelectNavigationItem(PageTag.Picture);

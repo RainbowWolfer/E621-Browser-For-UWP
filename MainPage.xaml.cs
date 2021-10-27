@@ -212,6 +212,7 @@ namespace E621Downloader {
 			(Instance.MyNavigationView.MenuItems.ToList().Find((i) => int.Parse((string)(i as NavigationViewItem).Tag) == (int)tag) as NavigationViewItem).IsSelected = true;
 		}
 
+		/// <summary> Used to solve the problem of navtigating to self in PicturePage </summary>
 		public static void NavigateToPicturePage() {
 			Instance.MyFrame.Navigate(typeof(PicturePage), Instance.parameter_picture, CalculateTransition(Instance.currentTag, PageTag.Picture));
 		}
