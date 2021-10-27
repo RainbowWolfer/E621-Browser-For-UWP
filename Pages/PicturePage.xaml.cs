@@ -60,6 +60,7 @@ namespace E621Downloader.Pages {
 			}
 			if(p is Post post) {
 				if(PostRef == post) {
+					UpdateTagsGroup(PostRef.tags);
 					return;
 				}
 				PostRef = post;
@@ -88,6 +89,7 @@ namespace E621Downloader.Pages {
 				UpdateTagsGroup(PostRef.tags);
 			} else if(p is ItemBlock itemBlock) {
 				if(PostRef == itemBlock.meta.MyPost) {
+					UpdateTagsGroup(PostRef.tags);
 					return;
 				}
 				PostRef = itemBlock.meta.MyPost;
@@ -219,11 +221,11 @@ namespace E621Downloader.Pages {
 			return new Point(a.X - b.X, a.Y - b.Y);
 		}
 
-		private void DeleteButton_Loaded(object sender, RoutedEventArgs e) {
-			if(!Local.FollowList.Contains((string)(sender as Button).Tag)) {
-				(sender as Button).Visibility = Visibility.Collapsed;
-			}
-		}
+		//private void DeleteButton_Loaded(object sender, RoutedEventArgs e) {
+		//	if(!Local.FollowList.Contains((string)(sender as Button).Tag)) {
+		//		(sender as Button).Visibility = Visibility.Collapsed;
+		//	}
+		//}
 
 		private async void TagsListView_ItemClick(object sender, ItemClickEventArgs e) {
 			string tag = e.ClickedItem as string;
@@ -237,19 +239,49 @@ namespace E621Downloader.Pages {
 		private void BlackListButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			var btn = sender as Button;
 			string tag = btn.Tag as string;
+			if(Local.CheckBlackList(tag)) {
+				Local.RemoveBlackList(tag);
+				btn.Content = "\uF8AB";
+				ToolTipService.SetToolTip(btn, "Add To BlackList");
+			} else {
+				Local.AddBlackList(tag);
+				btn.Content = "\uEA43";
+				ToolTipService.SetToolTip(btn, "Remove From BlackList");
 
+				if(Local.CheckFollowList(tag)) {
+					Local.RemoveFollowList(tag);
+					var followListButton = (btn.Parent as RelativePanel).Children.OfType<Button>().ToList().Find(b => b.Name == "FollowListButton");
+					followListButton.Content = "\uF8AA";
+					ToolTipService.SetToolTip(followListButton, "Add To FollowList");
+				}
+			}
 		}
 
 		private void FollowListButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			var btn = sender as Button;
 			string tag = btn.Tag as string;
+			if(Local.CheckFollowList(tag)) {
+				Local.RemoveFollowList(tag);
+				btn.Content = "\uF8AA";
+				ToolTipService.SetToolTip(btn, "Add To FollowList");
+			} else {
+				Local.AddFollowList(tag);
+				btn.Content = "\uE74D";
+				ToolTipService.SetToolTip(btn, "Delete From FollowList");
 
+				if(Local.CheckBlackList(tag)) {
+					Local.RemoveBlackList(tag);
+					var blackListButton = (btn.Parent as RelativePanel).Children.OfType<Button>().ToList().Find(b => b.Name == "BlackListButton");
+					blackListButton.Content = "\uF8AB";
+					ToolTipService.SetToolTip(blackListButton, "Add To BlackList");
+				}
+			}
 		}
 
 		private void BlackListButton_Loaded(object sender, RoutedEventArgs e) {
 			var btn = sender as Button;
 			string tag = btn.Tag as string;
-			if(Local.BlackList.Contains(tag)) {
+			if(Local.CheckBlackList(tag)) {
 				btn.Content = "\uEA43";
 				ToolTipService.SetToolTip(btn, "Remove From BlackList");
 			} else {
@@ -261,7 +293,7 @@ namespace E621Downloader.Pages {
 		private void FollowListButton_Loaded(object sender, RoutedEventArgs e) {
 			var btn = sender as Button;
 			string tag = btn.Tag as string;
-			if(Local.FollowList.Contains(tag)) {
+			if(Local.CheckFollowList(tag)) {
 				btn.Content = "\uE74D";
 				ToolTipService.SetToolTip(btn, "Delete From FollowList");
 			} else {

@@ -42,6 +42,7 @@ namespace E621Downloader.Models.Locals {
 		public static StorageFolder DownloadFolder { get; private set; }
 
 		public async static void Initialize() {
+			Debug.WriteLine("Initializing Local");
 			Debug.WriteLine(LocalFolder.Path);
 			if(initialized) {
 				throw new Exception("Local has been initialized more than one time!");
@@ -102,18 +103,50 @@ namespace E621Downloader.Models.Locals {
 			return reader.ReadToEnd();
 		}
 
-		public async static void WriteFollowList(string[] list) {
-			await FileIO.WriteLinesAsync(FollowListFile, list);
-		}
-		public async static void WriteBlackList(string[] list) {
-			await FileIO.WriteLinesAsync(BlackListFile, list);
-		}
 
 		public async static Task Reload() {
 			FollowList = await GetFollowList();
 			BlackList = await GetBlackList();
 			await ReadLocalSettings();
 			await SetToken(await GetTokenFromFile());
+		}
+
+		public static void AddFollowList(string newTag) {
+			var list = FollowList.ToList();
+			list.Add(newTag);
+			FollowList = list.ToArray();
+			WriteFollowList(FollowList);
+		}
+
+		public static void AddBlackList(string newTag) {
+			var list = BlackList.ToList();
+			list.Add(newTag);
+			BlackList = list.ToArray();
+			WriteBlackList(BlackList);
+		}
+
+		public static void RemoveFollowList(string tag) {
+			var list = FollowList.ToList();
+			list.Remove(tag);
+			FollowList = list.ToArray();
+			WriteFollowList(FollowList);
+		}
+
+		public static void RemoveBlackList(string tag) {
+			var list = BlackList.ToList();
+			list.Remove(tag);
+			BlackList = list.ToArray();
+			WriteBlackList(BlackList);
+		}
+
+		public static bool CheckFollowList(string tag) => FollowList.Contains(tag);
+		public static bool CheckBlackList(string tag) => BlackList.Contains(tag);
+
+		public async static void WriteFollowList(string[] list) {
+			await FileIO.WriteLinesAsync(FollowListFile, list);
+		}
+		public async static void WriteBlackList(string[] list) {
+			await FileIO.WriteLinesAsync(BlackListFile, list);
 		}
 
 		private async static Task<string[]> GetFollowList() => await GetListFromFile(FollowListFile);
