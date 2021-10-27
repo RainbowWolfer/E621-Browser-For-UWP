@@ -121,8 +121,8 @@ namespace E621Downloader.Views {
 		*/
 		private void Grid_Tapped(object sender, TappedRoutedEventArgs e) {
 			//if(!this.isLoaded) {
-				//open browser;
-				//return;
+			//open browser;
+			//return;
 			//}
 			if(LoadUrl == null) {
 				return;
@@ -137,6 +137,7 @@ namespace E621Downloader.Views {
 				dataPackage.SetText(LoadUrl);
 				Clipboard.SetContent(dataPackage);
 
+				App.UpdatePostsList(PostsBrowser.Instance.posts);
 				//MainPage.NavigateToPicturePage(PostRef);
 				MainPage.Instance.parameter_picture = PostRef;
 				MainPage.SelectNavigationItem(PageTag.Picture);

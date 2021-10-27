@@ -121,6 +121,16 @@
 						<Image PointerWheelChanged="MainImage_PointerWheelChanged" PointerPressed="MainImage_PointerPressed" PointerReleased="MainImage_PointerReleased" PointerMoved="MainImage_PointerMoved" PointerEntered="MainImage_PointerEntered" PointerExited="MainImage_PointerExited" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="MainImage" Margin="0,0,40,40" ImageOpened="MainImage_ImageOpened"/>
 					</ScrollViewer>
 					<ProgressRing Name="MyProgressRing" MaxHeight="300" MaxWidth="300" Margin="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>
+					<Button x:Name="LeftButton" FontFamily="Segoe MDL2 Assets" Content="&#xE26C;" Height="100" Opacity="0.2" PointerEntered="LeftButton_PointerEntered" PointerExited="LeftButton_PointerExited" Tapped="LeftButton_Tapped">
+						<Button.Background>
+							<SolidColorBrush Color="Gray" Opacity="0.4"/>
+						</Button.Background>
+					</Button>
+					<Button x:Name="RightButton" FontFamily="Segoe MDL2 Assets" Content="&#xE26B;" Height="100" Opacity="0.2" HorizontalAlignment="Right" PointerEntered="RightButton_PointerEntered" PointerExited="RightButton_PointerExited" Tapped="RightButton_Tapped">
+						<Button.Background>
+							<SolidColorBrush Color="Gray" Opacity="0.4"/>
+						</Button.Background>
+					</Button>
 				</Grid>
 			</SplitView.Content>
 		</SplitView>

@@ -146,6 +146,8 @@ namespace E621Downloader.Pages.LibrarySection {
 				libraryPage.Navigate(typeof(Explorer), new object[] { target, libraryPage });
 				libraryPage.ToTab(folders.Find(f => f.DisplayName == target.Name), target.Name);
 			} else {
+				var result = (items.Select(item => item.meta)).ToList();
+				App.UpdatePostsList(result);
 				MainPage.Instance.parameter_picture = target;
 				MainPage.SelectNavigationItem(PageTag.Picture);
 			}

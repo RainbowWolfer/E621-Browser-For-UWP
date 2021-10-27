@@ -41,15 +41,7 @@ namespace E621Downloader.Pages {
 
 		private Point pressStartPosition;
 
-		public string Title {
-			get {
-				if(PostRef == null) {
-					return "No Post Were Selected.";
-				} else {
-					return string.Format("Posts: {0}  UpVote: {1}  DownVote: {2}", PostRef.id, PostRef.score.up, PostRef.score.down);
-				}
-			}
-		}
+		public string Title => PostRef == null ? "No Post Were Selected." : $"Posts: {PostRef.id}  UpVote: {PostRef.score.up}  DownVote: {PostRef.score.down}";
 
 		public PicturePage() {
 			this.InitializeComponent();
@@ -76,7 +68,8 @@ namespace E621Downloader.Pages {
 				DownloadButton.Visibility = Visibility.Visible;
 				DownloadButton.Content = "Download";
 				DownloadButton.IsEnabled = true;
-				if(PostRef.file.ext.ToLower().Trim() == "webm") {
+				string type = PostRef.file.ext.ToLower().Trim();
+				if(type == "webm") {
 					MyProgressRing.IsActive = false;
 					MyMediaPlayer.Visibility = Visibility.Visible;
 					MyScrollViewer.Visibility = Visibility.Collapsed;
@@ -92,16 +85,7 @@ namespace E621Downloader.Pages {
 				}
 
 				TagsListView.ScrollIntoView(TagsListView.Items[0]);
-
-				RemoveGroup();
-				AddNewGroup("Artist", PostRef.tags.artist);
-				AddNewGroup("Copyright", PostRef.tags.copyright);
-				AddNewGroup("Species", PostRef.tags.species);
-				AddNewGroup("General", PostRef.tags.general);
-				AddNewGroup("Character", PostRef.tags.character);
-				AddNewGroup("Meta", PostRef.tags.meta);
-				AddNewGroup("Invalid", PostRef.tags.invalid);
-				AddNewGroup("Lore", PostRef.tags.lore);
+				UpdateTagsGroup(PostRef.tags);
 			} else if(p is ItemBlock itemBlock) {
 				if(PostRef == itemBlock.meta.MyPost) {
 					return;
@@ -137,15 +121,7 @@ namespace E621Downloader.Pages {
 				}
 				TagsListView.ScrollIntoView(TagsListView.Items[0]);
 
-				RemoveGroup();
-				AddNewGroup("Artist", PostRef.tags.artist);
-				AddNewGroup("Copyright", PostRef.tags.copyright);
-				AddNewGroup("Species", PostRef.tags.species);
-				AddNewGroup("General", PostRef.tags.general);
-				AddNewGroup("Character", PostRef.tags.character);
-				AddNewGroup("Meta", PostRef.tags.meta);
-				AddNewGroup("Invalid", PostRef.tags.invalid);
-				AddNewGroup("Lore", PostRef.tags.lore);
+				UpdateTagsGroup(PostRef.tags);
 			} else if(p == null) {
 				MyProgressRing.IsActive = false;
 				DebugButton.Visibility = Visibility.Collapsed;
@@ -156,6 +132,18 @@ namespace E621Downloader.Pages {
 				LoadCommentsAsync();
 			}
 			DescriptionText.Text = PostRef != null && !string.IsNullOrEmpty(PostRef.description) ? PostRef.description : "No Description";
+		}
+
+		private void UpdateTagsGroup(Tags tags) {
+			RemoveGroup();
+			AddNewGroup("Artist", tags.artist);
+			AddNewGroup("Copyright", tags.copyright);
+			AddNewGroup("Species", tags.species);
+			AddNewGroup("General", tags.general);
+			AddNewGroup("Character", tags.character);
+			AddNewGroup("Meta", tags.meta);
+			AddNewGroup("Invalid", tags.invalid);
+			AddNewGroup("Lore", tags.lore);
 		}
 
 		private void RemoveGroup() {
@@ -345,6 +333,30 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			MainSplitView.DisplayMode = SplitViewModeSwitch.IsOn ? SplitViewDisplayMode.Overlay : SplitViewDisplayMode.Inline;
+		}
+
+		private void LeftButton_PointerEntered(object sender, PointerRoutedEventArgs e) {
+			(sender as Button).Opacity = 1;
+		}
+
+		private void LeftButton_PointerExited(object sender, PointerRoutedEventArgs e) {
+			(sender as Button).Opacity = 0.2;
+		}
+
+		private void LeftButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			Debug.WriteLine(App.PostsList.Count);
+		}
+
+		private void RightButton_PointerEntered(object sender, PointerRoutedEventArgs e) {
+			(sender as Button).Opacity = 1;
+		}
+
+		private void RightButton_PointerExited(object sender, PointerRoutedEventArgs e) {
+			(sender as Button).Opacity = 0.2;
+		}
+
+		private void RightButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			Debug.WriteLine(App.PostsList.Count);
 		}
 	}
 	public class GroupTagList: ObservableCollection<string> {

@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Locals;
+using E621Downloader.Models.Posts;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -31,24 +32,32 @@ namespace E621Downloader {
 		public static bool showNullImage;
 		public static bool showBlackListed;
 
+		public static Post currentViewing;
+		public static List<PostsListItem> PostsList { get; private set; }
+
 		public App() {
 			Instance = this;
 			this.InitializeComponent();
 			this.Suspending += OnSuspending;
 
+			PostsList = new List<PostsListItem>();
 			Local.Initialize();
-
-			//Test();
 
 		}
 
+		public static void UpdatePostsList(List<Post> posts) {
+			PostsList.Clear();
+			foreach(Post item in posts) {
+				PostsList.Add(new PostsListItem(item, null));
+			}
+		}
 
-		//private async void Test() {
-		//while(Local.DownloadFolder == null) {
-		//	await Task.Delay(10);
-		//}
-		//List<MetaFile> metas = await Local.GetAllMetaFiles();
-		//}
+		public static void UpdatePostsList(List<MetaFile> metas) {
+			PostsList.Clear();
+			foreach(MetaFile item in metas) {
+				PostsList.Add(new PostsListItem(item.MyPost, item.FilePath));
+			}
+		}
 
 		public static bool CompareTwoArray<T>(IEnumerable<T> a, IEnumerable<T> b) {
 			T[] ar = a.ToArray();
@@ -94,6 +103,48 @@ namespace E621Downloader {
 			deferral.Complete();
 		}
 	}
+
+	public class PostsList {
+		private List<(Post, string)> items;//post,filepath
+		public Post current;
+
+		public int GetIndex() => items.Select(i => i.Item1).ToList().IndexOf(current);
+
+		public void UpdatePostsList(List<Post> posts) {
+			items.Clear();
+			foreach(Post item in posts) {
+				items.Add((item, null));
+			}
+		}
+
+		public void UpdatePostsList(List<MetaFile> metas) {
+			items.Clear();
+			foreach(MetaFile item in metas) {
+				items.Add((item.MyPost, item.FilePath));
+			}
+		}
+
+		public PostsList() {
+			items = new List<(Post, string)>();
+		}
+	}
+
+	public class PostsListItem {
+		public Post Post { get; private set; }
+		public string FilePath { get; private set; }
+
+		public bool IsLocal => !string.IsNullOrEmpty(FilePath);
+
+		public PostsListItem(Post post, string filePath) {
+			Post = post;
+			FilePath = filePath;
+		}
+
+		public override string ToString() {
+			return $"Item: {Post} {FilePath}";
+		}
+	}
+
 	public enum LOR {
 		Left, Right
 	}
