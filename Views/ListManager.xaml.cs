@@ -22,8 +22,9 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Views {
 	public sealed partial class ListManager: UserControl {
-		private string[] originTags;
+		private List<string> originTags;
 		public readonly ObservableCollection<string> tags;
+		private int initialCount;
 
 		private ContentDialog parent;
 
@@ -31,7 +32,8 @@ namespace E621Downloader.Views {
 
 		public ListManager(string[] tags, ContentDialog contentControl) {
 			this.InitializeComponent();
-			this.originTags = tags;
+			this.originTags = tags.ToList();
+			this.initialCount = tags.Length;
 			this.title = contentControl.Title as string;
 			this.parent = contentControl;
 			this.tags = new ObservableCollection<string>();
@@ -78,9 +80,26 @@ namespace E621Downloader.Views {
 			await PostsBrowser.Instance.LoadAsync(1, content);
 		}
 
+		private void AddButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			string tag = (sender as TextBox).Text.Trim().ToLower();
+			originTags.Add(tag);
+			tags.Add(tag);
+			UpdateTitle();
+		}
+
 		private void DeleteButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			tags.Remove((string)(sender as Button).Tag);
-			parent.Title = title + ": " + tags.Count;
+			string tag = (string)(sender as Button).Tag;
+			tags.Remove(tag);
+			originTags.Remove(tag);
+			UpdateTitle();
+		}
+
+		private void UpdateTitle() {
+			if(initialCount == originTags.Count) {
+				parent.Title = $"{title}: {originTags.Count}";
+			} else {
+				parent.Title = $"{title}: {initialCount} -> {originTags.Count}";
+			}
 		}
 
 		private void Grid_KeyDown(object sender, KeyRoutedEventArgs e) {
@@ -101,6 +120,7 @@ namespace E621Downloader.Views {
 				}
 			}
 		}
+
 	}
 	[Obsolete("Later in Dev", false)]
 	public class TagItem {

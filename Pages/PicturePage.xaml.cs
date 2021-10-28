@@ -36,6 +36,9 @@ namespace E621Downloader.Pages {
 		public readonly ObservableCollection<GroupTagList> tags;
 		public readonly List<E621Comment> comments;
 
+		private bool commentsLoading;
+		private bool commentsLoaded;
+
 		public bool isMouseOn;
 		public bool isMousePressed;
 
@@ -130,10 +133,13 @@ namespace E621Downloader.Pages {
 				CopyButton.Visibility = Visibility.Collapsed;
 				DownloadButton.Visibility = Visibility.Collapsed;
 			}
-			if(PostRef != null) {
-				LoadCommentsAsync();
-			}
 			DescriptionText.Text = PostRef != null && !string.IsNullOrEmpty(PostRef.description) ? PostRef.description : "No Description";
+			MainSplitView.IsPaneOpen = false;
+			InformationPivot.SelectedIndex = 0;
+			commentsLoaded = false;
+			commentsLoading = false;
+			comments.Clear();
+			CommentsListView.Items.Clear();
 		}
 
 		private void UpdateTagsGroup(Tags tags) {
@@ -165,12 +171,22 @@ namespace E621Downloader.Pages {
 		private async void LoadCommentsAsync() {
 			comments.Clear();
 			CommentsListView.Items.Clear();
+			commentsLoaded = false;
+			commentsLoading = true;
 			LoadingSection.Visibility = Visibility.Visible;
-			foreach(E621Comment item in await E621Comment.GetAsync(PostRef.id) ?? Array.Empty<E621Comment>()) {
-				comments.Add(item);
-				CommentsListView.Items.Add(new CommentView(item));
+			CommentsHint.Visibility = Visibility.Collapsed;
+			E621Comment[] list = await E621Comment.GetAsync(PostRef.id);
+			if(list != null && list.Length > 0) {
+				foreach(E621Comment item in list) {
+					comments.Add(item);
+					CommentsListView.Items.Add(new CommentView(item));
+				}
+			} else {
+				CommentsHint.Visibility = Visibility.Visible;
 			}
 			LoadingSection.Visibility = Visibility.Collapsed;
+			commentsLoading = false;
+			commentsLoaded = true;
 		}
 
 		private void MainImage_ImageOpened(object sender, RoutedEventArgs e) {
@@ -391,6 +407,16 @@ namespace E621Downloader.Pages {
 		private void RightButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			MainPage.Instance.parameter_picture = App.postsList.GoRight();
 			MainPage.NavigateToPicturePage();
+		}
+
+		private void InformationPivot_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(e.AddedItems != null && e.AddedItems.Count > 0 && e.AddedItems[0] is PivotItem item && item.Header as string == "Comments" && !commentsLoaded && !commentsLoading) {
+				if(PostRef != null) {
+					LoadCommentsAsync();
+				} else {
+					CommentsHint.Visibility = Visibility.Visible;
+				}
+			}
 		}
 	}
 	public class GroupTagList: ObservableCollection<string> {

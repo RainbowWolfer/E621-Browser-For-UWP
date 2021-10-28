@@ -89,7 +89,7 @@
 		<SplitView x:Name="MainSplitView" DisplayMode="Overlay" Grid.Column="1" Grid.Row="1" PanePlacement="Right" OpenPaneLength="500">
 			<SplitView.Pane>
 				<Grid>
-					<Pivot>
+					<Pivot x:Name="InformationPivot" SelectionChanged="InformationPivot_SelectionChanged">
 						<PivotItem Header="Description">
 							<ScrollViewer>
 								<TextBlock x:Name="DescriptionText" Text="No Description" TextWrapping="Wrap" FontSize="18" Margin="20" />
@@ -97,7 +97,7 @@
 						</PivotItem>
 						<PivotItem Header="Comments">
 							<Grid>
-								<StackPanel x:Name="LoadingSection" Visibility="Collapsed" Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+								<StackPanel x:Name="LoadingSection" Visibility="Visible" Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
 									<TextBlock Text="Loading Comments" FontSize="22" Margin="5" />
 									<ProgressBar IsIndeterminate="True" Margin="5" />
 								</StackPanel>
@@ -109,6 +109,8 @@
 										</Style>
 									</ListView.ItemContainerStyle>
 								</ListView>
+
+								<TextBlock Visibility="Collapsed" x:Name="CommentsHint" Text="No Comments Yet" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 							</Grid>
 						</PivotItem>
 					</Pivot>
