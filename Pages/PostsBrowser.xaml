@@ -14,20 +14,54 @@
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
-		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-			<!--<TextBlock x:Name="LoadsTextBlock" Text="Articles: 0/0" Margin="5" VerticalAlignment="Center"/>-->
-			<CheckBox x:Name="FixedHeightCheckBox" Content="Fixed Height" Margin="5" Checked="FixedHeightCheckBox_Checked" Unchecked="FixedHeightCheckBox_Unchecked"/>
-			<Button x:Name="RefreshButton" Content="Refresh" Margin="5" Tapped="RefreshButton_Tapped"/>
-			<Button x:Name="DownloadButton" Content="Download" Margin="5" Tapped="DownloadButton_Tapped"/>
-			<ToggleButton x:Name="SelectToggleButton" Content="Select" Checked="SelectToggleButton_Checked" Unchecked="SelectToggleButton_Unchecked" Margin="5"/>
-			<TextBlock x:Name="SelectionCountTextBlock" Text="2/75" VerticalAlignment="Center" Margin="5" FontSize="18" Visibility="Collapsed"/>
-		</StackPanel>
-		<ScrollViewer VerticalScrollMode="Auto" Grid.Row="1">
-			<Grid>
-				<!--<VariableSizedWrapGrid x:Name="MyWrapGrid" ItemHeight="100" ItemWidth="100" Orientation="Horizontal"/>-->
-				<VariableSizedWrapGrid x:Name="MyWrapGrid" ItemHeight="{x:Bind ItemSize}" ItemWidth="{x:Bind ItemSize}" Orientation="Horizontal"/>
-			</Grid>
-		</ScrollViewer>
+		<Grid>
+			<Button x:Name="MySplitViewButton" HorizontalAlignment="Left" VerticalAlignment="Stretch" Background="Transparent" BorderThickness="0" Tapped="MySplitViewButton_Tapped">
+				<Button.Content>
+					<StackPanel Orientation="Horizontal">
+						<FontIcon Glyph="&#xE71D;" Margin="2,0,0,0"/>
+						<TextBlock Text="Posts Info" Margin="10,0,0,0"/>
+					</StackPanel>
+				</Button.Content>
+			</Button>
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+				<CheckBox x:Name="FixedHeightCheckBox" Content="Fixed Height" Margin="5" Checked="FixedHeightCheckBox_Checked" Unchecked="FixedHeightCheckBox_Unchecked"/>
+				<Button x:Name="RefreshButton" Content="Refresh" Margin="5" Tapped="RefreshButton_Tapped"/>
+				<Button x:Name="DownloadButton" Content="Download" Margin="5" Tapped="DownloadButton_Tapped"/>
+				<ToggleButton x:Name="SelectToggleButton" Content="Select" Checked="SelectToggleButton_Checked" Unchecked="SelectToggleButton_Unchecked" Margin="5"/>
+				<TextBlock x:Name="SelectionCountTextBlock" Text="2/75" VerticalAlignment="Center" Margin="5" FontSize="18" Visibility="Collapsed"/>
+			</StackPanel>
+		</Grid>
+		<SplitView x:Name="MySplitView" Grid.Row="1" DisplayMode="Overlay">
+			<SplitView.Pane>
+				<ScrollViewer>
+					<StackPanel Orientation="Vertical" Margin="10">
+						<Button x:Name="TagsButton" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="10,8,0,0" Tapped="TagsButton_Tapped">
+							<Button.Content>
+								<StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+									<FontIcon Glyph="&#xE8EC;"/>
+									<TextBlock Text="Tags" Margin="10,0,0,0" VerticalAlignment="Center"/>
+									<TextBlock x:Name="HotTagsCountText" Text="(5)" Margin="10,0,0,0" VerticalAlignment="Center"/>
+								</StackPanel>
+							</Button.Content>
+						</Button>
+						<ListView x:Name="HotTagsListView" IsItemClickEnabled="True" SelectionMode="None"/>
+						<StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+							<FontIcon Glyph="&#xE25B;"/>
+							<TextBlock Text="Black List" Margin="10,0,0,0"/>
+						</StackPanel>
+						<ListView x:Name="BlackTagsListView" SelectionMode="None" IsItemClickEnabled="False"/>
+					</StackPanel>
+				</ScrollViewer>
+			</SplitView.Pane>
+			<SplitView.Content>
+				<ScrollViewer VerticalScrollMode="Auto">
+					<Grid>
+						<!--<VariableSizedWrapGrid x:Name="MyWrapGrid" ItemHeight="100" ItemWidth="100" Orientation="Horizontal"/>-->
+						<VariableSizedWrapGrid x:Name="MyWrapGrid" ItemHeight="{x:Bind ItemSize}" ItemWidth="{x:Bind ItemSize}" Orientation="Horizontal"/>
+					</Grid>
+				</ScrollViewer>
+			</SplitView.Content>
+		</SplitView>
 		<Grid Grid.Row="2">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>

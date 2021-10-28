@@ -144,9 +144,11 @@ namespace E621Downloader.Models.Locals {
 
 		public async static void WriteFollowList(string[] list) {
 			await FileIO.WriteLinesAsync(FollowListFile, list);
+			FollowList = list;
 		}
 		public async static void WriteBlackList(string[] list) {
 			await FileIO.WriteLinesAsync(BlackListFile, list);
+			BlackList = list;
 		}
 
 		private async static Task<string[]> GetFollowList() => await GetListFromFile(FollowListFile);

@@ -55,16 +55,20 @@ namespace E621Downloader.Views {
 			MainPage.CreateTip("Successful", "Hello World");
 		}
 
-		public string[] GetCurrentTags() {
-			return tags.ToArray();
-		}
+		public string[] GetCurrentTags() => originTags.ToArray();
 
 		private void TimeOrderItem_Click(object sender, RoutedEventArgs e) {
 			OrderToolTip.Content = "Time";
+			TimeOrderItem.Text = "· Time ·";
+			AlphaOrderItem.Text = "Alphabet";
+			tags.Clear();
+			originTags.ForEach(t => tags.Add(t));
 		}
 
 		private void AlphaOrderItem_Click(object sender, RoutedEventArgs e) {
 			OrderToolTip.Content = "Alpha";
+			TimeOrderItem.Text = "Time";
+			AlphaOrderItem.Text = "· Alphabet ·";
 			List<string> tmp = tags.ToList();
 			tmp.Sort((a, b) => a.CompareTo(b));
 			tags.Clear();
@@ -81,10 +85,15 @@ namespace E621Downloader.Views {
 		}
 
 		private void AddButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			string tag = (sender as TextBox).Text.Trim().ToLower();
+			string tag = NewText.Text.Trim().ToLower();
+			if(string.IsNullOrWhiteSpace(tag) || originTags.Contains(tag)) {
+				NewText.Text = "";
+				return;
+			}
 			originTags.Add(tag);
 			tags.Add(tag);
 			UpdateTitle();
+			NewText.Text = "";
 		}
 
 		private void DeleteButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -107,31 +116,27 @@ namespace E621Downloader.Views {
 		}
 
 		private void MySuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) {
+			UpdateSearch(args.QueryText);
+		}
+
+		private void MySuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args) {
+			UpdateSearch(sender.Text);
+		}
+
+		private void UpdateSearch(string input) {
 			tags.Clear();
-			if(string.IsNullOrEmpty(args.QueryText)) {
+			if(string.IsNullOrEmpty(input)) {
 				foreach(string item in originTags) {
 					tags.Add(item);
 				}
 				return;
 			}
 			foreach(string item in originTags) {
-				if(item.ToLower().Contains(args.QueryText.ToLower())) {
+				if(item.ToLower().Contains(input.ToLower())) {
 					tags.Add(item);
 				}
 			}
 		}
 
-	}
-	[Obsolete("Later in Dev", false)]
-	public class TagItem {
-		public string tag;
-		public DateTime addedTime;
-		public bool isBlackListed;
-
-		public TagItem(string tag, DateTime addedTime, bool isBlackListed) {
-			this.tag = tag;
-			this.addedTime = addedTime;
-			this.isBlackListed = isBlackListed;
-		}
 	}
 }

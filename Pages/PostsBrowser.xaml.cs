@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
+using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Views;
 using System;
@@ -35,6 +36,8 @@ namespace E621Downloader.Pages {
 		public int currentPage;
 		public int maxPage;
 
+		public TagsFilterSystem tagsFilterSystem;
+
 		private TextBlock tb_ArticlesLoadCount;
 
 		public int ItemSize { get => 50; }
@@ -50,6 +53,7 @@ namespace E621Downloader.Pages {
 			this.posts = new List<Post>();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			this.tags = Array.Empty<string>();
+			this.tagsFilterSystem = new TagsFilterSystem(HotTagsListView, BlackTagsListView);
 			Initialize();
 		}
 
@@ -72,7 +76,7 @@ namespace E621Downloader.Pages {
 			if(posts == null) {
 				return;
 			}
-			this.posts = posts;
+			this.posts = tagsFilterSystem.FilterBlackList(posts);
 			if(tags.Length != 0) {
 				this.tags = tags;
 				MainPage.ChangeCurrenttTags(tags);
@@ -87,7 +91,7 @@ namespace E621Downloader.Pages {
 				holder.OnImagedLoaded += (b) => tb_ArticlesLoadCount.Text = "Posts : " + ++loaded + "/" + this.posts.Count;
 				ToolTipService.SetToolTip(holder, $"ID: {item.id}\nScore: {item.score.total}");
 			}
-
+			tagsFilterSystem.Update(posts);
 		}
 
 		public async Task LoadAsync(int page = 1, params string[] tags) {
@@ -113,6 +117,7 @@ namespace E621Downloader.Pages {
 			LoadPosts(this.posts, tags);
 			MainPage.HideInstantDialog();
 		}
+
 		public void UpdatePaginator() {
 			PaginatorPanel.Children.Clear();
 			//currentPage
@@ -292,55 +297,11 @@ namespace E621Downloader.Pages {
 				holder.SpanCol = span_row;
 				holder.SpanRow = span_col;
 			}
-			//Debug.WriteLine(VariableSizedWrapGrid.GetRowSpan(holder) + "_" + VariableSizedWrapGrid.GetColumnSpan(holder));
 		}
 
 		private async void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			await Reload();
 		}
-
-		//private async void PrevButton_Tapped(object sender, TappedRoutedEventArgs e) {
-		//	if(currentPage <= 1) {
-		//		return;
-		//	}
-		//	await LoadAsync(--currentPage, tags);
-		//	//posts = Post.GetPostsByTags(--currentPage, tags);
-		//	//LoadPosts(posts);
-		//	//CurrentPageTextBlock.Text = "Current Page : " + currentPage;
-		//}
-
-		//private async void NextButton_Tapped(object sender, TappedRoutedEventArgs e) {
-		//	await LoadAsync(++currentPage, tags);
-		//	//posts = Post.GetPostsByTags(++currentPage, tags);
-		//	//LoadPosts(posts);
-		//	//CurrentPageTextBlock.Text = "Current Page : " + currentPage;
-		//}
-
-		//private async void PageJumpTextBox_KeyDown(object sender, KeyRoutedEventArgs e) {
-		//	if(e.Key == VirtualKey.Enter) {
-		//		await JumpPageAction(PageJumpTextBox);
-		//	}
-		//}
-
-		//private async void JumpPageSubmitButton_Tapped(object sender, TappedRoutedEventArgs e) {
-		//	await JumpPageAction(PageJumpTextBox);
-		//}
-		//private async Task JumpPageAction(TextBox sender) {
-		//	if(int.TryParse(sender.Text, out int page)) {
-		//		if(page == currentPage) {
-		//			return;
-		//		}
-		//		if(page > 750 || page <= 0) {
-		//			await MainPage.CreatePopupDialog("Error", "Plase Enter a Number Within 0 ~ 750");
-		//			return;
-		//		}
-		//		await LoadAsync(page, tags);
-		//	} else {
-		//		await MainPage.CreatePopupDialog("Int Parse Error", "Plase Enter a Valid Number");
-		//		return;
-		//	}
-		//}
-
 		private void FixedHeightCheckBox_Checked(object sender, RoutedEventArgs e) {
 			isHeightFixed = true;
 			SetAllItemsSize(true);
@@ -442,5 +403,145 @@ namespace E621Downloader.Pages {
 				}
 			}
 		}
+
+		private void MySplitViewButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
+		}
+
+		private void TagsButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(tagsFilterSystem.hot_tags_count == 5) {
+				tagsFilterSystem.hot_tags_count = 10;
+			} else if(tagsFilterSystem.hot_tags_count == 10) {
+				tagsFilterSystem.hot_tags_count = 15;
+			} else if(tagsFilterSystem.hot_tags_count == 15) {
+				tagsFilterSystem.hot_tags_count = 20;
+			} else if(tagsFilterSystem.hot_tags_count == 20) {
+				tagsFilterSystem.hot_tags_count = 5;
+			}
+			HotTagsCountText.Text = $"({tagsFilterSystem.hot_tags_count})";
+			tagsFilterSystem.UpdateHotTags();
+		}
 	}
+
+	public class TagsFilterSystem {
+		private readonly ListView hotTagsListView;
+		private readonly ListView blackTagsListView;
+		private Dictionary<string, long> all_tags;//name, count
+		public readonly Dictionary<string, long> black_tags;//name, count
+		public readonly Dictionary<string, CheckBox> black_tags_enabled;
+
+		private Dictionary<string, long> hot_tags;
+
+		public int hot_tags_count = 5;
+
+		public Dictionary<string, long> GetHotTags(int length) {
+			return hot_tags.Take(length).ToDictionary(x => x.Key, x => x.Value);
+		}
+
+		public List<string> GetEnabledBlackTags() {
+			var result = new List<string>();
+			foreach(KeyValuePair<string, CheckBox> item in black_tags_enabled) {
+				if(item.Value.IsChecked.Value) {
+					result.Add(item.Key);
+				}
+			}
+			return result;
+		}
+
+		public void Update(List<Post> posts) {
+			foreach(Post item in posts) {
+				foreach(string tag in item.tags.GetAllTags()) {
+					if(all_tags.ContainsKey(tag)) {
+						all_tags[tag]++;
+					} else {
+						all_tags.Add(tag, 1);
+					}
+				}
+			}
+			CalculateHotTags();
+			UpdateHotTags();
+			UpdateBlackListTags();
+		}
+
+		private void CalculateHotTags() {
+			hot_tags = all_tags.OrderByDescending(o => o.Value).ToDictionary(x => x.Key, x => x.Value);
+		}
+
+		public List<Post> FilterBlackList(List<Post> posts) {
+			black_tags.Clear();
+			List<Post> result = posts.ToList();
+			foreach(Post item in posts) {
+				foreach(string tag in item.tags.GetAllTags()) {
+					if(Local.BlackList.Contains(tag)) {
+						result.Remove(item);
+						if(black_tags.ContainsKey(tag)) {
+							black_tags[tag]++;
+						} else {
+							black_tags.Add(tag, 1);
+						}
+						break;
+					}
+				}
+			}
+			return result;
+		}
+
+
+		public void UpdateHotTags() {
+			hotTagsListView.Items.Clear();
+			foreach(KeyValuePair<string, long> item in GetHotTags(hot_tags_count)) {
+				StackPanel panel = new StackPanel() { Orientation = Orientation.Horizontal };
+				panel.Children.Add(new TextBlock() {
+					Text = item.Value.ToString(),
+					Width = 50,
+					TextAlignment = TextAlignment.Right,
+				});
+				panel.Children.Add(new TextBlock() {
+					Text = item.Key,
+					Margin = new Thickness(10, 0, 0, 0),
+				});
+				hotTagsListView.Items.Add(panel);
+			}
+		}
+
+		public void UpdateBlackListTags() {
+			black_tags_enabled.Clear();
+			blackTagsListView.Items.Clear();
+			foreach(KeyValuePair<string, long> item in black_tags) {
+				StackPanel panel = new StackPanel() { Orientation = Orientation.Horizontal };
+				var checkBox = new CheckBox() {
+					IsChecked = false,
+					Content = "",
+					MinWidth = 10,
+					VerticalAlignment = VerticalAlignment.Center,
+				};
+				panel.Children.Add(checkBox);
+				panel.Children.Add(new TextBlock() {
+					Text = item.Value.ToString(),
+					Width = 20,
+					TextAlignment = TextAlignment.Right,
+					HorizontalAlignment = HorizontalAlignment.Center,
+					VerticalAlignment = VerticalAlignment.Center,
+				});
+				panel.Children.Add(new TextBlock() {
+					Text = item.Key,
+					Margin = new Thickness(10, 0, 0, 0),
+					HorizontalAlignment = HorizontalAlignment.Center,
+					VerticalAlignment = VerticalAlignment.Center,
+				});
+				blackTagsListView.Items.Add(panel);
+				black_tags_enabled.Add(item.Key, checkBox);
+			}
+		}
+
+		public TagsFilterSystem(ListView hotTagsListView, ListView blackTagsListView) {
+			this.all_tags = new Dictionary<string, long>();
+			this.hot_tags = new Dictionary<string, long>();
+			this.black_tags = new Dictionary<string, long>();
+			this.black_tags_enabled = new Dictionary<string, CheckBox>();
+			this.hotTagsListView = hotTagsListView;
+			this.blackTagsListView = blackTagsListView;
+		}
+	}
+
 }

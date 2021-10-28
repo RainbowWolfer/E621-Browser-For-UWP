@@ -32,17 +32,17 @@
 				</ToolTipService.ToolTip>
 				<DropDownButton.Flyout>
 					<MenuFlyout Placement="Bottom">
-						<MenuFlyoutItem x:Name="TimeOrderItem" Text="Time" Click="TimeOrderItem_Click"/>
-						<MenuFlyoutItem x:Name="AlphaOrderItem" Text="Alpha" Click="AlphaOrderItem_Click"/>
+						<MenuFlyoutItem x:Name="TimeOrderItem" Text="· Time ·" Click="TimeOrderItem_Click"/>
+						<MenuFlyoutItem x:Name="AlphaOrderItem" Text="Alphabet" Click="AlphaOrderItem_Click"/>
 					</MenuFlyout>
 				</DropDownButton.Flyout>
 			</DropDownButton>
 			<!--<Button Content="Add New Tag" Grid.Column="1" HorizontalAlignment="Center" Height="32"/>-->
 			<Button x:Name="ExportButton" Content="Export To ClipBoard" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Tapped="ExportButton_Tapped"/>
-			<AutoSuggestBox Name="MySuggestBox" Grid.Row="1" Grid.ColumnSpan="3" Margin="2,5,8,2" QueryIcon="Find" QuerySubmitted="MySuggestBox_QuerySubmitted"/>
+			<AutoSuggestBox Name="MySuggestBox" Grid.Row="1" Grid.ColumnSpan="3" Margin="2,5,8,2" QueryIcon="Find" TextChanged="MySuggestBox_TextChanged" QuerySubmitted="MySuggestBox_QuerySubmitted"/>
 		</Grid>
 
-		<ListView x:Name="MyListView" Margin="5" ItemsSource="{x:Bind tags}" IsItemClickEnabled="True" SelectionMode="None" Grid.Row="1" ItemClick="ListView_ItemClick">
+		<ListView x:Name="MyListView" Margin="5,5,5,32" ItemsSource="{x:Bind tags}" IsItemClickEnabled="True" SelectionMode="None" Grid.Row="1" ItemClick="ListView_ItemClick">
 			<ListView.ItemTemplate>
 				<DataTemplate x:DataType="x:String">
 					<RelativePanel Width="215">
