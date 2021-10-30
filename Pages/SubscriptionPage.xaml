@@ -9,6 +9,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Grid>
-		<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="This is Subscription Page" FontSize="64"/>
+		<TextBlock x:Name="TestText" HorizontalAlignment="Center" VerticalAlignment="Center" Text="This is Subscription Page" TextWrapping="WrapWholeWords" FontSize="15"/>
 	</Grid>
 </Page>

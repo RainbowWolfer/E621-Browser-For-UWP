@@ -91,7 +91,7 @@ namespace E621Downloader {
 	}
 
 	public class PostsList {
-		private List<object> items;//post,filepath
+		private readonly List<object> items;//post,filepath
 		public object Current { private get; set; }
 		public int Count => items.Count;
 

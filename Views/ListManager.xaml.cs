@@ -22,13 +22,13 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Views {
 	public sealed partial class ListManager: UserControl {
-		private List<string> originTags;
+		private readonly List<string> originTags;
 		public readonly ObservableCollection<string> tags;
-		private int initialCount;
+		private readonly int initialCount;
 
-		private ContentDialog parent;
+		private readonly ContentDialog parent;
 
-		private string title;
+		private readonly string title;
 
 		public ListManager(string[] tags, ContentDialog contentControl) {
 			this.InitializeComponent();

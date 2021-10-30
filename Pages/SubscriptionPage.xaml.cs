@@ -1,4 +1,6 @@
-﻿using System;
+﻿using E621Downloader.Models.Locals;
+using E621Downloader.Models.Posts;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,6 +20,18 @@ namespace E621Downloader.Pages {
 	public sealed partial class SubscriptionPage: Page {
 		public SubscriptionPage() {
 			this.InitializeComponent();
+
+		}
+
+		private async void Load() {
+			List<Post> posts = await Post.GetPostsByTagsAsync(true, 1, Local.FollowList);
+			foreach(Post item in posts) {
+				TestText.Text += item.file.url + "\n";
+			}
+		}
+		protected override void OnNavigatedTo(NavigationEventArgs e) {
+			base.OnNavigatedTo(e);
+			Load();
 		}
 	}
 }
