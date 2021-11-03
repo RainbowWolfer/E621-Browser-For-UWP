@@ -53,7 +53,9 @@ namespace E621Downloader.Pages {
 			this.posts = new List<Post>();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			this.tags = Array.Empty<string>();
-			this.tagsFilterSystem = new TagsFilterSystem(HotTagsListView, BlackTagsListView);
+			this.tagsFilterSystem = new TagsFilterSystem(HotTagsListView, BlackTagsListView,
+				enable => UpdateImageHolders(CalculateEnabledPosts(), false)
+			);
 			Initialize();
 		}
 
@@ -82,16 +84,36 @@ namespace E621Downloader.Pages {
 				MainPage.ChangeCurrenttTags(tags);
 			}
 			loaded = 0;
-			MyWrapGrid.Children.Clear();
 			tb_ArticlesLoadCount.Text = "Posts : 0/" + this.posts.Count;
-			foreach(Post item in this.posts) {
-				var holder = new ImageHolder(item);
-				MyWrapGrid.Children.Add(holder);
-				SetImageItemSize(isHeightFixed, holder, item.sample);
-				holder.OnImagedLoaded += (b) => tb_ArticlesLoadCount.Text = "Posts : " + ++loaded + "/" + this.posts.Count;
-				ToolTipService.SetToolTip(holder, $"ID: {item.id}\nScore: {item.score.total}");
-			}
+
+			UpdateImageHolders(CalculateEnabledPosts(), true);
+
 			tagsFilterSystem.Update(posts);
+		}
+		private readonly string[] ignoreTypes = { "swf", };
+		private void UpdateImageHolders(List<Post> ps, bool refresh) {
+			if(refresh) {
+				MyWrapGrid.Children.Clear();
+				foreach(Post item in ps) {
+					if(ignoreTypes.Contains(item.file.ext)) {
+						continue;
+					}
+					var holder = new ImageHolder(item, this.posts.IndexOf(item));
+					MyWrapGrid.Children.Add(holder);
+					SetImageItemSize(isHeightFixed, holder, item.sample);
+					holder.OnImagedLoaded += (b) => tb_ArticlesLoadCount.Text = "Posts : " + ++loaded + "/" + this.posts.Count;
+					ToolTipService.SetToolTip(holder, $"ID: {item.id}\nScore: {item.score.total}");
+				}
+			} else {
+				for(int i = 0; i < this.posts.Count; i++) {
+					ImageHolder existed = MyWrapGrid.Children[i] as ImageHolder;
+
+				}
+				foreach(ImageHolder item in MyWrapGrid.Children) {
+					Debug.WriteLine(item.Index);
+				}
+
+			}
 		}
 
 		public async Task LoadAsync(int page = 1, params string[] tags) {
@@ -116,6 +138,20 @@ namespace E621Downloader.Pages {
 			await Task.Delay(20);
 			LoadPosts(this.posts, tags);
 			MainPage.HideInstantDialog();
+		}
+
+		private List<Post> CalculateEnabledPosts() {
+			var result = new List<Post>();
+			foreach(Post item in posts) {
+				if(!App.showNullImage && string.IsNullOrEmpty(item.sample.url)) {
+					continue;
+				}
+				if(item.tags.GetAllTags().Any(a => tagsFilterSystem.GetEnabledBlackTags().Contains(a))) {
+					continue;
+				}
+				result.Add(item);
+			}
+			return result;
 		}
 
 		public void UpdatePaginator() {
@@ -434,6 +470,8 @@ namespace E621Downloader.Pages {
 
 		public int hot_tags_count = 5;
 
+		public Action<bool> BlackListCheckBoxAction { get; private set; }
+
 		public Dictionary<string, long> GetHotTags(int length) {
 			return hot_tags.Take(length).ToDictionary(x => x.Key, x => x.Value);
 		}
@@ -510,11 +548,13 @@ namespace E621Downloader.Pages {
 			foreach(KeyValuePair<string, long> item in black_tags) {
 				StackPanel panel = new StackPanel() { Orientation = Orientation.Horizontal };
 				var checkBox = new CheckBox() {
-					IsChecked = false,
+					IsChecked = true,
 					Content = "",
 					MinWidth = 10,
 					VerticalAlignment = VerticalAlignment.Center,
 				};
+				checkBox.Unchecked += (s, e) => BlackListCheckBoxAction?.Invoke(false);
+				checkBox.Checked += (s, e) => BlackListCheckBoxAction?.Invoke(true);
 				panel.Children.Add(checkBox);
 				panel.Children.Add(new TextBlock() {
 					Text = item.Value.ToString(),
@@ -534,13 +574,14 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		public TagsFilterSystem(ListView hotTagsListView, ListView blackTagsListView) {
+		public TagsFilterSystem(ListView hotTagsListView, ListView blackTagsListView, Action<bool> blackListCheckBoxAction) {
 			this.all_tags = new Dictionary<string, long>();
 			this.hot_tags = new Dictionary<string, long>();
 			this.black_tags = new Dictionary<string, long>();
 			this.black_tags_enabled = new Dictionary<string, CheckBox>();
 			this.hotTagsListView = hotTagsListView;
 			this.blackTagsListView = blackTagsListView;
+			this.BlackListCheckBoxAction = blackListCheckBoxAction;
 		}
 	}
 

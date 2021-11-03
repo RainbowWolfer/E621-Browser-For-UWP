@@ -25,6 +25,7 @@ namespace E621Downloader.Views {
 	public delegate void OnImageLoadedEventHandler(BitmapImage bitmap);
 	public sealed partial class ImageHolder: UserControl {
 		public Post PostRef { get; private set; }
+		public int Index { get; private set; }
 
 		public event OnImageLoadedEventHandler OnImagedLoaded;
 
@@ -59,8 +60,9 @@ namespace E621Downloader.Views {
 
 		//private bool isLoaded;
 
-		public ImageHolder(Post post) {
+		public ImageHolder(Post post, int index) {
 			this.PostRef = post;
+			this.Index = index;
 			this.InitializeComponent();
 			OnImagedLoaded += (b) => this.Image = b;
 			if(LoadUrl != null) {
@@ -74,7 +76,7 @@ namespace E621Downloader.Views {
 					TypeBorder.Visibility = Visibility.Collapsed;
 					TypeTextBlock.Text = "";
 				}
-				Debug.WriteLine(post.file.ext);
+				//Debug.WriteLine(post.file.ext);
 				MyImage.Source = new BitmapImage(new Uri(LoadUrl));
 			} else {
 				MyProgressRing.IsActive = false;
@@ -92,33 +94,6 @@ namespace E621Downloader.Views {
 			}
 
 		}
-		/**
-		private async Task LoadImageAsync(WriteableBitmap bitmap) {
-			Debug.WriteLine(PostRef.id + "Start");
-			try {
-				LoadingPanel.Visibility = Visibility.Visible;
-				isLoaded = false;
-				MyImage.Source = await ImageConvertor.GetWriteableBitmapAsync(LoadUrl);
-				LoadingPanel.Visibility = Visibility.Collapsed;
-				isLoaded = true;
-			} catch(Exception e) {
-				Debug.WriteLine("ERROR_" + e.Message);
-			}
-			Debug.WriteLine(PostRef.id + "End");
-		}
-		private async void LoadImageAsync2() {
-			LoadingPanel.Visibility = Visibility.Visible;
-			isLoaded = false;
-			var rass = RandomAccessStreamReference.CreateFromUri(new Uri(LoadUrl));
-			using(IRandomAccessStream stream = await rass.OpenReadAsync()) {
-				var bitmapImage = new BitmapImage();
-				await bitmapImage.SetSourceAsync(stream);
-				MyImage.Source = bitmapImage;
-			}
-			LoadingPanel.Visibility = Visibility.Collapsed;
-			isLoaded = true;
-		}
-		*/
 		private void Grid_Tapped(object sender, TappedRoutedEventArgs e) {
 			//if(!this.isLoaded) {
 			//open browser;
