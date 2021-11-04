@@ -47,6 +47,8 @@ namespace E621Downloader.Pages {
 
 		public bool multipleSelectionMode;
 
+		private readonly string[] ignoreTypes = { "swf", };
+
 		public PostsBrowser() {
 			Instance = this;
 			this.InitializeComponent();
@@ -78,7 +80,8 @@ namespace E621Downloader.Pages {
 			if(posts == null) {
 				return;
 			}
-			this.posts = tagsFilterSystem.FilterBlackList(posts);
+			this.posts = posts;
+			tagsFilterSystem.RegisterBlackList(posts);
 			if(tags.Length != 0) {
 				this.tags = tags;
 				MainPage.ChangeCurrenttTags(tags);
@@ -90,14 +93,13 @@ namespace E621Downloader.Pages {
 
 			tagsFilterSystem.Update(posts);
 		}
-		private readonly string[] ignoreTypes = { "swf", };
 		private void UpdateImageHolders(List<Post> ps, bool refresh) {
 			if(refresh) {
 				MyWrapGrid.Children.Clear();
 				foreach(Post item in ps) {
-					if(ignoreTypes.Contains(item.file.ext)) {
-						continue;
-					}
+					//if(!tagsFilterSystem.CheckPostContainBlackList(item)) {
+					//	continue;
+					//}
 					var holder = new ImageHolder(item, this.posts.IndexOf(item));
 					MyWrapGrid.Children.Add(holder);
 					SetImageItemSize(isHeightFixed, holder, item.sample);
@@ -105,15 +107,25 @@ namespace E621Downloader.Pages {
 					ToolTipService.SetToolTip(holder, $"ID: {item.id}\nScore: {item.score.total}");
 				}
 			} else {
+				Debug.WriteLine($"{this.posts.Count} {ps.Count} {MyWrapGrid.Children.Count}");
 				for(int i = 0; i < this.posts.Count; i++) {
-					ImageHolder existed = MyWrapGrid.Children[i] as ImageHolder;
-
+					ImageHolder existed = GetImageHolder(i);
+					int shouleBe = ps.IndexOf(this.posts[i]);
+					if(shouleBe == -1) {
+						Post item = posts[i];
+						var holder = new ImageHolder(item, this.posts.IndexOf(item));
+						SetImageItemSize(isHeightFixed, holder, item.sample);
+						holder.OnImagedLoaded += (b) => tb_ArticlesLoadCount.Text = "Posts : " + ++loaded + "/" + this.posts.Count;
+						ToolTipService.SetToolTip(holder, $"ID: {item.id}\nScore: {item.score.total}");
+						MyWrapGrid.Children.Insert(existed.Index, holder);
+					}
+					Debug.WriteLine($"{existed?.Index} {shouleBe}");
 				}
-				foreach(ImageHolder item in MyWrapGrid.Children) {
-					Debug.WriteLine(item.Index);
-				}
-
 			}
+		}
+
+		private ImageHolder GetImageHolder(int index) {
+			return MyWrapGrid.Children.Select(c => c as ImageHolder).FirstOrDefault(i => i.Index == index);
 		}
 
 		public async Task LoadAsync(int page = 1, params string[] tags) {
@@ -127,6 +139,8 @@ namespace E621Downloader.Pages {
 				await MainPage.CreatePopupDialog("Articles Error", "Articles return 0");
 				return;
 			}
+			int removed_count = temp.RemoveAll(p => ignoreTypes.Contains(p.file.ext));
+			Debug.WriteLine($"Removed {removed_count} posts");
 			this.posts = temp;
 			maxPage = E621Paginator.Get(tags).GetMaxPage();
 			UpdatePaginator();
@@ -140,16 +154,26 @@ namespace E621Downloader.Pages {
 			MainPage.HideInstantDialog();
 		}
 
+		//private List<Post> CalculateEnabledPosts() {
+		//	var result = new List<Post>();
+		//	foreach(Post item in posts) {
+		//		if(!App.showNullImage && string.IsNullOrEmpty(item.sample.url)) {
+		//			continue;
+		//		}
+		//		if(item.tags.GetAllTags().Any(a => tagsFilterSystem.GetEnabledBlackTags().Contains(a))) {
+		//			continue;
+		//		}
+		//		result.Add(item);
+		//	}
+		//	return result;
+		//}
+
 		private List<Post> CalculateEnabledPosts() {
 			var result = new List<Post>();
-			foreach(Post item in posts) {
-				if(!App.showNullImage && string.IsNullOrEmpty(item.sample.url)) {
-					continue;
+			foreach(Post item in this.posts) {
+				if(!tagsFilterSystem.CheckPostContainBlackList(item)) {
+					result.Add(item);
 				}
-				if(item.tags.GetAllTags().Any(a => tagsFilterSystem.GetEnabledBlackTags().Contains(a))) {
-					continue;
-				}
-				result.Add(item);
 			}
 			return result;
 		}
@@ -457,12 +481,17 @@ namespace E621Downloader.Pages {
 			HotTagsCountText.Text = $"({tagsFilterSystem.hot_tags_count})";
 			tagsFilterSystem.UpdateHotTags();
 		}
+
+		private async void HotTagsListView_ItemClick(object sender, ItemClickEventArgs e) {
+			string tag = (e.ClickedItem as StackPanel).Tag as string;
+			await LoadAsync(1, tag);
+		}
 	}
 
 	public class TagsFilterSystem {
 		private readonly ListView hotTagsListView;
 		private readonly ListView blackTagsListView;
-		private Dictionary<string, long> all_tags;//name, count
+		private readonly Dictionary<string, long> all_tags;//name, count
 		public readonly Dictionary<string, long> black_tags;//name, count
 		public readonly Dictionary<string, CheckBox> black_tags_enabled;
 
@@ -474,6 +503,17 @@ namespace E621Downloader.Pages {
 
 		public Dictionary<string, long> GetHotTags(int length) {
 			return hot_tags.Take(length).ToDictionary(x => x.Key, x => x.Value);
+		}
+
+		public bool CheckPostContainBlackList(Post post) {
+			//var list = GetEnabledBlackTags();
+			IEnumerable<string> list = black_tags.Select(d => d.Key);
+			foreach(string item in post.tags.GetAllTags()) {
+				if(list.Contains(item)) {
+					return true;
+				}
+			}
+			return false;
 		}
 
 		public List<string> GetEnabledBlackTags() {
@@ -505,13 +545,11 @@ namespace E621Downloader.Pages {
 			hot_tags = all_tags.OrderByDescending(o => o.Value).ToDictionary(x => x.Key, x => x.Value);
 		}
 
-		public List<Post> FilterBlackList(List<Post> posts) {
+		public void RegisterBlackList(List<Post> posts) {
 			black_tags.Clear();
-			List<Post> result = posts.ToList();
 			foreach(Post item in posts) {
 				foreach(string tag in item.tags.GetAllTags()) {
 					if(Local.BlackList.Contains(tag)) {
-						result.Remove(item);
 						if(black_tags.ContainsKey(tag)) {
 							black_tags[tag]++;
 						} else {
@@ -521,14 +559,15 @@ namespace E621Downloader.Pages {
 					}
 				}
 			}
-			return result;
 		}
-
 
 		public void UpdateHotTags() {
 			hotTagsListView.Items.Clear();
 			foreach(KeyValuePair<string, long> item in GetHotTags(hot_tags_count)) {
-				StackPanel panel = new StackPanel() { Orientation = Orientation.Horizontal };
+				StackPanel panel = new StackPanel() {
+					Orientation = Orientation.Horizontal,
+					Tag = item.Key,
+				};
 				panel.Children.Add(new TextBlock() {
 					Text = item.Value.ToString(),
 					Width = 50,
@@ -555,10 +594,10 @@ namespace E621Downloader.Pages {
 				};
 				checkBox.Unchecked += (s, e) => BlackListCheckBoxAction?.Invoke(false);
 				checkBox.Checked += (s, e) => BlackListCheckBoxAction?.Invoke(true);
-				panel.Children.Add(checkBox);
+				//panel.Children.Add(checkBox);
 				panel.Children.Add(new TextBlock() {
 					Text = item.Value.ToString(),
-					Width = 20,
+					Width = 50,//20
 					TextAlignment = TextAlignment.Right,
 					HorizontalAlignment = HorizontalAlignment.Center,
 					VerticalAlignment = VerticalAlignment.Center,

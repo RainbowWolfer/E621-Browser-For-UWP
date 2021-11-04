@@ -41,7 +41,7 @@
 		<StackPanel Grid.Column="1">
 			<StackPanel Orientation="Horizontal">
 				<Button x:Name="DebugButton" Content="Debug Post Info" FontSize="18" Margin="10" Tapped="DebugButton_Tapped"/>
-				<TextBlock Margin="10" Text="{x:Bind Title}" FontSize="30" VerticalAlignment="Center" TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center"/>
+				<TextBlock x:Name="TitleText" Margin="10" Text="{x:Bind Title}" FontSize="30" VerticalAlignment="Center" TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center"/>
 			</StackPanel>
 			<RelativePanel Margin="5">
 				<Button x:Name="DownloadButton" Content="Download" FontSize="18" Margin="5" Tapped="DownloadButton_Tapped"/>

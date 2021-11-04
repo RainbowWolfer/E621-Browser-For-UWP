@@ -44,8 +44,8 @@
 								</StackPanel>
 							</Button.Content>
 						</Button>
-						<ListView x:Name="HotTagsListView" IsItemClickEnabled="True" SelectionMode="None"/>
-						<StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+						<ListView x:Name="HotTagsListView" IsItemClickEnabled="True" SelectionMode="None" ItemClick="HotTagsListView_ItemClick"/>
+						<StackPanel Orientation="Horizontal" Margin="11,10,0,10">
 							<FontIcon Glyph="&#xE25B;"/>
 							<TextBlock Text="Black List" Margin="10,0,0,0"/>
 						</StackPanel>

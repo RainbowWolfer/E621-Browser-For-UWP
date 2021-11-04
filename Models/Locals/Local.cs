@@ -196,10 +196,7 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public async static Task<StorageFolder[]> GetDownloadsFolders() {
-			if(DownloadFolder == null) {
-				return null;
-			}
-			return (await DownloadFolder.GetFoldersAsync()).ToArray();
+			return DownloadFolder == null ? null : (await DownloadFolder.GetFoldersAsync()).ToArray();
 		}
 		private class Pair {
 			public MetaFile meta;

@@ -133,6 +133,7 @@ namespace E621Downloader.Pages {
 				CopyButton.Visibility = Visibility.Collapsed;
 				DownloadButton.Visibility = Visibility.Collapsed;
 			}
+			TitleText.Text = Title;
 			DescriptionText.Text = PostRef != null && !string.IsNullOrEmpty(PostRef.description) ? PostRef.description : "No Description";
 			MainSplitView.IsPaneOpen = false;
 			InformationPivot.SelectedIndex = 0;
