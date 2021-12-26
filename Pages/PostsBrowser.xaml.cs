@@ -31,7 +31,7 @@ namespace E621Downloader.Pages {
 		public static PostsBrowser Instance;
 		public const float HolderScale = 1;
 
-		public List<Post> posts;
+		public List<Post> Posts { get; private set; }
 		public string[] tags;
 		public int currentPage;
 		public int maxPage;
@@ -43,7 +43,6 @@ namespace E621Downloader.Pages {
 		public int ItemSize { get => 50; }
 
 		public bool isHeightFixed;
-		public bool ShowNullImage => App.showNullImage;
 
 		public bool multipleSelectionMode;
 
@@ -52,7 +51,7 @@ namespace E621Downloader.Pages {
 		public PostsBrowser() {
 			Instance = this;
 			this.InitializeComponent();
-			this.posts = new List<Post>();
+			this.Posts = new List<Post>();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			this.tags = Array.Empty<string>();
 			this.tagsFilterSystem = new TagsFilterSystem(HotTagsListView, BlackTagsListView,
@@ -74,20 +73,20 @@ namespace E621Downloader.Pages {
 			base.OnNavigatedTo(e);
 		}
 
-		private const int PREFEREDHEIGHT = 200;
+		private const int PREFEREDHEIGHT = 350;
 		private int loaded;
 		private void LoadPosts(List<Post> posts, params string[] tags) {
 			if(posts == null) {
 				return;
 			}
-			this.posts = posts;
+			this.Posts = posts;
 			tagsFilterSystem.RegisterBlackList(posts);
 			if(tags.Length != 0) {
 				this.tags = tags;
 				MainPage.ChangeCurrenttTags(tags);
 			}
 			loaded = 0;
-			tb_ArticlesLoadCount.Text = "Posts : 0/" + this.posts.Count;
+			tb_ArticlesLoadCount.Text = "Posts : 0/" + this.Posts.Count;
 
 			UpdateImageHolders(CalculateEnabledPosts(), true);
 
@@ -100,22 +99,22 @@ namespace E621Downloader.Pages {
 					//if(!tagsFilterSystem.CheckPostContainBlackList(item)) {
 					//	continue;
 					//}
-					var holder = new ImageHolder(item, this.posts.IndexOf(item));
+					var holder = new ImageHolder(item, this.Posts.IndexOf(item));
 					MyWrapGrid.Children.Add(holder);
 					SetImageItemSize(isHeightFixed, holder, item.sample);
-					holder.OnImagedLoaded += (b) => tb_ArticlesLoadCount.Text = "Posts : " + ++loaded + "/" + this.posts.Count;
+					holder.OnImagedLoaded += (b) => tb_ArticlesLoadCount.Text = "Posts : " + ++loaded + "/" + this.Posts.Count;
 					ToolTipService.SetToolTip(holder, $"ID: {item.id}\nScore: {item.score.total}");
 				}
 			} else {
-				Debug.WriteLine($"{this.posts.Count} {ps.Count} {MyWrapGrid.Children.Count}");
-				for(int i = 0; i < this.posts.Count; i++) {
+				Debug.WriteLine($"{this.Posts.Count} {ps.Count} {MyWrapGrid.Children.Count}");
+				for(int i = 0; i < this.Posts.Count; i++) {
 					ImageHolder existed = GetImageHolder(i);
-					int shouleBe = ps.IndexOf(this.posts[i]);
+					int shouleBe = ps.IndexOf(this.Posts[i]);
 					if(shouleBe == -1) {
-						Post item = posts[i];
-						var holder = new ImageHolder(item, this.posts.IndexOf(item));
+						Post item = Posts[i];
+						var holder = new ImageHolder(item, this.Posts.IndexOf(item));
 						SetImageItemSize(isHeightFixed, holder, item.sample);
-						holder.OnImagedLoaded += (b) => tb_ArticlesLoadCount.Text = "Posts : " + ++loaded + "/" + this.posts.Count;
+						holder.OnImagedLoaded += (b) => tb_ArticlesLoadCount.Text = "Posts : " + ++loaded + "/" + this.Posts.Count;
 						ToolTipService.SetToolTip(holder, $"ID: {item.id}\nScore: {item.score.total}");
 						MyWrapGrid.Children.Insert(existed.Index, holder);
 					}
@@ -141,16 +140,16 @@ namespace E621Downloader.Pages {
 			}
 			int removed_count = temp.RemoveAll(p => ignoreTypes.Contains(p.file.ext));
 			Debug.WriteLine($"Removed {removed_count} posts");
-			this.posts = temp;
+			this.Posts = temp;
 			maxPage = E621Paginator.Get(tags).GetMaxPage();
 			UpdatePaginator();
-			LoadPosts(this.posts, tags);
+			LoadPosts(this.Posts, tags);
 			MainPage.HideInstantDialog();
 		}
 		public async Task Reload() {
 			MainPage.CreateInstantDialog("Please Wait", "Reloading...");
 			await Task.Delay(20);
-			LoadPosts(this.posts, tags);
+			LoadPosts(this.Posts, tags);
 			MainPage.HideInstantDialog();
 		}
 
@@ -170,7 +169,7 @@ namespace E621Downloader.Pages {
 
 		private List<Post> CalculateEnabledPosts() {
 			var result = new List<Post>();
-			foreach(Post item in this.posts) {
+			foreach(Post item in this.Posts) {
 				if(!tagsFilterSystem.CheckPostContainBlackList(item)) {
 					result.Add(item);
 				}
@@ -302,7 +301,7 @@ namespace E621Downloader.Pages {
 		}
 
 		public void SelectFeedBack(ImageHolder imageHolder) {
-			SelectionCountTextBlock.Text = $"{GetSelected().Count}/{posts.Count}";
+			SelectionCountTextBlock.Text = $"{GetSelected().Count}/{Posts.Count}";
 		}
 
 		private void ShowNullImages(bool showNullImages) {
@@ -423,7 +422,7 @@ namespace E621Downloader.Pages {
 						//get currentpage posts
 						MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
 						await Task.Delay(50);
-						foreach(Post item in posts) {
+						foreach(Post item in Posts) {
 							DownloadsManager.RegisterDownload(item, tags);
 							await Task.Delay(2);
 						}
@@ -451,7 +450,7 @@ namespace E621Downloader.Pages {
 		private void SelectToggleButton_Checked(object sender, RoutedEventArgs e) {
 			multipleSelectionMode = true;
 			SelectionCountTextBlock.Visibility = Visibility.Visible;
-			SelectionCountTextBlock.Text = $"0/{posts.Count}";
+			SelectionCountTextBlock.Text = $"0/{Posts.Count}";
 		}
 
 		private void SelectToggleButton_Unchecked(object sender, RoutedEventArgs e) {

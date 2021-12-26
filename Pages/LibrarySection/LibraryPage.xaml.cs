@@ -26,9 +26,7 @@ namespace E621Downloader.Pages.LibrarySection {
 
 		private int _size;
 		public int Size {
-			get {
-				return _size;
-			}
+			get => _size;
 			private set {
 				_size = value;
 				current?.UpdateSize(value, value - 30);

@@ -30,8 +30,8 @@ namespace E621Downloader {
 	public sealed partial class App: Application {
 		public static App Instance;
 
-		public static bool showNullImage;
-		public static bool showBlackListed;
+		//public static bool showNullImage;
+		//public static bool showBlackListed;
 
 		public static PostsList postsList { get; private set; }
 
@@ -87,47 +87,6 @@ namespace E621Downloader {
 			var deferral = e.SuspendingOperation.GetDeferral();
 			//TODO: Save application state and stop any background activity
 			deferral.Complete();
-		}
-	}
-
-	public class PostsList {
-		private readonly List<object> items;//post,filepath
-		public object Current { private get; set; }
-		public int Count => items.Count;
-
-		public int GetCurrentIndex() => items.IndexOf(Current);
-
-		public object GoLeft() {
-			Debug.WriteLine(Count);
-			int index = GetCurrentIndex();
-			if(index == -1) {
-				return Current;
-			}
-			Current = items[Math.Clamp(index - 1, 0, Count - 1)];
-			return Current;
-		}
-		public object GoRight() {
-			Debug.WriteLine(Count);
-			int index = GetCurrentIndex();
-			if(index == -1) {
-				return Current;
-			}
-			Current = items[Math.Clamp(index + 1, 0, Count - 1)];
-			return Current;
-		}
-
-		public void UpdatePostsList(List<Post> posts) {
-			items.Clear();
-			items.AddRange(posts);
-		}
-
-		public void UpdatePostsList(List<ItemBlock> block) {
-			items.Clear();
-			items.AddRange(block);
-		}
-
-		public PostsList() {
-			items = new List<object>();
 		}
 	}
 

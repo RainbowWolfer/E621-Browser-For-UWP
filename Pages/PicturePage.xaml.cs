@@ -20,6 +20,7 @@ using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System;
+using Windows.UI;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -58,8 +59,8 @@ namespace E621Downloader.Pages {
 		protected async override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			object p = e.Parameter;
-			if(p == null && PostRef == null && PostsBrowser.Instance != null && PostsBrowser.Instance.posts != null && PostsBrowser.Instance.posts.Count > 0) {
-				p = PostsBrowser.Instance.posts[0];
+			if(p == null && PostRef == null && PostsBrowser.Instance != null && PostsBrowser.Instance.Posts != null && PostsBrowser.Instance.Posts.Count > 0) {
+				p = PostsBrowser.Instance.Posts[0];
 			}
 			if(p is Post post) {
 				if(PostRef == post) {
@@ -134,6 +135,7 @@ namespace E621Downloader.Pages {
 				DownloadButton.Visibility = Visibility.Collapsed;
 			}
 			TitleText.Text = Title;
+			UpdateRatingIcon();
 			DescriptionText.Text = PostRef != null && !string.IsNullOrEmpty(PostRef.description) ? PostRef.description : "No Description";
 			MainSplitView.IsPaneOpen = false;
 			InformationPivot.SelectedIndex = 0;
@@ -141,6 +143,33 @@ namespace E621Downloader.Pages {
 			commentsLoading = false;
 			comments.Clear();
 			CommentsListView.Items.Clear();
+		}
+
+		private void UpdateRatingIcon() {
+			if(PostRef == null) {
+				return;
+			}
+			RatingIcon.Visibility = Visibility.Visible;
+			switch(PostRef.rating) {
+				case "s":
+					RatingIcon.Glyph = "\uF78C";
+					RatingIcon.Foreground = new SolidColorBrush(Colors.Green);
+					ToolTipService.SetToolTip(RatingIcon, "Rating: Safe");
+					break;
+				case "q":
+					RatingIcon.Glyph = "\uF142";
+					RatingIcon.Foreground = new SolidColorBrush(Colors.Yellow);
+					ToolTipService.SetToolTip(RatingIcon, "Rating: Questionable");
+					break;
+				case "e":
+					RatingIcon.Glyph = "\uE814";
+					RatingIcon.Foreground = new SolidColorBrush(Colors.Red);
+					ToolTipService.SetToolTip(RatingIcon, "Rating: Explicit");
+					break;
+				default:
+					RatingIcon.Visibility = Visibility.Collapsed;
+					break;
+			}
 		}
 
 		private void UpdateTagsGroup(Tags tags) {
@@ -247,7 +276,7 @@ namespace E621Downloader.Pages {
 		private async void TagsListView_ItemClick(object sender, ItemClickEventArgs e) {
 			string tag = e.ClickedItem as string;
 
-			MainPage.SelectNavigationItem(PageTag.Home);
+			MainPage.SelectNavigationItem(PageTag.PostsBrowser);
 			await Task.Delay(200);
 
 			await PostsBrowser.Instance.LoadAsync(1, tag);

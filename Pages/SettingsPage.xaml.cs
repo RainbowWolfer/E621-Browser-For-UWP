@@ -36,6 +36,9 @@ namespace E621Downloader.Pages {
 			base.OnNavigatedTo(e);
 			DownloadPathTextBlock.Text = Local.DownloadFolder == null ? "No Download Path Selected" : Local.DownloadFolder.Path;
 			SafeModeToggle.IsOn = LocalSettings.Current.safeMode;
+			NullImageToggle.IsOn = LocalSettings.Current.showNullImages;
+			BlackListToggle.IsOn = LocalSettings.Current.showBlackListed;
+			CycleListToggle.IsOn = LocalSettings.Current.cycleList;
 		}
 
 		private async void BlackListButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -102,17 +105,23 @@ namespace E621Downloader.Pages {
 		}
 
 		private void BlackListToggle_Toggled(object sender, RoutedEventArgs e) {
-			App.showBlackListed = (sender as ToggleSwitch).IsOn;
+			LocalSettings.Current.showBlackListed = (sender as ToggleSwitch).IsOn;
+			LocalSettings.Save();
 		}
 
 		private void NullImageToggle_Toggled(object sender, RoutedEventArgs e) {
-			App.showNullImage = (sender as ToggleSwitch).IsOn;
+			LocalSettings.Current.showNullImages = (sender as ToggleSwitch).IsOn;
+			LocalSettings.Save();
 		}
 
 		private void SafeModeToggle_Toggled(object sender, RoutedEventArgs e) {
 			LocalSettings.Current.safeMode = (sender as ToggleSwitch).IsOn;
-			Local.WriteLocalSettings();
+			LocalSettings.Save();
 		}
 
+		private void CycleListToggle_Toggled(object sender, RoutedEventArgs e) {
+			LocalSettings.Current.cycleList = (sender as ToggleSwitch).IsOn;
+			LocalSettings.Save();
+		}
 	}
 }

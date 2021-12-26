@@ -95,6 +95,7 @@
 						<ToggleSwitch x:Name="NullImageToggle" OffContent="Show NULL Image" OnContent="Show NULL Image" Margin="0,5,0,5" Toggled="NullImageToggle_Toggled"/>
 						<ToggleSwitch x:Name="BlackListToggle" OffContent="Show Blacklisted" OnContent="Show Blacklisted" Margin="0,5,0,5" Toggled="BlackListToggle_Toggled"/>
 						<ToggleSwitch x:Name="SafeModeToggle" OffContent="Enable Safe Mode" OnContent="Enable Safe Mode" Margin="0,5,0,5" Toggled="SafeModeToggle_Toggled"/>
+						<ToggleSwitch x:Name="CycleListToggle" OffContent="Enable Cycle List" OnContent="Enable Safe Mode" Margin="0,5,0,5" Toggled="CycleListToggle_Toggled"/>
 					</StackPanel>
 					<TextBlock Text="About: " Style="{StaticResource SectionTitle}"/>
 					<StackPanel Margin="40,0,0,0">

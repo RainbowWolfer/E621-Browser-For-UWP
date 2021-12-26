@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using System;
@@ -12,6 +13,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage.Streams;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -82,7 +84,7 @@ namespace E621Downloader.Views {
 				MyProgressRing.IsActive = false;
 				MyProgressRing.Visibility = Visibility.Collapsed;
 				FailureTextBlock.Text = "Failed";
-				if(PostsBrowser.Instance.ShowNullImage) {
+				if(LocalSettings.Current.showNullImages) {
 					this.Visibility = Visibility.Visible;
 					VariableSizedWrapGrid.SetColumnSpan(this, SpanCol);
 					VariableSizedWrapGrid.SetRowSpan(this, SpanRow);
@@ -92,29 +94,54 @@ namespace E621Downloader.Views {
 					VariableSizedWrapGrid.SetRowSpan(this, 0);
 				}
 			}
-
+			if(post != null) {
+				UpvoteText.Text = $"{post.score.up}";
+				FavoriteText.Text = $"{post.fav_count}";
+				CommentText.Text = $"{post.comment_count}";
+				RatingText.Text = $"{post.rating.ToUpper()}";
+				switch(post.rating) {
+					case "s":
+						RatingIcon.Glyph = "\uF78C";
+						RatingIcon.Foreground = new SolidColorBrush(Colors.Green);
+						break;
+					case "q":
+						RatingIcon.Glyph = "\uF142";
+						RatingIcon.Foreground = new SolidColorBrush(Colors.Yellow);
+						break;
+					case "e":
+						RatingIcon.Glyph = "\uE814";
+						RatingIcon.Foreground = new SolidColorBrush(Colors.Red);
+						break;
+					default:
+						RatingIcon.Foreground = new SolidColorBrush(Colors.White);
+						break;
+				}
+			}
 		}
 		private void Grid_Tapped(object sender, TappedRoutedEventArgs e) {
-			//if(!this.isLoaded) {
-			//open browser;
-			//return;
-			//}
 			if(LoadUrl == null) {
 				return;
 			}
-			if(PostsBrowser.Instance.multipleSelectionMode) {
-				IsSelected = !IsSelected;
-				PostsBrowser.Instance.SelectFeedBack(this);
-			} else {
-				var dataPackage = new DataPackage() {
-					RequestedOperation = DataPackageOperation.Copy
-				};
-				dataPackage.SetText(LoadUrl);
-				Clipboard.SetContent(dataPackage);
+			if(MainPage.Instance.currentTag == PageTag.PostsBrowser) {
+				if(PostsBrowser.Instance.multipleSelectionMode) {
+					IsSelected = !IsSelected;
+					PostsBrowser.Instance.SelectFeedBack(this);
+				} else {
+					var dataPackage = new DataPackage() {
+						RequestedOperation = DataPackageOperation.Copy
+					};
+					dataPackage.SetText(LoadUrl);
+					Clipboard.SetContent(dataPackage);
 
-				App.postsList.UpdatePostsList(PostsBrowser.Instance.posts);
+					App.postsList.UpdatePostsList(PostsBrowser.Instance.Posts);
+					App.postsList.Current = PostRef;
+
+					MainPage.Instance.parameter_picture = PostRef;
+					MainPage.SelectNavigationItem(PageTag.Picture);
+				}
+			} else if(MainPage.Instance.currentTag == PageTag.Spot) {
+				App.postsList.UpdatePostsList(SpotPage.Instance.Posts);
 				App.postsList.Current = PostRef;
-				//MainPage.NavigateToPicturePage(PostRef);
 				MainPage.Instance.parameter_picture = PostRef;
 				MainPage.SelectNavigationItem(PageTag.Picture);
 			}

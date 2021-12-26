@@ -334,12 +334,12 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public async static void WriteLocalSettings() {
-			StorageFile file = await LocalFolder.CreateFileAsync("LocalSettings", CreationCollisionOption.ReplaceExisting);
+			StorageFile file = await LocalFolder.CreateFileAsync("LocalSettings.settings", CreationCollisionOption.ReplaceExisting);
 			await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(LocalSettings.Current));
 		}
 
 		public async static Task ReadLocalSettings() {
-			StorageFile file = await LocalFolder.CreateFileAsync("LocalSettings", CreationCollisionOption.OpenIfExists);
+			StorageFile file = await LocalFolder.CreateFileAsync("LocalSettings.settings", CreationCollisionOption.OpenIfExists);
 			using(Stream stream = await file.OpenStreamForReadAsync()) {
 				using(StreamReader reader = new StreamReader(stream)) {
 					LocalSettings.Current = JsonConvert.DeserializeObject<LocalSettings>(await reader.ReadToEndAsync());
@@ -347,7 +347,12 @@ namespace E621Downloader.Models.Locals {
 			}
 			if(LocalSettings.Current == null) {
 				LocalSettings.Current = new LocalSettings() {
-					safeMode = true,
+					safeMode = false,
+					spot_allowGif = true,
+					spot_allowWebm = true,
+					spot_includeExplicit = true,
+					spot_includeQuestoinable = false,
+					spot_includeSafe = false,
 				};
 				WriteLocalSettings();
 			}

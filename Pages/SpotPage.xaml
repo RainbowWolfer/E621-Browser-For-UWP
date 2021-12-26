@@ -1,0 +1,81 @@
+﻿<Page
+    x:Class="E621Downloader.Pages.SpotPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+	Loaded="Page_Loaded">
+
+	<Grid>
+		<SplitView x:Name="MainSplitView" DisplayMode="CompactInline" PanePlacement="Left" CompactPaneLength="40" OpenPaneLength="400" IsPaneOpen="True">
+			<SplitView.Pane>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="40"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="auto"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="auto"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" VerticalAlignment="Top" Margin="0" Background="Transparent" BorderThickness="0" Width="40" Height="40" FontSize="20" Tapped="HamburgerButton_Tapped"/>
+					<TextBlock Grid.Column="1" Text="Filters" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+					<StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical" Margin="10">
+						<Button x:Name="TagsButton" Content="Requested Tags" FontSize="18" HorizontalAlignment="Stretch" Tapped="TagsButton_Tapped"/>
+						<Grid HorizontalAlignment="Stretch">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<TextBlock x:Name="InputTagsText" Text="All Tags" VerticalAlignment="Center" Margin="10" FontSize="15" TextAlignment="Center"/>
+							<TextBlock x:Name="SelectedTagsText" Text="From All Followings" VerticalAlignment="Center" Margin="10" FontSize="15" TextAlignment="Center" Grid.Column="1"/>
+						</Grid>
+					</StackPanel>
+					<Grid Grid.Row="2" Grid.Column="1" Margin="10,0,0,0">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<StackPanel>
+							<CheckBox x:Name="AllowWebmCheckBox" Content="Allow Webm" Checked="AllowWebmCheckBox_Checked" Unchecked="AllowWebmCheckBox_Checked"/>
+							<CheckBox x:Name="AllowGifCheckBox" Content="Allow Gif" Checked="AllowGifCheckBox_Checked" Unchecked="AllowGifCheckBox_Checked"/>
+							<CheckBox x:Name="AllowBlackListCheckBox" Content="Allow Black List" Checked="AllowBlackListCheckBox_Checked" Unchecked="AllowBlackListCheckBox_Checked"/>
+						</StackPanel>
+						<StackPanel Grid.Column="1">
+							<CheckBox x:Name="IncludeSafeCheckBox" Content="Include Safe" Checked="IncludeSafeCheckBox_Checked" Unchecked="IncludeSafeCheckBox_Checked"/>
+							<CheckBox x:Name="IncludeQuestionableCheckBox" Content="Include Questionable" IsChecked="False" Checked="IncludeQuestionableCheckBox_Checked" Unchecked="IncludeQuestionableCheckBox_Checked"/>
+							<CheckBox x:Name="IncludeExplicitCheckBox" Content="Include Explicit" Checked="IncludeExplicitCheckBox_Checked"
+							Unchecked="IncludeExplicitCheckBox_Checked"/>
+						</StackPanel>
+					</Grid>
+					<StackPanel Grid.Column="1" Grid.Row="3" Margin="10,10,40,10">
+						<TextBlock x:Name="AmountText" Text="Amount: 1" FontSize="20"/>
+						<Slider x:Name="AmountSlider" Value="1" Minimum="1" Maximum="50" ValueChanged="AmountSlider_ValueChanged"/>
+					</StackPanel>
+					<StackPanel Grid.Row="4" Grid.Column="1" Margin="10,0,40,0">
+						<TextBlock x:Name="ScoreLimitText" Text="Score Limit:" FontSize="20"/>
+						<controls:RangeSelector x:Name="ScoreRangeSlider" Minimum="-4000" Maximum="10000" StepFrequency="100" RangeStart="0" RangeEnd="10000" ValueChanged="ScoreRangeSlider_ValueChanged" Margin="0,5,0,0"/>
+					</StackPanel>
+					<Button x:Name="StartButton" Tapped="StartButton_Tapped" Grid.Column="1" Grid.Row="5" Content="Get Random" HorizontalAlignment="Stretch" FontSize="18" Margin="10" VerticalAlignment="Bottom"/>
+					<RepeatButton x:Name="SizeButton" Width="40" Height="40" FontFamily="Segoe MDL2 Assets" Content="&#xE2B2;" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" Background="Transparent" BorderThickness="0" Click="SizeButton_Click" ToolTipService.ToolTip="Current Size : 200" Grid.Column="0" Grid.Row="6"/>
+					<Slider x:Name="SizeSlider" Minimum="200" Maximum="500" Value="200" Height="40" StepFrequency="10" ValueChanged="SizeSlider_ValueChanged" HorizontalAlignment="Stretch"  Grid.Row="6" Grid.Column="1" Margin="5,0,5,-6"/>
+				</Grid>
+			</SplitView.Pane>
+			<SplitView.Content>
+				<Grid>
+					<ProgressRing Name="LoadingRing" Height="200" Width="200"/>
+					<GridView x:Name="MainGridView" SelectionMode="None" IsItemClickEnabled="False"/>
+				</Grid>
+			</SplitView.Content>
+		</SplitView>
+	</Grid>
+</Page>

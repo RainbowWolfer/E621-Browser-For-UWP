@@ -140,12 +140,14 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Locals\LocalSettings.cs" />
+    <Compile Include="Models\Methods.cs" />
     <Compile Include="Models\Networks\Data.cs" />
     <Compile Include="Models\Download\DownloadInstance.cs" />
     <Compile Include="Models\Download\DownloadInstanceLocalManager.cs" />
     <Compile Include="Models\Download\DownloadsGroup.cs" />
     <Compile Include="Models\Download\DownloadsManager.cs" />
     <Compile Include="Models\E621Article.cs" />
+    <Compile Include="Models\PostsList.cs" />
     <Compile Include="Models\Posts\E621Comment.cs" />
     <Compile Include="Models\Posts\E621Paginator.cs" />
     <Compile Include="Models\Posts\E621Tag.cs" />
@@ -156,7 +158,6 @@
     <Compile Include="Models\Posts\E621User.cs" />
     <Compile Include="Models\Posts\E621Wiki.cs" />
     <Compile Include="Models\Posts\Post.cs" />
-    <Compile Include="Models\Posts\SimplePost.cs" />
     <Compile Include="Pages\DownloadSection\DownloadDetailsPage.xaml.cs">
       <DependentUpon>DownloadDetailsPage.xaml</DependentUpon>
     </Compile>
@@ -174,6 +175,9 @@
     </Compile>
     <Compile Include="Pages\PostsBrowser.xaml.cs">
       <DependentUpon>PostsBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SpotPage.xaml.cs">
+      <DependentUpon>SpotPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SubscriptionPage.xaml.cs">
       <DependentUpon>SubscriptionPage.xaml</DependentUpon>
@@ -195,6 +199,9 @@
     </Compile>
     <Compile Include="Views\FoldersSelectionSection\FoldersSelectionView.xaml.cs">
       <DependentUpon>FoldersSelectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SpotTagsSelection.xaml.cs">
+      <DependentUpon>SpotTagsSelection.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LocalTagsManagementSection\LocalTagsManagementView.xaml.cs">
       <DependentUpon>LocalTagsManagementView.xaml</DependentUpon>
@@ -277,6 +284,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\SpotPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\SubscriptionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -302,6 +313,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FoldersSelectionSection\FoldersSelectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SpotTagsSelection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

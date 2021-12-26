@@ -230,14 +230,16 @@ namespace E621Downloader {
 			if(currentTag == tag) {
 				return;
 			}
-			if(tag == PageTag.Home) {
-				MyFrame.Navigate(typeof(PostsBrowser), null, CalculateTransition(currentTag, PageTag.Home));
+			if(tag == PageTag.PostsBrowser) {
+				MyFrame.Navigate(typeof(PostsBrowser), null, CalculateTransition(currentTag, PageTag.PostsBrowser));
 			} else if(tag == PageTag.Picture) {
 				MyFrame.Navigate(typeof(PicturePage), parameter_picture, CalculateTransition(currentTag, PageTag.Picture));
 			} else if(tag == PageTag.Library) {
 				MyFrame.Navigate(typeof(LibraryPage), null, CalculateTransition(currentTag, PageTag.Library));
 			} else if(tag == PageTag.Subscription) {
 				MyFrame.Navigate(typeof(SubscriptionPage), null, CalculateTransition(currentTag, PageTag.Subscription));
+			} else if(tag == PageTag.Spot) {
+				MyFrame.Navigate(typeof(SpotPage), null, CalculateTransition(currentTag, PageTag.Spot));
 			} else if(tag == PageTag.Download) {
 				MyFrame.Navigate(typeof(DownloadPage), null, CalculateTransition(currentTag, PageTag.Download));
 			} else {
@@ -262,14 +264,14 @@ namespace E621Downloader {
 
 			var content = (dialog.Content as Frame).Content as TagsSelectionView;
 			if(content.handleSearch) {
-				SelectNavigationItem(PageTag.Home);
+				SelectNavigationItem(PageTag.PostsBrowser);
 				await Task.Delay(100);
 				await PostsBrowser.Instance.LoadAsync(1, content.tags.ToArray());
 			}
 		}
 	}
 	public enum PageTag {
-		Home, Picture, Library, Subscription, Download, Settings, Welcome,
+		PostsBrowser, Picture, Library, Subscription, Spot, Download, Settings, Welcome,
 	}
 }
 

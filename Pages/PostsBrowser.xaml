@@ -30,6 +30,14 @@
 				<ToggleButton x:Name="SelectToggleButton" Content="Select" Checked="SelectToggleButton_Checked" Unchecked="SelectToggleButton_Unchecked" Margin="5"/>
 				<TextBlock x:Name="SelectionCountTextBlock" Text="2/75" VerticalAlignment="Center" Margin="5" FontSize="18" Visibility="Collapsed"/>
 			</StackPanel>
+			<Button HorizontalAlignment="Right" Height="40" VerticalAlignment="Center" Background="Transparent" BorderThickness="0">
+				<Button.Content>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Info" Margin="10,0,10,0" FontSize="18"/>
+						<FontIcon Glyph="&#xE946;" FontSize="20" Margin="0,0,5,-5"/>
+					</StackPanel>
+				</Button.Content>
+			</Button>
 		</Grid>
 		<SplitView x:Name="MySplitView" Grid.Row="1" DisplayMode="Overlay">
 			<SplitView.Pane>

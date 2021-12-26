@@ -39,10 +39,16 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<StackPanel Grid.Column="1">
-			<StackPanel Orientation="Horizontal">
-				<Button x:Name="DebugButton" Content="Debug Post Info" FontSize="18" Margin="10" Tapped="DebugButton_Tapped"/>
-				<TextBlock x:Name="TitleText" Margin="10" Text="{x:Bind Title}" FontSize="30" VerticalAlignment="Center" TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center"/>
-			</StackPanel>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="auto"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="auto"/>
+				</Grid.ColumnDefinitions>
+				<Button x:Name="DebugButton" Content="Debug Post Info" FontSize="18" Margin="10" Tapped="DebugButton_Tapped" Grid.Column="0"/>
+				<TextBlock x:Name="TitleText" Margin="10" Text="{x:Bind Title}" FontSize="30" VerticalAlignment="Center" TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center" Grid.Column="1"/>
+				<FontIcon x:Name="RatingIcon" Glyph="&#xE814;" Grid.Column="2" ToolTipService.ToolTip="Safe" Margin="10,0,10,0" FontSize="24" Width="60" Height="60"/>
+			</Grid>
 			<RelativePanel Margin="5">
 				<Button x:Name="DownloadButton" Content="Download" FontSize="18" Margin="5" Tapped="DownloadButton_Tapped"/>
 				<Button x:Name="CopyButton" Content="Copy" FontSize="18" Margin="5" Tapped="CopyButton_Tapped" RelativePanel.RightOf="DownloadButton"/>

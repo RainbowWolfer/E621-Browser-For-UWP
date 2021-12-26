@@ -17,7 +17,12 @@
 				<NavigationViewItem Icon="Pictures" Content="Picture" Tag="1"/>
 				<NavigationViewItem Icon="Library" Content="Library" Tag="2"/>
 				<NavigationViewItem Icon="Link" Content="Subcription" Tag="3"/>
-				<NavigationViewItem Icon="Download" Content="Download" Tag="4"/>
+				<NavigationViewItem Content="Spot" Tag="4">
+					<NavigationViewItem.Icon>
+						<FontIcon Glyph="&#xF272;"/>
+					</NavigationViewItem.Icon>
+				</NavigationViewItem>
+				<NavigationViewItem Icon="Download" Content="Download" Tag="5"/>
 			</NavigationView.MenuItems>
 			<NavigationView.PaneFooter>
 				<StackPanel Orientation="Horizontal">

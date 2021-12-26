@@ -79,7 +79,7 @@ namespace E621Downloader.Views {
 		private async void ListView_ItemClick(object sender, ItemClickEventArgs e) {
 			parent.Hide();
 			string content = (string)e.ClickedItem;
-			MainPage.SelectNavigationItem(PageTag.Home);
+			MainPage.SelectNavigationItem(PageTag.PostsBrowser);
 			await Task.Delay(100);
 			await PostsBrowser.Instance.LoadAsync(1, content);
 		}

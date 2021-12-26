@@ -15,9 +15,7 @@ namespace E621Downloader.Models.Posts {
 			}
 			string url = $"https://e621.net/posts.json?page={page}&tags=";
 			tags.ToList().ForEach((t) => url += t + "+");
-			if(LocalSettings.Current.safeMode) {
-				url += "rating:s";
-			}
+			CheckSafe(ref url);
 
 			string data = Data.ReadURL(url);
 			return data == null ? new List<Post>() : JsonConvert.DeserializeObject<PostsRoot>(data).posts;
@@ -27,11 +25,17 @@ namespace E621Downloader.Models.Posts {
 				throw new Exception("Page not valid");
 			}
 			string url = $"https://e621.net/posts.json?page={page}&tags=";
-			tags.ToList().ForEach((t) => url += $"{(combine ? "~" : "")}{t}+");
-			if(LocalSettings.Current.safeMode) {
-				url += "rating:s";
-			}
+			tags.ToList().ForEach(t => url += $"{(combine ? "~" : "")}{t}+");
+			CheckSafe(ref url);
 
+			string data = await Data.ReadURLAsync(url);
+			return data == null ? new List<Post>() : JsonConvert.DeserializeObject<PostsRoot>(data).posts;
+		}
+		public static async Task<List<Post>> GetPostsByRandom(int amount, params string[] tags) {
+			//e621.net/posts?tags = order:random + limit:20
+			string url = $"https://e621.net/posts.json?tags=order:random+limit:{amount}+";
+			tags.ToList().ForEach(t => url += $"{t}+");
+			CheckSafe(ref url);
 			string data = await Data.ReadURLAsync(url);
 			return data == null ? new List<Post>() : JsonConvert.DeserializeObject<PostsRoot>(data).posts;
 		}
@@ -40,6 +44,12 @@ namespace E621Downloader.Models.Posts {
 			string url = $"https://e621.net/posts/{id}.json";
 			string data = await Data.ReadURLAsync(url);
 			return JsonConvert.DeserializeObject<PostRoot>(data).post;
+		}
+
+		private static void CheckSafe(ref string url) {
+			if(LocalSettings.Current.safeMode) {
+				url += "rating:s";
+			}
 		}
 
 		public int id;
