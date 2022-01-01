@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Download;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
@@ -117,13 +118,61 @@ namespace E621Downloader.Views {
 						break;
 				}
 			}
+			SetRightClick();
 		}
+
+		private void SetRightClick() {
+			this.RightTapped += (s, e) => {
+				if(PostsBrowser.Instance?.MultipleSelectionMode ?? false) {
+					return;
+				}
+				MenuFlyout flyout = new MenuFlyout();
+
+				if(MainPage.Instance.currentTag == PageTag.PostsBrowser) {
+					MenuFlyoutItem item_select = new MenuFlyoutItem() {
+						Text = "Select This",
+						Foreground = new SolidColorBrush(Colors.White),
+					};
+					item_select.Click += (sender, arg) => {
+						PostsBrowser.Instance.EnterSelectionMode();
+						IsSelected = true;
+						PostsBrowser.Instance.SelectFeedBack(this);
+					};
+					flyout.Items.Add(item_select);
+
+					MenuFlyoutItem item_hide = new MenuFlyoutItem() {
+						Text = "Hide This Image",
+						Foreground = new SolidColorBrush(Colors.White),
+					};
+					item_hide.Click += (sender, arg) => {
+
+					};
+					flyout.Items.Add(item_hide);
+				}
+
+				MenuFlyoutItem item_download = new MenuFlyoutItem() {
+					Text = "Download This",
+					Foreground = new SolidColorBrush(Colors.White),
+				};
+				item_download.Click += (sender, arg) => {
+					DownloadsManager.RegisterDownload(PostRef);
+				};
+				flyout.Items.Add(item_download);
+
+				flyout.Placement = FlyoutPlacementMode.Left;
+				if(flyout.Items.Count != 0) {
+					FrameworkElement senderElement = s as FrameworkElement;
+					flyout.ShowAt(s as UIElement, e.GetPosition(s as UIElement));
+				}
+			};
+		}
+
 		private void Grid_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(LoadUrl == null) {
 				return;
 			}
 			if(MainPage.Instance.currentTag == PageTag.PostsBrowser) {
-				if(PostsBrowser.Instance.multipleSelectionMode) {
+				if(PostsBrowser.Instance.MultipleSelectionMode) {
 					IsSelected = !IsSelected;
 					PostsBrowser.Instance.SelectFeedBack(this);
 				} else {

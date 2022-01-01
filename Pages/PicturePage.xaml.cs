@@ -149,27 +149,34 @@ namespace E621Downloader.Pages {
 			if(PostRef == null) {
 				return;
 			}
-			RatingIcon.Visibility = Visibility.Visible;
+			RatingPanel.Visibility = Visibility.Visible;
+			Color color;
 			switch(PostRef.rating) {
 				case "s":
 					RatingIcon.Glyph = "\uF78C";
-					RatingIcon.Foreground = new SolidColorBrush(Colors.Green);
-					ToolTipService.SetToolTip(RatingIcon, "Rating: Safe");
+					RatingText.Text = "Safe";
+					ToolTipService.SetToolTip(RatingPanel, "Rating: Safe");
+					color = Colors.Green;
 					break;
 				case "q":
 					RatingIcon.Glyph = "\uF142";
-					RatingIcon.Foreground = new SolidColorBrush(Colors.Yellow);
-					ToolTipService.SetToolTip(RatingIcon, "Rating: Questionable");
+					RatingText.Text = "Qestionable";
+					ToolTipService.SetToolTip(RatingPanel, "Rating: Questionable");
+					color = Colors.Yellow;
 					break;
 				case "e":
 					RatingIcon.Glyph = "\uE814";
-					RatingIcon.Foreground = new SolidColorBrush(Colors.Red);
-					ToolTipService.SetToolTip(RatingIcon, "Rating: Explicit");
+					RatingText.Text = "Explicit";
+					ToolTipService.SetToolTip(RatingPanel, "Rating: Explicit");
+					color = Colors.Red;
 					break;
 				default:
-					RatingIcon.Visibility = Visibility.Collapsed;
+					RatingPanel.Visibility = Visibility.Collapsed;
+					color = Colors.White;
 					break;
 			}
+			RatingIcon.Foreground = new SolidColorBrush(color);
+			RatingText.Foreground = new SolidColorBrush(color);
 		}
 
 		private void UpdateTagsGroup(Tags tags) {

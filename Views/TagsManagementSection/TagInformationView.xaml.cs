@@ -22,7 +22,6 @@ namespace E621Downloader.Views.TagsManagementSection {
 
 		private string[] tmp_tags;
 		private E621Tag tag;
-		private E621Wiki wiki;
 		public TagInformationView() {
 			this.InitializeComponent();
 		}
@@ -32,13 +31,12 @@ namespace E621Downloader.Views.TagsManagementSection {
 				dialog = objs[0] as ContentDialog;
 				tmp_tags = objs[1] as string[];
 				tag = objs[2] as E621Tag;
-				wiki = objs[3] as E621Wiki;
 
 				TextBlock_Name.Text = $"Name: {(tag == null ? "Not Found" : tag.name)}";
 				TextBlock_Count.Text = $"Count: {(tag == null ? 0 : tag.post_count)}";
-				if(wiki != null) {
+				if(tag?.Wiki != null) {
 					var doc = new HtmlDocument();
-					doc.LoadHtml(wiki.body);
+					doc.LoadHtml(tag.Wiki.body);
 					TextBlock_Description.Text = $"Description: \n{doc.Text}";
 				}
 			}

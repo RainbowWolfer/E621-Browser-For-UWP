@@ -66,22 +66,16 @@ namespace E621Downloader.Views.TagsManagementSection {
 
 		private async void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			//MainSplitView.IsPaneOpen = true;
-			E621Tag e621tag = null;
-			E621Wiki e621wiki = null;
 			string tag = (sender as Button).Tag as string;
-			E621Tag[] e621tags = await E621Tag.GetAsync(tag);
-			if(e621tags != null && e621tags.Length > 0) {
-				e621tag = e621tags[0];
-				E621Wiki[] e621wikis = E621Wiki.Get(tag);
-				if(e621wikis != null && e621wikis.Length > 0) {
-					e621wiki = e621wikis[0];
-				}
+			E621Tag e621tag = (await E621Tag.GetAsync(tag))?.FirstOrDefault();
+			if(e621tag != null && !e621tag.IsWikiLoaded) {
+				await e621tag.LoadWikiAsync();
 			}
 			//TextBlock_ID.Text = Tag_ID;
 			//TextBlock_Name.Text = Tag_Name;
 			//TextBlock_Count.Text = Tag_Count;
 			//TextBlock_Description.Text = Wiki_Description;
-			(dialog.Content as Frame).Navigate(typeof(TagInformationView), new object[] { dialog, tags.ToArray(), e621tag, e621wiki });
+			(dialog.Content as Frame).Navigate(typeof(TagInformationView), new object[] { dialog, tags.ToArray(), e621tag });
 		}
 
 		private void DeleteButton_Tapped(object sender, TappedRoutedEventArgs e) {

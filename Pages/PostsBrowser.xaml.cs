@@ -44,7 +44,7 @@ namespace E621Downloader.Pages {
 
 		public bool isHeightFixed;
 
-		public bool multipleSelectionMode;
+		public bool MultipleSelectionMode { get; private set; }
 
 		private readonly string[] ignoreTypes = { "swf", };
 
@@ -145,6 +145,7 @@ namespace E621Downloader.Pages {
 			UpdatePaginator();
 			LoadPosts(this.Posts, tags);
 			MainPage.HideInstantDialog();
+			UpdateInfoButton(tags);
 		}
 		public async Task Reload() {
 			MainPage.CreateInstantDialog("Please Wait", "Reloading...");
@@ -166,6 +167,10 @@ namespace E621Downloader.Pages {
 		//	}
 		//	return result;
 		//}
+
+		private void UpdateInfoButton(string[] tags) {
+			InfoButton.Visibility = tags.Where(i => !i.Contains(':')).Count() > 0 ? Visibility.Visible : Visibility.Collapsed;
+		}
 
 		private List<Post> CalculateEnabledPosts() {
 			var result = new List<Post>();
@@ -370,9 +375,9 @@ namespace E621Downloader.Pages {
 			isHeightFixed = false;
 			SetAllItemsSize(false);
 		}
-
+		private const int delay = 1;
 		private async void DownloadButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(multipleSelectionMode) {
+			if(MultipleSelectionMode) {
 				if(await new ContentDialog() {
 					Title = "Download Selection",
 					Content = "Do you want to download the selected",
@@ -383,7 +388,7 @@ namespace E621Downloader.Pages {
 					await Task.Delay(50);
 					foreach(ImageHolder item in GetSelected()) {
 						DownloadsManager.RegisterDownload(item.PostRef, tags);
-						await Task.Delay(2);
+						await Task.Delay(delay);
 					}
 					MainPage.HideInstantDialog();
 					SelectToggleButton.IsChecked = false;
@@ -406,7 +411,7 @@ namespace E621Downloader.Pages {
 						break;
 					case ContentDialogResult.Primary:
 						MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
-						await Task.Delay(20);
+						await Task.Delay(50);
 						var all = new List<Post>();
 						for(int i = 1; i <= maxPage; i++) {
 							List<Post> p = Post.GetPostsByTags(i, tags);
@@ -414,7 +419,7 @@ namespace E621Downloader.Pages {
 						}
 						foreach(Post item in all) {
 							DownloadsManager.RegisterDownload(item, tags);
-							await Task.Delay(2);
+							await Task.Delay(delay);
 						}
 						MainPage.HideInstantDialog();
 						break;
@@ -424,7 +429,7 @@ namespace E621Downloader.Pages {
 						await Task.Delay(50);
 						foreach(Post item in Posts) {
 							DownloadsManager.RegisterDownload(item, tags);
-							await Task.Delay(2);
+							await Task.Delay(delay);
 						}
 						MainPage.HideInstantDialog();
 						break;
@@ -435,7 +440,7 @@ namespace E621Downloader.Pages {
 		}
 
 		public List<ImageHolder> GetSelected() {
-			if(!multipleSelectionMode) {
+			if(!MultipleSelectionMode) {
 				return new List<ImageHolder>();
 			}
 			var result = new List<ImageHolder>();
@@ -448,20 +453,41 @@ namespace E621Downloader.Pages {
 		}
 
 		private void SelectToggleButton_Checked(object sender, RoutedEventArgs e) {
-			multipleSelectionMode = true;
-			SelectionCountTextBlock.Visibility = Visibility.Visible;
-			SelectionCountTextBlock.Text = $"0/{Posts.Count}";
+			EnterSelectionMode();
 		}
 
 		private void SelectToggleButton_Unchecked(object sender, RoutedEventArgs e) {
-			multipleSelectionMode = false;
+			LeaveSelectionMode();
+		}
+
+		public void EnterSelectionMode() {
+			if(MultipleSelectionMode) {
+				return;
+			}
+			MultipleSelectionMode = true;
+			SelectionCountTextBlock.Visibility = Visibility.Visible;
+			SelectionCountTextBlock.Text = $"0/{Posts.Count}";
+			if(!SelectToggleButton.IsChecked.Value) {
+				SelectToggleButton.IsChecked = true;
+			}
+		}
+
+		public void LeaveSelectionMode() {
+			if(!MultipleSelectionMode) {
+				return;
+			}
+			MultipleSelectionMode = false;
 			SelectionCountTextBlock.Visibility = Visibility.Collapsed;
 			foreach(UIElement item in MyWrapGrid.Children) {
 				if(item is ImageHolder holder) {
 					holder.IsSelected = false;
 				}
 			}
+			if(SelectToggleButton.IsChecked.Value) {
+				SelectToggleButton.IsChecked = false;
+			}
 		}
+
 
 		private void MySplitViewButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
@@ -484,6 +510,10 @@ namespace E621Downloader.Pages {
 		private async void HotTagsListView_ItemClick(object sender, ItemClickEventArgs e) {
 			string tag = (e.ClickedItem as StackPanel).Tag as string;
 			await LoadAsync(1, tag);
+		}
+
+		private async void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			await MainPage.CreatePopupDialog(string.Join(", ", tags.Where(i => !i.Contains(':'))), new CurrentTagsInformation(tags));
 		}
 	}
 

@@ -57,6 +57,7 @@ namespace E621Downloader.Models.Download {
 				StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 				RegisterDownload(post, new Uri(post.file.url), file, groupTitle);
 			}
+			//todo: notify successful downloading
 		}
 
 		private static DownloadInstance RegisterDownload(Post post, Uri uri, StorageFile file, string groupTitle = DEFAULTTITLE) {

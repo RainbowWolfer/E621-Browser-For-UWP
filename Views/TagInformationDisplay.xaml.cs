@@ -27,19 +27,18 @@ namespace E621Downloader.Views {
 
 		private async void Load() {
 			LoadingRing.IsActive = true;
-			E621Tag[] e621tags = await E621Tag.GetAsync(tag);
-			string count = "0";
+			E621Tag e621tag = (await E621Tag.GetAsync(tag))?.FirstOrDefault();
+			int count = 0;
 			string description = "not found";
-			if(e621tags != null && e621tags.Length > 0) {
-				count = e621tags[0].post_count.ToString();
-				E621Wiki[] e621wikies = await E621Wiki.GetAsync(tag);
-				if(e621wikies != null && e621wikies.Length > 0) {
-					description = e621wikies[0].body;
+			if(e621tag != null) {
+				count = e621tag.post_count;
+				if(!e621tag.IsWikiLoaded) {
+					await e621tag.LoadWikiAsync();
 				}
+				description = e621tag.Wiki.body;
 			}
-			LoadingRing.IsActive = false;
 			ContentText.Text = $"Count: {count}\nDescription: {description}";
-
+			LoadingRing.IsActive = false;
 		}
 	}
 }

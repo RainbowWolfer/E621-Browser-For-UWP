@@ -141,6 +141,7 @@
     </Compile>
     <Compile Include="Models\Locals\LocalSettings.cs" />
     <Compile Include="Models\Methods.cs" />
+    <Compile Include="Models\MyEnumerable.cs" />
     <Compile Include="Models\Networks\Data.cs" />
     <Compile Include="Models\Download\DownloadInstance.cs" />
     <Compile Include="Models\Download\DownloadInstanceLocalManager.cs" />
@@ -182,11 +183,17 @@
     <Compile Include="Pages\SubscriptionPage.xaml.cs">
       <DependentUpon>SubscriptionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\TestPage.xaml.cs">
+      <DependentUpon>TestPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CommentsSection\CommentView.xaml.cs">
       <DependentUpon>CommentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CurrentTagsInformation.xaml.cs">
+      <DependentUpon>CurrentTagsInformation.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DownloadSection\DownloadProgressBar.xaml.cs">
       <DependentUpon>DownloadProgressBar.xaml</DependentUpon>
@@ -196,6 +203,9 @@
     </Compile>
     <Compile Include="Views\DownloadSection\SimpleDownloadProgressBar.xaml.cs">
       <DependentUpon>SimpleDownloadProgressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TagExpander.xaml.cs">
+      <DependentUpon>TagExpander.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FoldersSelectionSection\FoldersSelectionView.xaml.cs">
       <DependentUpon>FoldersSelectionView.xaml</DependentUpon>
@@ -292,11 +302,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\TestPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\WelcomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CommentsSection\CommentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CurrentTagsInformation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -309,6 +327,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DownloadSection\SimpleDownloadProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TagExpander.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
