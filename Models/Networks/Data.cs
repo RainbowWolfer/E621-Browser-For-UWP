@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
@@ -14,6 +15,7 @@ namespace E621Downloader.Models.Networks {
 	public static class Data {
 		public const string USERAGENT = "RainbowWolferE621TestApp";
 		public static string ReadURL(string url) {
+			Debug.WriteLine("Sync : " + url);
 			var request = (HttpWebRequest)WebRequest.Create(url);
 			request.UserAgent = USERAGENT;
 			request.Headers.Add("login", "rainbowwolfer");
@@ -33,12 +35,14 @@ namespace E621Downloader.Models.Networks {
 			}
 		}
 
-		public static async Task<string> ReadURLAsync(string url) {
+		public static async Task<string> ReadURLAsync(string url, CancellationToken token = default) {
+			Debug.WriteLine("Async : " + url);
 			var request = (HttpWebRequest)WebRequest.Create(url);
 			request.UserAgent = USERAGENT;
 			request.Headers.Add("login", "rainbowwolfer");
 			request.Headers.Add("api_key", "WUwPNbGDrfXnQoHfvU1nR3TD");
 			HttpWebResponse response;
+
 			try {
 				response = await request.GetResponseAsync() as HttpWebResponse;
 			} catch(Exception e) {

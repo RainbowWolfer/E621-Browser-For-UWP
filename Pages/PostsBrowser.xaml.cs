@@ -132,7 +132,7 @@ namespace E621Downloader.Pages {
 			MainPage.CreateInstantDialog("Please Wait", "Loading...");
 			await Task.Delay(200);
 			SelectToggleButton.IsChecked = false;
-			List<Post> temp = Post.GetPostsByTags(page, tags);
+			List<Post> temp = await Post.GetPostsByTagsAsync(page, tags);
 			if(temp.Count == 0) {
 				MainPage.HideInstantDialog();
 				await MainPage.CreatePopupDialog("Articles Error", "Articles return 0");
@@ -414,7 +414,7 @@ namespace E621Downloader.Pages {
 						await Task.Delay(50);
 						var all = new List<Post>();
 						for(int i = 1; i <= maxPage; i++) {
-							List<Post> p = Post.GetPostsByTags(i, tags);
+							List<Post> p = await Post.GetPostsByTagsAsync(i, tags);
 							all.AddRange(p);
 						}
 						foreach(Post item in all) {

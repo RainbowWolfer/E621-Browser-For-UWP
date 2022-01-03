@@ -11,6 +11,8 @@
 
 	<Grid>
 		<ProgressRing x:Name="LoadingRing" IsActive="True" Width="100" Height="100" Margin="20"/>
-		<TextBlock x:Name="ContentText" TextWrapping="Wrap" FontSize="18"/>
+		<ScrollViewer>
+			<TextBlock x:Name="ContentText" TextWrapping="Wrap" FontSize="18"/>
+		</ScrollViewer>
 	</Grid>
 </UserControl>

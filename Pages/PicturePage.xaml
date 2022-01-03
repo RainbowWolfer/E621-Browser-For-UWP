@@ -58,7 +58,7 @@
 				<Button x:Name="BrowserButton" Content="Open In Default Browser" FontSize="18" Margin="5" Tapped="BrowserButton_Tapped" RelativePanel.RightOf="CopyButton"/>
 
 				<ToggleSwitch x:Name="SplitViewModeSwitch" IsOn="True" OnContent="Overlay" OffContent="Inline" FlowDirection="RightToLeft" Margin="0,0,10,0" Toggled="SplitViewModeSwitch_Toggled" RelativePanel.LeftOf="MoreInfoButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
-				<Button x:Name="MoreInfoButton" RelativePanel.AlignRightWithPanel="True" FontSize="18" Background="Transparent" BorderThickness="0" Height="38" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="MoreInfoButton_Tapped">
+				<Button x:Name="MoreInfoButton" RelativePanel.AlignRightWithPanel="True" FontSize="18" Background="Transparent" BorderThickness="0" Height="38" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="MoreInfoButton_Tapped" Padding="7,0,7,0">
 					<Button.Content>
 						<StackPanel Orientation="Horizontal">
 							<TextBlock Text="More Info" Margin="5"/>
@@ -95,7 +95,7 @@
 				</GroupStyle>
 			</ListView.GroupStyle>
 		</ListView>
-		<SplitView x:Name="MainSplitView" DisplayMode="Overlay" Grid.Column="1" Grid.Row="1" PanePlacement="Right" OpenPaneLength="500">
+		<SplitView x:Name="MainSplitView" DisplayMode="Overlay" Grid.Column="1" Grid.Row="1" PanePlacement="Right" OpenPaneLength="500" Margin="0,0,-1,0">
 			<SplitView.Pane>
 				<Grid>
 					<Pivot x:Name="InformationPivot" SelectionChanged="InformationPivot_SelectionChanged">

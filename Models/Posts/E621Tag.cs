@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
@@ -58,8 +59,8 @@ namespace E621Downloader.Models.Posts {
 			IsWikiLoaded = true;
 			OnWikiLoaded?.Invoke();
 		}
-		public async Task<E621Wiki> LoadWikiAsync() {
-			this.Wikis = await E621Wiki.GetAsync(name);
+		public async Task<E621Wiki> LoadWikiAsync(CancellationToken token = default) {
+			this.Wikis = await E621Wiki.GetAsync(name, token);
 			IsWikiLoaded = true;
 			OnWikiLoaded?.Invoke();
 			return this.Wiki;

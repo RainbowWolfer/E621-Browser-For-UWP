@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
@@ -23,9 +24,9 @@ namespace E621Downloader.Models.Posts {
 			}
 		}
 
-		public static async Task<E621Wiki[]> GetAsync(string tag) {
+		public static async Task<E621Wiki[]> GetAsync(string tag, CancellationToken token = default) {
 			string url = $"https://e621.net/wiki_pages.json?search[title]={tag}";
-			string data = await Data.ReadURLAsync(url);
+			string data = await Data.ReadURLAsync(url, token);
 			if(data == "[]") {
 				return null;
 			}

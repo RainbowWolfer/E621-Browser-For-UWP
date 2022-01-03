@@ -131,6 +131,7 @@ namespace E621Downloader.Views {
 				if(MainPage.Instance.currentTag == PageTag.PostsBrowser) {
 					MenuFlyoutItem item_select = new MenuFlyoutItem() {
 						Text = "Select This",
+						Icon = new FontIcon() { Glyph = "\uE152" },
 						Foreground = new SolidColorBrush(Colors.White),
 					};
 					item_select.Click += (sender, arg) => {
@@ -142,6 +143,7 @@ namespace E621Downloader.Views {
 
 					MenuFlyoutItem item_hide = new MenuFlyoutItem() {
 						Text = "Hide This Image",
+						Icon = new FontIcon() { Glyph = "\uE894" },
 						Foreground = new SolidColorBrush(Colors.White),
 					};
 					item_hide.Click += (sender, arg) => {
@@ -152,6 +154,7 @@ namespace E621Downloader.Views {
 
 				MenuFlyoutItem item_download = new MenuFlyoutItem() {
 					Text = "Download This",
+					Icon = new FontIcon() { Glyph = "\uE896" },
 					Foreground = new SolidColorBrush(Colors.White),
 				};
 				item_download.Click += (sender, arg) => {

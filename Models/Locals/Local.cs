@@ -202,7 +202,7 @@ namespace E621Downloader.Models.Locals {
 			public MetaFile meta;
 			public BitmapImage source;
 			public StorageFile file;
-			public string SourceID => file.DisplayName;
+			public string SourceID => file?.DisplayName;
 
 			public bool IsValid => meta != null /*&& source != null */&& SourceID != null;
 

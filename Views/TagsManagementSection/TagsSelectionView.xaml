@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="400"
-    Width="300">
+    Width="350">
 
 	<Grid>
 		<Grid.RowDefinitions>
@@ -16,27 +16,13 @@
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
 		<AutoSuggestBox Name="MySuggestBox" TextChanged="MySuggestBox_TextChanged" Margin="10"/>
-		<ListView Grid.Row="1" ItemsSource="{x:Bind tags}" SelectionMode="None" IsItemClickEnabled="False">
+		<ListView x:Name="TagsListView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="False">
 			<ListView.ItemContainerStyle>
 				<Style TargetType="ListViewItem">
 					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
 					<Setter Property="VerticalContentAlignment" Value="Stretch"/>
 				</Style>
 			</ListView.ItemContainerStyle>
-			<ListView.ItemTemplate>
-				<DataTemplate x:DataType="x:String">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="auto"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="auto"/>
-						</Grid.ColumnDefinitions>
-						<Button x:Name="InfoButton" Tag="{x:Bind ToString()}" Height="30" Width="30" Background="Transparent" BorderThickness="0" FontFamily="Segoe MDL2 Assets" Content="&#xE946;" Tapped="InfoButton_Tapped"/>
-						<TextBlock Grid.Column="1" Text="{x:Bind ToString()}" VerticalAlignment="Center" FontSize="18" Margin="5,0,0,3"/>
-						<Button x:Name="DeleteButton" Tag="{x:Bind ToString()}" Grid.Column="2" FontFamily="Segoe MDL2 Assets" Content="&#xE106;" Background="Transparent" BorderThickness="0" Height="30" Width="30" Tapped="DeleteButton_Tapped"/>
-					</Grid>
-				</DataTemplate>
-			</ListView.ItemTemplate>
 		</ListView>
 		<Grid Grid.Row="2">
 			<Grid.ColumnDefinitions>

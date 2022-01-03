@@ -18,79 +18,46 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Views.TagsManagementSection {
 	public sealed partial class TagsSelectionView: Page {
-		public bool handleSearch = false;
-		public ObservableCollection<string> tags;
 		private ContentDialog dialog;
+		public bool handleSearch = false;
+		private List<SingleTagDisplay> TagDisplays => TagsListView.Items.Cast<SingleTagDisplay>().ToList();
+		private readonly Dictionary<string, E621Tag> tags = new Dictionary<string, E621Tag>();
 
-		//private string Tag_ID => $"ID: {tag?.id}";
-		//private string Tag_Name => $"Name: {tag?.name}";
-		//private string Tag_Count => $"Count: {tag?.post_count}";
-		//private string Wiki_Description => $"Description: {wiki?.body}";
-
-		public TagsSelectionView() {
+		public TagsSelectionView(ContentDialog dialog, string[] tags) {
 			this.InitializeComponent();
-			this.tags = new ObservableCollection<string>();
-		}
-
-		protected override void OnNavigatedTo(NavigationEventArgs e) {
-			base.OnNavigatedTo(e);
-			if(e.Parameter is object[] objs) {
-				this.dialog = objs[0] as ContentDialog;
-				foreach(string item in objs[1] as string[]) {
-					//this.tags.Add(item);
-					MySuggestBox.Text += item + " ";
-				}
-				MySuggestBox.Text = MySuggestBox.Text.Trim();
+			this.dialog = dialog;
+			foreach(string item in tags) {
+				MySuggestBox.Text += item + " ";
 			}
+			MySuggestBox.Text = MySuggestBox.Text.Trim();
 		}
 
 		private void MySuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args) {
-			this.tags.Clear();
-			//if(args.Reason != AutoSuggestionBoxTextChangeReason.ProgrammaticChange) {
+			foreach(SingleTagDisplay item in TagsListView.Items) {
+				item.CancelLoadingTag();
+			}
+			TagsListView.Items.Clear();
 			foreach(string item in sender.Text.Trim().Split(" ").Where(s => !string.IsNullOrEmpty(s))) {
-				this.tags.Add(item);
-			}
-			//}
-			string last = this.tags.LastOrDefault();
-			if(!string.IsNullOrWhiteSpace(last)) {
-				//E621Tag[] found = await E621Tag.GetAsync(last);
-				//if(found != null) {
-				//	Debug.Write("Tags : ");
-				//	foreach(E621Tag item in found) {
-				//		Debug.Write(item + " ");
-				//	}
-				//	Debug.WriteLine("");
-				//}
+				TagsListView.Items.Add(new SingleTagDisplay(this, item));
 			}
 		}
 
-		private async void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			//MainSplitView.IsPaneOpen = true;
-			string tag = (sender as Button).Tag as string;
-			E621Tag e621tag = (await E621Tag.GetAsync(tag))?.FirstOrDefault();
-			if(e621tag != null && !e621tag.IsWikiLoaded) {
-				await e621tag.LoadWikiAsync();
+		public E621Tag GetE621Tag(string tag) => tags.ContainsKey(tag) ? tags[tag] : null;
+		public void RegisterE621Tag(string tag, E621Tag e621tag) {
+			if(tags.ContainsKey(tag)) {
+				tags[tag] = e621tag;
+			} else {
+				tags.Add(tag, e621tag);
 			}
-			//TextBlock_ID.Text = Tag_ID;
-			//TextBlock_Name.Text = Tag_Name;
-			//TextBlock_Count.Text = Tag_Count;
-			//TextBlock_Description.Text = Wiki_Description;
-			(dialog.Content as Frame).Navigate(typeof(TagInformationView), new object[] { dialog, tags.ToArray(), e621tag });
 		}
 
-		private void DeleteButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			string tag = (sender as Button).Tag as string;
-			tags.Remove(tag);
+
+		public void RemoveTag(string tag) {
 			MySuggestBox.Text = MySuggestBox.Text.Replace(tag, "").Trim();
 		}
-
-		//private void BackButton_Tapped(object sender, TappedRoutedEventArgs e) {
-		//	MainSplitView.IsPaneOpen = false;
-		//}
-
-		//private void MainSplitView_PaneClosing(SplitView sender, SplitViewPaneClosingEventArgs args) {
-		//	args.Cancel = true;
-		//}
+		public string[] GetTags() {
+			return tags.Keys.ToArray();
+		}
 
 		private void SearchButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			handleSearch = true;

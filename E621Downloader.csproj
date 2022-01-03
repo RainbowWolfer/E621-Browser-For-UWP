@@ -238,8 +238,8 @@
     <Compile Include="Views\TagInformationDisplay.xaml.cs">
       <DependentUpon>TagInformationDisplay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TagsManagementSection\TagInformationView.xaml.cs">
-      <DependentUpon>TagInformationView.xaml</DependentUpon>
+    <Compile Include="Views\TagsManagementSection\SingleTagDisplay.xaml.cs">
+      <DependentUpon>SingleTagDisplay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TagsManagementSection\TagsSelectionView.xaml.cs">
       <DependentUpon>TagsSelectionView.xaml</DependentUpon>
@@ -374,7 +374,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TagsManagementSection\TagInformationView.xaml">
+    <Page Include="Views\TagsManagementSection\SingleTagDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

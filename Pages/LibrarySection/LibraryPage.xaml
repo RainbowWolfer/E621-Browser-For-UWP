@@ -37,7 +37,7 @@
 						</DataTemplate>
 					</ListView.ItemTemplate>
 				</ListView>
-				<RepeatButton x:Name="SizeButton" Width="40" Height="40" FontFamily="Segoe MDL2 Assets" Content="&#xE2B2;" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Background="Transparent" BorderThickness="0" Click="SizeButton_Click" ToolTipService.ToolTip="Current Size : 200"/>
+				<RepeatButton x:Name="SizeButton" Width="40" Height="40" FontFamily="Segoe MDL2 Assets" Content="&#xE2B2;" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Background="Transparent" BorderThickness="0" Click="SizeButton_Click" ToolTipService.ToolTip="Current Size : 200" Padding="0"/>
 				<Slider x:Name="SizeSlider" Minimum="100" Maximum="500" Value="200" VerticalAlignment="Bottom" Margin="50,0,10,-5" Height="40" StepFrequency="10" ValueChanged="SizeSlider_ValueChanged"/>
 			</Grid>
 		</SplitView.Pane>

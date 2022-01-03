@@ -256,17 +256,16 @@ namespace E621Downloader {
 			var dialog = new ContentDialog() {
 				Title = "Manage Your Search Tags",
 			};
+			var view = new TagsSelectionView(dialog, PostsBrowser.Instance?.tags ?? Array.Empty<string>());
+			dialog.Content = view;
 
-			var frame = new Frame();
-			dialog.Content = frame;
-			frame.Navigate(typeof(TagsSelectionView), new object[] { dialog, PostsBrowser.Instance == null ? Array.Empty<string>() : PostsBrowser.Instance.tags });
 			await dialog.ShowAsync();
 
-			var content = (dialog.Content as Frame).Content as TagsSelectionView;
-			if(content.handleSearch) {
+			if(view.handleSearch) {
 				SelectNavigationItem(PageTag.PostsBrowser);
 				await Task.Delay(100);
-				await PostsBrowser.Instance.LoadAsync(1, content.tags.ToArray());
+				await PostsBrowser.Instance.LoadAsync(1, view.GetTags());
+				//await PostsBrowser.Instance.LoadAsync(1, "feet");
 			}
 		}
 	}

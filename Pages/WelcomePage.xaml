@@ -44,11 +44,28 @@
 				</DoubleAnimation.EasingFunction>
 			</DoubleAnimation>
 		</Storyboard>
+		<Storyboard x:Name="MascotTransition">
+			<DoubleAnimation Storyboard.TargetName="ImageCompositeTransform" Storyboard.TargetProperty="ScaleX">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="7" EasingMode="EaseOut" />
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+			<DoubleAnimation Storyboard.TargetName="ImageCompositeTransform" Storyboard.TargetProperty="ScaleY">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="7" EasingMode="EaseOut" />
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+			<DoubleAnimation Storyboard.TargetName="PostsPanelCompositeTransform" Storyboard.TargetProperty="TranslateY">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="7" EasingMode="EaseOut" />
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+		</Storyboard>
 	</Page.Resources>
 	<Grid Background="#FF012E57">
-		<Image x:Name="MascotImage" Source="/Assets/esix2.jpg" Margin="0,60,0,120" Opacity="1">
+		<Image x:Name="MascotImage" Source="/Assets/esix2.jpg" Margin="0,60,0,120" Opacity="1" Tapped="MascotImage_Tapped" PointerEntered="MascotImage_PointerEntered" PointerExited="MascotImage_PointerExited" RenderTransformOrigin="0.5,0.5">
 			<Image.RenderTransform>
-				<CompositeTransform x:Name="ImageCompositeTransform" TranslateX="0" TranslateY="0"/>
+				<CompositeTransform x:Name="ImageCompositeTransform" ScaleX="1" ScaleY="1"/>
 			</Image.RenderTransform>
 		</Image>
 		<StackPanel x:Name="RightHintPanel" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,130,0" Opacity="0">

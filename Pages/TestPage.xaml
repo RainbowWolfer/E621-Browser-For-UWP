@@ -10,7 +10,15 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Grid>
-		<muxc:TabView AddTabButtonClick="TabView_AddButtonClick" TabCloseRequested="TabView_TabCloseRequested" Loaded="TabView_Loaded" >
-		</muxc:TabView>
+		<!--<muxc:TabView AddTabButtonClick="TabView_AddButtonClick" TabCloseRequested="TabView_TabCloseRequested" Loaded="TabView_Loaded" >
+		</muxc:TabView>-->
+		<muxc:Expander>
+			<muxc:Expander.Header>
+				<TextBlock Text="Jllo"/>
+			</muxc:Expander.Header>
+			<muxc:Expander.Content>
+				<TextBlock Text="qewfrggdd"/>
+			</muxc:Expander.Content>
+		</muxc:Expander>
 	</Grid>
 </Page>

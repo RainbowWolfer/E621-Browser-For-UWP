@@ -10,10 +10,6 @@
     d:DesignWidth="500">
 	<UserControl.Resources>
 		<CollectionViewSource x:Name="MyContactsCVS" Source="{x:Bind tags}" IsSourceGrouped="True"/>
-		<Style x:Key="MyButtonStyle" TargetType="Button">
-			<Setter Property="FontSize" Value="18"/>
-			<Setter Property="HorizontalAlignment" Value="Stretch"/>
-		</Style>
 	</UserControl.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -47,7 +43,7 @@
 							<ColumnDefinition Width="auto"/>
 						</Grid.ColumnDefinitions>
 						<TextBlock Text="{x:Bind ToString()}" FontSize="16" VerticalAlignment="Center"/>
-						<Button x:Name="CloseButton" Tag="{x:Bind ToString()}" Content="&#xE106;" FontSize="12" FontFamily="Segoe MDL2 Assets" Grid.Column="1" Background="Transparent" BorderThickness="0" Height="30" Width="30" Tapped="CloseButton_Tapped"/>
+						<Button x:Name="CloseButton" Tag="{x:Bind ToString()}" Content="&#xE106;" FontSize="12" FontFamily="Segoe MDL2 Assets" Grid.Column="1" Background="Transparent" BorderThickness="0" Height="30" Width="30" Tapped="CloseButton_Tapped" Padding="0"/>
 					</Grid>
 				</DataTemplate>
 			</ListView.ItemTemplate>
@@ -91,7 +87,7 @@
 				</DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>
-		<Button x:Name="ConfirmButton" Content="Confirm" Style="{StaticResource MyButtonStyle}" Margin="0,10,5,0" Grid.Row="2" Grid.Column="0" Tapped="ConfirmButton_Tapped"/>
-		<Button x:Name="BackButton" Content="Back" Style="{StaticResource MyButtonStyle}" Margin="5,10,0,0" Grid.Row="2" Grid.Column="1" Tapped="BackButton_Tapped"/>
+		<Button x:Name="ConfirmButton" Content="Confirm" HorizontalAlignment="Stretch" FontSize="18" Margin="0,10,5,0" Grid.Row="2" Grid.Column="0" Tapped="ConfirmButton_Tapped"/>
+		<Button x:Name="BackButton" Content="Back" HorizontalAlignment="Stretch" FontSize="18" Margin="5,10,0,0" Grid.Row="2" Grid.Column="1" Tapped="BackButton_Tapped"/>
 	</Grid>
 </UserControl>

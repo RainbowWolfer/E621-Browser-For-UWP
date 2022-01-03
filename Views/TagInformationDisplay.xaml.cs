@@ -32,10 +32,11 @@ namespace E621Downloader.Views {
 			string description = "not found";
 			if(e621tag != null) {
 				count = e621tag.post_count;
+				E621Wiki wiki = null;
 				if(!e621tag.IsWikiLoaded) {
-					await e621tag.LoadWikiAsync();
+					wiki = await e621tag.LoadWikiAsync();
 				}
-				description = e621tag.Wiki.body;
+				description = e621tag.Wiki?.body ?? "Error";
 			}
 			ContentText.Text = $"Count: {count}\nDescription: {description}";
 			LoadingRing.IsActive = false;

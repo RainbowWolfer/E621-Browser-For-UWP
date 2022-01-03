@@ -45,17 +45,17 @@
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
-			<Button x:Name="UpVoteButton" Tapped="UpVoteButton_Tapped" Content="&#xE96D;" Style="{StaticResource ScoreButton}" Grid.Column="0" />
+			<Button x:Name="UpVoteButton" Tapped="UpVoteButton_Tapped" Content="&#xE96D;" Style="{StaticResource ScoreButton}" Grid.Column="0" Padding="0" CornerRadius="5"/>
 			<TextBlock Text="{x:Bind Comment.score}" Grid.Column="1" FontSize="16" HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center"/>
-			<Button x:Name="DownVoteButton" Tapped="DownVoteButton_Tapped" Content="&#xE96E;" Style="{StaticResource ScoreButton}" Grid.Column="2" />
+			<Button x:Name="DownVoteButton" Tapped="DownVoteButton_Tapped" Content="&#xE96E;" Style="{StaticResource ScoreButton}" Grid.Column="2" Padding="0" CornerRadius="5"/>
 		</Grid>
 		<Grid Grid.Row="3">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="10*" />
+				<ColumnDefinition Width="11*" />
 			</Grid.ColumnDefinitions>
-			<Button x:Name="ReplyButton" Tapped="ReplyButton_Tapped" HorizontalAlignment="Stretch" Content="Reply" Grid.Column="0" Margin="5" />
-			<Button x:Name="ReportButton" Tapped="ReportButton_Tapped" HorizontalAlignment="Stretch" Content="Report" Grid.Column="1" Margin="5" />
+			<Button x:Name="ReplyButton" Tapped="ReplyButton_Tapped" HorizontalAlignment="Stretch" Content="Reply" Grid.Column="0" Margin="4" />
+			<Button x:Name="ReportButton" Tapped="ReportButton_Tapped" HorizontalAlignment="Stretch" Content="Report" Grid.Column="1" Margin="4" />
 		</Grid>
 		<Grid Grid.Row="4" Grid.ColumnSpan="2">
 			<Rectangle HorizontalAlignment="Stretch" Fill="Gray" Height="2" Margin="0,5,0,10" />
