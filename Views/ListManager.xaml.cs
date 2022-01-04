@@ -29,9 +29,11 @@ namespace E621Downloader.Views {
 		private readonly ContentDialog parent;
 
 		private readonly string title;
+		private SettingsPage page;
 
-		public ListManager(string[] tags, ContentDialog contentControl) {
+		public ListManager(SettingsPage page, string[] tags, ContentDialog contentControl) {
 			this.InitializeComponent();
+			this.page = page;
 			this.originTags = tags.ToList();
 			this.initialCount = tags.Length;
 			this.title = contentControl.Title as string;
@@ -52,7 +54,7 @@ namespace E621Downloader.Views {
 			};
 			dataPackage.SetText(result);
 			Clipboard.SetContent(dataPackage);
-			MainPage.CreateTip("Successful", "Hello World");
+			MainPage.CreateTip(page, "Nofitication", "Successfully Exported", Symbol.Accept);
 		}
 
 		public string[] GetCurrentTags() => originTags.ToArray();

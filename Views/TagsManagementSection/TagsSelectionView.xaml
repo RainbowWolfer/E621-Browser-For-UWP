@@ -5,6 +5,7 @@
     xmlns:local="using:E621Downloader.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="400"
     Width="350">
@@ -16,21 +17,65 @@
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
 		<AutoSuggestBox Name="MySuggestBox" TextChanged="MySuggestBox_TextChanged" Margin="10"/>
-		<ListView x:Name="TagsListView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="False">
+		<ScrollViewer  Grid.Row="1" VerticalScrollBarVisibility="Auto" MinHeight="20">
+			<StackPanel x:Name="TagsStackPanel">
+				<StackPanel.ChildrenTransitions>
+					<TransitionCollection>
+						<EntranceThemeTransition IsStaggeringEnabled="True"/>
+					</TransitionCollection>
+				</StackPanel.ChildrenTransitions>
+			</StackPanel>
+		</ScrollViewer>
+		<!--<ListView x:Name="TagsListView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="False" ScrollViewer.VerticalScrollBarVisibility="Auto">
 			<ListView.ItemContainerStyle>
 				<Style TargetType="ListViewItem">
 					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
 					<Setter Property="VerticalContentAlignment" Value="Stretch"/>
 				</Style>
 			</ListView.ItemContainerStyle>
-		</ListView>
+		</ListView>-->
 		<Grid Grid.Row="2">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,10,10,0" Tapped="SearchButton_Tapped"/>
-			<Button x:Name="DialogBackButton" Content="Back" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Margin="10,10,0,0" Tapped="DialogBackButton_Tapped"/>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<Button x:Name="SearchButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,5,0" Tapped="SearchButton_Tapped" Grid.Row="1">
+				<Button.Content>
+					<StackPanel Orientation="Horizontal">
+						<FontIcon Glyph="&#xE721;" FontSize="16" Margin="0,0,10,0"/>
+						<TextBlock Text="Search" FontSize="16"/>
+					</StackPanel>
+				</Button.Content>
+			</Button>
+			<Button x:Name="HotButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,5,0" Tapped="HotButton_Tapped" Grid.Column="1" Grid.Row="1">
+				<Button.Content>
+					<StackPanel Orientation="Horizontal">
+						<FontIcon FontFamily="Segoe UI Symbol" Glyph="&#x1F525;" FontSize="16" Margin="0,0,10,0"/>
+						<TextBlock x:Name="HotText" Text="Hot" FontSize="16"/>
+					</StackPanel>
+				</Button.Content>
+			</Button>
+			<Button x:Name="DialogBackButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Margin="5,10,5,0" Tapped="DialogBackButton_Tapped" Grid.Row="1">
+				<Button.Content>
+					<StackPanel Orientation="Horizontal">
+						<FontIcon Glyph="&#xE72B;" FontSize="16" Margin="0,0,10,0"/>
+						<TextBlock Text="Back" FontSize="16"/>
+					</StackPanel>
+				</Button.Content>
+			</Button>
+			<Button x:Name="RandomButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0" Grid.ColumnSpan="3" Margin="5,10,5,0" Tapped="RandomButton_Tapped" Padding="0">
+				<Button.Content>
+					<StackPanel Orientation="Horizontal">
+						<FontIcon Glyph="&#x1F3B2;" FontFamily="Segoe UI Symbol" FontSize="22" Margin="0,0,10,0"/>
+						<TextBlock Text="Feeling Lucky" FontSize="16" Padding="4"/>
+					</StackPanel>
+				</Button.Content>
+			</Button>
 		</Grid>
 	</Grid>
 </Page>

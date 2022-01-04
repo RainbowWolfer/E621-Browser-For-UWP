@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -19,9 +20,9 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Views.TagsManagementSection {
 	public sealed partial class TagsSelectionView: Page {
 		private ContentDialog dialog;
-		public bool handleSearch = false;
-		private List<SingleTagDisplay> TagDisplays => TagsListView.Items.Cast<SingleTagDisplay>().ToList();
-		private readonly Dictionary<string, E621Tag> tags = new Dictionary<string, E621Tag>();
+		public ResultType Result { get; private set; } = ResultType.None;
+		private readonly Dictionary<string, E621Tag> tags_pool = new Dictionary<string, E621Tag>();
+		private readonly List<string> currentTags = new List<string>();
 
 		public TagsSelectionView(ContentDialog dialog, string[] tags) {
 			this.InitializeComponent();
@@ -33,21 +34,23 @@ namespace E621Downloader.Views.TagsManagementSection {
 		}
 
 		private void MySuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args) {
-			foreach(SingleTagDisplay item in TagsListView.Items) {
+			foreach(SingleTagDisplay item in TagsStackPanel.Children) {
 				item.CancelLoadingTag();
 			}
-			TagsListView.Items.Clear();
-			foreach(string item in sender.Text.Trim().Split(" ").Where(s => !string.IsNullOrEmpty(s))) {
-				TagsListView.Items.Add(new SingleTagDisplay(this, item));
+			TagsStackPanel.Children.Clear();
+			currentTags.Clear();
+			foreach(string item in sender.Text.Trim().Split(" ").Where(s => !string.IsNullOrEmpty(s)).ToList()) {
+				currentTags.Add(item);
+				TagsStackPanel.Children.Add(new SingleTagDisplay(this, item));
 			}
 		}
 
-		public E621Tag GetE621Tag(string tag) => tags.ContainsKey(tag) ? tags[tag] : null;
+		public E621Tag GetE621Tag(string tag) => tags_pool.ContainsKey(tag) ? tags_pool[tag] : null;
 		public void RegisterE621Tag(string tag, E621Tag e621tag) {
-			if(tags.ContainsKey(tag)) {
-				tags[tag] = e621tag;
+			if(tags_pool.ContainsKey(tag)) {
+				tags_pool[tag] = e621tag;
 			} else {
-				tags.Add(tag, e621tag);
+				tags_pool.Add(tag, e621tag);
 			}
 		}
 
@@ -55,17 +58,30 @@ namespace E621Downloader.Views.TagsManagementSection {
 		public void RemoveTag(string tag) {
 			MySuggestBox.Text = MySuggestBox.Text.Replace(tag, "").Trim();
 		}
-		public string[] GetTags() {
-			return tags.Keys.ToArray();
-		}
+		public string[] GetTags() => currentTags.ToArray();
 
 		private void SearchButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			handleSearch = true;
+			Result = ResultType.Search;
 			dialog.Hide();
 		}
 
 		private void DialogBackButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			Result = ResultType.None;
 			dialog.Hide();
+		}
+
+		private void HotButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			Result = ResultType.Hot;
+			dialog.Hide();
+		}
+
+		private void RandomButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			Result = ResultType.Random;
+			dialog.Hide();
+		}
+
+		public enum ResultType {
+			None, Search, Hot, Random
 		}
 	}
 }

@@ -54,15 +54,17 @@ namespace E621Downloader.Models.Posts {
 		public bool IsWikiLoaded { get; private set; } = false;
 		public E621Wiki[] Wikis { get; private set; } = Array.Empty<E621Wiki>();
 		public E621Wiki Wiki => Wikis?.FirstOrDefault();
-		public async void LoadWiki() {
-			this.Wikis = await E621Wiki.GetAsync(name);
-			IsWikiLoaded = true;
-			OnWikiLoaded?.Invoke();
-		}
+		//public async void LoadWiki() {
+		//	this.Wikis = await E621Wiki.GetAsync(name);
+		//	IsWikiLoaded = true;
+		//	OnWikiLoaded?.Invoke();
+		//}
 		public async Task<E621Wiki> LoadWikiAsync(CancellationToken token = default) {
 			this.Wikis = await E621Wiki.GetAsync(name, token);
-			IsWikiLoaded = true;
-			OnWikiLoaded?.Invoke();
+			if(Wikis != null && Wiki != null) {
+				OnWikiLoaded?.Invoke();
+				IsWikiLoaded = true;
+			}
 			return this.Wiki;
 		}
 

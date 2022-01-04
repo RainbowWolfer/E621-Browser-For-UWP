@@ -369,6 +369,7 @@ namespace E621Downloader.Pages {
 
 		private void DownloadButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			DownloadsManager.RegisterDownload(PostRef);
+			MainPage.CreateTip(this, "Notification", "Download Successfully Began", Symbol.Accept);
 		}
 
 		private void CopyButton_Tapped(object sender, TappedRoutedEventArgs e) {

@@ -67,7 +67,7 @@ namespace E621Downloader.Pages {
 				PrimaryButtonText = "Confirm",
 				SecondaryButtonText = "Cancel",
 			};
-			var manager = new ListManager(oldValue, dialog);
+			var manager = new ListManager(this, oldValue, dialog);
 			dialog.Content = manager;
 			ContentDialogResult result = await dialog.ShowAsync();
 			string[] newValue = manager.GetCurrentTags();

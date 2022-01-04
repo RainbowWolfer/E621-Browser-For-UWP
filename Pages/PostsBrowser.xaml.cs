@@ -392,6 +392,7 @@ namespace E621Downloader.Pages {
 					}
 					MainPage.HideInstantDialog();
 					SelectToggleButton.IsChecked = false;
+					ShowTeachingTip();
 				}
 			} else {
 				var dialog = new ContentDialog() {
@@ -436,7 +437,11 @@ namespace E621Downloader.Pages {
 					default:
 						throw new Exception();
 				}
+				ShowTeachingTip();
 			}
+		}
+		public void ShowTeachingTip() {
+			ToggleThemeTeachingTip2.IsOpen = true;
 		}
 
 		public List<ImageHolder> GetSelected() {
@@ -514,6 +519,14 @@ namespace E621Downloader.Pages {
 
 		private async void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			await MainPage.CreatePopupDialog(string.Join(", ", tags.Where(i => !i.Contains(':'))), new CurrentTagsInformation(tags));
+		}
+
+		private void ToggleThemeTeachingTip2_ActionButtonClick(Microsoft.UI.Xaml.Controls.TeachingTip sender, object args) {
+			Debug.WriteLine("ewq");
+		}
+
+		private void ToggleThemeTeachingTip2_Closed(Microsoft.UI.Xaml.Controls.TeachingTip sender, Microsoft.UI.Xaml.Controls.TeachingTipClosedEventArgs args) {
+			Debug.WriteLine(sender.Parent);
 		}
 	}
 

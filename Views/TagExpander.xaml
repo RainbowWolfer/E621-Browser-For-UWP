@@ -9,7 +9,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-	<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" BorderThickness="2" BorderBrush="Gray">
+	<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" BorderThickness="2" BorderBrush="Gray" CornerRadius="10">
 		<Button x:Name="ExpandButton" Background="Transparent" BorderThickness="0" Tapped="Button_Tapped" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
 			<Button.Content>
 				<RelativePanel>

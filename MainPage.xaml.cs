@@ -8,6 +8,7 @@ using E621Downloader.Pages.DownloadSection;
 using E621Downloader.Pages.LibrarySection;
 using E621Downloader.Views;
 using E621Downloader.Views.TagsManagementSection;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,6 +35,10 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using NavigationView = Windows.UI.Xaml.Controls.NavigationView;
+using NavigationViewItem = Windows.UI.Xaml.Controls.NavigationViewItem;
+using NavigationViewItemInvokedEventArgs = Windows.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs;
+using SymbolIconSource = Microsoft.UI.Xaml.Controls.SymbolIconSource;
 
 namespace E621Downloader {
 	public sealed partial class MainPage: Page {
@@ -144,18 +149,34 @@ namespace E621Downloader {
 			IsShowingInstanceDialog = false;
 		}
 
-		public async static void CreateTip(string titile, string subtitle, int delayTime = 5000) {
-			var tip = new Microsoft.UI.Xaml.Controls.TeachingTip() {
+		public async static void CreateTip(Panel parent, string titile, string subtitle, Symbol? icon = null, string closeText = "Got it!", bool isLightDismissEnabled = false, TeachingTipPlacementMode placement = TeachingTipPlacementMode.TopRight, Thickness? margin = null, int delayTime = 5000) {
+			var tip = new TeachingTip() {
 				Title = titile,
 				Subtitle = subtitle,
-				Target = Instance.CurrentTagsButton,
-				IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() {
-					Symbol = Symbol.Accept
+				IconSource = icon == null ? null : new SymbolIconSource() {
+					Symbol = icon.Value
 				},
+				PreferredPlacement = placement,
+				PlacementMargin = margin == null ? new Thickness(20) : margin.Value,
+				IsLightDismissEnabled = isLightDismissEnabled,
+				CloseButtonContent = closeText,
 				IsOpen = true,
 			};
-			await Task.Delay(delayTime);
-			tip.IsOpen = false;
+			parent.Children.Add(tip);
+			if(delayTime > 0) {
+				await Task.Delay(delayTime);
+				tip.IsOpen = false;
+			}
+			tip.Closed += (s, e) => {
+				parent.Children.Remove(tip);
+			};
+		}
+		public static void CreateTip(Page page, string titile, string subtitle, Symbol? icon = null, string closeText = "Got it!", bool isLightDismissEnabled = false, TeachingTipPlacementMode placement = TeachingTipPlacementMode.TopRight, Thickness? margin = null, int delayTime = 5000) {
+			if(page.Content is Panel panel) {
+				CreateTip(panel, titile, subtitle, icon, closeText, isLightDismissEnabled, placement, margin, delayTime);
+			} else {
+				throw new Exception("Page's Content is not a valid Panel");
+			}
 		}
 
 		public static async Task<ContentDialog> CreatePopupDialog(string title, object content, bool enableButton = true, string backButtonContent = "Back") {
@@ -260,12 +281,33 @@ namespace E621Downloader {
 			dialog.Content = view;
 
 			await dialog.ShowAsync();
-
-			if(view.handleSearch) {
-				SelectNavigationItem(PageTag.PostsBrowser);
-				await Task.Delay(100);
-				await PostsBrowser.Instance.LoadAsync(1, view.GetTags());
-				//await PostsBrowser.Instance.LoadAsync(1, "feet");
+			switch(view.Result) {
+				case TagsSelectionView.ResultType.None:
+					break;
+				case TagsSelectionView.ResultType.Search:
+					SelectNavigationItem(PageTag.PostsBrowser);
+					await Task.Delay(100);
+					await PostsBrowser.Instance.LoadAsync(1, view.GetTags());
+					break;
+				case TagsSelectionView.ResultType.Hot:
+					SelectNavigationItem(PageTag.PostsBrowser);
+					await Task.Delay(100);
+					await PostsBrowser.Instance.LoadAsync(1, "order:rank");
+					break;
+				case TagsSelectionView.ResultType.Random:
+					CreateInstantDialog("Please Waiting", "Getting Your Tag");
+					Post post = (await Post.GetPostsByTagsAsync(1, "limit:1", "order:random"))?.FirstOrDefault();
+					HideInstantDialog();
+					if(post != null) {
+						List<string> all = post.tags.GetAllTags();
+						string tag = all[new Random().Next(all.Count)];
+						SelectNavigationItem(PageTag.PostsBrowser);
+						await Task.Delay(100);
+						await PostsBrowser.Instance.LoadAsync(1, tag);
+					}
+					break;
+				default:
+					throw new Exception("Result Type not found");
 			}
 		}
 	}

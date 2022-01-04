@@ -35,7 +35,7 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="250"/>
+			<ColumnDefinition Width="auto"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<StackPanel Grid.Column="1">
@@ -69,7 +69,7 @@
 			</RelativePanel>
 		</StackPanel>
 
-		<ListView x:Name="TagsListView" ItemsSource="{Binding Source={StaticResource ContactsCVS}}" Grid.RowSpan="2" SelectionMode="None" IsItemClickEnabled="True" ItemClick="TagsListView_ItemClick">
+		<ListView x:Name="TagsListView" ItemsSource="{Binding Source={StaticResource ContactsCVS}}" Grid.RowSpan="2" SelectionMode="None" IsItemClickEnabled="True" ItemClick="TagsListView_ItemClick" Width="250">
 			<ListView.ItemsPanel>
 				<ItemsPanelTemplate>
 					<ItemsStackPanel AreStickyGroupHeadersEnabled="True"/>
