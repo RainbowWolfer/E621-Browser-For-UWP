@@ -121,6 +121,8 @@ namespace E621Downloader.Pages {
 					Debug.WriteLine($"{existed?.Index} {shouleBe}");
 				}
 			}
+			//ScrollViewer.
+			//MyWrapGrid.
 		}
 
 		private ImageHolder GetImageHolder(int index) {

@@ -22,7 +22,7 @@
 						<FontIcon Glyph="&#xF272;"/>
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
-				<NavigationViewItem Icon="Download" Content="Download" Tag="5"/>
+				<NavigationViewItem Icon="Download" Content="Downloads" Tag="5"/>
 			</NavigationView.MenuItems>
 			<NavigationView.PaneFooter>
 				<StackPanel Orientation="Horizontal">

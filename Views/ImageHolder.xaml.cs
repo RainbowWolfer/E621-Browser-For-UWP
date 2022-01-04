@@ -179,12 +179,6 @@ namespace E621Downloader.Views {
 					IsSelected = !IsSelected;
 					PostsBrowser.Instance.SelectFeedBack(this);
 				} else {
-					var dataPackage = new DataPackage() {
-						RequestedOperation = DataPackageOperation.Copy
-					};
-					dataPackage.SetText(LoadUrl);
-					Clipboard.SetContent(dataPackage);
-
 					App.postsList.UpdatePostsList(PostsBrowser.Instance.Posts);
 					App.postsList.Current = PostRef;
 
@@ -194,6 +188,7 @@ namespace E621Downloader.Views {
 			} else if(MainPage.Instance.currentTag == PageTag.Spot) {
 				App.postsList.UpdatePostsList(SpotPage.Instance.Posts);
 				App.postsList.Current = PostRef;
+
 				MainPage.Instance.parameter_picture = PostRef;
 				MainPage.SelectNavigationItem(PageTag.Picture);
 			}

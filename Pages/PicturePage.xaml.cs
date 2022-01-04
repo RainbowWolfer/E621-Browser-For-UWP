@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Core;
@@ -28,6 +29,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -45,7 +47,8 @@ namespace E621Downloader.Pages {
 
 		private Point pressStartPosition;
 
-		public string Title => PostRef == null ? "No Post Were Selected." : $"Posts: {PostRef.id}  UpVote: {PostRef.score.up}  DownVote: {PostRef.score.down}";
+		public string Title => PostRef == null ? "# No Post" :
+			$"#{PostRef.id} ({PostRef.rating.ToUpper()})";
 
 		public PicturePage() {
 			this.InitializeComponent();
@@ -68,10 +71,11 @@ namespace E621Downloader.Pages {
 					return;
 				}
 				PostRef = post;
-				DebugButton.Visibility = Visibility.Visible;
-				CopyButton.Visibility = Visibility.Visible;
+				//DebugButton.Visibility = Visibility.Visible;
+				//CopyButton.Visibility = Visibility.Visible;
 				DownloadButton.Visibility = Visibility.Visible;
-				DownloadButton.Content = "Download";
+				DownloadText.Text = "Download";
+				DownloadIcon.Glyph = "\uE118";
 				DownloadButton.IsEnabled = true;
 				string type = PostRef.file.ext.ToLower().Trim();
 				if(type == "webm") {
@@ -97,10 +101,11 @@ namespace E621Downloader.Pages {
 					return;
 				}
 				PostRef = itemBlock.meta.MyPost;
-				DebugButton.Visibility = Visibility.Visible;
-				CopyButton.Visibility = Visibility.Visible;
+				//DebugButton.Visibility = Visibility.Visible;
+				//CopyButton.Visibility = Visibility.Visible;
 				DownloadButton.Visibility = Visibility.Visible;
-				DownloadButton.Content = "Local";
+				DownloadText.Text = "Local";
+				DownloadIcon.Glyph = "\uE159";
 				DownloadButton.IsEnabled = false;
 				string type = PostRef.file.ext.ToLower().Trim();
 				if(type == "webm") {
@@ -130,8 +135,8 @@ namespace E621Downloader.Pages {
 				UpdateTagsGroup(PostRef.tags);
 			} else if(p == null) {
 				MyProgressRing.IsActive = false;
-				DebugButton.Visibility = Visibility.Collapsed;
-				CopyButton.Visibility = Visibility.Collapsed;
+				//DebugButton.Visibility = Visibility.Collapsed;
+				//CopyButton.Visibility = Visibility.Collapsed;
 				DownloadButton.Visibility = Visibility.Collapsed;
 			}
 			TitleText.Text = Title;
@@ -149,34 +154,34 @@ namespace E621Downloader.Pages {
 			if(PostRef == null) {
 				return;
 			}
-			RatingPanel.Visibility = Visibility.Visible;
-			Color color;
-			switch(PostRef.rating) {
-				case "s":
-					RatingIcon.Glyph = "\uF78C";
-					RatingText.Text = "Safe";
-					ToolTipService.SetToolTip(RatingPanel, "Rating: Safe");
-					color = Colors.Green;
-					break;
-				case "q":
-					RatingIcon.Glyph = "\uF142";
-					RatingText.Text = "Qestionable";
-					ToolTipService.SetToolTip(RatingPanel, "Rating: Questionable");
-					color = Colors.Yellow;
-					break;
-				case "e":
-					RatingIcon.Glyph = "\uE814";
-					RatingText.Text = "Explicit";
-					ToolTipService.SetToolTip(RatingPanel, "Rating: Explicit");
-					color = Colors.Red;
-					break;
-				default:
-					RatingPanel.Visibility = Visibility.Collapsed;
-					color = Colors.White;
-					break;
-			}
-			RatingIcon.Foreground = new SolidColorBrush(color);
-			RatingText.Foreground = new SolidColorBrush(color);
+			//RatingPanel.Visibility = Visibility.Visible;
+			//Color color;
+			//switch(PostRef.rating) {
+			//	case "s":
+			//		RatingIcon.Glyph = "\uF78C";
+			//		RatingText.Text = "Safe";
+			//		ToolTipService.SetToolTip(RatingPanel, "Rating: Safe");
+			//		color = Colors.Green;
+			//		break;
+			//	case "q":
+			//		RatingIcon.Glyph = "\uF142";
+			//		RatingText.Text = "Qestionable";
+			//		ToolTipService.SetToolTip(RatingPanel, "Rating: Questionable");
+			//		color = Colors.Yellow;
+			//		break;
+			//	case "e":
+			//		RatingIcon.Glyph = "\uE814";
+			//		RatingText.Text = "Explicit";
+			//		ToolTipService.SetToolTip(RatingPanel, "Rating: Explicit");
+			//		color = Colors.Red;
+			//		break;
+			//	default:
+			//		RatingPanel.Visibility = Visibility.Collapsed;
+			//		color = Colors.White;
+			//		break;
+			//}
+			//RatingIcon.Foreground = new SolidColorBrush(color);
+			//RatingText.Foreground = new SolidColorBrush(color);
 		}
 
 		private void UpdateTagsGroup(Tags tags) {
@@ -355,32 +360,9 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		private async void DebugButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(PostRef == null) {
-				return;
-			}
-			var dialog = new ContentDialog() {
-				Title = "Debug Info",
-				Content = new PostDebugView(PostRef),
-				PrimaryButtonText = "Back",
-			};
-			await dialog.ShowAsync();
-		}
-
 		private void DownloadButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			DownloadsManager.RegisterDownload(PostRef);
 			MainPage.CreateTip(this, "Notification", "Download Successfully Began", Symbol.Accept);
-		}
-
-		private void CopyButton_Tapped(object sender, TappedRoutedEventArgs e) {
-
-		}
-
-		private async void BrowserButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(PostRef == null) {
-				return;
-			}
-			bool success = await Launcher.LaunchUriAsync(new Uri($"https://e621.net/posts/{PostRef.id}"));
 		}
 
 		private void MoreInfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -455,6 +437,67 @@ namespace E621Downloader.Pages {
 					CommentsHint.Visibility = Visibility.Visible;
 				}
 			}
+		}
+
+		private async void BrowserItem_Click(object sender, RoutedEventArgs e) {
+			if(PostRef == null) {
+				return;
+			}
+			if(!await Launcher.LaunchUriAsync(new Uri($"https://e621.net/posts/{PostRef.id}"))) {
+				await MainPage.CreatePopupDialog("Error", "Could not Open Default Browser");
+			}
+		}
+
+		private void CopyItem_Click(object sender, RoutedEventArgs e) {
+			if(PostRef == null) {
+				return;
+			}
+			var dataPackage = new DataPackage() {
+				RequestedOperation = DataPackageOperation.Copy
+			};
+			dataPackage.SetText($"{PostRef.id}");
+			Clipboard.SetContent(dataPackage);
+		}
+
+		private async void DebugItem_Click(object sender, RoutedEventArgs e) {
+			if(PostRef == null) {
+				return;
+			}
+			var dialog = new ContentDialog() {
+				Title = "Debug Info",
+				Content = new PostDebugView(PostRef),
+				PrimaryButtonText = "Back",
+			};
+			await dialog.ShowAsync();
+		}
+
+		private void FavoriteButton_Click(object sender, RoutedEventArgs e) {
+			if(FavoriteButton.IsChecked.Value) {
+				FavoriteText.Text = "Favorited";
+				FavoriteIcon.Glyph = "\uEB52";
+			} else {
+				FavoriteText.Text = "Favorite";
+				FavoriteIcon.Glyph = "\uEB51";
+			}
+		}
+
+		private void ToggleTagsButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			double from = TagsListView.Width;
+			double to;
+			if(TagsListView.Width <= 125) {
+				to = 250;
+				ToggleTagsButtonIcon.Glyph = "\uE8A0";
+			} else {
+				to = 0;
+				ToggleTagsButtonIcon.Glyph = "\uE89F";
+			}
+			TagsDisplay.Children[0].SetValue(DoubleAnimation.FromProperty, from);
+			TagsDisplay.Children[0].SetValue(DoubleAnimation.ToProperty, to);
+			TagsDisplay.Begin();
+		}
+
+		private void CopyItem_Tapped(object sender, TappedRoutedEventArgs e) {
+
 		}
 	}
 	public class GroupTagList: ObservableCollection<string> {
