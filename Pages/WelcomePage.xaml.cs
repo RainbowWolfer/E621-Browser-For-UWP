@@ -22,7 +22,6 @@ namespace E621Downloader.Pages {
 	public sealed partial class WelcomePage: Page {
 		private bool complete1 = false;
 		private bool complete2 = false;
-		private bool complete3 = false;
 		public WelcomePage() {
 			this.InitializeComponent();
 		}
@@ -40,13 +39,10 @@ namespace E621Downloader.Pages {
 
 			HintEntrance.BeginTime = new TimeSpan(0, 0, 0, 1, 0);
 			HintEntrance.Begin();
-			HintEntrance.Completed += (sender, arg) => complete3 = true;
 		}
 
-		private async void MascotImage_Tapped(object sender, TappedRoutedEventArgs e) {
-			MainPage.SelectNavigationItem(PageTag.PostsBrowser);
-			await Task.Delay(100);
-			await PostsBrowser.Instance.LoadAsync(1, "order:rank");
+		private void MascotImage_Tapped(object sender, TappedRoutedEventArgs e) {
+			MainPage.NavigateToPostsBrowser(1, "order:rank");
 		}
 
 		private void MascotImage_PointerEntered(object sender, PointerRoutedEventArgs e) {

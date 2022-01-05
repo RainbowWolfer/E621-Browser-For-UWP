@@ -36,7 +36,7 @@ namespace E621Downloader.Views {
 			LoadingBar.Visibility = Visibility.Visible;
 			ConentText.Visibility = Visibility.Collapsed;
 			this.tag = await E621Tag.GetFirstAsync(tag);
-			TagText.Text = $"{tag} ({this.tag.post_count})";
+			TagText.Text = $"{tag ?? "Not Found"} ({this.tag?.post_count ?? 0})";
 			if(this.tag != null && !this.tag.IsWikiLoaded) {
 				await this.tag.LoadWikiAsync();
 			}

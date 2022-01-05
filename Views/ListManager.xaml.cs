@@ -78,12 +78,9 @@ namespace E621Downloader.Views {
 		}
 
 
-		private async void ListView_ItemClick(object sender, ItemClickEventArgs e) {
+		private void ListView_ItemClick(object sender, ItemClickEventArgs e) {
 			parent.Hide();
-			string content = (string)e.ClickedItem;
-			MainPage.SelectNavigationItem(PageTag.PostsBrowser);
-			await Task.Delay(100);
-			await PostsBrowser.Instance.LoadAsync(1, content);
+			MainPage.NavigateToPostsBrowser(1, (string)e.ClickedItem);
 		}
 
 		private void AddButton_Tapped(object sender, TappedRoutedEventArgs e) {

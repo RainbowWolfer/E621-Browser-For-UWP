@@ -37,6 +37,7 @@ namespace E621Downloader.Pages {
 	public sealed partial class PicturePage: Page {
 		public Post PostRef { get; private set; }
 		public readonly ObservableCollection<GroupTagList> tags;
+		private readonly Dictionary<string, E621Tag> tags_pool;//should i refresh on every entry?
 		public readonly List<E621Comment> comments;
 
 		private bool commentsLoading;
@@ -54,6 +55,7 @@ namespace E621Downloader.Pages {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			tags = new ObservableCollection<GroupTagList>();
+			tags_pool = new Dictionary<string, E621Tag>();
 			comments = new List<E621Comment>();
 			this.DataContextChanged += (s, c) => Bindings.Update();
 			MyMediaPlayer.MediaPlayer.IsLoopingEnabled = true;
@@ -62,18 +64,18 @@ namespace E621Downloader.Pages {
 		protected async override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			object p = e.Parameter;
+			bool showNoPostGrid = false;
 			if(p == null && PostRef == null && PostsBrowser.Instance != null && PostsBrowser.Instance.Posts != null && PostsBrowser.Instance.Posts.Count > 0) {
 				p = PostsBrowser.Instance.Posts[0];
 			}
 			if(p is Post post) {
 				if(PostRef == post) {
 					UpdateTagsGroup(PostRef.tags);
+					NoPostGrid.Visibility = Visibility.Collapsed;//just in case
+					MainGrid.Visibility = Visibility.Visible;
 					return;
 				}
 				PostRef = post;
-				//DebugButton.Visibility = Visibility.Visible;
-				//CopyButton.Visibility = Visibility.Visible;
-				DownloadButton.Visibility = Visibility.Visible;
 				DownloadText.Text = "Download";
 				DownloadIcon.Glyph = "\uE118";
 				DownloadButton.IsEnabled = true;
@@ -101,9 +103,6 @@ namespace E621Downloader.Pages {
 					return;
 				}
 				PostRef = itemBlock.meta.MyPost;
-				//DebugButton.Visibility = Visibility.Visible;
-				//CopyButton.Visibility = Visibility.Visible;
-				DownloadButton.Visibility = Visibility.Visible;
 				DownloadText.Text = "Local";
 				DownloadIcon.Glyph = "\uE159";
 				DownloadButton.IsEnabled = false;
@@ -133,14 +132,14 @@ namespace E621Downloader.Pages {
 				TagsListView.ScrollIntoView(TagsListView.Items[0]);
 
 				UpdateTagsGroup(PostRef.tags);
-			} else if(p == null) {
+			} else if(this.PostRef == null && p == null) {
 				MyProgressRing.IsActive = false;
-				//DebugButton.Visibility = Visibility.Collapsed;
-				//CopyButton.Visibility = Visibility.Collapsed;
-				DownloadButton.Visibility = Visibility.Collapsed;
+				showNoPostGrid = true;
 			}
+			NoPostGrid.Visibility = showNoPostGrid ? Visibility.Visible : Visibility.Collapsed;
+			MainGrid.Visibility = !showNoPostGrid ? Visibility.Visible : Visibility.Collapsed;
 			TitleText.Text = Title;
-			UpdateRatingIcon();
+			UpdateRatingColor();
 			DescriptionText.Text = PostRef != null && !string.IsNullOrEmpty(PostRef.description) ? PostRef.description : "No Description";
 			MainSplitView.IsPaneOpen = false;
 			InformationPivot.SelectedIndex = 0;
@@ -150,38 +149,29 @@ namespace E621Downloader.Pages {
 			CommentsListView.Items.Clear();
 		}
 
-		private void UpdateRatingIcon() {
+		private void UpdateRatingColor() {
 			if(PostRef == null) {
 				return;
 			}
-			//RatingPanel.Visibility = Visibility.Visible;
-			//Color color;
-			//switch(PostRef.rating) {
-			//	case "s":
-			//		RatingIcon.Glyph = "\uF78C";
-			//		RatingText.Text = "Safe";
-			//		ToolTipService.SetToolTip(RatingPanel, "Rating: Safe");
-			//		color = Colors.Green;
-			//		break;
-			//	case "q":
-			//		RatingIcon.Glyph = "\uF142";
-			//		RatingText.Text = "Qestionable";
-			//		ToolTipService.SetToolTip(RatingPanel, "Rating: Questionable");
-			//		color = Colors.Yellow;
-			//		break;
-			//	case "e":
-			//		RatingIcon.Glyph = "\uE814";
-			//		RatingText.Text = "Explicit";
-			//		ToolTipService.SetToolTip(RatingPanel, "Rating: Explicit");
-			//		color = Colors.Red;
-			//		break;
-			//	default:
-			//		RatingPanel.Visibility = Visibility.Collapsed;
-			//		color = Colors.White;
-			//		break;
-			//}
-			//RatingIcon.Foreground = new SolidColorBrush(color);
-			//RatingText.Foreground = new SolidColorBrush(color);
+			string rating = PostRef.rating.ToLower().Trim();
+			Color color;
+			string tooltip;
+			if(rating == "e") {
+				color = Colors.Red;
+				tooltip = "Rating: Explicit";
+			} else if(rating == "q") {
+				color = Colors.Yellow;
+				tooltip = "Rating: Questionable";
+			} else if(rating == "s") {
+				color = Colors.Green;
+				tooltip = "Rating: Safe";
+			} else {
+				color = Colors.White;
+				tooltip = "No Rating";
+			}
+			TitleText.Foreground = new SolidColorBrush(color);
+			ToolTipService.SetToolTip(TitleText, tooltip);
+			ToolTipService.SetPlacement(TitleText, PlacementMode.Bottom);
 		}
 
 		private void UpdateTagsGroup(Tags tags) {
@@ -279,19 +269,8 @@ namespace E621Downloader.Pages {
 			return new Point(a.X - b.X, a.Y - b.Y);
 		}
 
-		//private void DeleteButton_Loaded(object sender, RoutedEventArgs e) {
-		//	if(!Local.FollowList.Contains((string)(sender as Button).Tag)) {
-		//		(sender as Button).Visibility = Visibility.Collapsed;
-		//	}
-		//}
-
-		private async void TagsListView_ItemClick(object sender, ItemClickEventArgs e) {
-			string tag = e.ClickedItem as string;
-
-			MainPage.SelectNavigationItem(PageTag.PostsBrowser);
-			await Task.Delay(200);
-
-			await PostsBrowser.Instance.LoadAsync(1, tag);
+		private void TagsListView_ItemClick(object sender, ItemClickEventArgs e) {
+			MainPage.NavigateToPostsBrowser(1, e.ClickedItem as string);
 		}
 
 		private void BlackListButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -376,24 +355,8 @@ namespace E621Downloader.Pages {
 				Title = $"Tag Information: {name}",
 				CloseButtonText = "Back",
 			};
-			dialog.Content = new TagInformationDisplay(dialog, tag);
+			dialog.Content = new TagInformationDisplay(tags_pool, tag);
 			await dialog.ShowAsync();
-
-			//E621Tag[] e621tags = E621Tag.Get(tag);
-			//string count = "0";
-			//string description = "not found";
-			//if(e621tags != null && e621tags.Length > 0) {
-			//	count = e621tags[0].post_count.ToString();
-			//	E621Wiki[] e621wikies = E621Wiki.Get(tag);
-			//	if(e621wikies != null && e621wikies.Length > 0) {
-			//		description = e621wikies[0].body;
-			//	}
-			//}
-			//await new ContentDialog() {
-			//	Title = $"Tag Information: {name}",
-			//	Content = $"Count: {count}\nDescription: {description}",
-			//	CloseButtonText = "Back",
-			//}.ShowAsync();
 		}
 
 		private void SplitViewModeSwitch_Toggled(object sender, RoutedEventArgs e) {
@@ -498,6 +461,14 @@ namespace E621Downloader.Pages {
 
 		private void CopyItem_Tapped(object sender, TappedRoutedEventArgs e) {
 
+		}
+
+		private void GotoLibraryButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			MainPage.SelectNavigationItem(PageTag.Library);
+		}
+
+		private void GotoHomeButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			MainPage.SelectNavigationItem(PageTag.PostsBrowser);
 		}
 	}
 	public class GroupTagList: ObservableCollection<string> {

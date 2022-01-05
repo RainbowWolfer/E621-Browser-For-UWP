@@ -64,7 +64,7 @@ namespace E621Downloader {
 		public PageTag currentTag;
 
 		public object parameter_picture;
-
+		private PostBrowserParameter parameter_postBrowser;
 
 		public MainPage() {
 			Instance = this;
@@ -190,39 +190,6 @@ namespace E621Downloader {
 			return dialog;
 		}
 
-		private void Page_Loaded(object sender, RoutedEventArgs e) {
-			//string result = await ReadFromTestFile();
-			//LoadPosts(Data.GetPostsByTags(1, ""));
-		}
-
-		//private async Task<string> ReadFromTestFile() {
-		//	StorageFolder InstallationFolder = Package.Current.InstalledLocation;
-		//	StorageFile file = await InstallationFolder.GetFileAsync(@"Assets\TestText_Copy.txt");
-		//	return File.ReadAllText(file.Path);
-		//}
-		//private async void SearchButton_Tapped(object sender, TappedRoutedEventArgs e) {
-		//	var dialog = new ContentDialog() {
-		//		Title = "Search Section",
-		//		PrimaryButtonText = "Confirm",
-		//		SecondaryButtonText = "Cancel",
-		//	};
-		//	dialog.Content = new SearchPopup(dialog);
-		//	dialog.KeyDown += (s, c) => {
-		//		if(c.Key == VirtualKey.Escape) {
-		//			dialog.Hide();
-		//		}
-		//	};
-		//	ContentDialogResult result = await dialog.ShowAsync();
-		//	if(result == ContentDialogResult.Primary) {
-		//		SelectNavigationItem(PageTag.Home);
-		//		await Task.Delay(100);
-		//		string text = (dialog.Content as SearchPopup).GetSearchText();
-		//		//LoadPosts(Data.GetPostsByTags(1, text));
-		//		//PostsBrowser.Instance.LoadPosts(Post.GetPostsByTags(1, text), text);
-		//		await PostsBrowser.Instance.LoadAsync(1, text);
-		//	}
-		//}
-
 		public static NavigationTransitionInfo CalculateTransition(PageTag from, PageTag to) {
 			return (int)from - (int)to < 0
 				? new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight }
@@ -231,6 +198,20 @@ namespace E621Downloader {
 
 		public static void SelectNavigationItem(PageTag tag) {
 			(Instance.MyNavigationView.MenuItems.ToList().Find((i) => int.Parse((string)(i as NavigationViewItem).Tag) == (int)tag) as NavigationViewItem).IsSelected = true;
+		}
+
+		public static void NavigateToPostsBrowser(int page, params string[] tags) {
+			Instance.parameter_postBrowser = new PostBrowserParameter(page, tags);
+			if(Instance.currentTag == PageTag.PostsBrowser) {
+				Instance.MyFrame.Navigate(typeof(PostsBrowser), Instance.parameter_postBrowser, CalculateTransition(Instance.currentTag, PageTag.PostsBrowser));
+			} else {
+				SelectNavigationItem(PageTag.PostsBrowser);
+			}
+			ClearPostBrowserParameter();
+		}
+
+		public static void ClearPostBrowserParameter() {
+			Instance.parameter_postBrowser = null;
 		}
 
 		/// <summary> Used to solve the problem of navtigating to self in PicturePage </summary>
@@ -252,7 +233,7 @@ namespace E621Downloader {
 				return;
 			}
 			if(tag == PageTag.PostsBrowser) {
-				MyFrame.Navigate(typeof(PostsBrowser), null, CalculateTransition(currentTag, PageTag.PostsBrowser));
+				MyFrame.Navigate(typeof(PostsBrowser), parameter_postBrowser, CalculateTransition(currentTag, PageTag.PostsBrowser));
 			} else if(tag == PageTag.Picture) {
 				MyFrame.Navigate(typeof(PicturePage), parameter_picture, CalculateTransition(currentTag, PageTag.Picture));
 			} else if(tag == PageTag.Library) {
@@ -285,14 +266,10 @@ namespace E621Downloader {
 				case TagsSelectionView.ResultType.None:
 					break;
 				case TagsSelectionView.ResultType.Search:
-					SelectNavigationItem(PageTag.PostsBrowser);
-					await Task.Delay(100);
-					await PostsBrowser.Instance.LoadAsync(1, view.GetTags());
+					NavigateToPostsBrowser(1, view.GetTags());
 					break;
 				case TagsSelectionView.ResultType.Hot:
-					SelectNavigationItem(PageTag.PostsBrowser);
-					await Task.Delay(100);
-					await PostsBrowser.Instance.LoadAsync(1, "order:rank");
+					NavigateToPostsBrowser(1, "order:rank");
 					break;
 				case TagsSelectionView.ResultType.Random:
 					CreateInstantDialog("Please Waiting", "Getting Your Tag");
@@ -301,9 +278,7 @@ namespace E621Downloader {
 					if(post != null) {
 						List<string> all = post.tags.GetAllTags();
 						string tag = all[new Random().Next(all.Count)];
-						SelectNavigationItem(PageTag.PostsBrowser);
-						await Task.Delay(100);
-						await PostsBrowser.Instance.LoadAsync(1, tag);
+						NavigateToPostsBrowser(1, tag);
 					}
 					break;
 				default:

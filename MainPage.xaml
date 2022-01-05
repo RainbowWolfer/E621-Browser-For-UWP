@@ -8,8 +8,7 @@
 	xmlns:data="using:E621Downloader.Models" 
 	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
 	mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    Loaded="Page_Loaded">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 	<Grid>
 		<NavigationView PaneDisplayMode="Top" Name="MyNavigationView" IsBackButtonVisible="Auto" SelectionFollowsFocus="Enabled" ItemInvoked="MyNavigationView_ItemInvoked">
 			<NavigationView.MenuItems>

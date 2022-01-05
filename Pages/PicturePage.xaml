@@ -6,7 +6,8 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:posts="using:E621Downloader.Models.Posts"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-	xmlns:commentssection="using:E621Downloader.Views.CommentsSection" xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+	xmlns:commentssection="using:E621Downloader.Views.CommentsSection" 
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
 	mc:Ignorable="d"
 	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
 	d:RequestedTheme="Dark">
@@ -48,176 +49,195 @@
 		</Storyboard>
 	</Page.Resources>
 	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="auto"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="auto"/>
-			<ColumnDefinition Width="*"/>
-		</Grid.ColumnDefinitions>
-		<RelativePanel Grid.Column="1" Visibility="Visible" Margin="10">
-			<Button x:Name="ToggleTagsButton" Height="38" Width="50" Padding="0" Tapped="ToggleTagsButton_Tapped">
-				<FontIcon x:Name="ToggleTagsButtonIcon" Glyph="&#xE8A0;"/>
-			</Button>
-			<Rectangle x:Name="Separator1" RelativePanel.RightOf="ToggleTagsButton" Style="{StaticResource RectangleSeparator}"/>
-			<TextBlock x:Name="TitleText" FontFamily="Cascadia Mono" Text="#1231278 (E)" RelativePanel.RightOf="Separator1" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Foreground="Red"/>
-			<Rectangle x:Name="Separator2" RelativePanel.RightOf="TitleText" Style="{StaticResource RectangleSeparator}"/>
-			<Button x:Name="UpVoteButton" Height="38" Width="38" Padding="0" FontFamily="Segoe MDL2 Assets" Content="&#xE96D;" RelativePanel.RightOf="Separator2" Foreground="LightGreen">
-				<Button.Resources>
-					<ResourceDictionary>
-						<ResourceDictionary.ThemeDictionaries>
-							<ResourceDictionary x:Key="Dark">
-								<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="LightGreen"/>
-								<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#333333"/>
-							</ResourceDictionary>
-							<ResourceDictionary x:Key="Light">
-								<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="LightGreen"/>
-								<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#333333"/>
-							</ResourceDictionary>
-						</ResourceDictionary.ThemeDictionaries>
-					</ResourceDictionary>
-				</Button.Resources>
-			</Button>
-			<TextBlock x:Name="ScoreText" Text="1321" RelativePanel.RightOf="UpVoteButton" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Margin="10,0,10,0"/>
-			<Button x:Name="DownVoteButton" Height="38" Width="38" Padding="0" FontFamily="Segoe MDL2 Assets" Content="&#xE96E;" RelativePanel.RightOf="ScoreText" Foreground="OrangeRed">
-				<Button.Resources>
-					<ResourceDictionary>
-						<ResourceDictionary.ThemeDictionaries>
-							<ResourceDictionary x:Key="Dark">
-								<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="OrangeRed"/>
-								<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#333333"/>
-							</ResourceDictionary>
-							<ResourceDictionary x:Key="Light">
-								<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="OrangeRed"/>
-								<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#333333"/>
-							</ResourceDictionary>
-						</ResourceDictionary.ThemeDictionaries>
-					</ResourceDictionary>
-				</Button.Resources>
-			</Button>
-			<Rectangle x:Name="Separator3" RelativePanel.RightOf="DownVoteButton" Style="{StaticResource RectangleSeparator}"/>
-			<ToggleButton x:Name="FavoriteButton" Height="38" Width="110" Padding="10,0,10,0" RelativePanel.RightOf="Separator3" Click="FavoriteButton_Click">
-				<StackPanel Orientation="Horizontal">
-					<FontIcon x:Name="FavoriteIcon" Glyph="&#xEB51;"/>
-					<TextBlock x:Name="FavoriteText" Text="Favorite" Margin="10,0,0,0"/>
-				</StackPanel>
-			</ToggleButton>
-			<Button x:Name="DownloadButton" Height="38" Padding="10,0,10,0" RelativePanel.RightOf="FavoriteButton" Margin="10,0,0,0" Tapped="DownloadButton_Tapped">
-				<StackPanel Orientation="Horizontal">
-					<FontIcon x:Name="DownloadIcon" Glyph="&#xE118;"/>
-					<TextBlock x:Name="DownloadText" Text="Download" Margin="10,0,0,0"/>
-				</StackPanel>
-			</Button>
-
-			<controls:DropDownButton FontSize="18" Content="Action" Height="38" RelativePanel.LeftOf="MoreInfoButton" CornerRadius="5" BorderThickness="0" Background="Transparent" Margin="0,0,10,0">
-				<controls:DropDownButton.Flyout>
-					<MenuFlyout Placement="Bottom">
-						<MenuFlyoutItem x:Name="BrowserItem" Text="Open In Browser" Click="BrowserItem_Click">
-							<MenuFlyoutItem.Icon>
-								<FontIcon Glyph="&#xE12B;"/>
-							</MenuFlyoutItem.Icon>
-						</MenuFlyoutItem>
-						<MenuFlyoutItem x:Name="CopyItem" Text="Copy ID" Click="CopyItem_Click">
-							<MenuFlyoutItem.Icon>
-								<FontIcon Glyph="&#xE16F;"/>
-							</MenuFlyoutItem.Icon>
-						</MenuFlyoutItem>
-						<MenuFlyoutItem x:Name="DebugItem" Text="Debug" Click="DebugItem_Click" Visibility="Visible">
-							<MenuFlyoutItem.Icon>
-								<FontIcon Glyph="&#xE8A1;"/>
-							</MenuFlyoutItem.Icon>
-						</MenuFlyoutItem>
-					</MenuFlyout>
-				</controls:DropDownButton.Flyout>
-			</controls:DropDownButton>
-			<Button x:Name="MoreInfoButton" RelativePanel.AlignRightWithPanel="True" FontSize="18" Background="Transparent" BorderThickness="0" Height="38" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="MoreInfoButton_Tapped" Padding="7,0,7,0">
-				<Button.Content>
+		<Grid x:Name="NoPostGrid">
+			<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+				<Button x:Name="GotoHomeButton" HorizontalAlignment="Center" Margin="10" Tapped="GotoHomeButton_Tapped">
 					<StackPanel Orientation="Horizontal">
-						<TextBlock Text="More Info" Margin="5"/>
-						<FontIcon Glyph="&#xE169;" Margin="5"/>
+						<FontIcon Glyph="&#xEA8A;" Margin="0,0,15,0" FontSize="26"/>
+						<TextBlock Text="Go to Posts Browser" FontSize="26"/>
 					</StackPanel>
-				</Button.Content>
-			</Button>
-		</RelativePanel>
+				</Button>
+				<TextBlock Text="No Post Selected" FontSize="48" Margin="10"/>
+				<Button x:Name="GotoLibraryButton" HorizontalAlignment="Center" Margin="10" FontSize="26" Tapped="GotoLibraryButton_Tapped">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Go to Local Library" FontSize="26"/>
+						<FontIcon Glyph="&#xE8F1;" Margin="15,0,0,0" FontSize="26"/>
+					</StackPanel>
+				</Button>
+			</StackPanel>
+		</Grid>
+		<Grid x:Name="MainGrid" Visibility="Collapsed">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<RelativePanel Grid.Column="1" Visibility="Visible" Margin="10">
+				<Button x:Name="ToggleTagsButton" Height="38" Width="50" Padding="0" Tapped="ToggleTagsButton_Tapped">
+					<FontIcon x:Name="ToggleTagsButtonIcon" Glyph="&#xE8A0;"/>
+				</Button>
+				<Rectangle x:Name="Separator1" RelativePanel.RightOf="ToggleTagsButton" Style="{StaticResource RectangleSeparator}"/>
+				<TextBlock x:Name="TitleText" FontFamily="Cascadia Mono" Text="#1231278 (E)" RelativePanel.RightOf="Separator1" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Foreground="Red"/>
+				<Rectangle x:Name="Separator2" RelativePanel.RightOf="TitleText" Style="{StaticResource RectangleSeparator}"/>
+				<Button x:Name="UpVoteButton" Height="38" Width="38" Padding="0" FontFamily="Segoe MDL2 Assets" Content="&#xE96D;" RelativePanel.RightOf="Separator2" Foreground="LightGreen">
+					<Button.Resources>
+						<ResourceDictionary>
+							<ResourceDictionary.ThemeDictionaries>
+								<ResourceDictionary x:Key="Dark">
+									<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="LightGreen"/>
+									<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#333333"/>
+								</ResourceDictionary>
+								<ResourceDictionary x:Key="Light">
+									<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="LightGreen"/>
+									<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#333333"/>
+								</ResourceDictionary>
+							</ResourceDictionary.ThemeDictionaries>
+						</ResourceDictionary>
+					</Button.Resources>
+				</Button>
+				<TextBlock x:Name="ScoreText" Text="1321" RelativePanel.RightOf="UpVoteButton" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Margin="10,0,10,0"/>
+				<Button x:Name="DownVoteButton" Height="38" Width="38" Padding="0" FontFamily="Segoe MDL2 Assets" Content="&#xE96E;" RelativePanel.RightOf="ScoreText" Foreground="OrangeRed">
+					<Button.Resources>
+						<ResourceDictionary>
+							<ResourceDictionary.ThemeDictionaries>
+								<ResourceDictionary x:Key="Dark">
+									<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="OrangeRed"/>
+									<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#333333"/>
+								</ResourceDictionary>
+								<ResourceDictionary x:Key="Light">
+									<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="OrangeRed"/>
+									<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#333333"/>
+								</ResourceDictionary>
+							</ResourceDictionary.ThemeDictionaries>
+						</ResourceDictionary>
+					</Button.Resources>
+				</Button>
+				<Rectangle x:Name="Separator3" RelativePanel.RightOf="DownVoteButton" Style="{StaticResource RectangleSeparator}"/>
+				<ToggleButton x:Name="FavoriteButton" Height="38" Width="110" Padding="10,0,10,0" RelativePanel.RightOf="Separator3" Click="FavoriteButton_Click">
+					<StackPanel Orientation="Horizontal">
+						<FontIcon x:Name="FavoriteIcon" Glyph="&#xEB51;"/>
+						<TextBlock x:Name="FavoriteText" Text="Favorite" Margin="10,0,0,0"/>
+					</StackPanel>
+				</ToggleButton>
+				<Button x:Name="DownloadButton" Height="38" Padding="10,0,10,0" RelativePanel.RightOf="FavoriteButton" Margin="10,0,0,0" Tapped="DownloadButton_Tapped">
+					<StackPanel Orientation="Horizontal">
+						<FontIcon x:Name="DownloadIcon" Glyph="&#xE118;"/>
+						<TextBlock x:Name="DownloadText" Text="Download" Margin="10,0,0,0"/>
+					</StackPanel>
+				</Button>
 
-		<ListView x:Name="TagsListView" ItemsSource="{Binding Source={StaticResource ContactsCVS}}" Grid.RowSpan="2" SelectionMode="None" IsItemClickEnabled="True" ItemClick="TagsListView_ItemClick" Width="250">
-			<ListView.ItemsPanel>
-				<ItemsPanelTemplate>
-					<ItemsStackPanel AreStickyGroupHeadersEnabled="True"/>
-				</ItemsPanelTemplate>
-			</ListView.ItemsPanel>
-			<ListView.ItemTemplate>
-				<DataTemplate x:DataType="x:String">
-					<RelativePanel Width="225">
-						<Button x:Name="InfoButton" FontFamily="Segoe MDL2 Assets" Content="&#xE946;" RelativePanel.AlignVerticalCenterWithPanel="True" Style="{StaticResource TagButton}" Tapped="InfoButton_Tapped" Tag="{x:Bind ToString()}"/>
-						<TextBlock Text="{x:Bind ToString()}" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="2,0,20,0" TextWrapping="Wrap" Width="100" RelativePanel.RightOf="InfoButton"/>
-						<Button x:Name="BlackListButton" Style="{StaticResource TagButton}" Content="&#xF8AB;" Tag="{x:Bind ToString()}" RelativePanel.LeftOf="FollowListButton" Tapped="BlackListButton_Tapped" Loaded="BlackListButton_Loaded"/>
-						<Button x:Name="FollowListButton" Style="{StaticResource TagButton}" Content="&#xF8AA;" Tag="{x:Bind ToString()}" RelativePanel.AlignRightWithPanel="True" Tapped="FollowListButton_Tapped" Loaded="FollowListButton_Loaded"/>
-					</RelativePanel>
-				</DataTemplate>
-			</ListView.ItemTemplate>
-			<ListView.GroupStyle>
-				<GroupStyle>
-					<GroupStyle.HeaderTemplate>
-						<DataTemplate>
-							<TextBlock Text="{Binding Key}" Margin="10,0" FontWeight="Bold" />
-						</DataTemplate>
-					</GroupStyle.HeaderTemplate>
-				</GroupStyle>
-			</ListView.GroupStyle>
-		</ListView>
-		<SplitView x:Name="MainSplitView" DisplayMode="Overlay" Grid.Column="1" Grid.Row="1" PanePlacement="Right" OpenPaneLength="500" Margin="0,0,-1,0">
-			<SplitView.Pane>
-				<Grid>
-					<Pivot x:Name="InformationPivot" SelectionChanged="InformationPivot_SelectionChanged">
-						<PivotItem Header="Description">
-							<ScrollViewer>
-								<TextBlock x:Name="DescriptionText" Text="No Description" TextWrapping="Wrap" FontSize="18" Margin="20" />
-							</ScrollViewer>
-						</PivotItem>
-						<PivotItem Header="Comments">
-							<Grid>
-								<StackPanel x:Name="LoadingSection" Visibility="Visible" Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-									<TextBlock Text="Loading Comments" FontSize="22" Margin="5" />
-									<ProgressBar IsIndeterminate="True" Margin="5" />
-								</StackPanel>
+				<controls:DropDownButton FontSize="18" Content="Action" Height="38" RelativePanel.LeftOf="MoreInfoButton" CornerRadius="5" BorderThickness="0" Background="Transparent" Margin="0,0,10,0">
+					<controls:DropDownButton.Flyout>
+						<MenuFlyout Placement="Bottom">
+							<MenuFlyoutItem x:Name="BrowserItem" Text="Open In Browser" Click="BrowserItem_Click">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE12B;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
+							<MenuFlyoutItem x:Name="CopyItem" Text="Copy ID" Click="CopyItem_Click">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE16F;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
+							<MenuFlyoutItem x:Name="DebugItem" Text="Debug" Click="DebugItem_Click" Visibility="Visible">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE8A1;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
+						</MenuFlyout>
+					</controls:DropDownButton.Flyout>
+				</controls:DropDownButton>
+				<Button x:Name="MoreInfoButton" RelativePanel.AlignRightWithPanel="True" FontSize="18" Background="Transparent" BorderThickness="0" Height="38" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="MoreInfoButton_Tapped" Padding="7,0,7,0">
+					<Button.Content>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="More Info" Margin="5"/>
+							<FontIcon Glyph="&#xE169;" Margin="5"/>
+						</StackPanel>
+					</Button.Content>
+				</Button>
+			</RelativePanel>
 
-								<ListView x:Name="CommentsListView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="False">
-									<ListView.ItemContainerStyle>
-										<Style TargetType="ListViewItem">
-											<Setter Property="HorizontalContentAlignment" Value="Stretch" />
-										</Style>
-									</ListView.ItemContainerStyle>
-								</ListView>
+			<ListView x:Name="TagsListView" ItemsSource="{Binding Source={StaticResource ContactsCVS}}" Grid.RowSpan="2" SelectionMode="None" IsItemClickEnabled="True" ItemClick="TagsListView_ItemClick" Width="250">
+				<ListView.ItemsPanel>
+					<ItemsPanelTemplate>
+						<ItemsStackPanel AreStickyGroupHeadersEnabled="True"/>
+					</ItemsPanelTemplate>
+				</ListView.ItemsPanel>
+				<ListView.ItemTemplate>
+					<DataTemplate x:DataType="x:String">
+						<RelativePanel Width="225">
+							<Button x:Name="InfoButton" FontFamily="Segoe MDL2 Assets" Content="&#xE946;" RelativePanel.AlignVerticalCenterWithPanel="True" Style="{StaticResource TagButton}" Tapped="InfoButton_Tapped" Tag="{x:Bind ToString()}"/>
+							<TextBlock Text="{x:Bind ToString()}" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="2,0,20,0" TextWrapping="Wrap" Width="100" RelativePanel.RightOf="InfoButton"/>
+							<Button x:Name="BlackListButton" Style="{StaticResource TagButton}" Content="&#xF8AB;" Tag="{x:Bind ToString()}" RelativePanel.LeftOf="FollowListButton" Tapped="BlackListButton_Tapped" Loaded="BlackListButton_Loaded"/>
+							<Button x:Name="FollowListButton" Style="{StaticResource TagButton}" Content="&#xF8AA;" Tag="{x:Bind ToString()}" RelativePanel.AlignRightWithPanel="True" Tapped="FollowListButton_Tapped" Loaded="FollowListButton_Loaded"/>
+						</RelativePanel>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+				<ListView.GroupStyle>
+					<GroupStyle>
+						<GroupStyle.HeaderTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Key}" Margin="10,0" FontWeight="Bold" />
+							</DataTemplate>
+						</GroupStyle.HeaderTemplate>
+					</GroupStyle>
+				</ListView.GroupStyle>
+			</ListView>
+			<SplitView x:Name="MainSplitView" DisplayMode="Overlay" Grid.Column="1" Grid.Row="1" PanePlacement="Right" OpenPaneLength="500" Margin="0,0,-1,0">
+				<SplitView.Pane>
+					<Grid>
+						<Pivot x:Name="InformationPivot" SelectionChanged="InformationPivot_SelectionChanged">
+							<PivotItem Header="Description">
+								<ScrollViewer>
+									<TextBlock x:Name="DescriptionText" Text="No Description" TextWrapping="Wrap" FontSize="18" Margin="20" />
+								</ScrollViewer>
+							</PivotItem>
+							<PivotItem Header="Comments">
+								<Grid>
+									<StackPanel x:Name="LoadingSection" Visibility="Visible" Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+										<TextBlock Text="Loading Comments" FontSize="22" Margin="5" />
+										<ProgressBar IsIndeterminate="True" Margin="5" />
+									</StackPanel>
 
-								<TextBlock Visibility="Collapsed" x:Name="CommentsHint" Text="No Comments Yet" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-							</Grid>
-						</PivotItem>
-					</Pivot>
-					<ToggleSwitch Height="38" x:Name="SplitViewModeSwitch" IsOn="True" OnContent="Overlay" OffContent="Inline" FlowDirection="RightToLeft" Margin="0,10,20,0" Toggled="SplitViewModeSwitch_Toggled" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-				</Grid>
-			</SplitView.Pane>
-			<SplitView.Content>
-				<Grid>
-					<MediaPlayerElement x:Name="MyMediaPlayer" AutoPlay="False" AreTransportControlsEnabled="True" Margin="0,0,0,0"/>
-					<ScrollViewer x:Name="MyScrollViewer" MinZoomFactor="0.3" DoubleTapped="MyScrollViewer_DoubleTapped" ZoomMode="Enabled" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Hidden" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Hidden">
-						<Image PointerWheelChanged="MainImage_PointerWheelChanged" PointerPressed="MainImage_PointerPressed" PointerReleased="MainImage_PointerReleased" PointerMoved="MainImage_PointerMoved" PointerEntered="MainImage_PointerEntered" PointerExited="MainImage_PointerExited" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="MainImage" Margin="0,0,0,0" ImageOpened="MainImage_ImageOpened"/>
-					</ScrollViewer>
-					<ProgressRing Name="MyProgressRing" MaxHeight="300" MaxWidth="300" Margin="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>
-					<Button x:Name="LeftButton" FontFamily="Segoe MDL2 Assets" Content="&#xE26C;" Height="100" Opacity="0.2" PointerEntered="LeftButton_PointerEntered" PointerExited="LeftButton_PointerExited" Tapped="LeftButton_Tapped">
-						<Button.Background>
-							<SolidColorBrush Color="Gray" Opacity="0.4"/>
-						</Button.Background>
-					</Button>
-					<Button x:Name="RightButton" FontFamily="Segoe MDL2 Assets" Content="&#xE26B;" Height="100" Opacity="0.2" HorizontalAlignment="Right" PointerEntered="RightButton_PointerEntered" PointerExited="RightButton_PointerExited" Tapped="RightButton_Tapped">
-						<Button.Background>
-							<SolidColorBrush Color="Gray" Opacity="0.4"/>
-						</Button.Background>
-					</Button>
-				</Grid>
-			</SplitView.Content>
-		</SplitView>
+									<ListView x:Name="CommentsListView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="False">
+										<ListView.ItemContainerStyle>
+											<Style TargetType="ListViewItem">
+												<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+											</Style>
+										</ListView.ItemContainerStyle>
+									</ListView>
 
+									<TextBlock Visibility="Collapsed" x:Name="CommentsHint" Text="No Comments Yet" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+								</Grid>
+							</PivotItem>
+						</Pivot>
+						<ToggleSwitch Height="38" x:Name="SplitViewModeSwitch" IsOn="True" OnContent="Overlay" OffContent="Inline" FlowDirection="RightToLeft" Margin="0,10,20,0" Toggled="SplitViewModeSwitch_Toggled" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+					</Grid>
+				</SplitView.Pane>
+				<SplitView.Content>
+					<Grid>
+						<MediaPlayerElement x:Name="MyMediaPlayer" AutoPlay="False" AreTransportControlsEnabled="True" Margin="0,0,0,0"/>
+						<ScrollViewer x:Name="MyScrollViewer" MinZoomFactor="0.3" DoubleTapped="MyScrollViewer_DoubleTapped" ZoomMode="Enabled" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Hidden" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Hidden">
+							<Image PointerWheelChanged="MainImage_PointerWheelChanged" PointerPressed="MainImage_PointerPressed" PointerReleased="MainImage_PointerReleased" PointerMoved="MainImage_PointerMoved" PointerEntered="MainImage_PointerEntered" PointerExited="MainImage_PointerExited" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="MainImage" Margin="0,0,0,0" ImageOpened="MainImage_ImageOpened"/>
+						</ScrollViewer>
+						<ProgressRing Name="MyProgressRing" MaxHeight="300" MaxWidth="300" Margin="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>
+						<Button x:Name="LeftButton" FontFamily="Segoe MDL2 Assets" Content="&#xE26C;" Height="100" Opacity="0.2" PointerEntered="LeftButton_PointerEntered" PointerExited="LeftButton_PointerExited" Tapped="LeftButton_Tapped">
+							<Button.Background>
+								<SolidColorBrush Color="Gray" Opacity="0.4"/>
+							</Button.Background>
+						</Button>
+						<Button x:Name="RightButton" FontFamily="Segoe MDL2 Assets" Content="&#xE26B;" Height="100" Opacity="0.2" HorizontalAlignment="Right" PointerEntered="RightButton_PointerEntered" PointerExited="RightButton_PointerExited" Tapped="RightButton_Tapped">
+							<Button.Background>
+								<SolidColorBrush Color="Gray" Opacity="0.4"/>
+							</Button.Background>
+						</Button>
+					</Grid>
+				</SplitView.Content>
+			</SplitView>
+
+		</Grid>
 	</Grid>
 </Page>

@@ -48,6 +48,8 @@ namespace E621Downloader.Pages {
 
 		private readonly string[] ignoreTypes = { "swf", };
 
+		private PostBrowserParameter parameter;
+
 		public PostsBrowser() {
 			Instance = this;
 			this.InitializeComponent();
@@ -57,20 +59,21 @@ namespace E621Downloader.Pages {
 			this.tagsFilterSystem = new TagsFilterSystem(HotTagsListView, BlackTagsListView,
 				enable => UpdateImageHolders(CalculateEnabledPosts(), false)
 			);
-			Initialize();
 		}
 
-		private async void Initialize() {
-			//string[] tags = { "rating:s", "wallpaper", "order:score" };
-			//string[] tags = { "type:webm", "order:score" };
-			string[] tags = { "order:score" };
-			//posts = Post.GetPostsByTags(currentPage, tags);
-			//LoadPosts(posts, tags);
-			await LoadAsync(1, tags);
-		}
-
-		protected override void OnNavigatedTo(NavigationEventArgs e) {
+		protected override async void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
+			if(e.Parameter is PostBrowserParameter parameter) {
+				this.parameter = (PostBrowserParameter)parameter.Clone();
+				await LoadAsync(parameter.Page, parameter.Tags);
+			} else if(this.parameter == null) {
+				//string[] tags = { "rating:s", "wallpaper", "order:score" };
+				//string[] tags = { "type:webm", "order:score" };
+				string[] tags = { "order:score" };
+				this.parameter = new PostBrowserParameter(1, tags);
+				await LoadAsync(1, tags);
+			}
+			MainPage.ClearPostBrowserParameter();
 		}
 
 		private const int PREFEREDHEIGHT = 350;
@@ -129,7 +132,7 @@ namespace E621Downloader.Pages {
 			return MyWrapGrid.Children.Select(c => c as ImageHolder).FirstOrDefault(i => i.Index == index);
 		}
 
-		public async Task LoadAsync(int page = 1, params string[] tags) {
+		private async Task LoadAsync(int page = 1, params string[] tags) {
 			this.currentPage = page;
 			MainPage.CreateInstantDialog("Please Wait", "Loading...");
 			await Task.Delay(200);
@@ -137,7 +140,8 @@ namespace E621Downloader.Pages {
 			List<Post> temp = await Post.GetPostsByTagsAsync(page, tags);
 			if(temp.Count == 0) {
 				MainPage.HideInstantDialog();
-				await MainPage.CreatePopupDialog("Articles Error", "Articles return 0");
+				await MainPage.CreatePopupDialog("Articles Error",
+					$"Tags:({string.Join(", ", tags)}) return 0 posts");
 				return;
 			}
 			int removed_count = temp.RemoveAll(p => ignoreTypes.Contains(p.file.ext));
@@ -149,29 +153,15 @@ namespace E621Downloader.Pages {
 			MainPage.HideInstantDialog();
 			UpdateInfoButton(tags);
 		}
-		public async Task Reload() {
+		private async Task Reload() {
 			MainPage.CreateInstantDialog("Please Wait", "Reloading...");
 			await Task.Delay(20);
 			LoadPosts(this.Posts, tags);
 			MainPage.HideInstantDialog();
 		}
 
-		//private List<Post> CalculateEnabledPosts() {
-		//	var result = new List<Post>();
-		//	foreach(Post item in posts) {
-		//		if(!App.showNullImage && string.IsNullOrEmpty(item.sample.url)) {
-		//			continue;
-		//		}
-		//		if(item.tags.GetAllTags().Any(a => tagsFilterSystem.GetEnabledBlackTags().Contains(a))) {
-		//			continue;
-		//		}
-		//		result.Add(item);
-		//	}
-		//	return result;
-		//}
-
 		private void UpdateInfoButton(string[] tags) {
-			InfoButton.Visibility = tags.Where(i => !i.Contains(':')).Count() > 0 ? Visibility.Visible : Visibility.Collapsed;
+			InfoButton.Visibility = true || tags.Where(i => !i.Contains(':')).Count() > 0 ? Visibility.Visible : Visibility.Collapsed;
 		}
 
 		private List<Post> CalculateEnabledPosts() {
@@ -184,7 +174,7 @@ namespace E621Downloader.Pages {
 			return result;
 		}
 
-		public void UpdatePaginator() {
+		private void UpdatePaginator() {
 			PaginatorPanel.Children.Clear();
 			//currentPage
 			//maxPage
@@ -520,7 +510,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			await MainPage.CreatePopupDialog(string.Join(", ", tags.Where(i => !i.Contains(':'))), new CurrentTagsInformation(tags));
+			await MainPage.CreatePopupDialog(string.Join(", ", tags), new CurrentTagsInformation(tags));
 		}
 
 		private void ToggleThemeTeachingTip2_ActionButtonClick(Microsoft.UI.Xaml.Controls.TeachingTip sender, object args) {
@@ -668,4 +658,16 @@ namespace E621Downloader.Pages {
 		}
 	}
 
+	public class PostBrowserParameter: ICloneable {
+		public int Page { get; private set; }
+		public string[] Tags { get; private set; }
+		public PostBrowserParameter(int page, string[] tags) {
+			Page = page;
+			Tags = tags;
+		}
+
+		public object Clone() {
+			return MemberwiseClone();
+		}
+	}
 }

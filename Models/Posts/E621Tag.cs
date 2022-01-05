@@ -11,10 +11,11 @@ using System.Threading.Tasks;
 namespace E621Downloader.Models.Posts {
 	public class E621Tag {
 		public static async Task<E621Tag[]> GetAsync(string tag) {
+			tag = tag.ToLower().Trim();
 			string url = $"https://e621.net/tags.json?search[name_matches]={tag}";
 			string content = await Data.ReadURLAsync(url);
 			if(content == "{\"tags\":[]}") {
-				return null;
+				return new E621Tag[] { GetDefault(tag) };
 			}
 			try {
 				return JsonConvert.DeserializeObject<E621Tag[]>(content);
@@ -23,22 +24,23 @@ namespace E621Downloader.Models.Posts {
 				return null;
 			}
 		}
+
 		public static async Task<E621Tag> GetFirstAsync(string tag) {
 			return (await GetAsync(tag))?.FirstOrDefault();
 		}
-		public static E621Tag[] Get(string tag) {
-			string url = $"https://e621.net/tags.json?search[name_matches]={tag}";
-			string content = Data.ReadURL(url);
-			if(content == "{\"tags\":[]}") {
-				return null;
-			}
-			try {
-				return JsonConvert.DeserializeObject<E621Tag[]>(content);
-			} catch {
-				Debug.WriteLine("Tags Error");
-				return null;
-			}
-		}
+
+		public static E621Tag GetDefault(string tag) => new E621Tag() {
+			id = 0,
+			name = tag,
+			post_count = 0,
+			related_tags = "",
+			related_tags_updated_at = DateTime.Now,
+			category = 0,
+			is_locked = false,
+			created_at = DateTime.Now,
+			updated_at = DateTime.Now,
+		};
+
 		public int id;
 		public string name;
 		public int post_count;
@@ -54,11 +56,6 @@ namespace E621Downloader.Models.Posts {
 		public bool IsWikiLoaded { get; private set; } = false;
 		public E621Wiki[] Wikis { get; private set; } = Array.Empty<E621Wiki>();
 		public E621Wiki Wiki => Wikis?.FirstOrDefault();
-		//public async void LoadWiki() {
-		//	this.Wikis = await E621Wiki.GetAsync(name);
-		//	IsWikiLoaded = true;
-		//	OnWikiLoaded?.Invoke();
-		//}
 		public async Task<E621Wiki> LoadWikiAsync(CancellationToken token = default) {
 			this.Wikis = await E621Wiki.GetAsync(name, token);
 			if(Wikis != null && Wiki != null) {
@@ -67,7 +64,6 @@ namespace E621Downloader.Models.Posts {
 			}
 			return this.Wiki;
 		}
-
 
 		public override string ToString() {
 			return $"E621Tags:({id})({name})({related_tags})({post_count})({category})";
