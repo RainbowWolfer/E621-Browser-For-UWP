@@ -19,6 +19,7 @@ namespace E621Downloader.Views {
 	public sealed partial class CurrentTagsInformation: UserControl {
 		private readonly string[] tags;
 		private readonly string[] filtered;
+		private bool initializing = true;
 		public CurrentTagsInformation(string[] tags) {
 			this.InitializeComponent();
 			this.tags = E621Tag.SortOutMetatags(tags);
@@ -31,12 +32,23 @@ namespace E621Downloader.Views {
 			filtered = E621Tag.FilterMetatags(this.tags);
 			FollowButton.IsEnabled = filtered.Length != 0;
 			BlockButton.IsEnabled = filtered.Length != 0;
+
+			if(Local.CheckFollowList(tags)) {
+				FollowButton.IsChecked = true;
+			}
+			if(Local.CheckBlackList(tags)) {
+				BlockButton.IsChecked = true;
+			}
+			initializing = false;
 		}
 
 		private void FollowButton_Click(object sender, RoutedEventArgs e) {
+			if(initializing) {
+				return;
+			}
 			bool isOn = (sender as ToggleButton).IsChecked.Value;
 			FollowText.Text = isOn ? "Following" : "Follow";
-			string tag = string.Join(", ", filtered);
+			string tag = E621Tag.JoinTags(filtered);
 			if(isOn) {
 				if(!Local.CheckFollowList(tag)) {
 					Local.AddFollowList(tag);
@@ -54,9 +66,12 @@ namespace E621Downloader.Views {
 		}
 
 		private void BlockButton_Click(object sender, RoutedEventArgs e) {
+			if(initializing) {
+				return;
+			}
 			bool isOn = (sender as ToggleButton).IsChecked.Value;
 			BlockText.Text = isOn ? "Blocking" : "Block";
-			string tag = string.Join(", ", filtered);
+			string tag = E621Tag.JoinTags(filtered);
 			if(isOn) {
 				if(!Local.CheckBlackList(tag)) {
 					Local.AddBlackList(tag);

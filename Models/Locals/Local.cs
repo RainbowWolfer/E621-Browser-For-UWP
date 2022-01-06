@@ -140,7 +140,9 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public static bool CheckFollowList(string tag) => FollowList.Contains(tag);
+		public static bool CheckFollowList(string[] tags) => FollowList.Contains(E621Tag.JoinTags(tags));
 		public static bool CheckBlackList(string tag) => BlackList.Contains(tag);
+		public static bool CheckBlackList(string[] tags) => BlackList.Contains(E621Tag.JoinTags(tags));
 
 		public async static void WriteFollowList(string[] list) {
 			await FileIO.WriteLinesAsync(FollowListFile, list);

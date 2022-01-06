@@ -61,6 +61,10 @@ namespace E621Downloader.Models.Posts {
 			return result.ToArray();
 		}
 
+		public static string JoinTags(string[] tags) {
+			return string.Join(", ", tags).Trim().ToLower();
+		}
+
 		public int id;
 		public string name;
 		public int post_count;

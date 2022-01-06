@@ -141,7 +141,7 @@ namespace E621Downloader.Pages {
 			if(temp.Count == 0) {
 				MainPage.HideInstantDialog();
 				await MainPage.CreatePopupDialog("Articles Error",
-					$"Tags:({string.Join(", ", tags)}) return 0 posts");
+					$"Tags:({E621Tag.JoinTags(tags)}) return 0 posts");
 				return;
 			}
 			int removed_count = temp.RemoveAll(p => ignoreTypes.Contains(p.file.ext));
@@ -510,7 +510,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			await MainPage.CreatePopupDialog(string.Join(", ", tags), new CurrentTagsInformation(tags));
+			await MainPage.CreatePopupDialog(E621Tag.JoinTags(tags), new CurrentTagsInformation(tags));
 		}
 
 		private void ToggleThemeTeachingTip2_ActionButtonClick(Microsoft.UI.Xaml.Controls.TeachingTip sender, object args) {
