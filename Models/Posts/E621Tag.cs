@@ -41,6 +41,26 @@ namespace E621Downloader.Models.Posts {
 			updated_at = DateTime.Now,
 		};
 
+		public static bool CheckMetatag(string tag) => tag.Contains(":");
+		public static string[] FilterMetatags(string[] tags) {
+			return tags.Where(t => !CheckMetatag(t)).ToArray();
+		}
+
+		public static string[] SortOutMetatags(string[] tags) {
+			List<string> result = new List<string>();
+			foreach(string item in tags) {
+				if(!CheckMetatag(item)) {
+					result.Add(item);
+				}
+			}
+			foreach(string item in tags) {
+				if(CheckMetatag(item)) {
+					result.Add(item);
+				}
+			}
+			return result.ToArray();
+		}
+
 		public int id;
 		public string name;
 		public int post_count;

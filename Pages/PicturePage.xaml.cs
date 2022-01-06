@@ -141,12 +141,17 @@ namespace E621Downloader.Pages {
 			TitleText.Text = Title;
 			UpdateRatingColor();
 			DescriptionText.Text = PostRef != null && !string.IsNullOrEmpty(PostRef.description) ? PostRef.description : "No Description";
-			MainSplitView.IsPaneOpen = false;
-			InformationPivot.SelectedIndex = 0;
-			commentsLoaded = false;
-			commentsLoading = false;
-			comments.Clear();
-			CommentsListView.Items.Clear();
+			if(this.PostRef != null && p != null) {
+				MainSplitView.IsPaneOpen = false;
+				//InformationPivot.SelectedIndex = 0;
+				commentsLoaded = false;
+				commentsLoading = false;
+				comments.Clear();
+				CommentsListView.Items.Clear();
+				if(InformationPivot.SelectedIndex == 1) {
+					LoadCommentsAsync();
+				}
+			}
 		}
 
 		private void UpdateRatingColor() {
