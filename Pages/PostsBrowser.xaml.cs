@@ -376,15 +376,17 @@ namespace E621Downloader.Pages {
 					PrimaryButtonText = "Yes",
 					CloseButtonText = "No",
 				}.ShowAsync() == ContentDialogResult.Primary) {
-					MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
-					await Task.Delay(50);
-					foreach(ImageHolder item in GetSelected()) {
-						DownloadsManager.RegisterDownload(item.PostRef, tags);
-						await Task.Delay(delay);
+					if(await DownloadsManager.CheckDownloadAvailable()) {
+						MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
+						await Task.Delay(50);
+						foreach(ImageHolder item in GetSelected()) {
+							DownloadsManager.RegisterDownload(item.PostRef, tags);
+							await Task.Delay(delay);
+						}
+						MainPage.HideInstantDialog();
+						SelectToggleButton.IsChecked = false;
+						ShowTeachingTip();
 					}
-					MainPage.HideInstantDialog();
-					SelectToggleButton.IsChecked = false;
-					ShowTeachingTip();
 				}
 			} else {
 				var dialog = new ContentDialog() {

@@ -44,9 +44,9 @@ namespace E621Downloader.Models.Download {
 				if(await new ContentDialog() {
 					Title = "Error",
 					Content = "Download Folder Not Found.\n Would you like to get it set?",
-					PrimaryButtonText = "Back",
-					SecondaryButtonText = "Go To Settings",
-				}.ShowAsync() == ContentDialogResult.Secondary) {
+					PrimaryButtonText = "Go To Settings",
+					SecondaryButtonText = "Back",
+				}.ShowAsync() == ContentDialogResult.Primary) {
 					MainPage.SelectNavigationItem(PageTag.Settings);
 				}
 				return false;

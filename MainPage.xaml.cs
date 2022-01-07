@@ -35,9 +35,9 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-using NavigationView = Windows.UI.Xaml.Controls.NavigationView;
-using NavigationViewItem = Windows.UI.Xaml.Controls.NavigationViewItem;
-using NavigationViewItemInvokedEventArgs = Windows.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs;
+using NavigationView = Microsoft.UI.Xaml.Controls.NavigationView;
+using NavigationViewItem = Microsoft.UI.Xaml.Controls.NavigationViewItem;
+using NavigationViewItemInvokedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs;
 using SymbolIconSource = Microsoft.UI.Xaml.Controls.SymbolIconSource;
 
 namespace E621Downloader {
@@ -50,7 +50,7 @@ namespace E621Downloader {
 			get => ApplicationView.GetForCurrentView().IsFullScreenMode;
 			set {
 				FullScreenButton.Content = value ? "\uE73F" : "\uE740";
-				var view = ApplicationView.GetForCurrentView();
+				ApplicationView view = ApplicationView.GetForCurrentView();
 				if(view.IsFullScreenMode) {
 					view.ExitFullScreenMode();
 					ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
@@ -113,7 +113,6 @@ namespace E621Downloader {
 			//HideInstantDialog();
 
 			MyFrame.Navigate(typeof(WelcomePage), long.Parse(result));
-			//(MyNavigationView.MenuItems[0] as NavigationViewItem).IsSelected = true;
 		}
 
 		public static void ChangeCurrenttTags(params string[] strs) {
@@ -171,6 +170,7 @@ namespace E621Downloader {
 				parent.Children.Remove(tip);
 			};
 		}
+
 		public static void CreateTip(Page page, string titile, string subtitle, Symbol? icon = null, string closeText = "Got it!", bool isLightDismissEnabled = false, TeachingTipPlacementMode placement = TeachingTipPlacementMode.TopRight, Thickness? margin = null, int delayTime = 5000) {
 			if(page.Content is Panel panel) {
 				CreateTip(panel, titile, subtitle, icon, closeText, isLightDismissEnabled, placement, margin, delayTime);
@@ -190,23 +190,18 @@ namespace E621Downloader {
 			return dialog;
 		}
 
-		public static NavigationTransitionInfo CalculateTransition(PageTag from, PageTag to) {
-			return (int)from - (int)to < 0
-				? new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight }
-				: new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft };
+		private static NavigationTransitionInfo CalculateTransition(PageTag from, PageTag to) {
+			return new SlideNavigationTransitionInfo() {
+				Effect = (int)from - (int)to < 0 ? SlideNavigationTransitionEffect.FromRight : SlideNavigationTransitionEffect.FromLeft
+			};
 		}
-
 		public static void SelectNavigationItem(PageTag tag) {
-			(Instance.MyNavigationView.MenuItems.ToList().Find((i) => int.Parse((string)(i as NavigationViewItem).Tag) == (int)tag) as NavigationViewItem).IsSelected = true;
+			Instance.JumpToPage(tag);
 		}
 
 		public static void NavigateToPostsBrowser(int page, params string[] tags) {
 			Instance.parameter_postBrowser = new PostBrowserParameter(page, tags);
-			if(Instance.currentTag == PageTag.PostsBrowser) {
-				Instance.MyFrame.Navigate(typeof(PostsBrowser), Instance.parameter_postBrowser, CalculateTransition(Instance.currentTag, PageTag.PostsBrowser));
-			} else {
-				SelectNavigationItem(PageTag.PostsBrowser);
-			}
+			Instance.JumpToPage(PageTag.PostsBrowser);
 			ClearPostBrowserParameter();
 		}
 
@@ -216,38 +211,93 @@ namespace E621Downloader {
 
 		/// <summary> Used to solve the problem of navtigating to self in PicturePage </summary>
 		public static void NavigateToPicturePage() {
-			Instance.MyFrame.Navigate(typeof(PicturePage), Instance.parameter_picture, CalculateTransition(Instance.currentTag, PageTag.Picture));
+			if(Instance.currentTag == PageTag.Picture) {
+				Instance.MyFrame.Navigate(typeof(PicturePage), Instance.parameter_picture, CalculateTransition(Instance.currentTag, PageTag.Picture));
+			} else {
+				throw new Exception("check it out!");
+			}
 		}
 
+		//click from NavitaionViewItem
 		private void MyNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
-			if(args.IsSettingsInvoked) {
-				if(currentTag == PageTag.Settings) {
-					return;
-				}
-				MyFrame.Navigate(typeof(SettingsPage), null, CalculateTransition(currentTag, PageTag.Settings));
-				currentTag = PageTag.Settings;
+			string tag = args.InvokedItemContainer.Tag as string;
+			PageTag pageTag = Convert(tag) ?? throw new Exception("Tag Not Found");
+			if(currentTag == pageTag) {
 				return;
 			}
-			PageTag tag = (PageTag)int.Parse((string)args.InvokedItemContainer.Tag);
-			if(currentTag == tag) {
-				return;
+			JumpToPage(pageTag, false);
+		}
+
+		private PageTag? Convert(string tag) {
+			if(string.IsNullOrWhiteSpace(tag)) {
+				return null;
 			}
-			if(tag == PageTag.PostsBrowser) {
-				MyFrame.Navigate(typeof(PostsBrowser), parameter_postBrowser, CalculateTransition(currentTag, PageTag.PostsBrowser));
-			} else if(tag == PageTag.Picture) {
-				MyFrame.Navigate(typeof(PicturePage), parameter_picture, CalculateTransition(currentTag, PageTag.Picture));
-			} else if(tag == PageTag.Library) {
-				MyFrame.Navigate(typeof(LibraryPage), null, CalculateTransition(currentTag, PageTag.Library));
-			} else if(tag == PageTag.Subscription) {
-				MyFrame.Navigate(typeof(SubscriptionPage), null, CalculateTransition(currentTag, PageTag.Subscription));
-			} else if(tag == PageTag.Spot) {
-				MyFrame.Navigate(typeof(SpotPage), null, CalculateTransition(currentTag, PageTag.Spot));
-			} else if(tag == PageTag.Download) {
-				MyFrame.Navigate(typeof(DownloadPage), null, CalculateTransition(currentTag, PageTag.Download));
+			if(int.TryParse(tag, out int tagInt)) {
+				return (PageTag)tagInt;
+			} else if(tag == "Settings") {
+				return PageTag.Settings;
 			} else {
-				throw new Exception("Tag Error");
+				return null;
 			}
+		}
+
+		private void JumpToPage(PageTag tag, bool updateNavigationVieItem = true) {
+			NavigationTransitionInfo transition = CalculateTransition(currentTag, tag);
+			Type target;
+			object parameter;
+			switch(tag) {
+				case PageTag.PostsBrowser:
+					target = typeof(PostsBrowser);
+					parameter = parameter_postBrowser;
+					break;
+				case PageTag.Picture:
+					target = typeof(PicturePage);
+					parameter = parameter_picture;
+					break;
+				case PageTag.Library:
+					target = typeof(LibraryPage);
+					parameter = null;
+					break;
+				case PageTag.Subscription:
+					target = typeof(SubscriptionPage);
+					parameter = null;
+					break;
+				case PageTag.Spot:
+					target = typeof(SpotPage);
+					parameter = null;
+					break;
+				case PageTag.Download:
+					target = typeof(DownloadPage);
+					parameter = null;
+					break;
+				case PageTag.UserProfile:
+					target = typeof(UserProfilePage);
+					parameter = null;
+					break;
+				case PageTag.Welcome:
+					target = typeof(WelcomePage);
+					parameter = null;
+					break;
+				case PageTag.Settings:
+					target = typeof(SettingsPage);
+					parameter = null;
+					break;
+				default:
+					throw new Exception("Tag Not Found");
+			}
+			MyFrame.Navigate(target, parameter, transition);
 			currentTag = tag;
+			if(updateNavigationVieItem) {
+				foreach(NavigationViewItem item in MyNavigationView.MenuItems
+					.Concat(MyNavigationView.FooterMenuItems)
+					.Concat(new object[] { MyNavigationView.SettingsItem })
+				) {
+					if(Convert(item.Tag as string) == currentTag) {
+						item.IsSelected = true;
+						break;
+					}
+				}
+			}
 		}
 
 		private void FullScreenButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -285,9 +335,10 @@ namespace E621Downloader {
 					throw new Exception("Result Type not found");
 			}
 		}
+
 	}
 	public enum PageTag {
-		PostsBrowser, Picture, Library, Subscription, Spot, Download, Settings, Welcome,
+		PostsBrowser = 0, Picture = 1, Library = 2, Subscription = 3, Spot = 4, Download = 5, UserProfile = 6, Welcome = 7, Settings,
 	}
 }
 

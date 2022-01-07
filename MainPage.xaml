@@ -6,24 +6,24 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:data="using:E621Downloader.Models" 
-	xmlns:contrl="using:Microsoft.UI.Xaml.Controls"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
 	mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 	<Grid>
-		<NavigationView PaneDisplayMode="Top" x:Name="MyNavigationView" IsBackButtonVisible="Auto" SelectionFollowsFocus="Enabled" ItemInvoked="MyNavigationView_ItemInvoked">
-			<NavigationView.MenuItems>
-				<NavigationViewItem Icon="Home" Content="Home" Tag="0"/>
-				<NavigationViewItem Icon="Pictures" Content="Picture" Tag="1"/>
-				<NavigationViewItem Icon="Library" Content="Library" Tag="2"/>
-				<NavigationViewItem Icon="Link" Content="Subcription" Tag="3"/>
-				<NavigationViewItem Content="Spot" Tag="4">
-					<NavigationViewItem.Icon>
+		<controls:NavigationView PaneDisplayMode="Top" x:Name="MyNavigationView" ItemInvoked="MyNavigationView_ItemInvoked">
+			<controls:NavigationView.MenuItems>
+				<controls:NavigationViewItem Icon="Home" Content="Home" Tag="0"/>
+				<controls:NavigationViewItem Icon="Pictures" Content="Picture" Tag="1"/>
+				<controls:NavigationViewItem Icon="Library" Content="Library" Tag="2"/>
+				<controls:NavigationViewItem Icon="Link" Content="Subcription" Tag="3"/>
+				<controls:NavigationViewItem Content="Spot" Tag="4">
+					<controls:NavigationViewItem.Icon>
 						<FontIcon Glyph="&#xF272;"/>
-					</NavigationViewItem.Icon>
-				</NavigationViewItem>
-				<NavigationViewItem Icon="Download" Content="Downloads" Tag="5"/>
-			</NavigationView.MenuItems>
-			<NavigationView.PaneFooter>
+					</controls:NavigationViewItem.Icon>
+				</controls:NavigationViewItem>
+				<controls:NavigationViewItem Icon="Download" Content="Downloads" Tag="5"/>
+			</controls:NavigationView.MenuItems>
+			<controls:NavigationView.PaneFooter>
 				<StackPanel Orientation="Horizontal">
 					<Button x:Name="CurrentTagsButton" VerticalAlignment="Center" Height="40" Background="Transparent" BorderThickness="0" Tapped="CurrentTagsButton_Tapped">
 						<Button.Content>
@@ -35,8 +35,17 @@
 					</Button>
 					<Button x:Name="FullScreenButton" Background="Transparent" BorderThickness="0" Height="40" Width="45" FontFamily="Segoe MDL2 Assets" Content="&#xE740;" Tapped="FullScreenButton_Tapped"  ToolTipService.ToolTip="Switch FullScreen"/>
 				</StackPanel>
-			</NavigationView.PaneFooter>
-			<NavigationView.Content>
+			</controls:NavigationView.PaneFooter>
+			<controls:NavigationView.FooterMenuItems>
+				<controls:NavigationViewItem Tag="6" ToolTipService.ToolTip="Rainbow Wolfer" ToolTipService.Placement="Bottom">
+					<controls:NavigationViewItem.Content>
+						<Grid>
+							<PersonPicture ProfilePicture="/Assets/e612.png" DisplayName="Rainbow Wolfer" Initials="E621" Height="30" Width="30"/>
+						</Grid>
+					</controls:NavigationViewItem.Content>
+				</controls:NavigationViewItem>
+			</controls:NavigationView.FooterMenuItems>
+			<controls:NavigationView.Content>
 				<Frame x:Name="MyFrame">
 					<Frame.ContentTransitions>
 						<TransitionCollection>
@@ -44,7 +53,7 @@
 						</TransitionCollection>
 					</Frame.ContentTransitions>
 				</Frame>
-			</NavigationView.Content>
-		</NavigationView>
+			</controls:NavigationView.Content>
+		</controls:NavigationView>
 	</Grid>
 </Page>
