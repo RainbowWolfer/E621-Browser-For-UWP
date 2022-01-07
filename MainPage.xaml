@@ -6,11 +6,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:data="using:E621Downloader.Models" 
-	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+	xmlns:contrl="using:Microsoft.UI.Xaml.Controls"
 	mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 	<Grid>
-		<NavigationView PaneDisplayMode="Top" Name="MyNavigationView" IsBackButtonVisible="Auto" SelectionFollowsFocus="Enabled" ItemInvoked="MyNavigationView_ItemInvoked">
+		<NavigationView PaneDisplayMode="Top" x:Name="MyNavigationView" IsBackButtonVisible="Auto" SelectionFollowsFocus="Enabled" ItemInvoked="MyNavigationView_ItemInvoked">
 			<NavigationView.MenuItems>
 				<NavigationViewItem Icon="Home" Content="Home" Tag="0"/>
 				<NavigationViewItem Icon="Pictures" Content="Picture" Tag="1"/>
@@ -34,13 +34,8 @@
 						</Button.Content>
 					</Button>
 					<Button x:Name="FullScreenButton" Background="Transparent" BorderThickness="0" Height="40" Width="45" FontFamily="Segoe MDL2 Assets" Content="&#xE740;" Tapped="FullScreenButton_Tapped"  ToolTipService.ToolTip="Switch FullScreen"/>
-					<!--<Button x:Name="SearchButton" Height="40" Width="45" BorderThickness="0" Background="Transparent" FontFamily="Segoe MDL2 Assets" Content="&#xE094;" Tapped="SearchButton_Tapped" ToolTipService.ToolTip="Search Tags"/>-->
-					<!--<FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE740;" />-->
 				</StackPanel>
 			</NavigationView.PaneFooter>
-			<!--<NavigationView.Header>
-			<TextBlock Text="Hello World!" HorizontalAlignment="Center"/>
-		</NavigationView.Header>-->
 			<NavigationView.Content>
 				<Frame x:Name="MyFrame">
 					<Frame.ContentTransitions>

@@ -71,12 +71,10 @@ namespace E621Downloader.Pages.LibrarySection {
 					if(objs[0] is LibraryTab tab) {//side tab
 						CurrentLibraryTab = tab;
 						if(tab.title == "Home") {//click home
-							StorageFolder[] downloadsFolders = await Local.GetDownloadsFolders();
-							if(downloadsFolders == null) {
-								HintText.Text = "You have not select your download folder\nPlease go to the settings page and choose your download folder";
-								HintText.Visibility = Visibility.Visible;
+							if(Local.DownloadFolder == null) {
+								UpdateHintPanelToNoDownloadFolder();
 							} else {
-								foreach(StorageFolder folder in downloadsFolders) {
+								foreach(StorageFolder folder in await Local.GetDownloadsFolders()) {
 									folders.Add(folder);
 									var myitem = new ItemBlock() {
 										parentFolder = folder,
@@ -86,19 +84,18 @@ namespace E621Downloader.Pages.LibrarySection {
 									originalItems.Add(myitem);
 								}
 								if(folders.Count == 0) {
-									HintText.Text = "No Download Folders Found";
-									HintText.Visibility = Visibility.Visible;
+									UpdateHintPanelToNoFolderFound();
 								}
 							}
 						} else if(tab.title == "Filter") {//click filter page
-							Debug.WriteLine("Filter VIEW");
-							FilterGrid.Visibility = Visibility.Visible;
-							foreach(StorageFolder folder in await Local.GetDownloadsFolders()) {
-								//folders.Add(folder);
-								orginalFolders.Add(folder);
+							if(Local.DownloadFolder == null) {
+								UpdateHintPanelToNoDownloadFolder();
+							} else {
+								FilterGrid.Visibility = Visibility.Visible;
+								foreach(StorageFolder folder in await Local.GetDownloadsFolders()) {
+									orginalFolders.Add(folder);
+								}
 							}
-
-
 						} else {//click folder
 							List<(MetaFile, BitmapImage, StorageFile)> v = await Local.GetMetaFiles(tab.folder.DisplayName);
 							foreach((MetaFile, BitmapImage, StorageFile) item in v) {
@@ -151,6 +148,32 @@ namespace E621Downloader.Pages.LibrarySection {
 				MainPage.Instance.parameter_picture = target;
 				MainPage.SelectNavigationItem(PageTag.Picture);
 			}
+		}
+
+		private void UpdateHintPanelToNoDownloadFolder() {
+			UpdateHintPanel("You have not selected your download folder\nPlease go to the settings page and choose your download folder", "Go To Settings", "\uE713", () => {
+				MainPage.SelectNavigationItem(PageTag.Settings);
+			});
+			SetHintPanelVisible(true);
+		}
+		private void UpdateHintPanelToNoFolderFound() {
+			UpdateHintPanel("No Download Folders Found\nWhy not go to posts browser to download some of your favorites?", "Go To Posts Browser", "\uE155", () => {
+				MainPage.SelectNavigationItem(PageTag.PostsBrowser);
+			});
+			SetHintPanelVisible(true);
+		}
+
+		private Action buttonAction;
+		private void UpdateHintPanel(string content, string buttonText, string buttonIcon, Action onClick) {
+			HintText.Text = content;
+			HintButtonText.Text = buttonText;
+			HintButtonIcon.Glyph = buttonIcon;
+			buttonAction = onClick;
+		}
+
+		private void SetHintPanelVisible(bool visible) {
+			HintPanel.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+			MyGridView.Visibility = !visible ? Visibility.Visible : Visibility.Collapsed;
 		}
 
 		public void Search(string content) {
@@ -336,6 +359,10 @@ namespace E621Downloader.Pages.LibrarySection {
 			if(folderIcons.Count >= items.Count) {
 				UpdateSize(libraryPage.Size, libraryPage.Size - 30);
 			}
+		}
+
+		private void HintActionButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			buttonAction?.Invoke();
 		}
 	}
 

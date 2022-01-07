@@ -102,7 +102,7 @@ namespace E621Downloader.Pages {
 					//if(!tagsFilterSystem.CheckPostContainBlackList(item)) {
 					//	continue;
 					//}
-					var holder = new ImageHolder(item, this.Posts.IndexOf(item));
+					var holder = new ImageHolder(this, item, this.Posts.IndexOf(item));
 					MyWrapGrid.Children.Add(holder);
 					SetImageItemSize(isHeightFixed, holder, item.sample);
 					holder.OnImagedLoaded += (b) => tb_ArticlesLoadCount.Text = "Posts : " + ++loaded + "/" + this.Posts.Count;
@@ -115,7 +115,7 @@ namespace E621Downloader.Pages {
 					int shouleBe = ps.IndexOf(this.Posts[i]);
 					if(shouleBe == -1) {
 						Post item = Posts[i];
-						var holder = new ImageHolder(item, this.Posts.IndexOf(item));
+						var holder = new ImageHolder(this, item, this.Posts.IndexOf(item));
 						SetImageItemSize(isHeightFixed, holder, item.sample);
 						holder.OnImagedLoaded += (b) => tb_ArticlesLoadCount.Text = "Posts : " + ++loaded + "/" + this.Posts.Count;
 						ToolTipService.SetToolTip(holder, $"ID: {item.id}\nScore: {item.score.total}");

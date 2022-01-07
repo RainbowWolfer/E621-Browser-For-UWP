@@ -48,9 +48,17 @@
 			<Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Stretch" Margin="5" FontSize="22" Tapped="SearchButton_Tapped"/>
 			<ProgressBar x:Name="MyLoadingBar" HorizontalAlignment="Stretch" Margin="5" IsIndeterminate="True" Visibility="Collapsed"/>
 		</StackPanel>
-		<TextBlock Visibility="Collapsed" x:Name="HintText" Text="You have not select your download folder&#x0a;Please go to the settings page and choose your download folder" FontSize="64" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Grid.Row="1"/>
+		<StackPanel x:Name="HintPanel" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+			<TextBlock x:Name="HintText" Text="You have not selected your download folder&#x0a;Please go to the settings page and choose your download folder" TextAlignment="Center" FontSize="32" TextWrapping="Wrap"/>
+			<Button x:Name="HintActionButton" HorizontalAlignment="Center" Margin="20" Tapped="HintActionButton_Tapped">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock x:Name="HintButtonText" Text="Go To Settings" FontSize="25"/>
+					<FontIcon x:Name="HintButtonIcon" Glyph="&#xE713;" Margin="15,0,0,0" FontSize="25"/>
+				</StackPanel>
+			</Button>
+		</StackPanel>
 		<ProgressRing Name="MyProgressRing" Height="200" Width="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True" Grid.Row="1"/>
-		<GridView x:Name="MyGridView" ItemsSource="{x:Bind items}" SelectionMode="None" ItemClick="MyGridView_ItemClick" IsItemClickEnabled="True" Grid.Row="1">
+		<GridView x:Name="MyGridView" ItemsSource="{x:Bind items}" SelectionMode="None" ItemClick="MyGridView_ItemClick" IsItemClickEnabled="True" Grid.Row="1" Visibility="Visible">
 			<!---->
 			<GridView.ItemContainerStyle>
 				<Style TargetType="GridViewItem">

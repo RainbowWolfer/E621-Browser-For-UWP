@@ -74,18 +74,18 @@ namespace E621Downloader {
 
 		protected async override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
-			CreateInstantDialog("Please Wait", "Initializing Local Program");
-			int time = 0;
-			while(Local.DownloadFolder == null) {
-				await Task.Delay(10);
-				time += 1;
-				if(time >= 200) {
-					HideInstantDialog();
-					await CreatePopupDialog("Warning", "Download Folder Not Found", true);
-					CreateInstantDialog("Please Wait", "Initializing Local Program");
-					break;
-				}
-			}
+			CreateInstantDialog("Please Wait", "Checking E621");
+			//int time = 0;
+			//while(Local.DownloadFolder == null) {
+			//	await Task.Delay(10);
+			//	time += 1;
+			//	if(time >= 200) {
+			//		HideInstantDialog();
+			//		await CreatePopupDialog("Warning", "Download Folder Not Found", true);
+			//		CreateInstantDialog("Please Wait", "Initializing Local Program");
+			//		break;
+			//	}
+			//}
 			string data = await Data.ReadURLAsync("https://e621.net/");
 			while(string.IsNullOrEmpty(data)) {
 				HideInstantDialog();
@@ -106,11 +106,11 @@ namespace E621Downloader {
 			HideInstantDialog();
 			await Task.Delay(20);
 
-			CreateInstantDialog("Please Wait", "Checking Unfinished Downloads");
-			if(Local.DownloadFolder != null) {
-				//await DownloadsManager.RestoreIncompletedDownloads();
-			}
-			HideInstantDialog();
+			//CreateInstantDialog("Please Wait", "Checking Unfinished Downloads");
+			//if(Local.DownloadFolder != null) {
+			//await DownloadsManager.RestoreIncompletedDownloads();
+			//}
+			//HideInstantDialog();
 
 			MyFrame.Navigate(typeof(WelcomePage), long.Parse(result));
 			//(MyNavigationView.MenuItems[0] as NavigationViewItem).IsSelected = true;

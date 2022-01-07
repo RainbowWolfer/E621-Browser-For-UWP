@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
+using Windows.UI.Xaml.Controls;
 
 namespace E621Downloader.Models.Download {
 	public delegate void OnDownloadFinishEventHandler();
@@ -37,6 +38,22 @@ namespace E621Downloader.Models.Download {
 			return false;
 		}
 
+		public static async Task<bool> CheckDownloadAvailable() {
+			MainPage.HideInstantDialog();
+			if(Local.DownloadFolder == null) {
+				if(await new ContentDialog() {
+					Title = "Error",
+					Content = "Download Folder Not Found.\n Would you like to get it set?",
+					PrimaryButtonText = "Back",
+					SecondaryButtonText = "Go To Settings",
+				}.ShowAsync() == ContentDialogResult.Secondary) {
+					MainPage.SelectNavigationItem(PageTag.Settings);
+				}
+				return false;
+			}
+			return true;
+		}
+
 		public static void RegisterDownload(Post post, IEnumerable<string> tags) {
 			RegisterDownload(post, DownloadsGroup.GetGroupTitle(tags));
 		}
@@ -45,9 +62,7 @@ namespace E621Downloader.Models.Download {
 			if(string.IsNullOrEmpty(post.file.url)) {
 				return;
 			}
-			if(Local.DownloadFolder == null) {
-				await MainPage.CreatePopupDialog("Error", "No Download Folder Selected.\nGo to Settings and choose your download folder.", true, "Confirm");
-			} else {
+			if(await CheckDownloadAvailable()) {
 				groupTitle = groupTitle.Replace(":", ";");
 				string filename = $"{post.id}.{post.file.ext}";
 				if(string.IsNullOrEmpty(groupTitle)) {
@@ -57,7 +72,6 @@ namespace E621Downloader.Models.Download {
 				StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 				RegisterDownload(post, new Uri(post.file.url), file, groupTitle);
 			}
-			//todo: notify successful downloading
 		}
 
 		private static DownloadInstance RegisterDownload(Post post, Uri uri, StorageFile file, string groupTitle = DEFAULTTITLE) {

@@ -62,8 +62,10 @@ namespace E621Downloader.Views {
 		public BitmapImage Image { get; private set; }
 
 		//private bool isLoaded;
+		private Page page;
 
-		public ImageHolder(Post post, int index) {
+		public ImageHolder(Page page, Post post, int index) {
+			this.page = page;
 			this.PostRef = post;
 			this.Index = index;
 			this.InitializeComponent();
@@ -159,6 +161,7 @@ namespace E621Downloader.Views {
 				};
 				item_download.Click += (sender, arg) => {
 					DownloadsManager.RegisterDownload(PostRef);
+					MainPage.CreateTip(page, "Notification", "Successul Downloading", Symbol.Accept);
 				};
 				flyout.Items.Add(item_download);
 

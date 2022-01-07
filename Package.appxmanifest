@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="06a716be-21c1-4061-ad25-8ca9a78a8aa2"
-    Publisher="CN=RainbowWolfer"
-    Version="1.0.2.0" />
+    Name="25737563C6D7A.E621Downloader"
+    Publisher="CN=08AE6180-69D9-4F58-9803-4063AA29A554"
+    Version="1.0.4.0" />
 
-  <mp:PhoneIdentity PhoneProductId="06a716be-21c1-4061-ad25-8ca9a78a8aa2" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="476c8ad6-24e1-4d83-983a-e0a27dfade12" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>E621Downloader</DisplayName>
-    <PublisherDisplayName>RWolfer</PublisherDisplayName>
+    <PublisherDisplayName>蔚家旭</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
