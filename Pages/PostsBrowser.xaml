@@ -78,17 +78,5 @@
 			</Grid.ColumnDefinitions>
 			<StackPanel x:Name="PaginatorPanel" Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Center"/>
 		</Grid>
-		<controls:TeachingTip x:Name="ToggleThemeTeachingTip2"
-			Title="Notification"
-			Subtitle="Successful Downloading"
-			PreferredPlacement="TopRight"
-			PlacementMargin="20"
-			IsLightDismissEnabled="True"
-			CloseButtonContent="Got it!"
-			Closed="ToggleThemeTeachingTip2_Closed">
-			<controls:TeachingTip.IconSource>
-				<controls:SymbolIconSource Symbol="Accept"/>
-			</controls:TeachingTip.IconSource>
-		</controls:TeachingTip>
 	</Grid>
 </Page>

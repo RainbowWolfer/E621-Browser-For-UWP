@@ -123,6 +123,10 @@ namespace E621Downloader {
 			Instance.TextBlockSearchTags.Text = result;
 		}
 
+		public static string[] GetCurrentTags() {
+			return PostsBrowser.Instance?.Tags ?? Array.Empty<string>();
+		}
+
 		public static ContentDialog InstanceDialog { get; private set; }
 		public static bool IsShowingInstanceDialog { get; private set; }
 
@@ -146,6 +150,10 @@ namespace E621Downloader {
 			InstanceDialog.Hide();
 			InstanceDialog = null;
 			IsShowingInstanceDialog = false;
+		}
+
+		public static void CreateTip_SuccessDownload(Page page) {
+			CreateTip(page, "Notification", "Successfully Start Downloading", Symbol.Accept);
 		}
 
 		public async static void CreateTip(Panel parent, string titile, string subtitle, Symbol? icon = null, string closeText = "Got it!", bool isLightDismissEnabled = false, TeachingTipPlacementMode placement = TeachingTipPlacementMode.TopRight, Thickness? margin = null, int delayTime = 5000) {
@@ -191,9 +199,17 @@ namespace E621Downloader {
 		}
 
 		private static NavigationTransitionInfo CalculateTransition(PageTag from, PageTag to) {
-			return new SlideNavigationTransitionInfo() {
-				Effect = (int)from - (int)to < 0 ? SlideNavigationTransitionEffect.FromRight : SlideNavigationTransitionEffect.FromLeft
-			};
+			if(from == to) {
+				//return new DrillInNavigationTransitionInfo();
+				return new EntranceNavigationTransitionInfo();
+			} else if(from == PageTag.Welcome) {
+				return new EntranceNavigationTransitionInfo();
+			} else {
+				return new SlideNavigationTransitionInfo() {
+					Effect = (int)from - (int)to < 0 ? SlideNavigationTransitionEffect.FromRight : SlideNavigationTransitionEffect.FromLeft
+
+				};
+			}
 		}
 		public static void SelectNavigationItem(PageTag tag) {
 			Instance.JumpToPage(tag);
@@ -271,7 +287,11 @@ namespace E621Downloader {
 					parameter = null;
 					break;
 				case PageTag.UserProfile:
-					target = typeof(UserProfilePage);
+					if(LocalSettings.Current.CheckLocalUser()) {
+						target = typeof(UserProfilePage);
+					} else {
+						target = typeof(LoginPage);
+					}
 					parameter = null;
 					break;
 				case PageTag.Welcome:
@@ -290,7 +310,7 @@ namespace E621Downloader {
 			if(updateNavigationVieItem) {
 				foreach(NavigationViewItem item in MyNavigationView.MenuItems
 					.Concat(MyNavigationView.FooterMenuItems)
-					.Concat(new object[] { MyNavigationView.SettingsItem })
+					.Append(MyNavigationView.SettingsItem)
 				) {
 					if(Convert(item.Tag as string) == currentTag) {
 						item.IsSelected = true;
@@ -308,7 +328,7 @@ namespace E621Downloader {
 			var dialog = new ContentDialog() {
 				Title = "Manage Your Search Tags",
 			};
-			var view = new TagsSelectionView(dialog, PostsBrowser.Instance?.tags ?? Array.Empty<string>());
+			var view = new TagsSelectionView(dialog, PostsBrowser.Instance?.Tags ?? Array.Empty<string>());
 			dialog.Content = view;
 
 			await dialog.ShowAsync();

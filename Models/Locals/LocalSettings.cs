@@ -22,5 +22,16 @@ namespace E621Downloader.Models.Locals {
 		public bool spot_includeQuestoinable;
 		public bool spot_includeExplicit;
 		public int spot_amount;
+
+		public string user_username = "";
+		public string user_api = "";
+
+		public bool CheckLocalUser() {
+			return !string.IsNullOrWhiteSpace(user_username) && !string.IsNullOrWhiteSpace(user_api);
+		}
+		public void SetLocalUser(string username, string api) {
+			user_username = username;
+			user_api = api;
+		}
 	}
 }

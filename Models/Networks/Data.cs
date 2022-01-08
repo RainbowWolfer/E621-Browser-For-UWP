@@ -1,4 +1,5 @@
-﻿using System;
+﻿using E621Downloader.Models.Locals;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,39 +15,31 @@ using Windows.UI.Xaml.Controls;
 namespace E621Downloader.Models.Networks {
 	public static class Data {
 		public const string USERAGENT = "RainbowWolferE621TestApp";
-		public static string ReadURL(string url) {
-			Debug.WriteLine("Sync : " + url);
-			var request = (HttpWebRequest)WebRequest.Create(url);
-			request.UserAgent = USERAGENT;
-			request.Headers.Add("login", "rainbowwolfer");
-			request.Headers.Add("api_key", "WUwPNbGDrfXnQoHfvU1nR3TD");
-			HttpWebResponse response;
-			try {
-				response = (HttpWebResponse)request.GetResponse();
-			} catch(Exception e) {
-				Debug.WriteLine(e.Message);
-				return null;
-			}
-			using(Stream dataStream = response.GetResponseStream()) {
-				using(StreamReader reader = new StreamReader(dataStream)) {
-					string data = reader.ReadToEnd();
-					return data;
-				}
-			}
-		}
 
-		public static async Task<string> ReadURLAsync(string url, CancellationToken token = default) {
+		public static async Task<string> ReadURLAsync(string url, CancellationToken token = default, string username = "", string api = "") {
 			Debug.WriteLine("Async : " + url);
 			var request = (HttpWebRequest)WebRequest.Create(url);
 			request.UserAgent = USERAGENT;
-			request.Headers.Add("login", "rainbowwolfer");
-			request.Headers.Add("api_key", "WUwPNbGDrfXnQoHfvU1nR3TD");
-			HttpWebResponse response;
+			if(string.IsNullOrWhiteSpace(username) && string.IsNullOrWhiteSpace(api)) {
+				if(LocalSettings.Current?.CheckLocalUser() ?? false) {
+					string encoded = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(LocalSettings.Current.user_username + ":" + LocalSettings.Current.user_api));
+					request.Headers.Add("Authorization", "Basic " + encoded);
+				}
+			} else {
+				string encoded = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(username + ":" + api));
+				request.Headers.Add("Authorization", "Basic " + encoded);
+			}
 
+			HttpWebResponse response;
 			try {
 				response = await request.GetResponseAsync() as HttpWebResponse;
-			} catch(Exception e) {
+			} catch(WebException e) {
 				Debug.WriteLine(e.Message);
+				using(var stream = e.Response.GetResponseStream()) {
+					using(var reader = new StreamReader(stream)) {
+						Debug.WriteLine(reader.ReadToEnd());
+					}
+				}
 				return null;
 			}
 			using(Stream dataStream = response.GetResponseStream()) {

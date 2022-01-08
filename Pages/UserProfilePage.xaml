@@ -4,11 +4,55 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:E621Downloader.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:views="using:E621Downloader.Views"
+	mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-		<TextBlock Text="User Here" FontSize="128" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<StackPanel Margin="20">
+			<Image x:Name="AvatarImage" Source="/Assets/e612.png" Width="200" Height="200"/>
+			<TextBlock x:Name="WelcomeText" Text="привет" HorizontalAlignment="Center" FontSize="32" Margin="5,10,5,0" Foreground="#FFD700" PointerEntered="WelcomeText_PointerEntered" PointerExited="WelcomeText_PointerExited"/>
+			<TextBlock x:Name="UsernameText" Text="RainbowWolfer" HorizontalAlignment="Center" Margin="10" FontSize="24"/>
+		</StackPanel>
+		<StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,40">
+			<Button x:Name="FavoritesButton" FontSize="20" HorizontalAlignment="Center" Tapped="FavoritesButton_Tapped">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="Favorites"/>
+					<FontIcon Glyph="&#xE113;" Margin="10,0,0,0"/>
+				</StackPanel>
+			</Button>
+			<Rectangle Fill="Gray" Width="100" Height="3" Margin="10" RadiusX="2" RadiusY="10"/>
+			<Button x:Name="RefreshButton" FontSize="20" HorizontalAlignment="Center" Tapped="RefreshButton_Tapped">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="Refresh"/>
+					<FontIcon Glyph="&#xE72C;" Margin="10,0,0,0"/>
+				</StackPanel>
+			</Button>
+			<Button x:Name="LogoutButton" FontSize="20" HorizontalAlignment="Center" Margin="10" Tapped="LogoutButton_Tapped">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="Logout"/>
+					<FontIcon Glyph="&#xF3B1;" Margin="10,0,0,0"/>
+				</StackPanel>
+			</Button>
+		</StackPanel>
+		<Grid Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
+			<ProgressRing Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Width="200" IsActive="True"/>
+		</Grid>
+		<StackPanel Grid.Column="1" Grid.RowSpan="2" Margin="10">
+			<views:UserInfoLine TitleText="wiki_page_version_count" ContentText="{x:Bind User.wiki_page_version_count}"/>
+		</StackPanel>
+		<StackPanel Grid.Column="2" Grid.RowSpan="2" Margin="10">
+
+		</StackPanel>
 	</Grid>
 </Page>

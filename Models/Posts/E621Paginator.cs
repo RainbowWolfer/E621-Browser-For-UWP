@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
 	public class E621Paginator {
-		public static E621Paginator Get(string[] tags, int page = 1) {
+		public async static Task<E621Paginator> Get(string[] tags, int page = 1) {
 			string tag = "";
 			foreach(var item in tags) {
 				tag += item + " ";
 			}
 			string url = $"https://e621.net/posts?tags={tag}&page={page}";
-			string data = Data.ReadURL(url);
+			string data = await Data.ReadURLAsync(url);
 			int startIndex = data.IndexOf("paginator");
 
 			int currentPageIndex = data.IndexOf("current-page", startIndex);

@@ -38,40 +38,72 @@ namespace E621Downloader.Models.Download {
 			return false;
 		}
 
-		public static async Task<bool> CheckDownloadAvailable() {
+		public static async Task<bool> CheckDownloadAvailableWithDialog(Action failedAcion = null) {
 			MainPage.HideInstantDialog();
 			if(Local.DownloadFolder == null) {
 				if(await new ContentDialog() {
 					Title = "Error",
-					Content = "Download Folder Not Found.\n Would you like to get it set?",
+					Content = "Download Folder Not Found.\nWould you like to get it set?",
 					PrimaryButtonText = "Go To Settings",
 					SecondaryButtonText = "Back",
 				}.ShowAsync() == ContentDialogResult.Primary) {
 					MainPage.SelectNavigationItem(PageTag.Settings);
 				}
+				failedAcion?.Invoke();
 				return false;
 			}
 			return true;
 		}
 
-		public static void RegisterDownload(Post post, IEnumerable<string> tags) {
-			RegisterDownload(post, DownloadsGroup.GetGroupTitle(tags));
+		public static bool CheckDownloadAvailable() => Local.DownloadFolder != null;
+
+		public static async Task<bool> RegisterDownloads(IEnumerable<Post> posts, IEnumerable<string> tags) {
+			return await RegisterDownloads(posts, DownloadsGroup.GetGroupTitle(tags));
 		}
 
-		public async static void RegisterDownload(Post post, string groupTitle = DEFAULTTITLE) {
-			if(string.IsNullOrEmpty(post.file.url)) {
-				return;
+		public static async Task<bool> RegisterDownloads(IEnumerable<Post> posts, string groupTitle = DEFAULTTITLE) {
+			if(!CheckDownloadAvailable()) {
+				return false;
 			}
-			if(await CheckDownloadAvailable()) {
+			StorageFolder folder = await Local.DownloadFolder.CreateFolderAsync(groupTitle, CreationCollisionOption.OpenIfExists);
+			if(folder == null) {
+				return false;
+			}
+			foreach(Post item in posts) {
+				if(string.IsNullOrEmpty(item.file.url)) {
+					continue;
+				}
 				groupTitle = groupTitle.Replace(":", ";");
-				string filename = $"{post.id}.{post.file.ext}";
+				string filename = $"{item.id}.{item.file.ext}";
 				if(string.IsNullOrEmpty(groupTitle)) {
 					groupTitle = DEFAULTTITLE;
 				}
-				StorageFolder folder = await Local.DownloadFolder.CreateFolderAsync(groupTitle, CreationCollisionOption.OpenIfExists);
 				StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
-				RegisterDownload(post, new Uri(post.file.url), file, groupTitle);
+				RegisterDownload(item, new Uri(item.file.url), file, groupTitle);
 			}
+			return true;
+		}
+
+		public static async Task<bool> RegisterDownload(Post post, IEnumerable<string> tags) {
+			return await RegisterDownload(post, DownloadsGroup.GetGroupTitle(tags));
+		}
+
+		public async static Task<bool> RegisterDownload(Post post, string groupTitle = DEFAULTTITLE) {
+			if(string.IsNullOrEmpty(post.file.url)) {
+				return false;
+			}
+			if(!CheckDownloadAvailable()) {
+				return false;
+			}
+			groupTitle = groupTitle.Replace(":", ";");
+			string filename = $"{post.id}.{post.file.ext}";
+			if(string.IsNullOrEmpty(groupTitle)) {
+				groupTitle = DEFAULTTITLE;
+			}
+			StorageFolder folder = await Local.DownloadFolder.CreateFolderAsync(groupTitle, CreationCollisionOption.OpenIfExists);
+			StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+			RegisterDownload(post, new Uri(post.file.url), file, groupTitle);
+			return true;
 		}
 
 		private static DownloadInstance RegisterDownload(Post post, Uri uri, StorageFile file, string groupTitle = DEFAULTTITLE) {
@@ -92,22 +124,22 @@ namespace E621Downloader.Models.Download {
 			return instance;
 		}
 
-		public static DownloadInstance RestoreCompletedDownload(Post post) {
+		//public static DownloadInstance RestoreCompletedDownload(Post post) {
 
-			return null;
-		}
+		//	return null;
+		//}
 
-		public static async Task RestoreIncompletedDownloads() {
-			var list = await Local.GetAllMetaFiles();
-			foreach(MetaFile meta in list) {
-				if(meta.FinishedDownloading) {
-					continue;
-				}
-				Post post = meta.MyPost;
-				string groupName = meta.Group;
-				RegisterDownload(post, groupName);
-			}
-		}
+		//public static async Task RestoreIncompletedDownloads() {
+		//	var list = await Local.GetAllMetaFiles();
+		//	foreach(MetaFile meta in list) {
+		//		if(meta.FinishedDownloading) {
+		//			continue;
+		//		}
+		//		Post post = meta.MyPost;
+		//		string groupName = meta.Group;
+		//		RegisterDownload(post, groupName);
+		//	}
+		//}
 
 		public static DownloadsGroup FindGroup(string title) {
 			return groups.Find(g => g.Title == title);

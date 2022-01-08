@@ -159,9 +159,14 @@ namespace E621Downloader.Views {
 					Icon = new FontIcon() { Glyph = "\uE896" },
 					Foreground = new SolidColorBrush(Colors.White),
 				};
-				item_download.Click += (sender, arg) => {
-					DownloadsManager.RegisterDownload(PostRef);
-					MainPage.CreateTip(page, "Notification", "Successul Downloading", Symbol.Accept);
+				item_download.Click += async (sender, arg) => {
+					if(await DownloadsManager.CheckDownloadAvailableWithDialog()) {
+						if(await DownloadsManager.RegisterDownload(PostRef)) {
+							MainPage.CreateTip_SuccessDownload(page);
+						} else {
+							await MainPage.CreatePopupDialog("Error", "Downloads Failed");
+						}
+					}
 				};
 				flyout.Items.Add(item_download);
 

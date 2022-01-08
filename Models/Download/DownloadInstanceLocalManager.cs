@@ -11,6 +11,7 @@ using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 
 namespace E621Downloader.Models.Download {
+	[Obsolete("May be deleted later", true)]
 	public static class DownloadInstanceLocalManager {
 		public static async void SaveLocal() {
 			var locals = new List<DownloadInstanceLocal>();
@@ -21,18 +22,18 @@ namespace E621Downloader.Models.Download {
 			await FileIO.WriteTextAsync(Local.DownloadsInfoFile, json);
 		}
 
-		public static async void ReadLocal() {
-			Stream stream = await Local.DownloadsInfoFile.OpenStreamForReadAsync();
-			StreamReader reader = new StreamReader(stream);
-			var ReList = JsonConvert.DeserializeObject<List<DownloadInstanceLocal>>(reader.ReadToEnd());
-			foreach(DownloadInstanceLocal item in ReList) {
-				if(item.isCompleted) {
-					DownloadsManager.RestoreCompletedDownload(item.post);
-				} else {
-					DownloadsManager.RegisterDownload(item.post);
-				}
-			}
-		}
+		//public static async void ReadLocal() {
+		//	Stream stream = await Local.DownloadsInfoFile.OpenStreamForReadAsync();
+		//	StreamReader reader = new StreamReader(stream);
+		//	var ReList = JsonConvert.DeserializeObject<List<DownloadInstanceLocal>>(reader.ReadToEnd());
+		//	foreach(DownloadInstanceLocal item in ReList) {
+		//		if(item.isCompleted) {
+		//			DownloadsManager.RestoreCompletedDownload(item.post);
+		//		} else {
+		//			await DownloadsManager.RegisterDownload(item.post);
+		//		}
+		//	}
+		//}
 
 		public static void Restore() {
 			//DownloadsManager.

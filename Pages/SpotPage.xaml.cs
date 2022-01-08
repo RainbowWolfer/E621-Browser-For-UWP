@@ -49,6 +49,7 @@ namespace E621Downloader.Pages {
 			this.InitializeComponent();
 			this.SaveLocalSettingsAsync();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
+			UpdateScoreLimit();
 		}
 		private void Page_Loaded(object sender, RoutedEventArgs e) {
 			AllowWebmCheckBox.IsChecked = LocalSettings.Current.spot_allowWebm;
@@ -188,6 +189,28 @@ namespace E621Downloader.Pages {
 		private void SizeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
 			Size = (int)e.NewValue;
 			ToolTipService.SetToolTip(SizeButton, "Current Size : " + Size);
+		}
+
+		private const int MIN = -40;
+		private const int MAX = 100;
+		private void FromSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
+			if(60 - (int)FromSlider.Value < (int)ToSlider.Value) {
+				ToSlider.Value = 60 - (int)FromSlider.Value;
+			}
+			UpdateScoreLimit();
+		}
+
+		private void ToSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
+			if((int)FromSlider.Value > 60 - (int)ToSlider.Value) {
+				FromSlider.Value = 60 - (int)ToSlider.Value;
+			}
+			UpdateScoreLimit();
+		}
+
+		private void UpdateScoreLimit() {
+			int from = (int)FromSlider.Value * 100;
+			int to = (int)(60 - ToSlider.Value) * 100;
+			ScoreLimitText.Text = $"Score Limit: ({from} - {to})";
 		}
 	}
 }

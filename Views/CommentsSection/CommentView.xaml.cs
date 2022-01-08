@@ -29,15 +29,19 @@ namespace E621Downloader.Views.CommentsSection {
 			this.DataContextChanged += (s, c) => Bindings.Update();
 			LoadAvatar();
 		}
-
+		private string test = "Start";
 		private async void LoadAvatar() {
+			AvatorLoadingRing.IsActive = true;
 			User = await E621User.GetAsync(Comment.creator_id);
+			test += "\n1";
 			string url = "";
 			if(User != null) {
-				url = await E621User.GetAvatorURL(User);
+				url = await E621User.GetAvatorURLAsync(User);
+				test += "\n2";
 			}
 			BitmapImage bi;
 			if(!string.IsNullOrEmpty(url)) {
+				test += "\n3";
 				bi = new BitmapImage() {
 					UriSource = new Uri(this.BaseUri, url)
 				};
@@ -54,15 +58,22 @@ namespace E621Downloader.Views.CommentsSection {
 					MainPage.NavigateToPicturePage();
 				};
 				ToolTipService.SetToolTip(Avatar, $"Post: {User.avatar_id}");
+				test += "\n4";
 			} else {
 				bi = new BitmapImage(new Uri("ms-appx:///Assets/esix2.jpg"));//not working
+				test += "\n5";
 			}
 			Avatar.Source = bi;
+			//AvatorLoadingRing.IsActive = false;
+			test += "\n6";
+			ToolTipService.SetToolTip(ReportButton, test);
 		}
 
 		private void Avatar_ImageOpened(object sender, RoutedEventArgs e) {
 			AvatorLoadingRing.IsActive = false;
 			//Debug.WriteLine((sender as Image).Source);
+			test += "\nopened";
+			ToolTipService.SetToolTip(ReportButton, test);
 		}
 
 		private void DownVoteButton_Tapped(object sender, TappedRoutedEventArgs e) {

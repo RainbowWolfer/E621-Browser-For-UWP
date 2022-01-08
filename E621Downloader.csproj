@@ -142,6 +142,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Locals\LocalSettings.cs" />
+    <Compile Include="Models\Locals\WelcomeInLanguages.cs" />
     <Compile Include="Models\Methods.cs" />
     <Compile Include="Models\MyEnumerable.cs" />
     <Compile Include="Models\Networks\Data.cs" />
@@ -172,6 +173,9 @@
     </Compile>
     <Compile Include="Pages\LibrarySection\Explorer.xaml.cs">
       <DependentUpon>Explorer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\PicturePage.xaml.cs">
       <DependentUpon>PicturePage.xaml</DependentUpon>
@@ -209,6 +213,9 @@
     <Compile Include="Views\DownloadSection\SimpleDownloadProgressBar.xaml.cs">
       <DependentUpon>SimpleDownloadProgressBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LoginHelpSection.xaml.cs">
+      <DependentUpon>LoginHelpSection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TagExpander.xaml.cs">
       <DependentUpon>TagExpander.xaml</DependentUpon>
     </Compile>
@@ -245,6 +252,9 @@
     </Compile>
     <Compile Include="Views\TagsManagementSection\TagsSelectionView.xaml.cs">
       <DependentUpon>TagsSelectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserInfoLine.xaml.cs">
+      <DependentUpon>UserInfoLine.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -340,6 +350,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\PicturePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -385,6 +399,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DownloadSection\SimpleDownloadProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoginHelpSection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -436,6 +454,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\UserInfoLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack">
@@ -445,7 +467,7 @@
       <Version>6.2.9</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
-      <Version>7.1.1</Version>
+      <Version>7.1.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.7.0</Version>
@@ -457,6 +479,9 @@
   <ItemGroup>
     <None Include=".editorconfig" />
     <None Include="E621Downloader_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\Images\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

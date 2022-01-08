@@ -1,0 +1,34 @@
+﻿<Page
+    x:Class="E621Downloader.Pages.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+		<TextBlock Text="SIGN IN" FontSize="64" HorizontalAlignment="Center"/>
+		<TextBlock Text="Username" Margin="0,10,0,5" FontSize="20"/>
+		<TextBox x:Name="UsernameBox" Width="400" Height="35" TextChanged="UsernameBox_TextChanged" Padding="10,6,6,6"/>
+		<TextBlock Text="API Key" Margin="0,10,0,5" FontSize="20"/>
+		<StackPanel Orientation="Horizontal">
+			<TextBox x:Name="APIBox" Width="365" Height="35" CornerRadius="4,0,0,4" TextChanged="APIBox_TextChanged" Padding="10,6,6,6"/>
+			<Button x:Name="PasteButton" Content="&#xE16D;" FontFamily="Segoe MDL2 Assets" Width="35" Height="35" CornerRadius="0,4,4,0" ToolTipService.ToolTip="Paste" Padding="0" Tapped="PasteButton_Tapped"/>
+		</StackPanel>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+			<Button x:Name="SubmitButton" Margin="20" FontSize="24" Height="45" Tapped="SubmitButton_Tapped">
+				<StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+					<TextBlock Text="Submit"/>
+					<FontIcon Glyph="&#xE13D;" Margin="10,0,0,0"/>
+				</StackPanel>
+			</Button>
+			<Button x:Name="HelpButton" Margin="20" FontSize="24" Height="45" Width="45" ToolTipService.ToolTip="Help" Tapped="HelpButton_Tapped">
+				<StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+					<FontIcon Glyph="&#xE11B;"/>
+				</StackPanel>
+			</Button>
+		</StackPanel>
+	</StackPanel>
+</Page>

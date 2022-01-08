@@ -10,9 +10,8 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace E621Downloader.Models.Posts {
 	public class E621User {
-		//https://e621.net/users/306106.json
-		public static async Task<E621User> GetAsync(int id) {
-			string url = $"https://e621.net/users/{id}.json";
+		public static async Task<E621User> GetAsync(string username) {
+			string url = $"https://e621.net/users/{username}.json";
 			string data = await Data.ReadURLAsync(url);
 			if(string.IsNullOrEmpty(data)) {
 				Debug.WriteLine("?????");
@@ -21,15 +20,18 @@ namespace E621Downloader.Models.Posts {
 			return JsonConvert.DeserializeObject<E621User>(data);
 		}
 
-		public static async Task<string> GetAvatorURL(E621User user) {
+		public static async Task<E621User> GetAsync(int id) {
+			return await GetAsync($"{id}");
+		}
+
+		public static async Task<string> GetAvatorURLAsync(E621User user) {
 			string url = $"https://e621.net/posts/{user.avatar_id}.json";
 			string data = await Data.ReadURLAsync(url);
 			if(string.IsNullOrEmpty(data)) {
 				return "ms - appx:///Assets/esix2.jpg";
 			}
 			Post post = JsonConvert.DeserializeObject<PostRoot>(data).post;
-			string preview = post.preview.url;
-			return preview;
+			return post.preview.url;
 		}
 
 		public int wiki_page_version_count;
@@ -45,7 +47,7 @@ namespace E621Downloader.Models.Posts {
 		public int upload_limit;
 		public int id;
 		public DateTime created_at;
-		public object name;
+		public string name;
 		public int level;
 		public int base_upload_limit;
 		public int post_upload_count;
@@ -56,5 +58,47 @@ namespace E621Downloader.Models.Posts {
 		public bool can_upload_free;
 		public string level_string;
 		public int? avatar_id;
+		public bool show_avatars;
+		public bool blacklist_avatars;
+		public bool blacklist_users;
+		public bool description_collapsed_initially;
+		public bool hide_comments;
+		public bool show_hidden_comments;
+		public bool show_post_statistics;
+		public bool has_mail;
+		public bool receive_email_notifications;
+		public bool enable_keyboard_navigation;
+		public bool enable_privacy_mode;
+		public bool style_usernames;
+		public bool enable_auto_complete;
+		public bool has_saved_searches;
+		public bool disable_cropped_thumbnails;
+		public bool disable_mobile_gestures;
+		public bool enable_safe_mode;
+		public bool disable_responsive_mode;
+		public bool disable_post_tooltips;
+		public bool no_flagging;
+		public bool no_feedback;
+		public bool disable_user_dmails;
+		public bool enable_compact_uploader;
+		public DateTime updated_at;
+		public string email;
+		public DateTime last_logged_in_at;
+		public DateTime last_forum_read_at;
+		public string recent_tags;
+		public int comment_threshold;
+		public string default_image_size;
+		public string favorite_tags;
+		public string blacklisted_tags;
+		public string time_zone;
+		public int per_page;
+		public string custom_style;
+		public int favorite_count;
+		public int api_regen_multiplier;
+		public int api_burst_limit;
+		public int remaining_api_limit;
+		public int statement_timeout;
+		public int favorite_limit;
+		public int tag_query_limit;
 	}
 }

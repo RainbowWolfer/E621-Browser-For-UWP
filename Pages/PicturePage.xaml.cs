@@ -139,6 +139,7 @@ namespace E621Downloader.Pages {
 			NoPostGrid.Visibility = showNoPostGrid ? Visibility.Visible : Visibility.Collapsed;
 			MainGrid.Visibility = !showNoPostGrid ? Visibility.Visible : Visibility.Collapsed;
 			TitleText.Text = Title;
+			ScoreText.Text = $"{PostRef?.score?.total ?? 0}";
 			UpdateRatingColor();
 			DescriptionText.Text = PostRef != null && !string.IsNullOrEmpty(PostRef.description) ? PostRef.description : "No Description";
 			if(this.PostRef != null && p != null) {
@@ -275,7 +276,8 @@ namespace E621Downloader.Pages {
 		}
 
 		private void TagsListView_ItemClick(object sender, ItemClickEventArgs e) {
-			MainPage.NavigateToPostsBrowser(1, e.ClickedItem as string);
+			string[] concat_tags = MainPage.GetCurrentTags().Append(e.ClickedItem as string).ToArray();
+			MainPage.NavigateToPostsBrowser(1, concat_tags);
 		}
 
 		private void BlackListButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -344,9 +346,14 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		private void DownloadButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			DownloadsManager.RegisterDownload(PostRef);
-			MainPage.CreateTip(this, "Notification", "Download Successfully Began", Symbol.Accept);
+		private async void DownloadButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(await DownloadsManager.CheckDownloadAvailableWithDialog()) {
+				if(await DownloadsManager.RegisterDownload(PostRef)) {
+					MainPage.CreateTip_SuccessDownload(this);
+				} else {
+					await MainPage.CreatePopupDialog("Error", "Downloads Failed");
+				}
+			}
 		}
 
 		private void MoreInfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -405,6 +412,18 @@ namespace E621Downloader.Pages {
 					CommentsHint.Visibility = Visibility.Visible;
 				}
 			}
+		}
+
+		private async void MoreInfoItem_Click(object sender, RoutedEventArgs e) {
+			if(PostRef == null) {
+				return;
+			}
+			var dialog = new ContentDialog() {
+				Title = "More Info",
+				Content = new PostDebugView(PostRef),
+				PrimaryButtonText = "Back",
+			};
+			await dialog.ShowAsync();
 		}
 
 		private async void BrowserItem_Click(object sender, RoutedEventArgs e) {
@@ -475,6 +494,49 @@ namespace E621Downloader.Pages {
 		private void GotoHomeButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			MainPage.SelectNavigationItem(PageTag.PostsBrowser);
 		}
+
+		private void RelativePanel_RightTapped(object sender, RightTappedRoutedEventArgs e) {
+			string tag = (string)((Panel)sender).Tag;
+			MenuFlyout flyout = new MenuFlyout();
+			MenuFlyoutItem item_copy = new MenuFlyoutItem() {
+				Text = "Copy Tag",
+				Icon = new FontIcon() { Glyph = "\uE8C8" },
+			};
+			item_copy.Click += (s, arg) => {
+				if(PostRef == null) {
+					return;
+				}
+				var dataPackage = new DataPackage() {
+					RequestedOperation = DataPackageOperation.Copy
+				};
+				dataPackage.SetText(tag);
+				Clipboard.SetContent(dataPackage);
+			};
+			flyout.Items.Add(item_copy);
+			MenuFlyoutItem item_concat = new MenuFlyoutItem() {
+				Text = "Concat Search",
+				Icon = new FontIcon() { Glyph = "\uE109" },
+			};
+			item_concat.Click += (s, arg) => {
+				string[] concat_tags = MainPage.GetCurrentTags().Append(tag).ToArray();
+				MainPage.NavigateToPostsBrowser(1, concat_tags);
+			};
+			flyout.Items.Add(item_concat);
+			MenuFlyoutItem item_overlay = new MenuFlyoutItem() {
+				Text = "Overlay Search",
+				Icon = new FontIcon() { Glyph = "\uE71E" },
+			};
+			item_overlay.Click += (s, arg) => {
+				MainPage.NavigateToPostsBrowser(1, tag);
+			};
+			flyout.Items.Add(item_overlay);
+			if(flyout.Items.Count != 0) {
+				FrameworkElement senderElement = sender as FrameworkElement;
+				var p = e.GetPosition(sender as UIElement);
+				flyout.ShowAt(sender as UIElement, p);
+			}
+		}
+
 	}
 	public class GroupTagList: ObservableCollection<string> {
 		public string Key { get; set; }

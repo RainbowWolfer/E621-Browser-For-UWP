@@ -23,13 +23,13 @@ namespace E621Downloader.Models.Posts {
 			}
 		}
 
-		public async Task<string> LoadAvatar() {
-			User = await E621User.GetAsync(creator_id);
-			if(User != null) {
-				return await E621User.GetAvatorURL(User);
-			}
-			return null;
-		}
+		//public async Task<string> LoadAvatar() {
+		//	User = await E621User.GetAsync(creator_id);
+		//	if(User != null) {
+		//		return await E621User.GetAvatorURL(User);
+		//	}
+		//	return null;
+		//}
 
 		public E621User User { get; private set; }
 

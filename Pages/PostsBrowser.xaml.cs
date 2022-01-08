@@ -32,9 +32,9 @@ namespace E621Downloader.Pages {
 		public const float HolderScale = 1;
 
 		public List<Post> Posts { get; private set; }
-		public string[] tags;
-		public int currentPage;
-		public int maxPage;
+		public string[] Tags { get; private set; }
+		private int currentPage;
+		private int maxPage;
 
 		public TagsFilterSystem tagsFilterSystem;
 
@@ -55,7 +55,7 @@ namespace E621Downloader.Pages {
 			this.InitializeComponent();
 			this.Posts = new List<Post>();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
-			this.tags = Array.Empty<string>();
+			this.Tags = Array.Empty<string>();
 			this.tagsFilterSystem = new TagsFilterSystem(HotTagsListView, BlackTagsListView,
 				enable => UpdateImageHolders(CalculateEnabledPosts(), false)
 			);
@@ -85,7 +85,7 @@ namespace E621Downloader.Pages {
 			this.Posts = posts;
 			tagsFilterSystem.RegisterBlackList(posts);
 			if(tags.Length != 0) {
-				this.tags = tags;
+				this.Tags = tags;
 				MainPage.ChangeCurrenttTags(tags);
 			}
 			loaded = 0;
@@ -147,7 +147,7 @@ namespace E621Downloader.Pages {
 			int removed_count = temp.RemoveAll(p => ignoreTypes.Contains(p.file.ext));
 			Debug.WriteLine($"Removed {removed_count} posts");
 			this.Posts = temp;
-			maxPage = E621Paginator.Get(tags).GetMaxPage();
+			maxPage = (await E621Paginator.Get(tags)).GetMaxPage();
 			UpdatePaginator();
 			LoadPosts(this.Posts, tags);
 			MainPage.HideInstantDialog();
@@ -156,7 +156,7 @@ namespace E621Downloader.Pages {
 		private async Task Reload() {
 			MainPage.CreateInstantDialog("Please Wait", "Reloading...");
 			await Task.Delay(20);
-			LoadPosts(this.Posts, tags);
+			LoadPosts(this.Posts, Tags);
 			MainPage.HideInstantDialog();
 		}
 
@@ -235,7 +235,7 @@ namespace E621Downloader.Pages {
 				} else {
 					page = i;
 				}
-				await LoadAsync(page, tags);
+				await LoadAsync(page, Tags);
 			}
 
 			async void P1(Button b) => await NavigatePage(-1);
@@ -288,7 +288,7 @@ namespace E621Downloader.Pages {
 					if(page < 1 || page > maxPage) {
 						await MainPage.CreatePopupDialog("Error", $"({page}) can only be in 1-{maxPage}");
 					} else {
-						await LoadAsync(page, tags);
+						await LoadAsync(page, Tags);
 					}
 				} else {
 					await MainPage.CreatePopupDialog("Error", $"({s.Text}) is not a valid number");
@@ -376,20 +376,21 @@ namespace E621Downloader.Pages {
 					PrimaryButtonText = "Yes",
 					CloseButtonText = "No",
 				}.ShowAsync() == ContentDialogResult.Primary) {
-					if(await DownloadsManager.CheckDownloadAvailable()) {
+					if(await DownloadsManager.CheckDownloadAvailableWithDialog()) {
 						MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
-						await Task.Delay(50);
-						foreach(ImageHolder item in GetSelected()) {
-							DownloadsManager.RegisterDownload(item.PostRef, tags);
-							await Task.Delay(delay);
+						if(await DownloadsManager.RegisterDownloads(GetSelected().Select(i => i.PostRef), Tags)) {
+							MainPage.CreateTip_SuccessDownload(this);
+							SelectToggleButton.IsChecked = false;
+						} else {
+							await MainPage.CreatePopupDialog("Error", "Downloads Failed");
 						}
 						MainPage.HideInstantDialog();
-						SelectToggleButton.IsChecked = false;
-						ShowTeachingTip();
 					}
 				}
 			} else {
-				var dialog = new ContentDialog() {
+				bool downloadResult = false;
+				bool hasShownFail = false;
+				switch(await new ContentDialog() {
 					Title = "Download Selection",
 					Content = new TextBlock() {
 						Text = "Do you want to download for current page or for whole tag(s)?",
@@ -399,43 +400,44 @@ namespace E621Downloader.Pages {
 					CloseButtonText = "Back",
 					PrimaryButtonText = "Whole Tag(s)",
 					SecondaryButtonText = "Current Page",
-				};
-				ContentDialogResult result = await dialog.ShowAsync();
-				switch(result) {
+				}.ShowAsync()) {
 					case ContentDialogResult.None:
-						break;
+						return;
 					case ContentDialogResult.Primary:
-						MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
-						await Task.Delay(50);
-						var all = new List<Post>();
-						for(int i = 1; i <= maxPage; i++) {
-							List<Post> p = await Post.GetPostsByTagsAsync(i, tags);
-							all.AddRange(p);
+						if(await DownloadsManager.CheckDownloadAvailableWithDialog(() => hasShownFail = true)) {
+							MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
+							await Task.Delay(50);
+							var all = new List<Post>();
+							for(int i = 1; i <= maxPage; i++) {
+								List<Post> p = await Post.GetPostsByTagsAsync(i, Tags);
+								all.AddRange(p);
+							}
+							if(await DownloadsManager.RegisterDownloads(all, Tags)) {
+								downloadResult = true;
+							}
+							MainPage.HideInstantDialog();
 						}
-						foreach(Post item in all) {
-							DownloadsManager.RegisterDownload(item, tags);
-							await Task.Delay(delay);
-						}
-						MainPage.HideInstantDialog();
 						break;
 					case ContentDialogResult.Secondary:
 						//get currentpage posts
-						MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
-						await Task.Delay(50);
-						foreach(Post item in Posts) {
-							DownloadsManager.RegisterDownload(item, tags);
-							await Task.Delay(delay);
+						if(await DownloadsManager.CheckDownloadAvailableWithDialog(() => hasShownFail = true)) {
+							MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
+							await Task.Delay(50);
+							if(await DownloadsManager.RegisterDownloads(Posts, Tags)) {
+								downloadResult = true;
+							}
+							MainPage.HideInstantDialog();
 						}
-						MainPage.HideInstantDialog();
 						break;
 					default:
 						throw new Exception();
 				}
-				ShowTeachingTip();
+				if(downloadResult) {
+					MainPage.CreateTip_SuccessDownload(this);
+				} else if(!hasShownFail) {
+					await MainPage.CreatePopupDialog("Error", "Downloads Failed");
+				}
 			}
-		}
-		public void ShowTeachingTip() {
-			ToggleThemeTeachingTip2.IsOpen = true;
 		}
 
 		public List<ImageHolder> GetSelected() {
@@ -512,7 +514,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			await MainPage.CreatePopupDialog(E621Tag.JoinTags(tags), new CurrentTagsInformation(tags));
+			await MainPage.CreatePopupDialog(E621Tag.JoinTags(Tags), new CurrentTagsInformation(Tags));
 		}
 
 		private void ToggleThemeTeachingTip2_ActionButtonClick(Microsoft.UI.Xaml.Controls.TeachingTip sender, object args) {

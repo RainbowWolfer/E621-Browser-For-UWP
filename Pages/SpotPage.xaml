@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:E621Downloader.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -63,7 +63,20 @@
 					</StackPanel>
 					<StackPanel Grid.Row="4" Grid.Column="1" Margin="10,0,40,0">
 						<TextBlock x:Name="ScoreLimitText" Text="Score Limit:" FontSize="20"/>
-						<controls:RangeSelector x:Name="ScoreRangeSlider" Minimum="-4000" Maximum="10000" StepFrequency="100" RangeStart="0" RangeEnd="10000" ValueChanged="ScoreRangeSlider_ValueChanged" Margin="0,5,0,0"/>
+						<Grid Margin="10,5,0,0">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="auto"/>
+								<RowDefinition Height="auto"/>
+							</Grid.RowDefinitions>
+							<TextBlock Text="From:" Margin="5" VerticalAlignment="Center" FontSize="16"/>
+							<TextBlock Text="To:" Grid.Row="1" Margin="5" VerticalAlignment="Center" FontSize="16"/>
+							<Slider x:Name="FromSlider" ValueChanged="FromSlider_ValueChanged" Grid.Column="1" Minimum="-40" Maximum="100" StepFrequency="1" Value="0" IsThumbToolTipEnabled="False" VerticalAlignment="Center"/>
+							<Slider x:Name="ToSlider" ValueChanged="ToSlider_ValueChanged" Grid.Column="1" Grid.Row="1" Minimum="-40" Maximum="100" StepFrequency="1" Value="-40" FlowDirection="RightToLeft" IsThumbToolTipEnabled="False" VerticalAlignment="Center"/>
+						</Grid>
 					</StackPanel>
 					<Button x:Name="StartButton" Tapped="StartButton_Tapped" Grid.Column="1" Grid.Row="5" Content="Get Random" HorizontalAlignment="Stretch" FontSize="18" Margin="10" VerticalAlignment="Bottom"/>
 					<RepeatButton x:Name="SizeButton" Width="40" Height="40" FontFamily="Segoe MDL2 Assets" Content="&#xE2B2;" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" Background="Transparent" BorderThickness="0" Click="SizeButton_Click" ToolTipService.ToolTip="Current Size : 200" Grid.Column="0" Grid.Row="6" Padding="0"/>

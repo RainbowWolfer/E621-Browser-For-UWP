@@ -9,17 +9,6 @@ using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
 	public class Post {
-		public static List<Post> GetPostsByTags(int page, params string[] tags) {
-			if(page <= 0) {
-				throw new Exception("Page not valid");
-			}
-			string url = $"https://e621.net/posts.json?page={page}&tags=";
-			tags.ToList().ForEach((t) => url += t + "+");
-			CheckSafe(ref url);
-
-			string data = Data.ReadURL(url);
-			return data == null ? new List<Post>() : JsonConvert.DeserializeObject<PostsRoot>(data).posts;
-		}
 		public async static Task<List<Post>> GetPostsByTagsAsync(int page, params string[] tags) {
 			if(page <= 0) {
 				throw new Exception("Page not valid");
