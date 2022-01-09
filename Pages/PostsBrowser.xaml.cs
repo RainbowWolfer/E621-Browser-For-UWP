@@ -105,7 +105,9 @@ namespace E621Downloader.Pages {
 					var holder = new ImageHolder(this, item, this.Posts.IndexOf(item));
 					MyWrapGrid.Children.Add(holder);
 					SetImageItemSize(isHeightFixed, holder, item.sample);
-					holder.OnImagedLoaded += (b) => tb_ArticlesLoadCount.Text = "Posts : " + ++loaded + "/" + this.Posts.Count;
+					holder.OnImagedLoaded += (b) => {
+						tb_ArticlesLoadCount.Text = $"Posts : {++loaded}/{this.Posts.Count}";
+					};
 					ToolTipService.SetToolTip(holder, $"ID: {item.id}\nScore: {item.score.total}");
 				}
 			} else {

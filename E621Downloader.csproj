@@ -154,6 +154,7 @@
     <Compile Include="Models\PostsList.cs" />
     <Compile Include="Models\Posts\E621Comment.cs" />
     <Compile Include="Models\Posts\E621Paginator.cs" />
+    <Compile Include="Models\Posts\E621Pool.cs" />
     <Compile Include="Models\Posts\E621Tag.cs" />
     <Compile Include="Models\HTMLConvertor.cs" />
     <Compile Include="Models\ImageConvertor.cs" />
@@ -189,9 +190,6 @@
     <Compile Include="Pages\SubscriptionPage.xaml.cs">
       <DependentUpon>SubscriptionPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\TestPage.xaml.cs">
-      <DependentUpon>TestPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\UserProfilePage.xaml.cs">
       <DependentUpon>UserProfilePage.xaml</DependentUpon>
     </Compile>
@@ -212,6 +210,9 @@
     </Compile>
     <Compile Include="Views\DownloadSection\SimpleDownloadProgressBar.xaml.cs">
       <DependentUpon>SimpleDownloadProgressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ImageHolderForPicturePage.xaml.cs">
+      <DependentUpon>ImageHolderForPicturePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginHelpSection.xaml.cs">
       <DependentUpon>LoginHelpSection.xaml</DependentUpon>
@@ -370,10 +371,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\TestPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\UserProfilePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -399,6 +396,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DownloadSection\SimpleDownloadProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ImageHolderForPicturePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

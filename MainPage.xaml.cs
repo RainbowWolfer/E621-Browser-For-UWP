@@ -42,8 +42,11 @@ using SymbolIconSource = Microsoft.UI.Xaml.Controls.SymbolIconSource;
 
 namespace E621Downloader {
 	public sealed partial class MainPage: Page {
+		public event Action UserStartChanging;
+		public event Action UserChangedInfoComplete;
+		public event Action<BitmapImage> UserChangedAvatarComplete;
+
 		public static MainPage Instance;
-		private const string url = "https://e621.net/posts?tags=skyleesfm+order%3Ascore";
 		public PostsBrowser postsBrowser;
 
 		public bool IsFullScreen {
@@ -113,6 +116,35 @@ namespace E621Downloader {
 			//HideInstantDialog();
 
 			MyFrame.Navigate(typeof(WelcomePage), long.Parse(result));
+			ChangeUser(LocalSettings.Current.user_username);
+		}
+
+		private bool updatingUser = false;
+		public async void ChangeUser(string username) {
+			if(updatingUser) {
+				return;
+			}
+			UserPicture.ProfilePicture = new BitmapImage(new Uri(E621User.DEFAULT_AVATAR));
+			if(string.IsNullOrWhiteSpace(username)) {
+				ToolTipService.SetToolTip(UserIconItem, null);
+				UserChangedInfoComplete?.Invoke();
+				UserChangedAvatarComplete?.Invoke(UserPicture.ProfilePicture as BitmapImage);
+				return;
+			}
+			ToolTipService.SetToolTip(UserIconItem, username);
+			UserStartChanging?.Invoke();
+			E621User.Current = await E621User.GetAsync(username);
+			UserChangedInfoComplete?.Invoke();
+			string url = await E621User.GetAvatarURLAsync(E621User.Current);
+			BitmapImage image = new BitmapImage(new Uri(this.BaseUri, url));
+			image.ImageOpened += (s, e) => {
+				UserChangedAvatarComplete?.Invoke(image);
+				updatingUser = false;
+			};
+			UserPicture.ProfilePicture = image;
+		}
+		public static BitmapImage GetUserIcon() {
+			return (BitmapImage)Instance.UserPicture.ProfilePicture;
 		}
 
 		public static void ChangeCurrenttTags(params string[] strs) {
@@ -207,7 +239,6 @@ namespace E621Downloader {
 			} else {
 				return new SlideNavigationTransitionInfo() {
 					Effect = (int)from - (int)to < 0 ? SlideNavigationTransitionEffect.FromRight : SlideNavigationTransitionEffect.FromLeft
-
 				};
 			}
 		}

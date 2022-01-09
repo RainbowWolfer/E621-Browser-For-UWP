@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
+using E621Downloader.Views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,21 +21,56 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {
 	public sealed partial class UserProfilePage: Page {
-		public E621User User { get; set; }
 		public UserProfilePage() {
 			this.InitializeComponent();
-			if(User != null) {
-				FieldInfo[] fields = User.GetType().GetFields();
-				foreach(FieldInfo field in fields) {
-					Debug.WriteLine($"{field.Name} - {field.GetValue(this)}");
-				}
-			}
+			this.NavigationCacheMode = NavigationCacheMode.Enabled;
+			MainPage.Instance.UserStartChanging += () => {
+				AvatarLoadingRing.IsActive = true;
+				InfoLoadingRing.IsActive = true;
+				AvatarImage.ImageSource = null;
+				UpdateUserInfo(null);
+			};
+			MainPage.Instance.UserChangedInfoComplete += () => {
+				UpdateUserInfo(E621User.Current);
+				InfoLoadingRing.IsActive = false;
+			};
+			MainPage.Instance.UserChangedAvatarComplete += (image) => {
+				AvatarLoadingRing.IsActive = false;
+				AvatarImage.ImageSource = image;
+			};
 		}
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			var pair = WelcomeInLanguages.GetRandomWelcomePair();
 			WelcomeText.Text = pair.Value;
 			ToolTipService.SetToolTip(WelcomeText, $"\"Welcome\" in {pair.Key}");
+
+			UpdateUserInfo(E621User.Current);
+
+			AvatarLoadingRing.IsActive = false;
+			InfoLoadingRing.IsActive = false;
+			AvatarImage.ImageSource = MainPage.GetUserIcon();
+		}
+
+		private const int MAXITEMINPANEL = 35;
+		private void UpdateUserInfo(E621User user) {
+			PanelLeft.Children.Clear();
+			PanelRight.Children.Clear();
+			if(user != null) {
+				Panel targetPanel = PanelLeft;
+				FieldInfo[] array = user.GetType().GetFields();
+				for(int i = 0; i < array.Length; i++) {
+					FieldInfo field = array[i];
+					string title = field.Name.Replace("_", " ").ToUpperInvariant();
+					string content = field.GetValue(E621User.Current).ToString();
+					targetPanel.Children.Add(new UserInfoLine(title, content));
+					if(i >= MAXITEMINPANEL) {
+						targetPanel = PanelRight;
+					}
+				}
+			} else {
+				//load default
+			}
 		}
 
 		private async void LogoutButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -47,6 +83,7 @@ namespace E621Downloader.Pages {
 				LocalSettings.Current.SetLocalUser("", "");
 				LocalSettings.Save();
 				MainPage.SelectNavigationItem(PageTag.UserProfile);
+				MainPage.Instance.ChangeUser(null);
 			}
 		}
 
@@ -65,7 +102,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			
+			MainPage.Instance.ChangeUser(LocalSettings.Current.user_username);
 		}
 	}
 }

@@ -24,15 +24,22 @@ namespace E621Downloader.Models.Posts {
 			return await GetAsync($"{id}");
 		}
 
-		public static async Task<string> GetAvatorURLAsync(E621User user) {
+		public const string DEFAULT_AVATAR = "ms-appx:///Assets/esix2.jpg";
+		public static async Task<string> GetAvatarURLAsync(E621User user) {
 			string url = $"https://e621.net/posts/{user.avatar_id}.json";
 			string data = await Data.ReadURLAsync(url);
-			if(string.IsNullOrEmpty(data)) {
-				return "ms - appx:///Assets/esix2.jpg";
+			if(string.IsNullOrWhiteSpace(data)) {
+				return DEFAULT_AVATAR;
 			}
 			Post post = JsonConvert.DeserializeObject<PostRoot>(data).post;
-			return post.preview.url;
+			string preview = post.preview.url;
+			if(string.IsNullOrWhiteSpace(preview)) {
+				return DEFAULT_AVATAR;
+			}
+			return preview;
 		}
+
+		public static E621User Current { get; set; }
 
 		public int wiki_page_version_count;
 		public int artist_version_count;
@@ -57,7 +64,7 @@ namespace E621Downloader.Models.Posts {
 		public bool can_approve_posts;
 		public bool can_upload_free;
 		public string level_string;
-		public int? avatar_id;
+		public string avatar_id;
 		public bool show_avatars;
 		public bool blacklist_avatars;
 		public bool blacklist_users;

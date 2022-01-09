@@ -36,7 +36,7 @@ namespace E621Downloader.Views.CommentsSection {
 			test += "\n1";
 			string url = "";
 			if(User != null) {
-				url = await E621User.GetAvatorURLAsync(User);
+				url = await E621User.GetAvatarURLAsync(User);
 				test += "\n2";
 			}
 			BitmapImage bi;
@@ -52,7 +52,7 @@ namespace E621Downloader.Views.CommentsSection {
 						return;
 					}
 					MainPage.CreateInstantDialog("Please Wait...", $"Loading Post: {User.avatar_id}");
-					Post post = await Post.GetPostByID(User.avatar_id.Value);
+					Post post = await Post.GetPostByIDAsync(User.avatar_id);
 					MainPage.HideInstantDialog();
 					MainPage.Instance.parameter_picture = post;
 					MainPage.NavigateToPicturePage();

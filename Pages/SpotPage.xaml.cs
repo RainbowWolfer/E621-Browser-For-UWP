@@ -109,7 +109,7 @@ namespace E621Downloader.Pages {
 
 		private async void StartButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			LoadingRing.IsActive = true;
-			List<Post> posts = await Post.GetPostsByRandom(CurrentAmount, selectedTags);
+			List<Post> posts = await Post.GetPostsByRandomAsync(CurrentAmount, selectedTags);
 			if(posts == null || posts.Count == 0) {
 				MainPage.CreateInstantDialog("Error", "There is No Post(s) Found");
 			} else {

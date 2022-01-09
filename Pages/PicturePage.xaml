@@ -7,7 +7,7 @@
 	xmlns:posts="using:E621Downloader.Models.Posts"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:commentssection="using:E621Downloader.Views.CommentsSection" 
-	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls" xmlns:views="using:E621Downloader.Views"
 	mc:Ignorable="d"
 	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
 	d:RequestedTheme="Dark">
@@ -191,7 +191,7 @@
 					</GroupStyle>
 				</ListView.GroupStyle>
 			</ListView>
-			<SplitView x:Name="MainSplitView" DisplayMode="Overlay" Grid.Column="1" Grid.Row="1" PanePlacement="Right" OpenPaneLength="500" Margin="0,0,-1,0">
+			<SplitView x:Name="MainSplitView" DisplayMode="Overlay" Grid.Column="1" Grid.Row="1" PanePlacement="Right" OpenPaneLength="550" Margin="0,0,-1,0">
 				<SplitView.Pane>
 					<Grid>
 						<Pivot x:Name="InformationPivot" SelectionChanged="InformationPivot_SelectionChanged">
@@ -218,8 +218,85 @@
 									<TextBlock Visibility="Collapsed" x:Name="CommentsHint" Text="No Comments Yet" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 								</Grid>
 							</PivotItem>
+							<PivotItem Header="Relations">
+								<ScrollViewer>
+									<StackPanel>
+										<controls:Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,5,0,5" IsExpanded="True">
+											<controls:Expander.Header>
+												<StackPanel Orientation="Horizontal">
+													<FontIcon Glyph="&#xE292;" FontSize="22"/>
+													<TextBlock Text="Pools" Margin="15,0,0,0" FontSize="22"/>
+												</StackPanel>
+											</controls:Expander.Header>
+											<controls:Expander.Content>
+												<Grid>
+													<TextBlock x:Name="PoolsHintText" Text="Not Found" HorizontalAlignment="Center" Visibility="Collapsed"/>
+													<ListView x:Name="PoolsListView" SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind PostRef.pools}" ItemClick="PoolsListView_ItemClick">
+														<ListView.ItemContainerStyle>
+															<Style TargetType="ListViewItem">
+																<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+															</Style>
+														</ListView.ItemContainerStyle>
+														<ListView.ItemTemplate>
+															<DataTemplate x:DataType="x:String">
+																<Grid ToolTipService.ToolTip="Description: ???&#x0a;Date: 2002-01-21" Tag="{x:Bind ToString()}">
+																	<FontIcon Glyph="&#xE158;" HorizontalAlignment="Left"/>
+																	<TextBlock Text="#" FontSize="18" Margin="35,0,0,0"/>
+																	<TextBlock Text="{x:Bind ToString()}" FontSize="18" Margin="47,0,0,0"/>
+																	<FontIcon Glyph="&#xE0E3;" HorizontalAlignment="Right" FontSize="18"/>
+																</Grid>
+															</DataTemplate>
+														</ListView.ItemTemplate>
+													</ListView>
+												</Grid>
+											</controls:Expander.Content>
+										</controls:Expander>
+										<controls:Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,5,0,5" IsExpanded="True">
+											<controls:Expander.Header>
+												<StackPanel Orientation="Horizontal">
+													<FontIcon Glyph="&#xE8CF;" FontSize="22"/>
+													<TextBlock Text="Parent" Margin="15,0,0,0" FontSize="22"/>
+												</StackPanel>
+											</controls:Expander.Header>
+											<controls:Expander.Content>
+												<Grid>
+													<TextBlock x:Name="ParentHintText" Text="Not Found" HorizontalAlignment="Center"/>
+													<GridViewItem x:Name="ParentImageHolder" Height="330" Width="400" Tapped="ParentImageHolder_Tapped">
+														<views:ImageHolderForPicturePage Post_ID="{x:Bind PostRef.relationships.parent_id}"/>
+													</GridViewItem>
+												</Grid>
+											</controls:Expander.Content>
+										</controls:Expander>
+										<controls:Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,5,0,5" IsExpanded="True">
+											<controls:Expander.Header>
+												<StackPanel Orientation="Horizontal">
+													<FontIcon Glyph="&#xE902;" FontSize="22"/>
+													<TextBlock Text="Children" Margin="15,0,0,0" FontSize="22"/>
+												</StackPanel>
+											</controls:Expander.Header>
+											<controls:Expander.Content>
+												<Grid>
+													<TextBlock x:Name="ChildrenHintText" Text="Not Found" HorizontalAlignment="Center"/>
+													<GridView x:Name="ChildrenGridView" ItemsSource="{x:Bind PostRef.relationships.children}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="ChildrenGridView_ItemClick">
+														<GridView.ItemContainerStyle>
+															<Style TargetType="GridViewItem">
+																<Setter Property="Margin" Value="5"/>
+															</Style>
+														</GridView.ItemContainerStyle>
+														<GridView.ItemTemplate>
+															<DataTemplate x:DataType="x:String">
+																<views:ImageHolderForPicturePage Height="220" Width="235" Post_ID="{x:Bind ToString()}"/>
+															</DataTemplate>
+														</GridView.ItemTemplate>
+													</GridView>
+												</Grid>
+											</controls:Expander.Content>
+										</controls:Expander>
+									</StackPanel>
+								</ScrollViewer>
+							</PivotItem>
 						</Pivot>
-						<ToggleSwitch Height="38" x:Name="SplitViewModeSwitch" IsOn="True" OnContent="Overlay" OffContent="Inline" FlowDirection="RightToLeft" Margin="0,10,20,0" Toggled="SplitViewModeSwitch_Toggled" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+						<ToggleSwitch Height="38" x:Name="SplitViewModeSwitch" IsOn="True" OnContent="Overlay" OffContent="Inline" FlowDirection="RightToLeft" Margin="0,5,20,0" Toggled="SplitViewModeSwitch_Toggled" HorizontalAlignment="Right" VerticalAlignment="Top"/>
 					</Grid>
 				</SplitView.Pane>
 				<SplitView.Content>

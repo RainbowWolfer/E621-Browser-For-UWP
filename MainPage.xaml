@@ -37,10 +37,10 @@
 				</StackPanel>
 			</controls:NavigationView.PaneFooter>
 			<controls:NavigationView.FooterMenuItems>
-				<controls:NavigationViewItem Tag="6" ToolTipService.ToolTip="Rainbow Wolfer" ToolTipService.Placement="Bottom">
+				<controls:NavigationViewItem x:Name="UserIconItem" Tag="6" ToolTipService.Placement="Bottom">
 					<controls:NavigationViewItem.Content>
 						<Grid>
-							<PersonPicture ProfilePicture="/Assets/e612.png" DisplayName="Rainbow Wolfer" Initials="E621" Height="30" Width="30"/>
+							<PersonPicture Name="UserPicture" Initials="..." Height="30" Width="30"/>
 						</Grid>
 					</controls:NavigationViewItem.Content>
 				</controls:NavigationViewItem>

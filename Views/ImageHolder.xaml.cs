@@ -37,15 +37,19 @@ namespace E621Downloader.Views {
 		public int SpanCol {
 			get => _spanCol;
 			set {
-				_spanCol = value;
-				VariableSizedWrapGrid.SetColumnSpan(this, value);
+				_spanCol = Math.Clamp(value, 5, 15);
+				//_spanCol = value;
+				Debug.WriteLine($"COL: {_spanCol}");
+				VariableSizedWrapGrid.SetColumnSpan(this, _spanCol);
 			}
 		}
 		public int SpanRow {
 			get => _spanRow;
 			set {
-				_spanRow = value;
-				VariableSizedWrapGrid.SetRowSpan(this, value);
+				_spanRow = Math.Clamp(value, 4, 15);
+				//_spanRow = value;
+				Debug.WriteLine($"COL: {_spanRow}");
+				VariableSizedWrapGrid.SetRowSpan(this, _spanRow);
 			}
 		}
 		public string LoadUrl => PostRef.sample.url;

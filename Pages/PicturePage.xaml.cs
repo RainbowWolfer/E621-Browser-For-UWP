@@ -142,6 +142,7 @@ namespace E621Downloader.Pages {
 			ScoreText.Text = $"{PostRef?.score?.total ?? 0}";
 			UpdateRatingColor();
 			DescriptionText.Text = PostRef != null && !string.IsNullOrEmpty(PostRef.description) ? PostRef.description : "No Description";
+			UpdateOthers();
 			if(this.PostRef != null && p != null) {
 				MainSplitView.IsPaneOpen = false;
 				//InformationPivot.SelectedIndex = 0;
@@ -225,6 +226,23 @@ namespace E621Downloader.Pages {
 			LoadingSection.Visibility = Visibility.Collapsed;
 			commentsLoading = false;
 			commentsLoaded = true;
+		}
+
+		private void UpdateOthers() {
+			if(PostRef == null) {
+				return;
+			}
+			bool pool = PostRef.pools != null && PostRef.pools.Count > 0;
+			PoolsHintText.Visibility = !pool ? Visibility.Visible : Visibility.Collapsed;
+			PoolsListView.Visibility = pool ? Visibility.Visible : Visibility.Collapsed;
+
+			bool parent = !string.IsNullOrWhiteSpace(PostRef.relationships.parent_id);
+			ParentHintText.Visibility = !parent ? Visibility.Visible : Visibility.Collapsed;
+			ParentImageHolder.Visibility = parent ? Visibility.Visible : Visibility.Collapsed;
+
+			bool children = PostRef.relationships.children != null && PostRef.relationships.children.Count > 0;
+			ChildrenHintText.Visibility = !children ? Visibility.Visible : Visibility.Collapsed;
+			ChildrenGridView.Visibility = children ? Visibility.Visible : Visibility.Collapsed;
 		}
 
 		private void MainImage_ImageOpened(object sender, RoutedEventArgs e) {
@@ -537,6 +555,21 @@ namespace E621Downloader.Pages {
 			}
 		}
 
+		private void PoolsListView_ItemClick(object sender, ItemClickEventArgs e) {
+			//MainPage.NavigateToPostsBrowser();
+			MainPage.SelectNavigationItem(PageTag.PostsBrowser);
+		}
+
+		private void ParentImageHolder_Tapped(object sender, TappedRoutedEventArgs e) {
+			//MainPage.Instance.parameter_picture;
+			//MainPage.NavigateToPicturePage();
+			Debug.WriteLine(ParentImageHolder.Content.GetType());
+			
+		}
+
+		private void ChildrenGridView_ItemClick(object sender, ItemClickEventArgs e) {
+			Debug.WriteLine(e.ClickedItem.GetType());
+		}
 	}
 	public class GroupTagList: ObservableCollection<string> {
 		public string Key { get; set; }

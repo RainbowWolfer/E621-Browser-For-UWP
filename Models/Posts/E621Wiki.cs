@@ -17,6 +17,11 @@ namespace E621Downloader.Models.Posts {
 				found.body = wikiDictionary[tag];
 				return new E621Wiki[] { found };
 			}
+			if(tag.StartsWith("fav:")) {
+				E621Wiki found = GetDefault(tag);
+				found.body = $"Favorites of \"{tag.Substring(4)}\"";
+				return new E621Wiki[] { found };
+			}
 			string url = $"https://e621.net/wiki_pages.json?search[title]={tag}";
 			string data = await Data.ReadURLAsync(url, token);
 			if(data == "[]") {

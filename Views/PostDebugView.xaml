@@ -9,7 +9,7 @@
     d:DesignHeight="400"
     d:DesignWidth="200">
 
-	<ScrollViewer>
+	<ScrollViewer x:Name="Scroll">
 		<StackPanel x:Name="MainStackPanel"/>
 	</ScrollViewer>
 </UserControl>

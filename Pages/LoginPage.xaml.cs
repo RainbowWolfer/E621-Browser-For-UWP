@@ -63,11 +63,10 @@ namespace E621Downloader.Pages {
 			string data = await Data.ReadURLAsync("https://e621.net/favorites.json", default, username, apiKey);
 			MainPage.HideInstantDialog();
 			if(data != null) {
-				//successful logged in
 				LocalSettings.Current.SetLocalUser(username, apiKey);
 				LocalSettings.Save();
-				//jump to PostsBrowser showing favorites
 				MainPage.SelectNavigationItem(PageTag.UserProfile);
+				MainPage.Instance.ChangeUser(username);
 			} else {
 				await MainPage.CreatePopupDialog("Sign In Failed", "Please Check that your username and your api_key copied from the website is correct");
 			}

@@ -20,7 +20,14 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<StackPanel Margin="20">
-			<Image x:Name="AvatarImage" Source="/Assets/e612.png" Width="200" Height="200"/>
+			<Grid Width="200" Height="200">
+				<ProgressRing x:Name="AvatarLoadingRing" IsActive="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="20"/>
+				<Border CornerRadius="10">
+					<Border.Background>
+						<ImageBrush x:Name="AvatarImage" ImageSource="/Assets/e612.png"/>
+					</Border.Background>
+				</Border>
+			</Grid>
 			<TextBlock x:Name="WelcomeText" Text="привет" HorizontalAlignment="Center" FontSize="32" Margin="5,10,5,0" Foreground="#FFD700" PointerEntered="WelcomeText_PointerEntered" PointerExited="WelcomeText_PointerExited"/>
 			<TextBlock x:Name="UsernameText" Text="RainbowWolfer" HorizontalAlignment="Center" Margin="10" FontSize="24"/>
 		</StackPanel>
@@ -46,13 +53,21 @@
 			</Button>
 		</StackPanel>
 		<Grid Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
-			<ProgressRing Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Width="200" IsActive="True"/>
+			<ProgressRing x:Name="InfoLoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Width="200" IsActive="True"/>
 		</Grid>
-		<StackPanel Grid.Column="1" Grid.RowSpan="2" Margin="10">
-			<views:UserInfoLine TitleText="wiki_page_version_count" ContentText="{x:Bind User.wiki_page_version_count}"/>
+		<StackPanel x:Name="PanelLeft" Grid.Column="1" Grid.RowSpan="2" Margin="10">
+			<StackPanel.ChildrenTransitions>
+				<TransitionCollection>
+					<EntranceThemeTransition IsStaggeringEnabled="True" />
+				</TransitionCollection>
+			</StackPanel.ChildrenTransitions>
 		</StackPanel>
-		<StackPanel Grid.Column="2" Grid.RowSpan="2" Margin="10">
-
+		<StackPanel x:Name="PanelRight" Grid.Column="2" Grid.RowSpan="2" Margin="10">
+			<StackPanel.ChildrenTransitions>
+				<TransitionCollection>
+					<EntranceThemeTransition IsStaggeringEnabled="True" />
+				</TransitionCollection>
+			</StackPanel.ChildrenTransitions>
 		</StackPanel>
 	</Grid>
 </Page>

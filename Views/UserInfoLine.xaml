@@ -9,13 +9,13 @@
     d:DesignHeight="50"
     d:DesignWidth="400"
     d:RequestedTheme="Dark">
-
-	<Grid>
+ 
+	<Grid Margin="60,0,0,0">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		<TextBlock x:Name="TitleTextBlock" Text="Wiki Page Version Count" TextAlignment="Right"/>
-		<TextBlock x:Name="ContentTextBlock" Text="2" TextAlignment="Left" Grid.Column="1" Margin="10,0,0,0"/>
+		<TextBlock x:Name="TitleTextBlock" Text="Wiki Page Version Count" TextAlignment="Right" FontSize="15.5"/>
+		<TextBlock x:Name="ContentTextBlock" Text="2" TextAlignment="Left" Grid.Column="1" Margin="10,0,0,0" FontSize="15.5"/>
 	</Grid>
 </UserControl>

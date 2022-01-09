@@ -31,7 +31,7 @@ namespace E621Downloader.Models.Posts {
 			string data = await Data.ReadURLAsync(url);
 			return data == null ? new List<Post>() : JsonConvert.DeserializeObject<PostsRoot>(data).posts;
 		}
-		public static async Task<List<Post>> GetPostsByRandom(int amount, params string[] tags) {
+		public static async Task<List<Post>> GetPostsByRandomAsync(int amount, params string[] tags) {
 			//e621.net/posts?tags = order:random + limit:20
 			string url = $"https://e621.net/posts.json?tags=order:random+limit:{amount}+";
 			tags.ToList().ForEach(t => url += $"{t}+");
@@ -40,7 +40,7 @@ namespace E621Downloader.Models.Posts {
 			return data == null ? new List<Post>() : JsonConvert.DeserializeObject<PostsRoot>(data).posts;
 		}
 
-		public static async Task<Post> GetPostByID(int id) {
+		public static async Task<Post> GetPostByIDAsync(string id) {
 			string url = $"https://e621.net/posts/{id}.json";
 			string data = await Data.ReadURLAsync(url);
 			return JsonConvert.DeserializeObject<PostRoot>(data).post;
@@ -66,7 +66,7 @@ namespace E621Downloader.Models.Posts {
 		public string rating;
 		public int fav_count;
 		public List<string> sources;
-		public List<int> pools;
+		public List<string> pools;
 		public Relationships relationships;
 		public int? approver_id;
 		public int uploader_id;
@@ -147,7 +147,7 @@ namespace E621Downloader.Models.Posts {
 		public string parent_id;
 		public bool has_children;
 		public bool has_active_children;
-		public List<int> children;
+		public List<string> children;
 	}
 
 

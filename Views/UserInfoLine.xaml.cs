@@ -35,5 +35,10 @@ namespace E621Downloader.Views {
 		public UserInfoLine() {
 			this.InitializeComponent();
 		}
+		public UserInfoLine(string title, string content) {
+			this.InitializeComponent();
+			TitleText = title;
+			ContentText = content;
+		}
 	}
 }
