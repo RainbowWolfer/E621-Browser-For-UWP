@@ -64,6 +64,7 @@ namespace E621Downloader.Pages {
 		protected async override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			object p = e.Parameter;
+			MainPage.ClearPicturePageParameter();
 			bool showNoPostGrid = false;
 			if(p == null && PostRef == null && PostsBrowser.Instance != null && PostsBrowser.Instance.Posts != null && PostsBrowser.Instance.Posts.Count > 0) {
 				p = PostsBrowser.Instance.Posts[0];
@@ -141,6 +142,8 @@ namespace E621Downloader.Pages {
 			TitleText.Text = Title;
 			ScoreText.Text = $"{PostRef?.score?.total ?? 0}";
 			UpdateRatingColor();
+			UpdateTypeIcon();
+			UpdateSoundIcon();
 			DescriptionText.Text = PostRef != null && !string.IsNullOrEmpty(PostRef.description) ? PostRef.description : "No Description";
 			UpdateOthers();
 			if(this.PostRef != null && p != null) {
@@ -153,6 +156,59 @@ namespace E621Downloader.Pages {
 				if(InformationPivot.SelectedIndex == 1) {
 					LoadCommentsAsync();
 				}
+
+				ChildrenGridView.Items.Clear();
+				foreach(string item in this.PostRef.relationships.children) {
+					var i = new ImageHolderForPicturePage() {
+						Post_ID = item,
+						Height = 220,
+						Width = 235,
+						Origin = this.PostRef,
+					};
+					ChildrenGridView.Items.Add(i);
+				}
+				ParentImageHolder.Post_ID = this.PostRef.relationships.parent_id;
+				ParentImageHolder.Origin = this.PostRef;
+			}
+		}
+
+		private void UpdateTypeIcon() {
+			if(PostRef == null) {
+				return;
+			}
+			switch(PostRef.file.ext.ToLower().Trim()) {
+				case "jpg":
+				case "png":
+					TypeIcon.Glyph = "\uEB9F";
+					break;
+				case "gif":
+					TypeIcon.Glyph = "\uF4A9";
+					break;
+				case "webm":
+					TypeIcon.Glyph = "\uE714";
+					break;
+				default:
+					TypeIcon.Glyph = "\uE9CE";
+					break;
+			}
+			ToolTipService.SetToolTip(TypeIcon, $"Type: {PostRef.file.ext.Trim().ToCamelCase()}");
+		}
+
+		private void UpdateSoundIcon() {
+			if(PostRef == null) {
+				return;
+			}
+			var list = PostRef.tags.GetAllTags();
+			if(list.Contains("sound_warning")) {
+				SoundIcon.Visibility = Visibility.Visible;
+				SoundIcon.Foreground = new SolidColorBrush(Colors.Red);
+				ToolTipService.SetToolTip(SoundIcon, "This Video Has Sound_Warning Tag");
+			} else if(list.Contains("sound")) {
+				SoundIcon.Visibility = Visibility.Visible;
+				SoundIcon.Foreground = new SolidColorBrush(Colors.Yellow);
+				ToolTipService.SetToolTip(SoundIcon, "This Video Has Sound Tag");
+			} else {
+				SoundIcon.Visibility = Visibility.Collapsed;
 			}
 		}
 
@@ -238,7 +294,7 @@ namespace E621Downloader.Pages {
 
 			bool parent = !string.IsNullOrWhiteSpace(PostRef.relationships.parent_id);
 			ParentHintText.Visibility = !parent ? Visibility.Visible : Visibility.Collapsed;
-			ParentImageHolder.Visibility = parent ? Visibility.Visible : Visibility.Collapsed;
+			ParentImageHolderParent.Visibility = parent ? Visibility.Visible : Visibility.Collapsed;
 
 			bool children = PostRef.relationships.children != null && PostRef.relationships.children.Count > 0;
 			ChildrenHintText.Visibility = !children ? Visibility.Visible : Visibility.Collapsed;
@@ -405,8 +461,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void LeftButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			MainPage.Instance.parameter_picture = App.postsList.GoLeft();
-			MainPage.NavigateToPicturePage();
+			MainPage.NavigateToPicturePage(App.postsList.GoLeft());
 		}
 
 		private void RightButton_PointerEntered(object sender, PointerRoutedEventArgs e) {
@@ -418,8 +473,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void RightButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			MainPage.Instance.parameter_picture = App.postsList.GoRight();
-			MainPage.NavigateToPicturePage();
+			MainPage.NavigateToPicturePage(App.postsList.GoRight());
 		}
 
 		private void InformationPivot_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -506,11 +560,11 @@ namespace E621Downloader.Pages {
 		}
 
 		private void GotoLibraryButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			MainPage.SelectNavigationItem(PageTag.Library);
+			MainPage.NavigateTo(PageTag.Library);
 		}
 
 		private void GotoHomeButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			MainPage.SelectNavigationItem(PageTag.PostsBrowser);
+			MainPage.NavigateTo(PageTag.PostsBrowser);
 		}
 
 		private void RelativePanel_RightTapped(object sender, RightTappedRoutedEventArgs e) {
@@ -555,20 +609,11 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		private void PoolsListView_ItemClick(object sender, ItemClickEventArgs e) {
-			//MainPage.NavigateToPostsBrowser();
-			MainPage.SelectNavigationItem(PageTag.PostsBrowser);
-		}
-
-		private void ParentImageHolder_Tapped(object sender, TappedRoutedEventArgs e) {
-			//MainPage.Instance.parameter_picture;
-			//MainPage.NavigateToPicturePage();
-			Debug.WriteLine(ParentImageHolder.Content.GetType());
-			
-		}
-
-		private void ChildrenGridView_ItemClick(object sender, ItemClickEventArgs e) {
-			Debug.WriteLine(e.ClickedItem.GetType());
+		private async void PoolsListView_ItemClick(object sender, ItemClickEventArgs e) {
+			MainPage.CreateInstantDialog("Please Wait", "Loading Pool");
+			E621Pool pool = await E621Pool.GetAsync((string)e.ClickedItem);
+			MainPage.HideInstantDialog();
+			MainPage.NavigateToPostsBrowser(pool);
 		}
 	}
 	public class GroupTagList: ObservableCollection<string> {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
 	public class E621Paginator {
-		public async static Task<E621Paginator> Get(string[] tags, int page = 1) {
+		public async static Task<E621Paginator> GetAsync(string[] tags, int page = 1) {
 			string tag = "";
 			foreach(var item in tags) {
 				tag += item + " ";

@@ -151,6 +151,7 @@
     <Compile Include="Models\Download\DownloadsGroup.cs" />
     <Compile Include="Models\Download\DownloadsManager.cs" />
     <Compile Include="Models\E621Article.cs" />
+    <Compile Include="Models\Pair.cs" />
     <Compile Include="Models\PostsList.cs" />
     <Compile Include="Models\Posts\E621Comment.cs" />
     <Compile Include="Models\Posts\E621Paginator.cs" />
@@ -198,6 +199,9 @@
     </Compile>
     <Compile Include="Views\CommentsSection\CommentView.xaml.cs">
       <DependentUpon>CommentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CurrentPoolInformation.xaml.cs">
+      <DependentUpon>CurrentPoolInformation.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CurrentTagsInformation.xaml.cs">
       <DependentUpon>CurrentTagsInformation.xaml</DependentUpon>
@@ -253,6 +257,9 @@
     </Compile>
     <Compile Include="Views\TagsManagementSection\TagsSelectionView.xaml.cs">
       <DependentUpon>TagsSelectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ToolTipContentForPost.xaml.cs">
+      <DependentUpon>ToolTipContentForPost.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserInfoLine.xaml.cs">
       <DependentUpon>UserInfoLine.xaml</DependentUpon>
@@ -383,6 +390,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\CurrentPoolInformation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CurrentTagsInformation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -452,6 +463,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TagsManagementSection\TagsSelectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ToolTipContentForPost.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

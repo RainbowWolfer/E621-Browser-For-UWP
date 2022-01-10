@@ -66,8 +66,8 @@ namespace E621Downloader {
 		}
 		public PageTag currentTag;
 
-		public object parameter_picture;
-		private PostBrowserParameter parameter_postBrowser;
+		private object parameter_picture;
+		private object parameter_postBrowser;
 
 		public MainPage() {
 			Instance = this;
@@ -242,7 +242,7 @@ namespace E621Downloader {
 				};
 			}
 		}
-		public static void SelectNavigationItem(PageTag tag) {
+		public static void NavigateTo(PageTag tag) {
 			Instance.JumpToPage(tag);
 		}
 
@@ -251,18 +251,25 @@ namespace E621Downloader {
 			Instance.JumpToPage(PageTag.PostsBrowser);
 			ClearPostBrowserParameter();
 		}
+		public static void NavigateToPostsBrowser(E621Pool pool) {
+			Instance.parameter_postBrowser = pool;
+			Instance.JumpToPage(PageTag.PostsBrowser);
+			ClearPostBrowserParameter();
+		}
+
+		/// <summary> Used to solve the problem of navtigating to self in PicturePage </summary>
+		public static void NavigateToPicturePage(object parameter = null) {
+			Instance.parameter_picture = parameter;
+			Instance.JumpToPage(PageTag.Picture);
+			ClearPicturePageParameter();
+		}
 
 		public static void ClearPostBrowserParameter() {
 			Instance.parameter_postBrowser = null;
 		}
 
-		/// <summary> Used to solve the problem of navtigating to self in PicturePage </summary>
-		public static void NavigateToPicturePage() {
-			if(Instance.currentTag == PageTag.Picture) {
-				Instance.MyFrame.Navigate(typeof(PicturePage), Instance.parameter_picture, CalculateTransition(Instance.currentTag, PageTag.Picture));
-			} else {
-				throw new Exception("check it out!");
-			}
+		public static void ClearPicturePageParameter() {
+			Instance.parameter_picture = null;
 		}
 
 		//click from NavitaionViewItem
@@ -300,6 +307,7 @@ namespace E621Downloader {
 				case PageTag.Picture:
 					target = typeof(PicturePage);
 					parameter = parameter_picture;
+					Debug.WriteLine($"PICTURE: {parameter == null}");
 					break;
 				case PageTag.Library:
 					target = typeof(LibraryPage);

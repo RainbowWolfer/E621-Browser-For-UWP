@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Locals;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Views;
 using System;
@@ -43,7 +44,8 @@ namespace E621Downloader.Pages {
 			base.OnNavigatedTo(e);
 			var pair = WelcomeInLanguages.GetRandomWelcomePair();
 			WelcomeText.Text = pair.Value;
-			ToolTipService.SetToolTip(WelcomeText, $"\"Welcome\" in {pair.Key}");
+			ToolTipService.SetPlacement(WelcomeText, PlacementMode.Right);
+			ToolTipService.SetToolTip(WelcomeText, $"\"Hello\" in {pair.Key}");
 
 			UpdateUserInfo(E621User.Current);
 
@@ -61,7 +63,7 @@ namespace E621Downloader.Pages {
 				FieldInfo[] array = user.GetType().GetFields();
 				for(int i = 0; i < array.Length; i++) {
 					FieldInfo field = array[i];
-					string title = field.Name.Replace("_", " ").ToUpperInvariant();
+					string title = field.Name.Replace("_", " ").ToCamelCase();
 					string content = field.GetValue(E621User.Current).ToString();
 					targetPanel.Children.Add(new UserInfoLine(title, content));
 					if(i >= MAXITEMINPANEL) {
@@ -82,7 +84,7 @@ namespace E621Downloader.Pages {
 			}.ShowAsync() == ContentDialogResult.Primary) {
 				LocalSettings.Current.SetLocalUser("", "");
 				LocalSettings.Save();
-				MainPage.SelectNavigationItem(PageTag.UserProfile);
+				MainPage.NavigateTo(PageTag.UserProfile);
 				MainPage.Instance.ChangeUser(null);
 			}
 		}

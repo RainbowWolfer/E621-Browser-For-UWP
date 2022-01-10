@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models.Locals;
+using E621Downloader.Views;
 using E621Downloader.Views.FoldersSelectionSection;
 using E621Downloader.Views.LocalTagsManagementSection;
 using E621Downloader.Views.TagsManagementSection;
@@ -145,20 +146,19 @@ namespace E621Downloader.Pages.LibrarySection {
 			} else {
 				App.postsList.UpdatePostsList(items.ToList());
 				App.postsList.Current = target;
-				MainPage.Instance.parameter_picture = target;
-				MainPage.SelectNavigationItem(PageTag.Picture);
+				MainPage.NavigateToPicturePage(target);
 			}
 		}
 
 		private void UpdateHintPanelToNoDownloadFolder() {
 			UpdateHintPanel("You have not selected your download folder\nPlease go to the settings page and choose your download folder", "Go To Settings", "\uE713", () => {
-				MainPage.SelectNavigationItem(PageTag.Settings);
+				MainPage.NavigateTo(PageTag.Settings);
 			});
 			SetHintPanelVisible(true);
 		}
 		private void UpdateHintPanelToNoFolderFound() {
 			UpdateHintPanel("No Download Folders Found\nWhy not go to posts browser to download some of your favorites?", "Go To Posts Browser", "\uE155", () => {
-				MainPage.SelectNavigationItem(PageTag.PostsBrowser);
+				MainPage.NavigateTo(PageTag.PostsBrowser);
 			});
 			SetHintPanelVisible(true);
 		}

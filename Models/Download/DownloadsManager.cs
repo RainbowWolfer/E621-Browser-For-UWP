@@ -47,7 +47,7 @@ namespace E621Downloader.Models.Download {
 					PrimaryButtonText = "Go To Settings",
 					SecondaryButtonText = "Back",
 				}.ShowAsync() == ContentDialogResult.Primary) {
-					MainPage.SelectNavigationItem(PageTag.Settings);
+					MainPage.NavigateTo(PageTag.Settings);
 				}
 				failedAcion?.Invoke();
 				return false;

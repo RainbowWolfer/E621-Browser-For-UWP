@@ -53,6 +53,10 @@ namespace E621Downloader.Models {
 			items.AddRange(block);
 		}
 
+		public IEnumerable<object> GetItems() {
+			return items;
+		}
+
 		public PostsList() {
 			items = new List<object>();
 		}

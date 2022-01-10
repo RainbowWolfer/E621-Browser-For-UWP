@@ -35,9 +35,11 @@ namespace E621Downloader.Models.Networks {
 				response = await request.GetResponseAsync() as HttpWebResponse;
 			} catch(WebException e) {
 				Debug.WriteLine(e.Message);
-				using(var stream = e.Response.GetResponseStream()) {
-					using(var reader = new StreamReader(stream)) {
-						Debug.WriteLine(reader.ReadToEnd());
+				if(e.Response != null) {
+					using(var stream = e.Response.GetResponseStream()) {
+						using(var reader = new StreamReader(stream)) {
+							Debug.WriteLine(reader.ReadToEnd());
+						}
 					}
 				}
 				return null;

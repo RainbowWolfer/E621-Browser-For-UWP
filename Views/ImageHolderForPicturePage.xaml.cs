@@ -1,6 +1,8 @@
-﻿using E621Downloader.Models.Posts;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Posts;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -41,25 +43,33 @@ namespace E621Downloader.Views {
 			}
 		}
 
+		public Post Origin { get; set; }
+		public Post Target { get; private set; }
 
 		private async void Load(string post_id) {
 			if(string.IsNullOrWhiteSpace(post_id)) {
 				IsLoading = false;
+				MyImage.Source = null;
 				return;
 			}
 			IsLoading = true;
-			Post post = await Post.GetPostByIDAsync(post_id);
-			UpdateInfo(post);
-			if(post.flags.deleted) {
+			Target = await Post.GetPostByIDAsync(post_id);
+			UpdateInfo(Target);
+			if(Target == null) {
+				return;
+			}
+			if(Target.flags.deleted) {
 				HintText.Visibility = Visibility.Visible;
 				IsLoading = false;
 			} else {
-				BitmapImage image = new BitmapImage(new Uri(post.sample.url ?? post.preview.url ?? "ms-appx:///Assets/e621.png"));
+				BitmapImage image = new BitmapImage(new Uri(Target.sample.url ?? Target.preview.url ?? "ms-appx:///Assets/e621.png"));
 				MyImage.Source = image;
 				image.ImageOpened += (s, e) => {
 					IsLoading = false;
 				};
 			}
+			ToolTipService.SetToolTip(this, new ToolTipContentForPost(Target));
+			ToolTipService.SetPlacement(this, PlacementMode.Bottom);
 		}
 
 		private void UpdateInfo(Post post) {
@@ -101,6 +111,35 @@ namespace E621Downloader.Views {
 
 		public ImageHolderForPicturePage() {
 			this.InitializeComponent();
+			this.Tapped += async (s, e) => {
+				if(Target == null || Target.flags.deleted) {
+					return;
+				}
+				List<Post> siblings = new List<Post>();
+				MainPage.CreateInstantDialog("Please Wait", "Loading Siblings");
+				if(!string.IsNullOrWhiteSpace(Origin.relationships.parent_id)) {
+					siblings.Add(Target);
+					List<Post> result = (await Post.GetPostsByTagsAsync(1, $"parent:{Origin.relationships.parent_id}")).Where(p => CheckPostAvailable(p)).ToList();
+					siblings.AddRange(result);
+					App.postsList.Current = Target;
+				} else {
+					siblings.Add(Origin);
+					foreach(string item in Origin.relationships.children) {
+						Post p = await Post.GetPostByIDAsync(item);
+						if(CheckPostAvailable(p)) {
+							siblings.Add(p);
+						}
+					}
+					App.postsList.Current = siblings.Find(sib => sib.id == Target.id) ?? Origin;
+				}
+				MainPage.HideInstantDialog();
+				App.postsList.UpdatePostsList(siblings);
+				MainPage.NavigateToPicturePage(Target);
+			};
+		}
+
+		private bool CheckPostAvailable(Post p) {
+			return !p.flags.deleted;
 		}
 	}
 }

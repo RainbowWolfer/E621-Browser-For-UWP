@@ -65,7 +65,7 @@ namespace E621Downloader.Pages {
 			if(data != null) {
 				LocalSettings.Current.SetLocalUser(username, apiKey);
 				LocalSettings.Save();
-				MainPage.SelectNavigationItem(PageTag.UserProfile);
+				MainPage.NavigateTo(PageTag.UserProfile);
 				MainPage.Instance.ChangeUser(username);
 			} else {
 				await MainPage.CreatePopupDialog("Sign In Failed", "Please Check that your username and your api_key copied from the website is correct");

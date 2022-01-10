@@ -34,14 +34,13 @@ namespace E621Downloader {
 		//public static bool showNullImage;
 		//public static bool showBlackListed;
 
-		public static PostsList postsList { get; private set; }
+		public static PostsList postsList { get; private set; } = new PostsList();
 
 		public App() {
 			Instance = this;
 			this.InitializeComponent();
 			this.Suspending += OnSuspending;
 
-			postsList = new PostsList();
 			Local.Initialize();
 
 		}

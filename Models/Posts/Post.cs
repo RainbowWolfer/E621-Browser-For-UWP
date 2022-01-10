@@ -43,7 +43,19 @@ namespace E621Downloader.Models.Posts {
 		public static async Task<Post> GetPostByIDAsync(string id) {
 			string url = $"https://e621.net/posts/{id}.json";
 			string data = await Data.ReadURLAsync(url);
-			return JsonConvert.DeserializeObject<PostRoot>(data).post;
+			if(string.IsNullOrWhiteSpace(data)) {
+				return null;
+			} else {
+				return JsonConvert.DeserializeObject<PostRoot>(data).post;
+			}
+		}
+
+		public static async Task<List<Post>> GetPostsByIDsAsync(IEnumerable<string> ids) {
+			List<Post> posts = new List<Post>();
+			foreach(string id in ids) {
+				posts.Add(await GetPostByIDAsync(id));
+			}
+			return posts;
 		}
 
 		private static void CheckSafe(ref string url) {
@@ -75,6 +87,10 @@ namespace E621Downloader.Models.Posts {
 		public bool is_favorited;
 		public bool has_notes;
 		public string duration;
+
+		public override string ToString() {
+			return $"E621Post ({id}.{file.ext})";
+		}
 	}
 
 	public class ArticleFile {
@@ -158,7 +174,6 @@ namespace E621Downloader.Models.Posts {
 	public class PostRoot {
 		public Post post;
 	}
-
 
 	public enum Rating {
 		safe, suggestive, explict

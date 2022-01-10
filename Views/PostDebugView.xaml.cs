@@ -23,6 +23,15 @@ namespace E621Downloader.Views {
 			this.post = post;
 			this.InitializeComponent();
 
+			int i = 0;
+			foreach(var item in App.postsList.GetItems()) {
+				string content = item.ToString();
+				if(item is Post p) {
+					content = $"ID_{p.id}";
+				}
+				Add($"list_{++i}", content);
+			}
+
 			Add("id", post.id);
 			Add("created_at", post.created_at);
 			Add("updated_at", post.updated_at);

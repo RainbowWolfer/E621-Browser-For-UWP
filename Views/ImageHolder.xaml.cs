@@ -39,7 +39,7 @@ namespace E621Downloader.Views {
 			set {
 				_spanCol = Math.Clamp(value, 5, 15);
 				//_spanCol = value;
-				Debug.WriteLine($"COL: {_spanCol}");
+				//Debug.WriteLine($"COL: {_spanCol}");
 				VariableSizedWrapGrid.SetColumnSpan(this, _spanCol);
 			}
 		}
@@ -48,7 +48,7 @@ namespace E621Downloader.Views {
 			set {
 				_spanRow = Math.Clamp(value, 4, 15);
 				//_spanRow = value;
-				Debug.WriteLine($"COL: {_spanRow}");
+				//Debug.WriteLine($"COL: {_spanRow}");
 				VariableSizedWrapGrid.SetRowSpan(this, _spanRow);
 			}
 		}
@@ -69,6 +69,7 @@ namespace E621Downloader.Views {
 		private Page page;
 
 		public ImageHolder(Page page, Post post, int index) {
+			Debug.WriteLine("Type: " + post.file.ext);
 			this.page = page;
 			this.PostRef = post;
 			this.Index = index;
@@ -123,6 +124,8 @@ namespace E621Downloader.Views {
 						RatingIcon.Foreground = new SolidColorBrush(Colors.White);
 						break;
 				}
+				ToolTipService.SetToolTip(this, new ToolTipContentForPost(post));
+				ToolTipService.SetPlacement(this, PlacementMode.Bottom);
 			}
 			SetRightClick();
 		}
@@ -194,15 +197,13 @@ namespace E621Downloader.Views {
 					App.postsList.UpdatePostsList(PostsBrowser.Instance.Posts);
 					App.postsList.Current = PostRef;
 
-					MainPage.Instance.parameter_picture = PostRef;
-					MainPage.SelectNavigationItem(PageTag.Picture);
+					MainPage.NavigateToPicturePage(PostRef);
 				}
 			} else if(MainPage.Instance.currentTag == PageTag.Spot) {
 				App.postsList.UpdatePostsList(SpotPage.Instance.Posts);
 				App.postsList.Current = PostRef;
 
-				MainPage.Instance.parameter_picture = PostRef;
-				MainPage.SelectNavigationItem(PageTag.Picture);
+				MainPage.NavigateToPicturePage(PostRef);
 			}
 		}
 

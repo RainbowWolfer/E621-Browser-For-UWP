@@ -54,8 +54,7 @@ namespace E621Downloader.Views.CommentsSection {
 					MainPage.CreateInstantDialog("Please Wait...", $"Loading Post: {User.avatar_id}");
 					Post post = await Post.GetPostByIDAsync(User.avatar_id);
 					MainPage.HideInstantDialog();
-					MainPage.Instance.parameter_picture = post;
-					MainPage.NavigateToPicturePage();
+					MainPage.NavigateToPicturePage(post);
 				};
 				ToolTipService.SetToolTip(Avatar, $"Post: {User.avatar_id}");
 				test += "\n4";

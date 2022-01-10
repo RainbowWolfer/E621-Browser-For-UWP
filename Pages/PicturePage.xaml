@@ -79,9 +79,11 @@
 				<Button x:Name="ToggleTagsButton" Height="38" Width="50" Padding="0" Tapped="ToggleTagsButton_Tapped">
 					<FontIcon x:Name="ToggleTagsButtonIcon" Glyph="&#xE8A0;"/>
 				</Button>
-				<Rectangle x:Name="Separator1" RelativePanel.RightOf="ToggleTagsButton" Style="{StaticResource RectangleSeparator}"/>
-				<TextBlock x:Name="TitleText" FontFamily="Cascadia Mono" Text="#1231278 (E)" RelativePanel.RightOf="Separator1" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Foreground="Red"/>
-				<Rectangle x:Name="Separator2" RelativePanel.RightOf="TitleText" Style="{StaticResource RectangleSeparator}"/>
+				<Rectangle x:Name="Separator1" RelativePanel.RightOf="ToggleTagsButton" Style="{StaticResource RectangleSeparator}" d:Fill="White"/>
+				<FontIcon x:Name="TypeIcon" Glyph="&#xE116;" Height="38" Width="40" FontSize="24" RelativePanel.RightOf="Separator1" Margin="0,0,5,0" ToolTipService.Placement="Bottom"/>
+				<TextBlock x:Name="TitleText" FontFamily="Cascadia Mono" Text="#1231278 (E)" RelativePanel.RightOf="TypeIcon" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Foreground="Red"/>
+				<FontIcon x:Name="SoundIcon" Glyph="&#xE7BA;" Height="38" Width="40" FontSize="24" RelativePanel.RightOf="TitleText" Margin="5,0,0,0" Foreground="Yellow" ToolTipService.Placement="Bottom"/>
+				<Rectangle x:Name="Separator2" RelativePanel.RightOf="SoundIcon" Style="{StaticResource RectangleSeparator}" d:Fill="White"/>
 				<Button x:Name="UpVoteButton" Height="38" Width="38" Padding="0" FontFamily="Segoe MDL2 Assets" Content="&#xE96D;" RelativePanel.RightOf="Separator2" Foreground="LightGreen">
 					<Button.Resources>
 						<ResourceDictionary>
@@ -115,7 +117,7 @@
 						</ResourceDictionary>
 					</Button.Resources>
 				</Button>
-				<Rectangle x:Name="Separator3" RelativePanel.RightOf="DownVoteButton" Style="{StaticResource RectangleSeparator}"/>
+				<Rectangle x:Name="Separator3" RelativePanel.RightOf="DownVoteButton" Style="{StaticResource RectangleSeparator}" d:Fill="White"/>
 				<ToggleButton x:Name="FavoriteButton" Height="38" Width="110" Padding="10,0,10,0" RelativePanel.RightOf="Separator3" Click="FavoriteButton_Click">
 					<StackPanel Orientation="Horizontal">
 						<FontIcon x:Name="FavoriteIcon" Glyph="&#xEB51;"/>
@@ -165,32 +167,34 @@
 				</Button>
 			</RelativePanel>
 
-			<ListView x:Name="TagsListView" ItemsSource="{Binding Source={StaticResource ContactsCVS}}" Grid.RowSpan="2" SelectionMode="None" IsItemClickEnabled="True" ItemClick="TagsListView_ItemClick" Width="250">
-				<ListView.ItemsPanel>
-					<ItemsPanelTemplate>
-						<ItemsStackPanel AreStickyGroupHeadersEnabled="True"/>
-					</ItemsPanelTemplate>
-				</ListView.ItemsPanel>
-				<ListView.ItemTemplate>
-					<DataTemplate x:DataType="x:String">
-						<RelativePanel Width="225" RightTapped="RelativePanel_RightTapped" Tag="{x:Bind ToString()}">
-							<Button x:Name="InfoButton" FontFamily="Segoe MDL2 Assets" Content="&#xE946;" RelativePanel.AlignVerticalCenterWithPanel="True" Style="{StaticResource TagButton}" Tapped="InfoButton_Tapped" Tag="{x:Bind ToString()}"/>
-							<TextBlock Text="{x:Bind ToString()}" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="2,0,20,0" TextWrapping="Wrap" Width="100" RelativePanel.RightOf="InfoButton"/>
-							<Button x:Name="BlackListButton" Style="{StaticResource TagButton}" Content="&#xF8AB;" Tag="{x:Bind ToString()}" RelativePanel.LeftOf="FollowListButton" Tapped="BlackListButton_Tapped" Loaded="BlackListButton_Loaded"/>
-							<Button x:Name="FollowListButton" Style="{StaticResource TagButton}" Content="&#xF8AA;" Tag="{x:Bind ToString()}" RelativePanel.AlignRightWithPanel="True" Tapped="FollowListButton_Tapped" Loaded="FollowListButton_Loaded"/>
-						</RelativePanel>
-					</DataTemplate>
-				</ListView.ItemTemplate>
-				<ListView.GroupStyle>
-					<GroupStyle>
-						<GroupStyle.HeaderTemplate>
-							<DataTemplate>
-								<TextBlock Text="{Binding Key}" Margin="10,0" FontWeight="Bold" />
-							</DataTemplate>
-						</GroupStyle.HeaderTemplate>
-					</GroupStyle>
-				</ListView.GroupStyle>
-			</ListView>
+			<Grid Grid.RowSpan="2">
+				<ListView x:Name="TagsListView" ItemsSource="{Binding Source={StaticResource ContactsCVS}}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="TagsListView_ItemClick" Width="250" Grid.Row="1">
+					<ListView.ItemsPanel>
+						<ItemsPanelTemplate>
+							<ItemsStackPanel AreStickyGroupHeadersEnabled="True"/>
+						</ItemsPanelTemplate>
+					</ListView.ItemsPanel>
+					<ListView.ItemTemplate>
+						<DataTemplate x:DataType="x:String">
+							<RelativePanel Width="225" RightTapped="RelativePanel_RightTapped" Tag="{x:Bind ToString()}">
+								<Button x:Name="InfoButton" FontFamily="Segoe MDL2 Assets" Content="&#xE946;" RelativePanel.AlignVerticalCenterWithPanel="True" Style="{StaticResource TagButton}" Tapped="InfoButton_Tapped" Tag="{x:Bind ToString()}"/>
+								<TextBlock Text="{x:Bind ToString()}" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="2,0,20,0" TextWrapping="Wrap" Width="100" RelativePanel.RightOf="InfoButton"/>
+								<Button x:Name="BlackListButton" Style="{StaticResource TagButton}" Content="&#xF8AB;" Tag="{x:Bind ToString()}" RelativePanel.LeftOf="FollowListButton" Tapped="BlackListButton_Tapped" Loaded="BlackListButton_Loaded"/>
+								<Button x:Name="FollowListButton" Style="{StaticResource TagButton}" Content="&#xF8AA;" Tag="{x:Bind ToString()}" RelativePanel.AlignRightWithPanel="True" Tapped="FollowListButton_Tapped" Loaded="FollowListButton_Loaded"/>
+							</RelativePanel>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+					<ListView.GroupStyle>
+						<GroupStyle>
+							<GroupStyle.HeaderTemplate>
+								<DataTemplate>
+									<TextBlock Text="{Binding Key}" Margin="10,0" FontWeight="Bold" />
+								</DataTemplate>
+							</GroupStyle.HeaderTemplate>
+						</GroupStyle>
+					</ListView.GroupStyle>
+				</ListView>
+			</Grid>
 			<SplitView x:Name="MainSplitView" DisplayMode="Overlay" Grid.Column="1" Grid.Row="1" PanePlacement="Right" OpenPaneLength="550" Margin="0,0,-1,0">
 				<SplitView.Pane>
 					<Grid>
@@ -261,8 +265,8 @@
 											<controls:Expander.Content>
 												<Grid>
 													<TextBlock x:Name="ParentHintText" Text="Not Found" HorizontalAlignment="Center"/>
-													<GridViewItem x:Name="ParentImageHolder" Height="330" Width="400" Tapped="ParentImageHolder_Tapped">
-														<views:ImageHolderForPicturePage Post_ID="{x:Bind PostRef.relationships.parent_id}"/>
+													<GridViewItem x:Name="ParentImageHolderParent" Height="330" Width="400">
+														<views:ImageHolderForPicturePage x:Name="ParentImageHolder"/>
 													</GridViewItem>
 												</Grid>
 											</controls:Expander.Content>
@@ -277,17 +281,12 @@
 											<controls:Expander.Content>
 												<Grid>
 													<TextBlock x:Name="ChildrenHintText" Text="Not Found" HorizontalAlignment="Center"/>
-													<GridView x:Name="ChildrenGridView" ItemsSource="{x:Bind PostRef.relationships.children}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="ChildrenGridView_ItemClick">
+													<GridView x:Name="ChildrenGridView" SelectionMode="None" IsItemClickEnabled="True">
 														<GridView.ItemContainerStyle>
 															<Style TargetType="GridViewItem">
 																<Setter Property="Margin" Value="5"/>
 															</Style>
 														</GridView.ItemContainerStyle>
-														<GridView.ItemTemplate>
-															<DataTemplate x:DataType="x:String">
-																<views:ImageHolderForPicturePage Height="220" Width="235" Post_ID="{x:Bind ToString()}"/>
-															</DataTemplate>
-														</GridView.ItemTemplate>
 													</GridView>
 												</Grid>
 											</controls:Expander.Content>

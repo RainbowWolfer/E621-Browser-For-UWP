@@ -1,0 +1,26 @@
+﻿<UserControl
+    x:Class="E621Downloader.Views.ToolTipContentForPost"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    d:RequestedTheme="Dark">
+
+	<StackPanel>
+		<TextBlock x:Name="ID" Text="#210321"/>
+		<TextBlock x:Name="UP" Text=" · Up - 321"/>
+		<TextBlock x:Name="DOWN" Text=" · Down - 21"/>
+		<TextBlock x:Name="TYPE" Text=" · Type - JPG"/>
+		<TextBlock x:Name="PARENT" Text=" · Parent - #321132"/>
+		<TextBlock x:Name="CHILDREN" Text=" · Children - 4"/>
+		<TextBlock x:Name="CREATE" Text=" · Created At - 2021.12.21"/>
+		<TextBlock x:Name="TAGS" Text=" · Tags - 51"/>
+		<TextBlock x:Name="SIZE" Text=" · Size - 212KB"/>
+		<TextBlock x:Name="WIDTH" Text=" · Width - 1080"/>
+		<TextBlock x:Name="HEIGHT" Text=" · Height - 1920"/>
+	</StackPanel>
+</UserControl>

@@ -50,6 +50,8 @@ namespace E621Downloader.Pages {
 
 		private PostBrowserParameter parameter;
 
+		private E621Pool pool;
+
 		public PostsBrowser() {
 			Instance = this;
 			this.InitializeComponent();
@@ -64,9 +66,14 @@ namespace E621Downloader.Pages {
 		protected override async void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			if(e.Parameter is PostBrowserParameter parameter) {
+				this.pool = null;
 				this.parameter = (PostBrowserParameter)parameter.Clone();
 				await LoadAsync(parameter.Page, parameter.Tags);
+			} else if(e.Parameter is E621Pool pool) {
+				this.pool = pool;
+				await LoadAsync(pool);
 			} else if(this.parameter == null) {
+				this.pool = null;
 				//string[] tags = { "rating:s", "wallpaper", "order:score" };
 				//string[] tags = { "type:webm", "order:score" };
 				string[] tags = { "order:score" };
@@ -108,7 +115,6 @@ namespace E621Downloader.Pages {
 					holder.OnImagedLoaded += (b) => {
 						tb_ArticlesLoadCount.Text = $"Posts : {++loaded}/{this.Posts.Count}";
 					};
-					ToolTipService.SetToolTip(holder, $"ID: {item.id}\nScore: {item.score.total}");
 				}
 			} else {
 				Debug.WriteLine($"{this.Posts.Count} {ps.Count} {MyWrapGrid.Children.Count}");
@@ -120,7 +126,6 @@ namespace E621Downloader.Pages {
 						var holder = new ImageHolder(this, item, this.Posts.IndexOf(item));
 						SetImageItemSize(isHeightFixed, holder, item.sample);
 						holder.OnImagedLoaded += (b) => tb_ArticlesLoadCount.Text = "Posts : " + ++loaded + "/" + this.Posts.Count;
-						ToolTipService.SetToolTip(holder, $"ID: {item.id}\nScore: {item.score.total}");
 						MyWrapGrid.Children.Insert(existed.Index, holder);
 					}
 					Debug.WriteLine($"{existed?.Index} {shouleBe}");
@@ -134,6 +139,26 @@ namespace E621Downloader.Pages {
 			return MyWrapGrid.Children.Select(c => c as ImageHolder).FirstOrDefault(i => i.Index == index);
 		}
 
+		private async Task LoadAsync(E621Pool pool) {
+			this.currentPage = 1;
+			MainPage.CreateInstantDialog("Please Wait", "Loading Posts...");
+			await Task.Delay(200);
+			SelectToggleButton.IsChecked = false;
+			List<Post> temp = await Post.GetPostsByIDsAsync(pool.post_ids);
+			if(temp.Count == 0) {
+				MainPage.HideInstantDialog();
+				await MainPage.CreatePopupDialog("Articles Error",
+					$"Pool:({pool.id}-{pool.name}) return 0 posts");
+				return;
+			}
+			int removed_count = temp.RemoveAll(p => ignoreTypes.Contains(p.file.ext));
+			Debug.WriteLine($"Removed {removed_count} posts");
+			this.Posts = temp;
+			PaginatorPanel.Visibility = Visibility.Collapsed;
+			LoadPosts(this.Posts, pool.Tag);
+			MainPage.HideInstantDialog();
+			//UpdateInfoButton(new string[] { tag });
+		}
 		private async Task LoadAsync(int page = 1, params string[] tags) {
 			this.currentPage = page;
 			MainPage.CreateInstantDialog("Please Wait", "Loading...");
@@ -149,11 +174,11 @@ namespace E621Downloader.Pages {
 			int removed_count = temp.RemoveAll(p => ignoreTypes.Contains(p.file.ext));
 			Debug.WriteLine($"Removed {removed_count} posts");
 			this.Posts = temp;
-			maxPage = (await E621Paginator.Get(tags)).GetMaxPage();
+			maxPage = (await E621Paginator.GetAsync(tags)).GetMaxPage();
 			UpdatePaginator();
 			LoadPosts(this.Posts, tags);
 			MainPage.HideInstantDialog();
-			UpdateInfoButton(tags);
+			//UpdateInfoButton(tags);
 		}
 		private async Task Reload() {
 			MainPage.CreateInstantDialog("Please Wait", "Reloading...");
@@ -162,9 +187,9 @@ namespace E621Downloader.Pages {
 			MainPage.HideInstantDialog();
 		}
 
-		private void UpdateInfoButton(string[] tags) {
-			InfoButton.Visibility = true || tags.Where(i => !i.Contains(':')).Count() > 0 ? Visibility.Visible : Visibility.Collapsed;
-		}
+		//private void UpdateInfoButton(string[] tags) {
+		//	InfoButton.Visibility = true || tags.Where(i => !i.Contains(':')).Count() > 0 ? Visibility.Visible : Visibility.Collapsed;
+		//}
 
 		private List<Post> CalculateEnabledPosts() {
 			var result = new List<Post>();
@@ -177,6 +202,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void UpdatePaginator() {
+			PaginatorPanel.Visibility = Visibility.Visible;
 			PaginatorPanel.Children.Clear();
 			//currentPage
 			//maxPage
@@ -516,7 +542,12 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			await MainPage.CreatePopupDialog(E621Tag.JoinTags(Tags), new CurrentTagsInformation(Tags));
+			if(this.pool == null) {
+				string title = E621Tag.JoinTags(Tags);
+				await MainPage.CreatePopupDialog(title, new CurrentTagsInformation(Tags));
+			} else {
+				await MainPage.CreatePopupDialog($"Pool:{this.pool.id}", new CurrentPoolInformation(this.pool));
+			}
 		}
 
 		private void ToggleThemeTeachingTip2_ActionButtonClick(Microsoft.UI.Xaml.Controls.TeachingTip sender, object args) {

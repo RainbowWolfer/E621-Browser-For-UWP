@@ -25,7 +25,10 @@
 			</controls:NavigationView.MenuItems>
 			<controls:NavigationView.PaneFooter>
 				<StackPanel Orientation="Horizontal">
-					<Button x:Name="CurrentTagsButton" VerticalAlignment="Center" Height="40" Background="Transparent" BorderThickness="0" Tapped="CurrentTagsButton_Tapped">
+					<Button x:Name="CurrentTagsButton" VerticalAlignment="Center" Height="40" Background="Transparent" BorderThickness="2" Tapped="CurrentTagsButton_Tapped">
+						<Button.BorderBrush>
+							<SolidColorBrush Opacity="0.3" Color="Gray"/>
+						</Button.BorderBrush>
 						<Button.Content>
 							<StackPanel Orientation="Horizontal">
 								<TextBlock x:Name="TextBlockSearchTags" Text="E621_Tags" Margin="5,0,5,0"/>
@@ -33,7 +36,7 @@
 							</StackPanel>
 						</Button.Content>
 					</Button>
-					<Button x:Name="FullScreenButton" Background="Transparent" BorderThickness="0" Height="40" Width="45" FontFamily="Segoe MDL2 Assets" Content="&#xE740;" Tapped="FullScreenButton_Tapped"  ToolTipService.ToolTip="Switch FullScreen"/>
+					<Button x:Name="FullScreenButton" Background="Transparent" BorderThickness="0" Height="40" Width="45" FontFamily="Segoe MDL2 Assets" Content="&#xE740;" Tapped="FullScreenButton_Tapped"  ToolTipService.ToolTip="Switch FullScreen" Margin="10,0,0,0"/>
 				</StackPanel>
 			</controls:NavigationView.PaneFooter>
 			<controls:NavigationView.FooterMenuItems>

@@ -1,0 +1,67 @@
+﻿<UserControl
+    x:Class="E621Downloader.Views.CurrentPoolInformation"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+	d:RequestedTheme="Dark">
+
+	<UserControl.Resources>
+		<Style x:Key="TitleText" TargetType="TextBlock">
+			<Setter Property="HorizontalAlignment" Value="Right"/>
+			<Setter Property="FontSize" Value="15"/>
+			<Setter Property="Margin" Value="0,0,10,0"/>
+			<Setter Property="Grid.Column" Value="0"/>
+		</Style>
+		<Style x:Key="ContentText" TargetType="TextBlock">
+			<Setter Property="HorizontalAlignment" Value="Left"/>
+			<Setter Property="FontSize" Value="15"/>
+			<Setter Property="Grid.Column" Value="1"/>
+		</Style>
+	</UserControl.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<ToggleButton x:Name="FollowButton" HorizontalAlignment="Stretch" Margin="5" Click="FollowButton_Click">
+			<StackPanel Orientation="Horizontal">
+				<TextBlock x:Name="FollowText" Text="Follow" FontSize="16"/>
+				<FontIcon Glyph="&#xEB51;" Margin="10,0,0,0"/>
+			</StackPanel>
+		</ToggleButton>
+		<StackPanel Grid.Row="1" CornerRadius="10" Margin="10" BorderThickness="2" BorderBrush="Gray" Padding="20">
+			<TextBlock Text="{x:Bind Pool.name}" d:Text="Mordheim_(lizardlars)" HorizontalAlignment="Center" FontSize="24"/>
+			<TextBlock Text="{x:Bind ID}" d:Text="#22988" HorizontalAlignment="Center" FontSize="18"/>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+				</Grid.RowDefinitions>
+				<TextBlock Text="Create Date" Grid.Row="0" Style="{StaticResource TitleText}"/>
+				<TextBlock d:Text="2021-12-21" Text="{x:Bind Pool.created_at}" Grid.Row="0" Style="{StaticResource ContentText}"/>
+				<TextBlock Text="Update Date" Grid.Row="1" Style="{StaticResource TitleText}"/>
+				<TextBlock d:Text="2021-12-21" Text="{x:Bind Pool.updated_at}" Grid.Row="1" Style="{StaticResource ContentText}"/>
+				<TextBlock Text="Category" Grid.Row="2" Style="{StaticResource TitleText}"/>
+				<TextBlock d:Text="series" Text="{x:Bind Pool.category}" Grid.Row="2" Style="{StaticResource ContentText}"/>
+				<TextBlock Text="Creator Name" Grid.Row="3" Style="{StaticResource TitleText}"/>
+				<TextBlock d:Text="Lippon35" Text="{x:Bind Pool.creator_name}" Grid.Row="3" Style="{StaticResource ContentText}"/>
+				<TextBlock Text="Description" Grid.Row="4" Style="{StaticResource TitleText}"/>
+				<TextBlock d:Text="None" Grid.Row="4" Text="{x:Bind Description}" TextWrapping="Wrap" Style="{StaticResource ContentText}"/>
+
+			</Grid>
+		</StackPanel>
+	</Grid>
+</UserControl>

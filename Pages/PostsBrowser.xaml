@@ -30,7 +30,7 @@
 				<ToggleButton x:Name="SelectToggleButton" Content="Select" Checked="SelectToggleButton_Checked" Unchecked="SelectToggleButton_Unchecked" Margin="5"/>
 				<TextBlock x:Name="SelectionCountTextBlock" Text="2/75" VerticalAlignment="Center" Margin="5" FontSize="18" Visibility="Collapsed"/>
 			</StackPanel>
-			<Button x:Name="InfoButton" Tapped="InfoButton_Tapped" HorizontalAlignment="Right" Height="40" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" Visibility="Collapsed">
+			<Button x:Name="InfoButton" Tapped="InfoButton_Tapped" HorizontalAlignment="Right" Height="40" VerticalAlignment="Center" Background="Transparent" BorderThickness="0">
 				<Button.Content>
 					<StackPanel Orientation="Horizontal">
 						<TextBlock Text="Info" Margin="10,0,10,0" FontSize="18"/>
