@@ -100,7 +100,7 @@
 						</ResourceDictionary>
 					</Button.Resources>
 				</Button>
-				<TextBlock x:Name="ScoreText" Text="1321" RelativePanel.RightOf="UpVoteButton" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Margin="10,0,10,0"/>
+				<TextBlock x:Name="ScoreText" Text="1321" RelativePanel.RightOf="UpVoteButton" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Margin="10,0,10,0" ToolTipService.Placement="Bottom"/>
 				<Button x:Name="DownVoteButton" Height="38" Width="38" Padding="0" FontFamily="Segoe MDL2 Assets" Content="&#xE96E;" RelativePanel.RightOf="ScoreText" Foreground="OrangeRed">
 					<Button.Resources>
 						<ResourceDictionary>

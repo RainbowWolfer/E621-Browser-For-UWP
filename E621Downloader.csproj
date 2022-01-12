@@ -141,6 +141,7 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Favorites.cs" />
     <Compile Include="Models\Locals\LocalSettings.cs" />
     <Compile Include="Models\Locals\WelcomeInLanguages.cs" />
     <Compile Include="Models\Methods.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="Models\E621Article.cs" />
     <Compile Include="Models\Pair.cs" />
     <Compile Include="Models\PostsList.cs" />
+    <Compile Include="Models\Posts\E621AutoComplete.cs" />
     <Compile Include="Models\Posts\E621Comment.cs" />
     <Compile Include="Models\Posts\E621Paginator.cs" />
     <Compile Include="Models\Posts\E621Pool.cs" />
@@ -254,6 +256,9 @@
     </Compile>
     <Compile Include="Views\TagsManagementSection\SingleTagDisplay.xaml.cs">
       <DependentUpon>SingleTagDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TagsManagementSection\SingleTagSuggestion.xaml.cs">
+      <DependentUpon>SingleTagSuggestion.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TagsManagementSection\TagsSelectionView.xaml.cs">
       <DependentUpon>TagsSelectionView.xaml</DependentUpon>
@@ -459,6 +464,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TagsManagementSection\SingleTagDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TagsManagementSection\SingleTagSuggestion.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

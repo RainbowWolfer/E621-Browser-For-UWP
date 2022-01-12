@@ -43,6 +43,22 @@ namespace E621Downloader.Views.TagsManagementSection {
 				currentTags.Add(item);
 				TagsStackPanel.Children.Add(new SingleTagDisplay(this, item));
 			}
+			string last = currentTags.LastOrDefault();
+			if(!string.IsNullOrWhiteSpace(last)) {
+				LoadAutoSuggestion(sender, last);
+			}
+		}
+
+		private async void LoadAutoSuggestion(AutoSuggestBox box, string tag) {
+			E621AutoComplete[] acs = await E621AutoComplete.GetAsync(tag);
+			var list = new List<SingleTagSuggestion>() {
+				new SingleTagSuggestion(),
+				new SingleTagSuggestion(),
+				new SingleTagSuggestion(),
+				new SingleTagSuggestion(),
+				new SingleTagSuggestion(),
+			};
+			//box.ItemsSource = list;
 		}
 
 		public E621Tag GetE621Tag(string tag) => tags_pool.ContainsKey(tag) ? tags_pool[tag] : null;

@@ -29,52 +29,41 @@ namespace E621Downloader.Views.CommentsSection {
 			this.DataContextChanged += (s, c) => Bindings.Update();
 			LoadAvatar();
 		}
-		private string test = "Start";
 		private async void LoadAvatar() {
 			AvatorLoadingRing.IsActive = true;
 			User = await E621User.GetAsync(Comment.creator_id);
-			test += "\n1";
 			string url = "";
 			if(User != null) {
 				url = await E621User.GetAvatarURLAsync(User);
-				test += "\n2";
 			}
 			BitmapImage bi;
 			if(!string.IsNullOrEmpty(url)) {
-				test += "\n3";
-				bi = new BitmapImage() {
-					UriSource = new Uri(this.BaseUri, url)
+				bi = new BitmapImage(new Uri(this.BaseUri, url));
+				bi.ImageOpened += (s, e) => {
+					Avatar.Tapped += async (sender, args) => {
+						if(User == null || User.avatar_id == null) {
+							return;
+						}
+						MainPage.CreateInstantDialog("Please Wait...", $"Loading Post: {User.avatar_id}");
+						Post post = await Post.GetPostByIDAsync(User.avatar_id);
+						MainPage.HideInstantDialog();
+						MainPage.NavigateToPicturePage(post);
+					};
+					AvatorLoadingRing.IsActive = false;
+					ToolTipService.SetToolTip(Avatar, $"Post: {User.avatar_id}");
 				};
-				//Debug.WriteLine($"avatar {url}");
-
-				Avatar.Tapped += async (sender, e) => {
-					if(User == null || User.avatar_id == null) {
-						return;
-					}
-					MainPage.CreateInstantDialog("Please Wait...", $"Loading Post: {User.avatar_id}");
-					Post post = await Post.GetPostByIDAsync(User.avatar_id);
-					MainPage.HideInstantDialog();
-					MainPage.NavigateToPicturePage(post);
+				bi.ImageFailed += (s, e) => {
+					bi.UriSource = new Uri("ms-appx:///Assets/esix2.jpg");
+					AvatorLoadingRing.IsActive = false;
+					ToolTipService.SetToolTip(Avatar, e.ErrorMessage);
 				};
-				ToolTipService.SetToolTip(Avatar, $"Post: {User.avatar_id}");
-				test += "\n4";
 			} else {
-				bi = new BitmapImage(new Uri("ms-appx:///Assets/esix2.jpg"));//not working
-				test += "\n5";
+				bi = new BitmapImage(new Uri("ms-appx:///Assets/esix2.jpg"));
+				AvatorLoadingRing.IsActive = false;
+				ToolTipService.SetToolTip(Avatar, "No Avatar");
 			}
 			Avatar.Source = bi;
-			//AvatorLoadingRing.IsActive = false;
-			test += "\n6";
-			ToolTipService.SetToolTip(ReportButton, test);
 		}
-
-		private void Avatar_ImageOpened(object sender, RoutedEventArgs e) {
-			AvatorLoadingRing.IsActive = false;
-			//Debug.WriteLine((sender as Image).Source);
-			test += "\nopened";
-			ToolTipService.SetToolTip(ReportButton, test);
-		}
-
 		private void DownVoteButton_Tapped(object sender, TappedRoutedEventArgs e) {
 
 		}

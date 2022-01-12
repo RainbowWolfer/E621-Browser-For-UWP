@@ -32,10 +32,16 @@
 			<TextBlock x:Name="UsernameText" Text="RainbowWolfer" HorizontalAlignment="Center" Margin="10" FontSize="24"/>
 		</StackPanel>
 		<StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,40">
-			<Button x:Name="FavoritesButton" FontSize="20" HorizontalAlignment="Center" Tapped="FavoritesButton_Tapped">
+			<Button x:Name="FavoritesButton" FontSize="20" HorizontalAlignment="Center" Tapped="FavoritesButton_Tapped" Margin="10">
 				<StackPanel Orientation="Horizontal">
 					<TextBlock Text="Favorites"/>
 					<FontIcon Glyph="&#xE113;" Margin="10,0,0,0"/>
+				</StackPanel>
+			</Button>
+			<Button x:Name="VotedButton" FontSize="20" HorizontalAlignment="Center" Tapped="VotedButton_Tapped">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="Voted Up"/>
+					<FontIcon Glyph="&#xE74A;" Margin="10,0,0,0"/>
 				</StackPanel>
 			</Button>
 			<Rectangle Fill="Gray" Width="100" Height="3" Margin="10" RadiusX="2" RadiusY="10"/>

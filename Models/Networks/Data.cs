@@ -29,7 +29,6 @@ namespace E621Downloader.Models.Networks {
 				string encoded = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(username + ":" + api));
 				request.Headers.Add("Authorization", "Basic " + encoded);
 			}
-
 			HttpWebResponse response;
 			try {
 				response = await request.GetResponseAsync() as HttpWebResponse;

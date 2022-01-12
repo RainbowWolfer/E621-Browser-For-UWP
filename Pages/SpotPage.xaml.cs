@@ -109,9 +109,32 @@ namespace E621Downloader.Pages {
 
 		private async void StartButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			LoadingRing.IsActive = true;
-			List<Post> posts = await Post.GetPostsByRandomAsync(CurrentAmount, selectedTags);
+			List<string> tags = selectedTags.ToList();
+			if(!IncludeSafeCheckBox.IsChecked.Value) {
+				tags.Add("-rating:s");
+			}
+			if(!IncludeQuestionableCheckBox.IsChecked.Value) {
+				tags.Add("-rating:q");
+			}
+			if(!IncludeExplicitCheckBox.IsChecked.Value) {
+				tags.Add("-rating:e");
+			}
+			if(!AllowWebmCheckBox.IsChecked.Value) {
+				tags.Add("-type:webm");
+			}
+			if(!AllowGifCheckBox.IsChecked.Value) {
+				tags.Add("-type:gif");
+			}
+			if(!AllowBlackListCheckBox.IsChecked.Value) {
+				foreach(string item in Local.BlackList) {
+					tags.Add($"-{item}");
+				}
+			}
+			(int, int) range = GetScoreRange();
+			tags.Add($"score:{range.Item1}..{range.Item2}");
+			List<Post> posts = await Post.GetPostsByRandomAsync(CurrentAmount, tags.ToArray());
 			if(posts == null || posts.Count == 0) {
-				MainPage.CreateInstantDialog("Error", "There is No Post(s) Found");
+				await MainPage.CreatePopupDialog("Error", "There is No Post(s) Found");
 			} else {
 				MainGridView.Items.Clear();
 				for(int i = 0; i < posts.Count; i++) {
@@ -211,6 +234,14 @@ namespace E621Downloader.Pages {
 			int from = (int)FromSlider.Value * 100;
 			int to = (int)(60 - ToSlider.Value) * 100;
 			ScoreLimitText.Text = $"Score Limit: ({from} - {to})";
+		}
+
+		private (int, int) GetScoreRange() {
+			return ((int)FromSlider.Value * 100, (int)(60 - ToSlider.Value) * 100);
+		}
+
+		private void ClearButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			MainGridView.Items.Clear();
 		}
 	}
 }

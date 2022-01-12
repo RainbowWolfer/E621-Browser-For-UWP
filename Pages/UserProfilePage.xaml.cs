@@ -106,5 +106,9 @@ namespace E621Downloader.Pages {
 		private void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			MainPage.Instance.ChangeUser(LocalSettings.Current.user_username);
 		}
+
+		private void VotedButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			MainPage.NavigateToPostsBrowser(1, $"votedup:anything");
+		}
 	}
 }

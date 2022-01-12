@@ -32,11 +32,11 @@ namespace E621Downloader.Models.Posts {
 				return DEFAULT_AVATAR;
 			}
 			Post post = JsonConvert.DeserializeObject<PostRoot>(data).post;
-			string preview = post.preview.url;
-			if(string.IsNullOrWhiteSpace(preview)) {
+			string result = post.preview.url ?? post.sample.url;
+			if(string.IsNullOrWhiteSpace(result)) {
 				return DEFAULT_AVATAR;
 			}
-			return preview;
+			return result;
 		}
 
 		public static E621User Current { get; set; }

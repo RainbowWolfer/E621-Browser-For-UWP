@@ -67,7 +67,9 @@ namespace E621Downloader.Pages {
 			MainPage.ClearPicturePageParameter();
 			bool showNoPostGrid = false;
 			if(p == null && PostRef == null && PostsBrowser.Instance != null && PostsBrowser.Instance.Posts != null && PostsBrowser.Instance.Posts.Count > 0) {
+				App.postsList.UpdatePostsList(PostsBrowser.Instance.Posts);
 				p = PostsBrowser.Instance.Posts[0];
+				App.postsList.Current = p;
 			}
 			if(p is Post post) {
 				if(PostRef == post) {
@@ -140,7 +142,7 @@ namespace E621Downloader.Pages {
 			NoPostGrid.Visibility = showNoPostGrid ? Visibility.Visible : Visibility.Collapsed;
 			MainGrid.Visibility = !showNoPostGrid ? Visibility.Visible : Visibility.Collapsed;
 			TitleText.Text = Title;
-			ScoreText.Text = $"{PostRef?.score?.total ?? 0}";
+			UpdateScore();
 			UpdateRatingColor();
 			UpdateTypeIcon();
 			UpdateSoundIcon();
@@ -170,6 +172,14 @@ namespace E621Downloader.Pages {
 				ParentImageHolder.Post_ID = this.PostRef.relationships.parent_id;
 				ParentImageHolder.Origin = this.PostRef;
 			}
+		}
+
+		private void UpdateScore() {
+			if(PostRef == null) {
+				return;
+			}
+			ScoreText.Text = $"{PostRef.score.total}";
+			ToolTipService.SetToolTip(ScoreText, $"Upvote: {PostRef.score.up}\nDownvote: {Math.Abs(PostRef.score.down)}");
 		}
 
 		private void UpdateTypeIcon() {

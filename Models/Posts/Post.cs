@@ -3,6 +3,7 @@ using E621Downloader.Models.Networks;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +36,7 @@ namespace E621Downloader.Models.Posts {
 			//e621.net/posts?tags = order:random + limit:20
 			string url = $"https://e621.net/posts.json?tags=order:random+limit:{amount}+";
 			tags.ToList().ForEach(t => url += $"{t}+");
+			Debug.WriteLine($"THIS: {url}");
 			CheckSafe(ref url);
 			string data = await Data.ReadURLAsync(url);
 			return data == null ? new List<Post>() : JsonConvert.DeserializeObject<PostsRoot>(data).posts;

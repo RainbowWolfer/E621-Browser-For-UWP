@@ -26,6 +26,15 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
+/**
+ *  <ListView.ItemsPanel>
+         <ItemsPanelTemplate>
+             <ItemsStackPanel ItemsUpdatingScrollMode="KeepLastItemInView"
+                              VerticalAlignment="Bottom"/>
+         </ItemsPanelTemplate>
+     </ListView.ItemsPanel>
+
+ */
 namespace E621Downloader.Pages {
 	public sealed partial class PostsBrowser: Page {
 		public static PostsBrowser Instance;
