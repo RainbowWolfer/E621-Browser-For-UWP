@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
 	public class E621Wiki {
-		public static async Task<E621Wiki[]> GetAsync(string tag, CancellationToken token = default) {
+		public static async Task<E621Wiki[]> GetAsync(string tag, CancellationToken? token = null) {
 			tag = tag.ToLower().Trim();
 			if(wikiDictionary.ContainsKey(tag)) {
 				E621Wiki found = GetDefault(tag);
@@ -23,15 +23,14 @@ namespace E621Downloader.Models.Posts {
 				return new E621Wiki[] { found };
 			}
 			string url = $"https://e621.net/wiki_pages.json?search[title]={tag}";
-			string data = await Data.ReadURLAsync(url, token);
-			if(data == "[]") {
+			HttpResult result = await Data.ReadURLAsync(url, token);
+			if(result.Result == HttpResultType.Success) {
+				if(result.Content == "[]") {
+					return new E621Wiki[] { GetDefault(tag) };
+				}
+				return JsonConvert.DeserializeObject<E621Wiki[]>(result.Content);
+			} else {
 				return new E621Wiki[] { GetDefault(tag) };
-			}
-			try {
-				return JsonConvert.DeserializeObject<E621Wiki[]>(data);
-			} catch {
-				Debug.WriteLine("Wiki Error");
-				return null;
 			}
 		}
 

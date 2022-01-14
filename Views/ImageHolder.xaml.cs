@@ -69,7 +69,7 @@ namespace E621Downloader.Views {
 		private Page page;
 
 		public ImageHolder(Page page, Post post, int index) {
-			Debug.WriteLine("Type: " + post.file.ext);
+			//Debug.WriteLine("Type: " + post.file.ext);
 			this.page = page;
 			this.PostRef = post;
 			this.Index = index;

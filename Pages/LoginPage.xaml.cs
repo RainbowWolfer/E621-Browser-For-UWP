@@ -60,9 +60,9 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			MainPage.CreateInstantDialog("Please Wait", "Checking Sign In Parameters");
-			string data = await Data.ReadURLAsync("https://e621.net/favorites.json", default, username, apiKey);
+			HttpResult result = await Data.ReadURLAsync("https://e621.net/favorites.json", null, username, apiKey);
 			MainPage.HideInstantDialog();
-			if(data != null) {
+			if(result.Result == HttpResultType.Success) {
 				LocalSettings.Current.SetLocalUser(username, apiKey);
 				LocalSettings.Save();
 				MainPage.NavigateTo(PageTag.UserProfile);

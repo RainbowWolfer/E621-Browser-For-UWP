@@ -18,6 +18,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Foundation;
@@ -78,44 +79,31 @@ namespace E621Downloader {
 		protected async override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			CreateInstantDialog("Please Wait", "Checking E621");
-			//int time = 0;
-			//while(Local.DownloadFolder == null) {
-			//	await Task.Delay(10);
-			//	time += 1;
-			//	if(time >= 200) {
-			//		HideInstantDialog();
-			//		await CreatePopupDialog("Warning", "Download Folder Not Found", true);
-			//		CreateInstantDialog("Please Wait", "Initializing Local Program");
-			//		break;
-			//	}
-			//}
-			string data = await Data.ReadURLAsync("https://e621.net/");
-			while(string.IsNullOrEmpty(data)) {
+			HttpResult result;
+			do {
+				result = await Data.ReadURLAsync("https://e621.net/", null);
+				if(result.Result == HttpResultType.Success) {
+					break;
+				}
 				HideInstantDialog();
 				await CreatePopupDialog("Error", "No Internet Connection", true, "Retry");
 				CreateInstantDialog("Please Wait", "Checking Internet");
-				data = await Data.ReadURLAsync("https://e621.net/");
-			}
+			} while(result.Result == HttpResultType.Error);
+			string data = result.Content;
 			int start = data.IndexOf("Serving ") + 8;
-			string result = "";
+			string number = "";
 			for(int i = start; i < data.Length; i++) {
 				if(data[i] == ',') {
 					continue;
 				}
 				if(char.IsDigit(data[i])) {
-					result += data[i];
+					number += data[i];
 				}
 			}
 			HideInstantDialog();
 			await Task.Delay(20);
 
-			//CreateInstantDialog("Please Wait", "Checking Unfinished Downloads");
-			//if(Local.DownloadFolder != null) {
-			//await DownloadsManager.RestoreIncompletedDownloads();
-			//}
-			//HideInstantDialog();
-
-			MyFrame.Navigate(typeof(WelcomePage), long.Parse(result));
+			MyFrame.Navigate(typeof(WelcomePage), long.Parse(number));
 			ChangeUser(LocalSettings.Current.user_username);
 		}
 
@@ -363,6 +351,9 @@ namespace E621Downloader {
 			IsFullScreen = !IsFullScreen;
 		}
 
+
+		private CancellationTokenSource cts = new CancellationTokenSource();
+
 		private async void CurrentTagsButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			var dialog = new ContentDialog() {
 				Title = "Manage Your Search Tags",
@@ -382,7 +373,7 @@ namespace E621Downloader {
 					break;
 				case TagsSelectionView.ResultType.Random:
 					CreateInstantDialog("Please Waiting", "Getting Your Tag");
-					Post post = (await Post.GetPostsByTagsAsync(1, "limit:1", "order:random"))?.FirstOrDefault();
+					Post post = (await Post.GetPostsByTagsAsync(cts.Token, 1, "limit:1", "order:random"))?.FirstOrDefault();
 					HideInstantDialog();
 					if(post != null) {
 						List<string> all = post.tags.GetAllTags();

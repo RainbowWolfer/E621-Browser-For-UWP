@@ -5,19 +5,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace E621Downloader.Models.Posts {
 	public class E621User {
-		public static async Task<E621User> GetAsync(string username) {
+		public static async Task<E621User> GetAsync(string username, CancellationToken? token = null) {
 			string url = $"https://e621.net/users/{username}.json";
-			string data = await Data.ReadURLAsync(url);
-			if(string.IsNullOrEmpty(data)) {
-				Debug.WriteLine("?????");
+			HttpResult result = await Data.ReadURLAsync(url, token);
+			if(result.Result == HttpResultType.Success) {
+				return JsonConvert.DeserializeObject<E621User>(result.Content);
+			} else {
 				return null;
 			}
-			return JsonConvert.DeserializeObject<E621User>(data);
 		}
 
 		public static async Task<E621User> GetAsync(int id) {
@@ -25,18 +26,20 @@ namespace E621Downloader.Models.Posts {
 		}
 
 		public const string DEFAULT_AVATAR = "ms-appx:///Assets/esix2.jpg";
-		public static async Task<string> GetAvatarURLAsync(E621User user) {
+		public static async Task<string> GetAvatarURLAsync(E621User user, CancellationToken? token = null) {
 			string url = $"https://e621.net/posts/{user.avatar_id}.json";
-			string data = await Data.ReadURLAsync(url);
-			if(string.IsNullOrWhiteSpace(data)) {
+			HttpResult result = await Data.ReadURLAsync(url, token);
+			if(result.Result == HttpResultType.Success) {
+				Post post = JsonConvert.DeserializeObject<PostRoot>(result.Content).post;
+				string avatar_url = post.preview.url ?? post.sample.url;
+				return string.IsNullOrWhiteSpace(avatar_url) ? DEFAULT_AVATAR : avatar_url;
+			} else if(result.Result == HttpResultType.Canceled) {
 				return DEFAULT_AVATAR;
-			}
-			Post post = JsonConvert.DeserializeObject<PostRoot>(data).post;
-			string result = post.preview.url ?? post.sample.url;
-			if(string.IsNullOrWhiteSpace(result)) {
+			} else if(result.Result == HttpResultType.Error) {
 				return DEFAULT_AVATAR;
+			} else {
+				throw new HttpResultTypeNotFoundException();
 			}
-			return result;
 		}
 
 		public static E621User Current { get; set; }

@@ -5,31 +5,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
 	public class E621Comment {
-		//https://e621.net/comments.json?group_by=comment&search[post_id]=2671193
-		public static async Task<E621Comment[]> GetAsync(int post_id) {
+		public static async Task<E621Comment[]> GetAsync(int post_id, CancellationToken? token = null) {
 			string url = $"https://e621.net/comments.json?group_by=comment&search[post_id]={post_id}";
-			string data = await Data.ReadURLAsync(url);
-			if(string.IsNullOrEmpty(data)) {
+			HttpResult result = await Data.ReadURLAsync(url, token);
+			if(result.Result == HttpResultType.Success) {
+				return JsonConvert.DeserializeObject<E621Comment[]>(result.Content);
+			} else {
 				return Array.Empty<E621Comment>();
 			}
-			try {
-				return JsonConvert.DeserializeObject<E621Comment[]>(data);
-			} catch(Exception) {
-				return JsonConvert.DeserializeObject<CommentRoot>(data).comments;
-			}
 		}
-
-		//public async Task<string> LoadAvatar() {
-		//	User = await E621User.GetAsync(creator_id);
-		//	if(User != null) {
-		//		return await E621User.GetAvatorURL(User);
-		//	}
-		//	return null;
-		//}
 
 		public E621User User { get; private set; }
 

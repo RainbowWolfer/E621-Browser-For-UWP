@@ -3,17 +3,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
 	public class E621Paginator {
-		public async static Task<E621Paginator> GetAsync(string[] tags, int page = 1) {
+		public async static Task<E621Paginator> GetAsync(string[] tags, int page = 1, CancellationToken? token = null) {
 			string tag = "";
 			foreach(var item in tags) {
 				tag += item + " ";
 			}
 			string url = $"https://e621.net/posts?tags={tag}&page={page}";
-			string data = await Data.ReadURLAsync(url);
+			HttpResult result = await Data.ReadURLAsync(url, token);
+			if(result.Result != HttpResultType.Success) {
+				return null;
+			}
+			string data = result.Content;
 			int startIndex = data.IndexOf("paginator");
 
 			int currentPageIndex = data.IndexOf("current-page", startIndex);

@@ -6,11 +6,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
 	public class Post {
-		public async static Task<List<Post>> GetPostsByTagsAsync(int page, params string[] tags) {
+		public async static Task<List<Post>> GetPostsByTagsAsync(CancellationToken? token, int page, params string[] tags) {
 			if(page <= 0) {
 				throw new Exception("Page not valid");
 			}
@@ -18,10 +19,14 @@ namespace E621Downloader.Models.Posts {
 			tags.ToList().ForEach((t) => url += t + "+");
 			CheckSafe(ref url);
 
-			string data = await Data.ReadURLAsync(url);
-			return data == null ? new List<Post>() : JsonConvert.DeserializeObject<PostsRoot>(data).posts;
+			HttpResult result = await Data.ReadURLAsync(url, token);
+			if(result.Result == HttpResultType.Success) {
+				return JsonConvert.DeserializeObject<PostsRoot>(result.Content).posts;
+			} else {
+				return new List<Post>();
+			}
 		}
-		public static async Task<List<Post>> GetPostsByTagsAsync(bool combine, int page, params string[] tags) {
+		public static async Task<List<Post>> GetPostsByTagsAsync(CancellationToken? token, bool combine, int page, params string[] tags) {
 			if(page <= 0) {
 				throw new Exception("Page not valid");
 			}
@@ -29,33 +34,41 @@ namespace E621Downloader.Models.Posts {
 			tags.ToList().ForEach(t => url += $"{(combine ? "~" : "")}{t}+");
 			CheckSafe(ref url);
 
-			string data = await Data.ReadURLAsync(url);
-			return data == null ? new List<Post>() : JsonConvert.DeserializeObject<PostsRoot>(data).posts;
+			HttpResult result = await Data.ReadURLAsync(url, token);
+			if(result.Result == HttpResultType.Success) {
+				return JsonConvert.DeserializeObject<PostsRoot>(result.Content).posts;
+			} else {
+				return null;
+			}
 		}
-		public static async Task<List<Post>> GetPostsByRandomAsync(int amount, params string[] tags) {
+		public static async Task<List<Post>> GetPostsByRandomAsync(CancellationToken? token, int amount, params string[] tags) {
 			//e621.net/posts?tags = order:random + limit:20
 			string url = $"https://e621.net/posts.json?tags=order:random+limit:{amount}+";
 			tags.ToList().ForEach(t => url += $"{t}+");
 			Debug.WriteLine($"THIS: {url}");
 			CheckSafe(ref url);
-			string data = await Data.ReadURLAsync(url);
-			return data == null ? new List<Post>() : JsonConvert.DeserializeObject<PostsRoot>(data).posts;
-		}
-
-		public static async Task<Post> GetPostByIDAsync(string id) {
-			string url = $"https://e621.net/posts/{id}.json";
-			string data = await Data.ReadURLAsync(url);
-			if(string.IsNullOrWhiteSpace(data)) {
-				return null;
+			HttpResult result = await Data.ReadURLAsync(url, token);
+			if(result.Result == HttpResultType.Success) {
+				return JsonConvert.DeserializeObject<PostsRoot>(result.Content).posts;
 			} else {
-				return JsonConvert.DeserializeObject<PostRoot>(data).post;
+				return null;
 			}
 		}
 
-		public static async Task<List<Post>> GetPostsByIDsAsync(IEnumerable<string> ids) {
+		public static async Task<Post> GetPostByIDAsync(CancellationToken? token, string id) {
+			string url = $"https://e621.net/posts/{id}.json";
+			HttpResult result = await Data.ReadURLAsync(url, token);
+			if(result.Result == HttpResultType.Success) {
+				return JsonConvert.DeserializeObject<PostRoot>(result.Content).post;
+			} else {
+				return null;
+			}
+		}
+
+		public static async Task<List<Post>> GetPostsByIDsAsync(CancellationToken? token, IEnumerable<string> ids) {
 			List<Post> posts = new List<Post>();
 			foreach(string id in ids) {
-				posts.Add(await GetPostByIDAsync(id));
+				posts.Add(await GetPostByIDAsync(token, id));
 			}
 			return posts;
 		}

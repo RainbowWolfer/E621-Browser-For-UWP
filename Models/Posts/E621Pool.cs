@@ -4,13 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
 	public class E621Pool {
-		public async static Task<E621Pool> GetAsync(string id) {
-			string data = await Data.ReadURLAsync($"https://e621.net/pools/{id}.json");
-			return JsonConvert.DeserializeObject<E621Pool>(data);
+		public async static Task<E621Pool> GetAsync(string id, CancellationToken? token = null) {
+			HttpResult result = await Data.ReadURLAsync($"https://e621.net/pools/{id}.json", token);
+			if(result.Result == HttpResultType.Success) {
+				return JsonConvert.DeserializeObject<E621Pool>(result.Content);
+			} else {
+				return null;
+			}
 		}
 
 		public int id;

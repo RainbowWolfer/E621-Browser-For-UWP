@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -33,35 +34,85 @@ namespace E621Downloader.Views.TagsManagementSection {
 			MySuggestBox.Text = MySuggestBox.Text.Trim();
 		}
 
-		private void MySuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args) {
-			foreach(SingleTagDisplay item in TagsStackPanel.Children) {
-				item.CancelLoadingTag();
+		private bool itemClick = false;
+		private void AutoCompletesListView_ItemClick(object sender, ItemClickEventArgs e) {
+			var item = (SingleTagSuggestion)e.ClickedItem;
+			var tag = item.CompleteName;
+			//change last
+			//var last = GetLast(MySuggestBox.Text);
+			int lastSpace = MySuggestBox.Text.LastIndexOf(' ');
+			if(lastSpace == -1) {
+				MySuggestBox.Text = tag;
+			} else {
+				//MySuggestBox.Text = MySuggestBox.Text.Trim() + " " + tag;
+				string cut = MySuggestBox.Text.Substring(0, lastSpace).Trim();
+				MySuggestBox.Text = cut + " " + tag;
 			}
-			TagsStackPanel.Children.Clear();
+			AutoCompletesListView.Items.Clear();
+			itemClick = true;
+		}
+
+		private void MySuggestBox_TextChanged(object sender, TextChangedEventArgs e) {
+			if(itemClick) {
+				itemClick = false;
+				return;
+			}
+			var box = (TextBox)sender;
+			if(box.Text.LastOrDefault() == ' ') {
+				AutoCompletesListView.Items.Clear();
+				return;
+			}
 			currentTags.Clear();
-			foreach(string item in sender.Text.Trim().Split(" ").Where(s => !string.IsNullOrEmpty(s)).ToList()) {
+			foreach(string item in box.Text.Trim().Split(" ").Where(s => !string.IsNullOrEmpty(s)).ToList()) {
 				currentTags.Add(item);
-				TagsStackPanel.Children.Add(new SingleTagDisplay(this, item));
 			}
 			string last = currentTags.LastOrDefault();
-			if(!string.IsNullOrWhiteSpace(last)) {
-				LoadAutoSuggestion(sender, last);
+			//if(args.Reason == AutoSuggestionBoxTextChangeReason.UserInput) {
+			if(string.IsNullOrWhiteSpace(last)) {
+				AutoCompletesListView.Items.Clear();
+			} else {
+				LoadAutoSuggestion(last);
+			}
+			//}
+		}
+		private CancellationTokenSource source;
+		private CancellationToken token;
+		private List<LoadTask> tasks = new List<LoadTask>();
+		private async void LoadAutoSuggestion(string tag) {
+			LoadTask task = new LoadTask();
+			tasks.Add(task);
+
+
+
+
+			SetLoadingbar(true);
+			AutoCompletesListView.Items.Clear();
+			E621AutoComplete[] acs = await E621AutoComplete.GetAsync(tag);
+			AutoCompletesListView.Items.Clear();
+			if(acs == null || acs.Length == 0) {
+				SetLoadingbar(false);
+				return;
+			}
+			foreach(E621AutoComplete item in acs) {
+				AutoCompletesListView.Items.Add(new SingleTagSuggestion(item));
+			}
+			var last = AutoCompletesListView.Items.Cast<SingleTagSuggestion>().LastOrDefault();
+			if(last != null) {
+				last.Loaded += (s, e) => {
+					SetLoadingbar(false);
+				};
 			}
 		}
 
-		private async void LoadAutoSuggestion(AutoSuggestBox box, string tag) {
-			E621AutoComplete[] acs = await E621AutoComplete.GetAsync(tag);
-			var list = new List<SingleTagSuggestion>() {
-				new SingleTagSuggestion(),
-				new SingleTagSuggestion(),
-				new SingleTagSuggestion(),
-				new SingleTagSuggestion(),
-				new SingleTagSuggestion(),
-			};
-			//box.ItemsSource = list;
+		private void SetLoadingbar(bool active) {
+			LoadingBar.IsIndeterminate = active;
+			LoadingBar.Visibility = active ? Visibility.Visible : Visibility.Collapsed;
 		}
 
-		public E621Tag GetE621Tag(string tag) => tags_pool.ContainsKey(tag) ? tags_pool[tag] : null;
+		public E621Tag GetE621Tag(string tag) {
+			return tags_pool.ContainsKey(tag) ? tags_pool[tag] : null;
+		}
+
 		public void RegisterE621Tag(string tag, E621Tag e621tag) {
 			if(tags_pool.ContainsKey(tag)) {
 				tags_pool[tag] = e621tag;
@@ -74,12 +125,8 @@ namespace E621Downloader.Views.TagsManagementSection {
 		public void RemoveTag(string tag) {
 			MySuggestBox.Text = MySuggestBox.Text.Replace(tag, "").Trim();
 		}
-		public string[] GetTags() => currentTags.ToArray();
 
-		private void SearchButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			Result = ResultType.Search;
-			dialog.Hide();
-		}
+		public string[] GetTags() => currentTags.ToArray();
 
 		private void DialogBackButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			Result = ResultType.None;
@@ -96,8 +143,30 @@ namespace E621Downloader.Views.TagsManagementSection {
 			dialog.Hide();
 		}
 
+		private string GetLast(string value) {
+			int lastSpace = value.LastIndexOf(' ');
+			if(lastSpace != -1) {
+				return value.Substring(lastSpace, value.Length - lastSpace).Trim();
+			} else {
+				return value;
+			}
+		}
+
 		public enum ResultType {
 			None, Search, Hot, Random
+		}
+
+		private class LoadTask {
+			public bool Effective { get; set; } = false;
+			public string Result { get; private set; }
+			public Action Loaded;
+			public async void Load() {
+				await Task.Delay(1);
+				if(Effective) {
+					//do stuff
+				}
+				Loaded?.Invoke();
+			}
 		}
 	}
 }

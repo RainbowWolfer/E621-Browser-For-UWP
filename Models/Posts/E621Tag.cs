@@ -10,18 +10,14 @@ using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
 	public class E621Tag {
-		public static async Task<E621Tag[]> GetAsync(string tag) {
+		public static async Task<E621Tag[]> GetAsync(string tag, CancellationToken? token = null) {
 			tag = tag.ToLower().Trim();
 			string url = $"https://e621.net/tags.json?search[name_matches]={tag}";
-			string content = await Data.ReadURLAsync(url);
-			if(content == "{\"tags\":[]}") {
+			HttpResult result = await Data.ReadURLAsync(url, token);
+			if(result.Result == HttpResultType.Success) {
+				return JsonConvert.DeserializeObject<E621Tag[]>(result.Content);
+			} else {
 				return new E621Tag[] { GetDefault(tag) };
-			}
-			try {
-				return JsonConvert.DeserializeObject<E621Tag[]>(content);
-			} catch {
-				Debug.WriteLine("Tags Error");
-				return null;
 			}
 		}
 
