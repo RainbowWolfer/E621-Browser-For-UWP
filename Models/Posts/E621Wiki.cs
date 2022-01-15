@@ -23,7 +23,7 @@ namespace E621Downloader.Models.Posts {
 				return new E621Wiki[] { found };
 			}
 			string url = $"https://e621.net/wiki_pages.json?search[title]={tag}";
-			HttpResult result = await Data.ReadURLAsync(url, token);
+			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
 				if(result.Content == "[]") {
 					return new E621Wiki[] { GetDefault(tag) };

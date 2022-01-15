@@ -75,24 +75,21 @@ namespace E621Downloader.Views.TagsManagementSection {
 			}
 			//}
 		}
-		private CancellationTokenSource source;
-		private CancellationToken token;
-		private List<LoadTask> tasks = new List<LoadTask>();
+		private CancellationTokenSource cts;
 		private async void LoadAutoSuggestion(string tag) {
-			LoadTask task = new LoadTask();
-			tasks.Add(task);
-
-
-
-
+			if(cts != null) {
+				cts.Cancel();
+				cts.Dispose();
+			}
+			cts = new CancellationTokenSource();
 			SetLoadingbar(true);
 			AutoCompletesListView.Items.Clear();
-			E621AutoComplete[] acs = await E621AutoComplete.GetAsync(tag);
+			E621AutoComplete[] acs = await E621AutoComplete.GetAsync(tag, cts.Token);
 			AutoCompletesListView.Items.Clear();
-			if(acs == null || acs.Length == 0) {
-				SetLoadingbar(false);
-				return;
-			}
+			//if(acs == null || acs.Length == 0) {
+			//	SetLoadingbar(false);
+			//	return;
+			//}
 			foreach(E621AutoComplete item in acs) {
 				AutoCompletesListView.Items.Add(new SingleTagSuggestion(item));
 			}
@@ -154,19 +151,6 @@ namespace E621Downloader.Views.TagsManagementSection {
 
 		public enum ResultType {
 			None, Search, Hot, Random
-		}
-
-		private class LoadTask {
-			public bool Effective { get; set; } = false;
-			public string Result { get; private set; }
-			public Action Loaded;
-			public async void Load() {
-				await Task.Delay(1);
-				if(Effective) {
-					//do stuff
-				}
-				Loaded?.Invoke();
-			}
 		}
 	}
 }

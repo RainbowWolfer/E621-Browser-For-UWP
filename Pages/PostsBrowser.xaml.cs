@@ -61,6 +61,8 @@ namespace E621Downloader.Pages {
 
 		private E621Pool pool;
 
+		private CancellationTokenSource cts = new CancellationTokenSource();
+
 		public PostsBrowser() {
 			Instance = this;
 			this.InitializeComponent();
@@ -153,7 +155,7 @@ namespace E621Downloader.Pages {
 			MainPage.CreateInstantDialog("Please Wait", "Loading Posts...");
 			await Task.Delay(200);
 			SelectToggleButton.IsChecked = false;
-			List<Post> temp = await Post.GetPostsByIDsAsync(pool.post_ids);
+			List<Post> temp = await Post.GetPostsByIDsAsync(cts.Token, pool.post_ids);
 			if(temp.Count == 0) {
 				MainPage.HideInstantDialog();
 				await MainPage.CreatePopupDialog("Articles Error",
@@ -173,7 +175,7 @@ namespace E621Downloader.Pages {
 			MainPage.CreateInstantDialog("Please Wait", "Loading...");
 			await Task.Delay(200);
 			SelectToggleButton.IsChecked = false;
-			List<Post> temp = await Post.GetPostsByTagsAsync(page, tags);
+			List<Post> temp = await Post.GetPostsByTagsAsync(cts.Token, page, tags);
 			if(temp.Count == 0) {
 				MainPage.HideInstantDialog();
 				await MainPage.CreatePopupDialog("Articles Error",
@@ -446,7 +448,7 @@ namespace E621Downloader.Pages {
 							await Task.Delay(50);
 							var all = new List<Post>();
 							for(int i = 1; i <= maxPage; i++) {
-								List<Post> p = await Post.GetPostsByTagsAsync(i, Tags);
+								List<Post> p = await Post.GetPostsByTagsAsync(cts.Token, i, Tags);
 								all.AddRange(p);
 							}
 							if(await DownloadsManager.RegisterDownloads(all, Tags)) {

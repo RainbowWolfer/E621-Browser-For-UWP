@@ -13,7 +13,7 @@ namespace E621Downloader.Models.Posts {
 	public class E621User {
 		public static async Task<E621User> GetAsync(string username, CancellationToken? token = null) {
 			string url = $"https://e621.net/users/{username}.json";
-			HttpResult result = await Data.ReadURLAsync(url, token);
+			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<E621User>(result.Content);
 			} else {
@@ -21,22 +21,20 @@ namespace E621Downloader.Models.Posts {
 			}
 		}
 
-		public static async Task<E621User> GetAsync(int id) {
+		public static async Task<E621User> GetAsync(int id, CancellationToken? token = null) {
 			return await GetAsync($"{id}");
 		}
 
-		public const string DEFAULT_AVATAR = "ms-appx:///Assets/esix2.jpg";
 		public static async Task<string> GetAvatarURLAsync(E621User user, CancellationToken? token = null) {
 			string url = $"https://e621.net/posts/{user.avatar_id}.json";
-			HttpResult result = await Data.ReadURLAsync(url, token);
+			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
 				Post post = JsonConvert.DeserializeObject<PostRoot>(result.Content).post;
-				string avatar_url = post.preview.url ?? post.sample.url;
-				return string.IsNullOrWhiteSpace(avatar_url) ? DEFAULT_AVATAR : avatar_url;
+				return post.preview.url ?? post.sample.url;
 			} else if(result.Result == HttpResultType.Canceled) {
-				return DEFAULT_AVATAR;
+				return "";
 			} else if(result.Result == HttpResultType.Error) {
-				return DEFAULT_AVATAR;
+				return "";
 			} else {
 				throw new HttpResultTypeNotFoundException();
 			}

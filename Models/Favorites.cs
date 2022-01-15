@@ -10,10 +10,10 @@ namespace E621Downloader.Models {
 	public static class Favorites {
 		private static readonly List<string> posts_id = new List<string>();
 
-		public static async void UpdateFavorites() {
+		//public static async void UpdateFavorites() {
 			
-			await Post.GetPostsByTagsAsync(1, $"fav:");
-		}
+			//await Post.GetPostsByTagsAsync(1, $"fav:");
+		//}
 
 		public static void RegisterFavoriteIcon(FrameworkElement target) {
 

@@ -31,6 +31,7 @@ namespace E621Downloader.Pages {
 		private bool onTask;
 		public List<Post> Posts { get; private set; } = new List<Post>();
 		private int _size;
+		private CancellationTokenSource cts = new CancellationTokenSource();
 		public int Size {
 			get => _size;
 			private set {
@@ -132,7 +133,7 @@ namespace E621Downloader.Pages {
 			}
 			(int, int) range = GetScoreRange();
 			tags.Add($"score:{range.Item1}..{range.Item2}");
-			List<Post> posts = await Post.GetPostsByRandomAsync(CurrentAmount, tags.ToArray());
+			List<Post> posts = await Post.GetPostsByRandomAsync(cts.Token, CurrentAmount, tags.ToArray());
 			if(posts == null || posts.Count == 0) {
 				await MainPage.CreatePopupDialog("Error", "There is No Post(s) Found");
 			} else {

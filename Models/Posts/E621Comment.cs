@@ -12,7 +12,7 @@ namespace E621Downloader.Models.Posts {
 	public class E621Comment {
 		public static async Task<E621Comment[]> GetAsync(int post_id, CancellationToken? token = null) {
 			string url = $"https://e621.net/comments.json?group_by=comment&search[post_id]={post_id}";
-			HttpResult result = await Data.ReadURLAsync(url, token);
+			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<E621Comment[]>(result.Content);
 			} else {

@@ -273,6 +273,7 @@ namespace E621Downloader.Pages {
 			tags.Add(new GroupTagList(title, content));
 		}
 
+		private readonly Dictionary<CommentView, Task> commentsLoader = new Dictionary<CommentView, Task>();
 		private async void LoadCommentsAsync() {
 			comments.Clear();
 			CommentsListView.Items.Clear();
@@ -281,17 +282,36 @@ namespace E621Downloader.Pages {
 			LoadingSection.Visibility = Visibility.Visible;
 			CommentsHint.Visibility = Visibility.Collapsed;
 			E621Comment[] list = await E621Comment.GetAsync(PostRef.id);
+			CancelLoadAvatars();
+			commentsLoader.Clear();
 			if(list != null && list.Length > 0) {
 				foreach(E621Comment item in list) {
 					comments.Add(item);
-					CommentsListView.Items.Add(new CommentView(item));
+					CommentView view = new CommentView(item);
+					commentsLoader.Add(view, view.LoadAvatar());
+					CommentsListView.Items.Add(view);
 				}
+				LoadAllAvatars(commentsLoader.Values.ToArray());
 			} else {
 				CommentsHint.Visibility = Visibility.Visible;
 			}
 			LoadingSection.Visibility = Visibility.Collapsed;
 			commentsLoading = false;
 			commentsLoaded = true;
+		}
+
+		private void CancelLoadAvatars() {
+			foreach(KeyValuePair<CommentView, Task> item in commentsLoader) {
+				item.Key.cts.Cancel();
+				item.Key.cts.Dispose();
+			}
+		}
+
+		private async void LoadAllAvatars(Task[] tasks) {
+			for(int i = 0; i < tasks.Length; i++) {
+				await tasks[i];
+				Debug.WriteLine("Loaded: " + i);
+			}
 		}
 
 		private void UpdateOthers() {

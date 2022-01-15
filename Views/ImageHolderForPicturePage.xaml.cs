@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -46,6 +47,8 @@ namespace E621Downloader.Views {
 		public Post Origin { get; set; }
 		public Post Target { get; private set; }
 
+		private CancellationTokenSource cts = new CancellationTokenSource();
+
 		private async void Load(string post_id) {
 			if(string.IsNullOrWhiteSpace(post_id)) {
 				IsLoading = false;
@@ -53,7 +56,7 @@ namespace E621Downloader.Views {
 				return;
 			}
 			IsLoading = true;
-			Target = await Post.GetPostByIDAsync(post_id);
+			Target = await Post.GetPostByIDAsync(cts.Token, post_id);
 			UpdateInfo(Target);
 			if(Target == null) {
 				return;
@@ -119,13 +122,13 @@ namespace E621Downloader.Views {
 				MainPage.CreateInstantDialog("Please Wait", "Loading Siblings");
 				if(!string.IsNullOrWhiteSpace(Origin.relationships.parent_id)) {
 					siblings.Add(Target);
-					List<Post> result = (await Post.GetPostsByTagsAsync(1, $"parent:{Origin.relationships.parent_id}")).Where(p => CheckPostAvailable(p)).ToList();
+					List<Post> result = (await Post.GetPostsByTagsAsync(cts.Token, 1, $"parent:{Origin.relationships.parent_id}")).Where(p => CheckPostAvailable(p)).ToList();
 					siblings.AddRange(result);
 					App.postsList.Current = Target;
 				} else {
 					siblings.Add(Origin);
 					foreach(string item in Origin.relationships.children) {
-						Post p = await Post.GetPostByIDAsync(item);
+						Post p = await Post.GetPostByIDAsync(cts.Token, item);
 						if(CheckPostAvailable(p)) {
 							siblings.Add(p);
 						}

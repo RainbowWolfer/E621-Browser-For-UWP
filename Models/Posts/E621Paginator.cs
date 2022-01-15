@@ -14,7 +14,7 @@ namespace E621Downloader.Models.Posts {
 				tag += item + " ";
 			}
 			string url = $"https://e621.net/posts?tags={tag}&page={page}";
-			HttpResult result = await Data.ReadURLAsync(url, token);
+			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result != HttpResultType.Success) {
 				return null;
 			}

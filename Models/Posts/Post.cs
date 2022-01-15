@@ -19,7 +19,7 @@ namespace E621Downloader.Models.Posts {
 			tags.ToList().ForEach((t) => url += t + "+");
 			CheckSafe(ref url);
 
-			HttpResult result = await Data.ReadURLAsync(url, token);
+			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<PostsRoot>(result.Content).posts;
 			} else {
@@ -34,7 +34,7 @@ namespace E621Downloader.Models.Posts {
 			tags.ToList().ForEach(t => url += $"{(combine ? "~" : "")}{t}+");
 			CheckSafe(ref url);
 
-			HttpResult result = await Data.ReadURLAsync(url, token);
+			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<PostsRoot>(result.Content).posts;
 			} else {
@@ -47,7 +47,7 @@ namespace E621Downloader.Models.Posts {
 			tags.ToList().ForEach(t => url += $"{t}+");
 			Debug.WriteLine($"THIS: {url}");
 			CheckSafe(ref url);
-			HttpResult result = await Data.ReadURLAsync(url, token);
+			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<PostsRoot>(result.Content).posts;
 			} else {
@@ -57,7 +57,7 @@ namespace E621Downloader.Models.Posts {
 
 		public static async Task<Post> GetPostByIDAsync(CancellationToken? token, string id) {
 			string url = $"https://e621.net/posts/{id}.json";
-			HttpResult result = await Data.ReadURLAsync(url, token);
+			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<PostRoot>(result.Content).post;
 			} else {

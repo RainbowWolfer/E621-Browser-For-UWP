@@ -79,7 +79,7 @@ namespace E621Downloader {
 		protected async override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			CreateInstantDialog("Please Wait", "Checking E621");
-			HttpResult result;
+			HttpResult<string> result;
 			do {
 				result = await Data.ReadURLAsync("https://e621.net/", null);
 				if(result.Result == HttpResultType.Success) {
@@ -112,7 +112,7 @@ namespace E621Downloader {
 			if(updatingUser) {
 				return;
 			}
-			UserPicture.ProfilePicture = new BitmapImage(new Uri(E621User.DEFAULT_AVATAR));
+			UserPicture.ProfilePicture = App.DefaultAvatar;
 			if(string.IsNullOrWhiteSpace(username)) {
 				ToolTipService.SetToolTip(UserIconItem, null);
 				UserChangedInfoComplete?.Invoke();

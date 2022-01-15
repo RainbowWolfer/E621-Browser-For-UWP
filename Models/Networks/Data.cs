@@ -17,52 +17,8 @@ using Windows.UI.Xaml.Controls;
 namespace E621Downloader.Models.Networks {
 	public static class Data {
 		public const string USERAGENT = "RainbowWolferE621TestApp";
-		[Obsolete("Use E621Downloader.Models.Networks.Data.ReadURLAsync() Instead", true)]
-		public static async Task<string> ReadURLAsync_Old(string url, CancellationToken token = default, string username = "", string api = "") {
-			Debug.WriteLine("Async : " + url);
-			var request = (HttpWebRequest)WebRequest.Create(url);
-			request.UserAgent = USERAGENT;
-			if(string.IsNullOrWhiteSpace(username) && string.IsNullOrWhiteSpace(api)) {
-				if(LocalSettings.Current?.CheckLocalUser() ?? false) {
-					AddAuthorizationHeader(request,
-						LocalSettings.Current.user_username,
-						LocalSettings.Current.user_api
-					);
-				}
-			} else {
-				AddAuthorizationHeader(request, username, api);
-			}
-			HttpWebResponse response;
-			try {
-				response = await request.GetResponseAsync() as HttpWebResponse;
-				request.Abort();
-			} catch(WebException e) {
-				Debug.WriteLine(e.Message);
-				if(e.Response != null) {
-					using(Stream stream = e.Response.GetResponseStream()) {
-						using(var reader = new StreamReader(stream)) {
-							Debug.WriteLine(reader.ReadToEnd());
-						}
-					}
-				}
-				return null;
-			}
-			using(Stream dataStream = response.GetResponseStream()) {
-				using(StreamReader reader = new StreamReader(dataStream)) {
-					string data = await reader.ReadToEndAsync();
-					return data;
-				}
-			}
-		}
 
-		[Obsolete]
-		private static void AddAuthorizationHeader(HttpWebRequest request, string username, string api) {
-			string encoded = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(username + ":" + api));
-			request.Headers.Add("Authorization", "Basic " + encoded);
-		}
-
-
-		public static async Task<HttpResult> ReadURLAsync(string url, CancellationToken? token = null, string username = "", string api = "") {
+		public static async Task<HttpResult<string>> ReadURLAsync(string url, CancellationToken? token = null, string username = "", string api = "") {
 			Stopwatch stopwatch = new Stopwatch();
 			stopwatch.Start();
 			var client = new HttpClient();
@@ -92,10 +48,46 @@ namespace E621Downloader.Models.Networks {
 				result = HttpResultType.Error;
 			} finally {
 				client.Dispose();
-				message.Dispose();
+				message?.Dispose();
 			}
 			stopwatch.Stop();
-			return new HttpResult(result, code, content, stopwatch.ElapsedMilliseconds);
+			return new HttpResult<string>(result, code, content, stopwatch.ElapsedMilliseconds);
+		}
+
+		public async static Task<HttpResult<Stream>> ReadImageStreamAsync(string url, CancellationToken? token = null, string username = "", string api = "") {
+			Stopwatch stopwatch = new Stopwatch();
+			stopwatch.Start();
+			HttpClient client = new HttpClient();
+			client.DefaultRequestHeaders.Add("User-Agent", "RainbowWolferE621TestApp");
+			AddAuthorizationHeader(client, username, api);
+			HttpResponseMessage message = await client.GetAsync(url, token.Value);
+			Stream stream = null;
+			HttpResultType result;
+			HttpStatusCode code;
+			try {
+				if(token != null) {
+					message = await client.GetAsync(url, token.Value);
+				} else {
+					message = await client.GetAsync(url);
+				}
+				message.EnsureSuccessStatusCode();
+				code = message.StatusCode;
+				stream = await message.Content.ReadAsStreamAsync();
+				result = HttpResultType.Success;
+			} catch(OperationCanceledException) {
+				code = message?.StatusCode ?? HttpStatusCode.NotFound;
+				stream = null;
+				result = HttpResultType.Canceled;
+			} catch(HttpRequestException) {
+				code = message?.StatusCode ?? HttpStatusCode.NotFound;
+				stream = null;
+				result = HttpResultType.Error;
+			} finally {
+				client.Dispose();
+				message?.Dispose();
+			}
+			stopwatch.Stop();
+			return new HttpResult<Stream>(result, code, stream, stopwatch.ElapsedMilliseconds);
 		}
 
 		private static void AddAuthorizationHeader(HttpClient client, string username, string api) {
@@ -112,12 +104,12 @@ namespace E621Downloader.Models.Networks {
 		}
 	}
 
-	public class HttpResult {
+	public class HttpResult<T> {
 		public HttpResultType Result { get; set; }
 		public HttpStatusCode StatusCode { get; private set; }
-		public string Content { get; private set; }
+		public T Content { get; private set; }
 		public long Time { get; private set; }
-		public HttpResult(HttpResultType result, HttpStatusCode statusCode, string content, long time) {
+		public HttpResult(HttpResultType result, HttpStatusCode statusCode, T content, long time) {
 			Result = result;
 			StatusCode = statusCode;
 			Content = content;
@@ -126,9 +118,7 @@ namespace E621Downloader.Models.Networks {
 	}
 
 	public class HttpResultTypeNotFoundException: Exception {
-		public HttpResultTypeNotFoundException() : base("") {
-
-		}
+		public HttpResultTypeNotFoundException() : base("") { }
 	}
 
 	public enum HttpResultType {

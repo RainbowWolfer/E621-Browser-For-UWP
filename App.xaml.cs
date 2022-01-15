@@ -31,10 +31,8 @@ namespace E621Downloader {
 	public sealed partial class App: Application {
 		public static App Instance;
 
-		//public static bool showNullImage;
-		//public static bool showBlackListed;
-
 		public static PostsList postsList { get; private set; } = new PostsList();
+		public static BitmapImage DefaultAvatar { get; } = new BitmapImage(new Uri("ms-appx:///Assets/esix2.jpg"));
 
 		public App() {
 			Instance = this;
@@ -42,8 +40,8 @@ namespace E621Downloader {
 			this.Suspending += OnSuspending;
 
 			Local.Initialize();
-
 		}
+
 
 		public static bool CompareTwoArray<T>(IEnumerable<T> a, IEnumerable<T> b) {
 			T[] ar = a.ToArray();
