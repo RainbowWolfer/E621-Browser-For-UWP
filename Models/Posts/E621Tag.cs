@@ -14,7 +14,7 @@ namespace E621Downloader.Models.Posts {
 			tag = tag.ToLower().Trim();
 			string url = $"https://e621.net/tags.json?search[name_matches]={tag}";
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
-			if(result.Result == HttpResultType.Success) {
+			if(result.Result == HttpResultType.Success && result.Content != "{\"tags\":[]}") {
 				return JsonConvert.DeserializeObject<E621Tag[]>(result.Content);
 			} else {
 				return new E621Tag[] { GetDefault(tag) };

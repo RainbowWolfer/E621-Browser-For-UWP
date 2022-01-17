@@ -61,6 +61,10 @@ namespace E621Downloader.Views {
 			if(Target == null) {
 				return;
 			}
+			if(Target.is_favorited) {
+				//FavoriteIcon.Foreground = new SolidColorBrush(Colors.Red);
+				FavoriteIcon.Foreground = new SolidColorBrush((Color)Application.Current.Resources["SystemAccentColor"]);
+			}
 			if(Target.flags.deleted) {
 				HintText.Visibility = Visibility.Visible;
 				IsLoading = false;

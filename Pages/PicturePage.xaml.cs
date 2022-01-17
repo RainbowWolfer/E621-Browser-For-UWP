@@ -1,6 +1,7 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
 using E621Downloader.Models.Locals;
+using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages.LibrarySection;
 using E621Downloader.Views;
@@ -36,12 +37,15 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Pages {
 	public sealed partial class PicturePage: Page {
 		public Post PostRef { get; private set; }
+		public PathType PostType { get; private set; }
 		public readonly ObservableCollection<GroupTagList> tags;
 		private readonly Dictionary<string, E621Tag> tags_pool;//should i refresh on every entry?
 		public readonly List<E621Comment> comments;
 
 		private bool commentsLoading;
 		private bool commentsLoaded;
+
+		private string path;
 
 		public bool isMouseOn;
 		public bool isMousePressed;
@@ -100,6 +104,8 @@ namespace E621Downloader.Pages {
 
 				TagsListView.ScrollIntoView(TagsListView.Items[0]);
 				UpdateTagsGroup(PostRef.tags);
+				PostType = PathType.PostID;
+				path = this.PostRef.id;
 			} else if(p is ItemBlock itemBlock) {
 				if(PostRef == itemBlock.meta.MyPost) {
 					UpdateTagsGroup(PostRef.tags);
@@ -135,9 +141,12 @@ namespace E621Downloader.Pages {
 				TagsListView.ScrollIntoView(TagsListView.Items[0]);
 
 				UpdateTagsGroup(PostRef.tags);
+				PostType = PathType.Local;
+				path = itemBlock.imageFile.Path;
 			} else if(this.PostRef == null && p == null) {
 				MyProgressRing.IsActive = false;
 				showNoPostGrid = true;
+				PostType = PathType.PostID;
 			}
 			NoPostGrid.Visibility = showNoPostGrid ? Visibility.Visible : Visibility.Collapsed;
 			MainGrid.Visibility = !showNoPostGrid ? Visibility.Visible : Visibility.Collapsed;
@@ -146,6 +155,7 @@ namespace E621Downloader.Pages {
 			UpdateRatingColor();
 			UpdateTypeIcon();
 			UpdateSoundIcon();
+			UpdateFavoriteButton();
 			DescriptionText.Text = PostRef != null && !string.IsNullOrEmpty(PostRef.description) ? PostRef.description : "No Description";
 			UpdateOthers();
 			if(this.PostRef != null && p != null) {
@@ -273,7 +283,6 @@ namespace E621Downloader.Pages {
 			tags.Add(new GroupTagList(title, content));
 		}
 
-		private readonly Dictionary<CommentView, Task> commentsLoader = new Dictionary<CommentView, Task>();
 		private async void LoadCommentsAsync() {
 			comments.Clear();
 			CommentsListView.Items.Clear();
@@ -283,15 +292,12 @@ namespace E621Downloader.Pages {
 			CommentsHint.Visibility = Visibility.Collapsed;
 			E621Comment[] list = await E621Comment.GetAsync(PostRef.id);
 			CancelLoadAvatars();
-			commentsLoader.Clear();
 			if(list != null && list.Length > 0) {
-				foreach(E621Comment item in list) {
+				foreach(E621Comment item in list.Reverse()) {
 					comments.Add(item);
-					CommentView view = new CommentView(item);
-					commentsLoader.Add(view, view.LoadAvatar());
-					CommentsListView.Items.Add(view);
+					CommentsListView.Items.Add(new CommentView(item));
 				}
-				LoadAllAvatars(commentsLoader.Values.ToArray());
+				LoadAllAvatars();
 			} else {
 				CommentsHint.Visibility = Visibility.Visible;
 			}
@@ -301,17 +307,35 @@ namespace E621Downloader.Pages {
 		}
 
 		private void CancelLoadAvatars() {
-			foreach(KeyValuePair<CommentView, Task> item in commentsLoader) {
-				item.Key.cts.Cancel();
-				item.Key.cts.Dispose();
+			foreach(CommentView item in CommentsListView.Items) {
+				item.Cts?.Cancel();
+				item.Cts?.Dispose();
 			}
 		}
 
-		private async void LoadAllAvatars(Task[] tasks) {
-			for(int i = 0; i < tasks.Length; i++) {
-				await tasks[i];
-				Debug.WriteLine("Loaded: " + i);
+		private async void LoadAllAvatars() {
+			foreach(CommentView item in CommentsListView.Items) {
+				item.EnableLoadingRing();
 			}
+			foreach(CommentView item in CommentsListView.Items) {
+				await item.LoadAvatar();
+			}
+		}
+
+		private void UpdateFavoriteButton() {
+			if(this.PostRef == null) {
+				return;
+			}
+			bool enable = this.PostRef.is_favorited;
+			FavoriteButton.IsChecked = enable;
+			if(enable) {
+				FavoriteText.Text = "Favorited";
+				FavoriteIcon.Glyph = "\uEB52";
+			} else {
+				FavoriteText.Text = "Favorite";
+				FavoriteIcon.Glyph = "\uEB51";
+			}
+			FavoriteListButton.IsChecked = enable;
 		}
 
 		private void UpdateOthers() {
@@ -560,14 +584,38 @@ namespace E621Downloader.Pages {
 			await dialog.ShowAsync();
 		}
 
-		private void FavoriteButton_Click(object sender, RoutedEventArgs e) {
+		private async void FavoriteButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			e.Handled = true;
+			FavoriteButton.IsEnabled = false;
+			FavoriteListButton.IsEnabled = false;
+			FavoriteText.Text = "Pending";
+			FavoriteIcon.Glyph = "\uE10C";
 			if(FavoriteButton.IsChecked.Value) {
-				FavoriteText.Text = "Favorited";
-				FavoriteIcon.Glyph = "\uEB52";
+				HttpResult<string> result = await Favorites.PostAsync(this.PostRef);
+				if(result.Result == HttpResultType.Success) {
+					FavoriteText.Text = "Favorited";
+					FavoriteIcon.Glyph = "\uEB52";
+				} else {
+					FavoriteText.Text = "Favorite";
+					FavoriteIcon.Glyph = "\uEB51";
+					MainPage.CreateTip(this, result.StatusCode.ToString(), result.Helper, Symbol.Important, "OK");
+					FavoriteButton.IsChecked = false;
+				}
 			} else {
-				FavoriteText.Text = "Favorite";
-				FavoriteIcon.Glyph = "\uEB51";
+				HttpResult<string> result = await Favorites.DeleteAsync(this.PostRef.id);
+				if(result.Result == HttpResultType.Success) {
+					FavoriteText.Text = "Favorite";
+					FavoriteIcon.Glyph = "\uEB51";
+				} else {
+					FavoriteText.Text = "Favorited";
+					FavoriteIcon.Glyph = "\uEB52";
+					MainPage.CreateTip(this, result.StatusCode.ToString(), result.Helper, Symbol.Important, "OK");
+					FavoriteButton.IsChecked = true;
+				}
 			}
+			FavoriteButton.IsEnabled = true;
+			FavoriteListButton.IsEnabled = true;
+			FavoriteListButton.IsChecked = FavoriteButton.IsChecked;
 		}
 
 		private void ToggleTagsButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -645,6 +693,19 @@ namespace E621Downloader.Pages {
 			MainPage.HideInstantDialog();
 			MainPage.NavigateToPostsBrowser(pool);
 		}
+
+		private void FavoriteListButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			var flyout = new Flyout();
+			var content = new PersonalFavoritesList(flyout, PostType, path);
+			flyout.Content = content;
+			Point pos = e.GetPosition(sender as UIElement);
+			pos.Y += 20;
+			flyout.ShowAt(sender as UIElement, new FlyoutShowOptions() {
+				Placement = FlyoutPlacementMode.Bottom,
+				ShowMode = FlyoutShowMode.Auto,
+				Position = pos,
+			});
+		}
 	}
 	public class GroupTagList: ObservableCollection<string> {
 		public string Key { get; set; }
@@ -655,6 +716,10 @@ namespace E621Downloader.Pages {
 			this.Key = key;
 			content.ForEach(s => this.Add(s));
 		}
+	}
+
+	public enum PathType {
+		PostID, Local
 	}
 
 }

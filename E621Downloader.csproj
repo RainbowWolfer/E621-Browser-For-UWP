@@ -141,7 +141,8 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Favorites.cs" />
+    <Compile Include="Models\Locals\FavoritesList.cs" />
+    <Compile Include="Models\Posts\Favorites.cs" />
     <Compile Include="Models\Locals\LocalSettings.cs" />
     <Compile Include="Models\Locals\WelcomeInLanguages.cs" />
     <Compile Include="Models\Methods.cs" />
@@ -223,6 +224,9 @@
     <Compile Include="Views\LoginHelpSection.xaml.cs">
       <DependentUpon>LoginHelpSection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PersonalFavoritesList.xaml.cs">
+      <DependentUpon>PersonalFavoritesList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TagExpander.xaml.cs">
       <DependentUpon>TagExpander.xaml</DependentUpon>
     </Compile>
@@ -269,6 +273,7 @@
     <Compile Include="Views\UserInfoLine.xaml.cs">
       <DependentUpon>UserInfoLine.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LockableToggleButton .cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -420,6 +425,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LoginHelpSection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PersonalFavoritesList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

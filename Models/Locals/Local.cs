@@ -25,6 +25,8 @@ namespace E621Downloader.Models.Locals {
 		private const string BLACKLISTNAME = "BlackList.txt";
 		private const string TOKENNAME = "Token.txt";
 		private const string DOWNLOADSINFONAME = "DownloadsInfo.json";
+		private const string FAVORITESLISTNAME = "FavorutesList.json";
+		private const string LOCALSETTINGSNAME = "LocalSettings.settings";
 
 		private static StorageFolder LocalFolder => ApplicationData.Current.LocalFolder;
 
@@ -33,6 +35,8 @@ namespace E621Downloader.Models.Locals {
 
 		public static StorageFile FutureAccessTokenFile { get; private set; }
 		public static StorageFile DownloadsInfoFile { get; private set; }
+		public static StorageFile FavoritesListFile { get; private set; }
+		public static StorageFile LocalSettingsFile { get; private set; }
 
 		public static string[] FollowList { get; private set; }
 		public static string[] BlackList { get; private set; }
@@ -54,6 +58,10 @@ namespace E621Downloader.Models.Locals {
 			FutureAccessTokenFile = await LocalFolder.CreateFileAsync(TOKENNAME, CreationCollisionOption.OpenIfExists);
 
 			DownloadsInfoFile = await LocalFolder.CreateFileAsync(DOWNLOADSINFONAME, CreationCollisionOption.OpenIfExists);
+
+			FavoritesListFile = await LocalFolder.CreateFileAsync(FAVORITESLISTNAME, CreationCollisionOption.OpenIfExists);
+
+			LocalSettingsFile = await LocalFolder.CreateFileAsync(LOCALSETTINGSNAME, CreationCollisionOption.OpenIfExists);
 
 			await Reload();
 		}
@@ -109,6 +117,7 @@ namespace E621Downloader.Models.Locals {
 			BlackList = await GetBlackList();
 			await ReadLocalSettings();
 			await SetToken(await GetTokenFromFile());
+			await ReadFavoritesLists();
 		}
 
 		public static void AddFollowList(string newTag) {
@@ -336,13 +345,11 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public async static void WriteLocalSettings() {
-			StorageFile file = await LocalFolder.CreateFileAsync("LocalSettings.settings", CreationCollisionOption.ReplaceExisting);
-			await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(LocalSettings.Current));
+			await FileIO.WriteTextAsync(LocalSettingsFile, JsonConvert.SerializeObject(LocalSettings.Current));
 		}
 
 		public async static Task ReadLocalSettings() {
-			StorageFile file = await LocalFolder.CreateFileAsync("LocalSettings.settings", CreationCollisionOption.OpenIfExists);
-			using(Stream stream = await file.OpenStreamForReadAsync()) {
+			using(Stream stream = await LocalSettingsFile.OpenStreamForReadAsync()) {
 				using(StreamReader reader = new StreamReader(stream)) {
 					LocalSettings.Current = JsonConvert.DeserializeObject<LocalSettings>(await reader.ReadToEndAsync());
 				}
@@ -358,6 +365,18 @@ namespace E621Downloader.Models.Locals {
 				};
 				WriteLocalSettings();
 			}
+		}
+
+		public async static Task ReadFavoritesLists() {
+			using(Stream stream = await FavoritesListFile.OpenStreamForReadAsync()) {
+				using(StreamReader reader = new StreamReader(stream)) {
+					FavoritesList.Lists = JsonConvert.DeserializeObject<List<FavoritesList>>(await reader.ReadToEndAsync()) ?? new List<FavoritesList>();
+				}
+			}
+		}
+
+		public async static Task WriteFavoritesLists() {
+			await FileIO.WriteTextAsync(FavoritesListFile, JsonConvert.SerializeObject(FavoritesList.Lists));
 		}
 	}
 }

@@ -105,6 +105,10 @@ namespace E621Downloader.Views {
 			if(post != null) {
 				UpvoteText.Text = $"{post.score.up}";
 				FavoriteText.Text = $"{post.fav_count}";
+				if(post.is_favorited) {
+					//FavoriteIcon.Foreground = new SolidColorBrush(Colors.Red);
+					FavoriteIcon.Foreground = new SolidColorBrush((Color)Application.Current.Resources["SystemAccentColor"]);
+				}
 				CommentText.Text = $"{post.comment_count}";
 				RatingText.Text = $"{post.rating.ToUpper()}";
 				switch(post.rating) {
@@ -179,7 +183,6 @@ namespace E621Downloader.Views {
 
 				flyout.Placement = FlyoutPlacementMode.Left;
 				if(flyout.Items.Count != 0) {
-					FrameworkElement senderElement = s as FrameworkElement;
 					flyout.ShowAt(s as UIElement, e.GetPosition(s as UIElement));
 				}
 			};

@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -151,6 +152,21 @@ namespace E621Downloader.Views.TagsManagementSection {
 
 		public enum ResultType {
 			None, Search, Hot, Random
+		}
+
+		private void MySuggestBox_PreviewKeyDown(object sender, KeyRoutedEventArgs e) {
+			if(e.Key == VirtualKey.Enter) {
+				Result = ResultType.Search;
+				dialog.Hide();
+			} else if(e.Key == VirtualKey.Escape) {
+				Result = ResultType.None;
+				dialog.Hide();
+			}
+		}
+
+		private void SearchButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			Result = ResultType.Search;
+			dialog.Hide();
 		}
 	}
 }

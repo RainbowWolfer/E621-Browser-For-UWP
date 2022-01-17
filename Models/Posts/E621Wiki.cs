@@ -84,6 +84,7 @@ namespace E621Downloader.Models.Posts {
 			{ "order:portrait", "Tall and thin to wide and short" },
 			{ "order:duration_asc", "Video duration shortest to longest" },
 			{ "order:rank", "Hot Posts" },
+			{ "votedup:anything", "The Voted Post" },
 		}.Where(p => !string.IsNullOrWhiteSpace(p.Key)).ToDictionary(x => x.Key, y => y.Value);
 
 	}

@@ -61,19 +61,23 @@
 		<Grid Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
 			<ProgressRing x:Name="InfoLoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Width="200" IsActive="True"/>
 		</Grid>
-		<StackPanel x:Name="PanelLeft" Grid.Column="1" Grid.RowSpan="2" Margin="10">
-			<StackPanel.ChildrenTransitions>
-				<TransitionCollection>
-					<EntranceThemeTransition IsStaggeringEnabled="True" />
-				</TransitionCollection>
-			</StackPanel.ChildrenTransitions>
-		</StackPanel>
-		<StackPanel x:Name="PanelRight" Grid.Column="2" Grid.RowSpan="2" Margin="10">
-			<StackPanel.ChildrenTransitions>
-				<TransitionCollection>
-					<EntranceThemeTransition IsStaggeringEnabled="True" />
-				</TransitionCollection>
-			</StackPanel.ChildrenTransitions>
-		</StackPanel>
+		<ScrollViewer Grid.Column="1" Grid.RowSpan="2" Margin="10">
+			<StackPanel x:Name="PanelLeft">
+				<StackPanel.ChildrenTransitions>
+					<TransitionCollection>
+						<EntranceThemeTransition IsStaggeringEnabled="True" />
+					</TransitionCollection>
+				</StackPanel.ChildrenTransitions>
+			</StackPanel>
+		</ScrollViewer>
+		<ScrollViewer Grid.Column="2" Grid.RowSpan="2" Margin="10">
+			<StackPanel x:Name="PanelRight">
+				<StackPanel.ChildrenTransitions>
+					<TransitionCollection>
+						<EntranceThemeTransition IsStaggeringEnabled="True" />
+					</TransitionCollection>
+				</StackPanel.ChildrenTransitions>
+			</StackPanel>
+		</ScrollViewer>
 	</Grid>
 </Page>

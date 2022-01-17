@@ -27,8 +27,8 @@
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="auto"/>
 				</Grid.ColumnDefinitions>
-				<TextBox Name="MySuggestBox" TextChanged="MySuggestBox_TextChanged" FontSize="22" Height="40" CornerRadius="4,0,0,4"/>
-				<Button Grid.Column="1" Content="&#xE721;" FontFamily="Segoe MDL2 Assets" Height="40" Width="40" FontSize="24" Padding="0" CornerRadius="0,4,4,0"/>
+				<TextBox Name="MySuggestBox" TextChanged="MySuggestBox_TextChanged" FontSize="22" Height="40" CornerRadius="4,0,0,4" PreviewKeyDown="MySuggestBox_PreviewKeyDown"/>
+				<Button x:Name="SearchButton" Grid.Column="1" Content="&#xE721;" FontFamily="Segoe MDL2 Assets" Height="40" Width="40" FontSize="24" Padding="0" CornerRadius="0,4,4,0" Tapped="SearchButton_Tapped"/>
 			</Grid>
 			<controls:ProgressBar x:Name="LoadingBar" IsIndeterminate="False" Grid.Row="1" Grid.ColumnSpan="3" Visibility="Collapsed" Margin="5" VerticalAlignment="Top"/>
 			<ListView x:Name="AutoCompletesListView" SelectionMode="None" IsItemClickEnabled="True" MaxHeight="500" Grid.Row="1" Grid.ColumnSpan="3" Margin="5" MinHeight="25" ItemClick="AutoCompletesListView_ItemClick">

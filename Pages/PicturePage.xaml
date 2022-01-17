@@ -118,13 +118,18 @@
 					</Button.Resources>
 				</Button>
 				<Rectangle x:Name="Separator3" RelativePanel.RightOf="DownVoteButton" Style="{StaticResource RectangleSeparator}" d:Fill="White"/>
-				<ToggleButton x:Name="FavoriteButton" Height="38" Width="110" Padding="10,0,10,0" RelativePanel.RightOf="Separator3" Click="FavoriteButton_Click">
+				<ToggleButton x:Name="FavoriteButton" Height="38" Width="110" Padding="10,0,10,0" RelativePanel.RightOf="Separator3" Tapped="FavoriteButton_Tapped" CornerRadius="4,0,0,4">
 					<StackPanel Orientation="Horizontal">
 						<FontIcon x:Name="FavoriteIcon" Glyph="&#xEB51;"/>
 						<TextBlock x:Name="FavoriteText" Text="Favorite" Margin="10,0,0,0"/>
 					</StackPanel>
 				</ToggleButton>
-				<Button x:Name="DownloadButton" Height="38" Padding="10,0,10,0" RelativePanel.RightOf="FavoriteButton" Margin="10,0,0,0" Tapped="DownloadButton_Tapped">
+				<views:LockableToggleButton x:Name="FavoriteListButton" Height="38" Width="38" RelativePanel.RightOf="FavoriteButton" Padding="0" CornerRadius="0,4,4,0" Tapped="FavoriteListButton_Tapped" LockToggle="True">
+					<ToggleButton.Content>
+						<FontIcon Glyph="&#xE972;" Margin="5" FontSize="12"/>
+					</ToggleButton.Content>
+				</views:LockableToggleButton>
+				<Button x:Name="DownloadButton" Height="38" Padding="10,0,10,0" RelativePanel.RightOf="FavoriteListButton" Margin="10,0,0,0" Tapped="DownloadButton_Tapped">
 					<StackPanel Orientation="Horizontal">
 						<FontIcon x:Name="DownloadIcon" Glyph="&#xE118;"/>
 						<TextBlock x:Name="DownloadText" Text="Download" Margin="10,0,0,0"/>

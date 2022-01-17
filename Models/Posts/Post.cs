@@ -26,6 +26,7 @@ namespace E621Downloader.Models.Posts {
 				return new List<Post>();
 			}
 		}
+
 		public static async Task<List<Post>> GetPostsByTagsAsync(CancellationToken? token, bool combine, int page, params string[] tags) {
 			if(page <= 0) {
 				throw new Exception("Page not valid");
@@ -41,6 +42,7 @@ namespace E621Downloader.Models.Posts {
 				return null;
 			}
 		}
+
 		public static async Task<List<Post>> GetPostsByRandomAsync(CancellationToken? token, int amount, params string[] tags) {
 			//e621.net/posts?tags = order:random + limit:20
 			string url = $"https://e621.net/posts.json?tags=order:random+limit:{amount}+";
@@ -79,7 +81,7 @@ namespace E621Downloader.Models.Posts {
 			}
 		}
 
-		public int id;
+		public string id;
 		public DateTime? created_at;
 		public DateTime? updated_at;
 		public ArticleFile file;
