@@ -21,39 +21,43 @@
 		</Storyboard>
 	</UserControl.Resources>
 
-	<Grid>
+	<Grid x:Name="MainGrid">
 		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
-		<TextBlock Text="Local Favorites List" Margin="2" FontSize="18"/>
-		<TextBlock x:Name="HintText" Text="No List Found" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-		<ListView x:Name="CheckListView" MaxHeight="500" MinHeight="50" ItemsSource="{x:Bind Lists}" Grid.Row="1" SelectionMode="None" BorderBrush="Gray" BorderThickness="2" Margin="5" CornerRadius="5">
+		<ToggleButton x:Name="E621FavoriteButton" HorizontalAlignment="Stretch" Margin="5" Visibility="{x:Bind E621FavoriteVisibility}" Tapped="E621FavoriteButton_Tapped" IsEnabled="{x:Bind ShowE621FavoriteButton}">
+			<ToggleButton.Content>
+				<StackPanel Orientation="Horizontal">
+					<FontIcon x:Name="FavoriteIcon" Glyph="&#xEB51;" FontSize="16"/>
+					<TextBlock x:Name="FavoriteText" Text="E621 Favorite" Margin="10,0,0,0" FontSize="16"/>
+				</StackPanel>
+			</ToggleButton.Content>
+		</ToggleButton>
+		<TextBlock Text="Local Favorites List" Margin="2" FontSize="18" Grid.Row="1"/>
+		<TextBlock x:Name="HintText" Text="No List Found" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		<ListView x:Name="CheckListView" MaxHeight="500" MinHeight="50" Grid.Row="2" SelectionMode="None" BorderBrush="Gray" BorderThickness="2" Margin="5" CornerRadius="5">
 			<ListView.ItemContainerStyle>
 				<Style TargetType="ListViewItem">
 					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
 					<Setter Property="VerticalContentAlignment" Value="Stretch"/>
 				</Style>
 			</ListView.ItemContainerStyle>
-			<ListView.ItemTemplate>
-				<DataTemplate x:DataType="locals:FavoritesList">
-					<StackPanel Orientation="Horizontal">
-						<CheckBox Content="{x:Bind Name}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" FontSize="16"/>
-					</StackPanel>
-				</DataTemplate>
-			</ListView.ItemTemplate>
 		</ListView>
-		<Grid Grid.Row="2">
+		<Grid Grid.Row="3">
 			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="auto"/>
 				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="auto"/>
 			</Grid.ColumnDefinitions>
-			<Button x:Name="AcceptButton" Content="&#xE0E7;" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Stretch" Margin="5" Tapped="AcceptButton_Tapped"/>
-			<Button x:Name="AddButton" Content="&#xE109;" FontFamily="Segoe MDL2 Assets" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5" Tapped="AddButton_Tapped"/>
+			<Button x:Name="AcceptButton" Content="&#xE0E7;" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Stretch" Margin="5" Tapped="AcceptButton_Tapped" MinWidth="90"/>
+			<Button x:Name="AddButton" Content="&#xE109;" FontFamily="Segoe MDL2 Assets" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5" Tapped="AddButton_Tapped" MinWidth="90"/>
+			<Button x:Name="BackButton" Content="&#xE72B;" FontFamily="Segoe MDL2 Assets" Grid.Column="2" HorizontalAlignment="Stretch" Margin="5" Tapped="BackButton_Tapped" MinWidth="90" Visibility="{x:Bind BackButtonVisiblity}" IsEnabled="{x:Bind ShowBackButton}"/>
 		</Grid>
-		<Grid x:Name="AddGrid" Grid.Row="3" Height="0">
+		<Grid x:Name="AddGrid" Grid.Row="4" Height="0">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="auto"/>

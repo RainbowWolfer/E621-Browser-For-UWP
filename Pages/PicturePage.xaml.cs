@@ -591,7 +591,7 @@ namespace E621Downloader.Pages {
 			FavoriteText.Text = "Pending";
 			FavoriteIcon.Glyph = "\uE10C";
 			if(FavoriteButton.IsChecked.Value) {
-				HttpResult<string> result = await Favorites.PostAsync(this.PostRef);
+				HttpResult<string> result = await Favorites.PostAsync(this.PostRef.id);
 				if(result.Result == HttpResultType.Success) {
 					FavoriteText.Text = "Favorited";
 					FavoriteIcon.Glyph = "\uEB52";
@@ -696,7 +696,10 @@ namespace E621Downloader.Pages {
 
 		private void FavoriteListButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			var flyout = new Flyout();
-			var content = new PersonalFavoritesList(flyout, PostType, path);
+			var content = new PersonalFavoritesList(flyout, PostType, path) {
+				Width = 200,
+				IsInitialFavorited = this.PostRef.is_favorited,
+			};
 			flyout.Content = content;
 			Point pos = e.GetPosition(sender as UIElement);
 			pos.Y += 20;

@@ -139,7 +139,7 @@ namespace E621Downloader.Pages {
 			} else {
 				MainGridView.Items.Clear();
 				for(int i = 0; i < posts.Count; i++) {
-					ImageHolder holder = new ImageHolder(this, posts[i], i) {
+					ImageHolder holder = new ImageHolder(this, posts[i], i, PathType.PostID, posts[i].id) {
 						Height = 400,
 						Width = 400,
 					};

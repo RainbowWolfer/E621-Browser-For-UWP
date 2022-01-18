@@ -33,6 +33,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 				MySuggestBox.Text += item + " ";
 			}
 			MySuggestBox.Text = MySuggestBox.Text.Trim();
+			MySuggestBox.SelectionStart = MySuggestBox.Text.Length;
 		}
 
 		private bool itemClick = false;

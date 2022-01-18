@@ -70,7 +70,8 @@ namespace E621Downloader.Pages {
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			this.Tags = Array.Empty<string>();
 			this.tagsFilterSystem = new TagsFilterSystem(HotTagsListView, BlackTagsListView,
-				enable => UpdateImageHolders(CalculateEnabledPosts(), false)
+				//enable => UpdateImageHolders(CalculateEnabledPosts(), false)
+				enable => Debug.WriteLine("?")
 			);
 		}
 
@@ -109,41 +110,21 @@ namespace E621Downloader.Pages {
 			loaded = 0;
 			tb_ArticlesLoadCount.Text = "Posts : 0/" + this.Posts.Count;
 
-			UpdateImageHolders(CalculateEnabledPosts(), true);
+			UpdateImageHolders(CalculateEnabledPosts());
 
 			tagsFilterSystem.Update(posts);
 		}
-		private void UpdateImageHolders(List<Post> ps, bool refresh) {
-			if(refresh) {
-				MyWrapGrid.Children.Clear();
-				foreach(Post item in ps) {
-					//if(!tagsFilterSystem.CheckPostContainBlackList(item)) {
-					//	continue;
-					//}
-					var holder = new ImageHolder(this, item, this.Posts.IndexOf(item));
-					MyWrapGrid.Children.Add(holder);
-					SetImageItemSize(isHeightFixed, holder, item.sample);
-					holder.OnImagedLoaded += (b) => {
-						tb_ArticlesLoadCount.Text = $"Posts : {++loaded}/{this.Posts.Count}";
-					};
-				}
-			} else {
-				Debug.WriteLine($"{this.Posts.Count} {ps.Count} {MyWrapGrid.Children.Count}");
-				for(int i = 0; i < this.Posts.Count; i++) {
-					ImageHolder existed = GetImageHolder(i);
-					int shouleBe = ps.IndexOf(this.Posts[i]);
-					if(shouleBe == -1) {
-						Post item = Posts[i];
-						var holder = new ImageHolder(this, item, this.Posts.IndexOf(item));
-						SetImageItemSize(isHeightFixed, holder, item.sample);
-						holder.OnImagedLoaded += (b) => tb_ArticlesLoadCount.Text = "Posts : " + ++loaded + "/" + this.Posts.Count;
-						MyWrapGrid.Children.Insert(existed.Index, holder);
-					}
-					Debug.WriteLine($"{existed?.Index} {shouleBe}");
-				}
+
+		private void UpdateImageHolders(List<Post> ps) {
+			MyWrapGrid.Children.Clear();
+			foreach(Post item in ps) {
+				var holder = new ImageHolder(this, item, this.Posts.IndexOf(item), PathType.PostID, item.id);
+				MyWrapGrid.Children.Add(holder);
+				SetImageItemSize(isHeightFixed, holder, item.sample);
+				holder.OnImagedLoaded += (b) => {
+					tb_ArticlesLoadCount.Text = $"Posts : {++loaded}/{this.Posts.Count}";
+				};
 			}
-			//ScrollViewer.
-			//MyWrapGrid.
 		}
 
 		private ImageHolder GetImageHolder(int index) {
@@ -510,6 +491,7 @@ namespace E621Downloader.Pages {
 			if(!SelectToggleButton.IsChecked.Value) {
 				SelectToggleButton.IsChecked = true;
 			}
+			AddFavoritesButton.Visibility = Visibility.Visible;
 		}
 
 		public void LeaveSelectionMode() {
@@ -526,6 +508,7 @@ namespace E621Downloader.Pages {
 			if(SelectToggleButton.IsChecked.Value) {
 				SelectToggleButton.IsChecked = false;
 			}
+			AddFavoritesButton.Visibility = Visibility.Collapsed;
 		}
 
 
@@ -561,12 +544,16 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		private void ToggleThemeTeachingTip2_ActionButtonClick(Microsoft.UI.Xaml.Controls.TeachingTip sender, object args) {
-			Debug.WriteLine("ewq");
-		}
-
-		private void ToggleThemeTeachingTip2_Closed(Microsoft.UI.Xaml.Controls.TeachingTip sender, Microsoft.UI.Xaml.Controls.TeachingTipClosedEventArgs args) {
-			Debug.WriteLine(sender.Parent);
+		private async void AddFavoritesButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			var dialog = new ContentDialog() {
+				Title = "Favorites",
+			};
+			var list = new PersonalFavoritesList(dialog, PathType.PostID, "") {
+				Width = 300,
+				ShowBackButton = true,
+			};
+			dialog.Content = list;
+			await dialog.ShowAsync();
 		}
 	}
 

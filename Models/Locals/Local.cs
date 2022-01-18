@@ -370,13 +370,13 @@ namespace E621Downloader.Models.Locals {
 		public async static Task ReadFavoritesLists() {
 			using(Stream stream = await FavoritesListFile.OpenStreamForReadAsync()) {
 				using(StreamReader reader = new StreamReader(stream)) {
-					FavoritesList.Lists = JsonConvert.DeserializeObject<List<FavoritesList>>(await reader.ReadToEndAsync()) ?? new List<FavoritesList>();
+					FavoritesList.Table = JsonConvert.DeserializeObject<List<FavoritesList>>(await reader.ReadToEndAsync()) ?? new List<FavoritesList>();
 				}
 			}
 		}
 
 		public async static Task WriteFavoritesLists() {
-			await FileIO.WriteTextAsync(FavoritesListFile, JsonConvert.SerializeObject(FavoritesList.Lists));
+			await FileIO.WriteTextAsync(FavoritesListFile, JsonConvert.SerializeObject(FavoritesList.Table));
 		}
 	}
 }

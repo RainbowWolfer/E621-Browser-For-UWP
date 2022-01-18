@@ -218,6 +218,9 @@
     <Compile Include="Views\DownloadSection\SimpleDownloadProgressBar.xaml.cs">
       <DependentUpon>SimpleDownloadProgressBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FavoritesDialog.xaml.cs">
+      <DependentUpon>FavoritesDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ImageHolderForPicturePage.xaml.cs">
       <DependentUpon>ImageHolderForPicturePage.xaml</DependentUpon>
     </Compile>
@@ -417,6 +420,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DownloadSection\SimpleDownloadProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FavoritesDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

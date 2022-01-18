@@ -64,15 +64,19 @@ namespace E621Downloader.Views {
 		}
 
 		public BitmapImage Image { get; private set; }
+		private readonly PathType type;
+		private readonly string path;
 
 		//private bool isLoaded;
 		private Page page;
 
-		public ImageHolder(Page page, Post post, int index) {
+		public ImageHolder(Page page, Post post, int index, PathType type, string path) {
 			//Debug.WriteLine("Type: " + post.file.ext);
 			this.page = page;
 			this.PostRef = post;
 			this.Index = index;
+			this.type = type;
+			this.path = path;
 			this.InitializeComponent();
 			OnImagedLoaded += (b) => this.Image = b;
 			if(LoadUrl != null) {
@@ -180,6 +184,26 @@ namespace E621Downloader.Views {
 					}
 				};
 				flyout.Items.Add(item_download);
+
+				MenuFlyoutItem item_favorite = new MenuFlyoutItem() {
+					Text = "Add Favorites",
+					Icon = new FontIcon() { Glyph = "\uE0A5" },
+					Foreground = new SolidColorBrush(Colors.White),
+				};
+				item_favorite.Click += async (sender, arg) => {
+					var dialog = new ContentDialog() {
+						Title = "Favorites",
+					};
+					var list = new PersonalFavoritesList(dialog, type, path) {
+						Width = 300,
+						ShowBackButton = true,
+						ShowE621FavoriteButton = true,
+						IsInitialFavorited = this.PostRef.is_favorited,
+					};
+					dialog.Content = list;
+					await dialog.ShowAsync();
+				};
+				flyout.Items.Add(item_favorite);
 
 				flyout.Placement = FlyoutPlacementMode.Left;
 				if(flyout.Items.Count != 0) {
