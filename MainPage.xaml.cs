@@ -86,24 +86,34 @@ namespace E621Downloader {
 					break;
 				}
 				HideInstantDialog();
-				await CreatePopupDialog("Error", "No Internet Connection", true, "Retry");
+				ContentDialogResult dialogResult = await new ContentDialog() {
+					Title = "Error",
+					Content = "No Internet Connection",
+					SecondaryButtonText = "Retry",
+					PrimaryButtonText = "Start in Offline Mode",
+				}.ShowAsync();
+				if(dialogResult == ContentDialogResult.Primary) {
+					break;
+				}
 				CreateInstantDialog("Please Wait", "Checking Internet");
 			} while(result.Result == HttpResultType.Error);
-			string data = result.Content;
-			int start = data.IndexOf("Serving ") + 8;
 			string number = "";
-			for(int i = start; i < data.Length; i++) {
-				if(data[i] == ',') {
-					continue;
-				}
-				if(char.IsDigit(data[i])) {
-					number += data[i];
+			if(result.Result == HttpResultType.Success) {
+				string data = result.Content;
+				int start = data.IndexOf("Serving ") + 8;
+				for(int i = start; i < data.Length; i++) {
+					if(data[i] == ',') {
+						continue;
+					}
+					if(char.IsDigit(data[i])) {
+						number += data[i];
+					}
 				}
 			}
 			HideInstantDialog();
 			await Task.Delay(20);
 
-			MyFrame.Navigate(typeof(WelcomePage), long.Parse(number));
+			MyFrame.Navigate(typeof(WelcomePage), string.IsNullOrWhiteSpace(number) ? (long)-1 : long.Parse(number));
 			ChangeUser(LocalSettings.Current.user_username);
 		}
 

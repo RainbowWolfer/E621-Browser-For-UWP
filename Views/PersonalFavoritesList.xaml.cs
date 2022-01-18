@@ -25,7 +25,7 @@ namespace E621Downloader.Views {
 	public sealed partial class PersonalFavoritesList: UserControl {
 		private bool addEnable;
 		private readonly PathType type;
-		private readonly string[] paths;
+		private readonly string path;
 		private readonly Flyout flyout;
 		private readonly ContentDialog dialog;
 		private bool showBackButton = false;
@@ -80,19 +80,19 @@ namespace E621Downloader.Views {
 			}
 		}
 
-		public PersonalFavoritesList(Flyout flyout, PathType type, params string[] paths) {
+		public PersonalFavoritesList(Flyout flyout, PathType type, string path) {
 			this.InitializeComponent();
 			this.flyout = flyout;
 			this.type = type;
-			this.paths = paths;
+			this.path = path;
 			Initialize();
 		}
 
-		public PersonalFavoritesList(ContentDialog dialog, PathType type, params string[] paths) {
+		public PersonalFavoritesList(ContentDialog dialog, PathType type, string path) {
 			this.InitializeComponent();
 			this.dialog = dialog;
 			this.type = type;
-			this.paths = paths;
+			this.path = path;
 			Initialize();
 		}
 

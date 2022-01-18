@@ -491,7 +491,7 @@ namespace E621Downloader.Pages {
 			if(!SelectToggleButton.IsChecked.Value) {
 				SelectToggleButton.IsChecked = true;
 			}
-			AddFavoritesButton.Visibility = Visibility.Visible;
+			AddFavoritesButton.Visibility = Visibility.Collapsed;
 		}
 
 		public void LeaveSelectionMode() {
@@ -548,10 +548,7 @@ namespace E621Downloader.Pages {
 			var dialog = new ContentDialog() {
 				Title = "Favorites",
 			};
-			var list = new PersonalFavoritesList(dialog, PathType.PostID, "") {
-				Width = 300,
-				ShowBackButton = true,
-			};
+			var list = new PersonalFavoritesListForMultiple(dialog, PathType.PostID, GetSelected().Select(i => i.PostRef));
 			dialog.Content = list;
 			await dialog.ShowAsync();
 		}

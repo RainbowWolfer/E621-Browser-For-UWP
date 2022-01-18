@@ -26,6 +26,9 @@ namespace E621Downloader.Models.Posts {
 		}
 
 		public static async Task<string> GetAvatarURLAsync(E621User user, CancellationToken? token = null) {
+			if(user == null) {
+				return "";
+			}
 			string url = $"https://e621.net/posts/{user.avatar_id}.json";
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {

@@ -27,10 +27,11 @@ namespace E621Downloader.Pages {
 
 		private async void Load() {
 			List<Post> posts = await Post.GetPostsByTagsAsync(cts.Token, true, 1, Local.FollowList);
-			foreach(Post item in posts) {
+			foreach(Post item in posts ?? new List<Post>()) {
 				TestText.Text += item.file.url + "\n";
 			}
 		}
+
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			Load();

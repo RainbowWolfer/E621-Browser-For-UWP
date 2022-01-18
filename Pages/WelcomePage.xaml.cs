@@ -27,8 +27,10 @@ namespace E621Downloader.Pages {
 		}
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
-			if(e.Parameter is long c) {
+			if(e.Parameter is long c && c != -1) {
 				CountText.Text = c.ToString();
+			} else {
+				CountText.Text = "OFFLINE";
 			}
 			MascotEntrance.Begin();
 			HintEntrance.Completed += (sender, arg) => complete1 = true;
