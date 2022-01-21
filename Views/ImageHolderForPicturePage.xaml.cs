@@ -57,13 +57,10 @@ namespace E621Downloader.Views {
 			}
 			IsLoading = true;
 			Target = await Post.GetPostByIDAsync(cts.Token, post_id);
-			UpdateInfo(Target);
+			TypeHint.PostRef = Target;
+			BottomInfo.PostRef = Target;
 			if(Target == null) {
 				return;
-			}
-			if(Target.is_favorited) {
-				//FavoriteIcon.Foreground = new SolidColorBrush(Colors.Red);
-				FavoriteIcon.Foreground = new SolidColorBrush((Color)Application.Current.Resources["SystemAccentColor"]);
 			}
 			if(Target.flags.deleted) {
 				HintText.Visibility = Visibility.Visible;
@@ -77,43 +74,6 @@ namespace E621Downloader.Views {
 			}
 			ToolTipService.SetToolTip(this, new ToolTipContentForPost(Target));
 			ToolTipService.SetPlacement(this, PlacementMode.Bottom);
-		}
-
-		private void UpdateInfo(Post post) {
-			if(post == null) {
-				return;
-			}
-			ParentUpvoteText.Text = $"{post.score.up}";
-			ParentFavoriteText.Text = $"{post.fav_count}";
-			ParentCommentText.Text = $"{post.comment_count}";
-			ParentRatingText.Text = $"{post.rating.ToUpper()}";
-			switch(post.rating) {
-				case "s":
-					RatingIcon.Glyph = "\uF78C";
-					RatingIcon.Foreground = new SolidColorBrush(Colors.Green);
-					break;
-				case "q":
-					RatingIcon.Glyph = "\uF142";
-					RatingIcon.Foreground = new SolidColorBrush(Colors.Yellow);
-					break;
-				case "e":
-					RatingIcon.Glyph = "\uE814";
-					RatingIcon.Foreground = new SolidColorBrush(Colors.Red);
-					break;
-				default:
-					RatingIcon.Foreground = new SolidColorBrush(Colors.White);
-					break;
-			}
-			if(post.file.ext == "webm") {
-				TypeBorder.Visibility = Visibility.Visible;
-				TypeTextBlock.Text = "WEBM";
-			} else if(post.file.ext == "anim") {
-				TypeBorder.Visibility = Visibility.Visible;
-				TypeTextBlock.Text = "ANIM";
-			} else {
-				TypeBorder.Visibility = Visibility.Collapsed;
-				TypeTextBlock.Text = "";
-			}
 		}
 
 		public ImageHolderForPicturePage() {

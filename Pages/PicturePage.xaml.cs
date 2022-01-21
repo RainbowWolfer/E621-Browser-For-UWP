@@ -126,7 +126,7 @@ namespace E621Downloader.Pages {
 					MyMediaPlayer.Visibility = Visibility.Collapsed;
 					MyScrollViewer.Visibility = Visibility.Collapsed;
 					MyProgressRing.IsActive = false;
-				} else {
+				} else if(type == "jpg" || type == "png") {
 					MyProgressRing.IsActive = true;
 					MyMediaPlayer.Visibility = Visibility.Collapsed;
 					MyScrollViewer.Visibility = Visibility.Visible;
@@ -137,6 +137,8 @@ namespace E621Downloader.Pages {
 						MainImage.Source = result;
 					}
 					MyProgressRing.IsActive = false;
+				} else {
+					await MainPage.CreatePopupDialog("Error", $"Type({type}) not supported");
 				}
 				TagsListView.ScrollIntoView(TagsListView.Items[0]);
 

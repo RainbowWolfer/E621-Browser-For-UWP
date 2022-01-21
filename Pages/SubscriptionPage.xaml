@@ -15,7 +15,7 @@
 	</Page.Resources>
 
 	<Grid>
-		<SplitView x:Name="MainSplitView" DisplayMode="CompactOverlay" OpenPaneLength="300" CompactPaneLength="40" PaneClosing="MainSplitView_PaneClosing">
+		<SplitView x:Name="MainSplitView" DisplayMode="CompactInline" OpenPaneLength="300" CompactPaneLength="40" PaneClosing="MainSplitView_PaneClosing" IsPaneOpen="True">
 			<SplitView.Pane>
 				<Grid>
 					<Grid.RowDefinitions>
@@ -26,7 +26,7 @@
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
 					<Button x:Name="HamburgerButton" Height="40" Width="40" Content="&#xE700;" FontFamily="Segoe MDL2 Assets" Tapped="HamburgerButton_Tapped" Background="Transparent" BorderThickness="0" FontSize="18"/>
-					<ToggleSwitch x:Name="SplitViewDisplayModeSwitch" HorizontalAlignment="Right" FlowDirection="RightToLeft" Margin="10,0,15,0" IsOn="True" OnContent="Overlay" OffContent="Inline" Toggled="SplitViewDisplayModeSwitch_Toggled"/>
+					<ToggleSwitch x:Name="SplitViewDisplayModeSwitch" HorizontalAlignment="Right" FlowDirection="RightToLeft" Margin="10,0,15,0" IsOn="False" OnContent="Overlay" OffContent="Inline" Toggled="SplitViewDisplayModeSwitch_Toggled"/>
 					<ToggleButton x:Name="FollowingButton" Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Height="40" FontSize="18" Tapped="FollowingButton_Tapped" Background="Transparent" BorderThickness="0">
 						<StackPanel Orientation="Horizontal">
 							<FontIcon Glyph="&#xE1CF;"/>
@@ -38,7 +38,7 @@
 							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="auto"/>
 						</Grid.ColumnDefinitions>
-						<ToggleButton x:Name="SelectionToggleButton" HorizontalAlignment="Stretch" Tapped="SelectionToggleButton_Tapped">
+						<ToggleButton x:Name="SelectionToggleButton" HorizontalAlignment="Stretch" Tapped="SelectionToggleButton_Tapped" IsChecked="True">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE762;"/>
 								<TextBlock Text="Selection" Margin="10,0,0,0"/>
@@ -82,11 +82,11 @@
 							<DataTemplate x:DataType="local:FavoriteListViewItem">
 								<Grid>
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="40"/>
+										<ColumnDefinition Width="auto" MinWidth="20"/>
 										<ColumnDefinition Width="*"/>
 										<ColumnDefinition Width="auto"/>
 									</Grid.ColumnDefinitions>
-									<FontIcon Tag="{x:Bind Index}" Glyph="&#xE1F5;" FontSize="12" ToolTipService.ToolTip="Title" Loaded="FontIcon_Loaded"/>
+									<FontIcon Tag="{x:Bind Index}" Glyph="&#xE1F5;" FontSize="12" ToolTipService.ToolTip="Title" Loaded="FontIcon_Loaded" Width="40"/>
 									<TextBlock Text="{x:Bind Title}" d:Text="This is Title" Grid.Column="1" VerticalAlignment="Center" FontSize="18"/>
 									<TextBlock Text="{x:Bind Count}" d:Text="20" Grid.Column="2" VerticalAlignment="Center" Margin="10,0,10,0"/>
 								</Grid>
@@ -145,9 +145,8 @@
 							</controls:DropDownButton.Flyout>
 						</controls:DropDownButton>
 					</RelativePanel>
-					<GridView x:Name="MainGridView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True">
-						
-					</GridView>
+					<ProgressRing Name="LoadingRing" Grid.Row="1" MinHeight="200" MinWidth="200" Margin="50"/>
+					<GridView x:Name="MainGridView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" ItemClick="MainGridView_ItemClick"/>
 				</Grid>
 			</SplitView.Content>
 		</SplitView>

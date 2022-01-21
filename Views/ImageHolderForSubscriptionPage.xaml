@@ -1,27 +1,22 @@
 ﻿<UserControl
-    x:Class="E621Downloader.Views.ImageHolderForPicturePage"
+    x:Class="E621Downloader.Views.ImageHolderForSubscriptionPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:E621Downloader.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="330"
+    d:DesignHeight="300"
     d:DesignWidth="400"
-	d:RequestedTheme="Dark"
-	Height="330"
-	Width="400">
+    d:RequestedTheme="Dark">
 
-
-	<Grid CornerRadius="10">
+    <Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
-		<Rectangle Fill="#444444" Grid.RowSpan="2"/>
 		<Image x:Name="MyImage" Stretch="Uniform"/>
-		<TextBlock x:Name="HintText" Text="Post was Deleled" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Visibility="Collapsed" TextWrapping="Wrap" TextAlignment="Center"/>
-		<ProgressRing Name="LoadingRing" Width="200" Height="200" Margin="50" IsActive="True"/>
+		<ProgressRing Name="LoadingRing" Margin="50" MinHeight="100" MinWidth="100"/>
 		<local:TypeHintForImageHolder x:Name="TypeHint"/>
 		<Grid Grid.Row="1" Margin="5,0,5,0">
 			<local:BottomInformationForImageHolder x:Name="BottomInfo"/>

@@ -23,33 +23,10 @@
 					<TextBlock x:Name="FailureTextBlock" FontSize="32"/>
 				</StackPanel>
 				<Image Name="MyImage" ImageOpened="MyImage_ImageOpened" ImageFailed="MyImage_ImageFailed"/>
-				<Border x:Name="TypeBorder" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="2" Background="{StaticResource TransparentBackground}">
-					<TextBlock x:Name="TypeTextBlock" Text="WEBM" Margin="4,2,4,2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-				</Border>
+				<local:TypeHintForImageHolder PostRef="{x:Bind PostRef}"/>
 			</Grid>
 			<Grid Grid.Row="1" Margin="10,0,10,0">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="0.7*"/>
-				</Grid.ColumnDefinitions>
-				<StackPanel Orientation="Horizontal" Grid.Column="0" Margin="5" HorizontalAlignment="Center">
-					<TextBlock x:Name="UpvoteText" Text="42" Margin="0,0,5,0"/>
-					<FontIcon Glyph="&#xEB11;" FontSize="15"/>
-				</StackPanel>
-				<StackPanel Orientation="Horizontal" Grid.Column="1" Margin="5" HorizontalAlignment="Center">
-					<TextBlock x:Name="FavoriteText" Text="42" Margin="0,0,5,0"/>
-					<FontIcon x:Name="FavoriteIcon" Glyph="&#xE0A5;" FontSize="15"/>
-				</StackPanel>
-				<StackPanel Orientation="Horizontal" Grid.Column="2" Margin="5" HorizontalAlignment="Center">
-					<TextBlock x:Name="CommentText" Text="42" Margin="0,0,5,0"/>
-					<FontIcon Glyph="&#xE134;" FontSize="15"/>
-				</StackPanel>
-				<StackPanel Orientation="Horizontal" Grid.Column="3" Margin="5" HorizontalAlignment="Center">
-					<TextBlock x:Name="RatingText" Text="S" Margin="0,0,5,0"/>
-					<FontIcon x:Name="RatingIcon" Glyph="&#xE814;" FontSize="15"/>
-				</StackPanel>
+				<local:BottomInformationForImageHolder PostRef="{x:Bind PostRef}"/>
 			</Grid>
 		</Grid>
 	</GridViewItem>

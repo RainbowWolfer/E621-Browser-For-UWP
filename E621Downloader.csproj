@@ -200,6 +200,9 @@
     <Compile Include="Pages\WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\BottomInformationForImageHolder.xaml.cs">
+      <DependentUpon>BottomInformationForImageHolder.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CommentsSection\CommentView.xaml.cs">
       <DependentUpon>CommentView.xaml</DependentUpon>
     </Compile>
@@ -223,6 +226,9 @@
     </Compile>
     <Compile Include="Views\ImageHolderForPicturePage.xaml.cs">
       <DependentUpon>ImageHolderForPicturePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ImageHolderForSubscriptionPage.xaml.cs">
+      <DependentUpon>ImageHolderForSubscriptionPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginHelpSection.xaml.cs">
       <DependentUpon>LoginHelpSection.xaml</DependentUpon>
@@ -275,6 +281,9 @@
     </Compile>
     <Compile Include="Views\ToolTipContentForPost.xaml.cs">
       <DependentUpon>ToolTipContentForPost.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TypeHintForImageHolder.xaml.cs">
+      <DependentUpon>TypeHintForImageHolder.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserInfoLine.xaml.cs">
       <DependentUpon>UserInfoLine.xaml</DependentUpon>
@@ -402,6 +411,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\BottomInformationForImageHolder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CommentsSection\CommentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -431,6 +444,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ImageHolderForPicturePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ImageHolderForSubscriptionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -499,6 +516,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ToolTipContentForPost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TypeHintForImageHolder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

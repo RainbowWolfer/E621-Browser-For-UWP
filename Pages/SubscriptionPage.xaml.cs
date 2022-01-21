@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
+using E621Downloader.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,7 +21,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {
 	public sealed partial class SubscriptionPage: Page {
-		private CancellationTokenSource cts = new CancellationTokenSource();
+		private CancellationTokenSource cts;
 		private readonly List<FontIcon> icons = new List<FontIcon>();
 		private bool isSelecting = false;
 		private int previousIndex = -1;
@@ -50,22 +51,33 @@ namespace E621Downloader.Pages {
 
 		public SubscriptionPage() {
 			this.InitializeComponent();
+			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			for(int i = 0; i < FavoritesList.Table.Count; i++) {
 				FavoritesList item = FavoritesList.Table[i];
 				items.Add(new FavoriteListViewItem(i, item.Name, item.Items.Count));
 			}
+			LoadFollowing();
 		}
-
-		//private async void Load() {
-		//	List<Post> posts = await Post.GetPostsByTagsAsync(cts.Token, true, 1, Local.FollowList);
-		//	foreach(Post item in posts ?? new List<Post>()) {
-		//		TestText.Text += item.file.url + "\n";
-		//	}
-		//}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
-			//Load();
+		}
+
+		private async void LoadFollowing() {
+			cts = new CancellationTokenSource();
+			LoadingRing.IsActive = true;
+			List<Post> posts = await Post.GetPostsByTagsAsync(cts.Token, true, 1, Local.FollowList);
+			if(posts == null || posts.Count == 0) {
+
+			} else {
+				foreach(Post post in posts) {
+					MainGridView.Items.Add(new ImageHolderForSubscriptionPage(post) {
+						Height = 300,
+						Width = 300,
+					});
+				}
+			}
+			LoadingRing.IsActive = false;
 		}
 
 		private void HamburgerButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -76,6 +88,7 @@ namespace E621Downloader.Pages {
 			e.Handled = true;
 			FavoritesListView.SelectedIndex = -1;
 			FollowingButton.IsChecked = true;
+			LoadFollowing();
 		}
 
 		private void SelectionToggleButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -138,6 +151,11 @@ namespace E621Downloader.Pages {
 
 		private void RenameButton_Tapped(object sender, TappedRoutedEventArgs e) {
 
+		}
+
+		private void MainGridView_ItemClick(object sender, ItemClickEventArgs e) {
+			var item = e.ClickedItem as ImageHolderForSubscriptionPage;
+			//item.PostRef;
 		}
 	}
 

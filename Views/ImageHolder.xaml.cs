@@ -80,17 +80,6 @@ namespace E621Downloader.Views {
 			this.InitializeComponent();
 			OnImagedLoaded += (b) => this.Image = b;
 			if(LoadUrl != null) {
-				if(post.file.ext == "webm") {
-					TypeBorder.Visibility = Visibility.Visible;
-					TypeTextBlock.Text = "WEBM";
-				} else if(post.file.ext == "anim") {
-					TypeBorder.Visibility = Visibility.Visible;
-					TypeTextBlock.Text = "ANIM";
-				} else {
-					TypeBorder.Visibility = Visibility.Collapsed;
-					TypeTextBlock.Text = "";
-				}
-				//Debug.WriteLine(post.file.ext);
 				MyImage.Source = new BitmapImage(new Uri(LoadUrl));
 			} else {
 				MyProgressRing.IsActive = false;
@@ -107,31 +96,6 @@ namespace E621Downloader.Views {
 				}
 			}
 			if(post != null) {
-				UpvoteText.Text = $"{post.score.up}";
-				FavoriteText.Text = $"{post.fav_count}";
-				if(post.is_favorited) {
-					//FavoriteIcon.Foreground = new SolidColorBrush(Colors.Red);
-					FavoriteIcon.Foreground = new SolidColorBrush((Color)Application.Current.Resources["SystemAccentColor"]);
-				}
-				CommentText.Text = $"{post.comment_count}";
-				RatingText.Text = $"{post.rating.ToUpper()}";
-				switch(post.rating) {
-					case "s":
-						RatingIcon.Glyph = "\uF78C";
-						RatingIcon.Foreground = new SolidColorBrush(Colors.Green);
-						break;
-					case "q":
-						RatingIcon.Glyph = "\uF142";
-						RatingIcon.Foreground = new SolidColorBrush(Colors.Yellow);
-						break;
-					case "e":
-						RatingIcon.Glyph = "\uE814";
-						RatingIcon.Foreground = new SolidColorBrush(Colors.Red);
-						break;
-					default:
-						RatingIcon.Foreground = new SolidColorBrush(Colors.White);
-						break;
-				}
 				ToolTipService.SetToolTip(this, new ToolTipContentForPost(post));
 				ToolTipService.SetPlacement(this, PlacementMode.Bottom);
 			}
