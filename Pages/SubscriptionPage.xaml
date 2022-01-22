@@ -27,7 +27,7 @@
 					</Grid.RowDefinitions>
 					<Button x:Name="HamburgerButton" Height="40" Width="40" Content="&#xE700;" FontFamily="Segoe MDL2 Assets" Tapped="HamburgerButton_Tapped" Background="Transparent" BorderThickness="0" FontSize="18"/>
 					<ToggleSwitch x:Name="SplitViewDisplayModeSwitch" HorizontalAlignment="Right" FlowDirection="RightToLeft" Margin="10,0,15,0" IsOn="False" OnContent="Overlay" OffContent="Inline" Toggled="SplitViewDisplayModeSwitch_Toggled"/>
-					<ToggleButton x:Name="FollowingButton" Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Height="40" FontSize="18" Tapped="FollowingButton_Tapped" Background="Transparent" BorderThickness="0">
+					<ToggleButton x:Name="FollowingButton" Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Height="40" IsChecked="True" FontSize="18" Tapped="FollowingButton_Tapped" Background="Transparent" BorderThickness="0">
 						<StackPanel Orientation="Horizontal">
 							<FontIcon Glyph="&#xE1CF;"/>
 							<TextBlock Text="Your Following" Margin="10,0,0,0"/>
@@ -38,7 +38,7 @@
 							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="auto"/>
 						</Grid.ColumnDefinitions>
-						<ToggleButton x:Name="SelectionToggleButton" HorizontalAlignment="Stretch" Tapped="SelectionToggleButton_Tapped" IsChecked="True">
+						<ToggleButton x:Name="SelectionToggleButton" HorizontalAlignment="Stretch" Tapped="SelectionToggleButton_Tapped">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE762;"/>
 								<TextBlock Text="Selection" Margin="10,0,0,0"/>
@@ -86,7 +86,7 @@
 										<ColumnDefinition Width="*"/>
 										<ColumnDefinition Width="auto"/>
 									</Grid.ColumnDefinitions>
-									<FontIcon Tag="{x:Bind Index}" Glyph="&#xE1F5;" FontSize="12" ToolTipService.ToolTip="Title" Loaded="FontIcon_Loaded" Width="40"/>
+									<FontIcon Tag="{x:Bind Index}" Glyph="&#xE1F5;" FontSize="12" ToolTipService.ToolTip="{x:Bind Title}" Loaded="FontIcon_Loaded" Width="40"/>
 									<TextBlock Text="{x:Bind Title}" d:Text="This is Title" Grid.Column="1" VerticalAlignment="Center" FontSize="18"/>
 									<TextBlock Text="{x:Bind Count}" d:Text="20" Grid.Column="2" VerticalAlignment="Center" Margin="10,0,10,0"/>
 								</Grid>
@@ -100,10 +100,10 @@
 					<Grid.RowDefinitions>
 						<RowDefinition Height="40"/>
 						<RowDefinition Height="*"/>
+						<RowDefinition Height="auto"/>
 					</Grid.RowDefinitions>
 					<RelativePanel>
 						<TextBlock x:Name="TitleText" Text="Hello World" FontSize="22" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,0,0,0"/>
-						<TextBlock x:Name="CountText" Text="20" RelativePanel.RightOf="TitleText" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,0,0,0" FontSize="20"/>
 						<Button x:Name="RefreshContentButton" FontSize="16" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="RefreshContentButton_Tapped" Margin="5,0,5,0">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE149;" FontSize="16"/>
@@ -122,7 +122,7 @@
 								<TextBlock Text="Rename" Margin="10,0,0,0"/>
 							</StackPanel>
 						</Button>
-						<controls:DropDownButton FontSize="16" RelativePanel.LeftOf="RenameButton" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="RenameButton_Tapped" Margin="5,0,5,0">
+						<controls:DropDownButton x:Name="SortDropDown" FontSize="16" RelativePanel.LeftOf="RenameButton" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="RenameButton_Tapped" Margin="5,0,5,0">
 							<controls:DropDownButton.Content>
 								<StackPanel Orientation="Horizontal">
 									<FontIcon Glyph="&#xE174;" FontSize="16"/>
@@ -144,9 +144,22 @@
 								</MenuFlyout>
 							</controls:DropDownButton.Flyout>
 						</controls:DropDownButton>
+						<Button x:Name="ManageButton" FontSize="16" RelativePanel.LeftOf="SortDropDown" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="RenameButton_Tapped" Margin="5,0,5,0">
+							<StackPanel Orientation="Horizontal">
+								<FontIcon Glyph="&#xE178;" FontSize="16"/>
+								<TextBlock Text="Manage" Margin="10,0,0,0"/>
+							</StackPanel>
+						</Button>
 					</RelativePanel>
 					<ProgressRing Name="LoadingRing" Grid.Row="1" MinHeight="200" MinWidth="200" Margin="50"/>
 					<GridView x:Name="MainGridView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" ItemClick="MainGridView_ItemClick"/>
+					<StackPanel x:Name="Paginator" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+						<Button x:Name="LeftButton" Content="&#xE09A;" FontFamily="Segoe MDL2 Assets" Height="30" Width="30" Padding="0" Tapped="LeftButton_Tapped"/>
+						<TextBlock x:Name="PageText" Text="1" VerticalAlignment="Center" Margin="10,0,10,0" FontSize="16"/>
+						<Button x:Name="RightButton" Content="&#xE09B;" FontFamily="Segoe MDL2 Assets" Height="30" Width="30" Padding="0" Tapped="RightButton_Tapped"/>
+						<controls:NumberBox x:Name="PageBox" Text="1" Minimum="1" Maximum="100" Width="120" Margin="10,0,0,0" CornerRadius="4,0,0,4" SpinButtonPlacementMode="Compact"/>
+						<Button x:Name="ForwardButton" Content="&#xE0AE;" FontFamily="Segoe MDL2 Assets" Height="30" Width="30" CornerRadius="0,4,4,0" Padding="0" Tapped="ForwardButton_Tapped"/>
+					</StackPanel>
 				</Grid>
 			</SplitView.Content>
 		</SplitView>

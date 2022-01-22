@@ -1,0 +1,43 @@
+﻿<UserControl
+    x:Class="E621Downloader.Views.AddNewFavoritesList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="100"
+    d:DesignWidth="400"
+    d:RequestedTheme="Dark">
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+		</Grid.RowDefinitions>
+		<TextBox x:Name="InputBox" PlaceholderText="Your List Name" d:Text="Hello World" Height="32" TextChanged="InputBox_TextChanged"/>
+		<StackPanel x:Name="HintPanel" Grid.Row="1" Orientation="Horizontal" Margin="10,10,10,5" HorizontalAlignment="Center" Visibility="Collapsed">
+			<FontIcon Glyph="&#xE946;"/>
+			<TextBlock x:Name="HintText" Text="Error" Margin="10,0,0,0"/>
+		</StackPanel>
+		<Grid Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Button x:Name="AddButton" HorizontalAlignment="Stretch" Margin="5" Tapped="AddButton_Tapped" IsEnabled="False">
+				<StackPanel Orientation="Horizontal">
+					<FontIcon Glyph="&#xE109;"/>
+					<TextBlock Text="Add" Margin="10,0,0,0"/>
+				</StackPanel>
+			</Button>
+			<Button x:Name="BackButton" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Tapped="BackButton_Tapped">
+				<StackPanel Orientation="Horizontal">
+					<FontIcon Glyph="&#xE0A6;"/>
+					<TextBlock Text="Back" Margin="10,0,0,0"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+	</Grid>
+</UserControl>

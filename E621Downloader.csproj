@@ -200,6 +200,9 @@
     <Compile Include="Pages\WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AddNewFavoritesList.xaml.cs">
+      <DependentUpon>AddNewFavoritesList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BottomInformationForImageHolder.xaml.cs">
       <DependentUpon>BottomInformationForImageHolder.xaml</DependentUpon>
     </Compile>
@@ -408,6 +411,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\WelcomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddNewFavoritesList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

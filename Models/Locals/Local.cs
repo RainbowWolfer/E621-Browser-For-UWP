@@ -264,7 +264,7 @@ namespace E621Downloader.Models.Locals {
 					MetaFile meta;
 					using(Stream stream = await file.OpenStreamForReadAsync()) {
 						using(StreamReader reader = new StreamReader(stream)) {
-							meta = JsonConvert.DeserializeObject<MetaFile>(reader.ReadToEnd());
+							meta = JsonConvert.DeserializeObject<MetaFile>(await reader.ReadToEndAsync());
 						}
 					}
 					if(meta != null) {
