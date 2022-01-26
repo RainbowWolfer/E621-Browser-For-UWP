@@ -85,7 +85,7 @@
 					<StackPanel Orientation="Vertical" Margin="40,0,0,0">
 						<Button x:Name="DownloadPathButton" Content="Select Download Path" FontSize="20" Tapped="DownloadPathButton_Tapped" Margin="20,10,0,10" />
 						<Button x:Name="ClearDownloadPathButton" Content="Clear" FontSize="20" Tapped="ClearDownloadPathButton_Tapped" Margin="20,0,0,10" />
-						<TextBlock Name="DownloadPathTextBlock" Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,10" FontSize="20"/>
+						<TextBlock x:Name="DownloadPathTextBlock" Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,10" FontSize="20"/>
 					</StackPanel>
 				</StackPanel>
 
@@ -94,13 +94,16 @@
 					<StackPanel Margin="40,0,0,0">
 						<ToggleSwitch x:Name="NullImageToggle" OffContent="Show NULL Image" OnContent="Show NULL Image" Margin="0,5,0,5" Toggled="NullImageToggle_Toggled"/>
 						<ToggleSwitch x:Name="BlackListToggle" OffContent="Show Blacklisted" OnContent="Show Blacklisted" Margin="0,5,0,5" Toggled="BlackListToggle_Toggled"/>
-						<ToggleSwitch x:Name="SafeModeToggle" OffContent="Enable Safe Mode" OnContent="Enable Safe Mode" Margin="0,5,0,5" Toggled="SafeModeToggle_Toggled"/>
+						<StackPanel Orientation="Horizontal">
+							<ToggleSwitch x:Name="CustomHostToggle" OffContent="Enable Custom Host" OnContent="Enable Custom Host" Margin="0,5,0,5" Toggled="CustomHostToggle_Toggled"/>
+							<Button x:Name="CustomHostButton" Content="E926.net" Margin="10,0,0,0" Tapped="CustomHostButton_Tapped"/>
+						</StackPanel>
 						<ToggleSwitch x:Name="CycleListToggle" OffContent="Enable Cycle List" OnContent="Enable Cycle List" Margin="0,5,0,5" Toggled="CycleListToggle_Toggled"/>
 					</StackPanel>
 					<TextBlock Text="About: " Style="{StaticResource SectionTitle}"/>
 					<StackPanel Margin="40,0,0,0">
 						<TextBlock FontSize="18" Text="Made By : RainbowWolfer"/>
-						<TextBlock FontSize="18" Text="Source From : e621.net"/>
+						<TextBlock FontSize="18" Text="Source From : E1547"/>
 						<TextBlock FontSize="18" Text="{x:Bind Version}"/>
 					</StackPanel>
 				</StackPanel>

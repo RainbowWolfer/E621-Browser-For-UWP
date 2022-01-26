@@ -11,7 +11,8 @@ namespace E621Downloader.Models.Locals {
 			Local.WriteLocalSettings();
 		}
 
-		public bool safeMode;
+		public string customHost;
+		public bool customHostEnable;
 		public bool showNullImages;
 		public bool showBlackListed;
 		public bool cycleList;

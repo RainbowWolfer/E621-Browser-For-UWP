@@ -200,6 +200,9 @@
     <Compile Include="Pages\WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CustomHostInputDialog.xaml.cs">
+      <DependentUpon>CustomHostInputDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FavoritesListNameModify.xaml.cs">
       <DependentUpon>FavoritesListNameModify.xaml</DependentUpon>
     </Compile>
@@ -411,6 +414,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\WelcomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CustomHostInputDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

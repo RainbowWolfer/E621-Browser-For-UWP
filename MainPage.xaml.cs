@@ -78,10 +78,11 @@ namespace E621Downloader {
 
 		protected async override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
-			CreateInstantDialog("Please Wait", "Checking E621");
+			CreateInstantDialog("Please Wait", "Initializing...");
+			await Local.Initialize();
 			HttpResult<string> result;
 			do {
-				result = await Data.ReadURLAsync("https://e621.net/", null);
+				result = await Data.ReadURLAsync($"https://{Data.GetHost()}/", null);
 				if(result.Result == HttpResultType.Success) {
 					break;
 				}
@@ -146,9 +147,12 @@ namespace E621Downloader {
 		}
 
 		public static void ChangeCurrenttTags(params string[] strs) {
-			string result = "Current Tags : ";
+			string result = "";
 			foreach(string item in strs) {
 				result += item + " ";
+			}
+			if(string.IsNullOrWhiteSpace(result)){
+				result = "Tags";
 			}
 			Instance.TextBlockSearchTags.Text = result;
 		}

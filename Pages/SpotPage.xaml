@@ -98,7 +98,7 @@
 			</SplitView.Pane>
 			<SplitView.Content>
 				<Grid>
-					<ProgressRing Name="LoadingRing" Height="200" Width="200"/>
+					<ProgressRing x:Name="LoadingRing" Height="200" Width="200"/>
 					<GridView x:Name="MainGridView" SelectionMode="None" IsItemClickEnabled="False"/>
 				</Grid>
 			</SplitView.Content>

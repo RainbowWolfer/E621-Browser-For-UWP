@@ -22,7 +22,7 @@ namespace E621Downloader.Models.Posts {
 				found.body = $"Favorites of \"{tag.Substring(4)}\"";
 				return new E621Wiki[] { found };
 			}
-			string url = $"https://e621.net/wiki_pages.json?search[title]={tag}";
+			string url = $"https://{Data.GetHost()}/wiki_pages.json?search[title]={tag}";
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
 				if(result.Content == "[]") {

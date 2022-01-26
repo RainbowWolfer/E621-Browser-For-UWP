@@ -88,7 +88,8 @@ namespace E621Downloader.Pages {
 				this.pool = null;
 				//string[] tags = { "rating:s", "wallpaper", "order:score" };
 				//string[] tags = { "type:webm", "order:score" };
-				string[] tags = { "order:score" };
+				//string[] tags = { "order:score" };
+				string[] tags = { "" };
 				this.parameter = new PostBrowserParameter(1, tags);
 				await LoadAsync(1, tags);
 			}
@@ -108,7 +109,9 @@ namespace E621Downloader.Pages {
 			MainPage.ChangeCurrenttTags(tags);
 			//}
 			loaded = 0;
-			tb_ArticlesLoadCount.Text = "Posts : 0/" + this.Posts.Count;
+			if(tb_ArticlesLoadCount != null) {
+				tb_ArticlesLoadCount.Text = "Posts : 0/" + this.Posts.Count;
+			}
 
 			UpdateImageHolders(CalculateEnabledPosts());
 
@@ -170,18 +173,16 @@ namespace E621Downloader.Pages {
 			UpdatePaginator();
 			LoadPosts(this.Posts, tags);
 			MainPage.HideInstantDialog();
-			//UpdateInfoButton(tags);
-		}
-		private async Task Reload() {
-			MainPage.CreateInstantDialog("Please Wait", "Reloading...");
-			await Task.Delay(20);
-			LoadPosts(this.Posts, Tags);
-			MainPage.HideInstantDialog();
+			UpdateInfoButton(tags);
 		}
 
-		//private void UpdateInfoButton(string[] tags) {
-		//	InfoButton.Visibility = true || tags.Where(i => !i.Contains(':')).Count() > 0 ? Visibility.Visible : Visibility.Collapsed;
-		//}
+		private async Task Reload() {
+			await LoadAsync(currentPage, Tags);
+		}
+
+		private void UpdateInfoButton(string[] tags) {
+			InfoButton.Visibility = tags.Where(t => !string.IsNullOrWhiteSpace(t)).Count() > 0 ? Visibility.Visible : Visibility.Collapsed;
+		}
 
 		private List<Post> CalculateEnabledPosts() {
 			var result = new List<Post>();

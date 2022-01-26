@@ -12,7 +12,7 @@
 	d:RequestedTheme="Dark">
 
 	<Grid>
-		<controls:Expander Name="TagExpander" ExpandDirection="Down" IsExpanded="False" HorizontalAlignment="Stretch" Expanding="TagExpander_Expanding">
+		<controls:Expander x:Name="TagExpander" ExpandDirection="Down" IsExpanded="False" HorizontalAlignment="Stretch" Expanding="TagExpander_Expanding">
 			<controls:Expander.Header>
 				<Grid>
 					<Grid.ColumnDefinitions>
@@ -23,7 +23,7 @@
 
 					<Button x:Name="DeleteButton" Grid.Column="0" FontFamily="Segoe MDL2 Assets" Content="&#xE106;" Background="Transparent" BorderThickness="0" Height="32" Width="32" Tapped="DeleteButton_Tapped" Padding="0" FontSize="12" Margin="-10,0,0,0"/>
 					<TextBlock x:Name="TagText" Grid.Column="1" Text="TagGoesHere" VerticalAlignment="Center" FontSize="18" Margin="5,0,0,3" MaxWidth="170"/>
-					<ProgressRing Name="LoadingIcon" HorizontalAlignment="Right" Grid.Column="2" IsActive="True" Margin="0,0,-10,0" Visibility="Visible"/>
+					<ProgressRing x:Name="LoadingIcon" HorizontalAlignment="Right" Grid.Column="2" IsActive="True" Margin="0,0,-10,0" Visibility="Visible"/>
 					<!--Count : 20k -->
 					<TextBlock x:Name="CountText" Text="(1)" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,-10,0" TextAlignment="Center"/>
 				</Grid>

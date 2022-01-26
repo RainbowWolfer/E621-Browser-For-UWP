@@ -15,9 +15,9 @@ namespace E621Downloader.Models.Posts {
 			if(page <= 0) {
 				throw new Exception("Page not valid");
 			}
-			string url = $"https://e621.net/posts.json?page={page}&tags=";
+			string url = $"https://{Data.GetHost()}/posts.json?page={page}&tags=";
 			tags.ToList().ForEach((t) => url += t + "+");
-			CheckSafe(ref url);
+			//CheckSafe(ref url);
 
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
@@ -31,9 +31,9 @@ namespace E621Downloader.Models.Posts {
 			if(page <= 0) {
 				throw new Exception("Page not valid");
 			}
-			string url = $"https://e621.net/posts.json?page={page}&tags=";
+			string url = $"https://{Data.GetHost()}/posts.json?page={page}&tags=";
 			tags.ToList().ForEach(t => url += $"{(combine ? "~" : "")}{t}+");
-			CheckSafe(ref url);
+			//CheckSafe(ref url);
 
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
@@ -44,11 +44,10 @@ namespace E621Downloader.Models.Posts {
 		}
 
 		public static async Task<List<Post>> GetPostsByRandomAsync(CancellationToken? token, int amount, params string[] tags) {
-			//e621.net/posts?tags = order:random + limit:20
-			string url = $"https://e621.net/posts.json?tags=order:random+limit:{amount}+";
+			string url = $"https://{Data.GetHost()}/posts.json?tags=order:random+limit:{amount}+";
 			tags.ToList().ForEach(t => url += $"{t}+");
 			Debug.WriteLine($"THIS: {url}");
-			CheckSafe(ref url);
+			//CheckSafe(ref url);
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<PostsRoot>(result.Content).posts;
@@ -58,7 +57,7 @@ namespace E621Downloader.Models.Posts {
 		}
 
 		public static async Task<Post> GetPostByIDAsync(CancellationToken? token, string id) {
-			string url = $"https://e621.net/posts/{id}.json";
+			string url = $"https://{Data.GetHost()}/posts/{id}.json";
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<PostRoot>(result.Content).post;
@@ -75,11 +74,11 @@ namespace E621Downloader.Models.Posts {
 			return posts;
 		}
 
-		private static void CheckSafe(ref string url) {
-			if(LocalSettings.Current.safeMode) {
-				url += "rating:s";
-			}
-		}
+		//private static void CheckSafe(ref string url) {
+		//	if(LocalSettings.Current.safeMode) {
+		//		url += "rating:s";
+		//	}
+		//}
 
 		public string id;
 		public DateTime? created_at;

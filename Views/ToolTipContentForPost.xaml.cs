@@ -17,6 +17,21 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Views {
 	public sealed partial class ToolTipContentForPost: UserControl {
+		private string[] relativeTags;
+
+		public string[] RelativeTags {
+			get => relativeTags;
+			set {
+				relativeTags = value;
+				if(value == null || value.Length == 0) {
+					RelativeTagsText.Visibility = Visibility.Collapsed;
+				} else {
+					RelativeTagsText.Visibility = Visibility.Visible;
+					RelativeTagsText.Text = $"Relative: ({string.Join(", ", value)})";
+				}
+			}
+		}
+
 		public ToolTipContentForPost(Post post, bool local = false) {
 			this.InitializeComponent();
 			ID.Text = $"#{post.id}" + (local ? " - Local" : "");

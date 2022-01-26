@@ -18,7 +18,7 @@
 			<ColumnDefinition Width="200"/>
 			<ColumnDefinition Width="200"/>
 		</Grid.ColumnDefinitions>
-		<AutoSuggestBox Name="TagsInput" QuerySubmitted="TagsInput_QuerySubmitted" QueryIcon="Add"/>
+		<AutoSuggestBox x:Name="TagsInput" QuerySubmitted="TagsInput_QuerySubmitted" QueryIcon="Add"/>
 		<ListView x:Name="InputTagsListView" ItemsSource="{x:Bind InputTags}" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" Loaded="InputTagsListView_Loaded">
 			<ListView.ItemContainerStyle>
 				<Style TargetType="ListViewItem">

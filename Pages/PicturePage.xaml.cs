@@ -751,7 +751,7 @@ namespace E621Downloader.Pages {
 			if(PostRef == null) {
 				return;
 			}
-			if(!await Launcher.LaunchUriAsync(new Uri($"https://e621.net/posts/{PostRef.id}"))) {
+			if(!await Launcher.LaunchUriAsync(new Uri($"https://{Data.GetHost()}/posts/{PostRef.id}"))) {
 				await MainPage.CreatePopupDialog("Error", "Could not Open Default Browser");
 			}
 		}

@@ -15,7 +15,7 @@ namespace E621Downloader.Models.Download {
 	public delegate void OnDownloadFinishEventHandler();
 	public static class DownloadsManager {
 		//public static event OnDownloadFinishEventHandler OnDownloadFinish;
-		public const string DEFAULTTITLE = "Individual Downloads";
+		public const string DEFAULTTITLE = "Default";
 
 		public readonly static List<DownloadInstance> downloads;
 		public readonly static BackgroundDownloader downloader;

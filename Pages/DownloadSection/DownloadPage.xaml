@@ -27,7 +27,7 @@
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 			<ToggleButton x:Name="TitleButton" IsChecked="True" Content="Download Groups" Margin="10" Tapped="TitleButton_Tapped" IsHitTestVisible="False"/>
-			<NavigationView Name="MyNavigationView" Grid.Column="1" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" VerticalAlignment="Center" ItemInvoked="NavigationView_ItemInvoked">
+			<NavigationView x:Name="MyNavigationView" Grid.Column="1" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" VerticalAlignment="Center" ItemInvoked="NavigationView_ItemInvoked">
 				<NavigationView.Resources>
 					<SolidColorBrush x:Key="NavigationViewTopPaneBackground" Color="Transparent" />
 				</NavigationView.Resources>
@@ -35,33 +35,15 @@
 					<NavigationViewItem Icon="Document">
 						<NavigationViewItem.Content>
 							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="Individual Downloads"/>
+								<TextBlock Text="Default"/>
 								<Button Background="Transparent" BorderThickness="0" FontFamily="Segoe MDL2 Assets" Content="&#xE10A;" Foreground="{ThemeResource AppBarToggleButtonCheckedPointerOverBorderThemeBrush}"/>
 							</StackPanel>
 						</NavigationViewItem.Content>
 					</NavigationViewItem>
-					<NavigationViewItem Icon="Audio" Content="Individual Downloads"/>
-					<NavigationViewItem Icon="Audio" Content="Individual Downloads"/>
+					<NavigationViewItem Icon="Audio" Content="Default"/>
+					<NavigationViewItem Icon="Audio" Content="Default"/>
 				</NavigationView.MenuItems>
 			</NavigationView>
-			<!--<Pivot x:Name="GroupPivot" Grid.Column="1" SelectionChanged="GroupPivot_SelectionChanged">
-				<PivotItem>
-					<PivotItem.Header>
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="Individual Downloads" VerticalAlignment="Center"/>
-							<Button FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="12" Content="&#xE106;" BorderThickness="0" Background="Transparent" VerticalAlignment="Center" Margin="5,0,0,0"/>
-						</StackPanel>
-					</PivotItem.Header>
-				</PivotItem>
-				<PivotItem>
-					<PivotItem.Header>
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="rating:s" VerticalAlignment="Center"/>
-							<Button FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="12" Content="&#xE106;" BorderThickness="0" Background="Transparent" VerticalAlignment="Center" Margin="5,0,0,0"/>
-						</StackPanel>
-					</PivotItem.Header>
-				</PivotItem>
-			</Pivot>-->
 		</Grid>
 
 		<AutoSuggestBox Grid.Column="1" Margin="20,0,20,0" VerticalAlignment="Center" QueryIcon="Find" QuerySubmitted="AutoSuggestBox_QuerySubmitted" MaxWidth="400"/>

@@ -71,7 +71,7 @@ namespace E621Downloader.Pages {
 		public SubscriptionPage() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
-			LoadFavoritesTable();
+			UpdateFavoritesTable();
 			LoadFollowing(1);
 		}
 
@@ -79,7 +79,7 @@ namespace E621Downloader.Pages {
 			base.OnNavigatedTo(e);
 		}
 
-		private void LoadFavoritesTable() {
+		public void UpdateFavoritesTable() {
 			items.Clear();
 			for(int i = 0; i < FavoritesList.Table.Count; i++) {
 				FavoritesList item = FavoritesList.Table[i];
@@ -115,7 +115,7 @@ namespace E621Downloader.Pages {
 						Height = 300,
 						Width = 300,
 					};
-					image.LoadFromPost(post);
+					image.LoadFromPost(post, Local.FollowList);
 					MainGridView.Items.Add(image);
 				}
 				LoadingRing.IsActive = false;
@@ -144,7 +144,7 @@ namespace E621Downloader.Pages {
 			if(list != null) {
 				MainGridView.Items.Clear();
 				foreach(FavoriteItem item in list.Items) {
-					var image = new ImageHolderForSubscriptionPage(this) {
+					var image = new ImageHolderForSubscriptionPage(this, listName) {
 						Height = 300,
 						Width = 300,
 					};
@@ -167,6 +167,19 @@ namespace E621Downloader.Pages {
 			RefreshContentButton.IsEnabled = true;
 		}
 
+		public void Refresh() {
+			switch(CurrentLayout) {
+				case LayoutType.Following:
+					LoadFollowing(1);
+					break;
+				case LayoutType.Favorites:
+					LoadFavorites(currentListName);
+					break;
+				default:
+					throw new Exception();
+			}
+		}
+
 		private void ClearGridView() {
 			MainGridView.Items.Clear();
 			LoadingRing.IsActive = false;
@@ -186,7 +199,7 @@ namespace E621Downloader.Pages {
 					break;
 				case LayoutType.Favorites:
 					ManageButton.Visibility = Visibility.Collapsed;
-					SortDropDown.Visibility = Visibility.Visible;
+					SortDropDown.Visibility = Visibility.Collapsed;//work on this later
 					RenameButton.Visibility = Visibility.Visible;
 					DeleteContentButton.Visibility = Visibility.Visible;
 					Paginator.Visibility = Visibility.Collapsed;
@@ -230,7 +243,7 @@ namespace E621Downloader.Pages {
 			}.ShowAsync() == ContentDialogResult.Primary) {
 				FavoritesList.Table.RemoveAll(l => Selected.Select(s => s.Title).Contains(l.Name));
 				FavoritesList.Save();
-				LoadFavoritesTable();
+				UpdateFavoritesTable();
 			}
 		}
 
@@ -244,7 +257,7 @@ namespace E621Downloader.Pages {
 			if(content.Confirm) {
 				FavoritesList.Table.Insert(0, new FavoritesList(content.Input));
 				FavoritesList.Save();
-				LoadFavoritesTable();
+				UpdateFavoritesTable();
 			}
 		}
 
@@ -259,7 +272,7 @@ namespace E621Downloader.Pages {
 		private void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			IsSelecting = false;
 			SelectionToggleButton.IsChecked = false;
-			LoadFavoritesTable();
+			UpdateFavoritesTable();
 		}
 
 		private void FavoritesListView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -285,16 +298,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void RefreshContentButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			switch(CurrentLayout) {
-				case LayoutType.Following:
-					LoadFollowing(1);
-					break;
-				case LayoutType.Favorites:
-					LoadFavorites(currentListName);
-					break;
-				default:
-					throw new Exception();
-			}
+			Refresh();
 		}
 
 		private async void DeleteContentButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -306,7 +310,7 @@ namespace E621Downloader.Pages {
 			}.ShowAsync() == ContentDialogResult.Primary) {
 				FavoritesList.Table.RemoveAll(l => currentListName == l.Name);
 				FavoritesList.Save();
-				LoadFavoritesTable();
+				UpdateFavoritesTable();
 				if(FavoritesList.Table.Count > 1) {
 					LoadFavorites(FavoritesList.Table.First().Name);
 				} else {
@@ -327,7 +331,7 @@ namespace E621Downloader.Pages {
 				if(found != null) {
 					found.Name = content.Input;
 					FavoritesList.Save();
-					LoadFavoritesTable();
+					UpdateFavoritesTable();
 					UpdateTitle(content.Input);
 				}
 			}

@@ -57,7 +57,7 @@
 				</StackPanel>
 			</Button>
 		</StackPanel>
-		<ProgressRing Name="MyProgressRing" Height="200" Width="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True" Grid.Row="1"/>
+		<ProgressRing x:Name="MyProgressRing" Height="200" Width="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True" Grid.Row="1"/>
 		<GridView x:Name="MyGridView" ItemsSource="{x:Bind items}" SelectionMode="None" ItemClick="MyGridView_ItemClick" IsItemClickEnabled="True" Grid.Row="1" Visibility="Visible">
 			<!---->
 			<GridView.ItemContainerStyle>

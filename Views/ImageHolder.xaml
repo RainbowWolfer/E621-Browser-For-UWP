@@ -19,10 +19,10 @@
 			</Grid.RowDefinitions>
 			<Grid x:Name="BorderGrid" Tapped="Grid_Tapped" BorderBrush="{ThemeResource SystemAccentColor}" BorderThickness="0">
 				<StackPanel x:Name="LoadingPanel" Margin="20">
-					<ProgressRing Name="MyProgressRing" Height="50" Width="50" IsActive="True"/>
+					<ProgressRing x:Name="MyProgressRing" Height="50" Width="50" IsActive="True"/>
 					<TextBlock x:Name="FailureTextBlock" FontSize="32"/>
 				</StackPanel>
-				<Image Name="MyImage" ImageOpened="MyImage_ImageOpened" ImageFailed="MyImage_ImageFailed"/>
+				<Image x:Name="MyImage" ImageOpened="MyImage_ImageOpened" ImageFailed="MyImage_ImageFailed"/>
 				<local:TypeHintForImageHolder PostRef="{x:Bind PostRef}"/>
 			</Grid>
 			<Grid Grid.Row="1" Margin="10,0,10,0">

@@ -12,7 +12,7 @@ namespace E621Downloader.Models.Posts {
 	public class E621Tag {
 		public static async Task<E621Tag[]> GetAsync(string tag, CancellationToken? token = null) {
 			tag = tag.ToLower().Trim();
-			string url = $"https://e621.net/tags.json?search[name_matches]={tag}";
+			string url = $"https://{Data.GetHost()}/tags.json?search[name_matches]={tag}";
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success && result.Content != "{\"tags\":[]}") {
 				return JsonConvert.DeserializeObject<E621Tag[]>(result.Content);

@@ -22,5 +22,6 @@
 		<TextBlock x:Name="SIZE" Text=" · Size - 212KB"/>
 		<TextBlock x:Name="WIDTH" Text=" · Width - 1080"/>
 		<TextBlock x:Name="HEIGHT" Text=" · Height - 1920"/>
+		<TextBlock x:Name="RelativeTagsText" Visibility="Collapsed"/>
 	</StackPanel>
 </UserControl>

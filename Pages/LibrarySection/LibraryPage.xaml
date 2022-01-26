@@ -59,29 +59,13 @@
 								<MenuFlyout Placement="BottomEdgeAlignedRight">
 									<MenuFlyoutItem Text="Name" Click="MenuFlyoutItem_Click"/>
 									<MenuFlyoutItem Text="Date" Click="MenuFlyoutItem_Click"/>
-									<MenuFlyoutItem Text="Size" Click="MenuFlyoutItem_Click" Name="FlyoutItem_Size"/>
-									<MenuFlyoutItem Text="Type - Date" Click="MenuFlyoutItem_Click" Name="FlyoutItem_Type"/>
+									<MenuFlyoutItem Text="Size" Click="MenuFlyoutItem_Click" x:Name="FlyoutItem_Size"/>
+									<MenuFlyoutItem Text="Type - Date" Click="MenuFlyoutItem_Click" x:Name="FlyoutItem_Type"/>
 								</MenuFlyout>
 							</Button.Flyout>
 						</Button>
 						<Button x:Name="OrderEnumButton" Content="&#xE74A;" FontFamily="Segoe MDL2 Assets" Height="36" Tapped="OrderEnumButton_Tapped"/>
 					</StackPanel>
-					<!--<SplitButton RelativePanel.LeftOf="MySearchBox" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,2,10,2" Tapped="SplitButton_Tapped">
-						<SplitButton.Content>
-							<StackPanel Orientation="Horizontal">
-								<FontIcon Name="AscDescIcon" Glyph="&#xE74A;&#xE74B;" Margin="0,0,10,0" FontSize="14"/>
-								<TextBlock x:Name="OrderTextBlock" Text="Order Desc : Name"/>
-							</StackPanel>
-						</SplitButton.Content>
-						<SplitButton.Flyout>
-							<MenuFlyout>
-								<MenuFlyoutItem Text="Name" Tapped="MenuFlyoutItem_Tapped"/>
-								<MenuFlyoutItem Text="Date" Tapped="MenuFlyoutItem_Tapped"/>
-								<MenuFlyoutItem Text="Size" Tapped="MenuFlyoutItem_Tapped"/>
-								<MenuFlyoutItem Text="Type - Date" Tapped="MenuFlyoutItem_Tapped"/>
-							</MenuFlyout>
-						</SplitButton.Flyout>
-					</SplitButton>-->
 					<AutoSuggestBox x:Name="MySearchBox" RelativePanel.AlignRightWithPanel="True" MinWidth="300" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,0,10,0" QueryIcon="Find" QuerySubmitted="MySearchBox_QuerySubmitted"/>
 				</RelativePanel>
 				<!--<Rectangle Grid.Row="1" HorizontalAlignment="Stretch" Height="2" Fill="DarkGray" Margin="10,0,10,5"/>-->

@@ -13,7 +13,7 @@ namespace E621Downloader.Models.Posts {
 			foreach(var item in tags) {
 				tag += item + " ";
 			}
-			string url = $"https://e621.net/posts?tags={tag}&page={page}";
+			string url = $"https://{Data.GetHost()}/posts?tags={tag}&page={page}";
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result != HttpResultType.Success) {
 				return null;

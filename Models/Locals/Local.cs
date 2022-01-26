@@ -45,7 +45,7 @@ namespace E621Downloader.Models.Locals {
 
 		public static StorageFolder DownloadFolder { get; private set; }
 
-		public async static void Initialize() {
+		public async static Task Initialize() {
 			Debug.WriteLine("Initializing Local");
 			Debug.WriteLine(LocalFolder.Path);
 			if(initialized) {
@@ -356,7 +356,7 @@ namespace E621Downloader.Models.Locals {
 			}
 			if(LocalSettings.Current == null) {
 				LocalSettings.Current = new LocalSettings() {
-					safeMode = false,
+					customHostEnable = false,
 					spot_allowGif = true,
 					spot_allowWebm = true,
 					spot_includeExplicit = true,

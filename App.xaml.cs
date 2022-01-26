@@ -38,8 +38,6 @@ namespace E621Downloader {
 			Instance = this;
 			this.InitializeComponent();
 			this.Suspending += OnSuspending;
-
-			Local.Initialize();
 		}
 
 

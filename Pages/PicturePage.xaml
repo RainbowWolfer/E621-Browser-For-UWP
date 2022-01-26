@@ -342,7 +342,7 @@
 								</Image.RenderTransform>
 							</Image>
 						</ScrollViewer>
-						<ProgressRing Name="MyProgressRing" MaxHeight="300" MaxWidth="300" Margin="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>
+						<ProgressRing x:Name="MyProgressRing" MaxHeight="300" MaxWidth="300" Margin="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>
 						<Button x:Name="LeftButton" FontFamily="Segoe MDL2 Assets" Content="&#xE26C;" Height="100" Opacity="0.2" PointerEntered="LeftButton_PointerEntered" PointerExited="LeftButton_PointerExited" Tapped="LeftButton_Tapped">
 							<Button.Background>
 								<SolidColorBrush Color="Gray" Opacity="0.4"/>

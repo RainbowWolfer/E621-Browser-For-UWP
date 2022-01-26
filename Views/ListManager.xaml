@@ -28,7 +28,7 @@
 
 			<DropDownButton Content="Order" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Height="32" Margin="3,0,0,0">
 				<ToolTipService.ToolTip>
-					<ToolTip Name="OrderToolTip" Content="Time"/>
+					<ToolTip x:Name="OrderToolTip" Content="Time"/>
 				</ToolTipService.ToolTip>
 				<DropDownButton.Flyout>
 					<MenuFlyout Placement="Bottom">
@@ -39,7 +39,7 @@
 			</DropDownButton>
 			<!--<Button Content="Add New Tag" Grid.Column="1" HorizontalAlignment="Center" Height="32"/>-->
 			<Button x:Name="ExportButton" Content="Export To ClipBoard" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Tapped="ExportButton_Tapped"/>
-			<AutoSuggestBox Name="MySuggestBox" Grid.Row="1" Grid.ColumnSpan="3" Margin="2,5,8,2" QueryIcon="Find" TextChanged="MySuggestBox_TextChanged" QuerySubmitted="MySuggestBox_QuerySubmitted"/>
+			<AutoSuggestBox x:Name="MySuggestBox" Grid.Row="1" Grid.ColumnSpan="3" Margin="2,5,8,2" QueryIcon="Find" TextChanged="MySuggestBox_TextChanged" QuerySubmitted="MySuggestBox_QuerySubmitted"/>
 		</Grid>
 
 		<ListView x:Name="MyListView" Margin="5,5,5,32" ItemsSource="{x:Bind tags}" IsItemClickEnabled="True" SelectionMode="None" Grid.Row="1" ItemClick="ListView_ItemClick">

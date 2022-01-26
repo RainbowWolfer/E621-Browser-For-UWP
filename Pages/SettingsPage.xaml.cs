@@ -35,10 +35,11 @@ namespace E621Downloader.Pages {
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			DownloadPathTextBlock.Text = Local.DownloadFolder == null ? "No Download Path Selected" : Local.DownloadFolder.Path;
-			SafeModeToggle.IsOn = LocalSettings.Current.safeMode;
+			CustomHostToggle.IsOn = LocalSettings.Current.customHostEnable;
 			NullImageToggle.IsOn = LocalSettings.Current.showNullImages;
 			BlackListToggle.IsOn = LocalSettings.Current.showBlackListed;
 			CycleListToggle.IsOn = LocalSettings.Current.cycleList;
+			CustomHostButton.IsEnabled = LocalSettings.Current.customHostEnable;
 		}
 
 		private async void BlackListButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -123,14 +124,30 @@ namespace E621Downloader.Pages {
 			LocalSettings.Save();
 		}
 
-		private void SafeModeToggle_Toggled(object sender, RoutedEventArgs e) {
-			LocalSettings.Current.safeMode = (sender as ToggleSwitch).IsOn;
+		private void CustomHostToggle_Toggled(object sender, RoutedEventArgs e) {
+			LocalSettings.Current.customHostEnable = (sender as ToggleSwitch).IsOn;
 			LocalSettings.Save();
+			CustomHostButton.IsEnabled = (sender as ToggleSwitch).IsOn;
+			CustomHostButton.Content = LocalSettings.Current.customHostEnable ? LocalSettings.Current.customHost : "E926.net";
 		}
 
 		private void CycleListToggle_Toggled(object sender, RoutedEventArgs e) {
 			LocalSettings.Current.cycleList = (sender as ToggleSwitch).IsOn;
 			LocalSettings.Save();
+		}
+
+		private async void CustomHostButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			ContentDialog dialog = new ContentDialog() {
+				Title = "Custom Host",
+			};
+			var content = new CustomHostInputDialog(dialog, LocalSettings.Current.customHost ?? "");
+			dialog.Content = content;
+			await dialog.ShowAsync();
+			if(content.Confirm) {
+				CustomHostButton.Content = content.InputText;
+				LocalSettings.Current.customHost = content.InputText;
+				LocalSettings.Save();
+			}
 		}
 	}
 }

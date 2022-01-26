@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace E621Downloader.Models.Posts {
 	public class E621Comment {
 		public static async Task<E621Comment[]> GetAsync(string post_id, CancellationToken? token = null) {
-			string url = $"https://e621.net/comments.json?group_by=comment&search[post_id]={post_id}";
+			string url = $"https://{Data.GetHost()}/comments.json?group_by=comment&search[post_id]={post_id}";
 			Debug.WriteLine(url);
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result?.Content == "{\"comments\":[]}") {

@@ -21,7 +21,7 @@
 			<ColumnDefinition Width="250"/>
 			<ColumnDefinition Width="250"/>
 		</Grid.ColumnDefinitions>
-		<AutoSuggestBox Name="MyInputBox" HorizontalAlignment="Stretch" Margin="5" Grid.Row="0" TextChanged="MyInputBox_TextChanged"/>
+		<AutoSuggestBox x:Name="MyInputBox" HorizontalAlignment="Stretch" Margin="5" Grid.Row="0" TextChanged="MyInputBox_TextChanged"/>
 		<TextBlock x:Name="CountTextBlock" Text="Tags Found : " HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Grid.Row="0" Grid.Column="1"/>
 		<ListView x:Name="InputList" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Source={StaticResource MyContactsCVS}}" SelectionMode="None" IsItemClickEnabled="False">
 			<ListView.ItemsPanel>

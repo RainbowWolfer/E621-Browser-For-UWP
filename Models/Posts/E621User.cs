@@ -12,7 +12,7 @@ using Windows.UI.Xaml.Media.Imaging;
 namespace E621Downloader.Models.Posts {
 	public class E621User {
 		public static async Task<E621User> GetAsync(string username, CancellationToken? token = null) {
-			string url = $"https://e621.net/users/{username}.json";
+			string url = $"https://{Data.GetHost()}/users/{username}.json";
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<E621User>(result.Content);
@@ -29,7 +29,7 @@ namespace E621Downloader.Models.Posts {
 			if(user == null) {
 				return "";
 			}
-			string url = $"https://e621.net/posts/{user.avatar_id}.json";
+			string url = $"https://{Data.GetHost()}/posts/{user.avatar_id}.json";
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
 				Post post = JsonConvert.DeserializeObject<PostRoot>(result.Content).post;
