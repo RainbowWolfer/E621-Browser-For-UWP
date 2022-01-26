@@ -55,7 +55,7 @@ namespace E621Downloader.Pages {
 		private void Page_Loaded(object sender, RoutedEventArgs e) {
 			AllowWebmCheckBox.IsChecked = LocalSettings.Current.spot_allowWebm;
 			AllowGifCheckBox.IsChecked = LocalSettings.Current.spot_allowGif;
-			AllowBlackListCheckBox.IsChecked = LocalSettings.Current.spot_allowBlackList;
+			AllowImageCheckBox.IsChecked = LocalSettings.Current.spot_allowImage;
 			IncludeSafeCheckBox.IsChecked = LocalSettings.Current.spot_includeSafe;
 			IncludeQuestionableCheckBox.IsChecked = LocalSettings.Current.spot_includeQuestoinable;
 			IncludeExplicitCheckBox.IsChecked = LocalSettings.Current.spot_includeExplicit;
@@ -126,11 +126,6 @@ namespace E621Downloader.Pages {
 			if(!AllowGifCheckBox.IsChecked.Value) {
 				tags.Add("-type:gif");
 			}
-			if(!AllowBlackListCheckBox.IsChecked.Value) {
-				foreach(string item in Local.BlackList) {
-					tags.Add($"-{item}");
-				}
-			}
 			(int, int) range = GetScoreRange();
 			tags.Add($"score:{range.Item1}..{range.Item2}");
 			List<Post> posts = await Post.GetPostsByRandomAsync(cts.Token, CurrentAmount, tags.ToArray());
@@ -164,6 +159,13 @@ namespace E621Downloader.Pages {
 			LocalSettings.Current.spot_allowGif = AllowGifCheckBox.IsChecked.Value;
 		}
 
+		private void AllowImageCheckBox_Checked(object sender, RoutedEventArgs e) {
+			if(internalChange) {
+				return;
+			}
+			LocalSettings.Current.spot_allowImage = AllowImageCheckBox.IsChecked.Value;
+		}
+
 		private void IncludeSafeCheckBox_Checked(object sender, RoutedEventArgs e) {
 			if(internalChange) {
 				return;
@@ -183,13 +185,6 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			LocalSettings.Current.spot_includeExplicit = IncludeExplicitCheckBox.IsChecked.Value;
-		}
-
-		private void AllowBlackListCheckBox_Checked(object sender, RoutedEventArgs e) {
-			if(internalChange) {
-				return;
-			}
-			LocalSettings.Current.spot_allowBlackList = AllowBlackListCheckBox.IsChecked.Value;
 		}
 
 		private void ScoreRangeSlider_ValueChanged(object sender, RangeChangedEventArgs e) {
@@ -244,5 +239,6 @@ namespace E621Downloader.Pages {
 		private void ClearButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			MainGridView.Items.Clear();
 		}
+
 	}
 }

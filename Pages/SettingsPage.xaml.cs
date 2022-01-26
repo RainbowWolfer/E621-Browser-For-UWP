@@ -36,8 +36,6 @@ namespace E621Downloader.Pages {
 			base.OnNavigatedTo(e);
 			DownloadPathTextBlock.Text = Local.DownloadFolder == null ? "No Download Path Selected" : Local.DownloadFolder.Path;
 			CustomHostToggle.IsOn = LocalSettings.Current.customHostEnable;
-			NullImageToggle.IsOn = LocalSettings.Current.showNullImages;
-			BlackListToggle.IsOn = LocalSettings.Current.showBlackListed;
 			CycleListToggle.IsOn = LocalSettings.Current.cycleList;
 			CustomHostButton.IsEnabled = LocalSettings.Current.customHostEnable;
 		}
@@ -114,21 +112,11 @@ namespace E621Downloader.Pages {
 			DownloadPathTextBlock.Text = "No Path Selected";
 		}
 
-		private void BlackListToggle_Toggled(object sender, RoutedEventArgs e) {
-			LocalSettings.Current.showBlackListed = (sender as ToggleSwitch).IsOn;
-			LocalSettings.Save();
-		}
-
-		private void NullImageToggle_Toggled(object sender, RoutedEventArgs e) {
-			LocalSettings.Current.showNullImages = (sender as ToggleSwitch).IsOn;
-			LocalSettings.Save();
-		}
-
 		private void CustomHostToggle_Toggled(object sender, RoutedEventArgs e) {
 			LocalSettings.Current.customHostEnable = (sender as ToggleSwitch).IsOn;
 			LocalSettings.Save();
 			CustomHostButton.IsEnabled = (sender as ToggleSwitch).IsOn;
-			CustomHostButton.Content = LocalSettings.Current.customHostEnable ? LocalSettings.Current.customHost : "E926.net";
+			CustomHostButton.Content = LocalSettings.Current.customHostEnable ? string.IsNullOrWhiteSpace(LocalSettings.Current.customHost) ? "Host" : LocalSettings.Current.customHost : "E926.net";
 		}
 
 		private void CycleListToggle_Toggled(object sender, RoutedEventArgs e) {

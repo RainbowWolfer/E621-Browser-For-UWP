@@ -13,12 +13,10 @@ namespace E621Downloader.Models.Locals {
 
 		public string customHost;
 		public bool customHostEnable;
-		public bool showNullImages;
-		public bool showBlackListed;
 		public bool cycleList;
 		public bool spot_allowWebm;
 		public bool spot_allowGif;
-		public bool spot_allowBlackList;
+		public bool spot_allowImage;
 		public bool spot_includeSafe;
 		public bool spot_includeQuestoinable;
 		public bool spot_includeExplicit;

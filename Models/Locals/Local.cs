@@ -359,9 +359,11 @@ namespace E621Downloader.Models.Locals {
 					customHostEnable = false,
 					spot_allowGif = true,
 					spot_allowWebm = true,
+					spot_allowImage = true,
 					spot_includeExplicit = true,
 					spot_includeQuestoinable = false,
 					spot_includeSafe = false,
+					cycleList = true,
 				};
 				WriteLocalSettings();
 			}

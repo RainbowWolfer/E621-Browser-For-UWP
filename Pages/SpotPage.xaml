@@ -48,7 +48,7 @@
 						<StackPanel>
 							<CheckBox x:Name="AllowWebmCheckBox" Content="Allow Webm" Checked="AllowWebmCheckBox_Checked" Unchecked="AllowWebmCheckBox_Checked"/>
 							<CheckBox x:Name="AllowGifCheckBox" Content="Allow Gif" Checked="AllowGifCheckBox_Checked" Unchecked="AllowGifCheckBox_Checked"/>
-							<CheckBox x:Name="AllowBlackListCheckBox" Content="Allow Black List" Checked="AllowBlackListCheckBox_Checked" Unchecked="AllowBlackListCheckBox_Checked"/>
+							<CheckBox x:Name="AllowImageCheckBox" Content="Allow Image" Checked="AllowImageCheckBox_Checked" Unchecked="AllowImageCheckBox_Checked"/>
 						</StackPanel>
 						<StackPanel Grid.Column="1">
 							<CheckBox x:Name="IncludeSafeCheckBox" Content="Include Safe" Checked="IncludeSafeCheckBox_Checked" Unchecked="IncludeSafeCheckBox_Checked"/>

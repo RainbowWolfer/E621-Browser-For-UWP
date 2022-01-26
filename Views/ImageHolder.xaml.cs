@@ -85,15 +85,9 @@ namespace E621Downloader.Views {
 				MyProgressRing.IsActive = false;
 				MyProgressRing.Visibility = Visibility.Collapsed;
 				FailureTextBlock.Text = "Failed";
-				if(LocalSettings.Current.showNullImages) {
-					this.Visibility = Visibility.Visible;
-					VariableSizedWrapGrid.SetColumnSpan(this, SpanCol);
-					VariableSizedWrapGrid.SetRowSpan(this, SpanRow);
-				} else {
-					this.Visibility = Visibility.Collapsed;
-					VariableSizedWrapGrid.SetColumnSpan(this, 0);
-					VariableSizedWrapGrid.SetRowSpan(this, 0);
-				}
+				this.Visibility = Visibility.Visible;
+				VariableSizedWrapGrid.SetColumnSpan(this, SpanCol);
+				VariableSizedWrapGrid.SetRowSpan(this, SpanRow);
 			}
 			if(post != null) {
 				ToolTipService.SetToolTip(this, new ToolTipContentForPost(post));

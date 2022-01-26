@@ -92,8 +92,6 @@
 				<StackPanel x:Name="SecondCol" Grid.Row="0" Grid.Column="1">
 					<TextBlock Text="General: " Style="{StaticResource SectionTitle}"/>
 					<StackPanel Margin="40,0,0,0">
-						<ToggleSwitch x:Name="NullImageToggle" OffContent="Show NULL Image" OnContent="Show NULL Image" Margin="0,5,0,5" Toggled="NullImageToggle_Toggled"/>
-						<ToggleSwitch x:Name="BlackListToggle" OffContent="Show Blacklisted" OnContent="Show Blacklisted" Margin="0,5,0,5" Toggled="BlackListToggle_Toggled"/>
 						<StackPanel Orientation="Horizontal">
 							<ToggleSwitch x:Name="CustomHostToggle" OffContent="Enable Custom Host" OnContent="Enable Custom Host" Margin="0,5,0,5" Toggled="CustomHostToggle_Toggled"/>
 							<Button x:Name="CustomHostButton" Content="E926.net" Margin="10,0,0,0" Tapped="CustomHostButton_Tapped"/>
