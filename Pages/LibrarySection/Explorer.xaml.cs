@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models.Locals;
+using E621Downloader.Models.Posts;
 using E621Downloader.Views;
 using E621Downloader.Views.FoldersSelectionSection;
 using E621Downloader.Views.LocalTagsManagementSection;
@@ -366,7 +367,7 @@ namespace E621Downloader.Pages.LibrarySection {
 		}
 	}
 
-	public class ItemBlock {
+	public class ItemBlock: ILocalImage {
 		public StorageFolder parentFolder;
 		public StorageFile imageFile;
 		public MetaFile meta;
@@ -381,5 +382,8 @@ namespace E621Downloader.Pages.LibrarySection {
 
 		public Visibility TypeBorderVisibility => meta != null && new string[] { "webm", "gif", "anim" }.Contains(meta.MyPost?.file?.ext?.ToLower()) ? Visibility.Visible : Visibility.Collapsed;
 		public string TypeText => meta != null && meta.MyPost != null && meta.MyPost.file != null ? meta.MyPost.file.ext : "UNDEFINED";
+
+		public Post ImagePost => meta?.MyPost;
+		public StorageFile ImageFile => imageFile;
 	}
 }

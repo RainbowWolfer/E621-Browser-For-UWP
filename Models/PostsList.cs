@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
+using E621Downloader.Pages;
 using E621Downloader.Pages.LibrarySection;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace E621Downloader.Models {
 			}
 			return Current;
 		}
+
 		public object GoRight() {
 			//Debug.WriteLine(Count);
 			int index = GetCurrentIndex();
@@ -51,6 +53,16 @@ namespace E621Downloader.Models {
 		public void UpdatePostsList(List<ItemBlock> block) {
 			items.Clear();
 			items.AddRange(block);
+		}
+
+		public void UpdatePostsList(List<MixPost> ids) {
+			items.Clear();
+			items.AddRange(ids);
+		}
+
+		public void UpdatePostsList(List<object> objs) {
+			items.Clear();
+			items.AddRange(objs);
 		}
 
 		public IEnumerable<object> GetItems() {

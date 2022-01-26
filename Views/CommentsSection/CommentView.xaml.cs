@@ -26,7 +26,7 @@ namespace E621Downloader.Views.CommentsSection {
 	public sealed partial class CommentView: UserControl {
 		public E621Comment Comment { get; set; }
 		public E621User User { get; set; }
-		public CancellationTokenSource Cts { get; private set; }
+		public CancellationTokenSource Cts { get; set; }
 		public CommentView(E621Comment comment) {
 			this.InitializeComponent();
 			this.Comment = comment;
@@ -36,22 +36,34 @@ namespace E621Downloader.Views.CommentsSection {
 		public async Task LoadAvatar() {
 			Cts = new CancellationTokenSource();
 			AvatorLoadingRing.IsActive = true;
-			User = await E621User.GetAsync(Comment.creator_id, Cts.Token);
+			try {
+				User = await E621User.GetAsync(Comment.creator_id, Cts.Token);
+			} catch {
+				return;
+			}
 			string url = "";
 			if(User != null) {
-				url = await E621User.GetAvatarURLAsync(User, Cts.Token);
+				try {
+					url = await E621User.GetAvatarURLAsync(User, Cts.Token);
+				} catch {
+					return;
+				}
 			}
 			BitmapImage bi;
 			if(!string.IsNullOrEmpty(url)) {
-				HttpResult<InMemoryRandomAccessStream> result = await Data.ReadImageStreamAsync(url, Cts.Token);
-				if(result.Result == HttpResultType.Success) {
-					bi = new BitmapImage();
-					await bi.SetSourceAsync(result.Content);
-					ToolTipService.SetToolTip(Avatar, $"Post: {User.avatar_id}");
-					Avatar.Tapped += Avatar_Tapped;
-				} else {
-					bi = App.DefaultAvatar;
-					ToolTipService.SetToolTip(Avatar, $"Avatar Load Fail\n{result.Helper}");
+				try {
+					HttpResult<InMemoryRandomAccessStream> result = await Data.ReadImageStreamAsync(url, Cts.Token);
+					if(result.Result == HttpResultType.Success) {
+						bi = new BitmapImage();
+						await bi.SetSourceAsync(result.Content);
+						ToolTipService.SetToolTip(Avatar, $"Post: {User.avatar_id}");
+						Avatar.Tapped += Avatar_Tapped;
+					} else {
+						bi = App.DefaultAvatar;
+						ToolTipService.SetToolTip(Avatar, $"Avatar Load Fail\n{result.Helper}");
+					}
+				} catch {
+					return;
 				}
 			} else {
 				bi = App.DefaultAvatar;

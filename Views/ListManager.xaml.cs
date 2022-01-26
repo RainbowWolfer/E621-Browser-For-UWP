@@ -29,9 +29,9 @@ namespace E621Downloader.Views {
 		private readonly ContentDialog parent;
 
 		private readonly string title;
-		private SettingsPage page;
+		private Page page;
 
-		public ListManager(SettingsPage page, string[] tags, ContentDialog contentControl) {
+		public ListManager(Page page, string[] tags, ContentDialog contentControl) {
 			this.InitializeComponent();
 			this.page = page;
 			this.originTags = tags.ToList();

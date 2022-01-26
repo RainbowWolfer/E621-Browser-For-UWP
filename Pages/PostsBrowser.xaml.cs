@@ -103,10 +103,10 @@ namespace E621Downloader.Pages {
 			}
 			this.Posts = posts;
 			tagsFilterSystem.RegisterBlackList(posts);
-			if(tags.Length != 0) {
-				this.Tags = tags;
-				MainPage.ChangeCurrenttTags(tags);
-			}
+			//if(tags.Length != 0) {
+			this.Tags = tags;
+			MainPage.ChangeCurrenttTags(tags);
+			//}
 			loaded = 0;
 			tb_ArticlesLoadCount.Text = "Posts : 0/" + this.Posts.Count;
 

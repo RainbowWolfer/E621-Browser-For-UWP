@@ -42,7 +42,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void BlackListButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			var result = await PopUp("Black List", Local.BlackList);
+			var result = await PopUp(this, "Black List", Local.BlackList);
 			if(result.Item1 == ContentDialogResult.Primary) {
 				if(!App.CompareTwoArray(result.Item2, result.Item3)) {
 					Local.WriteBlackList(result.Item3);
@@ -51,7 +51,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void FollowListButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			var result = await PopUp("Follow List", Local.FollowList);
+			var result = await PopUp(this, "Follow List", Local.FollowList);
 			if(result.Item1 == ContentDialogResult.Primary) {
 				if(!App.CompareTwoArray(result.Item2, result.Item3)) {
 					Local.WriteFollowList(result.Item3);
@@ -60,18 +60,27 @@ namespace E621Downloader.Pages {
 		}
 
 
-		private async Task<(ContentDialogResult, string[], string[])> PopUp(string title, string[] list) {
+		private static async Task<(ContentDialogResult, string[], string[])> PopUp(Page page, string title, string[] list) {
 			string[] oldValue = list;
 			ContentDialog dialog = new ContentDialog() {
 				Title = title,
 				PrimaryButtonText = "Confirm",
 				SecondaryButtonText = "Cancel",
 			};
-			var manager = new ListManager(this, oldValue, dialog);
+			var manager = new ListManager(page, oldValue, dialog);
 			dialog.Content = manager;
 			ContentDialogResult result = await dialog.ShowAsync();
 			string[] newValue = manager.GetCurrentTags();
 			return (result, oldValue, newValue);
+		}
+
+		public static async Task FollowListManage(Page page) {
+			var result = await PopUp(page, "Follow List", Local.FollowList);
+			if(result.Item1 == ContentDialogResult.Primary) {
+				if(!App.CompareTwoArray(result.Item2, result.Item3)) {
+					Local.WriteFollowList(result.Item3);
+				}
+			}
 		}
 
 		private async void DownloadPathButton_Tapped(object sender, TappedRoutedEventArgs e) {

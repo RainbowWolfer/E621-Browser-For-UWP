@@ -108,7 +108,7 @@ namespace E621Downloader.Models.Locals {
 		private async static Task<string> GetTokenFromFile() {
 			Stream stream = await FutureAccessTokenFile.OpenStreamForReadAsync();
 			StreamReader reader = new StreamReader(stream);
-			return reader.ReadToEnd();
+			return await reader.ReadToEndAsync();
 		}
 
 
@@ -169,7 +169,7 @@ namespace E621Downloader.Models.Locals {
 			using(Stream stream = await file.OpenStreamForReadAsync()) {
 				using(StreamReader reader = new StreamReader(stream)) {
 					string line = "";
-					foreach(char c in reader.ReadToEnd()) {
+					foreach(char c in await reader.ReadToEndAsync()) {
 						if(c == '\r' || c == '\n') {
 							if(line.Length > 0) {
 								list.Add(line);
@@ -311,7 +311,7 @@ namespace E621Downloader.Models.Locals {
 					}
 					using(Stream stream = await file.OpenStreamForReadAsync()) {
 						using(StreamReader reader = new StreamReader(stream)) {
-							string content = reader.ReadToEnd();
+							string content = await reader.ReadToEndAsync();
 							MetaFile meta = JsonConvert.DeserializeObject<MetaFile>(content);
 							if(meta == null) {
 								continue;
@@ -336,7 +336,7 @@ namespace E621Downloader.Models.Locals {
 				foreach(StorageFile item in await folder.GetFilesAsync()) {
 					using(Stream stream = await item.OpenStreamForReadAsync()) {
 						using(StreamReader reader = new StreamReader(stream)) {
-							result.Add(JsonConvert.DeserializeObject(reader.ReadToEnd()) as MetaFile);
+							result.Add(JsonConvert.DeserializeObject(await reader.ReadToEndAsync()) as MetaFile);
 						}
 					}
 				}
@@ -377,6 +377,30 @@ namespace E621Downloader.Models.Locals {
 
 		public async static Task WriteFavoritesLists() {
 			await FileIO.WriteTextAsync(FavoritesListFile, JsonConvert.SerializeObject(FavoritesList.Table));
+		}
+
+		//F:\E621\creepypasta -momo_(creepypasta) rating;e\1820721.png
+		public async static Task<(StorageFile, MetaFile)> GetDownloadFile(string path) {
+			StorageFile file;
+			try {
+				file = await StorageFile.GetFileFromPathAsync(path);
+			} catch(FileNotFoundException) {
+				return (null, null);
+			}
+			string metaPath = path.Substring(0, path.LastIndexOf('.')) + ".meta";
+			StorageFile metaFile;
+			try {
+				metaFile = await StorageFile.GetFileFromPathAsync(metaPath);
+			} catch(FileNotFoundException) {
+				return (file, null);
+			}
+			MetaFile meta;
+			using(Stream stream = await metaFile.OpenStreamForReadAsync()) {
+				using(StreamReader reader = new StreamReader(stream)) {
+					meta = JsonConvert.DeserializeObject<MetaFile>(await reader.ReadToEndAsync());
+				}
+			}
+			return (file, meta);
 		}
 	}
 }

@@ -154,6 +154,11 @@
 									<FontIcon Glyph="&#xE16F;"/>
 								</MenuFlyoutItem.Icon>
 							</MenuFlyoutItem>
+							<MenuFlyoutItem x:Name="CopyImageItem" Text="Copy Image" Click="CopyImageItem_Click">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE91B;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
 							<MenuFlyoutItem x:Name="DebugItem" Text="Debug" Click="DebugItem_Click" Visibility="Visible">
 								<MenuFlyoutItem.Icon>
 									<FontIcon Glyph="&#xE8A1;"/>
@@ -173,6 +178,7 @@
 			</RelativePanel>
 
 			<Grid Grid.RowSpan="2">
+				<ProgressRing x:Name="TagsLoadingRing" Height="150" Width="150" Visibility="Collapsed"/>
 				<ListView x:Name="TagsListView" ItemsSource="{Binding Source={StaticResource ContactsCVS}}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="TagsListView_ItemClick" Width="250" Grid.Row="1">
 					<ListView.ItemsPanel>
 						<ItemsPanelTemplate>
@@ -205,18 +211,40 @@
 					<Grid>
 						<Pivot x:Name="InformationPivot" SelectionChanged="InformationPivot_SelectionChanged">
 							<PivotItem Header="Description">
-								<ScrollViewer>
-									<TextBlock x:Name="DescriptionText" Text="No Description" TextWrapping="Wrap" FontSize="18" Margin="20" />
-								</ScrollViewer>
+								<Grid>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="auto"/>
+									</Grid.RowDefinitions>
+									<ScrollViewer>
+										<TextBlock x:Name="DescriptionText" Text="No Description" TextWrapping="Wrap" FontSize="18" Padding="20" />
+									</ScrollViewer>
+									<StackPanel Grid.Row="1" Padding="20">
+										<TextBlock x:Name="SourcesText" Text="Source" FontSize="24"/>
+										<ListView x:Name="SourcesView" SelectionMode="None" IsItemClickEnabled="False" MaxHeight="200">
+											<ListView.ItemContainerStyle>
+												<Style TargetType="ListViewItem">
+													<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+												</Style>
+											</ListView.ItemContainerStyle>
+											<d:ListViewItem>
+												<HyperlinkButton Content="Microsoft home page" NavigateUri="http://www.microsoft.com" />
+											</d:ListViewItem>
+											<d:ListViewItem>
+												<HyperlinkButton Content="Microsoft home page" NavigateUri="http://www.microsoft.com" />
+											</d:ListViewItem>
+										</ListView>
+									</StackPanel>
+								</Grid>
 							</PivotItem>
-							<PivotItem Header="Comments">
+							<PivotItem Header="Comments" Margin="0">
 								<Grid>
 									<StackPanel x:Name="LoadingSection" Visibility="Visible" Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
 										<TextBlock Text="Loading Comments" FontSize="22" Margin="5" />
 										<ProgressBar IsIndeterminate="True" Margin="5" />
 									</StackPanel>
 
-									<ListView x:Name="CommentsListView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="False">
+									<ListView x:Name="CommentsListView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="False" Padding="5">
 										<ListView.ItemContainerStyle>
 											<Style TargetType="ListViewItem">
 												<Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -305,9 +333,14 @@
 				</SplitView.Pane>
 				<SplitView.Content>
 					<Grid>
+						<TextBlock x:Name="HintText" Text="Type SWF not supported" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Visibility="Collapsed"/>
 						<MediaPlayerElement x:Name="MyMediaPlayer" AutoPlay="False" AreTransportControlsEnabled="True" Margin="0,0,0,0"/>
-						<ScrollViewer x:Name="MyScrollViewer" MinZoomFactor="0.3" DoubleTapped="MyScrollViewer_DoubleTapped" ZoomMode="Enabled" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Hidden" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Hidden">
-							<Image PointerWheelChanged="MainImage_PointerWheelChanged" PointerPressed="MainImage_PointerPressed" PointerReleased="MainImage_PointerReleased" PointerMoved="MainImage_PointerMoved" PointerEntered="MainImage_PointerEntered" PointerExited="MainImage_PointerExited" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="MainImage" Margin="0,0,0,0" ImageOpened="MainImage_ImageOpened"/>
+						<ScrollViewer x:Name="MyScrollViewer" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
+							<Image x:Name="MainImage" DoubleTapped="MainImage_DoubleTapped" PointerWheelChanged="MainImage_PointerWheelChanged" RenderTransformOrigin="0,0" ManipulationMode="TranslateX,TranslateY,Scale" ManipulationDelta="MainImage_ManipulationDelta" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" ImageOpened="MainImage_ImageOpened">
+								<Image.RenderTransform>
+									<CompositeTransform x:Name="ImageTransform"/>
+								</Image.RenderTransform>
+							</Image>
 						</ScrollViewer>
 						<ProgressRing Name="MyProgressRing" MaxHeight="300" MaxWidth="300" Margin="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>
 						<Button x:Name="LeftButton" FontFamily="Segoe MDL2 Assets" Content="&#xE26C;" Height="100" Opacity="0.2" PointerEntered="LeftButton_PointerEntered" PointerExited="LeftButton_PointerExited" Tapped="LeftButton_Tapped">

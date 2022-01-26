@@ -32,6 +32,9 @@ namespace E621Downloader.Pages {
 
 		private int currentFollowingPage = 1;
 
+		private LayoutType CurrentLayout { get; set; }
+		private string currentListName;
+
 		public bool IsSelecting {
 			get => isSelecting;
 			set {
@@ -63,6 +66,8 @@ namespace E621Downloader.Pages {
 			}
 		}
 
+		public List<object> PostsList { get; private set; }
+
 		public SubscriptionPage() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
@@ -80,9 +85,15 @@ namespace E621Downloader.Pages {
 				FavoritesList item = FavoritesList.Table[i];
 				items.Add(new FavoriteListViewItem(i, item.Name, item.Items.Count));
 			}
+			FavoritesTableHintText.Visibility = items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 		}
 
 		private async void LoadFollowing(int page) {
+			if(page <= 0 || page >= 100) {
+				return;
+			}
+			UpdateTitle("Following");
+			RefreshContentButton.IsEnabled = false;
 			SwitchLayout(LayoutType.Following);
 			FollowingButton.IsChecked = true;
 			if(cts != null) {
@@ -91,11 +102,16 @@ namespace E621Downloader.Pages {
 			}
 			cts = new CancellationTokenSource();
 			LoadingRing.IsActive = true;
+			MainGridView.Items.Clear();
 			List<Post> posts = await Post.GetPostsByTagsAsync(cts.Token, true, page, Local.FollowList);
+			if(posts == null) {
+				return;
+			}
+			PostsList = new List<object>();
+			PostsList.AddRange(posts);
 			if(posts != null) {
-				MainGridView.Items.Clear();
 				foreach(Post post in posts) {
-					var image = new ImageHolderForSubscriptionPage() {
+					var image = new ImageHolderForSubscriptionPage(this) {
 						Height = 300,
 						Width = 300,
 					};
@@ -103,10 +119,18 @@ namespace E621Downloader.Pages {
 					MainGridView.Items.Add(image);
 				}
 				LoadingRing.IsActive = false;
+				FavoritesListHintText.Visibility = posts.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 			}
+			RefreshContentButton.IsEnabled = true;
 		}
 
-		private async void LoadFavorites(string listName) {
+		private void LoadFavorites(string listName) {
+			if(string.IsNullOrWhiteSpace(listName)) {
+				return;
+			}
+			UpdateTitle(listName);
+			RefreshContentButton.IsEnabled = false;
+			currentListName = listName;
 			SwitchLayout(LayoutType.Favorites);
 			FollowingButton.IsChecked = false;
 			if(cts != null) {
@@ -116,26 +140,44 @@ namespace E621Downloader.Pages {
 			cts = new CancellationTokenSource();
 			LoadingRing.IsActive = true;
 			FavoritesList list = FavoritesList.Table.Find(l => l.Name == listName);
+			PostsList = new List<object>();
 			if(list != null) {
+				MainGridView.Items.Clear();
 				foreach(FavoriteItem item in list.Items) {
-					var image = new ImageHolderForSubscriptionPage();
+					var image = new ImageHolderForSubscriptionPage(this) {
+						Height = 300,
+						Width = 300,
+					};
+					var mix = new MixPost(item.Type, item.Path);
 					if(item.Type == PathType.Local) {
-						image.LoadFromLocal(item.Path, cts.Token);
+						image.LoadFromLocal(mix, cts.Token);
 					} else if(item.Type == PathType.PostID) {
-						image.LoadFromPostID(item.Path, cts.Token);
+						image.LoadFromPostID(mix, cts.Token);
 					} else {
 						throw new PathTypeException();
 					}
+					PostsList.Add(mix);
 					MainGridView.Items.Add(image);
 				}
 			} else {
 				throw new Exception("HOW_2?");
 			}
+			LoadingRing.IsActive = false;
+			FavoritesListHintText.Visibility = list.Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+			RefreshContentButton.IsEnabled = true;
+		}
+
+		private void ClearGridView() {
+			MainGridView.Items.Clear();
+			LoadingRing.IsActive = false;
+			FavoritesListHintText.Visibility = Visibility.Visible;
 		}
 
 		private void SwitchLayout(LayoutType type) {
+			CurrentLayout = type;
 			switch(type) {
 				case LayoutType.Following:
+					FavoritesListHintText.Visibility = Visibility.Collapsed;
 					ManageButton.Visibility = Visibility.Visible;
 					SortDropDown.Visibility = Visibility.Collapsed;
 					RenameButton.Visibility = Visibility.Collapsed;
@@ -152,6 +194,10 @@ namespace E621Downloader.Pages {
 				default:
 					throw new Exception();
 			}
+		}
+
+		private void UpdateTitle(string title) {
+			TitleText.Text = title;
 		}
 
 		private void HamburgerButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -182,7 +228,9 @@ namespace E621Downloader.Pages {
 				PrimaryButtonText = "Yes",
 				CloseButtonText = "No",
 			}.ShowAsync() == ContentDialogResult.Primary) {
-
+				FavoritesList.Table.RemoveAll(l => Selected.Select(s => s.Title).Contains(l.Name));
+				FavoritesList.Save();
+				LoadFavoritesTable();
 			}
 		}
 
@@ -190,10 +238,10 @@ namespace E621Downloader.Pages {
 			var dialog = new ContentDialog() {
 				Title = "Add New Favorites Lists",
 			};
-			var content = new AddNewFavoritesList(dialog, items.Select(i => i.Title));
+			var content = new FavoritesListNameModify(true, dialog, items.Select(i => i.Title));
 			dialog.Content = content;
 			await dialog.ShowAsync();
-			if(content.IsAdd) {
+			if(content.Confirm) {
 				FavoritesList.Table.Insert(0, new FavoritesList(content.Input));
 				FavoritesList.Save();
 				LoadFavoritesTable();
@@ -223,15 +271,12 @@ namespace E621Downloader.Pages {
 				}
 				if(e.AddedItems.FirstOrDefault() is FavoriteListViewItem item) {
 					LoadFavorites(item.Title);
-				} else {
-					throw new Exception("HOW?");
 				}
 			}
 		}
 
 		private void FontIcon_Loaded(object sender, RoutedEventArgs e) {
 			icons.Add(sender as FontIcon);
-
 		}
 
 		private void MainSplitView_PaneClosing(SplitView sender, SplitViewPaneClosingEventArgs args) {
@@ -240,15 +285,56 @@ namespace E621Downloader.Pages {
 		}
 
 		private void RefreshContentButton_Tapped(object sender, TappedRoutedEventArgs e) {
-
+			switch(CurrentLayout) {
+				case LayoutType.Following:
+					LoadFollowing(1);
+					break;
+				case LayoutType.Favorites:
+					LoadFavorites(currentListName);
+					break;
+				default:
+					throw new Exception();
+			}
 		}
 
-		private void DeleteContentButton_Tapped(object sender, TappedRoutedEventArgs e) {
-
+		private async void DeleteContentButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(await new ContentDialog() {
+				Title = "Confirmation",
+				Content = $"Are you sure to delete list ({currentListName})",
+				PrimaryButtonText = "Yes",
+				CloseButtonText = "No",
+			}.ShowAsync() == ContentDialogResult.Primary) {
+				FavoritesList.Table.RemoveAll(l => currentListName == l.Name);
+				FavoritesList.Save();
+				LoadFavoritesTable();
+				if(FavoritesList.Table.Count > 1) {
+					LoadFavorites(FavoritesList.Table.First().Name);
+				} else {
+					ClearGridView();
+				}
+			}
 		}
 
-		private void RenameButton_Tapped(object sender, TappedRoutedEventArgs e) {
+		private async void RenameButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			var dialog = new ContentDialog() {
+				Title = $"Rename - {currentListName}",
+			};
+			var content = new FavoritesListNameModify(false, dialog, items.Select(i => i.Title), currentListName);
+			dialog.Content = content;
+			await dialog.ShowAsync();
+			if(content.Confirm) {
+				FavoritesList found = FavoritesList.Table.Find(l => l.Name == currentListName);
+				if(found != null) {
+					found.Name = content.Input;
+					FavoritesList.Save();
+					LoadFavoritesTable();
+					UpdateTitle(content.Input);
+				}
+			}
+		}
 
+		private async void ManageButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			await SettingsPage.FollowListManage(this);
 		}
 
 		private void MainGridView_ItemClick(object sender, ItemClickEventArgs e) {

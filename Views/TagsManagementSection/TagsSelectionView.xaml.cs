@@ -21,7 +21,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Views.TagsManagementSection {
 	public sealed partial class TagsSelectionView: Page {
-		private ContentDialog dialog;
+		private readonly ContentDialog dialog;
 		public ResultType Result { get; private set; } = ResultType.None;
 		private readonly Dictionary<string, E621Tag> tags_pool = new Dictionary<string, E621Tag>();
 		private readonly List<string> currentTags = new List<string>();
@@ -51,6 +51,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 				MySuggestBox.Text = cut + " " + tag;
 			}
 			AutoCompletesListView.Items.Clear();
+			CalculateCurrentTags();
 			itemClick = true;
 		}
 
@@ -64,10 +65,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 				AutoCompletesListView.Items.Clear();
 				return;
 			}
-			currentTags.Clear();
-			foreach(string item in box.Text.Trim().Split(" ").Where(s => !string.IsNullOrEmpty(s)).ToList()) {
-				currentTags.Add(item);
-			}
+			CalculateCurrentTags();
 			string last = currentTags.LastOrDefault();
 			//if(args.Reason == AutoSuggestionBoxTextChangeReason.UserInput) {
 			if(string.IsNullOrWhiteSpace(last)) {
@@ -77,6 +75,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 			}
 			//}
 		}
+
 		private CancellationTokenSource cts;
 		private async void LoadAutoSuggestion(string tag) {
 			if(cts != null) {
@@ -100,6 +99,13 @@ namespace E621Downloader.Views.TagsManagementSection {
 				last.Loaded += (s, e) => {
 					SetLoadingbar(false);
 				};
+			}
+		}
+
+		private void CalculateCurrentTags(){
+			currentTags.Clear();
+			foreach(string item in MySuggestBox.Text.Trim().Split(" ").Where(s => !string.IsNullOrEmpty(s)).ToList()) {
+				currentTags.Add(item);
 			}
 		}
 
@@ -142,14 +148,14 @@ namespace E621Downloader.Views.TagsManagementSection {
 			dialog.Hide();
 		}
 
-		private string GetLast(string value) {
-			int lastSpace = value.LastIndexOf(' ');
-			if(lastSpace != -1) {
-				return value.Substring(lastSpace, value.Length - lastSpace).Trim();
-			} else {
-				return value;
-			}
-		}
+		//private string GetLast(string value) {
+		//	int lastSpace = value.LastIndexOf(' ');
+		//	if(lastSpace != -1) {
+		//		return value.Substring(lastSpace, value.Length - lastSpace).Trim();
+		//	} else {
+		//		return value;
+		//	}
+		//}
 
 		public enum ResultType {
 			None, Search, Hot, Random

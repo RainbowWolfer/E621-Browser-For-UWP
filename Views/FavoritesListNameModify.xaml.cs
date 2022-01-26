@@ -14,24 +14,37 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Views {
-	public sealed partial class AddNewFavoritesList: UserControl {
-		public bool IsAdd { get; private set; }
+	public sealed partial class FavoritesListNameModify: UserControl {
+		public bool Confirm { get; private set; }
 		public string Input => InputBox.Text;
 		private readonly ContentDialog dialog;
 		private readonly string[] existedNames;
-		public AddNewFavoritesList(ContentDialog dialog, IEnumerable<string> existedNames) {
+		private readonly string original;
+		public FavoritesListNameModify(bool isAdd, ContentDialog dialog, IEnumerable<string> existedNames, string original = "") {
 			this.InitializeComponent();
 			this.dialog = dialog;
 			this.existedNames = existedNames.ToArray();
+			this.original = original;
+			if(isAdd) {
+				ConfirmIcon.Glyph = "\uE109";
+				ConfirmText.Text = "Add";
+			} else {
+				ConfirmIcon.Glyph = "\uE001";
+				ConfirmText.Text = "Confirm";
+			}
+			if(!string.IsNullOrWhiteSpace(original)) {
+				InputBox.Text = original;
+				InputBox.SelectionStart = original.Length;
+			}
 		}
 
 		private void BackButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			IsAdd = false;
+			Confirm = false;
 			dialog.Hide();
 		}
 
 		private void AddButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			IsAdd = true;
+			Confirm = true;
 			dialog.Hide();
 		}
 
@@ -41,7 +54,11 @@ namespace E621Downloader.Views {
 			if(string.IsNullOrWhiteSpace(input)) {
 				return;
 			}
-			if(existedNames.Contains(input)) {
+			if(!string.IsNullOrWhiteSpace(original) && input == original) {
+				HintText.Text = $"Cannot be the Same as Before";
+				HintPanel.Visibility = Visibility.Visible;
+				return;
+			} else if(existedNames.Contains(input)) {
 				HintText.Text = $"\"{input}\" Already Exists";
 				HintPanel.Visibility = Visibility.Visible;
 				return;

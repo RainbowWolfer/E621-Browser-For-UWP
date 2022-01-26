@@ -69,7 +69,10 @@
 							</StackPanel>
 						</Button>
 					</Grid>
-					<ListView x:Name="FavoritesListView" Grid.Row="4" ItemsSource="{x:Bind items}" d:ItemsSource="1 2 3" Margin="0,5,0,0" SelectionMode="Single" SelectionChanged="FavoritesListView_SelectionChanged">
+					<Grid x:Name="FavoritesTableHintText" Grid.Row="4">
+						<TextBlock Text="You do not have any favorites List&#10;Go Create your own one" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" TextAlignment="Center"/>
+					</Grid>
+					<ListView x:Name="FavoritesListView" Grid.Row="4" ItemsSource="{x:Bind items}" d:ItemsSource="" Margin="0,5,0,0" SelectionMode="Single" SelectionChanged="FavoritesListView_SelectionChanged">
 						<ListView.ItemContainerStyle>
 							<Style TargetType="ListViewItem">
 								<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -122,7 +125,7 @@
 								<TextBlock Text="Rename" Margin="10,0,0,0"/>
 							</StackPanel>
 						</Button>
-						<controls:DropDownButton x:Name="SortDropDown" FontSize="16" RelativePanel.LeftOf="RenameButton" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="RenameButton_Tapped" Margin="5,0,5,0">
+						<controls:DropDownButton x:Name="SortDropDown" FontSize="16" RelativePanel.LeftOf="RenameButton" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="5,0,5,0">
 							<controls:DropDownButton.Content>
 								<StackPanel Orientation="Horizontal">
 									<FontIcon Glyph="&#xE174;" FontSize="16"/>
@@ -144,7 +147,7 @@
 								</MenuFlyout>
 							</controls:DropDownButton.Flyout>
 						</controls:DropDownButton>
-						<Button x:Name="ManageButton" FontSize="16" RelativePanel.LeftOf="SortDropDown" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="RenameButton_Tapped" Margin="5,0,5,0">
+						<Button x:Name="ManageButton" FontSize="16" RelativePanel.LeftOf="SortDropDown" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="ManageButton_Tapped" Margin="5,0,5,0">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE178;" FontSize="16"/>
 								<TextBlock Text="Manage" Margin="10,0,0,0"/>
@@ -152,7 +155,10 @@
 						</Button>
 					</RelativePanel>
 					<ProgressRing Name="LoadingRing" Grid.Row="1" MinHeight="200" MinWidth="200" Margin="50"/>
-					<GridView x:Name="MainGridView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" ItemClick="MainGridView_ItemClick"/>
+					<Grid x:Name="FavoritesListHintText" Grid.Row="1">
+						<TextBlock Text="Nothing is in this list" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+					</Grid>
+					<GridView x:Name="MainGridView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" ItemClick="MainGridView_ItemClick" Padding="10"/>
 					<StackPanel x:Name="Paginator" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
 						<Button x:Name="LeftButton" Content="&#xE09A;" FontFamily="Segoe MDL2 Assets" Height="30" Width="30" Padding="0" Tapped="LeftButton_Tapped"/>
 						<TextBlock x:Name="PageText" Text="1" VerticalAlignment="Center" Margin="10,0,10,0" FontSize="16"/>

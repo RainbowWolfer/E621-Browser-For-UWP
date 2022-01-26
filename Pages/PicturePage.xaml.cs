@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
@@ -47,13 +48,12 @@ namespace E621Downloader.Pages {
 
 		private string path;
 
-		public bool isMouseOn;
-		public bool isMousePressed;
-
-		private Point pressStartPosition;
-
 		public string Title => PostRef == null ? "# No Post" :
 			$"#{PostRef.id} ({PostRef.rating.ToUpper()})";
+
+		private CancellationTokenSource cts;
+
+		private DataPackage imageDataPackage;
 
 		public PicturePage() {
 			this.InitializeComponent();
@@ -70,6 +70,7 @@ namespace E621Downloader.Pages {
 			object p = e.Parameter;
 			MainPage.ClearPicturePageParameter();
 			bool showNoPostGrid = false;
+			this.imageDataPackage = null;
 			if(p == null && PostRef == null && PostsBrowser.Instance != null && PostsBrowser.Instance.Posts != null && PostsBrowser.Instance.Posts.Count > 0) {
 				App.postsList.UpdatePostsList(PostsBrowser.Instance.Posts);
 				p = PostsBrowser.Instance.Posts[0];
@@ -77,79 +78,72 @@ namespace E621Downloader.Pages {
 			}
 			if(p is Post post) {
 				if(PostRef == post) {
-					UpdateTagsGroup(PostRef.tags);
 					NoPostGrid.Visibility = Visibility.Collapsed;//just in case
 					MainGrid.Visibility = Visibility.Visible;
 					return;
 				}
 				PostRef = post;
-				DownloadText.Text = "Download";
-				DownloadIcon.Glyph = "\uE118";
-				DownloadButton.IsEnabled = true;
-				string type = PostRef.file.ext.ToLower().Trim();
-				if(type == "webm") {
-					MyProgressRing.IsActive = false;
-					MyMediaPlayer.Visibility = Visibility.Visible;
-					MyScrollViewer.Visibility = Visibility.Collapsed;
-					if(!string.IsNullOrEmpty(PostRef.file.url)) {
-						MyMediaPlayer.Source = MediaSource.CreateFromUri(new Uri(PostRef.file.url));
-					}
-				} else {
-					MyProgressRing.IsActive = true;
-					MyMediaPlayer.Visibility = Visibility.Collapsed;
-					MyScrollViewer.Visibility = Visibility.Visible;
-					MainImage.Source = new BitmapImage(new Uri(PostRef.file.url));
-					MyMediaPlayer.MediaPlayer.Source = null;
-				}
-
-				TagsListView.ScrollIntoView(TagsListView.Items[0]);
-				UpdateTagsGroup(PostRef.tags);
+				UpdateDownloadButton(false);
+				await LoadFromPost(post);
 				PostType = PathType.PostID;
 				path = this.PostRef.id;
-			} else if(p is ItemBlock itemBlock) {
-				if(PostRef == itemBlock.meta.MyPost) {
-					UpdateTagsGroup(PostRef.tags);
+			} else if(p is MixPost mix) {
+				switch(mix.Type) {
+					case PathType.PostID:
+						if(cts != null) {
+							try {
+								cts.Cancel();
+								cts.Dispose();
+							} finally {
+								cts = null;
+							}
+						}
+						if(mix.PostRef == this.PostRef) {
+							return;
+						}
+						if(mix.PostRef != null) {
+							this.PostRef = mix.PostRef;
+						} else {
+							cts = new CancellationTokenSource();
+							this.PostRef = await Post.GetPostByIDAsync(cts.Token, mix.ID);
+							mix.PostRef = this.PostRef;
+						}
+						UpdateDownloadButton(false);
+						await LoadFromPost(this.PostRef);
+						PostType = PathType.PostID;
+						path = mix.ID;
+						break;
+					case PathType.Local:
+						if(!mix.LocalLoaded) {
+							(StorageFile, MetaFile) result = await Local.GetDownloadFile(path);
+							mix.ImageFile = result.Item1;
+							mix.MetaFile = result.Item2;
+						}
+						this.PostRef = mix.MetaFile.MyPost;
+						UpdateDownloadButton(true);
+						await LoadFromLocal(mix);
+						PostType = PathType.Local;
+						path = mix.LocalPath;
+						break;
+					default:
+						throw new PathTypeException();
+				}
+			} else if(p is ILocalImage local) {
+				if(PostRef == local.ImagePost) {
 					return;
 				}
-				PostRef = itemBlock.meta.MyPost;
-				DownloadText.Text = "Local";
-				DownloadIcon.Glyph = "\uE159";
-				DownloadButton.IsEnabled = false;
-				string type = PostRef.file.ext.ToLower().Trim();
-				if(type == "webm") {
-					MyProgressRing.IsActive = false;
-					MyMediaPlayer.Visibility = Visibility.Visible;
-					MyScrollViewer.Visibility = Visibility.Collapsed;
-
-					MyMediaPlayer.Source = MediaSource.CreateFromStorageFile(itemBlock.imageFile);
-				} else if(type == "anim") {
-					MyMediaPlayer.Visibility = Visibility.Collapsed;
-					MyScrollViewer.Visibility = Visibility.Collapsed;
-					MyProgressRing.IsActive = false;
-				} else if(type == "jpg" || type == "png") {
-					MyProgressRing.IsActive = true;
-					MyMediaPlayer.Visibility = Visibility.Collapsed;
-					MyScrollViewer.Visibility = Visibility.Visible;
-
-					using(IRandomAccessStream randomAccessStream = await itemBlock.imageFile.OpenAsync(FileAccessMode.Read)) {
-						BitmapImage result = new BitmapImage();
-						await result.SetSourceAsync(randomAccessStream);
-						MainImage.Source = result;
-					}
-					MyProgressRing.IsActive = false;
-				} else {
-					await MainPage.CreatePopupDialog("Error", $"Type({type}) not supported");
-				}
-				TagsListView.ScrollIntoView(TagsListView.Items[0]);
-
-				UpdateTagsGroup(PostRef.tags);
+				PostRef = local.ImagePost;
+				UpdateDownloadButton(true);
+				await LoadFromLocal(local);
 				PostType = PathType.Local;
-				path = itemBlock.imageFile.Path;
+				path = local.ImageFile.Path;
 			} else if(this.PostRef == null && p == null) {
 				MyProgressRing.IsActive = false;
 				showNoPostGrid = true;
 				PostType = PathType.PostID;
 			}
+			TagsListView.ScrollIntoView(TagsListView.Items.FirstOrDefault());
+			UpdateTagsGroup(PostRef?.tags);
 			NoPostGrid.Visibility = showNoPostGrid ? Visibility.Visible : Visibility.Collapsed;
 			MainGrid.Visibility = !showNoPostGrid ? Visibility.Visible : Visibility.Collapsed;
 			TitleText.Text = Title;
@@ -158,8 +152,9 @@ namespace E621Downloader.Pages {
 			UpdateTypeIcon();
 			UpdateSoundIcon();
 			UpdateFavoriteButton();
-			DescriptionText.Text = PostRef != null && !string.IsNullOrEmpty(PostRef.description) ? PostRef.description : "No Description";
+			UpdateDescriptionSection();
 			UpdateOthers();
+			ResetImage();
 			if(this.PostRef != null && p != null) {
 				MainSplitView.IsPaneOpen = false;
 				//InformationPivot.SelectedIndex = 0;
@@ -183,6 +178,119 @@ namespace E621Downloader.Pages {
 				}
 				ParentImageHolder.Post_ID = this.PostRef.relationships.parent_id;
 				ParentImageHolder.Origin = this.PostRef;
+			}
+		}
+
+		private async Task LoadFromPost(Post post) {
+			FileType type = GetFileType(post);
+			switch(type) {
+				case FileType.Png:
+				case FileType.Jpg:
+				case FileType.Gif:
+					MyProgressRing.IsActive = true;
+					MyMediaPlayer.Visibility = Visibility.Collapsed;
+					MyScrollViewer.Visibility = Visibility.Visible;
+					MainImage.Source = new BitmapImage(new Uri(post.file.url));
+					imageDataPackage = new DataPackage() {
+						RequestedOperation = DataPackageOperation.Copy,
+					};
+					imageDataPackage.SetBitmap(RandomAccessStreamReference.CreateFromUri(new Uri(post.file.url)));
+					MyMediaPlayer.MediaPlayer.Source = null;
+					break;
+				case FileType.Webm:
+					MyProgressRing.IsActive = false;
+					MyMediaPlayer.Visibility = Visibility.Visible;
+					MyScrollViewer.Visibility = Visibility.Collapsed;
+					if(!string.IsNullOrEmpty(post.file.url)) {
+						MyMediaPlayer.Source = MediaSource.CreateFromUri(new Uri(post.file.url));
+					}
+					break;
+				case FileType.Anim:
+					MyMediaPlayer.Visibility = Visibility.Collapsed;
+					MyScrollViewer.Visibility = Visibility.Collapsed;
+					MyProgressRing.IsActive = false;
+					break;
+				default:
+					await MainPage.CreatePopupDialog("Error", $"Type({type}) not supported");
+					break;
+			}
+		}
+
+		private async Task LoadFromLocal(ILocalImage local) {
+			FileType type = GetFileType(local.ImagePost);
+			HintText.Visibility = Visibility.Collapsed;
+			switch(type) {
+				case FileType.Png:
+				case FileType.Jpg:
+				case FileType.Gif:
+					MyProgressRing.IsActive = true;
+					MyMediaPlayer.Visibility = Visibility.Collapsed;
+					MyScrollViewer.Visibility = Visibility.Visible;
+					try {
+						using(IRandomAccessStream randomAccessStream = await local.ImageFile.OpenAsync(FileAccessMode.Read)) {
+							BitmapImage result = new BitmapImage();
+							await result.SetSourceAsync(randomAccessStream);
+							MainImage.Source = result;
+							imageDataPackage = new DataPackage() {
+								RequestedOperation = DataPackageOperation.Copy,
+							};
+							imageDataPackage.SetBitmap(RandomAccessStreamReference.CreateFromFile(local.ImageFile));
+						}
+					} catch(Exception e) {
+						await MainPage.CreatePopupDialog("Error", $"Local Post({local.ImagePost.id}) - {local.ImageFile.Path} Load Failed\n{e.Message}");
+					}
+					MyMediaPlayer.Source = null;
+					MyProgressRing.IsActive = false;
+					break;
+				case FileType.Webm:
+					MyProgressRing.IsActive = false;
+					MyMediaPlayer.Visibility = Visibility.Visible;
+					MyScrollViewer.Visibility = Visibility.Collapsed;
+					MyMediaPlayer.Source = MediaSource.CreateFromStorageFile(local.ImageFile);
+					MainImage.Source = null;
+					break;
+				case FileType.Anim:
+					MyMediaPlayer.Visibility = Visibility.Collapsed;
+					MyScrollViewer.Visibility = Visibility.Collapsed;
+					HintText.Text = $"Type SWF not supported";
+					HintText.Visibility = Visibility.Visible;
+					MyProgressRing.IsActive = false;
+					break;
+				default:
+					HintText.Text = $"Type ({type}) not supported";
+					HintText.Visibility = Visibility.Visible;
+					await MainPage.CreatePopupDialog("Error", $"Type({type}) not supported");
+					break;
+			}
+		}
+
+		private FileType GetFileType(Post post) {
+			switch(post.file.ext.ToLower().Trim()) {
+				case "jpg":
+					return FileType.Jpg;
+				case "png":
+					return FileType.Png;
+				case "gif":
+					return FileType.Gif;
+				case "anim":
+				case "swf":
+					return FileType.Anim;
+				case "webm":
+					return FileType.Webm;
+				default:
+					throw new Exception($"New Type({post.file.ext}) Found");
+			}
+		}
+
+		private void UpdateDownloadButton(bool isLocal) {
+			if(isLocal) {
+				DownloadText.Text = "Local";
+				DownloadIcon.Glyph = "\uE159";
+				DownloadButton.IsEnabled = false;
+			} else {
+				DownloadText.Text = "Download";
+				DownloadIcon.Glyph = "\uE118";
+				DownloadButton.IsEnabled = true;
 			}
 		}
 
@@ -260,6 +368,9 @@ namespace E621Downloader.Pages {
 		}
 
 		private void UpdateTagsGroup(Tags tags) {
+			if(tags == null) {
+				return;
+			}
 			RemoveGroup();
 			AddNewGroup("Artist", tags.artist);
 			AddNewGroup("Copyright", tags.copyright);
@@ -310,8 +421,12 @@ namespace E621Downloader.Pages {
 
 		private void CancelLoadAvatars() {
 			foreach(CommentView item in CommentsListView.Items) {
-				item.Cts?.Cancel();
-				item.Cts?.Dispose();
+				try {
+					item.Cts?.Cancel();
+					item.Cts?.Dispose();
+				} finally {
+					item.Cts = null;
+				}
 			}
 		}
 
@@ -340,6 +455,28 @@ namespace E621Downloader.Pages {
 			FavoriteListButton.IsChecked = enable;
 		}
 
+		private void UpdateDescriptionSection() {
+			DescriptionText.Text = PostRef != null && !string.IsNullOrEmpty(PostRef.description) ? PostRef.description : "No Description";
+			SourcesView.Items.Clear();
+			if(PostRef != null) {
+				foreach(string item in PostRef.sources) {
+					SourcesView.Items.Add(new HyperlinkButton() {
+						Content = item,
+						NavigateUri = new Uri(item),
+					});
+				}
+				if(PostRef.sources.Count == 0) {
+					SourcesText.Text = "No Source";
+				} else if(PostRef.sources.Count == 1) {
+					SourcesText.Text = "Source";
+				} else {
+					SourcesText.Text = "Sources";
+				}
+			} else {
+				SourcesText.Text = "";
+			}
+		}
+
 		private void UpdateOthers() {
 			if(PostRef == null) {
 				return;
@@ -361,48 +498,104 @@ namespace E621Downloader.Pages {
 			MyProgressRing.IsActive = false;
 		}
 
-		private void MyScrollViewer_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e) {
-			//var scrollViewer = sender as ScrollViewer;
-			//if(scrollViewer.ZoomFactor != 1) {
-			//	scrollViewer.ChangeView(scrollViewer.ActualWidth / 2, scrollViewer.ActualHeight / 2, 1);
-			//} else if(scrollViewer.ZoomFactor == 1) {
-			//	scrollViewer.ChangeView(scrollViewer.ActualWidth / 2, scrollViewer.ActualHeight / 2, 2);
-			//}
+		private void MainImage_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e) {
+			Debug.WriteLine("!?!");
+			//ImageTransform.ScaleX = ImageTransform.ScaleX < 2 ? 3 : 1;
+			//ImageTransform.ScaleY = ImageTransform.ScaleY < 2 ? 3 : 1;
 		}
-
 
 		private void MainImage_PointerWheelChanged(object sender, PointerRoutedEventArgs e) {
-			//Debug.WriteLine("PointerWheelChanged");
+			PointerPoint point = e.GetCurrentPoint(MainImage);
+			double posX = point.Position.X;
+			double posY = point.Position.Y;
+
+			double scroll = point.Properties.MouseWheelDelta > 0 ? 1.2 : 0.8;
+
+			double newScaleX = ImageTransform.ScaleX * scroll;
+			double newScaleY = ImageTransform.ScaleY * scroll;
+
+			double newTransX = scroll > 1 ?
+				(ImageTransform.TranslateX - (posX * 0.2 * ImageTransform.ScaleX)) :
+				(ImageTransform.TranslateX - (posX * -0.2 * ImageTransform.ScaleX));
+			double newTransY = scroll > 1 ?
+				(ImageTransform.TranslateY - (posY * 0.2 * ImageTransform.ScaleY)) :
+				(ImageTransform.TranslateY - (posY * -0.2 * ImageTransform.ScaleY));
+
+			if(newScaleX < 1 || newScaleY < 1) {
+				newScaleX = 1;
+				newScaleY = 1;
+				newTransX = 0;
+				newTransY = 0;
+			}
+			if(newScaleX > 10 || newScaleY > 10) {
+				return;
+			}
+
+			ImageTransform.ScaleX = newScaleX;
+			ImageTransform.ScaleY = newScaleY;
+			ImageTransform.TranslateX = newTransX;
+			ImageTransform.TranslateY = newTransY;
+
+			Limit();
 		}
 
-		private void MainImage_PointerPressed(object sender, PointerRoutedEventArgs e) {
-			isMousePressed = true;
-			pressStartPosition = e.GetCurrentPoint(sender as UIElement).Position;
+		private void MainImage_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e) {
+			ImageTransform.TranslateX += e.Delta.Translation.X;
+			ImageTransform.TranslateY += e.Delta.Translation.Y;
+
+			Limit();
 		}
 
-		private void MainImage_PointerReleased(object sender, PointerRoutedEventArgs e) {
-			isMousePressed = false;
+		private bool IsHorScaleAbove() {
+			return MainImage.ActualWidth * ImageTransform.ScaleX > MyScrollViewer.ActualWidth;
+		}
+		private bool IsVerScaleAbove() {
+			return MainImage.ActualHeight * ImageTransform.ScaleY > MyScrollViewer.ActualHeight;
 		}
 
-		private void MainImage_PointerMoved(object sender, PointerRoutedEventArgs e) {
-			if(isMouseOn && isMousePressed) {
-				//PointerPoint pointer = e.GetCurrentPoint(sender as UIElement);
-				//Point p = Diff(pointer.Position, pressStartPosition);
-				//Debug.WriteLine(p);
-				//MyScrollViewer.ChangeView(-p.X, -p.Y, null);
+		private void Limit() {
+			double horLimit = (MyScrollViewer.ActualWidth - MainImage.ActualWidth) / 2;
+			if(IsHorScaleAbove()) {
+				if(ImageTransform.TranslateX > -horLimit) {
+					ImageTransform.TranslateX = -horLimit;
+				}
+				double offset = (MyScrollViewer.ActualWidth - MainImage.ActualWidth * ImageTransform.ScaleX);
+				if(ImageTransform.TranslateX < offset - horLimit) {
+					ImageTransform.TranslateX = offset - horLimit;
+				}
+			} else {
+				if(ImageTransform.TranslateX < -horLimit) {
+					ImageTransform.TranslateX = -horLimit;
+				}
+				double offset = (MyScrollViewer.ActualWidth - MainImage.ActualWidth * ImageTransform.ScaleX);
+				if(ImageTransform.TranslateX > offset - horLimit) {
+					ImageTransform.TranslateX = offset - horLimit;
+				}
+			}
+			double verLimit = (MyScrollViewer.ActualHeight - MainImage.ActualHeight) / 2;
+			if(IsVerScaleAbove()) {
+				if(ImageTransform.TranslateY > 0) {
+					ImageTransform.TranslateY = 0;
+				}
+				double offset = MyScrollViewer.ActualHeight - MainImage.ActualHeight * ImageTransform.ScaleY;
+				if(ImageTransform.TranslateY < offset) {
+					ImageTransform.TranslateY = offset;
+				}
+			} else {
+				if(ImageTransform.TranslateY < 0) {
+					ImageTransform.TranslateY = 0;
+				}
+				if(ImageTransform.TranslateY > verLimit) {
+					ImageTransform.TranslateY = verLimit;
+				}
 			}
 		}
 
-		private void MainImage_PointerEntered(object sender, PointerRoutedEventArgs e) {
-			isMouseOn = true;
-		}
-
-		private void MainImage_PointerExited(object sender, PointerRoutedEventArgs e) {
-			isMouseOn = false;
-		}
-
-		private static Point Diff(Point a, Point b) {
-			return new Point(a.X - b.X, a.Y - b.Y);
+		private void ResetImage() {
+			ImageTransform.TranslateX = 0;
+			ImageTransform.TranslateY = 0;
+			ImageTransform.ScaleX = 1;
+			ImageTransform.ScaleY = 1;
 		}
 
 		private void TagsListView_ItemClick(object sender, ItemClickEventArgs e) {
@@ -574,6 +767,13 @@ namespace E621Downloader.Pages {
 			Clipboard.SetContent(dataPackage);
 		}
 
+		private void CopyImageItem_Click(object sender, RoutedEventArgs e) {
+			if(imageDataPackage == null) {
+				return;
+			}
+			Clipboard.SetContent(imageDataPackage);
+		}
+
 		private async void DebugItem_Click(object sender, RoutedEventArgs e) {
 			if(PostRef == null) {
 				return;
@@ -727,4 +927,57 @@ namespace E621Downloader.Pages {
 		PostID, Local
 	}
 
+	public enum FileType {
+		Png, Jpg, Gif, Webm, Anim
+	}
+
+
+	public interface ILocalImage {
+		Post ImagePost { get; }
+		StorageFile ImageFile { get; }
+	}
+
+	public class MixPost: ILocalImage {
+		public PathType Type { get; set; }
+		public string ID { get; set; }
+		public string LocalPath { get; set; }
+		// -------------------------
+		public Post PostRef { get; set; }
+		// -------------------------
+		public StorageFile ImageFile { get; set; }
+		public MetaFile MetaFile { get; set; }
+		// -------------------------
+		public bool LocalLoaded => ImageFile != null && MetaFile != null;
+		Post ILocalImage.ImagePost => MetaFile.MyPost;
+		StorageFile ILocalImage.ImageFile => ImageFile;
+
+		public MixPost(PathType pathType, string path) {
+			Type = pathType;
+			switch(Type) {
+				case PathType.PostID:
+					ID = path;
+					break;
+				case PathType.Local:
+					LocalPath = path;
+					break;
+				default:
+					throw new PathTypeException();
+			}
+		}
+
+		public void Finish(Post post) {
+			if(Type != PathType.PostID) {
+				throw new Exception();
+			}
+			PostRef = post;
+		}
+
+		public void Finish(StorageFile storageFile, MetaFile metaFile) {
+			if(Type != PathType.Local) {
+				throw new Exception();
+			}
+			ImageFile = storageFile;
+			MetaFile = metaFile;
+		}
+	}
 }

@@ -17,9 +17,9 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Views {
 	public sealed partial class ToolTipContentForPost: UserControl {
-		public ToolTipContentForPost(Post post) {
+		public ToolTipContentForPost(Post post, bool local = false) {
 			this.InitializeComponent();
-			ID.Text = $"#{post.id}";
+			ID.Text = $"#{post.id}" + (local ? " - Local" : "");
 			UP.Text = $" · Up - {Math.Abs(post.score.up)}";
 			DOWN.Text = $" · Down - {Math.Abs(post.score.down)}";
 			TYPE.Text = $" · Type - {post.file.ext.ToUpper()}";
