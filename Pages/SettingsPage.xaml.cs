@@ -1,6 +1,7 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
 using E621Downloader.Models.Locals;
+using E621Downloader.Models.Networks;
 using E621Downloader.Views;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,15 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Contacts;
+using Windows.ApplicationModel.Email;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
+using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -169,6 +174,35 @@ namespace E621Downloader.Pages {
 			} else {
 				return false;
 			}
+		}
+
+		private CoreCursor cursorBeforePointerEntered = null;
+		private void TextBlock_PointerEntered(object sender, PointerRoutedEventArgs e) {
+			cursorBeforePointerEntered = Window.Current.CoreWindow.PointerCursor;
+			Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Help, 0);
+		}
+
+		private void TextBlock_PointerExited(object sender, PointerRoutedEventArgs e) {
+			Window.Current.CoreWindow.PointerCursor = cursorBeforePointerEntered;
+		}
+
+		private async void OfficialSiteButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(!await Launcher.LaunchUriAsync(new Uri($"https://{Data.GetHost()}"))) {
+				await MainPage.CreatePopupDialog("Error", "Could not Open Default Browser");
+			}
+		}
+
+		private async void EmailButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			await ComposeEmail("[E1547 For UWP] Subject Here", "");
+		}
+
+		private async Task ComposeEmail(string subject, string messageBody) {
+			var emailMessage = new EmailMessage {
+				Subject = subject,
+				Body = messageBody,
+			};
+			emailMessage.To.Add(new EmailRecipient("RainbowWolfer@Outlook.com", "RainbowWolfer"));
+			await EmailManager.ShowComposeNewEmailAsync(emailMessage);
 		}
 	}
 }

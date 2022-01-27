@@ -100,9 +100,31 @@
 					</StackPanel>
 					<TextBlock Text="About: " Style="{StaticResource SectionTitle}"/>
 					<StackPanel Margin="40,0,0,0">
-						<TextBlock FontSize="18" Text="Made By : RainbowWolfer"/>
-						<TextBlock FontSize="18" Text="Source From : E1547"/>
-						<TextBlock FontSize="18" Text="{x:Bind Version}"/>
+						<TextBlock FontSize="18" Text="Made By : RainbowWolfer" Margin="5"/>
+						<TextBlock FontSize="18" Text="Source From : E1547" Margin="5"/>
+						<TextBlock FontSize="18" d:Text="Version : 1.1.1.1" Text="{x:Bind Version}" Margin="5"/>
+						<Button x:Name="OfficialSiteButton" FontSize="18" Margin="5" Tapped="OfficialSiteButton_Tapped">
+							<StackPanel Orientation="Horizontal">
+								<FontIcon Glyph="&#xE80F;"/>
+								<TextBlock Text="Official SIte" Margin="10,0,0,0"/>
+							</StackPanel>
+						</Button>
+						<TextBlock FontSize="16" TextWrapping="Wrap" Margin="10,10,70,10" ToolTipService.Placement="Bottom" PointerEntered="TextBlock_PointerEntered" PointerExited="TextBlock_PointerExited">
+							This is a personal passionate project. You are expected to encounter something not working as intended. And many features are not implemented right now.
+							<ToolTipService.ToolTip>
+								I know there are already many e621 applications. but i really just wanna to put what i learnt into use. and nobody has done UWP version of e621, right?
+								And I know the download concept that i have done is kinda dumb. maybe i will rework on it (or not XD).
+							</ToolTipService.ToolTip>
+						</TextBlock>
+						<StackPanel Orientation="Horizontal">
+							<Button x:Name="EmailButton" FontSize="18" Margin="5" Tapped="EmailButton_Tapped">
+								<StackPanel Orientation="Horizontal">
+									<FontIcon Glyph="&#xE715;"/>
+									<TextBlock Text="Contact Me" Margin="10,0,0,0"/>
+								</StackPanel>
+							</Button>
+							<TextBlock Text="RainbowWolfer@Outlook.com" FontSize="18" VerticalAlignment="Center" Margin="10"/>
+						</StackPanel>
 					</StackPanel>
 				</StackPanel>
 			</Grid>
