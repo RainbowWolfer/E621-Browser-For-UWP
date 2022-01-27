@@ -245,6 +245,9 @@
     <Compile Include="Views\PersonalFavoritesListForMultiple.xaml.cs">
       <DependentUpon>PersonalFavoritesListForMultiple.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PostMoreInfoDialog.xaml.cs">
+      <DependentUpon>PostMoreInfoDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TagExpander.xaml.cs">
       <DependentUpon>TagExpander.xaml</DependentUpon>
     </Compile>
@@ -474,6 +477,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PersonalFavoritesListForMultiple.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PostMoreInfoDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,10 +1,12 @@
 ﻿using E621Downloader.Models.Posts;
+using E621Downloader.Pages;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI;
 using Windows.UI.Xaml.Controls;
 
 namespace E621Downloader.Models {
@@ -33,6 +35,14 @@ namespace E621Downloader.Models {
 				}
 			}
 			return new string(list.ToArray());
+		}
+
+		public static List<GroupTag> ToGroupTag(this List<string> tags, Color color) {
+			List<GroupTag> result = new List<GroupTag>();
+			foreach(string tag in tags) {
+				result.Add(new GroupTag(tag, color));
+			}
+			return result;
 		}
 	}
 }

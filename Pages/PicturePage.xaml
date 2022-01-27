@@ -186,12 +186,12 @@
 						</ItemsPanelTemplate>
 					</ListView.ItemsPanel>
 					<ListView.ItemTemplate>
-						<DataTemplate x:DataType="x:String">
-							<RelativePanel Width="225" RightTapped="RelativePanel_RightTapped" Tag="{x:Bind ToString()}">
-								<Button x:Name="InfoButton" FontFamily="Segoe MDL2 Assets" Content="&#xE946;" RelativePanel.AlignVerticalCenterWithPanel="True" Style="{StaticResource TagButton}" Tapped="InfoButton_Tapped" Tag="{x:Bind ToString()}"/>
-								<TextBlock Text="{x:Bind ToString()}" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="2,0,20,0" TextWrapping="Wrap" Width="100" RelativePanel.RightOf="InfoButton"/>
-								<Button x:Name="BlackListButton" Style="{StaticResource TagButton}" Content="&#xF8AB;" Tag="{x:Bind ToString()}" RelativePanel.LeftOf="FollowListButton" Tapped="BlackListButton_Tapped" Loaded="BlackListButton_Loaded"/>
-								<Button x:Name="FollowListButton" Style="{StaticResource TagButton}" Content="&#xF8AA;" Tag="{x:Bind ToString()}" RelativePanel.AlignRightWithPanel="True" Tapped="FollowListButton_Tapped" Loaded="FollowListButton_Loaded"/>
+						<DataTemplate x:DataType="local:GroupTag">
+							<RelativePanel Width="225" RightTapped="RelativePanel_RightTapped" Tag="{x:Bind Content}">
+								<Button x:Name="InfoButton" FontFamily="Segoe MDL2 Assets" Content="&#xE946;" RelativePanel.AlignVerticalCenterWithPanel="True" Style="{StaticResource TagButton}" Tapped="InfoButton_Tapped" Tag="{x:Bind Content}"/>
+								<TextBlock x:Name="TagText" Text="{x:Bind Content}" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="2,0,20,0" TextWrapping="Wrap" Width="100" RelativePanel.RightOf="InfoButton" Foreground="{x:Bind Brush}"/>
+								<Button x:Name="BlackListButton" Style="{StaticResource TagButton}" Content="&#xF8AB;" Tag="{x:Bind Content}" RelativePanel.LeftOf="FollowListButton" Tapped="BlackListButton_Tapped" Loaded="BlackListButton_Loaded"/>
+								<Button x:Name="FollowListButton" Style="{StaticResource TagButton}" Content="&#xF8AA;" Tag="{x:Bind Content}" RelativePanel.AlignRightWithPanel="True" Tapped="FollowListButton_Tapped" Loaded="FollowListButton_Loaded"/>
 							</RelativePanel>
 						</DataTemplate>
 					</ListView.ItemTemplate>

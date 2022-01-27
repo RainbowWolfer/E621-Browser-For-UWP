@@ -20,7 +20,7 @@ namespace E621Downloader.Models.Networks {
 		public const string USERAGENT = "RainbowWolferE621TestApp";
 
 		public static string GetHost() {
-			if(LocalSettings.Current?.customHostEnable ?? false) {
+			if((LocalSettings.Current?.customHostEnable ?? false) && !string.IsNullOrWhiteSpace(LocalSettings.Current.customHost)) {
 				return LocalSettings.Current.customHost;
 			} else {
 				return "e926.net";
@@ -28,6 +28,7 @@ namespace E621Downloader.Models.Networks {
 		}
 
 		public static async Task<HttpResult<string>> ReadURLAsync(string url, CancellationToken? token = null, string username = "", string api = "") {
+			Debug.WriteLine("Reading: " + url);
 			Stopwatch stopwatch = new Stopwatch();
 			stopwatch.Start();
 			var client = new HttpClient();

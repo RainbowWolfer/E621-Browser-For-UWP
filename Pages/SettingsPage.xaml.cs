@@ -27,6 +27,8 @@ namespace E621Downloader.Pages {
 	public sealed partial class SettingsPage: Page {
 		public static bool isDownloadPathChangingHandled;
 		public string Version => "Version: " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+		private bool internalChanges = true;
 		public SettingsPage() {
 			this.InitializeComponent();
 			ClearDownloadPathButton.IsEnabled = Local.DownloadFolder != null;
@@ -38,6 +40,7 @@ namespace E621Downloader.Pages {
 			CustomHostToggle.IsOn = LocalSettings.Current.customHostEnable;
 			CycleListToggle.IsOn = LocalSettings.Current.cycleList;
 			CustomHostButton.IsEnabled = LocalSettings.Current.customHostEnable;
+			internalChanges = false;
 		}
 
 		private async void BlackListButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -112,29 +115,59 @@ namespace E621Downloader.Pages {
 			DownloadPathTextBlock.Text = "No Path Selected";
 		}
 
-		private void CustomHostToggle_Toggled(object sender, RoutedEventArgs e) {
-			LocalSettings.Current.customHostEnable = (sender as ToggleSwitch).IsOn;
-			LocalSettings.Save();
-			CustomHostButton.IsEnabled = (sender as ToggleSwitch).IsOn;
-			CustomHostButton.Content = LocalSettings.Current.customHostEnable ? string.IsNullOrWhiteSpace(LocalSettings.Current.customHost) ? "Host" : LocalSettings.Current.customHost : "E926.net";
+		private async void CustomHostToggle_Toggled(object sender, RoutedEventArgs e) {
+			if(internalChanges) {
+				return;
+			}
+			bool isOn = (sender as ToggleSwitch).IsOn;
+			if(!isOn) {
+				LocalSettings.Current.customHostEnable = isOn;
+				LocalSettings.Save();
+				CustomHostButton.IsEnabled = isOn;
+				CustomHostButton.Content = LocalSettings.Current.customHostEnable ? string.IsNullOrWhiteSpace(LocalSettings.Current.customHost) ? "Host" : LocalSettings.Current.customHost : "E926.net";
+				return;
+			}
+			await PopupCustomHostDialog(result => {
+				if(result.Confirm) {
+					LocalSettings.Current.customHostEnable = isOn;
+					LocalSettings.Save();
+					CustomHostButton.IsEnabled = isOn;
+					CustomHostButton.Content = LocalSettings.Current.customHostEnable ? string.IsNullOrWhiteSpace(LocalSettings.Current.customHost) ? "Host" : LocalSettings.Current.customHost : "E926.net";
+				} else {
+					internalChanges = true;
+					(sender as ToggleSwitch).IsOn = false;
+					internalChanges = false;
+				}
+			});
 		}
 
 		private void CycleListToggle_Toggled(object sender, RoutedEventArgs e) {
+			if(internalChanges) {
+				return;
+			}
 			LocalSettings.Current.cycleList = (sender as ToggleSwitch).IsOn;
 			LocalSettings.Save();
 		}
 
 		private async void CustomHostButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			await PopupCustomHostDialog();
+		}
+
+		private async Task<bool> PopupCustomHostDialog(Action<CustomHostInputDialog> OnClosing = null) {
 			ContentDialog dialog = new ContentDialog() {
 				Title = "Custom Host",
 			};
 			var content = new CustomHostInputDialog(dialog, LocalSettings.Current.customHost ?? "");
+			dialog.Closing += (s, e) => OnClosing?.Invoke(content);
 			dialog.Content = content;
 			await dialog.ShowAsync();
 			if(content.Confirm) {
 				CustomHostButton.Content = content.InputText;
 				LocalSettings.Current.customHost = content.InputText;
 				LocalSettings.Save();
+				return true;
+			} else {
+				return false;
 			}
 		}
 	}

@@ -71,12 +71,12 @@ namespace E621Downloader.Pages {
 		public SubscriptionPage() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
-			UpdateFavoritesTable();
 			LoadFollowing(1);
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
+			UpdateFavoritesTable();
 		}
 
 		public void UpdateFavoritesTable() {

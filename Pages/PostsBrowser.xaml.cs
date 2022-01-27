@@ -164,8 +164,10 @@ namespace E621Downloader.Pages {
 				MainPage.HideInstantDialog();
 				await MainPage.CreatePopupDialog("Articles Error",
 					$"Tags:({E621Tag.JoinTags(tags)}) return 0 posts");
+					DownloadButton.IsEnabled = false;
 				return;
 			}
+			DownloadButton.IsEnabled = true;
 			int removed_count = temp.RemoveAll(p => ignoreTypes.Contains(p.file.ext));
 			Debug.WriteLine($"Removed {removed_count} posts");
 			this.Posts = temp;
@@ -390,6 +392,9 @@ namespace E621Downloader.Pages {
 		}
 		private const int delay = 1;
 		private async void DownloadButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(Posts == null || Posts.Count == 0) {
+				return;
+			}
 			if(MultipleSelectionMode) {
 				if(await new ContentDialog() {
 					Title = "Download Selection",

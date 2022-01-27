@@ -6,25 +6,36 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="100"
-    d:DesignWidth="400">
+    d:DesignHeight="140"
+    d:DesignWidth="400"
+	d:RequestedTheme="Dark">
 
-    <Grid>
+	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
 		<TextBox x:Name="Input" PlaceholderText="Host Name" Margin="5" TextChanged="Input_TextChanged" FontSize="26"/>
-		<Grid Grid.Row="1">
+		<StackPanel x:Name="HintPanel" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" Visibility="Collapsed" Margin="5">
+			<FontIcon Glyph="&#xE946;"/>
+			<TextBlock x:Name="HintText" d:Text="Hello World" Margin="10,0,0,0"/>
+		</StackPanel>
+		<Grid Grid.Row="2">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 			<Button x:Name="Acceptbutton" HorizontalAlignment="Stretch" Margin="5" Tapped="Acceptbutton_Tapped">
-				<StackPanel Orientation="Horizontal">
-					<FontIcon Glyph="&#xE008;"/>
-					<TextBlock Text="Accept" Margin="10,0,0,0"/>
-				</StackPanel>
+				<Grid>
+					<StackPanel x:Name="ButtonContent" Orientation="Horizontal">
+						<FontIcon Glyph="&#xE008;"/>
+						<TextBlock Text="Accept" Margin="10,0,0,0"/>
+					</StackPanel>
+					<Grid x:Name="LoadingPanel" Visibility="Collapsed">
+						<ProgressRing IsActive="True"/>
+					</Grid>
+				</Grid>
 			</Button>
 			<Button x:Name="BackButton" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5" Tapped="BackButton_Tapped">
 				<StackPanel Orientation="Horizontal">

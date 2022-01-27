@@ -113,7 +113,9 @@ namespace E621Downloader {
 			}
 			HideInstantDialog();
 			await Task.Delay(20);
-
+			if(number.Length > 18) {
+				number = long.MaxValue.ToString();
+			}
 			MyFrame.Navigate(typeof(WelcomePage), string.IsNullOrWhiteSpace(number) ? (long)-1 : long.Parse(number));
 			ChangeUser(LocalSettings.Current.user_username);
 		}
@@ -151,7 +153,7 @@ namespace E621Downloader {
 			foreach(string item in strs) {
 				result += item + " ";
 			}
-			if(string.IsNullOrWhiteSpace(result)){
+			if(string.IsNullOrWhiteSpace(result)) {
 				result = "Tags";
 			}
 			Instance.TextBlockSearchTags.Text = result;
@@ -309,7 +311,6 @@ namespace E621Downloader {
 				case PageTag.Picture:
 					target = typeof(PicturePage);
 					parameter = parameter_picture;
-					Debug.WriteLine($"PICTURE: {parameter == null}");
 					break;
 				case PageTag.Library:
 					target = typeof(LibraryPage);

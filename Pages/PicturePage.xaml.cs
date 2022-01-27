@@ -6,6 +6,7 @@ using E621Downloader.Models.Posts;
 using E621Downloader.Pages.LibrarySection;
 using E621Downloader.Views;
 using E621Downloader.Views.CommentsSection;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -39,7 +40,7 @@ namespace E621Downloader.Pages {
 	public sealed partial class PicturePage: Page {
 		public Post PostRef { get; private set; }
 		public PathType PostType { get; private set; }
-		public readonly ObservableCollection<GroupTagList> tags;
+		public readonly ObservableCollection<GroupTagListWithColor> tags;
 		private readonly Dictionary<string, E621Tag> tags_pool;//should i refresh on every entry?
 		public readonly List<E621Comment> comments;
 
@@ -58,7 +59,7 @@ namespace E621Downloader.Pages {
 		public PicturePage() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
-			tags = new ObservableCollection<GroupTagList>();
+			tags = new ObservableCollection<GroupTagListWithColor>();
 			tags_pool = new Dictionary<string, E621Tag>();
 			comments = new List<E621Comment>();
 			this.DataContextChanged += (s, c) => Bindings.Update();
@@ -372,28 +373,29 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			RemoveGroup();
-			AddNewGroup("Artist", tags.artist);
-			AddNewGroup("Copyright", tags.copyright);
-			AddNewGroup("Species", tags.species);
-			AddNewGroup("General", tags.general);
-			AddNewGroup("Character", tags.character);
-			AddNewGroup("Meta", tags.meta);
-			AddNewGroup("Invalid", tags.invalid);
-			AddNewGroup("Lore", tags.lore);
+			AddNewGroup("Artist", tags.artist.ToGroupTag("#f2ac08".ToColor()));
+			AddNewGroup("Copyright", tags.copyright.ToGroupTag("#d0d".ToColor()));
+			AddNewGroup("Species", tags.species.ToGroupTag("#ed5d1f".ToColor()));
+			AddNewGroup("Character", tags.character.ToGroupTag("#0a0".ToColor()));
+			AddNewGroup("General", tags.general.ToGroupTag("#b4c7d9".ToColor()));
+			AddNewGroup("Meta", tags.meta.ToGroupTag("#fff".ToColor()));
+			AddNewGroup("Invalid", tags.invalid.ToGroupTag("#ff3d3d".ToColor()));
+			AddNewGroup("Lore", tags.lore.ToGroupTag("#282".ToColor()));
+			
 		}
 
 		private void RemoveGroup() {
 			tags.Clear();
 		}
 
-		private void AddNewGroup(string title, List<string> content) {
+		private void AddNewGroup(string title, List<GroupTag> content) {
 			if(content == null) {
 				return;
 			}
 			if(content.Count == 0) {
 				return;
 			}
-			tags.Add(new GroupTagList(title, content));
+			tags.Add(new GroupTagListWithColor(title, content));
 		}
 
 		private async void LoadCommentsAsync() {
@@ -741,7 +743,7 @@ namespace E621Downloader.Pages {
 			}
 			var dialog = new ContentDialog() {
 				Title = "More Info",
-				Content = new PostDebugView(PostRef),
+				Content = new PostMoreInfoDialog(PostRef),
 				PrimaryButtonText = "Back",
 			};
 			await dialog.ShowAsync();
@@ -835,10 +837,6 @@ namespace E621Downloader.Pages {
 			TagsDisplay.Begin();
 		}
 
-		private void CopyItem_Tapped(object sender, TappedRoutedEventArgs e) {
-
-		}
-
 		private void GotoLibraryButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			MainPage.NavigateTo(PageTag.Library);
 		}
@@ -912,6 +910,28 @@ namespace E621Downloader.Pages {
 			});
 		}
 	}
+
+	public class GroupTagListWithColor: ObservableCollection<GroupTag> {
+		public string Key { get; set; }
+		public GroupTagListWithColor(string key) : base() {
+			this.Key = key;
+		}
+		public GroupTagListWithColor(string key, List<GroupTag> content) : base() {
+			this.Key = key;
+			content.ForEach(s => this.Add(s));
+		}
+	}
+
+	public struct GroupTag {
+		public string Content { get; set; }
+		public Color Color { get; set; }
+		public Brush Brush => new SolidColorBrush(this.Color);
+		public GroupTag(string content, Color color) {
+			Content = content;
+			Color = color;
+		}
+	}
+
 	public class GroupTagList: ObservableCollection<string> {
 		public string Key { get; set; }
 		public GroupTagList(string key) : base() {
