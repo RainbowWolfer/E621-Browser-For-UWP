@@ -4,13 +4,13 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:local="using:E621Downloader.Pages"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:posts="using:E621Downloader.Models.Posts"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-	xmlns:commentssection="using:E621Downloader.Views.CommentsSection" 
-	xmlns:controls="using:Microsoft.UI.Xaml.Controls" xmlns:views="using:E621Downloader.Views"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls" 
+	xmlns:views="using:E621Downloader.Views"
 	mc:Ignorable="d"
 	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
 	d:RequestedTheme="Dark">
+
 	<Page.Resources>
 		<CollectionViewSource x:Name="ContactsCVS" Source="{x:Bind tags}" IsSourceGrouped="True"/>
 		<Style x:Key="TagButton" TargetType="Button">
@@ -48,6 +48,7 @@
 			</DoubleAnimation>
 		</Storyboard>
 	</Page.Resources>
+
 	<Grid>
 		<VisualStateManager.VisualStateGroups>
 			<VisualStateGroup x:Name="VisualStateGroup">

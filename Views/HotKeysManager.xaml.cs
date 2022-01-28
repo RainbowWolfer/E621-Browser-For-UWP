@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -17,6 +18,7 @@ namespace E621Downloader.Views {
 	public sealed partial class HotKeysManager: UserControl {
 		public HotKeysManager() {
 			this.InitializeComponent();
+
 		}
 	}
 }

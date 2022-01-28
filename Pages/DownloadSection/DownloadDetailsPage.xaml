@@ -22,10 +22,18 @@
 			</StackPanel>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 				<TextBlock x:Name="DownloadsInfoBlock" Text="Downloads 20/400" FontSize="20" VerticalAlignment="Center" Margin="5,0,5,0"/>
+				<Button x:Name="OpenLibraryButton" Margin="10,0,10,0" VerticalAlignment="Center" Tapped="OpenLibraryButton_Tapped">
+					<Button.Content>
+						<StackPanel Orientation="Horizontal">
+							<FontIcon Glyph="&#xE8F1;" Margin="1" FontSize="14"/>
+							<TextBlock Text="Open in Library" FontSize="14" Margin="5,2,2,2"/>
+						</StackPanel>
+					</Button.Content>
+				</Button>
 				<Button x:Name="OpenFolderButton" Margin="10,0,10,0" VerticalAlignment="Center" Tapped="OpenFolderButton_Tapped">
 					<Button.Content>
 						<StackPanel Orientation="Horizontal">
-							<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC51;" Margin="1" FontSize="14"/>
+							<FontIcon Glyph="&#xEC51;" Margin="1" FontSize="14"/>
 							<TextBlock Text="Open in Folder" FontSize="14" Margin="5,2,2,2"/>
 						</StackPanel>
 					</Button.Content>

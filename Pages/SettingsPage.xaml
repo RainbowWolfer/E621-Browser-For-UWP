@@ -75,21 +75,12 @@
 						<TextBlock Text="Follow List" VerticalAlignment="Center" FontSize="20" Margin="10"/>
 						<Button Content="Manage" VerticalAlignment="Center" Margin="10" FontSize="20" Tapped="FollowListButton_Tapped"/>
 					</StackPanel>
-					<TextBlock Text="Theme: " Style="{StaticResource SectionTitle}"/>
+					<!--<TextBlock Text="Theme: " Style="{StaticResource SectionTitle}"/>
 					<StackPanel Margin="40,0,0,0">
 						<RadioButton Margin="5" Content="Light" Checked="LightButton_Checked" Unchecked="LightButton_Checked"/>
 						<RadioButton Margin="5" Content="Dark" Checked="DarkButton_Checked" Unchecked="DarkButton_Checked"/>
 						<RadioButton Margin="5" Content="Follow System" IsChecked="True" Checked="FollowSystemButton_Checked" Unchecked="FollowSystemButton_Checked"/>
-					</StackPanel>
-					<TextBlock Text="Local: " Style="{StaticResource SectionTitle}"/>
-					<StackPanel Orientation="Vertical" Margin="40,0,0,0">
-						<Button x:Name="DownloadPathButton" Content="Select Download Path" FontSize="20" Tapped="DownloadPathButton_Tapped" Margin="20,10,0,10" />
-						<Button x:Name="ClearDownloadPathButton" Content="Clear" FontSize="20" Tapped="ClearDownloadPathButton_Tapped" Margin="20,0,0,10" />
-						<TextBlock x:Name="DownloadPathTextBlock" Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,10" FontSize="20"/>
-					</StackPanel>
-				</StackPanel>
-
-				<StackPanel x:Name="SecondCol" Grid.Row="0" Grid.Column="1">
+					</StackPanel>-->
 					<TextBlock Text="General: " Style="{StaticResource SectionTitle}"/>
 					<StackPanel Margin="40,0,0,0">
 						<StackPanel Orientation="Horizontal">
@@ -109,6 +100,15 @@
 								</StackPanel>
 							</Button>
 						</StackPanel>
+					</StackPanel>
+				</StackPanel>
+
+				<StackPanel x:Name="SecondCol" Grid.Row="0" Grid.Column="1">
+					<TextBlock Text="Local: " Style="{StaticResource SectionTitle}"/>
+					<StackPanel Orientation="Vertical" Margin="40,0,0,0">
+						<Button x:Name="DownloadPathButton" Content="Select Download Path" FontSize="20" Tapped="DownloadPathButton_Tapped" Margin="20,10,0,10" />
+						<Button x:Name="ClearDownloadPathButton" Content="Clear" FontSize="20" Tapped="ClearDownloadPathButton_Tapped" Margin="20,0,0,10" />
+						<TextBlock x:Name="DownloadPathTextBlock" Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,10" FontSize="20"/>
 					</StackPanel>
 					<TextBlock Text="About: " Style="{StaticResource SectionTitle}"/>
 					<StackPanel Margin="40,0,0,0">

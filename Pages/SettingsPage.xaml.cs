@@ -187,7 +187,7 @@ namespace E621Downloader.Pages {
 				Content = new HotKeysManager(),
 				CloseButtonText = "Back",
 			}.ShowAsync() == ContentDialogResult.Primary) {
-				
+
 			}
 		}
 
@@ -250,14 +250,26 @@ namespace E621Downloader.Pages {
 			await EmailManager.ShowComposeNewEmailAsync(emailMessage);
 		}
 
-		private void LightButton_Checked(object sender, RoutedEventArgs e) {
-
-		}
-		private void DarkButton_Checked(object sender, RoutedEventArgs e) {
-
-		}
-		private void FollowSystemButton_Checked(object sender, RoutedEventArgs e) {
-			
-		}
+		//private void LightButton_Checked(object sender, RoutedEventArgs e) {
+		//	var box = sender as RadioButton;
+		//	if(!box.IsChecked.Value) {
+		//		return;
+		//	}
+		//	MainPage.Instance.RequestedTheme = ElementTheme.Light;
+		//}
+		//private void DarkButton_Checked(object sender, RoutedEventArgs e) {
+		//	var box = sender as RadioButton;
+		//	if(!box.IsChecked.Value) {
+		//		return;
+		//	}
+		//	MainPage.Instance.RequestedTheme = ElementTheme.Dark;
+		//}
+		//private void FollowSystemButton_Checked(object sender, RoutedEventArgs e) {
+		//	var box = sender as RadioButton;
+		//	if(!box.IsChecked.Value) {
+		//		return;
+		//	}
+		//	MainPage.Instance.RequestedTheme = ElementTheme.Default;
+		//}
 	}
 }

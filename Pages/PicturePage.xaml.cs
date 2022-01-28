@@ -507,10 +507,7 @@ namespace E621Downloader.Pages {
 			SourcesView.Items.Clear();
 			if(PostRef != null) {
 				foreach(string item in PostRef.sources) {
-					SourcesView.Items.Add(new HyperlinkButton() {
-						Content = item,
-						NavigateUri = new Uri(item),
-					});
+					SourcesView.Items.Add(new MyHyperLinkButton(item));
 				}
 				if(PostRef.sources.Count == 0) {
 					SourcesText.Text = "No Source";

@@ -107,7 +107,6 @@ namespace E621Downloader.Views {
 					MenuFlyoutItem item_select = new MenuFlyoutItem() {
 						Text = "Select This",
 						Icon = new FontIcon() { Glyph = "\uE152" },
-						Foreground = new SolidColorBrush(Colors.White),
 					};
 					item_select.Click += (sender, arg) => {
 						PostsBrowser.Instance.EnterSelectionMode();
@@ -119,7 +118,6 @@ namespace E621Downloader.Views {
 					MenuFlyoutItem item_hide = new MenuFlyoutItem() {
 						Text = "Hide This Image",
 						Icon = new FontIcon() { Glyph = "\uE894" },
-						Foreground = new SolidColorBrush(Colors.White),
 					};
 					item_hide.Click += (sender, arg) => {
 
@@ -130,7 +128,6 @@ namespace E621Downloader.Views {
 				MenuFlyoutItem item_download = new MenuFlyoutItem() {
 					Text = "Download This",
 					Icon = new FontIcon() { Glyph = "\uE896" },
-					Foreground = new SolidColorBrush(Colors.White),
 				};
 				item_download.Click += async (sender, arg) => {
 					if(await DownloadsManager.CheckDownloadAvailableWithDialog()) {
@@ -146,7 +143,6 @@ namespace E621Downloader.Views {
 				MenuFlyoutItem item_favorite = new MenuFlyoutItem() {
 					Text = "Add Favorites",
 					Icon = new FontIcon() { Glyph = "\uE0A5" },
-					Foreground = new SolidColorBrush(Colors.White),
 				};
 				item_favorite.Click += async (sender, arg) => {
 					var dialog = new ContentDialog() {

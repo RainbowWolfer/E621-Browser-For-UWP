@@ -96,8 +96,13 @@ namespace E621Downloader.Pages.DownloadSection {
 			});
 		}
 
+		private void OpenLibraryButton_Tapped(object sender, TappedRoutedEventArgs e) {
+
+		}
+
 		private enum MyTag {
 			All = 0, Downloading = 1, Downloaded = 2,
 		}
+
 	}
 }

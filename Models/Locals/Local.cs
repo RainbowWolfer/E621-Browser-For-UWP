@@ -282,7 +282,7 @@ namespace E621Downloader.Models.Locals {
 					using(StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(mode)) {
 						if(thumbnail != null) {
 							using(Stream stream = thumbnail.AsStreamForRead()) {
-								bitmap.SetSource(stream.AsRandomAccessStream());
+								await bitmap.SetSourceAsync(stream.AsRandomAccessStream());
 							}
 						}
 					}

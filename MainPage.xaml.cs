@@ -78,7 +78,11 @@ namespace E621Downloader {
 			currentTag = PageTag.Welcome;
 			KeyListener.SubmitInstance(new KeyListenerInstance(async key => {
 				if(key == VirtualKey.Q && !IsInSearchPopup) {
-					await PopupSearch();
+					try {
+						await PopupSearch();
+					} catch {
+						IsInSearchPopup = false;
+					}
 				}
 			}));
 		}
@@ -275,6 +279,10 @@ namespace E621Downloader {
 			ClearPicturePageParameter();
 		}
 
+		public static void NavigateToLibrary(string folderName){
+			
+		}
+
 		public static void ClearPostBrowserParameter() {
 			Instance.parameter_postBrowser = null;
 		}
@@ -388,6 +396,7 @@ namespace E621Downloader {
 			var dialog = new ContentDialog() {
 				Title = "Manage Your Search Tags",
 			};
+
 			var view = new TagsSelectionView(dialog, PostsBrowser.Instance?.Tags ?? Array.Empty<string>());
 			dialog.Content = view;
 

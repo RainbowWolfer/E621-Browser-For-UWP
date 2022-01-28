@@ -243,6 +243,9 @@
     <Compile Include="Views\LoginHelpSection.xaml.cs">
       <DependentUpon>LoginHelpSection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MyHyperLinkButton.xaml.cs">
+      <DependentUpon>MyHyperLinkButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PersonalFavoritesList.xaml.cs">
       <DependentUpon>PersonalFavoritesList.xaml</DependentUpon>
     </Compile>
@@ -324,6 +327,8 @@
     <Content Include="Assets\E621.scale-200.png" />
     <Content Include="Assets\E621.scale-400.png" />
     <Content Include="Assets\esix2.jpg" />
+    <Content Include="Assets\Images\Helper_Step2.png" />
+    <Content Include="Assets\Images\Helper_Step1.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
@@ -483,6 +488,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\MyHyperLinkButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PersonalFavoritesList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -585,9 +594,7 @@
     <None Include=".editorconfig" />
     <None Include="E621Downloader_TemporaryKey.pfx" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets\Images\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
