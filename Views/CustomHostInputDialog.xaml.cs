@@ -21,7 +21,7 @@ namespace E621Downloader.Views {
 		public string InputText => Input.Text;
 		public bool Confirm { get; private set; } = false;
 		private readonly ContentDialog dialog;
-		private readonly string origin;
+		//private readonly string origin;
 
 		private CancellationTokenSource cts;
 
@@ -29,7 +29,7 @@ namespace E621Downloader.Views {
 			this.InitializeComponent();
 			this.dialog = dialog;
 			Acceptbutton.IsEnabled = false;
-			this.origin = origin;
+			//this.origin = origin;
 			Input.Text = origin;
 			Input.SelectionStart = origin.Length;
 		}
@@ -39,10 +39,6 @@ namespace E621Downloader.Views {
 				Acceptbutton.IsEnabled = false;
 				HintPanel.Visibility = Visibility.Visible;
 				HintText.Text = "Empty input is not allowed";
-			} else if(Input.Text == origin) {
-				Acceptbutton.IsEnabled = false;
-				HintPanel.Visibility = Visibility.Visible;
-				HintText.Text = "It is the same as before";
 			} else if(Uri.CheckHostName(Input.Text) == UriHostNameType.Unknown) {
 				Acceptbutton.IsEnabled = false;
 				HintPanel.Visibility = Visibility.Visible;

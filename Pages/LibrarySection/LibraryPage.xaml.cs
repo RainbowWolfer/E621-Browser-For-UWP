@@ -262,19 +262,8 @@ namespace E621Downloader.Pages.LibrarySection {
 			}
 		}
 
-		private void SizeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
-			Size = (int)e.NewValue;
-			ToolTipService.SetToolTip(SizeButton, "Current Size : " + Size);
-		}
-
-		private void SizeButton_Click(object sender, RoutedEventArgs e) {
-			int s = Size;
-			if(s + 25 > 500) {
-				s = 100;
-			} else {
-				s += 25;
-			}
-			SizeSlider.Value = s;
+		private void ResizeBar_OnSizeChanged(int value) {
+			Size = value;
 		}
 	}
 	public class LibraryTab {

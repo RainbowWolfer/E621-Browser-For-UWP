@@ -141,6 +141,7 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\KeyListener.cs" />
     <Compile Include="Models\Locals\FavoritesList.cs" />
     <Compile Include="Models\Posts\Favorites.cs" />
     <Compile Include="Models\Locals\LocalSettings.cs" />
@@ -230,6 +231,9 @@
     <Compile Include="Views\FavoritesDialog.xaml.cs">
       <DependentUpon>FavoritesDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\HotKeysManager.xaml.cs">
+      <DependentUpon>HotKeysManager.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ImageHolderForPicturePage.xaml.cs">
       <DependentUpon>ImageHolderForPicturePage.xaml</DependentUpon>
     </Compile>
@@ -247,6 +251,9 @@
     </Compile>
     <Compile Include="Views\PostMoreInfoDialog.xaml.cs">
       <DependentUpon>PostMoreInfoDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResizeBar.xaml.cs">
+      <DependentUpon>ResizeBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TagExpander.xaml.cs">
       <DependentUpon>TagExpander.xaml</DependentUpon>
@@ -460,6 +467,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\HotKeysManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ImageHolderForPicturePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -481,6 +492,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PostMoreInfoDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ResizeBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

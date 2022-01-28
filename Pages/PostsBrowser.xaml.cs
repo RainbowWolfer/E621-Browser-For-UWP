@@ -105,7 +105,7 @@ namespace E621Downloader.Pages {
 			this.Posts = posts;
 			tagsFilterSystem.RegisterBlackList(posts);
 			//if(tags.Length != 0) {
-			this.Tags = tags;
+			this.Tags = tags.Where(t => !string.IsNullOrWhiteSpace(t)).ToArray();
 			MainPage.ChangeCurrenttTags(tags);
 			//}
 			loaded = 0;
@@ -125,7 +125,9 @@ namespace E621Downloader.Pages {
 				MyWrapGrid.Children.Add(holder);
 				SetImageItemSize(isHeightFixed, holder, item.sample);
 				holder.OnImagedLoaded += (b) => {
-					tb_ArticlesLoadCount.Text = $"Posts : {++loaded}/{this.Posts.Count}";
+					if(tb_ArticlesLoadCount != null) {
+						tb_ArticlesLoadCount.Text = $"Posts : {++loaded}/{this.Posts.Count}";
+					}
 				};
 			}
 		}
@@ -143,9 +145,11 @@ namespace E621Downloader.Pages {
 			if(temp.Count == 0) {
 				MainPage.HideInstantDialog();
 				await MainPage.CreatePopupDialog("Articles Error",
-					$"Pool:({pool.id}-{pool.name}) return 0 posts");
+					$"Pool:({pool.id} - {pool.name}) return 0 posts");
+				DownloadButton.IsEnabled = false;
 				return;
 			}
+			DownloadButton.IsEnabled = true;
 			int removed_count = temp.RemoveAll(p => ignoreTypes.Contains(p.file.ext));
 			Debug.WriteLine($"Removed {removed_count} posts");
 			this.Posts = temp;
@@ -164,7 +168,7 @@ namespace E621Downloader.Pages {
 				MainPage.HideInstantDialog();
 				await MainPage.CreatePopupDialog("Articles Error",
 					$"Tags:({E621Tag.JoinTags(tags)}) return 0 posts");
-					DownloadButton.IsEnabled = false;
+				DownloadButton.IsEnabled = false;
 				return;
 			}
 			DownloadButton.IsEnabled = true;
@@ -416,47 +420,65 @@ namespace E621Downloader.Pages {
 			} else {
 				bool downloadResult = false;
 				bool hasShownFail = false;
-				switch(await new ContentDialog() {
-					Title = "Download Selection",
-					Content = new TextBlock() {
-						Text = "Do you want to download for current page or for whole tag(s)?",
-						TextWrapping = TextWrapping.WrapWholeWords,
-						FontSize = 24,
-					},
-					CloseButtonText = "Back",
-					PrimaryButtonText = "Whole Tag(s)",
-					SecondaryButtonText = "Current Page",
-				}.ShowAsync()) {
-					case ContentDialogResult.None:
-						return;
-					case ContentDialogResult.Primary:
+				if(this.pool != null) {
+					if(await new ContentDialog() {
+						Title = "Download Section",
+						Content = $"Do you want to download current pool ({this.pool.name})",
+						PrimaryButtonText = "Yes",
+						CloseButtonText = "No",
+					}.ShowAsync() == ContentDialogResult.Primary) {
 						if(await DownloadsManager.CheckDownloadAvailableWithDialog(() => hasShownFail = true)) {
 							MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
 							await Task.Delay(50);
-							var all = new List<Post>();
-							for(int i = 1; i <= maxPage; i++) {
-								List<Post> p = await Post.GetPostsByTagsAsync(cts.Token, i, Tags);
-								all.AddRange(p);
-							}
-							if(await DownloadsManager.RegisterDownloads(all, Tags)) {
+							if(await DownloadsManager.RegisterDownloads(this.Posts, this.pool.name)) {
 								downloadResult = true;
 							}
 							MainPage.HideInstantDialog();
 						}
-						break;
-					case ContentDialogResult.Secondary:
-						//get currentpage posts
-						if(await DownloadsManager.CheckDownloadAvailableWithDialog(() => hasShownFail = true)) {
-							MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
-							await Task.Delay(50);
-							if(await DownloadsManager.RegisterDownloads(Posts, Tags)) {
-								downloadResult = true;
+					}
+				} else {
+					switch(await new ContentDialog() {
+						Title = "Download Selection",
+						Content = new TextBlock() {
+							Text = "Do you want to download for current page or for whole tag(s)?",
+							TextWrapping = TextWrapping.WrapWholeWords,
+							FontSize = 24,
+						},
+						CloseButtonText = "Back",
+						PrimaryButtonText = "Whole Tag(s)",
+						SecondaryButtonText = "Current Page",
+					}.ShowAsync()) {
+						case ContentDialogResult.None:
+							return;
+						case ContentDialogResult.Primary:
+							if(await DownloadsManager.CheckDownloadAvailableWithDialog(() => hasShownFail = true)) {
+								MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
+								await Task.Delay(50);
+								var all = new List<Post>();
+								for(int i = 1; i <= maxPage; i++) {
+									List<Post> p = await Post.GetPostsByTagsAsync(cts.Token, i, Tags);
+									all.AddRange(p);
+								}
+								if(await DownloadsManager.RegisterDownloads(all, Tags)) {
+									downloadResult = true;
+								}
+								MainPage.HideInstantDialog();
 							}
-							MainPage.HideInstantDialog();
-						}
-						break;
-					default:
-						throw new Exception();
+							break;
+						case ContentDialogResult.Secondary:
+							//get currentpage posts
+							if(await DownloadsManager.CheckDownloadAvailableWithDialog(() => hasShownFail = true)) {
+								MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
+								await Task.Delay(50);
+								if(await DownloadsManager.RegisterDownloads(Posts, Tags)) {
+									downloadResult = true;
+								}
+								MainPage.HideInstantDialog();
+							}
+							break;
+						default:
+							throw new Exception();
+					}
 				}
 				if(downloadResult) {
 					MainPage.CreateTip_SuccessDownload(this);

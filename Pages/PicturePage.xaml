@@ -49,6 +49,40 @@
 		</Storyboard>
 	</Page.Resources>
 	<Grid>
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup x:Name="VisualStateGroup">
+				<VisualState x:Name="Wide">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="1260"/>
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="FavoriteText.Visibility" Value="Visible"/>
+						<Setter Target="DownloadText.Visibility" Value="Visible"/>
+						<Setter Target="MoreInfoText.Visibility" Value="Visible"/>
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="Normal">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="1150"/>
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="FavoriteText.Visibility" Value="Collapsed"/>
+						<Setter Target="DownloadText.Visibility" Value="Collapsed"/>
+						<Setter Target="MoreInfoText.Visibility" Value="Visible"/>
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="Narrow">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="0"/>
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="FavoriteText.Visibility" Value="Collapsed"/>
+						<Setter Target="DownloadText.Visibility" Value="Collapsed"/>
+						<Setter Target="MoreInfoText.Visibility" Value="Collapsed"/>
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
 		<Grid x:Name="NoPostGrid" Visibility="Collapsed">
 			<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 				<Button x:Name="GotoHomeButton" HorizontalAlignment="Center" Margin="10" Tapped="GotoHomeButton_Tapped">
@@ -118,7 +152,7 @@
 					</Button.Resources>
 				</Button>
 				<Rectangle x:Name="Separator3" RelativePanel.RightOf="DownVoteButton" Style="{StaticResource RectangleSeparator}" d:Fill="White"/>
-				<ToggleButton x:Name="FavoriteButton" Height="38" Width="110" Padding="10,0,10,0" RelativePanel.RightOf="Separator3" Tapped="FavoriteButton_Tapped" CornerRadius="4,0,0,4">
+				<ToggleButton x:Name="FavoriteButton" Height="38" Padding="10,0,10,0" RelativePanel.RightOf="Separator3" Tapped="FavoriteButton_Tapped" CornerRadius="4,0,0,4">
 					<StackPanel Orientation="Horizontal">
 						<FontIcon x:Name="FavoriteIcon" Glyph="&#xEB51;"/>
 						<TextBlock x:Name="FavoriteText" Text="Favorite" Margin="10,0,0,0"/>
@@ -170,7 +204,7 @@
 				<Button x:Name="MoreInfoButton" RelativePanel.AlignRightWithPanel="True" FontSize="18" Background="Transparent" BorderThickness="0" Height="38" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="MoreInfoButton_Tapped" Padding="7,0,7,0">
 					<Button.Content>
 						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="More Info" Margin="5"/>
+							<TextBlock x:Name="MoreInfoText" Text="More Info" Margin="5"/>
 							<FontIcon Glyph="&#xE169;" Margin="5"/>
 						</StackPanel>
 					</Button.Content>

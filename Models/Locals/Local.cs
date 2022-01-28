@@ -364,6 +364,11 @@ namespace E621Downloader.Models.Locals {
 					spot_includeQuestoinable = false,
 					spot_includeSafe = false,
 					cycleList = true,
+					concatTags = false,
+					mediaBackgroundPlay = false,
+					mediaAutoPlay = true,
+					customHost = "",
+					spot_amount = 1,
 				};
 				WriteLocalSettings();
 			}

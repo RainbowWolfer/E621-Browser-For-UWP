@@ -5,8 +5,8 @@
     xmlns:local="using:E621Downloader.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:views="using:E621Downloader.Views"
+	mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
 	Loaded="Page_Loaded">
 
@@ -92,8 +92,7 @@
 							</StackPanel>
 						</Button>
 					</StackPanel>
-					<RepeatButton x:Name="SizeButton" Width="40" Height="40" FontFamily="Segoe MDL2 Assets" Content="&#xE2B2;" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" Background="Transparent" BorderThickness="0" Click="SizeButton_Click" ToolTipService.ToolTip="Current Size : 200" Grid.Column="0" Grid.Row="6" Padding="0"/>
-					<Slider x:Name="SizeSlider" Minimum="200" Maximum="500" Value="200" Height="40" StepFrequency="10" ValueChanged="SizeSlider_ValueChanged" HorizontalAlignment="Stretch"  Grid.Row="6" Grid.Column="1" Margin="5,0,5,-6"/>
+					<views:ResizeBar Grid.Row="6" Grid.ColumnSpan="2" OnSizeChanged="ResizeBar_OnSizeChanged"/>
 				</Grid>
 			</SplitView.Pane>
 			<SplitView.Content>

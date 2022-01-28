@@ -5,8 +5,8 @@
     xmlns:local="using:E621Downloader.Pages"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:views="using:E621Downloader.Views"
+	mc:Ignorable="d"
     d:RequestedTheme="Dark"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -24,6 +24,7 @@
 						<RowDefinition Height="auto"/>
 						<RowDefinition Height="auto"/>
 						<RowDefinition Height="*"/>
+						<RowDefinition Height="auto"/>
 					</Grid.RowDefinitions>
 					<Button x:Name="HamburgerButton" Height="40" Width="40" Content="&#xE700;" FontFamily="Segoe MDL2 Assets" Tapped="HamburgerButton_Tapped" Background="Transparent" BorderThickness="0" FontSize="18"/>
 					<ToggleSwitch x:Name="SplitViewDisplayModeSwitch" HorizontalAlignment="Right" FlowDirection="RightToLeft" Margin="10,0,15,0" IsOn="False" OnContent="Overlay" OffContent="Inline" Toggled="SplitViewDisplayModeSwitch_Toggled"/>
@@ -96,6 +97,7 @@
 							</DataTemplate>
 						</ListView.ItemTemplate>
 					</ListView>
+					<views:ResizeBar Grid.Row="5" OnSizeChanged="ResizeBar_OnSizeChanged"/>
 				</Grid>
 			</SplitView.Pane>
 			<SplitView.Content>

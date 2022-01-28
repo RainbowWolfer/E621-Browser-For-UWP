@@ -45,6 +45,10 @@ namespace E621Downloader.Pages {
 			CustomHostToggle.IsOn = LocalSettings.Current.customHostEnable;
 			CycleListToggle.IsOn = LocalSettings.Current.cycleList;
 			CustomHostButton.IsEnabled = LocalSettings.Current.customHostEnable;
+			ConcatTagToggle.IsOn = LocalSettings.Current.concatTags;
+			MediaPlayToggle.IsOn = LocalSettings.Current.mediaBackgroundPlay;
+			MediaAutoPlayToggle.IsOn = LocalSettings.Current.mediaAutoPlay;
+			HotKeysToggle.IsOn = LocalSettings.Current.enableHotKeys;
 			internalChanges = false;
 		}
 
@@ -154,6 +158,47 @@ namespace E621Downloader.Pages {
 			LocalSettings.Save();
 		}
 
+		private void ConcatTagToggle_Toggled(object sender, RoutedEventArgs e) {
+			if(internalChanges) {
+				return;
+			}
+			LocalSettings.Current.concatTags = (sender as ToggleSwitch).IsOn;
+			LocalSettings.Save();
+		}
+
+		private void MediaPlayToggle_Toggled(object sender, RoutedEventArgs e) {
+			if(internalChanges) {
+				return;
+			}
+			LocalSettings.Current.mediaBackgroundPlay = (sender as ToggleSwitch).IsOn;
+			LocalSettings.Save();
+		}
+		private void MediaAutoPlayToggle_Toggled(object sender, RoutedEventArgs e) {
+			if(internalChanges) {
+				return;
+			}
+			LocalSettings.Current.mediaAutoPlay = (sender as ToggleSwitch).IsOn;
+			LocalSettings.Save();
+		}
+
+		private async void HotKeysButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(await new ContentDialog() {
+				Title = "Hot Keys",
+				Content = new HotKeysManager(),
+				CloseButtonText = "Back",
+			}.ShowAsync() == ContentDialogResult.Primary) {
+				
+			}
+		}
+
+		private void HotKeysToggle_Toggled(object sender, RoutedEventArgs e) {
+			if(internalChanges) {
+				return;
+			}
+			LocalSettings.Current.enableHotKeys = (sender as ToggleSwitch).IsOn;
+			LocalSettings.Save();
+		}
+
 		private async void CustomHostButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			await PopupCustomHostDialog();
 		}
@@ -203,6 +248,16 @@ namespace E621Downloader.Pages {
 			};
 			emailMessage.To.Add(new EmailRecipient("RainbowWolfer@Outlook.com", "RainbowWolfer"));
 			await EmailManager.ShowComposeNewEmailAsync(emailMessage);
+		}
+
+		private void LightButton_Checked(object sender, RoutedEventArgs e) {
+
+		}
+		private void DarkButton_Checked(object sender, RoutedEventArgs e) {
+
+		}
+		private void FollowSystemButton_Checked(object sender, RoutedEventArgs e) {
+			
 		}
 	}
 }

@@ -77,9 +77,9 @@
 					</StackPanel>
 					<TextBlock Text="Theme: " Style="{StaticResource SectionTitle}"/>
 					<StackPanel Margin="40,0,0,0">
-						<RadioButton Margin="5" Content="Light"/>
-						<RadioButton Margin="5" Content="Dark"/>
-						<RadioButton Margin="5" Content="Follow System" IsChecked="True"/>
+						<RadioButton Margin="5" Content="Light" Checked="LightButton_Checked" Unchecked="LightButton_Checked"/>
+						<RadioButton Margin="5" Content="Dark" Checked="DarkButton_Checked" Unchecked="DarkButton_Checked"/>
+						<RadioButton Margin="5" Content="Follow System" IsChecked="True" Checked="FollowSystemButton_Checked" Unchecked="FollowSystemButton_Checked"/>
 					</StackPanel>
 					<TextBlock Text="Local: " Style="{StaticResource SectionTitle}"/>
 					<StackPanel Orientation="Vertical" Margin="40,0,0,0">
@@ -93,10 +93,22 @@
 					<TextBlock Text="General: " Style="{StaticResource SectionTitle}"/>
 					<StackPanel Margin="40,0,0,0">
 						<StackPanel Orientation="Horizontal">
-							<ToggleSwitch x:Name="CustomHostToggle" OffContent="Enable Custom Host" OnContent="Enable Custom Host" Margin="0,5,0,5" Toggled="CustomHostToggle_Toggled"/>
+							<ToggleSwitch x:Name="CustomHostToggle" OffContent="Enable Custom Host" OnContent="Enable Custom Host" Margin="5" Toggled="CustomHostToggle_Toggled"/>
 							<Button x:Name="CustomHostButton" Content="E926.net" Margin="10,0,0,0" Tapped="CustomHostButton_Tapped"/>
 						</StackPanel>
-						<ToggleSwitch x:Name="CycleListToggle" OffContent="Enable Cycle List" OnContent="Enable Cycle List" Margin="0,5,0,5" Toggled="CycleListToggle_Toggled"/>
+						<ToggleSwitch x:Name="CycleListToggle" OffContent="Enable Cycle List" OnContent="Enable Cycle List" Margin="5" Toggled="CycleListToggle_Toggled"/>
+						<ToggleSwitch x:Name="ConcatTagToggle" OffContent="Overlay Tags" OnContent="Concat Tags" Margin="5" Toggled="ConcatTagToggle_Toggled"/>
+						<ToggleSwitch x:Name="MediaPlayToggle" OffContent="Media Background Play" OnContent="Media Background Play" Margin="5" Toggled="MediaPlayToggle_Toggled"/>
+						<ToggleSwitch x:Name="MediaAutoPlayToggle" OffContent="Media Auto Play" OnContent="Media Auto Play" Margin="5" Toggled="MediaAutoPlayToggle_Toggled"/>
+						<StackPanel Orientation="Horizontal">
+							<ToggleSwitch x:Name="HotKeysToggle" OffContent="Enable Hot Keys" OnContent="Enable Hot Keys" Margin="5" Toggled="HotKeysToggle_Toggled"/>
+							<Button x:Name="HotKeysButton" Margin="10,0,0,0" FontSize="18" Tapped="HotKeysButton_Tapped">
+								<StackPanel Orientation="Horizontal">
+									<FontIcon Glyph="&#xE92E;"/>
+									<TextBlock Text="Hot Keys" Margin="10,0,0,0"/>
+								</StackPanel>
+							</Button>
+						</StackPanel>
 					</StackPanel>
 					<TextBlock Text="About: " Style="{StaticResource SectionTitle}"/>
 					<StackPanel Margin="40,0,0,0">

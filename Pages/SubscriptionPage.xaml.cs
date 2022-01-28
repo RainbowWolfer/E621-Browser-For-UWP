@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -66,6 +67,8 @@ namespace E621Downloader.Pages {
 			}
 		}
 
+		public int Size { get; private set; } = 300;
+
 		public List<object> PostsList { get; private set; }
 
 		public SubscriptionPage() {
@@ -112,8 +115,8 @@ namespace E621Downloader.Pages {
 			if(posts != null) {
 				foreach(Post post in posts) {
 					var image = new ImageHolderForSubscriptionPage(this) {
-						Height = 300,
-						Width = 300,
+						Height = Size,
+						Width = Size,
 					};
 					image.LoadFromPost(post, Local.FollowList);
 					MainGridView.Items.Add(image);
@@ -145,8 +148,8 @@ namespace E621Downloader.Pages {
 				MainGridView.Items.Clear();
 				foreach(FavoriteItem item in list.Items) {
 					var image = new ImageHolderForSubscriptionPage(this, listName) {
-						Height = 300,
-						Width = 300,
+						Height = Size,
+						Width = Size,
 					};
 					var mix = new MixPost(item.Type, item.Path);
 					if(item.Type == PathType.Local) {
@@ -358,6 +361,17 @@ namespace E621Downloader.Pages {
 
 		private void RightButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			LoadFollowing(++CurrentFollowingPage);
+		}
+
+		private void ResizeBar_OnSizeChanged(int value) {
+			Size = value;
+			if(MainGridView == null) {
+				return;
+			}
+			foreach(ImageHolderForSubscriptionPage item in MainGridView.Items) {
+				item.Height = value;
+				item.Width = value;
+			}
 		}
 
 		private enum LayoutType {

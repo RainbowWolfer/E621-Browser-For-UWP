@@ -30,21 +30,8 @@ namespace E621Downloader.Pages {
 		private bool internalChange = true;
 		private bool onTask;
 		public List<Post> Posts { get; private set; } = new List<Post>();
-		private int _size;
 		private CancellationTokenSource cts = new CancellationTokenSource();
-		public int Size {
-			get => _size;
-			private set {
-				_size = value;
-				if(MainGridView == null) {
-					return;
-				}
-				foreach(ImageHolder item in MainGridView.Items) {
-					item.Height = value;
-					item.Width = value;
-				}
-			}
-		}
+
 		public SpotPage() {
 			Instance = this;
 			this.InitializeComponent();
@@ -196,18 +183,11 @@ namespace E621Downloader.Pages {
 		}
 
 		private void SizeButton_Click(object sender, RoutedEventArgs e) {
-			int s = Size;
-			if(s + 25 > 500) {
-				s = 200;
-			} else {
-				s += 25;
-			}
-			SizeSlider.Value = s;
+			
 		}
 
 		private void SizeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
-			Size = (int)e.NewValue;
-			ToolTipService.SetToolTip(SizeButton, "Current Size : " + Size);
+			
 		}
 
 		private const int MIN = -40;
@@ -240,5 +220,14 @@ namespace E621Downloader.Pages {
 			MainGridView.Items.Clear();
 		}
 
+		private void ResizeBar_OnSizeChanged(int value) {
+			if(MainGridView == null) {
+				return;
+			}
+			foreach(ImageHolder item in MainGridView.Items) {
+				item.Height = value;
+				item.Width = value;
+			}
+		}
 	}
 }

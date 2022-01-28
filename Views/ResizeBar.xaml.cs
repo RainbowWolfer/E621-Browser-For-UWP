@@ -13,12 +13,35 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
-
 namespace E621Downloader.Views {
 	public sealed partial class ResizeBar: UserControl {
+		private int size;
+		public int Size {
+			get => size;
+			set {
+				size = value;
+				OnSizeChanged?.Invoke(value);
+			}
+		}
+
+		public event Action<int> OnSizeChanged;
+
 		public ResizeBar() {
 			this.InitializeComponent();
+		}
+
+		private void SizeButton_Click(object sender, RoutedEventArgs e) {
+			if(Size + 25 > 500) {
+				Size = 200;
+			} else {
+				Size += 25;
+			}
+			SizeSlider.Value = Size;
+		}
+
+		private void SizeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
+			Size = (int)e.NewValue;
+			ToolTipService.SetToolTip(SizeButton, "Current Size : " + Size);
 		}
 	}
 }

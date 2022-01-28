@@ -18,6 +18,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage.Streams;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -74,6 +75,10 @@ namespace E621Downloader {
 				}
 				Window.Current.Activate();
 			}
+
+			Window.Current.CoreWindow.KeyDown += (sender, args) => {
+				KeyListener.RegisterKeyDown(args.VirtualKey);
+			};
 		}
 
 		void OnNavigationFailed(object sender, NavigationFailedEventArgs e) {

@@ -70,10 +70,17 @@ namespace E621Downloader {
 		private object parameter_picture;
 		private object parameter_postBrowser;
 
+		public bool IsInSearchPopup { get; private set; }
+
 		public MainPage() {
 			Instance = this;
 			this.InitializeComponent();
 			currentTag = PageTag.Welcome;
+			KeyListener.SubmitInstance(new KeyListenerInstance(async key => {
+				if(key == VirtualKey.Q && !IsInSearchPopup) {
+					await PopupSearch();
+				}
+			}));
 		}
 
 		protected async override void OnNavigatedTo(NavigationEventArgs e) {
@@ -370,6 +377,14 @@ namespace E621Downloader {
 		private CancellationTokenSource cts = new CancellationTokenSource();
 
 		private async void CurrentTagsButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			await PopupSearch();
+		}
+
+		private async Task PopupSearch() {
+			if(IsInSearchPopup) {
+				return;
+			}
+			IsInSearchPopup = true;
 			var dialog = new ContentDialog() {
 				Title = "Manage Your Search Tags",
 			};
@@ -399,8 +414,8 @@ namespace E621Downloader {
 				default:
 					throw new Exception("Result Type not found");
 			}
+			IsInSearchPopup = false;
 		}
-
 	}
 	public enum PageTag {
 		PostsBrowser = 0, Picture = 1, Library = 2, Subscription = 3, Spot = 4, Download = 5, UserProfile = 6, Welcome = 7, Settings,

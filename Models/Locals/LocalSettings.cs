@@ -14,6 +14,11 @@ namespace E621Downloader.Models.Locals {
 		public string customHost;
 		public bool customHostEnable;
 		public bool cycleList;
+		public bool concatTags;
+		public bool mediaBackgroundPlay;
+		public bool mediaAutoPlay;
+		public bool enableHotKeys;
+
 		public bool spot_allowWebm;
 		public bool spot_allowGif;
 		public bool spot_allowImage;

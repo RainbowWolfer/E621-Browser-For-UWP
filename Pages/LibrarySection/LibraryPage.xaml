@@ -5,7 +5,7 @@
     xmlns:local="using:E621Downloader.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:librarysection="using:E621Downloader.Pages.LibrarySection"
+	xmlns:librarysection="using:E621Downloader.Pages.LibrarySection" xmlns:views="using:E621Downloader.Views"
 	mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -37,8 +37,7 @@
 						</DataTemplate>
 					</ListView.ItemTemplate>
 				</ListView>
-				<RepeatButton x:Name="SizeButton" Width="40" Height="40" FontFamily="Segoe MDL2 Assets" Content="&#xE2B2;" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Background="Transparent" BorderThickness="0" Click="SizeButton_Click" ToolTipService.ToolTip="Current Size : 200" Padding="0"/>
-				<Slider x:Name="SizeSlider" Minimum="100" Maximum="500" Value="200" VerticalAlignment="Bottom" Margin="50,0,10,-5" Height="40" StepFrequency="10" ValueChanged="SizeSlider_ValueChanged"/>
+				<views:ResizeBar VerticalAlignment="Bottom" OnSizeChanged="ResizeBar_OnSizeChanged"/>
 			</Grid>
 		</SplitView.Pane>
 		<SplitView.Content>

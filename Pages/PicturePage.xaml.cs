@@ -20,6 +20,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Core;
+using Windows.Media.Playback;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -49,12 +50,14 @@ namespace E621Downloader.Pages {
 
 		private string path;
 
+		public bool EnableAutoPlay => LocalSettings.Current?.mediaAutoPlay ?? false;
 		public string Title => PostRef == null ? "# No Post" :
 			$"#{PostRef.id} ({PostRef.rating.ToUpper()})";
 
 		private CancellationTokenSource cts;
 
 		private DataPackage imageDataPackage;
+		private bool TextInputing { get; set; } = false;
 
 		public PicturePage() {
 			this.InitializeComponent();
@@ -64,12 +67,33 @@ namespace E621Downloader.Pages {
 			comments = new List<E621Comment>();
 			this.DataContextChanged += (s, c) => Bindings.Update();
 			MyMediaPlayer.MediaPlayer.IsLoopingEnabled = true;
+			KeyListener.SubmitInstance(new KeyListenerInstance(key => {
+				if(MainPage.Instance.currentTag != PageTag.Picture) {
+					return;
+				}
+				if(TextInputing) {
+					return;
+				}
+				if(this.PostRef == null) {
+					return;
+				}
+				if(key == VirtualKey.A || key == VirtualKey.Left) {
+					GoLeft();
+				} else if(key == VirtualKey.D || key == VirtualKey.Right) {
+					GoRight();
+				} else if(key == VirtualKey.W || key == VirtualKey.Up) {
+					ZoomIn();
+				} else if(key == VirtualKey.S || key == VirtualKey.Down) {
+					ZoomOut();
+				}
+			}));
 		}
 
 		protected async override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			object p = e.Parameter;
 			MainPage.ClearPicturePageParameter();
+			MyMediaPlayer.AutoPlay = EnableAutoPlay;
 			bool showNoPostGrid = false;
 			this.imageDataPackage = null;
 			if(p == null && PostRef == null && PostsBrowser.Instance != null && PostsBrowser.Instance.Posts != null && PostsBrowser.Instance.Posts.Count > 0) {
@@ -180,9 +204,30 @@ namespace E621Downloader.Pages {
 				ParentImageHolder.Post_ID = this.PostRef.relationships.parent_id;
 				ParentImageHolder.Origin = this.PostRef;
 			}
+
+			if(hasExecutedPause && MyMediaPlayer.Source != null && MyMediaPlayer.MediaPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Paused) {
+				MyMediaPlayer.MediaPlayer.Play();
+				hasExecutedPause = false;
+			}
+		}
+
+		private bool hasExecutedPause = false;
+		protected override void OnNavigatedFrom(NavigationEventArgs e) {
+			base.OnNavigatedFrom(e);
+			if(!LocalSettings.Current.mediaBackgroundPlay && MyMediaPlayer.Source != null && MyMediaPlayer.MediaPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Playing) {
+				MyMediaPlayer.MediaPlayer.Pause();
+				hasExecutedPause = true;
+			}
 		}
 
 		private async Task LoadFromPost(Post post) {
+			if(string.IsNullOrWhiteSpace(post.file.url)) {
+				MyMediaPlayer.Visibility = Visibility.Collapsed;
+				MyScrollViewer.Visibility = Visibility.Collapsed;
+				MyProgressRing.IsActive = false;
+				await MainPage.CreatePopupDialog("Error", $"Post({post.id}) has no valid file url");
+				return;
+			}
 			FileType type = GetFileType(post);
 			switch(type) {
 				case FileType.Png:
@@ -381,7 +426,7 @@ namespace E621Downloader.Pages {
 			AddNewGroup("Meta", tags.meta.ToGroupTag("#fff".ToColor()));
 			AddNewGroup("Invalid", tags.invalid.ToGroupTag("#ff3d3d".ToColor()));
 			AddNewGroup("Lore", tags.lore.ToGroupTag("#282".ToColor()));
-			
+
 		}
 
 		private void RemoveGroup() {
@@ -510,6 +555,7 @@ namespace E621Downloader.Pages {
 			PointerPoint point = e.GetCurrentPoint(MainImage);
 			double posX = point.Position.X;
 			double posY = point.Position.Y;
+			Debug.WriteLine($"{(int)posX}-{(int)posY} <=> {(int)MainImage.ActualWidth / 2}-{(int)MainImage.ActualHeight / 2}");
 
 			double scroll = point.Properties.MouseWheelDelta > 0 ? 1.2 : 0.8;
 
@@ -548,9 +594,45 @@ namespace E621Downloader.Pages {
 			Limit();
 		}
 
+		private void ZoomIn() {
+			Zoom(1.2);
+		}
+
+		private void ZoomOut() {
+			Zoom(0.8);
+		}
+
+		private void Zoom(double ratio) {
+			double newScaleX = ImageTransform.ScaleX * ratio;
+			double newScaleY = ImageTransform.ScaleY * ratio;
+			double newTransX = ratio > 1 ?
+				(ImageTransform.TranslateX - (MainImage.ActualWidth / 2 * 0.2 * ImageTransform.ScaleX)) :
+				(ImageTransform.TranslateX - (MainImage.ActualWidth / 2 * -0.2 * ImageTransform.ScaleX));
+			double newTransY = ratio > 1 ?
+				(ImageTransform.TranslateY - (MainImage.ActualHeight / 2 * 0.2 * ImageTransform.ScaleY)) :
+				(ImageTransform.TranslateY - (MainImage.ActualHeight / 2 * -0.2 * ImageTransform.ScaleY));
+			if(newScaleX < 1 || newScaleY < 1) {
+				newScaleX = 1;
+				newScaleY = 1;
+				newTransX = 0;
+				newTransY = 0;
+			}
+			if(newScaleX > 10 || newScaleY > 10) {
+				newScaleX = 10;
+				newScaleY = 10;
+				return;
+			}
+			ImageTransform.ScaleX = newScaleX;
+			ImageTransform.ScaleY = newScaleY;
+			ImageTransform.TranslateX = newTransX;
+			ImageTransform.TranslateY = newTransY;
+			Limit();
+		}
+
 		private bool IsHorScaleAbove() {
 			return MainImage.ActualWidth * ImageTransform.ScaleX > MyScrollViewer.ActualWidth;
 		}
+
 		private bool IsVerScaleAbove() {
 			return MainImage.ActualHeight * ImageTransform.ScaleY > MyScrollViewer.ActualHeight;
 		}
@@ -601,8 +683,13 @@ namespace E621Downloader.Pages {
 		}
 
 		private void TagsListView_ItemClick(object sender, ItemClickEventArgs e) {
-			string[] concat_tags = MainPage.GetCurrentTags().Append(e.ClickedItem as string).ToArray();
-			MainPage.NavigateToPostsBrowser(1, concat_tags);
+			string[] result_tags;
+			if(LocalSettings.Current.concatTags) {
+				result_tags = MainPage.GetCurrentTags().Append(((GroupTag)e.ClickedItem).Content).ToArray();
+			} else {
+				result_tags = new string[] { ((GroupTag)e.ClickedItem).Content };
+			}
+			MainPage.NavigateToPostsBrowser(1, result_tags);
 		}
 
 		private void BlackListButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -712,7 +799,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void LeftButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			MainPage.NavigateToPicturePage(App.postsList.GoLeft());
+			GoLeft();
 		}
 
 		private void RightButton_PointerEntered(object sender, PointerRoutedEventArgs e) {
@@ -724,6 +811,14 @@ namespace E621Downloader.Pages {
 		}
 
 		private void RightButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			GoRight();
+		}
+
+		private void GoLeft() {
+			MainPage.NavigateToPicturePage(App.postsList.GoLeft());
+		}
+
+		private void GoRight() {
 			MainPage.NavigateToPicturePage(App.postsList.GoRight());
 		}
 
@@ -903,11 +998,13 @@ namespace E621Downloader.Pages {
 			flyout.Content = content;
 			Point pos = e.GetPosition(sender as UIElement);
 			pos.Y += 20;
+			TextInputing = true;
 			flyout.ShowAt(sender as UIElement, new FlyoutShowOptions() {
 				Placement = FlyoutPlacementMode.Bottom,
 				ShowMode = FlyoutShowMode.Auto,
 				Position = pos,
 			});
+			flyout.Closed += (s, args) => TextInputing = false;
 		}
 	}
 
