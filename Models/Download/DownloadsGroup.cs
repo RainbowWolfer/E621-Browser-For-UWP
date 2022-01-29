@@ -44,7 +44,7 @@ namespace E621Downloader.Models.Download {
 		public static string GetGroupTitle(IEnumerable<string> tags) {
 			string result = "";
 			foreach(string item in tags) {
-				result += item + ' ';
+				result += item.Replace(':', '-').Trim() + ' ';
 			}
 			return result.Trim();
 		}

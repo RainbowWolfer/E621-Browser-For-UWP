@@ -135,17 +135,17 @@ namespace E621Downloader.Views.TagsManagementSection {
 
 		private void DialogBackButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			Result = ResultType.None;
-			dialog.Hide();
+			Hide();
 		}
 
 		private void HotButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			Result = ResultType.Hot;
-			dialog.Hide();
+			Hide();
 		}
 
 		private void RandomButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			Result = ResultType.Random;
-			dialog.Hide();
+			Hide();
 		}
 
 		//private string GetLast(string value) {
@@ -164,15 +164,23 @@ namespace E621Downloader.Views.TagsManagementSection {
 		private void MySuggestBox_PreviewKeyDown(object sender, KeyRoutedEventArgs e) {
 			if(e.Key == VirtualKey.Enter) {
 				Result = ResultType.Search;
-				dialog.Hide();
+				Hide();
 			} else if(e.Key == VirtualKey.Escape) {
 				Result = ResultType.None;
-				dialog.Hide();
+				Hide();
 			}
 		}
 
 		private void SearchButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			Result = ResultType.Search;
+			Hide();
+		}
+
+		private void Hide(){
+			if(cts != null) {
+				cts.Cancel();
+				cts.Dispose();
+			}
 			dialog.Hide();
 		}
 	}

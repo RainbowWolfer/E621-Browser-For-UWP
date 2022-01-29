@@ -23,8 +23,25 @@ namespace E621Downloader.Views.DownloadSection {
 		public const char icon_error = '\uE783';
 		public const char icon_starting = '\uE10C';
 
+		private DownloadBlock block;
+		public DownloadInstance Instance { get; private set; }
+
 		public SimpleDownloadProgressBar() {
 			this.InitializeComponent();
+		}
+
+		public void SetParent(DownloadBlock block) {
+			this.block = block;
+		}
+
+		public void SetTarget(DownloadInstance instance) {
+			this.Instance = instance;
+			SetBarValue(instance.DownloadProgress);
+			SetIcon(instance);
+			instance.SubDownloadingAction = (p) => {
+				SetBarValue(instance.DownloadProgress);
+				SetIcon(instance);
+			};
 		}
 
 		public void SetVisible(bool visible) {

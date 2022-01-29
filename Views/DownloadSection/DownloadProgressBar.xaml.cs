@@ -30,15 +30,15 @@ namespace E621Downloader.Views.DownloadSection {
 			NameTextBlock.Text = "Posts: " + instance.PostRef.id;
 			InfoTextBlock.Text = instance.PostRef.file.url;
 
-			Instance.DownloadingAction = (p) => {
+			Instance.DedicatedDownloadingAction = (p) => {
 				UpdateInfo();
 				if(p >= 1 || instance.Status == BackgroundTransferStatus.Completed) {
-					Debug.WriteLine("Downloaded" + p);
+					//Debug.WriteLine("Downloaded" + p);
 					PageParent.MoveToDownloaded(instance);
 					PageParent.UpdateDownloadsInfo();
 				}
 			};
-			Debug.WriteLine(Instance.Status);
+			//Debug.WriteLine(Instance.Status);
 			if(Instance.Status == BackgroundTransferStatus.Running) {
 				TextBlock_PauseButton.Text = "Pause";
 				FontIcon_PauseButton.Glyph = "\uE769";
@@ -75,7 +75,23 @@ namespace E621Downloader.Views.DownloadSection {
 		}
 
 		private void CancelButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			Instance.Cancel();
+		}
 
+		private void OpenButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			MainPage.NavigateToPicturePage(Instance.metaFile.MyPost);
+		}
+
+		private void InfoTextBlock_RightTapped(object sender, RightTappedRoutedEventArgs e) {
+			MenuFlyout flyout = new MenuFlyout() {
+				Placement = FlyoutPlacementMode.Bottom,
+			};
+			MenuFlyoutItem copy_item = new MenuFlyoutItem() {
+				Text = "Copy URL",
+				Icon = new FontIcon() { Glyph = "\uE8C8" },
+			};
+			flyout.Items.Add(copy_item);
+			flyout.ShowAt(sender as TextBlock);
 		}
 	}
 }

@@ -38,7 +38,6 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Pages {
 	public sealed partial class PostsBrowser: Page {
 		public static PostsBrowser Instance;
-		public const float HolderScale = 1;
 
 		public List<Post> Posts { get; private set; }
 		public string[] Tags { get; private set; }
@@ -62,6 +61,8 @@ namespace E621Downloader.Pages {
 		private E621Pool pool;
 
 		private CancellationTokenSource cts = new CancellationTokenSource();
+
+		private int loaded;
 
 		public PostsBrowser() {
 			Instance = this;
@@ -96,8 +97,6 @@ namespace E621Downloader.Pages {
 			MainPage.ClearPostBrowserParameter();
 		}
 
-		private const int PREFEREDHEIGHT = 350;
-		private int loaded;
 		private void LoadPosts(List<Post> posts, params string[] tags) {
 			if(posts == null) {
 				return;
@@ -123,7 +122,11 @@ namespace E621Downloader.Pages {
 			foreach(Post item in ps) {
 				var holder = new ImageHolder(this, item, this.Posts.IndexOf(item), PathType.PostID, item.id);
 				MyWrapGrid.Children.Add(holder);
-				SetImageItemSize(isHeightFixed, holder, item.sample);
+				if(isHeightFixed) {
+					SetImageItemSize(isHeightFixed, holder, item.sample, LocalSettings.Current.fixedHeight);
+				} else {
+					SetImageItemSize(isHeightFixed, holder, item.sample, LocalSettings.Current.adaptiveSizeMultiplier);
+				}
 				holder.OnImagedLoaded += (b) => {
 					if(tb_ArticlesLoadCount != null) {
 						tb_ArticlesLoadCount.Text = $"Posts : {++loaded}/{this.Posts.Count}";
@@ -352,31 +355,31 @@ namespace E621Downloader.Pages {
 			MyWrapGrid.Visibility = Visibility.Visible;
 		}
 
-		private void SetAllItemsSize(bool fixedHeight) {
+		public void SetAllItemsSize(bool fixedHeight, double value) {
 			MyWrapGrid.Visibility = Visibility.Collapsed;
 			foreach(UIElement item in MyWrapGrid.Children) {
 				if(item is ImageHolder holder) {
-					SetImageItemSize(fixedHeight, holder, holder.PostRef.sample);
+					SetImageItemSize(fixedHeight, holder, holder.PostRef.sample, value);
 				}
 			}
 			MyWrapGrid.UpdateLayout();
 			MyWrapGrid.Visibility = Visibility.Visible;
 		}
 
-		private void SetImageItemSize(bool fixedHeight, ImageHolder holder, Sample sample) {
+		private void SetImageItemSize(bool fixedHeight, ImageHolder holder, Sample sample, double value) {
 			int height = sample.height;
 			int width = sample.width;
 			if(fixedHeight) {
 				float ratio_hdw = height / (float)width;
-				int span_row = PREFEREDHEIGHT / ItemSize;
+				int span_row = (int)value / ItemSize;
 				int span_col = (int)Math.Round(span_row / ratio_hdw);
 				holder.SpanCol = span_col;
 				holder.SpanRow = span_row;
 			} else {
 				int fixedHeightSpan = width / 100;
 				int fixedWidthSpan = height / 100;
-				int span_row = (int)(fixedHeightSpan * HolderScale);
-				int span_col = (int)(fixedWidthSpan * HolderScale);
+				int span_row = (int)(fixedHeightSpan * value);
+				int span_col = (int)(fixedWidthSpan * value);
 				holder.SpanCol = span_row;
 				holder.SpanRow = span_col;
 			}
@@ -385,16 +388,16 @@ namespace E621Downloader.Pages {
 		private async void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			await Reload();
 		}
-		private void FixedHeightCheckBox_Checked(object sender, RoutedEventArgs e) {
-			isHeightFixed = true;
-			SetAllItemsSize(true);
-		}
+		//private void FixedHeightCheckBox_Checked(object sender, RoutedEventArgs e) {
+		//	isHeightFixed = true;
+		//	SetAllItemsSize(true);
+		//}
 
-		private void FixedHeightCheckBox_Unchecked(object sender, RoutedEventArgs e) {
-			isHeightFixed = false;
-			SetAllItemsSize(false);
-		}
-		private const int delay = 1;
+		//private void FixedHeightCheckBox_Unchecked(object sender, RoutedEventArgs e) {
+		//	isHeightFixed = false;
+		//	SetAllItemsSize(false);
+		//}
+
 		private async void DownloadButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(Posts == null || Posts.Count == 0) {
 				return;
@@ -580,6 +583,10 @@ namespace E621Downloader.Pages {
 			dialog.Content = list;
 			await dialog.ShowAsync();
 		}
+
+		private void ImagesSizeDialog_UpdateImagesLayout(bool isAdaptive, double value) {
+			SetAllItemsSize(!isAdaptive, value);
+		}
 	}
 
 	public class TagsFilterSystem {
@@ -591,7 +598,7 @@ namespace E621Downloader.Pages {
 
 		private Dictionary<string, long> hot_tags;
 
-		public int hot_tags_count = 5;
+		public int hot_tags_count = 15;
 
 		public Action<bool> BlackListCheckBoxAction { get; private set; }
 

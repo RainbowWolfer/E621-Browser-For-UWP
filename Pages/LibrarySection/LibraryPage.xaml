@@ -50,7 +50,7 @@
 					<TextBlock x:Name="TitleTextBlock" Text="Hello World" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Margin="10,0,0,0"/>
 					<StackPanel x:Name="RefreshPanel" Orientation="Horizontal" RelativePanel.RightOf="TitleTextBlock" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,0,10,0">
 						<Button x:Name="RefreshButton" Content="Refresh" Tapped="RefreshButton_Tapped"/>
-						<TextBlock Text="Local Changdes has been Made &#10;Please Refresh to view new Downloaded Files" Margin="5,0,0,0"/>
+						<TextBlock Text="Local Changes has been Made &#10;Please Refresh to view new Downloaded Files" Margin="5,0,0,0"/>
 					</StackPanel>
 					<StackPanel RelativePanel.LeftOf="MySearchBox" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,2,10,2" Orientation="Horizontal">
 						<Button x:Name="OrderButton" Content="Order Desc : Name" Height="36">

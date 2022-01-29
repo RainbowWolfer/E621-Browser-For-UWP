@@ -1,0 +1,27 @@
+﻿<UserControl
+    x:Class="E621Downloader.Views.ImagesSizeDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="100"
+    d:DesignWidth="400"
+	d:RequestedTheme="Dark">
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<RadioButton x:Name="FixedHeightRadioButton" Grid.Row="0" Grid.Column="0" Content="Fixed Height" Checked="FixedHeightRadioButton_Checked" Unchecked="FixedHeightRadioButton_Checked" IsChecked="True"/>
+		<RadioButton x:Name="AdaptiveHeightRadioButton" Grid.Row="1" Grid.Column="0" Content="Adaptive Height" Checked="AdaptiveHeightRadioButton_Checked" Unchecked="AdaptiveHeightRadioButton_Checked"/>
+		<Slider x:Name="FixedHeightSlider" Grid.Row="0" Grid.Column="1" Margin="20,0,10,0" ValueChanged="FixedHeightSlider_ValueChanged" VerticalAlignment="Center" Minimum="200" Maximum="800" StepFrequency="40" Width="200"/>
+		<Slider x:Name="AdaptiveHeightSlider" Grid.Row="1" Grid.Column="1" Margin="20,0,10,0" ValueChanged="AdaptiveHeightSlider_ValueChanged" VerticalAlignment="Center" Minimum="0.2" Maximum="2" StepFrequency="0.1" Width="200"/>
+	</Grid>
+</UserControl>

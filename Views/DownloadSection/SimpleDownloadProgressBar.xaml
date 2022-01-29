@@ -7,15 +7,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="30"
-    d:DesignWidth="300">
+    d:DesignWidth="300"
+	d:RequestedTheme="Dark">
 
-	<Grid Margin="5" Height="20" Visibility="Visible">
+	<Grid Margin="5" Height="20" Visibility="Visible" Width="300">
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition Width="20"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		<FontIcon x:Name="MyIcon" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE10C;" Visibility="Visible"/>
-		<ProgressBar x:Name="MyProgressBar" Grid.Column="1" Margin="5" Value="0.15" Maximum="1" Visibility="Visible"/>
+		<FontIcon x:Name="MyIcon" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE10C;" Visibility="Visible" Width="20"/>
+		<ProgressBar x:Name="MyProgressBar" Grid.Column="1" Margin="5" Value="0.15" Maximum="1" Visibility="Visible" Width="270"/>
 
 		<!--<TextBlock Grid.ColumnSpan="2" Text="·" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
 		<Ellipse x:Name="MyEllipse" Visibility="Collapsed" Grid.ColumnSpan="2" Width="5" Height="5" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{ThemeResource ApplicationForegroundThemeBrush}"/>

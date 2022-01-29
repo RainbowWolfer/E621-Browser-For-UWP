@@ -125,5 +125,13 @@ namespace E621Downloader.Pages.DownloadSection {
 		private void MainFrame_Navigated(object sender, NavigationEventArgs e) {
 
 		}
+
+		private async void HelpButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			await new ContentDialog() {
+				Title = "Help",
+				Content = "The Downloads Section is based on the tag you searched when downloaded. I will be rework on this shortly and the meta system on local downloads is slow af I know that. I will fix it. \nAnd the search box does nothing, do not try that.",
+				CloseButtonText = "Back",
+			}.ShowAsync();
+		}
 	}
 }

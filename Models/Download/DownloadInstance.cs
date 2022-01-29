@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Networking.BackgroundTransfer;
+using Windows.UI.Xaml.Controls;
 
 namespace E621Downloader.Models.Download {
 	public class DownloadInstance {
@@ -30,8 +31,11 @@ namespace E621Downloader.Models.Download {
 		public string ReceivedKB => (BytesReceived / 1000).ToString();
 		public string TotalKB => (TotalBytesToReceive / 1000).ToString();
 
-		public Action<double> DownloadingAction { get; set; }
+		/// <summary> Direct assign action value. Do not use plus sign on this</summary>
+		public Action<double> DedicatedDownloadingAction { get; set; }
+		public Action<double> SubDownloadingAction { get; set; }
 		public Action DownloadCompleteAction { get; set; }
+		public CancellationTokenSource Cts { get; private set; }
 
 		public DownloadInstance(Post post, string groupName, DownloadOperation operation) {
 			PostRef = post;
@@ -40,31 +44,38 @@ namespace E621Downloader.Models.Download {
 		}
 
 		public async void StartDownload() {
-			await Operation.StartAsync().AsTask(new CancellationTokenSource().Token, new Progress<DownloadOperation>(o => {
-				ulong received = Operation.Progress.BytesReceived;
-				ulong total = Operation.Progress.TotalBytesToReceive;
-				if(total == 0) {
-					DownloadProgress = -1;
-				} else {
-					DownloadProgress = received / (double)total;
-				}
-				DownloadingAction?.Invoke(DownloadProgress);
-				if(DownloadProgress == 1 || Status == BackgroundTransferStatus.Completed) {
-					DownloadCompleteAction?.Invoke();
-					metaFile.FinishedDownloading = true;
-					Local.WriteMetaFile(metaFile, PostRef, GroupName);
-					if(LibraryPage.Instance != null && LibraryPage.Instance.current != null) {
-						LibraryPage.Instance.current.RefreshRequest();
+			try {
+				Cts = new CancellationTokenSource();
+				await Operation.StartAsync().AsTask(Cts.Token, new Progress<DownloadOperation>(o => {
+					ulong received = Operation.Progress.BytesReceived;
+					ulong total = Operation.Progress.TotalBytesToReceive;
+					if(total == 0) {
+						DownloadProgress = -1;
+					} else {
+						DownloadProgress = received / (double)total;
 					}
-				}
-			}));
-			//if(MainPage.Instance.currentTag == PageTag.Download && DownloadPage.Instance != null) {
-			//	DownloadPage.Instance.RefreshCurrentContent();
-			//}
+					DedicatedDownloadingAction?.Invoke(DownloadProgress);
+					SubDownloadingAction?.Invoke(DownloadProgress);
+					if(DownloadProgress == 1 || Status == BackgroundTransferStatus.Completed) {
+						DownloadCompleteAction?.Invoke();
+						metaFile.FinishedDownloading = true;
+						Local.WriteMetaFile(metaFile, PostRef, GroupName);
+						if(LibraryPage.Instance != null && LibraryPage.Instance.current != null) {
+							LibraryPage.Instance.current.RefreshRequest();
+						}
+					}
+				}));
+			} catch(Exception e) {
+				MainPage.CreateTip(MainPage.Instance, $"(#{metaFile.MyPost.id}) Download Fail", $"Errr Message: {e.Message}", Symbol.Important);
+			}
 		}
 
 		public void Pause() {
-			Operation.Pause();
+			try {
+				Operation.Pause();
+			} catch(InvalidOperationException ex) {
+				Debug.WriteLine("Pause(): " + ex.Message);
+			}
 		}
 
 		public void Resume() {
@@ -74,12 +85,19 @@ namespace E621Downloader.Models.Download {
 			try {
 				Operation.Resume();
 			} catch(InvalidOperationException ex) {
-				Debug.WriteLine(ex);
+				Debug.WriteLine("Resume(): " + ex.Message);
 			}
 		}
 
 		public void Cancel() {
-			//Operation.
+			try {
+				if(Cts != null) {
+					Cts.Cancel();
+					Cts.Dispose();
+				}
+			} catch(Exception ex) {
+				Debug.WriteLine("Cancel(): " + ex.Message);
+			}
 		}
 	}
 }

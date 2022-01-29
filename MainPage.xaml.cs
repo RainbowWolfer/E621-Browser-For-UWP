@@ -69,6 +69,7 @@ namespace E621Downloader {
 
 		private object parameter_picture;
 		private object parameter_postBrowser;
+		private object parameter_library;
 
 		public bool IsInSearchPopup { get; private set; }
 
@@ -199,8 +200,33 @@ namespace E621Downloader {
 			IsShowingInstanceDialog = false;
 		}
 
-		public static void CreateTip_SuccessDownload(Page page) {
-			CreateTip(page, "Notification", "Successfully Start Downloading", Symbol.Accept);
+		public async static void CreateTip_SuccessDownload(Page page) {
+			if(page.Content is Panel panel) {
+				var tip = new TeachingTip() {
+					Title = "Notification",
+					Subtitle = "Successfully Start Downloading",
+					IconSource = new SymbolIconSource() {
+						Symbol = Symbol.Accept,
+					},
+					PreferredPlacement = TeachingTipPlacementMode.TopRight,
+					PlacementMargin = new Thickness(20),
+					IsLightDismissEnabled = false,
+					ActionButtonContent = "Go to downloads",
+					CloseButtonContent = "Got it",
+					IsOpen = true,
+				};
+				tip.ActionButtonClick += (sender, args) => {
+					NavigateTo(PageTag.Download);
+				};
+				panel.Children.Add(tip);
+				await Task.Delay(5000);
+				tip.IsOpen = false;
+				tip.Closed += (s, e) => {
+					panel.Children.Remove(tip);
+				};
+			} else {
+				throw new Exception("Page's Content is not a valid Panel");
+			}
 		}
 
 		public async static void CreateTip(Panel parent, string titile, string subtitle, Symbol? icon = null, string closeText = "Got it!", bool isLightDismissEnabled = false, TeachingTipPlacementMode placement = TeachingTipPlacementMode.TopRight, Thickness? margin = null, int delayTime = 5000) {
@@ -279,8 +305,10 @@ namespace E621Downloader {
 			ClearPicturePageParameter();
 		}
 
-		public static void NavigateToLibrary(string folderName){
-			
+		public static void NavigateToLibrary(string folderName) {
+			Instance.parameter_library = folderName;
+			Instance.JumpToPage(PageTag.Library);
+			ClearLibraryPageParameter();
 		}
 
 		public static void ClearPostBrowserParameter() {
@@ -289,6 +317,10 @@ namespace E621Downloader {
 
 		public static void ClearPicturePageParameter() {
 			Instance.parameter_picture = null;
+		}
+
+		public static void ClearLibraryPageParameter() {
+			Instance.parameter_library = null;
 		}
 
 		//click from NavitaionViewItem
@@ -329,7 +361,7 @@ namespace E621Downloader {
 					break;
 				case PageTag.Library:
 					target = typeof(LibraryPage);
-					parameter = null;
+					parameter = parameter_library;
 					break;
 				case PageTag.Subscription:
 					target = typeof(SubscriptionPage);

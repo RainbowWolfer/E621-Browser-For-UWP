@@ -77,7 +77,9 @@ namespace E621Downloader {
 			}
 
 			Window.Current.CoreWindow.KeyDown += (sender, args) => {
-				KeyListener.RegisterKeyDown(args.VirtualKey);
+				if(LocalSettings.Current?.enableHotKeys ?? true) {
+					KeyListener.RegisterKeyDown(args.VirtualKey);
+				}
 			};
 		}
 

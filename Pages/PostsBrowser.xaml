@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:E621Downloader.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.UI.Xaml.Controls" xmlns:views="using:E621Downloader.Views"
 	mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -24,7 +24,14 @@
 				</Button.Content>
 			</Button>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-				<CheckBox x:Name="FixedHeightCheckBox" Content="Fixed Height" Margin="5" Checked="FixedHeightCheckBox_Checked" Unchecked="FixedHeightCheckBox_Unchecked"/>
+				<!--<CheckBox x:Name="FixedHeightCheckBox" Content="Fixed Height" Margin="5" Checked="FixedHeightCheckBox_Checked" Unchecked="FixedHeightCheckBox_Unchecked"/>-->
+				<Button x:Name="ViewButton" Content="View" Margin="5">
+					<Button.Flyout>
+						<Flyout Placement="Bottom">
+							<views:ImagesSizeDialog UpdateImagesLayout="ImagesSizeDialog_UpdateImagesLayout"/>
+						</Flyout>
+					</Button.Flyout>
+				</Button>
 				<Button x:Name="RefreshButton" Content="Refresh" Margin="5" Tapped="RefreshButton_Tapped"/>
 				<Button x:Name="DownloadButton" Content="Download" Margin="5" Tapped="DownloadButton_Tapped"/>
 				<ToggleButton x:Name="SelectToggleButton" Content="Select" Checked="SelectToggleButton_Checked" Unchecked="SelectToggleButton_Unchecked" Margin="5"/>
@@ -49,7 +56,7 @@
 								<StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 									<FontIcon Glyph="&#xE8EC;"/>
 									<TextBlock Text="Tags" Margin="10,0,0,0" VerticalAlignment="Center"/>
-									<TextBlock x:Name="HotTagsCountText" Text="(5)" Margin="10,0,0,0" VerticalAlignment="Center"/>
+									<TextBlock x:Name="HotTagsCountText" Text="(15)" Margin="10,0,0,0" VerticalAlignment="Center"/>
 								</StackPanel>
 							</Button.Content>
 						</Button>

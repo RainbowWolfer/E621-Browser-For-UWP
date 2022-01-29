@@ -255,9 +255,12 @@ namespace E621Downloader.Models.Locals {
 			}
 		}
 
-		public async static Task<List<(MetaFile, BitmapImage, StorageFile)>> GetMetaFiles(string folderName) {
+		public async static Task<(List<(MetaFile, BitmapImage, StorageFile)>, StorageFolder)> GetMetaFiles(string folderName) {
 			var result = new List<(MetaFile, BitmapImage)>();
 			StorageFolder folder = await DownloadFolder.GetFolderAsync(folderName);
+			if(folder == null) {
+				return (new List<(MetaFile, BitmapImage, StorageFile)>(), null);
+			}
 			var pairs = new List<Pair>();
 			foreach(StorageFile file in await folder.GetFilesAsync()) {
 				if(file.FileType == ".meta") {
@@ -289,7 +292,7 @@ namespace E621Downloader.Models.Locals {
 					Pair.Add(pairs, bitmap, file);
 				}
 			}
-			return Pair.Convert(pairs, p => p.IsValid);
+			return (Pair.Convert(pairs, p => p.IsValid), folder);
 		}
 
 		public async static Task<(MetaFile, StorageFile)> GetMetaFile(string postID, string groupName) {
@@ -369,6 +372,10 @@ namespace E621Downloader.Models.Locals {
 					mediaAutoPlay = true,
 					customHost = "",
 					spot_amount = 1,
+					enableHotKeys = true,
+					adaptiveGrid = true,
+					adaptiveSizeMultiplier = 1,
+					fixedHeight = 280,
 				};
 				WriteLocalSettings();
 			}

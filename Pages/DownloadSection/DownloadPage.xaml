@@ -46,7 +46,10 @@
 			</NavigationView>
 		</Grid>
 
-		<AutoSuggestBox Grid.Column="1" Margin="20,0,20,0" VerticalAlignment="Center" QueryIcon="Find" QuerySubmitted="AutoSuggestBox_QuerySubmitted" MaxWidth="400"/>
+		<AutoSuggestBox Grid.Column="1" Margin="20,0,70,0" VerticalAlignment="Center" QueryIcon="Find" QuerySubmitted="AutoSuggestBox_QuerySubmitted" MaxWidth="400"/>
+		<Button x:Name="HelpButton" Margin="20,0,20,0" Height="33" Width="33" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" ToolTipService.ToolTip="Help" Padding="0" Tapped="HelpButton_Tapped">
+			<FontIcon Glyph="&#xE897;"/>
+		</Button>
 
 		<Frame x:Name="MainFrame" Grid.Row="1" Margin="5" Grid.ColumnSpan="2" Navigating="MainFrame_Navigating" Navigated="MainFrame_Navigated">
 			<Frame.ContentTransitions>

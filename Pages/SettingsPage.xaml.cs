@@ -30,7 +30,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {
 	public sealed partial class SettingsPage: Page {
-		public static bool isDownloadPathChangingHandled;
+		public static bool isDownloadPathChangingHandled = true;
 		public string Version => "Version: " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
 		private bool internalChanges = true;
@@ -108,8 +108,8 @@ namespace E621Downloader.Pages {
 				await Local.WriteTokenToFile(token);
 				DownloadPathTextBlock.Text = Local.DownloadFolder.Path;
 				ClearDownloadPathButton.IsEnabled = true;
+				isDownloadPathChangingHandled = false;
 			}
-			isDownloadPathChangingHandled = false;
 		}
 
 		private async void ClearDownloadPathButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -130,10 +130,11 @@ namespace E621Downloader.Pages {
 			}
 			bool isOn = (sender as ToggleSwitch).IsOn;
 			if(!isOn) {
-				LocalSettings.Current.customHostEnable = isOn;
+				LocalSettings.Current.customHostEnable = false;
+				LocalSettings.Current.customHost = "";
 				LocalSettings.Save();
-				CustomHostButton.IsEnabled = isOn;
-				CustomHostButton.Content = LocalSettings.Current.customHostEnable ? string.IsNullOrWhiteSpace(LocalSettings.Current.customHost) ? "Host" : LocalSettings.Current.customHost : "E926.net";
+				CustomHostButton.IsEnabled = false;
+				CustomHostButton.Content = "E926.net";
 				return;
 			}
 			await PopupCustomHostDialog(result => {

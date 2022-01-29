@@ -41,7 +41,7 @@
 			</StackPanel>
 		</Grid>
 
-		<ListView Grid.Row="1" x:Name="MyListView" SelectionMode="None" IsItemClickEnabled="True" Margin="10">
+		<ListView Grid.Row="1" x:Name="MyListView" SelectionMode="None" IsItemClickEnabled="True" Margin="10" MinHeight="50">
 			<ListView.ItemsPanel>
 				<ItemsPanelTemplate>
 					<ItemsStackPanel AreStickyGroupHeadersEnabled="True"/>

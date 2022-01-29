@@ -65,6 +65,9 @@ namespace E621Downloader.Models.Download {
 			if(!CheckDownloadAvailable()) {
 				return false;
 			}
+			if(string.IsNullOrWhiteSpace(groupTitle)) {
+				groupTitle = DEFAULTTITLE;
+			}
 			StorageFolder folder = await Local.DownloadFolder.CreateFolderAsync(groupTitle, CreationCollisionOption.OpenIfExists);
 			if(folder == null) {
 				return false;

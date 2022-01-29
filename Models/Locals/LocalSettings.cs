@@ -11,6 +11,10 @@ namespace E621Downloader.Models.Locals {
 			Local.WriteLocalSettings();
 		}
 
+		public bool adaptiveGrid;
+		public double fixedHeight;
+		public double adaptiveSizeMultiplier;
+
 		public string customHost;
 		public bool customHostEnable;
 		public bool cycleList;

@@ -45,6 +45,7 @@ namespace E621Downloader.Pages.LibrarySection {
 
 		public LibraryTab CurrentLibraryTab { get; private set; }
 		public ItemBlock CurrentItemBlock { get; private set; }
+		public string CurrentFolderName { get; private set; }
 
 		//private bool refreshNeeded;
 
@@ -99,8 +100,8 @@ namespace E621Downloader.Pages.LibrarySection {
 								}
 							}
 						} else {//click folder
-							List<(MetaFile, BitmapImage, StorageFile)> v = await Local.GetMetaFiles(tab.folder.DisplayName);
-							foreach((MetaFile, BitmapImage, StorageFile) item in v) {
+							var reuslt = await Local.GetMetaFiles(tab.folder.DisplayName);
+							foreach((MetaFile, BitmapImage, StorageFile) item in reuslt.Item1) {
 								if(!item.Item1.FinishedDownloading) {
 									continue;
 								}
@@ -115,8 +116,8 @@ namespace E621Downloader.Pages.LibrarySection {
 						}
 					} else if(objs[0] is ItemBlock parent) {//click folder in page
 						CurrentItemBlock = parent;
-						List<(MetaFile, BitmapImage, StorageFile)> v = await Local.GetMetaFiles(parent.Name);
-						foreach((MetaFile, BitmapImage, StorageFile) item in v) {
+						var reuslt = await Local.GetMetaFiles(parent.Name);
+						foreach((MetaFile, BitmapImage, StorageFile) item in reuslt.Item1) {
 							if(!item.Item1.FinishedDownloading) {
 								continue;
 							}
@@ -125,6 +126,22 @@ namespace E621Downloader.Pages.LibrarySection {
 								thumbnail = item.Item2,
 								imageFile = item.Item3,
 								parent = parent,
+							};
+							items.Add(myitem);
+							originalItems.Add(myitem);
+						}
+					} else if(objs[0] is string folderName) {
+						CurrentFolderName = folderName;
+						var reuslt = await Local.GetMetaFiles(folderName);
+						libraryPage.ToTab(reuslt.Item2, folderName);
+						foreach((MetaFile, BitmapImage, StorageFile) item in reuslt.Item1) {
+							if(!item.Item1.FinishedDownloading) {
+								continue;
+							}
+							var myitem = new ItemBlock() {
+								meta = item.Item1,
+								thumbnail = item.Item2,
+								imageFile = item.Item3,
 							};
 							items.Add(myitem);
 							originalItems.Add(myitem);
@@ -299,8 +316,8 @@ namespace E621Downloader.Pages.LibrarySection {
 			await Task.Delay(100);
 
 			foreach(StorageFolder folder in folders) {
-				List<(MetaFile, BitmapImage, StorageFile)> v = await Local.GetMetaFiles(folder.Name);
-				foreach((MetaFile, BitmapImage, StorageFile) item in v) {
+				var result = await Local.GetMetaFiles(folder.Name);
+				foreach((MetaFile, BitmapImage, StorageFile) item in result.Item1) {
 					if(!GetSelectedRating().Contains(item.Item1.MyPost.rating)) {
 						continue;
 					}

@@ -7,7 +7,8 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
 	d:DesignHeight="120"
-	d:DesignWidth="600">
+	d:DesignWidth="600"
+	d:RequestedTheme="Dark">
 
 	<Grid>
 		<Grid.RowDefinitions>
@@ -21,7 +22,7 @@
 		</Grid.ColumnDefinitions>
 
 		<TextBlock x:Name="NameTextBlock" Text="Post : 2912928" FontSize="20" VerticalAlignment="Center" Margin="10,0,10,0"/>
-		<TextBlock x:Name="InfoTextBlock" Grid.Row="1" Grid.ColumnSpan="2" Text="" FontSize="20" Margin="20,0,120,0" VerticalAlignment="Center"/>
+		<TextBlock x:Name="InfoTextBlock" Grid.Row="1" Grid.ColumnSpan="2" Text="" FontSize="20" Margin="20,0,120,0" VerticalAlignment="Center" RightTapped="InfoTextBlock_RightTapped"/>
 		<TextBlock x:Name="PercentageTextBlok" Grid.Column="2" Text="Pending..." HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
 		<ProgressBar x:Name="MyProgressBar" Grid.Column="1" Value="0" Maximum="1" VerticalAlignment="Center" Margin="10" ShowPaused="False" ShowError="False"/>
 
@@ -30,7 +31,7 @@
 		</StackPanel>
 
 		<StackPanel x:Name="DownloadedPanel" Visibility="Collapsed" Orientation="Horizontal" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right">
-			<Button Margin="10">
+			<Button x:Name="OpenButton" Margin="10" Tapped="OpenButton_Tapped">
 				<Button.Content>
 					<StackPanel Orientation="Horizontal">
 						<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE1A5;" Margin="1" FontSize="14"/>
@@ -38,7 +39,7 @@
 					</StackPanel>
 				</Button.Content>
 			</Button>
-			<Button Margin="10">
+			<Button Margin="10" Visibility="Collapsed">
 				<Button.Content>
 					<StackPanel Orientation="Horizontal">
 						<FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE107;" Margin="1" FontSize="14"/>

@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+	d:RequestedTheme="Dark"
     Height="300"
     Width="300">
 
@@ -16,15 +17,15 @@
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
 
-		<TextBlock Text="{x:Bind Group.Title}" HorizontalAlignment="Center" FontSize="24"/>
+		<TextBlock d:Text="Title" Text="{x:Bind Group.Title}" HorizontalAlignment="Center" FontSize="24"/>
 		<StackPanel Grid.Row="1" Margin="5">
-			<local:SimpleDownloadProgressBar x:Name="Bar1"/>
-			<local:SimpleDownloadProgressBar x:Name="Bar2"/>
-			<local:SimpleDownloadProgressBar x:Name="Bar3"/>
-			<local:SimpleDownloadProgressBar x:Name="Bar4"/>
-			<local:SimpleDownloadProgressBar x:Name="Bar5"/>
-			<local:SimpleDownloadProgressBar x:Name="Bar6"/>
-			<local:SimpleDownloadProgressBar x:Name="Bar7"/>
+			<local:SimpleDownloadProgressBar x:Name="Bar1" Height="30" Width="300"/>
+			<local:SimpleDownloadProgressBar x:Name="Bar2" Height="30" Width="300"/>
+			<local:SimpleDownloadProgressBar x:Name="Bar3" Height="30" Width="300"/>
+			<local:SimpleDownloadProgressBar x:Name="Bar4" Height="30" Width="300"/>
+			<local:SimpleDownloadProgressBar x:Name="Bar5" Height="30" Width="300"/>
+			<local:SimpleDownloadProgressBar x:Name="Bar6" Height="30" Width="300"/>
+			<local:SimpleDownloadProgressBar x:Name="Bar7" Height="30" Width="300"/>
 		</StackPanel>
 
 		<Grid Grid.Row="2" Margin="5,5,5,15">
@@ -36,9 +37,8 @@
 			<Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="&#xE10C;" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0">
 				<Button.Flyout>
 					<MenuFlyout Placement="BottomEdgeAlignedLeft">
-						<MenuFlyoutItem Text="Check"/>
-						<MenuFlyoutItem Text="Share"/>
-						<MenuFlyoutItem Text="Delete"/>
+						<MenuFlyoutItem x:Name="GoToLibraryItem" Text="Go To Library" Icon="Library" Click="GoToLibraryItem_Click"/>
+						<MenuFlyoutItem x:Name="DeleteItem" Text="Delete" Icon="Delete" Click="DeleteItem_Click"/>
 					</MenuFlyout>
 				</Button.Flyout>
 			</Button>

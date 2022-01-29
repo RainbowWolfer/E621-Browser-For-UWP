@@ -96,6 +96,7 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			UpdateTitle("Following");
+			UpdatePage();
 			RefreshContentButton.IsEnabled = false;
 			SwitchLayout(LayoutType.Following);
 			FollowingButton.IsChecked = true;
@@ -349,18 +350,16 @@ namespace E621Downloader.Pages {
 			//item.PostRef;
 		}
 
-		private void ForwardButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(int.TryParse(PageBox.Text, out int page)) {
-				LoadFollowing(page);
-			}
-		}
-
 		private void LeftButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			LoadFollowing(--CurrentFollowingPage);
 		}
 
 		private void RightButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			LoadFollowing(++CurrentFollowingPage);
+		}
+
+		private void UpdatePage(){
+			PageText.Text = $"{CurrentFollowingPage}";
 		}
 
 		private void ResizeBar_OnSizeChanged(int value) {

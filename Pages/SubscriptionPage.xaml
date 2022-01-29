@@ -10,10 +10,6 @@
     d:RequestedTheme="Dark"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-	<Page.Resources>
-
-	</Page.Resources>
-
 	<Grid>
 		<SplitView x:Name="MainSplitView" DisplayMode="CompactInline" OpenPaneLength="300" CompactPaneLength="40" PaneClosing="MainSplitView_PaneClosing" IsPaneOpen="True">
 			<SplitView.Pane>
@@ -162,11 +158,11 @@
 					</Grid>
 					<GridView x:Name="MainGridView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" ItemClick="MainGridView_ItemClick" Padding="10"/>
 					<StackPanel x:Name="Paginator" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-						<Button x:Name="LeftButton" Content="&#xE09A;" FontFamily="Segoe MDL2 Assets" Height="30" Width="30" Padding="0" Tapped="LeftButton_Tapped"/>
-						<TextBlock x:Name="PageText" Text="1" VerticalAlignment="Center" Margin="10,0,10,0" FontSize="16"/>
-						<Button x:Name="RightButton" Content="&#xE09B;" FontFamily="Segoe MDL2 Assets" Height="30" Width="30" Padding="0" Tapped="RightButton_Tapped"/>
-						<controls:NumberBox x:Name="PageBox" Text="1" Minimum="1" Maximum="100" Width="120" Margin="10,0,0,0" CornerRadius="4,0,0,4" SpinButtonPlacementMode="Compact"/>
-						<Button x:Name="ForwardButton" Content="&#xE0AE;" FontFamily="Segoe MDL2 Assets" Height="30" Width="30" CornerRadius="0,4,4,0" Padding="0" Tapped="ForwardButton_Tapped"/>
+						<Button x:Name="LeftButton" Content="&#xE09A;" FontFamily="Segoe MDL2 Assets" Height="30" Width="50" Padding="0" Tapped="LeftButton_Tapped"/>
+						<TextBlock x:Name="PageText" Text="1" VerticalAlignment="Center" Margin="20,0,20,0" FontSize="20"/>
+						<Button x:Name="RightButton" Content="&#xE09B;" FontFamily="Segoe MDL2 Assets" Height="30" Width="50" Tapped="RightButton_Tapped"/>
+						<!--<controls:NumberBox x:Name="PageBox" Text="1" Minimum="1" Maximum="100" Width="120" Margin="10,0,0,0" CornerRadius="4,0,0,4" SpinButtonPlacementMode="Compact"/>-->
+						<!--<Button x:Name="ForwardButton" Content="&#xE0AE;" FontFamily="Segoe MDL2 Assets" Height="30" Width="30" CornerRadius="0,4,4,0" Padding="0" Tapped="ForwardButton_Tapped"/>-->
 					</StackPanel>
 				</Grid>
 			</SplitView.Content>

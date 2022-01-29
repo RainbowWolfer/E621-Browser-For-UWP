@@ -240,6 +240,9 @@
     <Compile Include="Views\ImageHolderForSubscriptionPage.xaml.cs">
       <DependentUpon>ImageHolderForSubscriptionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ImagesSizeDialog.xaml.cs">
+      <DependentUpon>ImagesSizeDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LoginHelpSection.xaml.cs">
       <DependentUpon>LoginHelpSection.xaml</DependentUpon>
     </Compile>
@@ -481,6 +484,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ImageHolderForSubscriptionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ImagesSizeDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

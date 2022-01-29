@@ -97,7 +97,7 @@ namespace E621Downloader.Pages.DownloadSection {
 		}
 
 		private void OpenLibraryButton_Tapped(object sender, TappedRoutedEventArgs e) {
-
+			MainPage.NavigateToLibrary(group.Title);
 		}
 
 		private enum MyTag {

@@ -50,9 +50,6 @@ namespace E621Downloader.Pages.LibrarySection {
 				filter,
 				home,
 			};
-			TabsListView.SelectedIndex = 1;
-			NavigateToHome();
-			SettingsPage.isDownloadPathChangingHandled = true;
 			Size = 200;
 			UpdateOrderText();
 		}
@@ -60,9 +57,19 @@ namespace E621Downloader.Pages.LibrarySection {
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			if(!SettingsPage.isDownloadPathChangingHandled) {
+				TabsListView.SelectedIndex = 1;
 				NavigateToHome();
 				SettingsPage.isDownloadPathChangingHandled = true;
+			} else {
+				if(e.Parameter is string folderName) {
+					Navigate(typeof(Explorer), new object[] { folderName, this });
+				} else if(current == null) {
+					TabsListView.SelectedIndex = 1;
+					NavigateToHome();
+					SettingsPage.isDownloadPathChangingHandled = true;
+				}
 			}
+			MainPage.ClearLibraryPageParameter();
 		}
 
 		private void HamburgerButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -89,6 +96,10 @@ namespace E621Downloader.Pages.LibrarySection {
 					TitleTextBlock.Text = block.Name;
 					FlyoutItem_Size.Visibility = Visibility.Visible;
 					FlyoutItem_Type.Visibility = Visibility.Visible;
+				} else if(objs[0] is string folderName) {
+					TitleTextBlock.Text = folderName;
+					FlyoutItem_Size.Visibility = Visibility.Visible;
+					FlyoutItem_Type.Visibility = Visibility.Visible;
 				}
 			}
 		}
@@ -103,6 +114,17 @@ namespace E621Downloader.Pages.LibrarySection {
 			tabs.Add(new LibraryTab(folder, Symbol.Folder, tabName, true));
 			TabsListView.SelectedIndex = TabsListView.Items.Count - 1;
 		}
+
+		//public void AddTab(string folderName) {
+		//	foreach(LibraryTab item in tabs) {
+		//		if(item.title == folderName) {
+		//			TabsListView.SelectedIndex = TabsListView.Items.ToList().FindIndex(t => (t as LibraryTab).title == folderName);
+		//			return;
+		//		}
+		//	}
+		//	tabs.Add(new LibraryTab(folder, Symbol.Folder, folderName, true));
+		//	TabsListView.SelectedIndex = TabsListView.Items.Count - 1;
+		//}
 
 		private void TabsListView_ItemClick(object sender, ItemClickEventArgs e) {
 			if(e.ClickedItem != null) {
@@ -234,12 +256,14 @@ namespace E621Downloader.Pages.LibrarySection {
 				return;
 			}
 			object param;
-			if(current.CurrentItemBlock != null && current.CurrentLibraryTab != null) {
+			if(current.CurrentItemBlock != null && current.CurrentFolderName == null && current.CurrentLibraryTab != null) {
 				throw new Exception();
 			} else if(current.CurrentItemBlock != null) {
 				param = current.CurrentItemBlock;
 			} else if(current.CurrentLibraryTab != null) {
 				param = current.CurrentLibraryTab;
+			} else if(current.CurrentFolderName != null) {
+				param = current.CurrentFolderName;
 			} else {
 				throw new Exception();
 			}
