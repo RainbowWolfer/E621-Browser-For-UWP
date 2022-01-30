@@ -7,14 +7,14 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="25737563C6D7A.E621Downloader"
+    Name="25737563C6D7A.E1547Browser"
     Publisher="CN=08AE6180-69D9-4F58-9803-4063AA29A554"
-    Version="1.0.4.0" />
+    Version="1.0.5.0" />
 
-  <mp:PhoneIdentity PhoneProductId="476c8ad6-24e1-4d83-983a-e0a27dfade12" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="1146dfad-4d6d-406b-85e6-43855c69ae06" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>E621Downloader</DisplayName>
+    <DisplayName>E1547 Browser</DisplayName>
     <PublisherDisplayName>蔚家旭</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -32,7 +32,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="E621Downloader.App">
       <uap:VisualElements
-        DisplayName="E621Downloader"
+        DisplayName="E1547 Browser"
         Square150x150Logo="Assets\E621.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="E621Downloader"

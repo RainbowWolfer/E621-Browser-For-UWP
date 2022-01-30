@@ -107,25 +107,31 @@ namespace E621Downloader.Pages {
 			cts = new CancellationTokenSource();
 			LoadingRing.IsActive = true;
 			MainGridView.Items.Clear();
-			List<Post> posts = await Post.GetPostsByTagsAsync(cts.Token, true, page, Local.FollowList);
-			if(posts == null) {
-				return;
-			}
-			PostsList = new List<object>();
-			PostsList.AddRange(posts);
-			if(posts != null) {
-				foreach(Post post in posts) {
-					var image = new ImageHolderForSubscriptionPage(this) {
-						Height = Size,
-						Width = Size,
-					};
-					image.LoadFromPost(post, Local.FollowList);
-					MainGridView.Items.Add(image);
-				}
+			if(Local.FollowList == null || Local.FollowList.Length == 0) {
 				LoadingRing.IsActive = false;
-				FavoritesListHintText.Visibility = posts.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+				RefreshContentButton.IsEnabled = true;
+				FavoritesListHintText.Visibility = Visibility.Visible;
+			} else {
+				List<Post> posts = await Post.GetPostsByTagsAsync(cts.Token, true, page, Local.FollowList);
+				if(posts == null) {
+					return;
+				}
+				PostsList = new List<object>();
+				PostsList.AddRange(posts);
+				if(posts != null) {
+					foreach(Post post in posts) {
+						var image = new ImageHolderForSubscriptionPage(this) {
+							Height = Size,
+							Width = Size,
+						};
+						image.LoadFromPost(post, Local.FollowList);
+						MainGridView.Items.Add(image);
+					}
+					LoadingRing.IsActive = false;
+					FavoritesListHintText.Visibility = posts.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+				}
+				RefreshContentButton.IsEnabled = true;
 			}
-			RefreshContentButton.IsEnabled = true;
 		}
 
 		private void LoadFavorites(string listName) {
@@ -345,11 +351,6 @@ namespace E621Downloader.Pages {
 			await SettingsPage.FollowListManage(this);
 		}
 
-		private void MainGridView_ItemClick(object sender, ItemClickEventArgs e) {
-			var item = e.ClickedItem as ImageHolderForSubscriptionPage;
-			//item.PostRef;
-		}
-
 		private void LeftButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			LoadFollowing(--CurrentFollowingPage);
 		}
@@ -358,7 +359,7 @@ namespace E621Downloader.Pages {
 			LoadFollowing(++CurrentFollowingPage);
 		}
 
-		private void UpdatePage(){
+		private void UpdatePage() {
 			PageText.Text = $"{CurrentFollowingPage}";
 		}
 

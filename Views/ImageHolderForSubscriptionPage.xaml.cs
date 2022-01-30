@@ -39,8 +39,14 @@ namespace E621Downloader.Views {
 		public void LoadFromPost(Post post, string[] followTags = null) {
 			this.PostRef = post;
 			LoadingRing.IsActive = true;
-			MyImage.Source = new BitmapImage(new Uri(post.sample.url ?? post.preview.url));
-			(MyImage.Source as BitmapImage).ImageOpened += ImageHolderForSubscriptionPage_ImageOpened;
+			string url = post.sample.url ?? post.preview.url;
+			if(string.IsNullOrWhiteSpace(url)) {
+				HintText.Visibility = Visibility.Visible;
+				LoadingRing.IsActive = false;
+			} else {
+				MyImage.Source = new BitmapImage(new Uri(post.sample.url ?? post.preview.url));
+				(MyImage.Source as BitmapImage).ImageOpened += ImageHolderForSubscriptionPage_ImageOpened;
+			}
 			TypeHint.PostRef = post;
 			BottomInfo.PostRef = post;
 			type = PathType.PostID;
@@ -76,7 +82,10 @@ namespace E621Downloader.Views {
 				return;
 			}
 			string url = this.PostRef.sample.url ?? this.PostRef.preview.url;
-			if(!string.IsNullOrWhiteSpace(url)) {
+			if(string.IsNullOrWhiteSpace(url)) {
+				HintText.Visibility = Visibility.Visible;
+				LoadingRing.IsActive = false;
+			} else {
 				MyImage.Source = new BitmapImage(new Uri(url));
 				(MyImage.Source as BitmapImage).ImageOpened += ImageHolderForSubscriptionPage_ImageOpened;
 			}
@@ -244,8 +253,10 @@ namespace E621Downloader.Views {
 					if(PostRef == null) {
 						return;
 					}
-					await DownloadsManager.RegisterDownload(PostRef);
-					MainPage.CreateTip_SuccessDownload(parent);
+					if(await DownloadsManager.CheckDownloadAvailableWithDialog()) {
+						await DownloadsManager.RegisterDownload(PostRef);
+						MainPage.CreateTip_SuccessDownload(parent);
+					}
 				};
 				return item;
 			}

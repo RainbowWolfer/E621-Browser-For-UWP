@@ -156,7 +156,7 @@
 					<Grid x:Name="FavoritesListHintText" Grid.Row="1">
 						<TextBlock Text="Nothing is in this list" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
 					</Grid>
-					<GridView x:Name="MainGridView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" ItemClick="MainGridView_ItemClick" Padding="10"/>
+					<GridView x:Name="MainGridView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" Padding="10"/>
 					<StackPanel x:Name="Paginator" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
 						<Button x:Name="LeftButton" Content="&#xE09A;" FontFamily="Segoe MDL2 Assets" Height="30" Width="50" Padding="0" Tapped="LeftButton_Tapped"/>
 						<TextBlock x:Name="PageText" Text="1" VerticalAlignment="Center" Margin="20,0,20,0" FontSize="20"/>

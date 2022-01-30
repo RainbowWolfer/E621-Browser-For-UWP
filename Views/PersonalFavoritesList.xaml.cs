@@ -58,7 +58,13 @@ namespace E621Downloader.Views {
 
 		public bool ShowE621FavoriteButton {
 			get => showE621FavoriteButton;
-			set => showE621FavoriteButton = value;
+			set {
+				if(string.IsNullOrWhiteSpace(LocalSettings.Current.user_username) || string.IsNullOrWhiteSpace(LocalSettings.Current.user_api)) {
+					showE621FavoriteButton = false;
+				} else {
+					showE621FavoriteButton = value;
+				}
+			}
 		}
 
 		public Visibility E621FavoriteVisibility => showE621FavoriteButton ? Visibility.Visible : Visibility.Collapsed;
