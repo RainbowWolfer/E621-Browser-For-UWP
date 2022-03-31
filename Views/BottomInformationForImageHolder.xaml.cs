@@ -47,7 +47,7 @@ namespace E621Downloader.Views {
 					RatingIcon.Foreground = new SolidColorBrush(Colors.Green);
 					break;
 				case "q":
-					RatingIcon.Glyph = "\uF142";
+					RatingIcon.Glyph = "\uE897";
 					RatingIcon.Foreground = new SolidColorBrush(Colors.Yellow);
 					break;
 				case "e":

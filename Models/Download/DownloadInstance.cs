@@ -60,8 +60,8 @@ namespace E621Downloader.Models.Download {
 						DownloadCompleteAction?.Invoke();
 						metaFile.FinishedDownloading = true;
 						Local.WriteMetaFile(metaFile, PostRef, GroupName);
-						if(LibraryPage.Instance != null && LibraryPage.Instance.current != null) {
-							LibraryPage.Instance.current.RefreshRequest();
+						if(LibraryPage.Instance != null && LibraryPage.Instance.Current != null) {
+							LibraryPage.Instance.Current.RefreshRequest();
 						}
 					}
 				}));

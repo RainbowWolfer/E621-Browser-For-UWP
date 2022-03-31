@@ -29,7 +29,7 @@ namespace E621Downloader.Views.FoldersSelectionSection {
 
 		}
 
-		private void ReverseSelectionButton_Tapped(object sender, TappedRoutedEventArgs e) {
+		private void ReverseSelectionButton_Click(object sender, RoutedEventArgs e) {
 			for(int i = 0; i < MyListView.Items.Count; i++) {
 				var item = MyListView.ContainerFromIndex(i) as ListViewItem;
 				item.IsSelected = !item.IsSelected;

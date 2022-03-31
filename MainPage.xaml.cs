@@ -72,13 +72,19 @@ namespace E621Downloader {
 		private object parameter_library;
 
 		public bool IsInSearchPopup { get; private set; }
+		public bool IsInputting { get; private set; } = false;
+
+		public const VirtualKey SEARCH_KEY = VirtualKey.Q;
 
 		public MainPage() {
 			Instance = this;
 			this.InitializeComponent();
 			currentTag = PageTag.Welcome;
 			KeyListener.SubmitInstance(new KeyListenerInstance(async key => {
-				if(key == VirtualKey.Q && !IsInSearchPopup) {
+				if(IsInputting) {
+					return;
+				}
+				if(key == SEARCH_KEY && !IsInSearchPopup) {
 					try {
 						await PopupSearch();
 					} catch {
@@ -130,6 +136,22 @@ namespace E621Downloader {
 			}
 			MyFrame.Navigate(typeof(WelcomePage), string.IsNullOrWhiteSpace(number) ? (long)-1 : long.Parse(number));
 			ChangeUser(LocalSettings.Current.user_username);
+		}
+
+		private CancellationTokenSource delayInputListener_cts;
+		public async void DelayInputKeyListener(int delay = 500) {
+			IsInputting = true;
+			if(delayInputListener_cts != null) {
+				delayInputListener_cts.Cancel();
+				delayInputListener_cts.Dispose();
+			}
+			delayInputListener_cts = new CancellationTokenSource();
+			try {
+				await Task.Delay(delay, delayInputListener_cts.Token);
+			} catch(TaskCanceledException) {
+				return;
+			}
+			IsInputting = false;
 		}
 
 		private bool updatingUser = false;
@@ -346,7 +368,7 @@ namespace E621Downloader {
 			}
 		}
 
-		private void JumpToPage(PageTag tag, bool updateNavigationVieItem = true) {
+		private void JumpToPage(PageTag tag, bool updateNavigationViewItem = true) {
 			NavigationTransitionInfo transition = CalculateTransition(currentTag, tag);
 			Type target;
 			object parameter;
@@ -396,7 +418,7 @@ namespace E621Downloader {
 			}
 			MyFrame.Navigate(target, parameter, transition);
 			currentTag = tag;
-			if(updateNavigationVieItem) {
+			if(updateNavigationViewItem) {
 				foreach(NavigationViewItem item in MyNavigationView.MenuItems
 					.Concat(MyNavigationView.FooterMenuItems)
 					.Append(MyNavigationView.SettingsItem)
@@ -412,7 +434,6 @@ namespace E621Downloader {
 		private void FullScreenButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			IsFullScreen = !IsFullScreen;
 		}
-
 
 		private CancellationTokenSource cts = new CancellationTokenSource();
 

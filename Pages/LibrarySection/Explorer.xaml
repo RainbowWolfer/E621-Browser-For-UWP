@@ -4,85 +4,28 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:E621Downloader.Pages.LibrarySection"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:librarysection="using:E621Downloader.Views.LibrarySection"
+	mc:Ignorable="d"
+	d:RequestedTheme="Dark">
+
 	<Page.Resources>
 		<SolidColorBrush x:Key="TransparentBackground" Color="Gray" Opacity="0.6"/>
 	</Page.Resources>
+
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<StackPanel x:Name="FilterGrid" Visibility="Visible" Margin="10">
-			<RelativePanel>
-				<Button x:Name="FoldersButton" Tapped="FoldersButton_Tapped" Margin="5">
-					<Button.Content>
-						<StackPanel Orientation="Horizontal">
-							<TextBlock x:Name="SelectedFoldersText" Text="Active Folders" FontSize="18"/>
-							<FontIcon Glyph="&#xF12B;" Margin="10,0,10,0" FontSize="24"/>
-							<TextBlock x:Name="SelectedFoldersCount" Text="0" FontSize="18"/>
-						</StackPanel>
-					</Button.Content>
-				</Button>
-				<Button x:Name="TagsButton" Tapped="TagsButton_Tapped" Margin="5" RelativePanel.AlignRightWithPanel="True">
-					<Button.Content>
-						<StackPanel Orientation="Horizontal">
-							<TextBlock x:Name="SelectedTagsText" Text="Current Tags" FontSize="18"/>
-							<FontIcon Glyph="&#xE8EC;" Margin="10,0,10,0" FontSize="24"/>
-							<TextBlock x:Name="SelectedTagsCount" Text="0" FontSize="18"/>
-						</StackPanel>
-					</Button.Content>
-				</Button>
-			</RelativePanel>
-			<StackPanel Orientation="Horizontal" Margin="10,0,10,0">
-				<CheckBox x:Name="SCheckBox" IsChecked="True" Content="Rating: Safe" Margin="5,5,5,0"/>
-				<CheckBox x:Name="QCheckBox" IsChecked="True" Content="Rating: Questionable" Margin="5,5,5,0"/>
-				<CheckBox x:Name="ECheckBox" IsChecked="True" Content="Rating: Explicit" Margin="15,5,5,0"/>
-				<TextBlock Text="Minimal Score:" FontSize="18" VerticalAlignment="Center" Margin="15,5,5,5"/>
-				<TextBox x:Name="MinScoreText" Text="" TextChanged="TextBox_TextChanged" Margin="5" MinWidth="100"/>
-				<TextBlock Text="Maximal Score:" FontSize="18" VerticalAlignment="Center" Margin="15,5,5,5"/>
-				<TextBox x:Name="MaxScoreText" Text="" TextChanged="TextBox_TextChanged" Margin="5" MinWidth="100"/>
+		<Grid Margin="5">
+			<librarysection:LibraryTitleBar x:Name="TitleBar" ShowExpanderButton="False" ShowExplorerButton="True"/>
+		</Grid>
+		<Grid x:Name="LoadingGrid" Grid.Row="1" Visibility="Collapsed">
+			<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+				<ProgressRing x:Name="LoadingRing" Height="150" Width="150" IsActive="True" Margin="5"/>
+				<TextBlock x:Name="LoadingText" Text="Loading" TextAlignment="Center" FontSize="24" Margin="5"/>
 			</StackPanel>
-			<Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Stretch" Margin="5" FontSize="22" Tapped="SearchButton_Tapped"/>
-			<ProgressBar x:Name="MyLoadingBar" HorizontalAlignment="Stretch" Margin="5" IsIndeterminate="True" Visibility="Collapsed"/>
-		</StackPanel>
-		<StackPanel x:Name="HintPanel" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
-			<TextBlock x:Name="HintText" Text="You have not selected your download folder&#x0a;Please go to the settings page and choose your download folder" TextAlignment="Center" FontSize="32" TextWrapping="Wrap"/>
-			<Button x:Name="HintActionButton" HorizontalAlignment="Center" Margin="20" Tapped="HintActionButton_Tapped">
-				<StackPanel Orientation="Horizontal">
-					<TextBlock x:Name="HintButtonText" Text="Go To Settings" FontSize="25"/>
-					<FontIcon x:Name="HintButtonIcon" Glyph="&#xE713;" Margin="15,0,0,0" FontSize="25"/>
-				</StackPanel>
-			</Button>
-		</StackPanel>
-		<ProgressRing x:Name="MyProgressRing" Height="200" Width="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True" Grid.Row="1"/>
-		<GridView x:Name="MyGridView" ItemsSource="{x:Bind items}" SelectionMode="None" ItemClick="MyGridView_ItemClick" IsItemClickEnabled="True" Grid.Row="1" Visibility="Visible">
-			<!---->
-			<GridView.ItemContainerStyle>
-				<Style TargetType="GridViewItem">
-					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-					<Setter Property="VerticalContentAlignment" Value="Stretch"/>
-				</Style>
-			</GridView.ItemContainerStyle>
-			<GridView.ItemTemplate>
-				<DataTemplate x:DataType="local:ItemBlock">
-					<Grid Height="170" Width="200" Margin="10" Loaded="ItemGrid_Loaded">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="*"/>
-							<RowDefinition Height="30"/>
-						</Grid.RowDefinitions>
-						<FontIcon Visibility="{x:Bind FolderIconVisibility}" Glyph="&#xED43;" Foreground="Yellow" FontSize="120"/>
-						<Image Visibility="{x:Bind ImagePreviewVisibility}" Source="{x:Bind thumbnail}"/>
-						<TextBlock Grid.Row="1" Text="{x:Bind Name}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
-						<!--<FontIcon Glyph="&#xE00A;" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20"/>-->
-						<Border x:Name="TypeBorder" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="2" Background="{StaticResource TransparentBackground}" Visibility="{x:Bind TypeBorderVisibility}">
-							<TextBlock x:Name="TypeTextBlock" Text="WEBM" Margin="4,2,4,2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-						</Border>
-					</Grid>
-				</DataTemplate>
-			</GridView.ItemTemplate>
-		</GridView>
+		</Grid>
+		<librarysection:LibraryItemsGroupView x:Name="GroupView" Grid.Row="1" Padding="5"/>
 	</Grid>
 </Page>

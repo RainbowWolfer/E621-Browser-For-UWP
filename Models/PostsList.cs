@@ -2,6 +2,7 @@
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using E621Downloader.Pages.LibrarySection;
+using E621Downloader.Views.LibrarySection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -50,7 +51,7 @@ namespace E621Downloader.Models {
 			items.AddRange(posts);
 		}
 
-		public void UpdatePostsList(List<ItemBlock> block) {
+		public void UpdatePostsList(List<LibraryImage> block) {
 			items.Clear();
 			items.AddRange(block);
 		}

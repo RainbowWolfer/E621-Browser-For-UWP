@@ -12,5 +12,9 @@ namespace E621Downloader.Models {
 			Key = key;
 			Value = value;
 		}
+
+		public override string ToString() {
+			return $"({Key} : {Value})";
+		}
 	}
 }

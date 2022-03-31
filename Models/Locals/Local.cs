@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Storage.Streams;
 using Windows.Storage.FileProperties;
+using System.Threading;
 
 namespace E621Downloader.Models.Locals {
 	public static class Local {
@@ -87,13 +88,15 @@ namespace E621Downloader.Models.Locals {
 		public static string GetToken() => token;
 		public async static Task SetToken(string token) {
 			Local.token = token;
-			if(string.IsNullOrEmpty(token)) {
+			if(string.IsNullOrWhiteSpace(token)) {
 				//set to download library
 				return;
 			}
 			try {
 				DownloadFolder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync(token);
 			} catch(ArgumentException e) {
+				Debug.WriteLine(e);
+			} catch(FileNotFoundException e) {
 				Debug.WriteLine(e);
 			}
 		}
@@ -106,17 +109,15 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		private async static Task<string> GetTokenFromFile() {
-			Stream stream = await FutureAccessTokenFile.OpenStreamForReadAsync();
-			StreamReader reader = new StreamReader(stream);
-			return await reader.ReadToEndAsync();
+			return await FileIO.ReadTextAsync(FutureAccessTokenFile);
 		}
-
 
 		public async static Task Reload() {
 			FollowList = await GetFollowList();
 			BlackList = await GetBlackList();
 			await ReadLocalSettings();
-			await SetToken(await GetTokenFromFile());
+			string token = await GetTokenFromFile();
+			await SetToken(token);
 			await ReadFavoritesLists();
 		}
 
@@ -255,14 +256,17 @@ namespace E621Downloader.Models.Locals {
 			}
 		}
 
-		public async static Task<(List<(MetaFile, BitmapImage, StorageFile)>, StorageFolder)> GetMetaFiles(string folderName) {
+		public async static Task<List<(MetaFile meta, BitmapImage bitmap, StorageFile file)>> GetMetaFiles(StorageFolder folder, Action<StorageFile, int, int> onNextFileLoad = null) {
 			var result = new List<(MetaFile, BitmapImage)>();
-			StorageFolder folder = await DownloadFolder.GetFolderAsync(folderName);
+			//StorageFolder folder = await DownloadFolder.GetFolderAsync(folderName);
 			if(folder == null) {
-				return (new List<(MetaFile, BitmapImage, StorageFile)>(), null);
+				return new List<(MetaFile, BitmapImage, StorageFile)>();
 			}
 			var pairs = new List<Pair>();
-			foreach(StorageFile file in await folder.GetFilesAsync()) {
+			IReadOnlyList<StorageFile> files = await folder.GetFilesAsync();
+			for(int i = 0; i < files.Count; i++) {
+				StorageFile file = files[i];
+				onNextFileLoad?.Invoke(file, i + 1, files.Count);
 				if(file.FileType == ".meta") {
 					MetaFile meta;
 					using(Stream stream = await file.OpenStreamForReadAsync()) {
@@ -292,7 +296,7 @@ namespace E621Downloader.Models.Locals {
 					Pair.Add(pairs, bitmap, file);
 				}
 			}
-			return (Pair.Convert(pairs, p => p.IsValid), folder);
+			return Pair.Convert(pairs, p => p.IsValid);
 		}
 
 		public async static Task<(MetaFile, StorageFile)> GetMetaFile(string postID, string groupName) {

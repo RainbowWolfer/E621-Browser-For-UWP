@@ -16,11 +16,39 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Views {
 	public sealed partial class ResizeBar: UserControl {
 		private int size;
+		private int minimum;
+		private int maximum;
+		private int step;
+
 		public int Size {
 			get => size;
 			set {
 				size = value;
 				OnSizeChanged?.Invoke(value);
+			}
+		}
+
+		public int Minimum {
+			get => minimum;
+			set {
+				minimum = value;
+				SizeSlider.Minimum = minimum;
+			}
+		}
+
+		public int Maximum {
+			get => maximum;
+			set {
+				maximum = value;
+				SizeSlider.Maximum = maximum;
+			}
+		}
+
+		public int Step {
+			get => step;
+			set {
+				step = value;
+				SizeSlider.StepFrequency = step;
 			}
 		}
 
@@ -31,10 +59,10 @@ namespace E621Downloader.Views {
 		}
 
 		private void SizeButton_Click(object sender, RoutedEventArgs e) {
-			if(Size + 25 > 500) {
-				Size = 200;
+			if(Size + Step > Maximum) {
+				Size = Minimum;
 			} else {
-				Size += 25;
+				Size += Step;
 			}
 			SizeSlider.Value = Size;
 		}

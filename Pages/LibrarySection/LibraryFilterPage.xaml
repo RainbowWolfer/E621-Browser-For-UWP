@@ -1,0 +1,118 @@
+﻿<Page
+    x:Class="E621Downloader.Pages.LibrarySection.LibraryFilterPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Pages.LibrarySection"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+	xmlns:librarysection="using:E621Downloader.Views.LibrarySection"
+	mc:Ignorable="d"
+	d:RequestedTheme="Dark">
+
+	<Page.Resources>
+		<Storyboard x:Name="ExpanderStoryBoard">
+			<DoubleAnimation x:Name="ExpanderHeightAnimation" Storyboard.TargetName="FilterGrid" Storyboard.TargetProperty="Height" EnableDependentAnimation="True">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="7" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+		</Storyboard>
+	</Page.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="auto"/>
+		</Grid.RowDefinitions>
+		<Grid Margin="5">
+			<librarysection:LibraryTitleBar x:Name="TitleBar" Title="Filter" ShowExplorerButton="False" IsExpanded="True"/>
+		</Grid>
+		<StackPanel x:Name="FilterGrid" Visibility="Visible" Margin="10" Grid.Row="1" CornerRadius="10" Height="250" Padding="10">
+			<StackPanel.Background>
+				<SolidColorBrush Color="Black" Opacity="0.1"/>
+			</StackPanel.Background>
+			<RelativePanel>
+				<Button x:Name="FoldersButton" Click="FoldersButton_Click"  Margin="5">
+					<Button.Content>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock x:Name="SelectedFoldersText" Text="Active Folders" FontSize="18"/>
+							<FontIcon Glyph="&#xF12B;" Margin="10,0,10,0" FontSize="24"/>
+							<TextBlock x:Name="SelectedFoldersCount" Text="0" FontSize="18"/>
+						</StackPanel>
+					</Button.Content>
+				</Button>
+				<Button x:Name="TagsButton" Click="TagsButton_Click" Margin="5" RelativePanel.AlignRightWithPanel="True">
+					<Button.Content>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock x:Name="SelectedTagsText" Text="Current Tags" FontSize="18"/>
+							<FontIcon Glyph="&#xE8EC;" Margin="10,0,10,0" FontSize="24"/>
+							<TextBlock x:Name="SelectedTagsCount" Text="0" FontSize="18"/>
+						</StackPanel>
+					</Button.Content>
+				</Button>
+				<Button x:Name="AndOrButton" RelativePanel.LeftOf="TagsButton" RelativePanel.AlignVerticalCenterWithPanel="True" Height="37" Margin="0,0,5,0" Click="AndOrButton_Click">
+					<Button.Content>
+						<TextBlock x:Name="AndOrText" Text="AND"/>
+					</Button.Content>
+				</Button>
+			</RelativePanel>
+			<Grid Margin="20,5,20,5">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="auto"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="auto"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<FontIcon x:Name="RatingIcon" Glyph="&#xE129;" Grid.RowSpan="3" FontSize="48" Margin="20"/>
+				<CheckBox x:Name="SCheckBox" IsChecked="True" Content="Rating: Safe" Margin="5" Grid.Row="0" Grid.Column="1" Checked="SCheckBox_Checked" Unchecked="SCheckBox_Checked"/>
+				<CheckBox x:Name="QCheckBox" IsChecked="True" Content="Rating: Questionable" Margin="5" Grid.Row="1" Grid.Column="1" Checked="QCheckBox_Checked" Unchecked="QCheckBox_Checked"/>
+				<CheckBox x:Name="ECheckBox" IsChecked="True" Content="Rating: Explicit" Margin="5" Grid.Row="2" Grid.Column="1" Checked="ECheckBox_Checked" Unchecked="ECheckBox_Checked"/>
+
+				<FontIcon x:Name="TypeIcon" Glyph="&#xE97C;" Grid.RowSpan="3" Grid.Column="2" FontSize="48" Margin="20"/>
+				<CheckBox x:Name="ImageCheckBox" IsChecked="True" Content="Type: Image" Margin="5" Grid.Row="0" Grid.Column="3" Checked="ImageCheckBox_Checked" Unchecked="ImageCheckBox_Checked"/>
+				<CheckBox x:Name="GifCheckBox" IsChecked="True" Content="Type: Gif" Margin="5" Grid.Row="1" Grid.Column="3" Checked="GifCheckBox_Checked" Unchecked="GifCheckBox_Checked"/>
+				<CheckBox x:Name="WebmCheckBox" IsChecked="True" Content="Type: Webm" Margin="5" Grid.Row="2" Grid.Column="3" Checked="WebmCheckBox_Checked" Unchecked="WebmCheckBox_Checked"/>
+
+				<FontIcon x:Name="ScoreIcon" Glyph="&#xF597;" Grid.RowSpan="3" Grid.Column="4" FontSize="48" Margin="20"/>
+				<Grid Grid.Row="0" Grid.Column="5" VerticalAlignment="Center">
+					<TextBlock Text="Score :" FontSize="20" Margin="5"/>
+					<TextBlock x:Name="ScoreText" Text="( 100 - 300)" FontSize="22" Margin="5" TextAlignment="Right"/>
+				</Grid>
+				<Slider x:Name="FromSlider" ValueChanged="FromSlider_ValueChanged" Grid.Row="1" Grid.Column="5" Minimum="-40" Maximum="100" StepFrequency="1" Value="0" IsThumbToolTipEnabled="False" VerticalAlignment="Center" Margin="5"/>
+				<Slider x:Name="ToSlider" ValueChanged="ToSlider_ValueChanged" Grid.Row="2" Grid.Column="5" Minimum="-40" Maximum="100" StepFrequency="1" Value="-40" FlowDirection="RightToLeft" IsThumbToolTipEnabled="False" VerticalAlignment="Center" Margin="5"/>
+			</Grid>
+			<Button x:Name="SearchButton" HorizontalAlignment="Stretch" Margin="5" FontSize="22" Click="SearchButton_Click">
+				<StackPanel Orientation="Horizontal">
+					<FontIcon Glyph="&#xE721;" VerticalAlignment="Center" FontSize="22"/>
+					<TextBlock Text="Search" Margin="15,0,0,0" VerticalAlignment="Center" FontSize="18"/>
+				</StackPanel>
+			</Button>
+			<ProgressBar x:Name="MyLoadingBar" HorizontalAlignment="Stretch" Margin="5" IsIndeterminate="True" Visibility="Collapsed"/>
+		</StackPanel>
+		<Grid x:Name="LoadingGrid" Grid.Row="2" Visibility="Collapsed">
+			<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+				<ProgressRing x:Name="LoadingRing" Height="150" Width="150" IsActive="True" Margin="5"/>
+				<TextBlock x:Name="LoadingText" Text="Loading" TextAlignment="Center" FontSize="24" Margin="5"/>
+			</StackPanel>
+		</Grid>
+		<librarysection:LibraryItemsGroupView x:Name="GroupView" Grid.Row="2" Padding="5"/>
+		<Grid Grid.Row="3" Padding="5">
+			<TextBlock x:Name="TotalFoundText" d:Text="Total Found: 29" TextAlignment="Right" FontSize="18" Margin="5,0,10,0"/>
+		</Grid>
+		<controls:TeachingTip x:Name="InsufficientRequirements" Title="Warning" IsLightDismissEnabled="True" PlacementMargin="20" PreferredPlacement="Bottom" CloseButtonContent="OK">
+			<controls:TeachingTip.IconSource>
+				<controls:FontIconSource Glyph="&#xE7BA;"/>
+			</controls:TeachingTip.IconSource>
+		</controls:TeachingTip>
+	</Grid>
+</Page>

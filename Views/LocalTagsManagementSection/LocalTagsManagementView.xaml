@@ -6,35 +6,19 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+	d:RequestedTheme="Dark"
     d:DesignHeight="500"
     d:DesignWidth="500">
-	<UserControl.Resources>
-		<CollectionViewSource x:Name="MyContactsCVS" Source="{x:Bind tags}" IsSourceGrouped="True"/>
-	</UserControl.Resources>
+
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="250"/>
-			<ColumnDefinition Width="250"/>
-		</Grid.ColumnDefinitions>
-		<AutoSuggestBox x:Name="MyInputBox" HorizontalAlignment="Stretch" Margin="5" Grid.Row="0" TextChanged="MyInputBox_TextChanged"/>
-		<TextBlock x:Name="CountTextBlock" Text="Tags Found : " HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Grid.Row="0" Grid.Column="1"/>
-		<ListView x:Name="InputList" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Source={StaticResource MyContactsCVS}}" SelectionMode="None" IsItemClickEnabled="False">
-			<ListView.ItemsPanel>
-				<ItemsPanelTemplate>
-					<ItemsStackPanel AreStickyGroupHeadersEnabled="True"/>
-				</ItemsPanelTemplate>
-			</ListView.ItemsPanel>
-			<ListView.ItemContainerStyle>
-				<Style TargetType="ListViewItem">
-					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-					<Setter Property="VerticalContentAlignment" Value="Stretch"/>
-				</Style>
-			</ListView.ItemContainerStyle>
+		<AutoSuggestBox x:Name="MyInputBox" HorizontalAlignment="Stretch" Margin="5" Grid.Row="0" TextChanged="MyInputBox_TextChanged" PlaceholderText="Input Your Tags Here"/>
+
+		<ListView x:Name="InputList" ItemsSource="{x:Bind input}" Grid.Row="1" Grid.Column="0" SelectionMode="None" IsItemClickEnabled="False">
 			<ListView.ItemTemplate>
 				<DataTemplate x:DataType="x:String">
 					<Grid>
@@ -47,47 +31,14 @@
 					</Grid>
 				</DataTemplate>
 			</ListView.ItemTemplate>
-			<ListView.GroupStyle>
-				<GroupStyle>
-					<GroupStyle.HeaderTemplate>
-						<DataTemplate>
-							<TextBlock Text="{Binding Key}" Margin="10,0" FontWeight="Bold" />
-						</DataTemplate>
-					</GroupStyle.HeaderTemplate>
-				</GroupStyle>
-			</ListView.GroupStyle>
 		</ListView>
-		<StackPanel x:Name="LoadingPanel" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="50">
-			<ProgressRing IsActive="True" Width="50" Height="50"/>
-			<TextBlock Text="Loading Local Tags Information..." HorizontalAlignment="Center" FontSize="18" TextWrapping="Wrap" TextAlignment="Center"/>
-		</StackPanel>
-		<ListView x:Name="LocalList" Grid.Row="1" Grid.Column="1" ItemsSource="{x:Bind localTags}" SelectionMode="Multiple" IsItemClickEnabled="False" SelectionChanged="LocalList_SelectionChanged">
-			<ListView.ItemContainerStyle>
-				<Style TargetType="ListViewItem">
-					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-					<Setter Property="VerticalContentAlignment" Value="Stretch"/>
-				</Style>
-			</ListView.ItemContainerStyle>
-			<ListView.ItemTemplate>
-				<DataTemplate x:DataType="local:LocalTagsInfo">
-					<Grid>
-						<Grid.Resources>
-							<Style x:Key="MyTextBlock" TargetType="TextBlock">
-								<Setter Property="VerticalAlignment" Value="Center"/>
-								<Setter Property="FontSize" Value="18"/>
-							</Style>
-						</Grid.Resources>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="auto"/>
-						</Grid.ColumnDefinitions>
-						<TextBlock Text="{x:Bind name}" Style="{StaticResource MyTextBlock}"/>
-						<TextBlock Text="{x:Bind count}" Grid.Column="1" Style="{StaticResource MyTextBlock}"/>
-					</Grid>
-				</DataTemplate>
-			</ListView.ItemTemplate>
-		</ListView>
-		<Button x:Name="ConfirmButton" Content="Confirm" HorizontalAlignment="Stretch" FontSize="18" Margin="0,10,5,0" Grid.Row="2" Grid.Column="0" Tapped="ConfirmButton_Tapped"/>
-		<Button x:Name="BackButton" Content="Back" HorizontalAlignment="Stretch" FontSize="18" Margin="5,10,0,0" Grid.Row="2" Grid.Column="1" Tapped="BackButton_Tapped"/>
+		<Grid Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Button x:Name="ConfirmButton" Content="Confirm" HorizontalAlignment="Stretch" FontSize="18" Margin="0,10,5,0" Grid.Column="0" Tapped="ConfirmButton_Tapped"/>
+			<Button x:Name="BackButton" Content="Back" HorizontalAlignment="Stretch" FontSize="18" Margin="5,10,0,0" Grid.Column="1" Tapped="BackButton_Tapped"/>
+		</Grid>
 	</Grid>
 </UserControl>

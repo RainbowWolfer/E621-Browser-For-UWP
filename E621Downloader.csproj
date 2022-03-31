@@ -180,6 +180,10 @@
     <Compile Include="Pages\LibrarySection\Explorer.xaml.cs">
       <DependentUpon>Explorer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\LibrarySection\IViewTypePage.cs" />
+    <Compile Include="Pages\LibrarySection\LibraryFilterPage.xaml.cs">
+      <DependentUpon>LibraryFilterPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -242,6 +246,22 @@
     </Compile>
     <Compile Include="Views\ImagesSizeDialog.xaml.cs">
       <DependentUpon>ImagesSizeDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LibrarySection\ILibraryItemView.cs" />
+    <Compile Include="Views\LibrarySection\LibraryFolderDetailTooltip.xaml.cs">
+      <DependentUpon>LibraryFolderDetailTooltip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LibrarySection\LibraryItemsGroupView.xaml.cs">
+      <DependentUpon>LibraryItemsGroupView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LibrarySection\LibraryGridViewItem.xaml.cs">
+      <DependentUpon>LibraryGridViewItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LibrarySection\LibraryListViewItem.xaml.cs">
+      <DependentUpon>LibraryListViewItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LibrarySection\LibraryTitleBar.xaml.cs">
+      <DependentUpon>LibraryTitleBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginHelpSection.xaml.cs">
       <DependentUpon>LoginHelpSection.xaml</DependentUpon>
@@ -407,6 +427,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\LibrarySection\LibraryFilterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -488,6 +512,26 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ImagesSizeDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LibrarySection\LibraryFolderDetailTooltip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LibrarySection\LibraryItemsGroupView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LibrarySection\LibraryGridViewItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LibrarySection\LibraryListViewItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LibrarySection\LibraryTitleBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
