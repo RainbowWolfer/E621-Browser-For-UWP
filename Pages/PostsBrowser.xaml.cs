@@ -102,7 +102,7 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			this.Posts = posts;
-			tagsFilterSystem.RegisterBlackList(posts);
+			//tagsFilterSystem.RegisterBlackList(posts);
 			//if(tags.Length != 0) {
 			this.Tags = tags.Where(t => !string.IsNullOrWhiteSpace(t)).ToArray();
 			MainPage.ChangeCurrenttTags(tags);
@@ -569,7 +569,9 @@ namespace E621Downloader.Pages {
 		private async void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(this.pool == null) {
 				string title = E621Tag.JoinTags(Tags);
-				await MainPage.CreatePopupDialog(title, new CurrentTagsInformation(Tags));
+				var dialog = new CurrentTagsInformation(Tags);
+				await MainPage.CreatePopupDialog(title, dialog);
+				await Local.WriteListing();
 			} else {
 				await MainPage.CreatePopupDialog($"Pool:{this.pool.id}", new CurrentPoolInformation(this.pool));
 			}

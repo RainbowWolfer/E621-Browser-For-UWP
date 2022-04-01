@@ -1,0 +1,30 @@
+﻿<UserControl
+    x:Class="E621Downloader.Views.AddButtonInput"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="50"
+    d:DesignWidth="400"
+    d:RequestedTheme="Dark">
+
+	<Grid Margin="5" CornerRadius="5" Height="32">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="auto"/>
+		</Grid.ColumnDefinitions>
+		<Rectangle Fill="Gray" Opacity="0.1" Grid.ColumnSpan="2"/>
+		<TextBox x:Name="Box" TextChanging="Box_TextChanging" KeyDown="Box_KeyDown" PlaceholderText="{x:Bind PlaceholderText}" CornerRadius="4,0,0,4"/>
+		<Button x:Name="BoxAddButton" Grid.Column="1" Height="32" CornerRadius="0,4,4,0" Click="BoxAddButton_Click">
+			<FontIcon Glyph="&#xE109;"/>
+		</Button>
+		<controls:TeachingTip x:Name="WarningTip" Target="{x:Bind Box}" PlacementMargin="10" PreferredPlacement="Top" IsLightDismissEnabled="True" Title="Warning">
+			<controls:TeachingTip.IconSource>
+				<controls:FontIconSource Glyph="&#xE7BA;"/>
+			</controls:TeachingTip.IconSource>
+		</controls:TeachingTip>
+	</Grid>
+</UserControl>

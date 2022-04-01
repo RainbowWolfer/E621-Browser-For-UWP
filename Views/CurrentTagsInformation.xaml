@@ -8,6 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+	d:RequestedTheme="Dark"
     d:DesignHeight="300"
     d:DesignWidth="400"
 	Width="400">
@@ -21,22 +22,8 @@
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		<ToggleButton x:Name="FollowButton" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" Click="FollowButton_Click">
-			<ToggleButton.Content>
-				<StackPanel Orientation="Horizontal">
-					<TextBlock x:Name="FollowText" Text="Follow" FontSize="16"/>
-					<FontIcon Glyph="&#xEB51;" Margin="10,0,0,0"/>
-				</StackPanel>
-			</ToggleButton.Content>
-		</ToggleButton>
-		<ToggleButton x:Name="BlockButton" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" Click="BlockButton_Click">
-			<ToggleButton.Content>
-				<StackPanel Orientation="Horizontal">
-					<TextBlock x:Name="BlockText" Text="Block" FontSize="16"/>
-					<FontIcon Glyph="&#xEA39;" Margin="10,0,0,0"/>
-				</StackPanel>
-			</ToggleButton.Content>
-		</ToggleButton>
+		<local:ListingToggleSplitButton x:Name="FollowingToggle" OffIcon="&#xEB51;" OnIcon="&#xEB52;" OnText="Following" OffText="Follow" Margin="5"/>
+		<local:ListingToggleSplitButton x:Name="BlackToggle" Grid.Column="1" OffIcon="&#xEA39;" OnIcon="&#xEA39;" OnText="Blocking" OffText="Block" Margin="5"/>
 
 		<ScrollViewer Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0" Height="300">
 			<StackPanel x:Name="ExpanderPanel">

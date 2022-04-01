@@ -143,6 +143,7 @@
     </Compile>
     <Compile Include="Models\KeyListener.cs" />
     <Compile Include="Models\Locals\FavoritesList.cs" />
+    <Compile Include="Models\Locals\Listing.cs" />
     <Compile Include="Models\Posts\Favorites.cs" />
     <Compile Include="Models\Locals\LocalSettings.cs" />
     <Compile Include="Models\Locals\WelcomeInLanguages.cs" />
@@ -205,6 +206,9 @@
     <Compile Include="Pages\WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AddButtonInput.xaml.cs">
+      <DependentUpon>AddButtonInput.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomHostInputDialog.xaml.cs">
       <DependentUpon>CustomHostInputDialog.xaml</DependentUpon>
     </Compile>
@@ -262,6 +266,12 @@
     </Compile>
     <Compile Include="Views\LibrarySection\LibraryTitleBar.xaml.cs">
       <DependentUpon>LibraryTitleBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ListingToggleSplitButton.xaml.cs">
+      <DependentUpon>ListingToggleSplitButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ListingManager\BlackListManager.xaml.cs">
+      <DependentUpon>BlackListManager.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginHelpSection.xaml.cs">
       <DependentUpon>LoginHelpSection.xaml</DependentUpon>
@@ -459,6 +469,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AddButtonInput.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CustomHostInputDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -532,6 +546,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LibrarySection\LibraryTitleBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ListingToggleSplitButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ListingManager\BlackListManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -635,7 +657,7 @@
       <Version>7.1.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.7.0</Version>
+      <Version>2.7.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>

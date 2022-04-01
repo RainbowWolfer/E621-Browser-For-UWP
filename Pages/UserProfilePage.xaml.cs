@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Locals;
+using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
 using E621Downloader.Views;
 using System;
@@ -109,6 +110,18 @@ namespace E621Downloader.Pages {
 
 		private void VotedButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			MainPage.NavigateToPostsBrowser(1, $"votedup:anything");
+		}
+
+		private void TestButton_Click(object sender, RoutedEventArgs e) {
+			//if(E621User.Current == null) {
+			//	return;
+			//}
+			//HttpResult<string> result = await Data.PutRequestAsync(
+			//	$"https://{Data.GetHost()}/users/{E621User.Current.name}.json",
+			//	new KeyValuePair<string, string>("user[blacklisted_tags]", "feet\ncum")
+			//);
+				
+			//Debug.WriteLine(result.Result == HttpResultType.Success);
 		}
 	}
 }

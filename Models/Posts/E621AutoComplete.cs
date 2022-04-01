@@ -13,6 +13,7 @@ namespace E621Downloader.Models.Posts {
 	public class E621AutoComplete {
 		public static async Task<E621AutoComplete[]> GetAsync(string tag, CancellationToken? token = null) {
 			HttpResult<string> result = await Data.ReadURLAsync($"https://{Data.GetHost()}/tags/autocomplete.json?search[name_matches]={tag}", token);
+			Debug.WriteLine(result.Time);
 			if(result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<E621AutoComplete[]>(result.Content);
 			} else {

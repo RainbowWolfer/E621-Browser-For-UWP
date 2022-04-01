@@ -22,8 +22,8 @@ using System.Threading;
 namespace E621Downloader.Models.Locals {
 	public static class Local {
 		private static bool initialized = false;
-		private const string FOLLOWLISTNAME = "FollowList.txt";
-		private const string BLACKLISTNAME = "BlackList.txt";
+
+		private const string LISTINGNAME = "Listing.json";
 		private const string TOKENNAME = "Token.txt";
 		private const string DOWNLOADSINFONAME = "DownloadsInfo.json";
 		private const string FAVORITESLISTNAME = "FavorutesList.json";
@@ -31,8 +31,8 @@ namespace E621Downloader.Models.Locals {
 
 		private static StorageFolder LocalFolder => ApplicationData.Current.LocalFolder;
 
-		public static StorageFile FollowListFile { get; private set; }
-		public static StorageFile BlackListFile { get; private set; }
+		public static StorageFile ListingFile { get; private set; }
+		//public static StorageFile BlackListFile { get; private set; }
 
 		public static StorageFile FutureAccessTokenFile { get; private set; }
 		public static StorageFile DownloadsInfoFile { get; private set; }
@@ -41,6 +41,8 @@ namespace E621Downloader.Models.Locals {
 
 		public static string[] FollowList { get; private set; }
 		public static string[] BlackList { get; private set; }
+
+		public static Listing Listing { get; private set; }
 
 		private static string token;
 
@@ -53,8 +55,7 @@ namespace E621Downloader.Models.Locals {
 				throw new Exception("Local has been initialized more than one time!");
 			}
 			initialized = true;
-			FollowListFile = await LocalFolder.CreateFileAsync(FOLLOWLISTNAME, CreationCollisionOption.OpenIfExists);
-			BlackListFile = await LocalFolder.CreateFileAsync(BLACKLISTNAME, CreationCollisionOption.OpenIfExists);
+			ListingFile = await LocalFolder.CreateFileAsync(LISTINGNAME, CreationCollisionOption.OpenIfExists);
 
 			FutureAccessTokenFile = await LocalFolder.CreateFileAsync(TOKENNAME, CreationCollisionOption.OpenIfExists);
 
@@ -113,8 +114,7 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public async static Task Reload() {
-			FollowList = await GetFollowList();
-			BlackList = await GetBlackList();
+			await ReadListing();
 			await ReadLocalSettings();
 			string token = await GetTokenFromFile();
 			await SetToken(token);
@@ -122,49 +122,49 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public static void AddFollowList(string newTag) {
-			var list = FollowList.ToList();
-			list.Add(newTag);
-			FollowList = list.ToArray();
-			WriteFollowList(FollowList);
+			//var list = FollowList.ToList();
+			//list.Add(newTag);
+			//FollowList = list.ToArray();
+			//WriteFollowList(FollowList);
 		}
 
 		public static void AddBlackList(string newTag) {
-			var list = BlackList.ToList();
-			list.Add(newTag);
-			BlackList = list.ToArray();
-			WriteBlackList(BlackList);
+			//var list = BlackList.ToList();
+			//list.Add(newTag);
+			//BlackList = list.ToArray();
+			//WriteBlackList(BlackList);
 		}
 
 		public static void RemoveFollowList(string tag) {
-			var list = FollowList.ToList();
-			list.Remove(tag);
-			FollowList = list.ToArray();
-			WriteFollowList(FollowList);
+			//var list = FollowList.ToList();
+			//list.Remove(tag);
+			//FollowList = list.ToArray();
+			//WriteFollowList(FollowList);
 		}
 
 		public static void RemoveBlackList(string tag) {
-			var list = BlackList.ToList();
-			list.Remove(tag);
-			BlackList = list.ToArray();
-			WriteBlackList(BlackList);
+			//var list = BlackList.ToList();
+			//list.Remove(tag);
+			//BlackList = list.ToArray();
+			//WriteBlackList(BlackList);
 		}
 
-		public static bool CheckFollowList(string tag) => FollowList.Contains(tag);
-		public static bool CheckFollowList(string[] tags) => FollowList.Contains(E621Tag.JoinTags(tags));
-		public static bool CheckBlackList(string tag) => BlackList.Contains(tag);
-		public static bool CheckBlackList(string[] tags) => BlackList.Contains(E621Tag.JoinTags(tags));
+		public static bool CheckFollowList(string tag) => false;
+		public static bool CheckFollowList(string[] tags) => false;
+		public static bool CheckBlackList(string tag) => false;
+		public static bool CheckBlackList(string[] tags) => false;
 
 		public async static void WriteFollowList(string[] list) {
-			await FileIO.WriteLinesAsync(FollowListFile, list);
-			FollowList = list;
+			//await FileIO.WriteLinesAsync(FollowListFile, list);
+			//FollowList = list;
 		}
 		public async static void WriteBlackList(string[] list) {
-			await FileIO.WriteLinesAsync(BlackListFile, list);
-			BlackList = list;
+			//await FileIO.WriteLinesAsync(BlackListFile, list);
+			//BlackList = list;
 		}
 
-		private async static Task<string[]> GetFollowList() => await GetListFromFile(FollowListFile);
-		private async static Task<string[]> GetBlackList() => await GetListFromFile(BlackListFile);
+		private async static Task<string[]> GetFollowList() => await GetListFromFile(null);
+		private async static Task<string[]> GetBlackList() => await GetListFromFile(null);
 		private async static Task<string[]> GetListFromFile(StorageFile file) {
 			var list = new List<string>();
 			using(Stream stream = await file.OpenStreamForReadAsync()) {
@@ -186,6 +186,20 @@ namespace E621Downloader.Models.Locals {
 				}
 			}
 			return list.ToArray();
+		}
+
+		public static async Task WriteListing() {
+			string json = JsonConvert.SerializeObject(Listing, Formatting.Indented);
+			await FileIO.WriteTextAsync(ListingFile, json);
+		}
+
+		public static async Task ReadListing() {
+			string json = await FileIO.ReadTextAsync(ListingFile);
+			Listing = JsonConvert.DeserializeObject<Listing>(json);
+			if(Listing == null) {
+				Listing = Listing.GetDefaultListing();
+				await WriteListing();
+			}
 		}
 
 		public static MetaFile CreateMetaFile(StorageFile file, Post post, string groupName) {

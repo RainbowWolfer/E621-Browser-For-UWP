@@ -179,6 +179,45 @@ namespace E621Downloader.Models.Networks {
 			return new HttpResult<string>(result, code, content, stopwatch.ElapsedMilliseconds, helper);
 		}
 
+		public async static Task<HttpResult<string>> PutRequestAsync(string url, KeyValuePair<string, string> pair, CancellationToken? token = null, string username = "", string api = "") {
+			Stopwatch stopwatch = new Stopwatch();
+			stopwatch.Start();
+			var client = new HttpClient();
+			AddDefaultRequestHeaders(client, username, api);
+			HttpResponseMessage message = null;
+			HttpResultType result;
+			HttpStatusCode code;
+			string content = null;
+			string helper = "";
+			try {
+				var pairs = new List<KeyValuePair<string, string>>() { pair };
+				var data = new FormUrlEncodedContent(pairs);
+				if(token != null) {
+					message = await client.PutAsync(url, data, token.Value);
+				} else {
+					message = await client.PutAsync(url, data);
+				}
+				message.EnsureSuccessStatusCode();
+				code = message.StatusCode;
+				content = await message.Content.ReadAsStringAsync();
+				result = HttpResultType.Success;
+			} catch(OperationCanceledException) {
+				code = message?.StatusCode ?? HttpStatusCode.NotFound;
+				content = null;
+				result = HttpResultType.Canceled;
+			} catch(HttpRequestException e) {
+				code = message?.StatusCode ?? HttpStatusCode.NotFound;
+				content = e.Message;
+				helper = e.Message;
+				result = HttpResultType.Error;
+			} finally {
+				client.Dispose();
+				message?.Dispose();
+			}
+			stopwatch.Stop();
+			return new HttpResult<string>(result, code, content, stopwatch.ElapsedMilliseconds, helper);
+		}
+
 		private static void AddDefaultRequestHeaders(HttpClient client, string username, string api) {
 			client.DefaultRequestHeaders.Add("User-Agent", "RainbowWolferE621TestApp");
 			AddAuthorizationHeader(client, username, api);

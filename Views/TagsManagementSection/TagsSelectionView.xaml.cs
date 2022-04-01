@@ -71,17 +71,35 @@ namespace E621Downloader.Views.TagsManagementSection {
 			if(string.IsNullOrWhiteSpace(last)) {
 				AutoCompletesListView.Items.Clear();
 			} else {
-				LoadAutoSuggestion(last);
+				//await LoadAutoSuggestion(last);
+				SetLoadingbar(false);
+				DelayLoad(last);
 			}
 			//}
 		}
+		private CancellationTokenSource delay_cts;
+		private async void DelayLoad(string tag) {
+			if(delay_cts != null) {
+				delay_cts.Cancel();
+				delay_cts.Dispose();
+			}
+			delay_cts = new CancellationTokenSource();
+			try {
+				await Task.Delay(500, delay_cts.Token);
+			} catch(TaskCanceledException) {
+				return;
+			}
+			await LoadAutoSuggestion(tag);
+		}
 
 		private CancellationTokenSource cts;
-		private async void LoadAutoSuggestion(string tag) {
-			if(cts != null) {
-				cts.Cancel();
-				cts.Dispose();
-			}
+		private async Task LoadAutoSuggestion(string tag) {
+			try {
+				if(cts != null) {
+					cts.Cancel();
+					cts.Dispose();
+				}
+			} catch { }
 			cts = new CancellationTokenSource();
 			SetLoadingbar(true);
 			AutoCompletesListView.Items.Clear();
@@ -102,7 +120,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 			}
 		}
 
-		private void CalculateCurrentTags(){
+		private void CalculateCurrentTags() {
 			currentTags.Clear();
 			foreach(string item in MySuggestBox.Text.Trim().Split(" ").Where(s => !string.IsNullOrEmpty(s)).ToList()) {
 				currentTags.Add(item);
@@ -176,7 +194,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 			Hide();
 		}
 
-		private void Hide(){
+		private void Hide() {
 			if(cts != null) {
 				cts.Cancel();
 				cts.Dispose();

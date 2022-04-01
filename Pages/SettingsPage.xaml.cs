@@ -3,6 +3,7 @@ using E621Downloader.Models.Download;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Views;
+using E621Downloader.Views.ListingManager;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -52,22 +53,73 @@ namespace E621Downloader.Pages {
 			internalChanges = false;
 		}
 
-		private async void BlackListButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			var result = await PopUp(this, "Black List", Local.BlackList);
-			if(result.Item1 == ContentDialogResult.Primary) {
-				if(!App.CompareTwoArray(result.Item2, result.Item3)) {
-					Local.WriteBlackList(result.Item3);
-				}
-			}
+		private async void BlackListButton_Click(object sender, RoutedEventArgs e) {
+			//var result = await PopUp(this, "Black List", Local.BlackList);
+			//if(result.Item1 == ContentDialogResult.Primary) {
+			//	if(!App.CompareTwoArray(result.Item2, result.Item3)) {
+			//		Local.WriteBlackList(result.Item3);
+			//	}
+			//}
 		}
 
-		private async void FollowListButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			var result = await PopUp(this, "Follow List", Local.FollowList);
-			if(result.Item1 == ContentDialogResult.Primary) {
-				if(!App.CompareTwoArray(result.Item2, result.Item3)) {
-					Local.WriteFollowList(result.Item3);
+		private async void FollowListButton_Click(object sender, RoutedEventArgs e) {
+			FollowListButton.IsEnabled = false;
+			var content = new BlackListManager(Local.Listing.LocalFollowingLists);
+			content.OnNewListSubmit += async text => {
+				Local.Listing.LocalFollowingLists.Add(new SingleListing(text));
+				await Local.WriteListing();
+				content.Update(Local.Listing.LocalFollowingLists);
+				content.FocusListingsLastItem();
+			};
+			content.OnNewTagSubmit += async (listing, tag) => {
+				listing.Tags.Add(tag);
+				await Local.WriteListing();
+				content.LoadTags(listing, true);
+			};
+			content.OnPasteImport += async array => {
+				int count = Local.Listing.LocalFollowingLists.Count;
+				string newName;
+				do {
+					newName = $"Paste List - {count++}";
+				} while(Local.Listing.LocalFollowingLists.Any(i => i.Name == newName));
+				var list = new SingleListing(newName) {
+					Tags = array.ToList(),
+					IsDefault = false,
+					IsCloud = false,
+				};
+				Local.Listing.LocalFollowingLists.Add(list);
+				await Local.WriteListing();
+				content.Update(Local.Listing.LocalFollowingLists);
+				content.FocusListingsLastItem();
+			};
+			content.OnListingDelete += async listing => {
+				Local.Listing.LocalFollowingLists.Remove(listing);
+				await Local.WriteListing();
+				content.Update(Local.Listing.LocalFollowingLists);
+				content.FocusListingsLastItem();
+			};
+			content.OnListingSetAsDefault += async listing => {
+				foreach(SingleListing item in Local.Listing.LocalFollowingLists) {
+					item.IsDefault = item == listing.Listing;
 				}
-			}
+				await Local.WriteListing();
+			};
+			content.OnListingRename += async (listing, text) => {
+				listing.Name = text;
+				await Local.WriteListing();
+			};
+			content.OnTagDelete += async (listing, tag) => {
+				listing.Tags.Remove(tag.Tag);
+				await Local.WriteListing();
+			};
+			var dialog = new ContentDialog() {
+				Title = "Follow List",
+				CloseButtonText = "Back",
+				Content = content,
+			};
+			dialog.Resources["ContentDialogMaxWidth"] = 650;
+			await dialog.ShowAsync();
+			FollowListButton.IsEnabled = true;
 		}
 
 

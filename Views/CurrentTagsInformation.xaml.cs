@@ -30,62 +30,67 @@ namespace E621Downloader.Views {
 				});
 			}
 			filtered = E621Tag.FilterMetatags(this.tags);
-			FollowButton.IsEnabled = filtered.Length != 0;
-			BlockButton.IsEnabled = filtered.Length != 0;
+			string tag = E621Tag.JoinTags(filtered);
+			if(filtered.Length == 0) {
+				FollowingToggle.IsEnabled = false;
+				BlackToggle.IsEnabled = false;
+			} else {
+				var follow_list = Local.Listing.LocalFollowingLists.ToList();
+				FollowingToggle.Initialize(tag, follow_list);
+				FollowingToggle.OnComboBoxChecked += dic => {
+					//(list name, isChecked)
+					foreach(KeyValuePair<string, bool> item in dic) {
+						SingleListing found = follow_list.Find(l => l.Name == item.Key);
+						if(found == null) {
+							continue;
+						}
+						if(item.Value) {
+							if(!found.Tags.Contains(tag)) {
+								found.Tags.Add(tag);
+							}
+							if(found.IsDefault) {
+								BlackToggle.UncheckDefault();
+							}
+						} else {
+							if(found.Tags.Contains(tag)) {
+								found.Tags.Remove(tag);
+							}
+						}
+					}
+				};
+				FollowingToggle.OnToggled += () => {
+					BlackToggle.UncheckDefault();
+				};
 
-			if(Local.CheckFollowList(tags)) {
-				FollowButton.IsChecked = true;
-			}
-			if(Local.CheckBlackList(tags)) {
-				BlockButton.IsChecked = true;
+				var black_list = Local.Listing.LocalBlackLists.Append(Local.Listing.CloudBlackList).ToList();
+				BlackToggle.Initialize(tag, black_list);
+				BlackToggle.OnComboBoxChecked += dic => {
+					foreach(KeyValuePair<string, bool> item in dic) {
+						SingleListing found = black_list.Find(l => l.Name == item.Key);
+						if(found == null) {
+							continue;
+						}
+						if(item.Value) {
+							if(!found.Tags.Contains(tag)) {
+								found.Tags.Add(tag);
+							}
+							if(found.IsDefault) {
+								FollowingToggle.UncheckDefault();
+							}
+						} else {
+							if(found.Tags.Contains(tag)) {
+								found.Tags.Remove(tag);
+							}
+						}
+					}
+				};
+				BlackToggle.OnToggled += () => {
+					FollowingToggle.UncheckDefault();
+				};
+
 			}
 			initializing = false;
 		}
 
-		private void FollowButton_Click(object sender, RoutedEventArgs e) {
-			if(initializing) {
-				return;
-			}
-			bool isOn = (sender as ToggleButton).IsChecked.Value;
-			FollowText.Text = isOn ? "Following" : "Follow";
-			string tag = E621Tag.JoinTags(filtered);
-			if(isOn) {
-				if(!Local.CheckFollowList(tag)) {
-					Local.AddFollowList(tag);
-				}
-				if(Local.CheckBlackList(tag)) {
-					Local.RemoveBlackList(tag);
-				}
-			} else {
-				if(Local.CheckFollowList(tag)) {
-					Local.RemoveFollowList(tag);
-				}
-			}
-			BlockButton.IsChecked = false;
-			BlockText.Text = "Block";
-		}
-
-		private void BlockButton_Click(object sender, RoutedEventArgs e) {
-			if(initializing) {
-				return;
-			}
-			bool isOn = (sender as ToggleButton).IsChecked.Value;
-			BlockText.Text = isOn ? "Blocking" : "Block";
-			string tag = E621Tag.JoinTags(filtered);
-			if(isOn) {
-				if(!Local.CheckBlackList(tag)) {
-					Local.AddBlackList(tag);
-				}
-				if(Local.CheckFollowList(tag)) {
-					Local.RemoveFollowList(tag);
-				}
-			} else {
-				if(Local.CheckBlackList(tag)) {
-					Local.AddBlackList(tag);
-				}
-			}
-			FollowButton.IsChecked = false;
-			FollowText.Text = "Follow";
-		}
 	}
 }
