@@ -107,12 +107,12 @@ namespace E621Downloader.Pages {
 			cts = new CancellationTokenSource();
 			LoadingRing.IsActive = true;
 			MainGridView.Items.Clear();
-			if(Local.Listing.DefaultFollowList.Tags.Count() == 0) {
+			if(Local.Listing.GetGetDefaultFollowList().Tags.Count() == 0) {
 				LoadingRing.IsActive = false;
 				RefreshContentButton.IsEnabled = true;
 				FavoritesListHintText.Visibility = Visibility.Visible;
 			} else {
-				List<Post> posts = await Post.GetPostsByTagsAsync(cts.Token, true, page, Local.Listing.DefaultFollowList.Tags.ToArray());
+				List<Post> posts = await Post.GetPostsByTagsAsync(cts.Token, true, page, Local.Listing.GetGetDefaultFollowList().Tags.ToArray());
 				if(posts == null) {
 					return;
 				}
@@ -124,7 +124,7 @@ namespace E621Downloader.Pages {
 							Height = Size,
 							Width = Size,
 						};
-						image.LoadFromPost(post, Local.Listing.DefaultFollowList.Tags.ToArray());
+						image.LoadFromPost(post, Local.Listing.GetGetDefaultFollowList().Tags.ToArray());
 						MainGridView.Items.Add(image);
 					}
 					LoadingRing.IsActive = false;

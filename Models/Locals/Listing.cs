@@ -12,37 +12,42 @@ namespace E621Downloader.Models.Locals {
 		public List<SingleListing> LocalFollowingLists { get; set; } = new List<SingleListing>();
 		public List<SingleListing> LocalBlackLists { get; set; } = new List<SingleListing>();
 
-		public SingleListing DefaultFollowList => LocalFollowingLists.Find(i => i.IsDefault) ?? new SingleListing("Error");
-		public SingleListing DefaultBlackList => LocalBlackLists.Find(i => i.IsDefault) ?? new SingleListing("Error");
-
 		public Listing() {
 
 		}
 
+		public SingleListing GetGetDefaultFollowList() {
+			return LocalFollowingLists.Find(i => i.IsDefault) ?? new SingleListing("Error");
+		}
+
+		public SingleListing GetGetDefaultBlackList() {
+			return LocalBlackLists.Find(i => i.IsDefault) ?? new SingleListing("Error");
+		}
+
 		public async Task AddFollowingList(string tag) {
-			if(!DefaultFollowList.Tags.Contains(tag)) {
-				DefaultFollowList.Tags.Add(tag);
+			if(!GetGetDefaultFollowList().Tags.Contains(tag)) {
+				GetGetDefaultFollowList().Tags.Add(tag);
 			}
 			await Local.WriteListing();
 		}
 
 		public async Task AddBlackList(string tag) {
-			if(!DefaultBlackList.Tags.Contains(tag)) {
-				DefaultBlackList.Tags.Add(tag);
+			if(!GetGetDefaultBlackList().Tags.Contains(tag)) {
+				GetGetDefaultBlackList().Tags.Add(tag);
 			}
 			await Local.WriteListing();
 		}
 
 		public async Task RemoveFollowingList(string tag) {
-			if(DefaultFollowList.Tags.Contains(tag)) {
-				DefaultFollowList.Tags.Remove(tag);
+			if(GetGetDefaultFollowList().Tags.Contains(tag)) {
+				GetGetDefaultFollowList().Tags.Remove(tag);
 			}
 			await Local.WriteListing();
 		}
 
 		public async Task RemoveBlackList(string tag) {
-			if(DefaultBlackList.Tags.Contains(tag)) {
-				DefaultBlackList.Tags.Remove(tag);
+			if(GetGetDefaultBlackList().Tags.Contains(tag)) {
+				GetGetDefaultBlackList().Tags.Remove(tag);
 			}
 			await Local.WriteListing();
 		}
@@ -51,7 +56,7 @@ namespace E621Downloader.Models.Locals {
 			if(tags.Length == 0) {
 				return false;
 			} else {
-				return DefaultFollowList.Tags.Contains(E621Tag.JoinTags(tags)); ;
+				return GetGetDefaultFollowList().Tags.Contains(E621Tag.JoinTags(tags)); ;
 			}
 		}
 
@@ -59,7 +64,7 @@ namespace E621Downloader.Models.Locals {
 			if(tags.Length == 0) {
 				return false;
 			} else {
-				return DefaultBlackList.Tags.Contains(E621Tag.JoinTags(tags)); ;
+				return GetGetDefaultBlackList().Tags.Contains(E621Tag.JoinTags(tags)); ;
 			}
 		}
 

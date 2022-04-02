@@ -20,9 +20,11 @@ namespace E621Downloader.Views {
 		private readonly string[] tags;
 		private readonly string[] filtered;
 		private bool initializing = true;
-		public CurrentTagsInformation(string[] tags) {
+		private readonly ContentDialog dialog;
+		public CurrentTagsInformation(string[] tags, ContentDialog dialog) {
 			this.InitializeComponent();
 			this.tags = E621Tag.SortOutMetatags(tags);
+			this.dialog = dialog;
 			for(int i = 0; i < this.tags.Length; i++) {
 				ExpanderPanel.Children.Add(new TagExpander(this.tags[i]) {
 					IsExpanded = true,
@@ -34,6 +36,8 @@ namespace E621Downloader.Views {
 			if(filtered.Length == 0) {
 				FollowingToggle.IsEnabled = false;
 				BlackToggle.IsEnabled = false;
+				FollowingToggle.IsChecked = false;
+				BlackToggle.IsChecked = false;
 			} else {
 				var follow_list = Local.Listing.LocalFollowingLists.ToList();
 				FollowingToggle.Initialize(tag, follow_list);
@@ -92,5 +96,12 @@ namespace E621Downloader.Views {
 			initializing = false;
 		}
 
+		private void FollowingToggle_OnSettingsClick() {
+			dialog.Hide();
+		}
+
+		private void BlackToggle_OnSettingsClick() {
+			dialog.Hide();
+		}
 	}
 }

@@ -541,7 +541,7 @@ namespace E621Downloader.Views.ListingManager {
 				if(result == null) {
 					return;
 				}
-				content = $"Post Count: {result.post_count}      Post Category: {E621Tag.GetCategory(result.category)}";
+				content = $"Post Count: {result.post_count}      Tag Category: {E621Tag.GetCategory(result.category)}";
 				tagsInfo.Add(tag.Tag, content);
 			}
 			if(string.IsNullOrEmpty(content)) {

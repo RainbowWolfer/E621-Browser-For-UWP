@@ -130,6 +130,7 @@ namespace E621Downloader.Pages.LibrarySection {
 		}
 
 		private async Task Refresh(bool load = true, string matchedName = null) {
+			TitleBar.ShowLocalChangedHintText = false;
 			GroupView.ClearItems();
 			if(args is LibraryImagesArgs imagesArgs) {
 				if(load) {
@@ -148,6 +149,9 @@ namespace E621Downloader.Pages.LibrarySection {
 			base.OnNavigatedTo(e);
 			if(e.Parameter is LibraryPassArgs args) {
 				this.args = args;
+				if(this.args.NeedRefresh) {
+					TitleBar.ShowLocalChangedHintText = true;
+				}
 				libraryPage = args.Parent;
 				TitleBar.Title = args.Title;
 
@@ -172,8 +176,6 @@ namespace E621Downloader.Pages.LibrarySection {
 					}
 					TitleBar.IsFolderBar = false;
 				}
-
-				libraryPage.EnableRefreshButton(false);
 			}
 		}
 
@@ -347,8 +349,8 @@ namespace E621Downloader.Pages.LibrarySection {
 		}
 
 		public void RefreshRequest() {
-			//refreshNeeded = true;
-			libraryPage.EnableRefreshButton(true);
+			args.NeedRefresh = true;
+			TitleBar.ShowLocalChangedHintText = true;
 		}
 
 		public void UpdateSize(int size) {

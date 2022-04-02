@@ -68,8 +68,8 @@ namespace E621Downloader.Pages.LibrarySection {
 				orderType = value;
 			}
 		}
-		public LibraryFilterArgs FilterArgs { get; }
-		public LibraryFoldersArgs RootFoldersArgs { get; }
+		public LibraryFilterArgs FilterArgs { get; private set; }
+		public LibraryFoldersArgs RootFoldersArgs { get; private set; }
 		public Dictionary<StorageFolder, LibraryImagesArgs> ImagesArgs { get; } = new Dictionary<StorageFolder, LibraryImagesArgs>();
 
 		//private readonly LibraryTab home;
@@ -90,7 +90,6 @@ namespace E621Downloader.Pages.LibrarySection {
 				Parent = this,
 				Title = "Filter",
 			};
-
 			RootFoldersArgs = new LibraryFoldersArgs() {
 				Parent = this,
 				Title = "Home",
@@ -101,8 +100,13 @@ namespace E621Downloader.Pages.LibrarySection {
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			if(!SettingsPage.isDownloadPathChangingHandled) {
-				//TabsListView.SelectedIndex = 1;
+				RootFoldersArgs = new LibraryFoldersArgs() {
+					Parent = this,
+					Title = "Home",
+					RootFolder = Local.DownloadFolder,
+				};
 				NavigateToHome();
+				ClearTabs();
 				SettingsPage.isDownloadPathChangingHandled = true;
 			} else {
 				if(e.Parameter is string folderName) {
@@ -145,6 +149,19 @@ namespace E621Downloader.Pages.LibrarySection {
 		//	}
 		//}
 		//}
+
+		public void ClearTabs() {
+			List<NavigationViewItem> itemsToDelete = new List<NavigationViewItem>();
+			foreach(var item in MainNavigationView.MenuItems.Where(i => i is NavigationViewItem).Cast<NavigationViewItem>()) {
+				if(item == RootItem || item == FilterItem) {
+					continue;
+				}
+				itemsToDelete.Add(item);
+			}
+			foreach(NavigationViewItem item in itemsToDelete) {
+				MainNavigationView.MenuItems.Remove(item);
+			}
+		}
 
 		public void ToTab(StorageFolder folder) {
 			bool found = false;
@@ -357,10 +374,6 @@ namespace E621Downloader.Pages.LibrarySection {
 			//Navigate(typeof(Explorer), new object[] { param, this });
 		}
 
-		public void EnableRefreshButton(bool b) {
-			//RefreshPanel.Visibility = b ? Visibility.Visible : Visibility.Collapsed;
-		}
-
 		private void CloseButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			Button b = sender as Button;
 			Debug.WriteLine(b.Parent);
@@ -469,6 +482,7 @@ namespace E621Downloader.Pages.LibrarySection {
 	public abstract class LibraryPassArgs {
 		public LibraryPage Parent { get; set; } = null;
 		public string Title { get; set; } = "Title Not Set";
+		public bool NeedRefresh { get; set; }
 	}
 
 	public class LibraryFoldersArgs: LibraryPassArgs {

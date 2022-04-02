@@ -568,9 +568,13 @@ namespace E621Downloader.Pages {
 
 		private async void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(this.pool == null) {
-				string title = E621Tag.JoinTags(Tags);
-				var dialog = new CurrentTagsInformation(Tags);
-				await MainPage.CreatePopupDialog(title, dialog);
+				ContentDialog dialog = new ContentDialog() {
+					Title = E621Tag.JoinTags(Tags),
+					CloseButtonText = "Back",
+				};
+				var content = new CurrentTagsInformation(Tags, dialog);
+				dialog.Content = content;
+				await dialog.ShowAsync();
 				await Local.WriteListing();
 			} else {
 				await MainPage.CreatePopupDialog($"Pool:{this.pool.id}", new CurrentPoolInformation(this.pool));

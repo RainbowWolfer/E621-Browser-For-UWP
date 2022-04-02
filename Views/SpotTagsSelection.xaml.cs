@@ -23,7 +23,7 @@ namespace E621Downloader.Views {
 		private string[] initial_followings;
 		public SpotTagsSelection() {
 			this.InitializeComponent();
-			Followings = Local.Listing.DefaultFollowList.Tags.ToArray();
+			Followings = Local.Listing.GetGetDefaultFollowList().Tags.ToArray();
 		}
 
 		public void Initialize(string[] input, string[] followings) {

@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
@@ -22,6 +23,7 @@ namespace E621Downloader.Views {
 	public sealed partial class ListingToggleSplitButton: UserControl {
 		public event Action<Dictionary<string, bool>> OnComboBoxChecked;
 		public event Action OnToggled;
+		public event Action OnSettingsClick;
 
 		private readonly List<ComboBoxLine> lists = new List<ComboBoxLine>();
 		private List<SingleListing> listings;
@@ -163,6 +165,34 @@ namespace E621Downloader.Views {
 				box.Unchecked += Box_Checked;
 				panel.Children.Add(box);
 			}
+			StackPanel buttonPanel = new StackPanel() {
+				Orientation = Orientation.Horizontal,
+			};
+			var gotoSettingsIcon = new FontIcon {
+				Glyph = "\uE115",
+				Margin = new Thickness(0, 0, 10, 0),
+				VerticalAlignment = VerticalAlignment.Center,
+			};
+			var gotoSettingsText = new TextBlock() {
+				Text = "Settings",
+				VerticalAlignment = VerticalAlignment.Center,
+			};
+			buttonPanel.Children.Add(gotoSettingsIcon);
+			buttonPanel.Children.Add(gotoSettingsText);
+			Button gotoSettingsButton = new Button() {
+				HorizontalAlignment = HorizontalAlignment.Stretch,
+				HorizontalContentAlignment = HorizontalAlignment.Center,
+				Margin = new Thickness(5, 10, 5, 0),
+				Content = buttonPanel,
+			};
+			gotoSettingsButton.Click += async (s, args) => {
+				flyout.Hide();
+				await Task.Delay(10);
+				OnSettingsClick?.Invoke();
+				await Task.Delay(10);
+				MainPage.NavigateTo(PageTag.Settings);
+			};
+			panel.Children.Add(gotoSettingsButton);
 
 			flyout.ShowAt(SideToggle);
 		}
