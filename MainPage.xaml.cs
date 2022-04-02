@@ -383,7 +383,11 @@ namespace E621Downloader {
 					parameter = parameter_picture;
 					break;
 				case PageTag.Library:
-					target = typeof(LibraryPage);
+					if(Local.DownloadFolder == null) {
+						target = typeof(LibraryNoFolderPage);
+					} else {
+						target = typeof(LibraryPage);
+					}
 					parameter = parameter_library;
 					break;
 				case PageTag.Subscription:

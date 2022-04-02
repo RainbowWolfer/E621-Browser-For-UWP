@@ -107,12 +107,12 @@ namespace E621Downloader.Pages {
 			cts = new CancellationTokenSource();
 			LoadingRing.IsActive = true;
 			MainGridView.Items.Clear();
-			if(Local.FollowList == null || Local.FollowList.Length == 0) {
+			if(Local.Listing.DefaultFollowList.Tags.Count() == 0) {
 				LoadingRing.IsActive = false;
 				RefreshContentButton.IsEnabled = true;
 				FavoritesListHintText.Visibility = Visibility.Visible;
 			} else {
-				List<Post> posts = await Post.GetPostsByTagsAsync(cts.Token, true, page, Local.FollowList);
+				List<Post> posts = await Post.GetPostsByTagsAsync(cts.Token, true, page, Local.Listing.DefaultFollowList.Tags.ToArray());
 				if(posts == null) {
 					return;
 				}
@@ -124,7 +124,7 @@ namespace E621Downloader.Pages {
 							Height = Size,
 							Width = Size,
 						};
-						image.LoadFromPost(post, Local.FollowList);
+						image.LoadFromPost(post, Local.Listing.DefaultFollowList.Tags.ToArray());
 						MainGridView.Items.Add(image);
 					}
 					LoadingRing.IsActive = false;
@@ -348,7 +348,8 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void ManageButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			await SettingsPage.FollowListManage(this);
+			await SettingsPage.PopupListingManager("Follow List", Local.Listing.LocalFollowingLists);
+
 		}
 
 		private void LeftButton_Tapped(object sender, TappedRoutedEventArgs e) {

@@ -39,8 +39,8 @@ namespace E621Downloader.Models.Locals {
 		public static StorageFile FavoritesListFile { get; private set; }
 		public static StorageFile LocalSettingsFile { get; private set; }
 
-		public static string[] FollowList { get; private set; }
-		public static string[] BlackList { get; private set; }
+		//public static string[] FollowList { get; private set; }
+		//public static string[] BlackList { get; private set; }
 
 		public static Listing Listing { get; private set; }
 
@@ -121,72 +121,72 @@ namespace E621Downloader.Models.Locals {
 			await ReadFavoritesLists();
 		}
 
-		public static void AddFollowList(string newTag) {
-			//var list = FollowList.ToList();
-			//list.Add(newTag);
-			//FollowList = list.ToArray();
-			//WriteFollowList(FollowList);
-		}
+		//public static void AddFollowList(string newTag) {
+		//	//var list = FollowList.ToList();
+		//	//list.Add(newTag);
+		//	//FollowList = list.ToArray();
+		//	//WriteFollowList(FollowList);
+		//}
 
-		public static void AddBlackList(string newTag) {
-			//var list = BlackList.ToList();
-			//list.Add(newTag);
-			//BlackList = list.ToArray();
-			//WriteBlackList(BlackList);
-		}
+		//public static void AddBlackList(string newTag) {
+		//	//var list = BlackList.ToList();
+		//	//list.Add(newTag);
+		//	//BlackList = list.ToArray();
+		//	//WriteBlackList(BlackList);
+		//}
 
-		public static void RemoveFollowList(string tag) {
-			//var list = FollowList.ToList();
-			//list.Remove(tag);
-			//FollowList = list.ToArray();
-			//WriteFollowList(FollowList);
-		}
+		//public static void RemoveFollowList(string tag) {
+		//	//var list = FollowList.ToList();
+		//	//list.Remove(tag);
+		//	//FollowList = list.ToArray();
+		//	//WriteFollowList(FollowList);
+		//}
 
-		public static void RemoveBlackList(string tag) {
-			//var list = BlackList.ToList();
-			//list.Remove(tag);
-			//BlackList = list.ToArray();
-			//WriteBlackList(BlackList);
-		}
+		//public static void RemoveBlackList(string tag) {
+		//	//var list = BlackList.ToList();
+		//	//list.Remove(tag);
+		//	//BlackList = list.ToArray();
+		//	//WriteBlackList(BlackList);
+		//}
 
-		public static bool CheckFollowList(string tag) => false;
-		public static bool CheckFollowList(string[] tags) => false;
-		public static bool CheckBlackList(string tag) => false;
-		public static bool CheckBlackList(string[] tags) => false;
+		//public static bool CheckFollowList(string tag) => false;
+		//public static bool CheckFollowList(string[] tags) => false;
+		//public static bool CheckBlackList(string tag) => false;
+		//public static bool CheckBlackList(string[] tags) => false;
 
-		public async static void WriteFollowList(string[] list) {
-			//await FileIO.WriteLinesAsync(FollowListFile, list);
-			//FollowList = list;
-		}
-		public async static void WriteBlackList(string[] list) {
-			//await FileIO.WriteLinesAsync(BlackListFile, list);
-			//BlackList = list;
-		}
+		//public async static void WriteFollowList(string[] list) {
+		//	//await FileIO.WriteLinesAsync(FollowListFile, list);
+		//	//FollowList = list;
+		//}
+		//public async static void WriteBlackList(string[] list) {
+		//	//await FileIO.WriteLinesAsync(BlackListFile, list);
+		//	//BlackList = list;
+		//}
 
-		private async static Task<string[]> GetFollowList() => await GetListFromFile(null);
-		private async static Task<string[]> GetBlackList() => await GetListFromFile(null);
-		private async static Task<string[]> GetListFromFile(StorageFile file) {
-			var list = new List<string>();
-			using(Stream stream = await file.OpenStreamForReadAsync()) {
-				using(StreamReader reader = new StreamReader(stream)) {
-					string line = "";
-					foreach(char c in await reader.ReadToEndAsync()) {
-						if(c == '\r' || c == '\n') {
-							if(line.Length > 0) {
-								list.Add(line);
-							}
-							line = "";
-							continue;
-						}
-						line += c;
-					}
-					if(line.Length > 0) {
-						list.Add(line);
-					}
-				}
-			}
-			return list.ToArray();
-		}
+		//private async static Task<string[]> GetFollowList() => await GetListFromFile(null);
+		//private async static Task<string[]> GetBlackList() => await GetListFromFile(null);
+		//private async static Task<string[]> GetListFromFile(StorageFile file) {
+		//	var list = new List<string>();
+		//	using(Stream stream = await file.OpenStreamForReadAsync()) {
+		//		using(StreamReader reader = new StreamReader(stream)) {
+		//			string line = "";
+		//			foreach(char c in await reader.ReadToEndAsync()) {
+		//				if(c == '\r' || c == '\n') {
+		//					if(line.Length > 0) {
+		//						list.Add(line);
+		//					}
+		//					line = "";
+		//					continue;
+		//				}
+		//				line += c;
+		//			}
+		//			if(line.Length > 0) {
+		//				list.Add(line);
+		//			}
+		//		}
+		//	}
+		//	return list.ToArray();
+		//}
 
 		public static async Task WriteListing() {
 			string json = JsonConvert.SerializeObject(Listing, Formatting.Indented);

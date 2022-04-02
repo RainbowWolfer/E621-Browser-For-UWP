@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models.Networks;
+using E621Downloader.Models.Posts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +9,63 @@ using System.Threading.Tasks;
 namespace E621Downloader.Models.Locals {
 	public class Listing {
 		public SingleListing CloudBlackList { get; set; } = new SingleListing("Cloud") { IsCloud = true, };
-		public List<SingleListing> LocalBlackLists { get; set; } = new List<SingleListing>();
 		public List<SingleListing> LocalFollowingLists { get; set; } = new List<SingleListing>();
+		public List<SingleListing> LocalBlackLists { get; set; } = new List<SingleListing>();
+
+		public SingleListing DefaultFollowList => LocalFollowingLists.Find(i => i.IsDefault) ?? new SingleListing("Error");
+		public SingleListing DefaultBlackList => LocalBlackLists.Find(i => i.IsDefault) ?? new SingleListing("Error");
 
 		public Listing() {
 
 		}
 
+		public async Task AddFollowingList(string tag) {
+			if(!DefaultFollowList.Tags.Contains(tag)) {
+				DefaultFollowList.Tags.Add(tag);
+			}
+			await Local.WriteListing();
+		}
+
+		public async Task AddBlackList(string tag) {
+			if(!DefaultBlackList.Tags.Contains(tag)) {
+				DefaultBlackList.Tags.Add(tag);
+			}
+			await Local.WriteListing();
+		}
+
+		public async Task RemoveFollowingList(string tag) {
+			if(DefaultFollowList.Tags.Contains(tag)) {
+				DefaultFollowList.Tags.Remove(tag);
+			}
+			await Local.WriteListing();
+		}
+
+		public async Task RemoveBlackList(string tag) {
+			if(DefaultBlackList.Tags.Contains(tag)) {
+				DefaultBlackList.Tags.Remove(tag);
+			}
+			await Local.WriteListing();
+		}
+
+		public bool CheckFollowingList(params string[] tags) {
+			if(tags.Length == 0) {
+				return false;
+			} else {
+				return DefaultFollowList.Tags.Contains(E621Tag.JoinTags(tags)); ;
+			}
+		}
+
+		public bool CheckBlackList(params string[] tags) {
+			if(tags.Length == 0) {
+				return false;
+			} else {
+				return DefaultBlackList.Tags.Contains(E621Tag.JoinTags(tags)); ;
+			}
+		}
+
 		public static Listing GetDefaultListing() {
-			string hostName = Data.GetSimpleHost();
 			return new Listing() {
-				CloudBlackList = new SingleListing($"{hostName} Cloud") {
+				CloudBlackList = new SingleListing($"{Data.GetSimpleHost()} Cloud") {
 					IsCloud = true,
 				},
 				LocalBlackLists = new List<SingleListing>() {

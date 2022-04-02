@@ -185,6 +185,9 @@
     <Compile Include="Pages\LibrarySection\LibraryFilterPage.xaml.cs">
       <DependentUpon>LibraryFilterPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\LibrarySection\LibraryNoFolderPage.xaml.cs">
+      <DependentUpon>LibraryNoFolderPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -438,6 +441,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\LibrarySection\LibraryFilterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\LibrarySection\LibraryNoFolderPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

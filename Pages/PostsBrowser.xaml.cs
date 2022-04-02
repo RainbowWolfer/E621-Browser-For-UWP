@@ -652,7 +652,7 @@ namespace E621Downloader.Pages {
 			black_tags.Clear();
 			foreach(Post item in posts) {
 				foreach(string tag in item.tags.GetAllTags()) {
-					if(Local.BlackList.Contains(tag)) {
+					if(Local.Listing.CheckBlackList(tag)) {
 						if(black_tags.ContainsKey(tag)) {
 							black_tags[tag]++;
 						} else {

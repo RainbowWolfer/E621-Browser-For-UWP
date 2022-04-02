@@ -67,7 +67,7 @@ namespace E621Downloader.Pages {
 			FollowListButton.IsEnabled = true;
 		}
 
-		private async Task PopupListingManager(string title, List<SingleListing> listings) {
+		public static async Task PopupListingManager(string title, List<SingleListing> listings) {
 			var content = new BlackListManager(listings);
 			content.OnNewListSubmit += async text => {
 				listings.Add(new SingleListing(text));
@@ -133,30 +133,6 @@ namespace E621Downloader.Pages {
 			dialog.Resources["ContentDialogMaxWidth"] = 650;
 			await dialog.ShowAsync();
 			content.OnClose();
-		}
-
-
-		private static async Task<(ContentDialogResult, string[], string[])> PopUp(Page page, string title, string[] list) {
-			string[] oldValue = list;
-			ContentDialog dialog = new ContentDialog() {
-				Title = title,
-				PrimaryButtonText = "Confirm",
-				SecondaryButtonText = "Cancel",
-			};
-			var manager = new ListManager(page, oldValue, dialog);
-			dialog.Content = manager;
-			ContentDialogResult result = await dialog.ShowAsync();
-			string[] newValue = manager.GetCurrentTags();
-			return (result, oldValue, newValue);
-		}
-
-		public static async Task FollowListManage(Page page) {
-			var result = await PopUp(page, "Follow List", Local.FollowList);
-			if(result.Item1 == ContentDialogResult.Primary) {
-				if(!App.CompareTwoArray(result.Item2, result.Item3)) {
-					Local.WriteFollowList(result.Item3);
-				}
-			}
 		}
 
 		private async void DownloadPathButton_Tapped(object sender, TappedRoutedEventArgs e) {

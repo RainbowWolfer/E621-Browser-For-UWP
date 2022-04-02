@@ -24,28 +24,28 @@ namespace E621Downloader.Views {
 		public CurrentPoolInformation(E621Pool pool) {
 			this.InitializeComponent();
 			Pool = pool;
-			if(Local.CheckFollowList(pool.Tag)) {
+			if(Local.Listing.CheckFollowingList(pool.Tag)) {
 				FollowButton.IsChecked = true;
 			}
 			initializing = false;
 		}
 
-		private void FollowButton_Click(object sender, RoutedEventArgs e) {
+		private async void FollowButton_Click(object sender, RoutedEventArgs e) {
 			if(initializing) {
 				return;
 			}
 			bool isOn = (sender as ToggleButton).IsChecked.Value;
 			FollowText.Text = isOn ? "Following" : "Follow";
 			if(isOn) {
-				if(!Local.CheckFollowList(Pool.Tag)) {
-					Local.AddFollowList(Pool.Tag);
+				if(!Local.Listing.CheckFollowingList(Pool.Tag)) {
+					await Local.Listing.AddFollowingList(Pool.Tag);
 				}
-				if(Local.CheckBlackList(Pool.Tag)) {
-					Local.RemoveBlackList(Pool.Tag);
+				if(Local.Listing.CheckBlackList(Pool.Tag)) {
+					await Local.Listing.RemoveBlackList(Pool.Tag);
 				}
 			} else {
-				if(Local.CheckFollowList(Pool.Tag)) {
-					Local.RemoveFollowList(Pool.Tag);
+				if(Local.Listing.CheckFollowingList(Pool.Tag)) {
+					await Local.Listing.RemoveFollowingList(Pool.Tag);
 				}
 			}
 		}

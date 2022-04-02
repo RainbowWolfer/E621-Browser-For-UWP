@@ -215,32 +215,32 @@ namespace E621Downloader.Pages.LibrarySection {
 		public LibraryItemsGroupView GetGroupView() => GroupView;
 
 		private async void SearchButton_Click(object sender, RoutedEventArgs e) {
-			await Load();
-			if(args.Files.Count >= 10) {
+			bool result = await Load();
+			if(result && args.Files.Count >= 10) {
 				await Task.Delay(100);
 				TitleBar.IsExpanded = false;
 			}
 		}
 
-		private async Task Load() {
+		private async Task<bool> Load() {
 			if(!args.SafeCheck && !args.QuestionableCheck && !args.ExplicitCheck) {
 				InsufficientRequirements.PreferredPlacement = TeachingTipPlacementMode.Bottom;
 				InsufficientRequirements.Target = RatingIcon;
 				InsufficientRequirements.Subtitle = "Please Select Least One CheckBox";
 				InsufficientRequirements.IsOpen = true;
-				return;
+				return false;
 			} else if(!args.ImageCheck && !args.GifCheck && !args.WebmCheck) {
 				InsufficientRequirements.PreferredPlacement = TeachingTipPlacementMode.Bottom;
 				InsufficientRequirements.Target = TypeIcon;
 				InsufficientRequirements.Subtitle = "Please Select Least One CheckBox";
 				InsufficientRequirements.IsOpen = true;
-				return;
+				return false;
 			} else if(args.SelectedFolders.Count == 0) {
 				InsufficientRequirements.PreferredPlacement = TeachingTipPlacementMode.Right;
 				InsufficientRequirements.Target = FoldersButton;
 				InsufficientRequirements.Subtitle = "Please Select Least One Folder";
 				InsufficientRequirements.IsOpen = true;
-				return;
+				return false;
 			}
 			IsLoading = true;
 			GroupView.ClearItems();
@@ -307,6 +307,7 @@ namespace E621Downloader.Pages.LibrarySection {
 			UpdateImages();
 			UpdateTotalCountText();
 			IsLoading = false;
+			return true;
 		}
 
 		private void UpdateImages(string matchedName = null) {

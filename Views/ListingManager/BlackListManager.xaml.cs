@@ -64,6 +64,7 @@ namespace E621Downloader.Views.ListingManager {
 			this.DataContextChanged += (s, e) => Bindings.Update();
 			this.listings = listings;
 			Update(listings);
+			ListingListView.SelectedItem = Items.FirstOrDefault(i => i.IsDefault) ?? Items.FirstOrDefault();
 			AddButtonInput.OnTextSubmit += text => OnNewListSubmit?.Invoke(text);
 			TagAddButtonInput.OnTextSubmit += text => {
 				var item = (ListingItem)ListingListView.SelectedItem;
