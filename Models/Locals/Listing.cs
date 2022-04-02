@@ -16,24 +16,18 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public static Listing GetDefaultListing() {
-			string hostName = Data.GetHost().ToUpper();
-			int index = hostName.IndexOf(".");
-			if(index != -1) {
-				hostName = hostName.Substring(0, index);
-			}
+			string hostName = Data.GetSimpleHost();
 			return new Listing() {
 				CloudBlackList = new SingleListing($"{hostName} Cloud") {
 					IsCloud = true,
 				},
 				LocalBlackLists = new List<SingleListing>() {
 					new SingleListing("Default Black List") {
-						IsActive = true,
 						IsDefault = true,
 					},
 				},
 				LocalFollowingLists = new List<SingleListing>() {
-					new SingleListing("Default Following List") {
-						IsActive = true,
+					new SingleListing("Default Follow List") {
 						IsDefault = true,
 					},
 				},
@@ -51,7 +45,7 @@ namespace E621Downloader.Models.Locals {
 	public class SingleListing {
 		public string Name { get; set; }
 		public bool IsDefault { get; set; }
-		public bool IsActive { get; set; }
+		//public bool IsActive { get; set; }
 		public bool IsCloud { get; set; } = false;
 		public List<string> Tags { get; set; }
 

@@ -21,8 +21,8 @@ namespace E621Downloader.Models.Posts {
 			}
 		}
 
-		public static async Task<E621Tag> GetFirstAsync(string tag) {
-			return (await GetAsync(tag))?.FirstOrDefault();
+		public static async Task<E621Tag> GetFirstAsync(string tag, CancellationToken? token = null) {
+			return (await GetAsync(tag, token))?.FirstOrDefault();
 		}
 
 		public static E621Tag GetDefault(string tag) => new E621Tag() {
@@ -59,6 +59,31 @@ namespace E621Downloader.Models.Posts {
 
 		public static string JoinTags(string[] tags) {
 			return string.Join(", ", tags).Trim().ToLower();
+		}
+
+		public static string GetCategory(int category) {
+			switch(category) {
+				case 0:
+					return "General";
+				case 1:
+					return "Artists";
+				case 2:
+					return "Not Found";
+				case 3:
+					return "Copyrights";
+				case 4:
+					return "Artists";
+				case 5:
+					return "Species";
+				case 6:
+					return "Invalid";
+				case 7:
+					return "Meta";
+				case 8:
+					return "Lore";
+				default:
+					return "UnKnown";
+			}
 		}
 
 		public int id;

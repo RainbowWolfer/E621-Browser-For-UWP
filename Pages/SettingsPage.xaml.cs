@@ -54,21 +54,25 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void BlackListButton_Click(object sender, RoutedEventArgs e) {
-			//var result = await PopUp(this, "Black List", Local.BlackList);
-			//if(result.Item1 == ContentDialogResult.Primary) {
-			//	if(!App.CompareTwoArray(result.Item2, result.Item3)) {
-			//		Local.WriteBlackList(result.Item3);
-			//	}
-			//}
+			BlackListButton.IsEnabled = false;
+			var list = Local.Listing.LocalBlackLists.ToList();
+			list.Insert(0, Local.Listing.CloudBlackList);
+			await PopupListingManager("Black List", list);
+			BlackListButton.IsEnabled = true;
 		}
 
 		private async void FollowListButton_Click(object sender, RoutedEventArgs e) {
 			FollowListButton.IsEnabled = false;
-			var content = new BlackListManager(Local.Listing.LocalFollowingLists);
+			await PopupListingManager("Follow List", Local.Listing.LocalFollowingLists);
+			FollowListButton.IsEnabled = true;
+		}
+
+		private async Task PopupListingManager(string title, List<SingleListing> listings) {
+			var content = new BlackListManager(listings);
 			content.OnNewListSubmit += async text => {
-				Local.Listing.LocalFollowingLists.Add(new SingleListing(text));
+				listings.Add(new SingleListing(text));
 				await Local.WriteListing();
-				content.Update(Local.Listing.LocalFollowingLists);
+				content.Update(listings);
 				content.FocusListingsLastItem();
 			};
 			content.OnNewTagSubmit += async (listing, tag) => {
@@ -77,29 +81,29 @@ namespace E621Downloader.Pages {
 				content.LoadTags(listing, true);
 			};
 			content.OnPasteImport += async array => {
-				int count = Local.Listing.LocalFollowingLists.Count;
+				int count = listings.Count;
 				string newName;
 				do {
 					newName = $"Paste List - {count++}";
-				} while(Local.Listing.LocalFollowingLists.Any(i => i.Name == newName));
+				} while(listings.Any(i => i.Name == newName));
 				var list = new SingleListing(newName) {
 					Tags = array.ToList(),
 					IsDefault = false,
 					IsCloud = false,
 				};
-				Local.Listing.LocalFollowingLists.Add(list);
+				listings.Add(list);
 				await Local.WriteListing();
-				content.Update(Local.Listing.LocalFollowingLists);
+				content.Update(listings);
 				content.FocusListingsLastItem();
 			};
 			content.OnListingDelete += async listing => {
-				Local.Listing.LocalFollowingLists.Remove(listing);
+				listings.Remove(listing);
 				await Local.WriteListing();
-				content.Update(Local.Listing.LocalFollowingLists);
+				content.Update(listings);
 				content.FocusListingsLastItem();
 			};
 			content.OnListingSetAsDefault += async listing => {
-				foreach(SingleListing item in Local.Listing.LocalFollowingLists) {
+				foreach(SingleListing item in listings) {
 					item.IsDefault = item == listing.Listing;
 				}
 				await Local.WriteListing();
@@ -111,15 +115,24 @@ namespace E621Downloader.Pages {
 			content.OnTagDelete += async (listing, tag) => {
 				listing.Tags.Remove(tag.Tag);
 				await Local.WriteListing();
+				content.LoadTags(listing);
+			};
+			content.OnCloudSync += async array => {
+				await Local.WriteListing();
+			};
+			content.OnTagsClearAll += async listing => {
+				listing.Tags.Clear();
+				await Local.WriteListing();
+				content.LoadTags(listing);
 			};
 			var dialog = new ContentDialog() {
-				Title = "Follow List",
+				Title = title,
 				CloseButtonText = "Back",
 				Content = content,
 			};
 			dialog.Resources["ContentDialogMaxWidth"] = 650;
 			await dialog.ShowAsync();
-			FollowListButton.IsEnabled = true;
+			content.OnClose();
 		}
 
 

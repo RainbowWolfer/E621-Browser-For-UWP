@@ -161,6 +161,7 @@ namespace E621Downloader {
 			}
 			UserPicture.ProfilePicture = App.DefaultAvatar;
 			if(string.IsNullOrWhiteSpace(username)) {
+				E621User.Current = null;
 				ToolTipService.SetToolTip(UserIconItem, null);
 				UserChangedInfoComplete?.Invoke();
 				UserChangedAvatarComplete?.Invoke(UserPicture.ProfilePicture as BitmapImage);

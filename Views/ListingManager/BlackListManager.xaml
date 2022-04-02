@@ -12,6 +12,21 @@
     d:DesignHeight="350"
     d:DesignWidth="650">
 
+	<UserControl.Resources>
+		<Storyboard x:Name="NoDataStoryboard">
+			<DoubleAnimation Storyboard.TargetName="NoDataGrid" Storyboard.TargetProperty="Opacity" EnableDependentAnimation="True" From="0" To="1">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="10" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+			<DoubleAnimation Storyboard.TargetName="NoDataGridTransform" Storyboard.TargetProperty="Y" EnableDependentAnimation="True" From="50" To="0">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="10" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+		</Storyboard>
+	</UserControl.Resources>
+
 	<Grid Height="350" Width="650">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="2*"/>
@@ -37,7 +52,7 @@
 							</Grid.ColumnDefinitions>
 							<Grid.ContextFlyout>
 								<MenuFlyout>
-									<MenuFlyoutItem x:Name="ListingRenameItem" Icon="Rename" Tag="{x:Bind Listing}" Text="Rename" Click="ListingRenameItem_Click"/>
+									<MenuFlyoutItem x:Name="ListingRenameItem" Icon="Rename" Tag="{x:Bind Listing}" Text="Rename" Click="ListingRenameItem_Click" Loaded="ListingRenameItem_Loaded"/>
 									<MenuFlyoutItem x:Name="ListingSetDefaultItem" Tag="{x:Bind GetSelf()}" Text="Set As Default" Click="ListingSetDefaultItem_Click" Loaded="ListingSetDefaultItem_Loaded">
 										<MenuFlyoutItem.Icon>
 											<FontIcon Glyph="&#xF5ED;"/>
@@ -46,10 +61,13 @@
 									<MenuFlyoutItem x:Name="ListingDeleteItem" Icon="Delete" Tag="{x:Bind Listing}" Text="Delete" Click="ListingDeleteItem_Click" Loaded="ListingDeleteItem_Loaded"/>
 								</MenuFlyout>
 							</Grid.ContextFlyout>
-							<FontIcon Glyph="{x:Bind Icon}" FontSize="20" VerticalAlignment="Center"/>
-							<TextBlock Text="{x:Bind Name, Mode=OneWay}" Margin="10,0,20,0" FontSize="18" Grid.Column="1" VerticalAlignment="Center"/>
+							<FontIcon d:Glyph="&#xE123;" Glyph="{x:Bind Icon}" FontSize="20" VerticalAlignment="Center"/>
+							<TextBlock d:Text="Hello" Text="{x:Bind Name, Mode=OneWay}" Margin="10,0,20,0" FontSize="18" Grid.Column="1" VerticalAlignment="Center"/>
 							<TextBox Grid.Column="1" Margin="10,0,20,0" FontSize="18" VerticalAlignment="Center" Visibility="Collapsed" Tag="{x:Bind GetSelf()}"/>
 							<FontIcon Glyph="&#xECCC;" Grid.Column="2" Visibility="{x:Bind AccepctIconVisibility, Mode=OneWay}"/>
+							<Grid Grid.ColumnSpan="3" Margin="0,10,0,-5" VerticalAlignment="Bottom" Visibility="{x:Bind CloudLoadingGridVisibility, Mode=OneWay}">
+								<controls:ProgressBar IsIndeterminate="True" Visibility="Collapsed" Loaded="ProgressBar_Loaded" Tag="{x:Bind Listing}"/>
+							</Grid>
 						</Grid>
 					</DataTemplate>
 				</ListView.ItemTemplate>
@@ -57,7 +75,7 @@
 			<StackPanel Grid.Row="2" Margin="5">
 				<Button x:Name="PasteImportButton" HorizontalAlignment="Stretch" Margin="5" Click="PasteImportButton_Click" ToolTipService.Placement="Bottom">
 					<StackPanel Orientation="Horizontal">
-						<TextBlock Text="Paste Import" VerticalAlignment="Center" FontSize="16" Margin="0,0,10,0"/>
+						<TextBlock Text="Paste as New List" VerticalAlignment="Center" FontSize="16" Margin="0,0,10,0"/>
 						<FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE16D;" FontSize="20" VerticalAlignment="Center" Margin="0,5,0,0"/>
 					</StackPanel>
 				</Button>
@@ -76,10 +94,26 @@
 				<RowDefinition Height="auto"/>
 			</Grid.RowDefinitions>
 			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="auto"/>
+					<ColumnDefinition Width="auto"/>
+				</Grid.ColumnDefinitions>
 				<CheckBox x:Name="DefaultCheckBox" HorizontalAlignment="Left" Click="DefaultCheckBox_Click" Margin="15,5,5,5">
 					<TextBlock Text="Default"/>
 				</CheckBox>
-				<controls:DropDownButton HorizontalAlignment="Right" Margin="5,5,15,5">
+				<Button x:Name="MoreInfoButton" Grid.Column="1" Height="33" Margin="5" Padding="6">
+					<Button.Flyout>
+						<Flyout Placement="Bottom">
+							<StackPanel Width="250">
+								<TextBlock Text="{x:Bind HostCloud}" FontWeight="Bold" TextAlignment="Center" FontSize="18" Margin="5"/>
+								<TextBlock Text="This is synced with the account settings. Be careful not to override your original black list tags" TextAlignment="Center" Margin="5" TextWrapping="Wrap" FontSize="15"/>
+							</StackPanel>
+						</Flyout>
+					</Button.Flyout>
+					<FontIcon Glyph="&#xEDB1;"/>
+				</Button>
+				<controls:DropDownButton x:Name="ActionsButton" HorizontalAlignment="Right" Margin="5,5,15,5" Grid.Column="2">
 					<controls:DropDownButton.Content>
 						<StackPanel Orientation="Horizontal">
 							<FontIcon Glyph="&#xE81E;" VerticalAlignment="Center"/>
@@ -93,15 +127,29 @@
 									<FontIcon Glyph="&#xE72D;"/>
 								</MenuFlyoutItem.Icon>
 							</MenuFlyoutItem>
+							<MenuFlyoutItem x:Name="ImportClipboardItem" Text="Import from Clipboard (Override)" Click="ImportClipboardItem_Click">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xF0E3;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
+							<MenuFlyoutItem x:Name="ClearAllTagsItem" Text="Clear All" Click="ClearAllTagsItem_Click">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE75C;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
+							<MenuFlyoutItem x:Name="DownloadCloudItem" Text="Load From Cloud" Click="DownloadCloudItem_Click">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE896;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
+							<MenuFlyoutItem x:Name="UploadCloudItem" Text="Upload To Cloud" Click="UploadCloudItem_Click">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE11C;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
 						</MenuFlyout>
 					</controls:DropDownButton.Flyout>
 				</controls:DropDownButton>
-			</Grid>
-			<Grid x:Name="NoDataGrid" Grid.Row="1">
-				<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-					<FontIcon Glyph="&#xF165;" FontSize="50" Margin="5"/>
-					<TextBlock Text="No Tags" TextAlignment="Center" Margin="5"/>
-				</StackPanel>
 			</Grid>
 			<ListView x:Name="DetailListingListView" SelectionMode="Single" IsItemClickEnabled="True" ItemsSource="{x:Bind Tags}" d:ItemsSource="1 2 3" Grid.Row="1" Padding="10">
 				<ListView.ItemTemplate>
@@ -110,13 +158,42 @@
 							<Grid.ContextFlyout>
 								<MenuFlyout>
 									<MenuFlyoutItem x:Name="TagDeleteItem" Icon="Delete" Text="Delete" Click="TagDeleteItem_Click" Tag="{x:Bind GetSelf()}"/>
+									<MenuFlyoutItem x:Name="TagCopyItem" Icon="Copy" Text="Copy" Click="TagCopyItem_Click" Tag="{x:Bind Tag}"/>
 								</MenuFlyout>
 							</Grid.ContextFlyout>
-							<TextBlock Text="{x:Bind Tag}"/>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="auto"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="auto"/>
+							</Grid.ColumnDefinitions>
+							<Button x:Name="TagInfoButton" Background="Transparent" BorderBrush="Transparent" Padding="3" Margin="5,0,10,0" Tag="{x:Bind GetSelf()}" Click="TagInfoButton_Click">
+								<FontIcon Glyph="&#xE946;" FontSize="14"/>
+							</Button>
+							<TextBlock d:Text="Tag Here" Text="{x:Bind Tag}" VerticalAlignment="Center" Grid.Column="1"/>
+							<Button Grid.Column="2" BorderBrush="Transparent" Background="Transparent" Padding="3" Tag="{x:Bind GetSelf()}" Click="TagDeleteItem_Click">
+								<FontIcon Glyph="&#xE106;" FontSize="14"/>
+							</Button>
 						</Grid>
 					</DataTemplate>
 				</ListView.ItemTemplate>
 			</ListView>
+			<Grid x:Name="NoDataGrid" Grid.Row="1">
+				<Grid.RenderTransform>
+					<TranslateTransform x:Name="NoDataGridTransform" X="0" Y="0"/>
+				</Grid.RenderTransform>
+				<StackPanel x:Name="NormalNoDataPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
+					<FontIcon Glyph="&#xF165;" FontSize="50" Margin="5"/>
+					<TextBlock Text="No Tags" TextAlignment="Center" Margin="5"/>
+				</StackPanel>
+				<StackPanel x:Name="CloudNoDataSyncPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
+					<Button x:Name="CloudSyncButton" Click="CloudSyncButton_Click">
+						<StackPanel Margin="5">
+							<FontIcon Glyph="&#xE117;" FontSize="56" Margin="5"/>
+							<TextBlock Text="Sync" TextAlignment="Center" FontSize="16" Margin="5,5,5,0"/>
+						</StackPanel>
+					</Button>
+				</StackPanel>
+			</Grid>
 			<Grid Grid.Row="2" Margin="5">
 				<views:AddButtonInput x:Name="TagAddButtonInput" PlaceholderText="Your Tag"/>
 			</Grid>
@@ -140,6 +217,37 @@
 			</controls:TeachingTip.Content>
 			<controls:TeachingTip.IconSource>
 				<controls:FontIconSource Glyph="&#xE8AC;"/>
+			</controls:TeachingTip.IconSource>
+		</controls:TeachingTip>
+		<controls:TeachingTip x:Name="CenteredClearAllComfirmTeachingTip" IsLightDismissEnabled="True" Title="Clear All Tags" PreferredPlacement="Center" ActionButtonContent="Yes" CloseButtonContent="No" ActionButtonClick="CenteredClearAllComfirmTeachingTip_ActionButtonClick">
+			<controls:TeachingTip.IconSource>
+				<controls:FontIconSource Glyph="&#xE897;"/>
+			</controls:TeachingTip.IconSource>
+		</controls:TeachingTip>
+		<controls:TeachingTip x:Name="CenteredUploadComfirmTeachingTip" IsLightDismissEnabled="True" Title="Upload Warning" PreferredPlacement="Center" ActionButtonContent="Yes" CloseButtonContent="No" ActionButtonClick="CenteredUploadComfirmTeachingTip_ActionButtonClick">
+			<controls:TeachingTip.IconSource>
+				<controls:FontIconSource Glyph="&#xE8C9;"/>
+			</controls:TeachingTip.IconSource>
+		</controls:TeachingTip>
+		<controls:TeachingTip x:Name="CenteredUploadResultTeachingTip" IsLightDismissEnabled="True" Title="Upload Result" PreferredPlacement="Center" CloseButtonContent="OK">
+			<controls:TeachingTip.IconSource>
+				<controls:FontIconSource Glyph="&#xE8C9;"/>
+			</controls:TeachingTip.IconSource>
+		</controls:TeachingTip>
+		<controls:TeachingTip x:Name="CenteredTagsOverrideConfirmTeachingTip" IsLightDismissEnabled="True" Title="Tags Override" PreferredPlacement="Center" ActionButtonContent="Yes" CloseButtonContent="No" ActionButtonClick="CenteredTagsOverrideConfirmTeachingTip_ActionButtonClick	 ">
+			<controls:TeachingTip.IconSource>
+				<controls:FontIconSource Glyph="&#xE897;"/>
+			</controls:TeachingTip.IconSource>
+		</controls:TeachingTip>
+		<controls:TeachingTip x:Name="TagInfoTeachingTip" d:Title="Hello World" IsLightDismissEnabled="True" CloseButtonContent="Back">
+			<controls:TeachingTip.Content>
+				<Grid Margin="5,15,5,0">
+					<controls:ProgressBar x:Name="TagLoadingBar" IsIndeterminate="True"/>
+					<TextBlock x:Name="TagInfoText" TextAlignment="Center"/>
+				</Grid>
+			</controls:TeachingTip.Content>
+			<controls:TeachingTip.IconSource>
+				<controls:FontIconSource Glyph="&#xE8EC;"/>
 			</controls:TeachingTip.IconSource>
 		</controls:TeachingTip>
 	</Grid>

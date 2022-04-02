@@ -27,6 +27,15 @@ namespace E621Downloader.Models.Networks {
 			}
 		}
 
+		public static string GetSimpleHost() {
+			string hostName = GetHost().ToUpper();
+			int index = hostName.IndexOf(".");
+			if(index != -1) {
+				hostName = hostName.Substring(0, index);
+			}
+			return hostName;
+		}
+
 		public static async Task<HttpResult<string>> ReadURLAsync(string url, CancellationToken? token = null, string username = "", string api = "") {
 			Debug.WriteLine("Reading: " + url);
 			Stopwatch stopwatch = new Stopwatch();
