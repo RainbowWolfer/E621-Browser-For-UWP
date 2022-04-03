@@ -38,7 +38,7 @@ namespace E621Downloader.Models {
 		}
 
 		public static List<GroupTag> ToGroupTag(this List<string> tags, Color color) {
-			List<GroupTag> result = new List<GroupTag>();
+			List<GroupTag> result = new();
 			foreach(string tag in tags) {
 				result.Add(new GroupTag(tag, color));
 			}

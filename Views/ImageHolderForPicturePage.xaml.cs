@@ -47,7 +47,7 @@ namespace E621Downloader.Views {
 		public Post Origin { get; set; }
 		public Post Target { get; private set; }
 
-		private CancellationTokenSource cts = new CancellationTokenSource();
+		private CancellationTokenSource cts = new();
 
 		private async void Load(string post_id) {
 			if(string.IsNullOrWhiteSpace(post_id)) {
@@ -66,7 +66,7 @@ namespace E621Downloader.Views {
 				HintText.Visibility = Visibility.Visible;
 				IsLoading = false;
 			} else {
-				BitmapImage image = new BitmapImage(new Uri(Target.sample.url ?? Target.preview.url ?? "ms-appx:///Assets/e621.png"));
+				BitmapImage image = new(new Uri(Target.sample.url ?? Target.preview.url ?? "ms-appx:///Assets/e621.png"));
 				MyImage.Source = image;
 				image.ImageOpened += (s, e) => {
 					IsLoading = false;
@@ -82,7 +82,7 @@ namespace E621Downloader.Views {
 				if(Target == null || Target.flags.deleted) {
 					return;
 				}
-				List<Post> siblings = new List<Post>();
+				List<Post> siblings = new();
 				MainPage.CreateInstantDialog("Please Wait", "Loading Siblings");
 				if(!string.IsNullOrWhiteSpace(Origin.relationships.parent_id)) {
 					siblings.Add(Target);

@@ -72,6 +72,10 @@
 			<SplitView.Content>
 				<ScrollViewer VerticalScrollMode="Auto">
 					<Grid>
+						<StackPanel x:Name="AllBlackListHint" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+							<FontIcon Glyph="&#xF133;" FontSize="64" Margin="5"/>
+							<TextBlock Text="It seems all of the posts are in blacklist." FontSize="16" Margin="5"/>
+						</StackPanel>
 						<!--<VariableSizedWrapGrid x:Name="MyWrapGrid" ItemHeight="100" ItemWidth="100" Orientation="Horizontal"/>-->
 						<VariableSizedWrapGrid x:Name="MyWrapGrid" ItemHeight="{x:Bind ItemSize}" ItemWidth="{x:Bind ItemSize}" Orientation="Horizontal"/>
 					</Grid>

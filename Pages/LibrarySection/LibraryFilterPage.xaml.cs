@@ -104,8 +104,8 @@ namespace E621Downloader.Pages.LibrarySection {
 		}
 
 		private Storyboard CreateIconStoryboard(FontIcon icon) {
-			Storyboard storyboard = new Storyboard();
-			DoubleAnimation doubleAnimation = new DoubleAnimation() {
+			Storyboard storyboard = new();
+			DoubleAnimation doubleAnimation = new() {
 				EnableDependentAnimation = true,
 				EasingFunction = new ExponentialEase() {
 					Exponent = 7,

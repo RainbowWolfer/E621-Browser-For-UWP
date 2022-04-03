@@ -25,7 +25,7 @@ namespace E621Downloader.Models.Posts {
 			return (await GetAsync(tag, token))?.FirstOrDefault();
 		}
 
-		public static E621Tag GetDefault(string tag) => new E621Tag() {
+		public static E621Tag GetDefault(string tag) => new() {
 			id = 0,
 			name = tag,
 			post_count = 0,
@@ -43,7 +43,7 @@ namespace E621Downloader.Models.Posts {
 		}
 
 		public static string[] SortOutMetatags(string[] tags) {
-			List<string> result = new List<string>();
+			List<string> result = new();
 			foreach(string item in tags) {
 				if(!CheckMetatag(item)) {
 					result.Add(item);
@@ -62,28 +62,18 @@ namespace E621Downloader.Models.Posts {
 		}
 
 		public static string GetCategory(int category) {
-			switch(category) {
-				case 0:
-					return "General";
-				case 1:
-					return "Artists";
-				case 2:
-					return "Not Found";
-				case 3:
-					return "Copyrights";
-				case 4:
-					return "Artists";
-				case 5:
-					return "Species";
-				case 6:
-					return "Invalid";
-				case 7:
-					return "Meta";
-				case 8:
-					return "Lore";
-				default:
-					return "UnKnown";
-			}
+			return category switch {
+				0 => "General",
+				1 => "Artists",
+				2 => "Not Found",
+				3 => "Copyrights",
+				4 => "Artists",
+				5 => "Species",
+				6 => "Invalid",
+				7 => "Meta",
+				8 => "Lore",
+				_ => "UnKnown",
+			};
 		}
 
 		public int id;

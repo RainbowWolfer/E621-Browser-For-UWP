@@ -35,6 +35,8 @@ using Windows.UI.Xaml.Navigation;
      </ListView.ItemsPanel>
 
  */
+
+//TODO: black list not working
 namespace E621Downloader.Pages {
 	public sealed partial class PostsBrowser: Page {
 		public static PostsBrowser Instance;
@@ -60,7 +62,7 @@ namespace E621Downloader.Pages {
 
 		private E621Pool pool;
 
-		private CancellationTokenSource cts = new CancellationTokenSource();
+		private CancellationTokenSource cts = new();
 
 		private int loaded;
 
@@ -102,7 +104,7 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			this.Posts = posts;
-			//tagsFilterSystem.RegisterBlackList(posts);
+			tagsFilterSystem.RegisterBlackList(posts);
 			//if(tags.Length != 0) {
 			this.Tags = tags.Where(t => !string.IsNullOrWhiteSpace(t)).ToArray();
 			MainPage.ChangeCurrenttTags(tags);
@@ -139,11 +141,13 @@ namespace E621Downloader.Pages {
 			return MyWrapGrid.Children.Select(c => c as ImageHolder).FirstOrDefault(i => i.Index == index);
 		}
 
+
 		private async Task LoadAsync(E621Pool pool) {
 			this.currentPage = 1;
 			MainPage.CreateInstantDialog("Please Wait", $"Loading Pool\n ( {pool.name} - {pool.id} )");
 			await Task.Delay(200);
 			SelectToggleButton.IsChecked = false;
+			cts = new CancellationTokenSource();
 			List<Post> temp = await Post.GetPostsByIDsAsync(cts.Token, pool.post_ids);
 			if(temp.Count == 0) {
 				MainPage.HideInstantDialog();
@@ -173,6 +177,7 @@ namespace E621Downloader.Pages {
 			MainPage.CreateInstantDialog("Please Wait", $"Loading {content}");
 			await Task.Delay(200);
 			SelectToggleButton.IsChecked = false;
+			cts = new CancellationTokenSource();
 			List<Post> temp = await Post.GetPostsByTagsAsync(cts.Token, page, tags);
 			if(temp.Count == 0) {
 				MainPage.HideInstantDialog();
@@ -206,6 +211,11 @@ namespace E621Downloader.Pages {
 				if(!tagsFilterSystem.CheckPostContainBlackList(item)) {
 					result.Add(item);
 				}
+			}
+			if(this.Posts.Count != 0 && result.Count == 0) {
+				AllBlackListHint.Visibility = Visibility.Visible;
+			} else {
+				AllBlackListHint.Visibility = Visibility.Collapsed;
 			}
 			return result;
 		}
@@ -314,7 +324,7 @@ namespace E621Downloader.Pages {
 
 			btns.Add(CreateButton('>', currentPage < maxPage ? (Action<Button>)P2 : null));
 
-			AutoSuggestBox box = new AutoSuggestBox() {
+			AutoSuggestBox box = new() {
 				QueryIcon = new SymbolIcon(Symbol.Forward),
 				VerticalAlignment = VerticalAlignment.Center,
 				MinWidth = 130,
@@ -469,7 +479,7 @@ namespace E621Downloader.Pages {
 						CancelDownloads();
 						cts = new CancellationTokenSource();
 						CreateDownloadDialog("Please Wait", "Handling Downloads");
-						bool? result = await DownloadsManager.RegisterDownloads(cts.Token, GetSelected().Select(i => i.PostRef), Tags, progress => UpdateContentText(progress));
+						bool? result = await DownloadsManager.RegisterDownloads(cts.Token, GetSelected().Select(i => i.PostRef), Tags, UpdateContentText);
 						if(result == true) {
 							MainPage.CreateTip_SuccessDownload(this);
 							SelectToggleButton.IsChecked = false;
@@ -496,7 +506,7 @@ namespace E621Downloader.Pages {
 							cts = new CancellationTokenSource();
 							CreateDownloadDialog("Please Wait", "Handling Downloads");
 							await Task.Delay(50);
-							bool? result = await DownloadsManager.RegisterDownloads(cts.Token, this.Posts, this.pool.name, progress => UpdateContentText(progress));
+							bool? result = await DownloadsManager.RegisterDownloads(cts.Token, this.Posts, this.pool.name, UpdateContentText);
 							if(result == true) {
 								downloadResult = true;
 							} else if(result == null) {
@@ -506,28 +516,29 @@ namespace E621Downloader.Pages {
 						}
 					}
 				} else {
-					switch(await new ContentDialog() {
+					PagesSelector pagesSelector = new() {
+						Minimum = 1,
+						Maximum = maxPage,
+						CurrentPage = currentPage,
+					};
+					if(await new ContentDialog() {
 						Title = "Download Selection",
-						Content = new TextBlock() {
-							Text = "Do you want to download for current page or for whole tag(s)?",
-							TextWrapping = TextWrapping.WrapWholeWords,
-							FontSize = 24,
-						},
+						Content = pagesSelector,
 						CloseButtonText = "Back",
-						PrimaryButtonText = "Whole Tag(s)",
-						SecondaryButtonText = "Current Page",
-					}.ShowAsync()) {
-						case ContentDialogResult.None:
-							return;
-						case ContentDialogResult.Primary:
-							if(await DownloadsManager.CheckDownloadAvailableWithDialog(() => hasShownFail = true)) {
-								CancelDownloads();
-								cts = new CancellationTokenSource();
-								CreateDownloadDialog("Please Wait", "Handling Downloads");
-								await Task.Delay(50);
-								var all = new List<Post>();
-								for(int i = 1; i <= maxPage; i++) {
-									UpdateContentText($"Handling Downloads\nGetting Page {i}/{maxPage}");
+						PrimaryButtonText = "Confirm",
+					}.ShowAsync() == ContentDialogResult.Primary) {
+						if(await DownloadsManager.CheckDownloadAvailableWithDialog(() => hasShownFail = true)) {
+							CancelDownloads();
+							cts = new CancellationTokenSource();
+							CreateDownloadDialog("Please Wait", "Handling Downloads");
+							await Task.Delay(50);
+							var all = new List<Post>();
+							(int from, int to) = pagesSelector.GetRange();
+							if(from == to) {
+								all.AddRange(Posts);
+							} else {
+								for(int i = from; i <= to; i++) {
+									UpdateContentText($"Handling Downloads\nGetting Page {i}/{to}");
 									if(cts == null) {
 										HideDownloadDialog();
 										return;
@@ -538,33 +549,17 @@ namespace E621Downloader.Pages {
 									}
 									all.AddRange(p);
 								}
-								bool? result = await DownloadsManager.RegisterDownloads(cts.Token, all, Tags, progress => UpdateContentText(progress));
-								if(result == true) {
-									downloadResult = true;
-								} else if(result == null) {
-									return;
-								}
-								HideDownloadDialog();
 							}
-							break;
-						case ContentDialogResult.Secondary:
-							//get currentpage posts
-							if(await DownloadsManager.CheckDownloadAvailableWithDialog(() => hasShownFail = true)) {
-								CancelDownloads();
-								cts = new CancellationTokenSource();
-								CreateDownloadDialog("Please Wait", "Handling Downloads");
-								await Task.Delay(50);
-								bool? result = await DownloadsManager.RegisterDownloads(cts.Token, Posts, Tags, progress => UpdateContentText(progress));
-								if(result == true) {
-									downloadResult = true;
-								} else if(result == null) {
-									return;
-								}
-								HideDownloadDialog();
+							bool? result = await DownloadsManager.RegisterDownloads(cts.Token, all, Tags, UpdateContentText);
+							if(result == true) {
+								downloadResult = true;
+							} else if(result == null) {
+								return;
 							}
-							break;
-						default:
-							throw new Exception();
+							HideDownloadDialog();
+						}
+					} else {
+						return;
 					}
 				}
 				if(downloadResult) {
@@ -652,7 +647,7 @@ namespace E621Downloader.Pages {
 
 		private async void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(this.pool == null) {
-				ContentDialog dialog = new ContentDialog() {
+				ContentDialog dialog = new() {
 					Title = E621Tag.JoinTags(Tags),
 					CloseButtonText = "Back",
 				};
@@ -755,7 +750,7 @@ namespace E621Downloader.Pages {
 		public void UpdateHotTags() {
 			hotTagsListView.Items.Clear();
 			foreach(KeyValuePair<string, long> item in GetHotTags(hot_tags_count)) {
-				StackPanel panel = new StackPanel() {
+				StackPanel panel = new() {
 					Orientation = Orientation.Horizontal,
 					Tag = item.Key,
 				};
@@ -776,7 +771,7 @@ namespace E621Downloader.Pages {
 			black_tags_enabled.Clear();
 			blackTagsListView.Items.Clear();
 			foreach(KeyValuePair<string, long> item in black_tags) {
-				StackPanel panel = new StackPanel() { Orientation = Orientation.Horizontal };
+				StackPanel panel = new() { Orientation = Orientation.Horizontal };
 				var checkBox = new CheckBox() {
 					IsChecked = true,
 					Content = "",

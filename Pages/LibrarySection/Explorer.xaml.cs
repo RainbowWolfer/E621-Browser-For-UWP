@@ -71,6 +71,40 @@ namespace E621Downloader.Pages.LibrarySection {
 			TitleBar.OnAsecDesOrderChanged += TitleBar_OnAsecDesOrderChanged;
 		}
 
+		protected override async void OnNavigatedTo(NavigationEventArgs e) {
+			base.OnNavigatedTo(e);
+			if(e.Parameter is LibraryPassArgs args) {
+				this.args = args;
+				if(this.args.NeedRefresh) {
+					TitleBar.ShowLocalChangedHintText = true;
+				}
+				libraryPage = args.Parent;
+				TitleBar.Title = args.Title;
+
+				GroupView.Library = libraryPage;
+				GroupView.ViewType = libraryPage.ViewType;
+
+				if(args is LibraryImagesArgs imagesArgs) {
+					if(imagesArgs.Files == null) {
+						await LoadImages(imagesArgs);
+					}
+					UpdateImages(imagesArgs);
+					TitleBar.IsFolderBar = false;
+				} else if(args is LibraryFoldersArgs folderArgs) {
+					if(folderArgs.Folders == null) {
+						await LoadDownloadFolders(folderArgs);
+					}
+					UpdateFolders(folderArgs);
+					TitleBar.IsFolderBar = true;
+				} else if(args is LibraryFilterArgs filterArgs) {
+					if(filterArgs.Files != null) {
+						UpdateImages(filterArgs);
+					}
+					TitleBar.IsFolderBar = false;
+				}
+			}
+		}
+
 		private void TitleBar_OnSearchInput(VirtualKey key) {
 			if(key == MainPage.SEARCH_KEY) {
 				MainPage.Instance.DelayInputKeyListener();
@@ -123,40 +157,6 @@ namespace E621Downloader.Pages.LibrarySection {
 					await LoadDownloadFolders(folderArgs);
 				}
 				UpdateFolders(folderArgs, matchedName);
-			}
-		}
-
-		protected override async void OnNavigatedTo(NavigationEventArgs e) {
-			base.OnNavigatedTo(e);
-			if(e.Parameter is LibraryPassArgs args) {
-				this.args = args;
-				if(this.args.NeedRefresh) {
-					TitleBar.ShowLocalChangedHintText = true;
-				}
-				libraryPage = args.Parent;
-				TitleBar.Title = args.Title;
-
-				GroupView.Library = libraryPage;
-				GroupView.ViewType = libraryPage.ViewType;
-
-				if(args is LibraryImagesArgs imagesArgs) {
-					if(imagesArgs.Files == null) {
-						await LoadImages(imagesArgs);
-					}
-					UpdateImages(imagesArgs);
-					TitleBar.IsFolderBar = false;
-				} else if(args is LibraryFoldersArgs folderArgs) {
-					if(folderArgs.Folders == null) {
-						await LoadDownloadFolders(folderArgs);
-					}
-					UpdateFolders(folderArgs);
-					TitleBar.IsFolderBar = true;
-				} else if(args is LibraryFilterArgs filterArgs) {
-					if(filterArgs.Files != null) {
-						UpdateImages(filterArgs);
-					}
-					TitleBar.IsFolderBar = false;
-				}
 			}
 		}
 

@@ -25,11 +25,11 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Pages {
 	public sealed partial class SubscriptionPage: Page {
 		private CancellationTokenSource cts;
-		private readonly List<FontIcon> icons = new List<FontIcon>();
+		private readonly List<FontIcon> icons = new();
 		private bool isSelecting = false;
 		private int previousIndex = -1;
 
-		private readonly ObservableCollection<FavoriteListViewItem> items = new ObservableCollection<FavoriteListViewItem>();
+		private readonly ObservableCollection<FavoriteListViewItem> items = new();
 
 		private int currentFollowingPage = 1;
 
@@ -51,7 +51,7 @@ namespace E621Downloader.Pages {
 					if(previousIndex != -1) {
 						FavoritesListView.SelectedIndex = previousIndex;
 					}
-					icons.ForEach(i => i.Width = 40);
+					icons.ForEach(i => i.Width = 12);
 					DeleteButton.Visibility = Visibility.Collapsed;
 					previousIndex = -1;
 				}
@@ -92,7 +92,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void LoadFollowing(int page) {
-			if(page <= 0 || page >= 100) {
+			if(page is <= 0 or >= 100) {
 				return;
 			}
 			UpdateTitle("Following");
@@ -103,6 +103,7 @@ namespace E621Downloader.Pages {
 			if(cts != null) {
 				cts.Cancel();
 				cts.Dispose();
+				cts = null;
 			}
 			cts = new CancellationTokenSource();
 			LoadingRing.IsActive = true;
@@ -305,6 +306,25 @@ namespace E621Downloader.Pages {
 		private void MainSplitView_PaneClosing(SplitView sender, SplitViewPaneClosingEventArgs args) {
 			IsSelecting = false;
 			SelectionToggleButton.IsChecked = false;
+			if(FavoritesListView == null) {
+				return;
+			}
+			for(int i = 0; i < FavoritesListView.Items.Count; i++) {
+				ListViewItem item = (ListViewItem)FavoritesListView.ContainerFromIndex(i);
+				item.HorizontalAlignment = HorizontalAlignment.Left;
+				item.Width = 45;
+				item.MinWidth = 0;
+			}
+		}
+
+		private void MainSplitView_PaneOpening(SplitView sender, object args) {
+			if(FavoritesListView == null) {
+				return;
+			}
+			for(int i = 0; i < FavoritesListView.Items.Count; i++) {
+				ListViewItem item = (ListViewItem)FavoritesListView.ContainerFromIndex(i);
+				item.Width = 290;
+			}
 		}
 
 		private void RefreshContentButton_Tapped(object sender, TappedRoutedEventArgs e) {

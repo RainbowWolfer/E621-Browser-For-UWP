@@ -293,6 +293,9 @@
     <Compile Include="Views\MyHyperLinkButton.xaml.cs">
       <DependentUpon>MyHyperLinkButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PagesSelector.xaml.cs">
+      <DependentUpon>PagesSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PersonalFavoritesList.xaml.cs">
       <DependentUpon>PersonalFavoritesList.xaml</DependentUpon>
     </Compile>
@@ -584,6 +587,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MyHyperLinkButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PagesSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

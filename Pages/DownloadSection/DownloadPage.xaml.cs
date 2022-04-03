@@ -60,7 +60,7 @@ namespace E621Downloader.Pages.DownloadSection {
 		}
 
 		public void SelectTitle(string title) {
-			if(!(MyNavigationView.MenuItems.ToList().Find(i => ((i as NavigationViewItem).Content as StackPanel).Tag as string == title) is NavigationViewItem found)) {
+			if(MyNavigationView.MenuItems.ToList().Find(i => ((i as NavigationViewItem).Content as StackPanel).Tag as string == title) is not NavigationViewItem found) {
 				var stackPanel = new StackPanel() {
 					Orientation = Orientation.Horizontal,
 					Tag = title,

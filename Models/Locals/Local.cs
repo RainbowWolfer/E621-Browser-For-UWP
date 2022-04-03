@@ -1,6 +1,7 @@
 ﻿using E621Downloader.Models.Download;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
+using E621Downloader.Pages;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -136,13 +137,13 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public static MetaFile CreateMetaFile(StorageFile file, Post post, string groupName) {
-			MetaFile meta = new MetaFile(file.Path, groupName, post);
+			MetaFile meta = new(file.Path, groupName, post);
 			WriteMetaFile(meta, file, post);
 			return meta;
 		}
 		private static async void WriteMetaFile(MetaFile meta, StorageFile file, Post post) {
-			StorageFolder folder = await file.GetParentAsync();
 			try {
+				StorageFolder folder = await file.GetParentAsync();
 				//An exception of type 'System.IO.FileLoadException' occurred in System.Private.CoreLib.dll but was not handled in user code
 				//The process cannot access the file because it is being used by another process. (Exception from HRESULT: 0x80070020)
 				StorageFile target = await folder.CreateFileAsync($"{post.id}.meta", CreationCollisionOption.ReplaceExisting);
@@ -152,8 +153,13 @@ namespace E621Downloader.Models.Locals {
 			}
 		}
 		public static async void WriteMetaFile(MetaFile meta, Post post, string groupName) {
-			(MetaFile, StorageFile) file = await GetMetaFile(post.id.ToString(), groupName);
-			WriteMetaFile(meta, file.Item2, post);
+			//System.IO.FileLoadException: 'The process cannot access the file because it is being used by another process. (Exception from HRESULT: 0x80070020)'
+			try {
+				(MetaFile, StorageFile) file = await GetMetaFile(post.id.ToString(), groupName);
+				WriteMetaFile(meta, file.Item2, post);
+			} catch(Exception e) {
+				Debug.WriteLine(e.Message);
+			}
 		}
 
 		public static async Task<StorageFolder[]> GetDownloadsFolders() {
@@ -219,15 +225,14 @@ namespace E621Downloader.Models.Locals {
 				if(file.FileType == ".meta") {
 					MetaFile meta;
 					using(Stream stream = await file.OpenStreamForReadAsync()) {
-						using(StreamReader reader = new StreamReader(stream)) {
-							meta = JsonConvert.DeserializeObject<MetaFile>(await reader.ReadToEndAsync());
-						}
+						using StreamReader reader = new(stream);
+						meta = JsonConvert.DeserializeObject<MetaFile>(await reader.ReadToEndAsync());
 					}
 					if(meta != null) {
 						Pair.Add(pairs, meta);
 					}
 				} else {
-					BitmapImage bitmap = new BitmapImage();
+					BitmapImage bitmap = new();
 					ThumbnailMode mode = ThumbnailMode.SingleItem;
 					if(new string[] { ".webm" }.Contains(file.FileType)) {
 						mode = ThumbnailMode.SingleItem;
@@ -237,9 +242,8 @@ namespace E621Downloader.Models.Locals {
 					//Debug.WriteLine(mode);
 					using(StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(mode)) {
 						if(thumbnail != null) {
-							using(Stream stream = thumbnail.AsStreamForRead()) {
-								await bitmap.SetSourceAsync(stream.AsRandomAccessStream());
-							}
+							using Stream stream = thumbnail.AsStreamForRead();
+							await bitmap.SetSourceAsync(stream.AsRandomAccessStream());
 						}
 					}
 					Pair.Add(pairs, bitmap, file);
@@ -251,11 +255,9 @@ namespace E621Downloader.Models.Locals {
 		public static async Task<(MetaFile, StorageFile)> GetMetaFile(string postID, string groupName) {
 			StorageFolder folder = await DownloadFolder.GetFolderAsync(groupName);
 			StorageFile file = await folder.GetFileAsync($"{postID}.meta");
-			using(Stream stream = await file.OpenStreamForReadAsync()) {
-				using(StreamReader reader = new StreamReader(stream)) {
-					return (JsonConvert.DeserializeObject<MetaFile>(await reader.ReadToEndAsync()), file);
-				}
-			}
+			using Stream stream = await file.OpenStreamForReadAsync();
+			using StreamReader reader = new(stream);
+			return (JsonConvert.DeserializeObject<MetaFile>(await reader.ReadToEndAsync()), file);
 		}
 
 		public static async Task<List<MetaFile>> GetAllMetaFiles() {
@@ -265,16 +267,14 @@ namespace E621Downloader.Models.Locals {
 					if(file.FileType != ".meta") {
 						continue;
 					}
-					using(Stream stream = await file.OpenStreamForReadAsync()) {
-						using(StreamReader reader = new StreamReader(stream)) {
-							string content = await reader.ReadToEndAsync();
-							MetaFile meta = JsonConvert.DeserializeObject<MetaFile>(content);
-							if(meta == null) {
-								continue;
-							}
-							metas.Add(meta);
-						}
+					using Stream stream = await file.OpenStreamForReadAsync();
+					using StreamReader reader = new(stream);
+					string content = await reader.ReadToEndAsync();
+					MetaFile meta = JsonConvert.DeserializeObject<MetaFile>(content);
+					if(meta == null) {
+						continue;
 					}
+					metas.Add(meta);
 				}
 			};
 			return metas;
@@ -290,11 +290,9 @@ namespace E621Downloader.Models.Locals {
 
 			foreach(StorageFolder folder in await DownloadFolder.GetFoldersAsync()) {
 				foreach(StorageFile item in await folder.GetFilesAsync()) {
-					using(Stream stream = await item.OpenStreamForReadAsync()) {
-						using(StreamReader reader = new StreamReader(stream)) {
-							result.Add(JsonConvert.DeserializeObject(await reader.ReadToEndAsync()) as MetaFile);
-						}
-					}
+					using Stream stream = await item.OpenStreamForReadAsync();
+					using StreamReader reader = new(stream);
+					result.Add(JsonConvert.DeserializeObject(await reader.ReadToEndAsync()) as MetaFile);
 				}
 			}
 			return result;
@@ -306,16 +304,14 @@ namespace E621Downloader.Models.Locals {
 
 		public static async Task ReadLocalSettings() {
 			using(Stream stream = await LocalSettingsFile.OpenStreamForReadAsync()) {
-				using(StreamReader reader = new StreamReader(stream)) {
-					LocalSettings.Current = JsonConvert.DeserializeObject<LocalSettings>(await reader.ReadToEndAsync());
-				}
+				using StreamReader reader = new(stream);
+				LocalSettings.Current = JsonConvert.DeserializeObject<LocalSettings>(await reader.ReadToEndAsync());
 			}
 			if(LocalSettings.Current == null) {
 				LocalSettings.Current = new LocalSettings() {
 					customHostEnable = false,
-					spot_allowGif = true,
-					spot_allowWebm = true,
-					spot_allowImage = true,
+					spot_fileType = FileType.Jpg,
+					spot_FilterType = SpotFilterType.All,
 					spot_includeExplicit = true,
 					spot_includeQuestoinable = false,
 					spot_includeSafe = false,
@@ -335,11 +331,9 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public static async Task ReadFavoritesLists() {
-			using(Stream stream = await FavoritesListFile.OpenStreamForReadAsync()) {
-				using(StreamReader reader = new StreamReader(stream)) {
-					FavoritesList.Table = JsonConvert.DeserializeObject<List<FavoritesList>>(await reader.ReadToEndAsync()) ?? new List<FavoritesList>();
-				}
-			}
+			using Stream stream = await FavoritesListFile.OpenStreamForReadAsync();
+			using StreamReader reader = new(stream);
+			FavoritesList.Table = JsonConvert.DeserializeObject<List<FavoritesList>>(await reader.ReadToEndAsync()) ?? new List<FavoritesList>();
 		}
 
 		public static async Task WriteFavoritesLists() {
@@ -363,9 +357,8 @@ namespace E621Downloader.Models.Locals {
 			}
 			MetaFile meta;
 			using(Stream stream = await metaFile.OpenStreamForReadAsync()) {
-				using(StreamReader reader = new StreamReader(stream)) {
-					meta = JsonConvert.DeserializeObject<MetaFile>(await reader.ReadToEndAsync());
-				}
+				using StreamReader reader = new(stream);
+				meta = JsonConvert.DeserializeObject<MetaFile>(await reader.ReadToEndAsync());
 			}
 			return (file, meta);
 		}

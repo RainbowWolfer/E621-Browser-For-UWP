@@ -22,7 +22,7 @@ namespace E621Downloader.Views {
 	public sealed partial class PersonalFavoritesListForMultiple: UserControl {
 		private ContentDialog dialog;
 		private readonly PathType type;
-		public ObservableCollection<CheckBoxClass> Paths = new ObservableCollection<CheckBoxClass>();
+		public ObservableCollection<CheckBoxClass> Paths = new();
 		public PersonalFavoritesListForMultiple(ContentDialog dialog, PathType type, IEnumerable<Post> posts) {
 			this.InitializeComponent();
 			this.dialog = dialog;

@@ -32,7 +32,7 @@ namespace E621Downloader.Pages {
 		private bool internalChange = true;
 		private bool onTask;
 		public List<Post> Posts { get; private set; } = new List<Post>();
-		private CancellationTokenSource cts = new CancellationTokenSource();
+		private CancellationTokenSource cts = new();
 
 		public SpotPage() {
 			Instance = this;
@@ -42,9 +42,21 @@ namespace E621Downloader.Pages {
 			UpdateScoreLimit();
 		}
 		private void Page_Loaded(object sender, RoutedEventArgs e) {
-			AllowWebmCheckBox.IsChecked = LocalSettings.Current.spot_allowWebm;
-			AllowGifCheckBox.IsChecked = LocalSettings.Current.spot_allowGif;
-			AllowImageCheckBox.IsChecked = LocalSettings.Current.spot_allowImage;
+			UpdateTypesRadioButtonEnable();
+			switch(LocalSettings.Current.spot_fileType) {
+				case FileType.Png:
+					RadioButton_PNG.IsChecked = true;
+					break;
+				case FileType.Jpg:
+					RadioButton_JPG.IsChecked = true;
+					break;
+				case FileType.Gif:
+					RadioButton_GIF.IsChecked = true;
+					break;
+				case FileType.Webm:
+					RadioButton_WEBM.IsChecked = true;
+					break;
+			}
 			IncludeSafeCheckBox.IsChecked = LocalSettings.Current.spot_includeSafe;
 			IncludeQuestionableCheckBox.IsChecked = LocalSettings.Current.spot_includeQuestoinable;
 			IncludeExplicitCheckBox.IsChecked = LocalSettings.Current.spot_includeExplicit;
@@ -77,8 +89,8 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void TagsButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			SpotTagsSelection content = new SpotTagsSelection();
-			ContentDialog dialog = new ContentDialog {
+			SpotTagsSelection content = new();
+			ContentDialog dialog = new() {
 				Title = "Select Your Tags",
 				Content = content,
 				PrimaryButtonText = "Confirm",
@@ -137,44 +149,53 @@ namespace E621Downloader.Pages {
 				return;
 			}
 
-			bool WEBM = AllowWebmCheckBox.IsChecked.Value;
-			bool GIF = AllowGifCheckBox.IsChecked.Value;
-			//bool IMG = AllowImageCheckBox.IsChecked.Value;
-
-			if(WEBM && GIF) {
-				//do nothing for all
-			} else if(!WEBM && GIF) {
-				tags.Add("-type:WEBM");
-			} else if(WEBM && !GIF) {
-				tags.Add("-type:GIF");
-			} else if(!WEBM && !GIF) {
-				//var tip = new TeachingTip() {
-				//	IsOpen = true,
-				//	Target = TypePanel,
-				//	Title = "Parameters Error",
-				//	Subtitle = "Please Select At Least One Type",
-				//	PreferredPlacement = TeachingTipPlacementMode.Right,
-				//	IconSource = new SymbolIconSource() {
-				//		Symbol = Symbol.Important,
-				//	},
-				//};
-				//TypePanel.Children.Add(tip);
-				//tip.Closed += (s, args) => {
-				//	TypePanel.Children.Remove(tip);
-				//};
-				//LoadingRing.IsActive = false;
-				//return;
+			string fileType = "";
+			switch(LocalSettings.Current.spot_fileType) {
+				case FileType.Png:
+					fileType = "type:png";
+					break;
+				case FileType.Jpg:
+					fileType = "type:jpg";
+					break;
+				case FileType.Gif:
+					fileType = "type:gif";
+					break;
+				case FileType.Webm:
+					fileType = "type:webm";
+					break;
+				case FileType.Anim:
+					break;
+				default:
+					break;
 			}
 
-			(int, int) range = GetScoreRange();
-			tags.Add($"score:{range.Item1}..{range.Item2}");
+			switch(LocalSettings.Current.spot_FilterType) {
+				case SpotFilterType.All:
+					fileType = "";
+					break;
+				case SpotFilterType.Exclude:
+					fileType = "-" + fileType;
+					break;
+				case SpotFilterType.Specify:
+					break;
+				default:
+					fileType = "";
+					break;
+			}
+
+			if(!string.IsNullOrWhiteSpace(fileType)) {
+				tags.Add(fileType);
+			}
+
+			(int from, int to) = GetScoreRange();
+			tags.Add($"score:{from}..{to}");
 			List<Post> posts = await Post.GetPostsByRandomAsync(cts.Token, CurrentAmount, tags.ToArray());
 			if(posts == null || posts.Count == 0) {
 				await MainPage.CreatePopupDialog("Error", "There is No Post(s) Found");
 			} else {
 				MainGridView.Items.Clear();
 				for(int i = 0; i < posts.Count; i++) {
-					ImageHolder holder = new ImageHolder(this, posts[i], i, PathType.PostID, posts[i].id) {
+					ImageHolder holder = new(this, posts[i], i, PathType.PostID, posts[i].id) {
 						Height = 400,
 						Width = 400,
 					};
@@ -195,30 +216,6 @@ namespace E621Downloader.Pages {
 			foreach(TeachingTip item in TypePanel.Children.Where(i => i is TeachingTip)) {
 				item.IsOpen = false;
 			}
-		}
-
-		private void AllowWebmCheckBox_Checked(object sender, RoutedEventArgs e) {
-			if(internalChange) {
-				return;
-			}
-			CloseTypePanelTeachingTips();
-			LocalSettings.Current.spot_allowWebm = AllowWebmCheckBox.IsChecked.Value;
-		}
-
-		private void AllowGifCheckBox_Checked(object sender, RoutedEventArgs e) {
-			if(internalChange) {
-				return;
-			}
-			CloseTypePanelTeachingTips();
-			LocalSettings.Current.spot_allowGif = AllowGifCheckBox.IsChecked.Value;
-		}
-
-		private void AllowImageCheckBox_Checked(object sender, RoutedEventArgs e) {
-			if(internalChange) {
-				return;
-			}
-			CloseTypePanelTeachingTips();
-			LocalSettings.Current.spot_allowImage = AllowImageCheckBox.IsChecked.Value;
 		}
 
 		private void IncludeSafeCheckBox_Checked(object sender, RoutedEventArgs e) {
@@ -280,11 +277,11 @@ namespace E621Downloader.Pages {
 		private void UpdateScoreLimit() {
 			int from = (int)FromSlider.Value * 100;
 			int to = (int)(60 - ToSlider.Value) * 100;
-			ScoreLimitText.Text = $"Score Limit: ({from} - {to})";
+			ScoreLimitText.Text = $"Score Limit: ({from} - {to + 50})";
 		}
 
-		private (int, int) GetScoreRange() {
-			return ((int)FromSlider.Value * 100, (int)(60 - ToSlider.Value) * 100);
+		private (int from, int to) GetScoreRange() {
+			return ((int)FromSlider.Value * 100, (int)(60 - ToSlider.Value) * 100 + 50);
 		}
 
 		private void ClearButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -300,5 +297,67 @@ namespace E621Downloader.Pages {
 				item.Width = value;
 			}
 		}
+
+		private void TypeSwitchButton_Click(object sender, RoutedEventArgs e) {
+			switch(LocalSettings.Current.spot_FilterType) {
+				case SpotFilterType.All:
+					LocalSettings.Current.spot_FilterType = SpotFilterType.Exclude;
+					break;
+				case SpotFilterType.Exclude:
+					LocalSettings.Current.spot_FilterType = SpotFilterType.Specify;
+					break;
+				case SpotFilterType.Specify:
+					LocalSettings.Current.spot_FilterType = SpotFilterType.All;
+					break;
+				default:
+					return;
+			}
+			UpdateTypesRadioButtonEnable();
+		}
+
+		private void UpdateTypesRadioButtonEnable() {
+			if(LocalSettings.Current.spot_FilterType == SpotFilterType.All) {
+				RadioButton_PNG.IsEnabled = false;
+				RadioButton_JPG.IsEnabled = false;
+				RadioButton_GIF.IsEnabled = false;
+				RadioButton_WEBM.IsEnabled = false;
+			} else {
+				RadioButton_PNG.IsEnabled = true;
+				RadioButton_JPG.IsEnabled = true;
+				RadioButton_GIF.IsEnabled = true;
+				RadioButton_WEBM.IsEnabled = true;
+			}
+			TypeSwitchButtonIcon.Glyph = LocalSettings.Current.spot_FilterType switch {
+				SpotFilterType.All => "\uE8A9",
+				SpotFilterType.Exclude => "\uE152",
+				SpotFilterType.Specify => "\uE153",
+				_ => "\uE10C",
+			};
+			TypeSwitchButtonText.Text = LocalSettings.Current.spot_FilterType.ToString();
+		}
+
+		private void RadioButton_PNG_Click(object sender, RoutedEventArgs e) {
+			RadioButton_PNG.IsChecked = true;
+			LocalSettings.Current.spot_fileType = FileType.Png;
+		}
+
+		private void RadioButton_JPG_Click(object sender, RoutedEventArgs e) {
+			RadioButton_JPG.IsChecked = true;
+			LocalSettings.Current.spot_fileType = FileType.Jpg;
+		}
+
+		private void RadioButton_GIF_Click(object sender, RoutedEventArgs e) {
+			RadioButton_GIF.IsChecked = true;
+			LocalSettings.Current.spot_fileType = FileType.Gif;
+		}
+
+		private void RadioButton_WEBM_Click(object sender, RoutedEventArgs e) {
+			RadioButton_WEBM.IsChecked = true;
+			LocalSettings.Current.spot_fileType = FileType.Webm;
+		}
+	}
+
+	public enum SpotFilterType {
+		All, Exclude, Specify
 	}
 }

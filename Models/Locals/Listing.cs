@@ -21,7 +21,7 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public SingleListing GetGetDefaultBlackList() {
-			return LocalBlackLists.Find(i => i.IsDefault) ?? new SingleListing("Error");
+			return LocalBlackLists.Append(CloudBlackList).ToList().Find(i => i.IsDefault) ?? new SingleListing("Error");
 		}
 
 		public async Task AddFollowingList(string tag) {

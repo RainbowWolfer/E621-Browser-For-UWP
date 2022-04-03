@@ -25,7 +25,7 @@ namespace E621Downloader.Views {
 		public event Action OnToggled;
 		public event Action OnSettingsClick;
 
-		private readonly List<ComboBoxLine> lists = new List<ComboBoxLine>();
+		private readonly List<ComboBoxLine> lists = new();
 		private List<SingleListing> listings;
 		private SingleListing defaultListing;
 		private string tag;
@@ -96,14 +96,14 @@ namespace E621Downloader.Views {
 		}
 
 		private void SideToggle_Click(object sender, RoutedEventArgs e) {
-			StackPanel panel = new StackPanel();
-			Flyout flyout = new Flyout() {
+			StackPanel panel = new();
+			Flyout flyout = new() {
 				Placement = FlyoutPlacementMode.Bottom,
 				Content = panel,
 			};
 			ComboBoxLine cloud = lists.Find(l => l.IsCloud);
 			if(cloud != null) {
-				StackPanel cloudLine = new StackPanel() {
+				StackPanel cloudLine = new() {
 					Orientation = Orientation.Horizontal
 				};
 				var text = new TextBlock() {
@@ -117,7 +117,7 @@ namespace E621Downloader.Views {
 				};
 				cloudLine.Children.Add(text);
 				cloudLine.Children.Add(icon);
-				CheckBox box = new CheckBox() {
+				CheckBox box = new() {
 					Content = cloudLine,
 					IsChecked = cloud.IsChecked,
 					Tag = cloud.Name,
@@ -156,7 +156,7 @@ namespace E621Downloader.Views {
 				} else {
 					name = item.Name;
 				}
-				CheckBox box = new CheckBox() {
+				CheckBox box = new() {
 					Content = name,
 					IsChecked = item.IsChecked,
 					Tag = item.Name,
@@ -165,7 +165,7 @@ namespace E621Downloader.Views {
 				box.Unchecked += Box_Checked;
 				panel.Children.Add(box);
 			}
-			StackPanel buttonPanel = new StackPanel() {
+			StackPanel buttonPanel = new() {
 				Orientation = Orientation.Horizontal,
 			};
 			var gotoSettingsIcon = new FontIcon {
@@ -179,7 +179,7 @@ namespace E621Downloader.Views {
 			};
 			buttonPanel.Children.Add(gotoSettingsIcon);
 			buttonPanel.Children.Add(gotoSettingsText);
-			Button gotoSettingsButton = new Button() {
+			Button gotoSettingsButton = new() {
 				HorizontalAlignment = HorizontalAlignment.Stretch,
 				HorizontalContentAlignment = HorizontalAlignment.Center,
 				Margin = new Thickness(5, 10, 5, 0),

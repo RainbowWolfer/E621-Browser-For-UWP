@@ -101,10 +101,10 @@ namespace E621Downloader.Views {
 				if(PostsBrowser.Instance?.MultipleSelectionMode ?? false) {
 					return;
 				}
-				MenuFlyout flyout = new MenuFlyout();
+				MenuFlyout flyout = new();
 
 				if(MainPage.Instance.currentTag == PageTag.PostsBrowser) {
-					MenuFlyoutItem item_select = new MenuFlyoutItem() {
+					MenuFlyoutItem item_select = new() {
 						Text = "Select This",
 						Icon = new FontIcon() { Glyph = "\uE152" },
 					};
@@ -115,7 +115,7 @@ namespace E621Downloader.Views {
 					};
 					flyout.Items.Add(item_select);
 
-					MenuFlyoutItem item_hide = new MenuFlyoutItem() {
+					MenuFlyoutItem item_hide = new() {
 						Text = "Hide This Image",
 						Icon = new FontIcon() { Glyph = "\uE894" },
 					};
@@ -125,7 +125,7 @@ namespace E621Downloader.Views {
 					flyout.Items.Add(item_hide);
 				}
 
-				MenuFlyoutItem item_download = new MenuFlyoutItem() {
+				MenuFlyoutItem item_download = new() {
 					Text = "Download This",
 					Icon = new FontIcon() { Glyph = "\uE896" },
 				};
@@ -140,7 +140,7 @@ namespace E621Downloader.Views {
 				};
 				flyout.Items.Add(item_download);
 
-				MenuFlyoutItem item_favorite = new MenuFlyoutItem() {
+				MenuFlyoutItem item_favorite = new() {
 					Text = "Add Favorites",
 					Icon = new FontIcon() { Glyph = "\uE0A5" },
 				};

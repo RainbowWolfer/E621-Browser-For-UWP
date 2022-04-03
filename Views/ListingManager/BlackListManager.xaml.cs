@@ -44,7 +44,7 @@ namespace E621Downloader.Views.ListingManager {
 
 		public event Action<string[]> OnCloudSync;
 
-		private readonly Dictionary<string, string> tagsInfo = new Dictionary<string, string>();
+		private readonly Dictionary<string, string> tagsInfo = new();
 
 		private readonly List<SingleListing> listings;
 
@@ -245,7 +245,7 @@ namespace E621Downloader.Views.ListingManager {
 		private void PasteImportButton_Click(object sender, RoutedEventArgs e) {
 			var tag = PasteImportButton.Tag as string;
 			bool error = false;
-			List<string> result = new List<string>();
+			List<string> result = new();
 			if(string.IsNullOrWhiteSpace(tag)) {
 				error = true;
 			} else {
@@ -363,7 +363,7 @@ namespace E621Downloader.Views.ListingManager {
 		private void ExportClipboardItem_Click(object sender, RoutedEventArgs e) {
 			string text = string.Join('\n', Tags.Select(t => t.Tag.Trim()));
 			if(!string.IsNullOrWhiteSpace(text)) {
-				DataPackage dataPackage = new DataPackage() {
+				DataPackage dataPackage = new() {
 					RequestedOperation = DataPackageOperation.Copy,
 				};
 				dataPackage.SetText(text);
@@ -375,7 +375,7 @@ namespace E621Downloader.Views.ListingManager {
 			var element = (MenuFlyoutItem)sender;
 			var tag = (string)element.Tag;
 			if(!string.IsNullOrWhiteSpace(tag)) {
-				DataPackage dataPackage = new DataPackage() {
+				DataPackage dataPackage = new() {
 					RequestedOperation = DataPackageOperation.Copy,
 				};
 				dataPackage.SetText(tag);
@@ -493,7 +493,7 @@ namespace E621Downloader.Views.ListingManager {
 			var tag = (string)ImportClipboardItem.Tag;
 
 			bool error = false;
-			List<string> result = new List<string>();
+			List<string> result = new();
 			if(string.IsNullOrWhiteSpace(tag)) {
 				error = true;
 			} else {

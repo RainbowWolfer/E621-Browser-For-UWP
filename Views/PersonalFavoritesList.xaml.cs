@@ -110,8 +110,8 @@ namespace E621Downloader.Views {
 		}
 
 		private void AcceptButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			List<string> newLists = new List<string>();
-			List<string> containLists = new List<string>();
+			List<string> newLists = new();
+			List<string> containLists = new();
 			foreach(CheckBox item in CheckRecords) {
 				string name = (string)item.Content;
 				if(((CheckBoxTag)item.Tag).IsNew) {
@@ -182,16 +182,16 @@ namespace E621Downloader.Views {
 		}
 
 		private Grid GenerateItem(string name, int count, bool isNew, bool isChecked = false) {
-			Grid grid = new Grid();
+			Grid grid = new();
 			grid.ColumnDefinitions.Add(new ColumnDefinition());
 			grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(0, GridUnitType.Auto) });
-			CheckBox box = new CheckBox() {
+			CheckBox box = new() {
 				Content = name,
 				Tag = new CheckBoxTag() { IsNew = isNew },
 				FontSize = 16,
 				IsChecked = isChecked,
 			};
-			TextBlock countText = new TextBlock() {
+			TextBlock countText = new() {
 				Text = $"{count}",
 				FontSize = 16,
 				HorizontalAlignment = HorizontalAlignment.Right,

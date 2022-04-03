@@ -76,6 +76,7 @@ namespace E621Downloader.Models.Download {
 			if(folder == null) {
 				return false;
 			}
+			int index = 1;
 			foreach(Post item in posts) {
 				if(string.IsNullOrEmpty(item.file.url)) {
 					continue;
@@ -85,12 +86,13 @@ namespace E621Downloader.Models.Download {
 				if(string.IsNullOrEmpty(groupTitle)) {
 					groupTitle = DEFAULTTITLE;
 				}
-				onProgress?.Invoke($"Handling Downloads\nCreating Download File - ({filename})");
+				onProgress?.Invoke($"Handling Downloads\t{index}/{posts.Count()}\nCreating Download File - ({filename})");
 				if(token.IsCancellationRequested) {
 					return null;
 				}
 				StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 				RegisterDownload(item, new Uri(item.file.url), file, groupTitle);
+				index++;
 			}
 			return true;
 		}

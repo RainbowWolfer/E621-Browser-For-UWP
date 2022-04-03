@@ -23,7 +23,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 	public sealed partial class SingleTagDisplay: UserControl {
 		private TagsSelectionView parent;
 		private string tag;
-		private readonly CancellationTokenSource source = new CancellationTokenSource();
+		private readonly CancellationTokenSource source = new();
 		private bool hasDisposed = false;
 		public SingleTagDisplay(TagsSelectionView parent, string tag) {
 			this.InitializeComponent();

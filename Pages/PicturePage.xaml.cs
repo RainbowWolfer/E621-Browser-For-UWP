@@ -78,13 +78,13 @@ namespace E621Downloader.Pages {
 				if(this.PostRef == null) {
 					return;
 				}
-				if(key == VirtualKey.A || key == VirtualKey.Left) {
+				if(key is VirtualKey.A or VirtualKey.Left) {
 					GoLeft();
-				} else if(key == VirtualKey.D || key == VirtualKey.Right) {
+				} else if(key is VirtualKey.D or VirtualKey.Right) {
 					GoRight();
-				} else if(key == VirtualKey.W || key == VirtualKey.Up) {
+				} else if(key is VirtualKey.W or VirtualKey.Up) {
 					ZoomIn();
-				} else if(key == VirtualKey.S || key == VirtualKey.Down) {
+				} else if(key is VirtualKey.S or VirtualKey.Down) {
 					ZoomOut();
 				}
 			}));
@@ -276,15 +276,14 @@ namespace E621Downloader.Pages {
 					MyMediaPlayer.Visibility = Visibility.Collapsed;
 					MyScrollViewer.Visibility = Visibility.Visible;
 					try {
-						using(IRandomAccessStream randomAccessStream = await local.ImageFile.OpenAsync(FileAccessMode.Read)) {
-							BitmapImage result = new BitmapImage();
-							await result.SetSourceAsync(randomAccessStream);
-							MainImage.Source = result;
-							imageDataPackage = new DataPackage() {
-								RequestedOperation = DataPackageOperation.Copy,
-							};
-							imageDataPackage.SetBitmap(RandomAccessStreamReference.CreateFromFile(local.ImageFile));
-						}
+						using IRandomAccessStream randomAccessStream = await local.ImageFile.OpenAsync(FileAccessMode.Read);
+						BitmapImage result = new();
+						await result.SetSourceAsync(randomAccessStream);
+						MainImage.Source = result;
+						imageDataPackage = new DataPackage() {
+							RequestedOperation = DataPackageOperation.Copy,
+						};
+						imageDataPackage.SetBitmap(RandomAccessStreamReference.CreateFromFile(local.ImageFile));
 					} catch(Exception e) {
 						await MainPage.CreatePopupDialog("Error", $"Local Post({local.ImagePost.id}) - {local.ImageFile.Path} Load Failed\n{e.Message}");
 					}
@@ -314,21 +313,14 @@ namespace E621Downloader.Pages {
 		}
 
 		private FileType GetFileType(Post post) {
-			switch(post.file.ext.ToLower().Trim()) {
-				case "jpg":
-					return FileType.Jpg;
-				case "png":
-					return FileType.Png;
-				case "gif":
-					return FileType.Gif;
-				case "anim":
-				case "swf":
-					return FileType.Anim;
-				case "webm":
-					return FileType.Webm;
-				default:
-					throw new Exception($"New Type({post.file.ext}) Found");
-			}
+			return post.file.ext.ToLower().Trim() switch {
+				"jpg" => FileType.Jpg,
+				"png" => FileType.Png,
+				"gif" => FileType.Gif,
+				"anim" or "swf" => FileType.Anim,
+				"webm" => FileType.Webm,
+				_ => throw new Exception($"New Type({post.file.ext}) Found"),
+			};
 		}
 
 		private void UpdateDownloadButton(bool isLocal) {
@@ -355,21 +347,12 @@ namespace E621Downloader.Pages {
 			if(PostRef == null) {
 				return;
 			}
-			switch(PostRef.file.ext.ToLower().Trim()) {
-				case "jpg":
-				case "png":
-					TypeIcon.Glyph = "\uEB9F";
-					break;
-				case "gif":
-					TypeIcon.Glyph = "\uF4A9";
-					break;
-				case "webm":
-					TypeIcon.Glyph = "\uE714";
-					break;
-				default:
-					TypeIcon.Glyph = "\uE9CE";
-					break;
-			}
+			TypeIcon.Glyph = PostRef.file.ext.ToLower().Trim() switch {
+				"jpg" or "png" => "\uEB9F",
+				"gif" => "\uF4A9",
+				"webm" => "\uE714",
+				_ => "\uE9CE",
+			};
 			ToolTipService.SetToolTip(TypeIcon, $"Type: {PostRef.file.ext.Trim().ToCamelCase()}");
 		}
 
@@ -946,8 +929,8 @@ namespace E621Downloader.Pages {
 
 		private void RelativePanel_RightTapped(object sender, RightTappedRoutedEventArgs e) {
 			string tag = (string)((Panel)sender).Tag;
-			MenuFlyout flyout = new MenuFlyout();
-			MenuFlyoutItem item_copy = new MenuFlyoutItem() {
+			MenuFlyout flyout = new();
+			MenuFlyoutItem item_copy = new() {
 				Text = "Copy Tag",
 				Icon = new FontIcon() { Glyph = "\uE8C8" },
 			};
@@ -962,7 +945,7 @@ namespace E621Downloader.Pages {
 				Clipboard.SetContent(dataPackage);
 			};
 			flyout.Items.Add(item_copy);
-			MenuFlyoutItem item_concat = new MenuFlyoutItem() {
+			MenuFlyoutItem item_concat = new() {
 				Text = "Concat Search",
 				Icon = new FontIcon() { Glyph = "\uE109" },
 			};
@@ -971,7 +954,7 @@ namespace E621Downloader.Pages {
 				MainPage.NavigateToPostsBrowser(1, concat_tags);
 			};
 			flyout.Items.Add(item_concat);
-			MenuFlyoutItem item_overlay = new MenuFlyoutItem() {
+			MenuFlyoutItem item_overlay = new() {
 				Text = "Overlay Search",
 				Icon = new FontIcon() { Glyph = "\uE71E" },
 			};

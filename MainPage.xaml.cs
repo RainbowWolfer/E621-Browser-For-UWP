@@ -173,7 +173,7 @@ namespace E621Downloader {
 			E621User.Current = await E621User.GetAsync(username);
 			UserChangedInfoComplete?.Invoke();
 			string url = await E621User.GetAvatarURLAsync(E621User.Current);
-			BitmapImage image = new BitmapImage(new Uri(this.BaseUri, url));
+			BitmapImage image = new(new Uri(this.BaseUri, url));
 			image.ImageOpened += (s, e) => {
 				UserChangedAvatarComplete?.Invoke(image);
 				updatingUser = false;
@@ -292,13 +292,15 @@ namespace E621Downloader {
 		}
 
 		public static async Task<ContentDialog> CreatePopupDialog(string title, object content, bool enableButton = true, string backButtonContent = "Back") {
-			ContentDialog dialog = new ContentDialog() {
+			ContentDialog dialog = new() {
 				Title = title,
 				Content = content,
 				IsPrimaryButtonEnabled = enableButton,
 				PrimaryButtonText = enableButton ? backButtonContent : "",
 			};
-			await dialog.ShowAsync();
+			try {
+				await dialog.ShowAsync();
+			} catch { }
 			return dialog;
 		}
 
@@ -448,7 +450,7 @@ namespace E621Downloader {
 			IsFullScreen = !IsFullScreen;
 		}
 
-		private CancellationTokenSource cts = new CancellationTokenSource();
+		private CancellationTokenSource cts = new();
 
 		private async void CurrentTagsButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			await PopupSearch();

@@ -22,7 +22,7 @@ namespace E621Downloader.Views.LocalTagsManagementSection {
 	public sealed partial class LocalTagsManagementView: UserControl {
 		private readonly ContentDialog dialog;
 		public bool HandleConfirm { get; private set; }
-		private readonly ObservableCollection<string> input = new ObservableCollection<string>();
+		private readonly ObservableCollection<string> input = new();
 
 		public LocalTagsManagementView(ContentDialog dialog, string[] initialTags) {
 			this.InitializeComponent();

@@ -22,7 +22,7 @@ namespace E621Downloader.Views.DownloadSection {
 		private const int MAXCOLS = 7;
 		public DownloadsGroup Group { get; private set; }
 
-		public List<SimpleDownloadProgressBar> Bars => new List<SimpleDownloadProgressBar>() {
+		public List<SimpleDownloadProgressBar> Bars => new() {
 			Bar1, Bar2, Bar3, Bar4, Bar5, Bar6, Bar7
 		};
 

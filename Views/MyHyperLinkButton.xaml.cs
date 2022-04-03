@@ -37,10 +37,10 @@ namespace E621Downloader.Views {
 		}
 
 		private void Button_RightTapped(object sender, RightTappedRoutedEventArgs e) {
-			MenuFlyout flyout = new MenuFlyout() {
+			MenuFlyout flyout = new() {
 				Placement = FlyoutPlacementMode.Auto,
 			};
-			MenuFlyoutItem item_copy = new MenuFlyoutItem() {
+			MenuFlyoutItem item_copy = new() {
 				Icon = new FontIcon() { Glyph = "\uE8C8" },
 				Text = "Copy",
 			};

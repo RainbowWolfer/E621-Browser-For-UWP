@@ -38,7 +38,7 @@ namespace E621Downloader.Models.Networks {
 
 		public static async Task<HttpResult<string>> ReadURLAsync(string url, CancellationToken? token = null, string username = "", string api = "") {
 			Debug.WriteLine("Reading: " + url);
-			Stopwatch stopwatch = new Stopwatch();
+			Stopwatch stopwatch = new();
 			stopwatch.Start();
 			var client = new HttpClient();
 			AddDefaultRequestHeaders(client, username, api);
@@ -75,9 +75,9 @@ namespace E621Downloader.Models.Networks {
 		}
 
 		public static async Task<HttpResult<InMemoryRandomAccessStream>> ReadImageStreamAsync(string url, CancellationToken? token = null, string username = "", string api = "") {
-			Stopwatch stopwatch = new Stopwatch();
+			Stopwatch stopwatch = new();
 			stopwatch.Start();
-			HttpClient client = new HttpClient();
+			HttpClient client = new();
 			AddDefaultRequestHeaders(client, username, api);
 			HttpResponseMessage message = null;
 			InMemoryRandomAccessStream stream = null;
@@ -93,7 +93,7 @@ namespace E621Downloader.Models.Networks {
 				message.EnsureSuccessStatusCode();
 				code = message.StatusCode;
 				stream = new InMemoryRandomAccessStream();
-				DataWriter writer = new DataWriter(stream.GetOutputStreamAt(0));
+				DataWriter writer = new(stream.GetOutputStreamAt(0));
 				writer.WriteBytes(await message.Content.ReadAsByteArrayAsync());
 				await writer.StoreAsync();
 				result = HttpResultType.Success;
@@ -115,9 +115,9 @@ namespace E621Downloader.Models.Networks {
 		}
 
 		public static async Task<HttpResult<string>> PostRequestAsync(string url, KeyValuePair<string, string> pair, CancellationToken? token = null, string username = "", string api = "") {
-			Stopwatch stopwatch = new Stopwatch();
+			Stopwatch stopwatch = new();
 			stopwatch.Start();
-			HttpClient client = new HttpClient();
+			HttpClient client = new();
 			AddDefaultRequestHeaders(client, username, api);
 			HttpResponseMessage message = null;
 			HttpResultType result;
@@ -152,7 +152,7 @@ namespace E621Downloader.Models.Networks {
 		}
 
 		public static async Task<HttpResult<string>> DeleteRequestAsync(string url, CancellationToken? token = null, string username = "", string api = "") {
-			Stopwatch stopwatch = new Stopwatch();
+			Stopwatch stopwatch = new();
 			stopwatch.Start();
 			var client = new HttpClient();
 			AddDefaultRequestHeaders(client, username, api);
@@ -189,7 +189,7 @@ namespace E621Downloader.Models.Networks {
 		}
 
 		public static async Task<HttpResult<string>> PutRequestAsync(string url, KeyValuePair<string, string> pair, CancellationToken? token = null, string username = "", string api = "") {
-			Stopwatch stopwatch = new Stopwatch();
+			Stopwatch stopwatch = new();
 			stopwatch.Start();
 			var client = new HttpClient();
 			AddDefaultRequestHeaders(client, username, api);

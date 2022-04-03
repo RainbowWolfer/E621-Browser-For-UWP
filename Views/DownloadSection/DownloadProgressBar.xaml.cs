@@ -83,10 +83,10 @@ namespace E621Downloader.Views.DownloadSection {
 		}
 
 		private void InfoTextBlock_RightTapped(object sender, RightTappedRoutedEventArgs e) {
-			MenuFlyout flyout = new MenuFlyout() {
+			MenuFlyout flyout = new() {
 				Placement = FlyoutPlacementMode.Bottom,
 			};
-			MenuFlyoutItem copy_item = new MenuFlyoutItem() {
+			MenuFlyoutItem copy_item = new() {
 				Text = "Copy URL",
 				Icon = new FontIcon() { Glyph = "\uE8C8" },
 			};

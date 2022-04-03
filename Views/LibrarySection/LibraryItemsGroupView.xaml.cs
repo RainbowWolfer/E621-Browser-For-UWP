@@ -147,7 +147,7 @@ namespace E621Downloader.Views.LibrarySection {
 		public void SetFolders(List<StorageFolder> folders) {
 			LibraryItems.Clear();
 			foreach(StorageFolder item in folders) {
-				FontIcon icon = new FontIcon() {
+				FontIcon icon = new() {
 					Glyph = "\uE838",
 				};
 				LibraryItems.Add(new LibraryFolder() {
@@ -225,7 +225,7 @@ namespace E621Downloader.Views.LibrarySection {
 
 		public ItemType ItemType {
 			get {
-				if(File.FileType == ".png" || File.FileType == ".jpg") {
+				if(File.FileType is ".png" or ".jpg") {
 					return ItemType.Image;
 				} else if(File.FileType == ".gif") {
 					return ItemType.Gif;

@@ -97,7 +97,9 @@ namespace E621Downloader.Pages.LibrarySection {
 				SettingsPage.isDownloadPathChangingHandled = true;
 			} else {
 				if(e.Parameter is string folderName) {
+					FindNewTab(folderName);
 					//Navigate(typeof(Explorer), new object[] { folderName, this });
+					//ToTab();
 				} else if(Current == null) {
 					//TabsListView.SelectedIndex = 1;
 					NavigateToHome();
@@ -107,8 +109,17 @@ namespace E621Downloader.Pages.LibrarySection {
 			MainPage.ClearLibraryPageParameter();
 		}
 
+		public async void FindNewTab(string folderName) {
+			if(RootFoldersArgs.Folders == null) {
+				StorageFolder[] folders = await Local.GetDownloadsFolders();
+				RootFoldersArgs.Folders = folders.ToList();
+			}
+			StorageFolder folder = RootFoldersArgs.Folders.Find(f => f.Name == folderName);
+			ToTab(folder);
+		}
+
 		public void ClearTabs() {
-			List<NavigationViewItem> itemsToDelete = new List<NavigationViewItem>();
+			List<NavigationViewItem> itemsToDelete = new();
 			foreach(var item in MainNavigationView.MenuItems.Where(i => i is NavigationViewItem).Cast<NavigationViewItem>()) {
 				if(item == RootItem || item == FilterItem) {
 					continue;
@@ -122,21 +133,22 @@ namespace E621Downloader.Pages.LibrarySection {
 
 		public void ToTab(StorageFolder folder) {
 			bool found = false;
+			NavigationViewItem viewItem = null;
 			foreach(var item in MainNavigationView.MenuItems.Where(i => i is NavigationViewItem).Cast<NavigationViewItem>()) {
 				if(item == RootItem || item == FilterItem) {
 					continue;
 				}
 				if(folder.DisplayName == item.Content as string) {
-					MainNavigationView.SelectedItem = item;
 					found = true;
+					viewItem = item;
 					break;
 				}
 			}
 
 			if(!found) {
 				NavigationViewItem newMenuItem = CreateMenuItem(folder);
-				MenuFlyout flyout = new MenuFlyout();
-				MenuFlyoutItem delete_item = new MenuFlyoutItem() {
+				MenuFlyout flyout = new();
+				MenuFlyoutItem delete_item = new() {
 					Icon = new FontIcon() {
 						Glyph = "\uE10A",
 					},
@@ -146,10 +158,14 @@ namespace E621Downloader.Pages.LibrarySection {
 				flyout.Items.Add(delete_item);
 				newMenuItem.ContextFlyout = flyout;
 				MainNavigationView.MenuItems.Add(newMenuItem);
-				MainNavigationView.SelectedItem = newMenuItem;
+				viewItem = newMenuItem;
 			}
 
-			NavigateToFolder(folder);
+			NavigateToFolder(viewItem, folder);
+		}
+
+		private NavigationViewItem GetCurrent() {
+			return MainNavigationView.MenuItems.Where(i => i is NavigationViewItem).Cast<NavigationViewItem>().FirstOrDefault(i => i.IsSelected);
 		}
 
 		private void Delete_Item_Click(NavigationViewItem item) {
@@ -171,10 +187,11 @@ namespace E621Downloader.Pages.LibrarySection {
 			};
 		}
 
-		private void NavigateToFolder(StorageFolder folder) {
-			if(folder == null) {
+		private void NavigateToFolder(NavigationViewItem item, StorageFolder folder) {
+			if(folder == null || GetCurrent() == item) {
 				return;
 			}
+			MainNavigationView.SelectedItem = item;
 			LibraryImagesArgs args;
 			if(ImagesArgs.ContainsKey(folder)) {
 				args = ImagesArgs[folder];
@@ -202,11 +219,15 @@ namespace E621Downloader.Pages.LibrarySection {
 			} else if(args.InvokedItemContainer == FilterItem) {
 				NavigateToFilter(false);
 			} else {
-				NavigateToFolder(args.InvokedItemContainer.Tag as StorageFolder);
+				var item = (NavigationViewItem)args.InvokedItemContainer;
+				NavigateToFolder(item, item.Tag as StorageFolder);
 			}
 		}
 
 		public void NavigateToHome(bool updateListMenuItem = true) {
+			if(GetCurrent() == RootItem) {
+				return;
+			}
 			MainFrame.Navigate(typeof(Explorer), RootFoldersArgs, new EntranceNavigationTransitionInfo());
 			if(updateListMenuItem) {
 				MainNavigationView.SelectedItem = RootItem;
@@ -215,6 +236,9 @@ namespace E621Downloader.Pages.LibrarySection {
 		}
 
 		public void NavigateToFilter(bool updateListMenuItem = true) {
+			if(GetCurrent() == FilterItem) {
+				return;
+			}
 			MainFrame.Navigate(typeof(LibraryFilterPage), FilterArgs, new EntranceNavigationTransitionInfo());
 			if(updateListMenuItem) {
 				MainNavigationView.SelectedItem = FilterItem;

@@ -23,8 +23,8 @@ namespace E621Downloader.Views.TagsManagementSection {
 	public sealed partial class TagsSelectionView: Page {
 		private readonly ContentDialog dialog;
 		public ResultType Result { get; private set; } = ResultType.None;
-		private readonly Dictionary<string, E621Tag> tags_pool = new Dictionary<string, E621Tag>();
-		private readonly List<string> currentTags = new List<string>();
+		private readonly Dictionary<string, E621Tag> tags_pool = new();
+		private readonly List<string> currentTags = new();
 
 		public TagsSelectionView(ContentDialog dialog, string[] tags) {
 			this.InitializeComponent();
@@ -68,7 +68,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 			CalculateCurrentTags();
 			string last = currentTags.LastOrDefault();
 			//if(args.Reason == AutoSuggestionBoxTextChangeReason.UserInput) {
-			if(string.IsNullOrWhiteSpace(last)) {
+			if(string.IsNullOrWhiteSpace(last) || last.Length <= 2) {
 				AutoCompletesListView.Items.Clear();
 			} else {
 				//await LoadAutoSuggestion(last);
@@ -85,7 +85,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 			}
 			delay_cts = new CancellationTokenSource();
 			try {
-				await Task.Delay(500, delay_cts.Token);
+				await Task.Delay(200, delay_cts.Token);
 			} catch(TaskCanceledException) {
 				return;
 			}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using E621Downloader.Pages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,9 +24,8 @@ namespace E621Downloader.Models.Locals {
 		public bool mediaAutoPlay;
 		public bool enableHotKeys;
 
-		public bool spot_allowWebm;
-		public bool spot_allowGif;
-		public bool spot_allowImage;
+		public SpotFilterType spot_FilterType;
+		public FileType spot_fileType;
 		public bool spot_includeSafe;
 		public bool spot_includeQuestoinable;
 		public bool spot_includeExplicit;

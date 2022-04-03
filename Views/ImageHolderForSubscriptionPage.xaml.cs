@@ -51,7 +51,7 @@ namespace E621Downloader.Views {
 			BottomInfo.PostRef = post;
 			type = PathType.PostID;
 			path = post.id;
-			List<string> relatives = new List<string>();
+			List<string> relatives = new();
 			if(followTags != null && followTags.Length > 0) {
 				foreach(string followTag in followTags) {
 					foreach(string tag in post.tags.GetAllTags()) {
@@ -111,7 +111,7 @@ namespace E621Downloader.Views {
 			MetaFile meta = result.Item2;
 			mix.ImageFile = file;
 			mix.MetaFile = meta;
-			BitmapImage bitmap = new BitmapImage();
+			BitmapImage bitmap = new();
 			ThumbnailMode mode = ThumbnailMode.SingleItem;
 			if(new string[] { ".webm" }.Contains(file?.FileType)) {
 				mode = ThumbnailMode.SingleItem;
@@ -150,7 +150,7 @@ namespace E621Downloader.Views {
 
 
 		private void ImageHolderForSubscriptionPage_RightTappedForLocal(object sender, RightTappedRoutedEventArgs e) {
-			MenuFlyout flyout = new MenuFlyout();
+			MenuFlyout flyout = new();
 			flyout.Items.Add(Item_ManageFavorites);
 			flyout.Items.Add(Item_OpenInBrowser);
 			flyout.Items.Add(Item_RemoveFromThis);
@@ -158,7 +158,7 @@ namespace E621Downloader.Views {
 		}
 
 		private void ImageHolderForSubscriptionPage_RightTappedForPostID(object sender, RightTappedRoutedEventArgs e) {
-			MenuFlyout flyout = new MenuFlyout();
+			MenuFlyout flyout = new();
 			flyout.Items.Add(Item_ManageFavorites);
 			flyout.Items.Add(Item_OpenInBrowser);
 			flyout.Items.Add(Item_Download);
@@ -167,7 +167,7 @@ namespace E621Downloader.Views {
 		}
 
 		private void ImageHolderForSubscriptionPage_RightTappedForFollowing(object sender, RightTappedRoutedEventArgs e) {
-			MenuFlyout flyout = new MenuFlyout();
+			MenuFlyout flyout = new();
 			flyout.Items.Add(Item_ManageFavorites);
 			flyout.Items.Add(Item_OpenInBrowser);
 			flyout.Items.Add(Item_Download);
@@ -176,7 +176,7 @@ namespace E621Downloader.Views {
 
 		private MenuFlyoutItem Item_RemoveFromThis {
 			get {
-				MenuFlyoutItem item = new MenuFlyoutItem {
+				MenuFlyoutItem item = new() {
 					Icon = new FontIcon() { Glyph = "\uE107" },
 					Text = "Remove From This"
 				};
@@ -207,7 +207,7 @@ namespace E621Downloader.Views {
 
 		private MenuFlyoutItem Item_ManageFavorites {
 			get {
-				MenuFlyoutItem item = new MenuFlyoutItem {
+				MenuFlyoutItem item = new() {
 					Icon = new FontIcon() { Glyph = "\uE912" },
 					Text = "Manage Favorites"
 				};
@@ -230,7 +230,7 @@ namespace E621Downloader.Views {
 
 		private MenuFlyoutItem Item_OpenInBrowser {
 			get {
-				MenuFlyoutItem item = new MenuFlyoutItem {
+				MenuFlyoutItem item = new() {
 					Icon = new FontIcon() { Glyph = "\uE12B" },
 					Text = "Open In Browser"
 				};
@@ -245,7 +245,7 @@ namespace E621Downloader.Views {
 
 		private MenuFlyoutItem Item_Download {
 			get {
-				MenuFlyoutItem item = new MenuFlyoutItem {
+				MenuFlyoutItem item = new() {
 					Icon = new FontIcon() { Glyph = "\uE118" },
 					Text = "Download"
 				};

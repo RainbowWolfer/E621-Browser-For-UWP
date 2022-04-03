@@ -11,7 +11,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Grid>
-		<SplitView x:Name="MainSplitView" DisplayMode="CompactInline" OpenPaneLength="300" CompactPaneLength="40" PaneClosing="MainSplitView_PaneClosing" IsPaneOpen="True">
+		<SplitView x:Name="MainSplitView" DisplayMode="CompactInline" OpenPaneLength="300" CompactPaneLength="50" PaneClosing="MainSplitView_PaneClosing" IsPaneOpen="True" PaneOpening="MainSplitView_PaneOpening">
 			<SplitView.Pane>
 				<Grid>
 					<Grid.RowDefinitions>
@@ -22,15 +22,15 @@
 						<RowDefinition Height="*"/>
 						<RowDefinition Height="auto"/>
 					</Grid.RowDefinitions>
-					<Button x:Name="HamburgerButton" Height="40" Width="40" Content="&#xE700;" FontFamily="Segoe MDL2 Assets" Tapped="HamburgerButton_Tapped" Background="Transparent" BorderThickness="0" FontSize="18"/>
+					<Button x:Name="HamburgerButton" Height="40" Width="40" Content="&#xE700;" FontFamily="Segoe MDL2 Assets" Tapped="HamburgerButton_Tapped" Background="Transparent" BorderThickness="0" FontSize="18" Margin="5"/>
 					<ToggleSwitch x:Name="SplitViewDisplayModeSwitch" HorizontalAlignment="Right" FlowDirection="RightToLeft" Margin="10,0,15,0" IsOn="False" OnContent="Overlay" OffContent="Inline" Toggled="SplitViewDisplayModeSwitch_Toggled"/>
-					<ToggleButton x:Name="FollowingButton" Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Height="40" IsChecked="True" FontSize="18" Tapped="FollowingButton_Tapped" Background="Transparent" BorderThickness="0">
+					<ToggleButton x:Name="FollowingButton" Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Height="40" IsChecked="True" FontSize="18" Tapped="FollowingButton_Tapped" Background="Transparent" BorderThickness="0" Margin="5">
 						<StackPanel Orientation="Horizontal">
 							<FontIcon Glyph="&#xE1CF;"/>
-							<TextBlock Text="Your Following" Margin="10,0,0,0"/>
+							<TextBlock Text="Your Following" Margin="15,0,0,0"/>
 						</StackPanel>
 					</ToggleButton>
-					<Grid Grid.Row="2" Height="40" Margin="45,5,10,0">
+					<Grid Grid.Row="2" Height="40" Margin="55,5,10,0">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="auto"/>
@@ -48,7 +48,7 @@
 							</StackPanel>
 						</Button>
 					</Grid>
-					<Grid Grid.Row="3" Margin="45,5,10,0">
+					<Grid Grid.Row="3" Margin="55,5,10,0">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="*"/>
@@ -66,34 +66,26 @@
 							</StackPanel>
 						</Button>
 					</Grid>
-					<Grid x:Name="FavoritesTableHintText" Grid.Row="4">
-						<TextBlock Text="You do not have any favorites List&#10;Go Create your own one" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" TextAlignment="Center"/>
+					<Grid x:Name="FavoritesTableHintText" Grid.Row="4" Margin="50">
+						<TextBlock Text="You do not have any favorites List&#10;Go Create your own one" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" TextAlignment="Center" TextWrapping="Wrap"/>
 					</Grid>
-					<ListView x:Name="FavoritesListView" Grid.Row="4" ItemsSource="{x:Bind items}" d:ItemsSource="" Margin="0,5,0,0" SelectionMode="Single" SelectionChanged="FavoritesListView_SelectionChanged">
-						<ListView.ItemContainerStyle>
-							<Style TargetType="ListViewItem">
-								<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-								<Setter Property="VerticalContentAlignment" Value="Stretch"/>
-								<Setter Property="Padding" Value="0"/>
-								<Setter Property="Margin" Value="0"/>
-							</Style>
-						</ListView.ItemContainerStyle>
+					<ListView x:Name="FavoritesListView" Grid.Row="4" ItemsSource="{x:Bind items}" d:ItemsSource="1 2 3" Margin="0,5,0,0" SelectionMode="Single" SelectionChanged="FavoritesListView_SelectionChanged" Padding="5">
 						<ListView.ItemTemplate>
 							<DataTemplate x:DataType="local:FavoriteListViewItem">
 								<Grid>
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="auto" MinWidth="20"/>
+										<ColumnDefinition Width="auto"/>
 										<ColumnDefinition Width="*"/>
 										<ColumnDefinition Width="auto"/>
 									</Grid.ColumnDefinitions>
-									<FontIcon Tag="{x:Bind Index}" Glyph="&#xE1F5;" FontSize="12" ToolTipService.ToolTip="{x:Bind Title}" Loaded="FontIcon_Loaded" Width="40"/>
-									<TextBlock Text="{x:Bind Title}" d:Text="This is Title" Grid.Column="1" VerticalAlignment="Center" FontSize="18"/>
+									<FontIcon Tag="{x:Bind Index}" Glyph="&#xE923;" FontSize="12" ToolTipService.ToolTip="{x:Bind Title}" Loaded="FontIcon_Loaded" Width="12"/>
+									<TextBlock Text="{x:Bind Title}" d:Text="This is Title" Grid.Column="1" VerticalAlignment="Center" FontSize="18" Margin="25,0,0,0"/>
 									<TextBlock Text="{x:Bind Count}" d:Text="20" Grid.Column="2" VerticalAlignment="Center" Margin="10,0,10,0"/>
 								</Grid>
 							</DataTemplate>
 						</ListView.ItemTemplate>
 					</ListView>
-					<views:ResizeBar Grid.Row="5" OnSizeChanged="ResizeBar_OnSizeChanged"/>
+					<views:ResizeBar Grid.Row="5" OnSizeChanged="ResizeBar_OnSizeChanged" Margin="5"/>
 				</Grid>
 			</SplitView.Pane>
 			<SplitView.Content>
@@ -154,7 +146,10 @@
 					</RelativePanel>
 					<ProgressRing x:Name="LoadingRing" Grid.Row="1" MinHeight="200" MinWidth="200" Margin="50"/>
 					<Grid x:Name="FavoritesListHintText" Grid.Row="1">
-						<TextBlock Text="Nothing is in this list" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+						<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+							<FontIcon Glyph="&#xF133;" FontSize="68" Margin="5"/>
+							<TextBlock Text="Nothing is in this list" FontSize="20" Margin="5"/>
+						</StackPanel>
 					</Grid>
 					<GridView x:Name="MainGridView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" Padding="10"/>
 					<StackPanel x:Name="Paginator" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">

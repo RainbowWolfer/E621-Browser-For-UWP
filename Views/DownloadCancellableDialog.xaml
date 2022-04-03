@@ -15,7 +15,7 @@
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
-		<TextBlock x:Name="MainText" Text="Downloading"/>
+		<TextBlock x:Name="MainText" Text="Downloading" Margin="0,0,0,5"/>
 		<Button x:Name="CancelButton" Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="CancelButton_Click">
 			<StackPanel Orientation="Horizontal">
 				<FontIcon Glyph="&#xE711;" VerticalAlignment="Center" Margin="5"/>

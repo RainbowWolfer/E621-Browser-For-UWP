@@ -34,7 +34,7 @@ namespace E621Downloader.Models.Posts {
 			}
 		}
 
-		public static E621Wiki GetDefault(string tag) => new E621Wiki() {
+		public static E621Wiki GetDefault(string tag) => new() {
 			id = 0,
 			created_at = DateTime.Now,
 			updated_at = DateTime.Now,

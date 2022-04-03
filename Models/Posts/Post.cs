@@ -69,7 +69,7 @@ namespace E621Downloader.Models.Posts {
 		}
 
 		public static async Task<List<Post>> GetPostsByIDsAsync(CancellationToken? token, IEnumerable<string> ids) {
-			List<Post> posts = new List<Post>();
+			List<Post> posts = new();
 			foreach(string id in ids) {
 				posts.Add(await GetPostByIDAsync(token, id));
 			}

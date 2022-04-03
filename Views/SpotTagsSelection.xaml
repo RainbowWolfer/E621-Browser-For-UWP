@@ -18,14 +18,8 @@
 			<ColumnDefinition Width="200"/>
 			<ColumnDefinition Width="200"/>
 		</Grid.ColumnDefinitions>
-		<AutoSuggestBox x:Name="TagsInput" QuerySubmitted="TagsInput_QuerySubmitted" QueryIcon="Add"/>
-		<ListView x:Name="InputTagsListView" ItemsSource="{x:Bind InputTags}" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" Loaded="InputTagsListView_Loaded">
-			<ListView.ItemContainerStyle>
-				<Style TargetType="ListViewItem">
-					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-					<Setter Property="Height" Value="40"/>
-				</Style>
-			</ListView.ItemContainerStyle>
+		<AutoSuggestBox x:Name="TagsInput" QuerySubmitted="TagsInput_QuerySubmitted" QueryIcon="Add" Margin="5"/>
+		<ListView x:Name="InputTagsListView" ItemsSource="{x:Bind InputTags}" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" Loaded="InputTagsListView_Loaded" Margin="5">
 			<ListView.ItemTemplate>
 				<DataTemplate x:DataType="x:String">
 					<Grid Height="40">
@@ -33,18 +27,18 @@
 							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="auto"/>
 						</Grid.ColumnDefinitions>
-						<TextBlock Text="{x:Bind ToString()}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+						<TextBlock Text="{x:Bind ToString()}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 						<Button x:Name="DeleteButton" Tapped="DeleteButton_Tapped" Tag="{x:Bind ToString()}" Background="Transparent" Content="-" BorderThickness="0" Height="30" Width="30" Grid.Column="1"/>
 					</Grid>
 				</DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>
-		<Button x:Name="ReverseButton" Tapped="ReverseButton_Tapped" Content="Reverse Selection" HorizontalAlignment="Stretch" Grid.Column="1"/>
-		<ListView x:Name="FollowingTagsListView" Grid.Row="1" Grid.Column="1" ItemsSource="{x:Bind Followings}" SelectionMode="Multiple">
+		<Button x:Name="ReverseButton" Tapped="ReverseButton_Tapped" Content="Reverse Selection" HorizontalAlignment="Stretch" Grid.Column="1" Margin="5"/>
+		<ListView x:Name="FollowingTagsListView" Grid.Row="1" Grid.Column="1" ItemsSource="{x:Bind Followings}" SelectionMode="Multiple" Margin="5">
 			<ListView.ItemTemplate>
 				<DataTemplate x:DataType="x:String">
 					<Grid>
-						<TextBlock Text="{x:Bind ToString()}"/>
+						<TextBlock Text="{x:Bind ToString()}" FontSize="16"/>
 					</Grid>
 				</DataTemplate>
 			</ListView.ItemTemplate>
