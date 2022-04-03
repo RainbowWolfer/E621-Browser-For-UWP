@@ -24,7 +24,7 @@ namespace E621Downloader.Views {
 			this.InitializeComponent();
 
 			int i = 0;
-			foreach(var item in App.postsList.GetItems()) {
+			foreach(var item in App.PostsList.GetItems()) {
 				string content = item.ToString();
 				if(item is Post p) {
 					content = $"ID_{p.id}";

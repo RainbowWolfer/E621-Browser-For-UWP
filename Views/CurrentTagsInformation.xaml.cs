@@ -19,8 +19,9 @@ namespace E621Downloader.Views {
 	public sealed partial class CurrentTagsInformation: UserControl {
 		private readonly string[] tags;
 		private readonly string[] filtered;
-		private bool initializing = true;
+
 		private readonly ContentDialog dialog;
+
 		public CurrentTagsInformation(string[] tags, ContentDialog dialog) {
 			this.InitializeComponent();
 			this.tags = E621Tag.SortOutMetatags(tags);
@@ -93,7 +94,6 @@ namespace E621Downloader.Views {
 				};
 
 			}
-			initializing = false;
 		}
 
 		private void FollowingToggle_OnSettingsClick() {

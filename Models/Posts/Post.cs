@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
 	public class Post {
-		public async static Task<List<Post>> GetPostsByTagsAsync(CancellationToken? token, int page, params string[] tags) {
+		public static async Task<List<Post>> GetPostsByTagsAsync(CancellationToken? token, int page, params string[] tags) {
 			if(page <= 0) {
 				throw new Exception("Page not valid");
 			}
@@ -21,7 +21,9 @@ namespace E621Downloader.Models.Posts {
 
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
-				return JsonConvert.DeserializeObject<PostsRoot>(result.Content).posts;
+				return JsonConvert.DeserializeObject<PostsRoot>(result.Content).posts ?? new List<Post>();
+			} else if(result.Result == HttpResultType.Canceled) {
+				return null;
 			} else {
 				return new List<Post>();
 			}

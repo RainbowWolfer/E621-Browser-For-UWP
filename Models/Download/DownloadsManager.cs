@@ -17,10 +17,10 @@ namespace E621Downloader.Models.Download {
 		//public static event OnDownloadFinishEventHandler OnDownloadFinish;
 		public const string DEFAULTTITLE = "Default";
 
-		public readonly static List<DownloadInstance> downloads;
-		public readonly static BackgroundDownloader downloader;
+		public static readonly List<DownloadInstance> downloads;
+		public static readonly BackgroundDownloader downloader;
 
-		public readonly static List<DownloadsGroup> groups;
+		public static readonly List<DownloadsGroup> groups;
 
 
 		static DownloadsManager() {
@@ -57,16 +57,20 @@ namespace E621Downloader.Models.Download {
 
 		public static bool CheckDownloadAvailable() => Local.DownloadFolder != null;
 
-		public static async Task<bool> RegisterDownloads(IEnumerable<Post> posts, IEnumerable<string> tags) {
-			return await RegisterDownloads(posts, DownloadsGroup.GetGroupTitle(tags));
+		public static async Task<bool?> RegisterDownloads(CancellationToken token, IEnumerable<Post> posts, IEnumerable<string> tags, Action<string> onProgress = null) {
+			return await RegisterDownloads(token, posts, DownloadsGroup.GetGroupTitle(tags), onProgress);
 		}
 
-		public static async Task<bool> RegisterDownloads(IEnumerable<Post> posts, string groupTitle = DEFAULTTITLE) {
+		public static async Task<bool?> RegisterDownloads(CancellationToken token, IEnumerable<Post> posts, string groupTitle, Action<string> onProgress = null) {
 			if(!CheckDownloadAvailable()) {
 				return false;
 			}
 			if(string.IsNullOrWhiteSpace(groupTitle)) {
 				groupTitle = DEFAULTTITLE;
+			}
+			onProgress?.Invoke($"Handling Downloads\nGetting Folder - ({groupTitle})");
+			if(token.IsCancellationRequested) {
+				return null;
 			}
 			StorageFolder folder = await Local.DownloadFolder.CreateFolderAsync(groupTitle, CreationCollisionOption.OpenIfExists);
 			if(folder == null) {
@@ -81,6 +85,10 @@ namespace E621Downloader.Models.Download {
 				if(string.IsNullOrEmpty(groupTitle)) {
 					groupTitle = DEFAULTTITLE;
 				}
+				onProgress?.Invoke($"Handling Downloads\nCreating Download File - ({filename})");
+				if(token.IsCancellationRequested) {
+					return null;
+				}
 				StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 				RegisterDownload(item, new Uri(item.file.url), file, groupTitle);
 			}
@@ -91,7 +99,7 @@ namespace E621Downloader.Models.Download {
 			return await RegisterDownload(post, DownloadsGroup.GetGroupTitle(tags));
 		}
 
-		public async static Task<bool> RegisterDownload(Post post, string groupTitle = DEFAULTTITLE) {
+		public static async Task<bool> RegisterDownload(Post post, string groupTitle = DEFAULTTITLE) {
 			if(string.IsNullOrEmpty(post.file.url)) {
 				return false;
 			}

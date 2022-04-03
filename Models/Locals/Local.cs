@@ -1,23 +1,23 @@
-﻿using System;
+﻿using E621Downloader.Models.Download;
+using E621Downloader.Models.Locals;
+using E621Downloader.Models.Posts;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
+using Windows.Storage.FileProperties;
+using Windows.Storage.Streams;
 using Windows.UI.Popups;
-using Newtonsoft.Json;
-using E621Downloader.Models.Download;
-using E621Downloader.Models.Locals;
-using E621Downloader.Models.Posts;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.Storage.Streams;
-using Windows.Storage.FileProperties;
-using System.Threading;
 
 namespace E621Downloader.Models.Locals {
 	public static class Local {
@@ -48,7 +48,7 @@ namespace E621Downloader.Models.Locals {
 
 		public static StorageFolder DownloadFolder { get; private set; }
 
-		public async static Task Initialize() {
+		public static async Task Initialize() {
 			Debug.WriteLine("Initializing Local");
 			Debug.WriteLine(LocalFolder.Path);
 			if(initialized) {
@@ -81,13 +81,13 @@ namespace E621Downloader.Models.Locals {
 		//}
 
 
-		public async static Task WriteTokenToFile(string token) {
+		public static async Task WriteTokenToFile(string token) {
 			await FileIO.WriteTextAsync(FutureAccessTokenFile, token);
 			await SetToken(token);
 		}
 
 		public static string GetToken() => token;
-		public async static Task SetToken(string token) {
+		public static async Task SetToken(string token) {
 			Local.token = token;
 			if(string.IsNullOrWhiteSpace(token)) {
 				//set to download library
@@ -102,91 +102,24 @@ namespace E621Downloader.Models.Locals {
 			}
 		}
 
-		public async static void ClearToken(string token) {
+		public static async void ClearToken(string token) {
 			StorageApplicationPermissions.FutureAccessList.Remove(token);
 			Local.token = null;
 			DownloadFolder = null;
 			await FileIO.WriteTextAsync(FutureAccessTokenFile, "");
 		}
 
-		private async static Task<string> GetTokenFromFile() {
+		private static async Task<string> GetTokenFromFile() {
 			return await FileIO.ReadTextAsync(FutureAccessTokenFile);
 		}
 
-		public async static Task Reload() {
+		public static async Task Reload() {
 			await ReadListing();
 			await ReadLocalSettings();
 			string token = await GetTokenFromFile();
 			await SetToken(token);
 			await ReadFavoritesLists();
 		}
-
-		//public static void AddFollowList(string newTag) {
-		//	//var list = FollowList.ToList();
-		//	//list.Add(newTag);
-		//	//FollowList = list.ToArray();
-		//	//WriteFollowList(FollowList);
-		//}
-
-		//public static void AddBlackList(string newTag) {
-		//	//var list = BlackList.ToList();
-		//	//list.Add(newTag);
-		//	//BlackList = list.ToArray();
-		//	//WriteBlackList(BlackList);
-		//}
-
-		//public static void RemoveFollowList(string tag) {
-		//	//var list = FollowList.ToList();
-		//	//list.Remove(tag);
-		//	//FollowList = list.ToArray();
-		//	//WriteFollowList(FollowList);
-		//}
-
-		//public static void RemoveBlackList(string tag) {
-		//	//var list = BlackList.ToList();
-		//	//list.Remove(tag);
-		//	//BlackList = list.ToArray();
-		//	//WriteBlackList(BlackList);
-		//}
-
-		//public static bool CheckFollowList(string tag) => false;
-		//public static bool CheckFollowList(string[] tags) => false;
-		//public static bool CheckBlackList(string tag) => false;
-		//public static bool CheckBlackList(string[] tags) => false;
-
-		//public async static void WriteFollowList(string[] list) {
-		//	//await FileIO.WriteLinesAsync(FollowListFile, list);
-		//	//FollowList = list;
-		//}
-		//public async static void WriteBlackList(string[] list) {
-		//	//await FileIO.WriteLinesAsync(BlackListFile, list);
-		//	//BlackList = list;
-		//}
-
-		//private async static Task<string[]> GetFollowList() => await GetListFromFile(null);
-		//private async static Task<string[]> GetBlackList() => await GetListFromFile(null);
-		//private async static Task<string[]> GetListFromFile(StorageFile file) {
-		//	var list = new List<string>();
-		//	using(Stream stream = await file.OpenStreamForReadAsync()) {
-		//		using(StreamReader reader = new StreamReader(stream)) {
-		//			string line = "";
-		//			foreach(char c in await reader.ReadToEndAsync()) {
-		//				if(c == '\r' || c == '\n') {
-		//					if(line.Length > 0) {
-		//						list.Add(line);
-		//					}
-		//					line = "";
-		//					continue;
-		//				}
-		//				line += c;
-		//			}
-		//			if(line.Length > 0) {
-		//				list.Add(line);
-		//			}
-		//		}
-		//	}
-		//	return list.ToArray();
-		//}
 
 		public static async Task WriteListing() {
 			string json = JsonConvert.SerializeObject(Listing, Formatting.Indented);
@@ -207,21 +140,23 @@ namespace E621Downloader.Models.Locals {
 			WriteMetaFile(meta, file, post);
 			return meta;
 		}
-		private async static void WriteMetaFile(MetaFile meta, StorageFile file, Post post) {
+		private static async void WriteMetaFile(MetaFile meta, StorageFile file, Post post) {
 			StorageFolder folder = await file.GetParentAsync();
-			StorageFile target = await folder.CreateFileAsync($"{post.id}.meta", CreationCollisionOption.ReplaceExisting);
 			try {
+				//An exception of type 'System.IO.FileLoadException' occurred in System.Private.CoreLib.dll but was not handled in user code
+				//The process cannot access the file because it is being used by another process. (Exception from HRESULT: 0x80070020)
+				StorageFile target = await folder.CreateFileAsync($"{post.id}.meta", CreationCollisionOption.ReplaceExisting);
 				await FileIO.WriteTextAsync(target, meta.ConvertJson());
 			} catch(Exception e) {
 				Debug.WriteLine(e.Message);
 			}
 		}
-		public async static void WriteMetaFile(MetaFile meta, Post post, string groupName) {
+		public static async void WriteMetaFile(MetaFile meta, Post post, string groupName) {
 			(MetaFile, StorageFile) file = await GetMetaFile(post.id.ToString(), groupName);
 			WriteMetaFile(meta, file.Item2, post);
 		}
 
-		public async static Task<StorageFolder[]> GetDownloadsFolders() {
+		public static async Task<StorageFolder[]> GetDownloadsFolders() {
 			return DownloadFolder == null ? null : (await DownloadFolder.GetFoldersAsync()).ToArray();
 		}
 		private class Pair {
@@ -270,7 +205,7 @@ namespace E621Downloader.Models.Locals {
 			}
 		}
 
-		public async static Task<List<(MetaFile meta, BitmapImage bitmap, StorageFile file)>> GetMetaFiles(StorageFolder folder, Action<StorageFile, int, int> onNextFileLoad = null) {
+		public static async Task<List<(MetaFile meta, BitmapImage bitmap, StorageFile file)>> GetMetaFiles(StorageFolder folder, Action<StorageFile, int, int> onNextFileLoad = null) {
 			var result = new List<(MetaFile, BitmapImage)>();
 			//StorageFolder folder = await DownloadFolder.GetFolderAsync(folderName);
 			if(folder == null) {
@@ -313,7 +248,7 @@ namespace E621Downloader.Models.Locals {
 			return Pair.Convert(pairs, p => p.IsValid);
 		}
 
-		public async static Task<(MetaFile, StorageFile)> GetMetaFile(string postID, string groupName) {
+		public static async Task<(MetaFile, StorageFile)> GetMetaFile(string postID, string groupName) {
 			StorageFolder folder = await DownloadFolder.GetFolderAsync(groupName);
 			StorageFile file = await folder.GetFileAsync($"{postID}.meta");
 			using(Stream stream = await file.OpenStreamForReadAsync()) {
@@ -323,7 +258,7 @@ namespace E621Downloader.Models.Locals {
 			}
 		}
 
-		public async static Task<List<MetaFile>> GetAllMetaFiles() {
+		public static async Task<List<MetaFile>> GetAllMetaFiles() {
 			var metas = new List<MetaFile>();
 			foreach(StorageFolder folder in await DownloadFolder.GetFoldersAsync()) {
 				foreach(StorageFile file in await folder.GetFilesAsync()) {
@@ -346,11 +281,11 @@ namespace E621Downloader.Models.Locals {
 		}
 
 
-		public async static void UpdateMetaFile(StorageFile file, MetaFile meta) {
+		public static async void UpdateMetaFile(StorageFile file, MetaFile meta) {
 			await FileIO.WriteTextAsync(file, meta.ConvertJson());
 		}
 
-		public async static Task<List<MetaFile>> FindAllMetaFiles() {
+		public static async Task<List<MetaFile>> FindAllMetaFiles() {
 			var result = new List<MetaFile>();
 
 			foreach(StorageFolder folder in await DownloadFolder.GetFoldersAsync()) {
@@ -365,11 +300,11 @@ namespace E621Downloader.Models.Locals {
 			return result;
 		}
 
-		public async static void WriteLocalSettings() {
+		public static async void WriteLocalSettings() {
 			await FileIO.WriteTextAsync(LocalSettingsFile, JsonConvert.SerializeObject(LocalSettings.Current));
 		}
 
-		public async static Task ReadLocalSettings() {
+		public static async Task ReadLocalSettings() {
 			using(Stream stream = await LocalSettingsFile.OpenStreamForReadAsync()) {
 				using(StreamReader reader = new StreamReader(stream)) {
 					LocalSettings.Current = JsonConvert.DeserializeObject<LocalSettings>(await reader.ReadToEndAsync());
@@ -399,7 +334,7 @@ namespace E621Downloader.Models.Locals {
 			}
 		}
 
-		public async static Task ReadFavoritesLists() {
+		public static async Task ReadFavoritesLists() {
 			using(Stream stream = await FavoritesListFile.OpenStreamForReadAsync()) {
 				using(StreamReader reader = new StreamReader(stream)) {
 					FavoritesList.Table = JsonConvert.DeserializeObject<List<FavoritesList>>(await reader.ReadToEndAsync()) ?? new List<FavoritesList>();
@@ -407,12 +342,12 @@ namespace E621Downloader.Models.Locals {
 			}
 		}
 
-		public async static Task WriteFavoritesLists() {
+		public static async Task WriteFavoritesLists() {
 			await FileIO.WriteTextAsync(FavoritesListFile, JsonConvert.SerializeObject(FavoritesList.Table));
 		}
 
 		//F:\E621\creepypasta -momo_(creepypasta) rating;e\1820721.png
-		public async static Task<(StorageFile, MetaFile)> GetDownloadFile(string path) {
+		public static async Task<(StorageFile, MetaFile)> GetDownloadFile(string path) {
 			StorageFile file;
 			try {
 				file = await StorageFile.GetFileFromPathAsync(path);

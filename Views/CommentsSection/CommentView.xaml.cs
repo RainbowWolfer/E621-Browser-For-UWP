@@ -42,7 +42,7 @@ namespace E621Downloader.Views.CommentsSection {
 				return;
 			}
 			string url = "";
-			if(User != null) {
+			if(User != null && Cts != null) {
 				try {
 					url = await E621User.GetAvatarURLAsync(User, Cts.Token);
 				} catch {

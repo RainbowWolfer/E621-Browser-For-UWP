@@ -88,7 +88,7 @@ namespace E621Downloader.Views {
 					siblings.Add(Target);
 					List<Post> result = (await Post.GetPostsByTagsAsync(cts.Token, 1, $"parent:{Origin.relationships.parent_id}")).Where(p => CheckPostAvailable(p)).ToList();
 					siblings.AddRange(result);
-					App.postsList.Current = Target;
+					App.PostsList.Current = Target;
 				} else {
 					siblings.Add(Origin);
 					foreach(string item in Origin.relationships.children) {
@@ -97,10 +97,10 @@ namespace E621Downloader.Views {
 							siblings.Add(p);
 						}
 					}
-					App.postsList.Current = siblings.Find(sib => sib.id == Target.id) ?? Origin;
+					App.PostsList.Current = siblings.Find(sib => sib.id == Target.id) ?? Origin;
 				}
 				MainPage.HideInstantDialog();
-				App.postsList.UpdatePostsList(siblings);
+				App.PostsList.UpdatePostsList(siblings);
 				MainPage.NavigateToPicturePage(Target);
 			};
 		}

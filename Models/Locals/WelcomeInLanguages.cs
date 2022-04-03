@@ -14,7 +14,7 @@ namespace E621Downloader.Models.Locals {
 			return welcomes.ElementAt(new Random().Next(welcomes.Count)).Value;
 		}
 
-		public readonly static Dictionary<string, string> welcomes = new Dictionary<string, string>() {
+		public static readonly Dictionary<string, string> welcomes = new Dictionary<string, string>() {
 			{ "Afrikaans", "hallo" },
 			{ "Albanian", "Përshëndetje" },
 			{ "Amharic", "ሰላም" },

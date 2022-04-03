@@ -74,7 +74,7 @@ namespace E621Downloader.Models.Networks {
 			return new HttpResult<string>(result, code, content, stopwatch.ElapsedMilliseconds, helper);
 		}
 
-		public async static Task<HttpResult<InMemoryRandomAccessStream>> ReadImageStreamAsync(string url, CancellationToken? token = null, string username = "", string api = "") {
+		public static async Task<HttpResult<InMemoryRandomAccessStream>> ReadImageStreamAsync(string url, CancellationToken? token = null, string username = "", string api = "") {
 			Stopwatch stopwatch = new Stopwatch();
 			stopwatch.Start();
 			HttpClient client = new HttpClient();
@@ -114,7 +114,7 @@ namespace E621Downloader.Models.Networks {
 			return new HttpResult<InMemoryRandomAccessStream>(result, code, stream, stopwatch.ElapsedMilliseconds, helper);
 		}
 
-		public async static Task<HttpResult<string>> PostRequestAsync(string url, KeyValuePair<string, string> pair, CancellationToken? token = null, string username = "", string api = "") {
+		public static async Task<HttpResult<string>> PostRequestAsync(string url, KeyValuePair<string, string> pair, CancellationToken? token = null, string username = "", string api = "") {
 			Stopwatch stopwatch = new Stopwatch();
 			stopwatch.Start();
 			HttpClient client = new HttpClient();
@@ -151,7 +151,7 @@ namespace E621Downloader.Models.Networks {
 			return new HttpResult<string>(result, code, "", stopwatch.ElapsedMilliseconds, helper);
 		}
 
-		public async static Task<HttpResult<string>> DeleteRequestAsync(string url, CancellationToken? token = null, string username = "", string api = "") {
+		public static async Task<HttpResult<string>> DeleteRequestAsync(string url, CancellationToken? token = null, string username = "", string api = "") {
 			Stopwatch stopwatch = new Stopwatch();
 			stopwatch.Start();
 			var client = new HttpClient();
@@ -188,7 +188,7 @@ namespace E621Downloader.Models.Networks {
 			return new HttpResult<string>(result, code, content, stopwatch.ElapsedMilliseconds, helper);
 		}
 
-		public async static Task<HttpResult<string>> PutRequestAsync(string url, KeyValuePair<string, string> pair, CancellationToken? token = null, string username = "", string api = "") {
+		public static async Task<HttpResult<string>> PutRequestAsync(string url, KeyValuePair<string, string> pair, CancellationToken? token = null, string username = "", string api = "") {
 			Stopwatch stopwatch = new Stopwatch();
 			stopwatch.Start();
 			var client = new HttpClient();

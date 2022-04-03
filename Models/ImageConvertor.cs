@@ -9,10 +9,10 @@ using Windows.Web.Http;
 
 namespace E621Downloader {
 	public class ImageConvertor {
-		public async static Task<IBuffer> GetBufferAsync(string url) {
+		public static async Task<IBuffer> GetBufferAsync(string url) {
 			return await new HttpClient().GetBufferAsync(new Uri(url));
 		}
-		public async static Task<WriteableBitmap> GetWriteableBitmapAsync(string url) {
+		public static async Task<WriteableBitmap> GetWriteableBitmapAsync(string url) {
 			try {
 				IBuffer buffer = await GetBufferAsync(url);
 				if(buffer != null) {

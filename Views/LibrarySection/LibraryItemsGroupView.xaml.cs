@@ -180,8 +180,8 @@ namespace E621Downloader.Views.LibrarySection {
 				if(item.Item is LibraryFolder folder) {
 					Library.ToTab(folder.Folder);
 				} else if(item.Item is LibraryImage image) {
-					App.postsList.UpdatePostsList(LibraryItems.Where(i => i is LibraryImage).Cast<LibraryImage>().ToList());
-					App.postsList.Current = image;
+					App.PostsList.UpdatePostsList(LibraryItems.Where(i => i is LibraryImage).Cast<LibraryImage>().ToList());
+					App.PostsList.Current = image;
 					MainPage.NavigateToPicturePage(image);
 				}
 			}
@@ -192,8 +192,8 @@ namespace E621Downloader.Views.LibrarySection {
 				if(item.Item is LibraryFolder folder) {
 					Library.ToTab(folder.Folder);
 				} else if(item.Item is LibraryImage image) {
-					App.postsList.UpdatePostsList(LibraryItems.Where(i => i is LibraryImage).Cast<LibraryImage>().ToList());
-					App.postsList.Current = image;
+					App.PostsList.UpdatePostsList(LibraryItems.Where(i => i is LibraryImage).Cast<LibraryImage>().ToList());
+					App.PostsList.Current = image;
 					MainPage.NavigateToPicturePage(image);
 				}
 			}

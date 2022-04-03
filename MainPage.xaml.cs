@@ -94,11 +94,12 @@ namespace E621Downloader {
 			}));
 		}
 
-		protected async override void OnNavigatedTo(NavigationEventArgs e) {
+		protected override async void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
-			CreateInstantDialog("Please Wait", "Initializing...");
+			CreateInstantDialog("Please Wait", "Initializing Local Stuff");
 			await Local.Initialize();
 			HttpResult<string> result;
+			UpdateInstanceDialogContent($"Checking Connection to {Data.GetHost()}");
 			do {
 				result = await Data.ReadURLAsync($"https://{Data.GetHost()}/", null);
 				if(result.Result == HttpResultType.Success) {
@@ -201,7 +202,7 @@ namespace E621Downloader {
 		public static ContentDialog InstanceDialog { get; private set; }
 		public static bool IsShowingInstanceDialog { get; private set; }
 
-		public async static void CreateInstantDialog(string title, object content) {
+		public static async void CreateInstantDialog(string title, object content) {
 			if(InstanceDialog != null) {
 				return;
 			}
@@ -210,10 +211,17 @@ namespace E621Downloader {
 				Title = title,
 				Content = content,
 			};
-
-			await InstanceDialog.ShowAsync();
+			_ = await InstanceDialog.ShowAsync();
 			IsShowingInstanceDialog = true;
 		}
+
+		public static void UpdateInstanceDialogContent(object content) {
+			if(InstanceDialog == null) {
+				return;
+			}
+			InstanceDialog.Content = content;
+		}
+
 		public static void HideInstantDialog() {
 			if(InstanceDialog == null) {
 				return;
@@ -223,7 +231,7 @@ namespace E621Downloader {
 			IsShowingInstanceDialog = false;
 		}
 
-		public async static void CreateTip_SuccessDownload(Page page) {
+		public static async void CreateTip_SuccessDownload(Page page) {
 			if(page.Content is Panel panel) {
 				var tip = new TeachingTip() {
 					Title = "Notification",
@@ -252,7 +260,7 @@ namespace E621Downloader {
 			}
 		}
 
-		public async static void CreateTip(Panel parent, string titile, string subtitle, Symbol? icon = null, string closeText = "Got it!", bool isLightDismissEnabled = false, TeachingTipPlacementMode placement = TeachingTipPlacementMode.TopRight, Thickness? margin = null, int delayTime = 5000) {
+		public static async void CreateTip(Panel parent, string titile, string subtitle, Symbol? icon = null, string closeText = "Got it!", bool isLightDismissEnabled = false, TeachingTipPlacementMode placement = TeachingTipPlacementMode.TopRight, Thickness? margin = null, int delayTime = 5000) {
 			var tip = new TeachingTip() {
 				Title = titile,
 				Subtitle = subtitle,

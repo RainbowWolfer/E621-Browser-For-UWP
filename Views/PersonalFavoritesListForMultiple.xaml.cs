@@ -37,7 +37,7 @@ namespace E621Downloader.Views {
 		}
 
 		private void AcceptButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			
+
 			dialog.Hide();
 		}
 

@@ -120,7 +120,7 @@ namespace E621Downloader.Pages {
 			//	$"https://{Data.GetHost()}/users/{E621User.Current.name}.json",
 			//	new KeyValuePair<string, string>("user[blacklisted_tags]", "feet\ncum")
 			//);
-				
+
 			//Debug.WriteLine(result.Result == HttpResultType.Success);
 		}
 	}

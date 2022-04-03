@@ -175,14 +175,14 @@ namespace E621Downloader.Views {
 					IsSelected = !IsSelected;
 					PostsBrowser.Instance.SelectFeedBack(this);
 				} else {
-					App.postsList.UpdatePostsList(PostsBrowser.Instance.Posts);
-					App.postsList.Current = PostRef;
+					App.PostsList.UpdatePostsList(PostsBrowser.Instance.Posts);
+					App.PostsList.Current = PostRef;
 
 					MainPage.NavigateToPicturePage(PostRef);
 				}
 			} else if(MainPage.Instance.currentTag == PageTag.Spot) {
-				App.postsList.UpdatePostsList(SpotPage.Instance.Posts);
-				App.postsList.Current = PostRef;
+				App.PostsList.UpdatePostsList(SpotPage.Instance.Posts);
+				App.PostsList.Current = PostRef;
 
 				MainPage.NavigateToPicturePage(PostRef);
 			}

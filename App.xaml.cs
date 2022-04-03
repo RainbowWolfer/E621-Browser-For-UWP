@@ -33,7 +33,7 @@ namespace E621Downloader {
 		//WUwPNbGDrfXnQoHfvU1nR3TD;
 		public static App Instance;
 
-		public static PostsList postsList { get; private set; } = new PostsList();
+		public static PostsList PostsList { get; private set; } = new PostsList();
 		public static BitmapImage DefaultAvatar { get; } = new BitmapImage(new Uri("ms-appx:///Assets/esix2.jpg"));
 
 		public App() {
@@ -42,23 +42,8 @@ namespace E621Downloader {
 			this.Suspending += OnSuspending;
 		}
 
-
-		public static bool CompareTwoArray<T>(IEnumerable<T> a, IEnumerable<T> b) {
-			T[] ar = a.ToArray();
-			T[] br = b.ToArray();
-			if(ar.Length != br.Length) {
-				return false;
-			}
-			for(int i = 0; i < ar.Length; i++) {
-				if(!ar[i].Equals(br[i])) {
-					return false;
-				}
-			}
-			return true;
-		}
-
 		protected override void OnLaunched(LaunchActivatedEventArgs e) {
-			if(!(Window.Current.Content is Frame rootFrame)) {
+			if(Window.Current.Content is not Frame rootFrame) {
 				rootFrame = new Frame();
 
 				rootFrame.NavigationFailed += OnNavigationFailed;

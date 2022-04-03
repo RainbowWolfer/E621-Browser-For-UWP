@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
 	public class E621Pool {
-		public async static Task<E621Pool> GetAsync(string id, CancellationToken? token = null) {
+		public static async Task<E621Pool> GetAsync(string id, CancellationToken? token = null) {
 			HttpResult<string> result = await Data.ReadURLAsync($"https://{Data.GetHost()}/pools/{id}.json", token);
 			if(result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<E621Pool>(result.Content);

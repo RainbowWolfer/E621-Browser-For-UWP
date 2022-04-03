@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace E621Downloader.Models {
 	public static class MyEnumerable {
-		
+
 	}
 }

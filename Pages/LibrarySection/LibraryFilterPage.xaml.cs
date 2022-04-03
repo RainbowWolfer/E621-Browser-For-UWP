@@ -319,10 +319,6 @@ namespace E621Downloader.Pages.LibrarySection {
 			GroupView.SetImages(files);
 		}
 
-		public void Search(string content) {
-
-		}
-
 		public void RefreshRequest() {
 
 		}

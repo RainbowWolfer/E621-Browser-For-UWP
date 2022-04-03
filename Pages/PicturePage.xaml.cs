@@ -47,6 +47,7 @@ namespace E621Downloader.Pages {
 
 		private bool commentsLoading;
 		private bool commentsLoaded;
+		private string commentsPostID;
 
 		private string path;
 
@@ -89,7 +90,7 @@ namespace E621Downloader.Pages {
 			}));
 		}
 
-		protected async override void OnNavigatedTo(NavigationEventArgs e) {
+		protected override async void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			object p = e.Parameter;
 			MainPage.ClearPicturePageParameter();
@@ -97,9 +98,9 @@ namespace E621Downloader.Pages {
 			bool showNoPostGrid = false;
 			this.imageDataPackage = null;
 			if(p == null && PostRef == null && PostsBrowser.Instance != null && PostsBrowser.Instance.Posts != null && PostsBrowser.Instance.Posts.Count > 0) {
-				App.postsList.UpdatePostsList(PostsBrowser.Instance.Posts);
+				App.PostsList.UpdatePostsList(PostsBrowser.Instance.Posts);
 				p = PostsBrowser.Instance.Posts[0];
-				App.postsList.Current = p;
+				App.PostsList.Current = p;
 			}
 			if(p is Post post) {
 				if(PostRef == post) {
@@ -181,13 +182,15 @@ namespace E621Downloader.Pages {
 			UpdateOthers();
 			ResetImage();
 			if(this.PostRef != null && p != null) {
-				MainSplitView.IsPaneOpen = false;
+				if(MainSplitView.DisplayMode == SplitViewDisplayMode.Overlay) {
+					MainSplitView.IsPaneOpen = false;
+				}
 				//InformationPivot.SelectedIndex = 0;
 				commentsLoaded = false;
 				commentsLoading = false;
 				comments.Clear();
 				CommentsListView.Items.Clear();
-				if(InformationPivot.SelectedIndex == 1) {
+				if(MainSplitView.DisplayMode == SplitViewDisplayMode.Inline && InformationPivot.SelectedIndex == 1) {
 					LoadCommentsAsync();
 				}
 
@@ -450,6 +453,7 @@ namespace E621Downloader.Pages {
 			commentsLoading = true;
 			LoadingSection.Visibility = Visibility.Visible;
 			CommentsHint.Visibility = Visibility.Collapsed;
+			commentsPostID = PostRef.id;
 			E621Comment[] list = await E621Comment.GetAsync(PostRef.id);
 			CancelLoadAvatars();
 			if(list != null && list.Length > 0) {
@@ -767,6 +771,9 @@ namespace E621Downloader.Pages {
 
 		private void MoreInfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			MainSplitView.IsPaneOpen = !MainSplitView.IsPaneOpen;
+			if(MainSplitView.IsPaneOpen && InformationPivot.SelectedIndex == 1 && commentsPostID != PostRef.id) {
+				LoadCommentsAsync();
+			}
 		}
 
 		private async void InfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -775,8 +782,8 @@ namespace E621Downloader.Pages {
 			var dialog = new ContentDialog() {
 				Title = $"Tag Information: {name}",
 				CloseButtonText = "Back",
+				Content = new TagInformationDisplay(tags_pool, tag)
 			};
-			dialog.Content = new TagInformationDisplay(tags_pool, tag);
 			await dialog.ShowAsync();
 		}
 
@@ -812,11 +819,11 @@ namespace E621Downloader.Pages {
 		}
 
 		private void GoLeft() {
-			MainPage.NavigateToPicturePage(App.postsList.GoLeft());
+			MainPage.NavigateToPicturePage(App.PostsList.GoLeft());
 		}
 
 		private void GoRight() {
-			MainPage.NavigateToPicturePage(App.postsList.GoRight());
+			MainPage.NavigateToPicturePage(App.PostsList.GoRight());
 		}
 
 		private void InformationPivot_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -980,8 +987,9 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void PoolsListView_ItemClick(object sender, ItemClickEventArgs e) {
-			MainPage.CreateInstantDialog("Please Wait", "Loading Pool");
-			E621Pool pool = await E621Pool.GetAsync((string)e.ClickedItem);
+			string id = (string)e.ClickedItem;
+			MainPage.CreateInstantDialog("Please Wait", $"Loading Pool ({id})");
+			E621Pool pool = await E621Pool.GetAsync(id);
 			MainPage.HideInstantDialog();
 			MainPage.NavigateToPostsBrowser(pool);
 		}

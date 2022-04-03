@@ -9,7 +9,6 @@ namespace E621Downloader.Pages.LibrarySection {
 	public interface ILibraryGridPage {
 		void UpdateSize(int size);
 		LibraryItemsGroupView GetGroupView();
-		void Search(string content);
 		void RefreshRequest();
 	}
 }

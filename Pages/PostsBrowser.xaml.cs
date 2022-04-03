@@ -141,7 +141,7 @@ namespace E621Downloader.Pages {
 
 		private async Task LoadAsync(E621Pool pool) {
 			this.currentPage = 1;
-			MainPage.CreateInstantDialog("Please Wait", "Loading Posts...");
+			MainPage.CreateInstantDialog("Please Wait", $"Loading Pool\n ( {pool.name} - {pool.id} )");
 			await Task.Delay(200);
 			SelectToggleButton.IsChecked = false;
 			List<Post> temp = await Post.GetPostsByIDsAsync(cts.Token, pool.post_ids);
@@ -163,7 +163,14 @@ namespace E621Downloader.Pages {
 		}
 		private async Task LoadAsync(int page = 1, params string[] tags) {
 			this.currentPage = page;
-			MainPage.CreateInstantDialog("Please Wait", "Loading...");
+			string content;
+			tags = tags.Where(t => !string.IsNullOrWhiteSpace(t)).ToArray();
+			if(tags == null || tags.Length == 0) {
+				content = "Posts";
+			} else {
+				content = $"Tags: ({string.Join(' ', tags)})";
+			}
+			MainPage.CreateInstantDialog("Please Wait", $"Loading {content}");
 			await Task.Delay(200);
 			SelectToggleButton.IsChecked = false;
 			List<Post> temp = await Post.GetPostsByTagsAsync(cts.Token, page, tags);
@@ -388,15 +395,64 @@ namespace E621Downloader.Pages {
 		private async void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			await Reload();
 		}
-		//private void FixedHeightCheckBox_Checked(object sender, RoutedEventArgs e) {
-		//	isHeightFixed = true;
-		//	SetAllItemsSize(true);
+
+		private void CancelDownloads() {
+			if(cts != null) {
+				cts.Cancel();
+				cts.Dispose();
+			}
+			cts = null;
+		}
+
+		//dont create it everytime it update
+		//just update the text and leave the cancel button unchanged
+		//once update goes too quickly, the cancel button wont work
+		//private FrameworkElement CreateDialogContent(string text) {
+		//	return new DownloadCancellableDialog() {
+		//		Text = text,
+		//		OnCancel = () => {
+		//			CancelDownloads();
+		//			MainPage.HideInstantDialog();
+		//		},
+		//	};
 		//}
 
-		//private void FixedHeightCheckBox_Unchecked(object sender, RoutedEventArgs e) {
-		//	isHeightFixed = false;
-		//	SetAllItemsSize(false);
-		//}
+		private ContentDialog downloadDialog;
+		private DownloadCancellableDialog dialogContent;
+
+		private async void CreateDownloadDialog(string title, string text) {
+			if(downloadDialog != null) {
+				return;
+			}
+			downloadDialog = new ContentDialog() {
+				Title = title,
+			};
+			dialogContent = new DownloadCancellableDialog() {
+				Text = text,
+				OnCancel = () => {
+					CancelDownloads();
+					HideDownloadDialog();
+				},
+			};
+			downloadDialog.Content = dialogContent;
+			await downloadDialog.ShowAsync();
+		}
+
+		private void UpdateContentText(string text) {
+			if(dialogContent == null) {
+				return;
+			}
+			dialogContent.Text = text;
+		}
+
+		private void HideDownloadDialog() {
+			if(downloadDialog == null) {
+				return;
+			}
+			downloadDialog.Hide();
+			downloadDialog = null;
+			dialogContent = null;
+		}
 
 		private async void DownloadButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(Posts == null || Posts.Count == 0) {
@@ -410,14 +466,19 @@ namespace E621Downloader.Pages {
 					CloseButtonText = "No",
 				}.ShowAsync() == ContentDialogResult.Primary) {
 					if(await DownloadsManager.CheckDownloadAvailableWithDialog()) {
-						MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
-						if(await DownloadsManager.RegisterDownloads(GetSelected().Select(i => i.PostRef), Tags)) {
+						CancelDownloads();
+						cts = new CancellationTokenSource();
+						CreateDownloadDialog("Please Wait", "Handling Downloads");
+						bool? result = await DownloadsManager.RegisterDownloads(cts.Token, GetSelected().Select(i => i.PostRef), Tags, progress => UpdateContentText(progress));
+						if(result == true) {
 							MainPage.CreateTip_SuccessDownload(this);
 							SelectToggleButton.IsChecked = false;
+						} else if(result == null) {
+							return;
 						} else {
 							await MainPage.CreatePopupDialog("Error", "Downloads Failed");
 						}
-						MainPage.HideInstantDialog();
+						HideDownloadDialog();
 					}
 				}
 			} else {
@@ -431,12 +492,17 @@ namespace E621Downloader.Pages {
 						CloseButtonText = "No",
 					}.ShowAsync() == ContentDialogResult.Primary) {
 						if(await DownloadsManager.CheckDownloadAvailableWithDialog(() => hasShownFail = true)) {
-							MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
+							CancelDownloads();
+							cts = new CancellationTokenSource();
+							CreateDownloadDialog("Please Wait", "Handling Downloads");
 							await Task.Delay(50);
-							if(await DownloadsManager.RegisterDownloads(this.Posts, this.pool.name)) {
+							bool? result = await DownloadsManager.RegisterDownloads(cts.Token, this.Posts, this.pool.name, progress => UpdateContentText(progress));
+							if(result == true) {
 								downloadResult = true;
+							} else if(result == null) {
+								return;
 							}
-							MainPage.HideInstantDialog();
+							HideDownloadDialog();
 						}
 					}
 				} else {
@@ -455,28 +521,46 @@ namespace E621Downloader.Pages {
 							return;
 						case ContentDialogResult.Primary:
 							if(await DownloadsManager.CheckDownloadAvailableWithDialog(() => hasShownFail = true)) {
-								MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
+								CancelDownloads();
+								cts = new CancellationTokenSource();
+								CreateDownloadDialog("Please Wait", "Handling Downloads");
 								await Task.Delay(50);
 								var all = new List<Post>();
 								for(int i = 1; i <= maxPage; i++) {
+									UpdateContentText($"Handling Downloads\nGetting Page {i}/{maxPage}");
+									if(cts == null) {
+										HideDownloadDialog();
+										return;
+									}
 									List<Post> p = await Post.GetPostsByTagsAsync(cts.Token, i, Tags);
+									if(p == null) {
+										return;
+									}
 									all.AddRange(p);
 								}
-								if(await DownloadsManager.RegisterDownloads(all, Tags)) {
+								bool? result = await DownloadsManager.RegisterDownloads(cts.Token, all, Tags, progress => UpdateContentText(progress));
+								if(result == true) {
 									downloadResult = true;
+								} else if(result == null) {
+									return;
 								}
-								MainPage.HideInstantDialog();
+								HideDownloadDialog();
 							}
 							break;
 						case ContentDialogResult.Secondary:
 							//get currentpage posts
 							if(await DownloadsManager.CheckDownloadAvailableWithDialog(() => hasShownFail = true)) {
-								MainPage.CreateInstantDialog("Please Wait", "Handling Downloads");
+								CancelDownloads();
+								cts = new CancellationTokenSource();
+								CreateDownloadDialog("Please Wait", "Handling Downloads");
 								await Task.Delay(50);
-								if(await DownloadsManager.RegisterDownloads(Posts, Tags)) {
+								bool? result = await DownloadsManager.RegisterDownloads(cts.Token, Posts, Tags, progress => UpdateContentText(progress));
+								if(result == true) {
 									downloadResult = true;
+								} else if(result == null) {
+									return;
 								}
-								MainPage.HideInstantDialog();
+								HideDownloadDialog();
 							}
 							break;
 						default:
