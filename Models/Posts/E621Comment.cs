@@ -26,7 +26,7 @@ namespace E621Downloader.Models.Posts {
 
 		public E621User User { get; private set; }
 
-		public int id;
+		public string id;
 		public DateTime created_at;
 		public int post_id;
 		public int creator_id;

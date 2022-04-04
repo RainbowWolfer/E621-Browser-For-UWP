@@ -37,6 +37,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using NavigationView = Microsoft.UI.Xaml.Controls.NavigationView;
+using NavigationViewBackRequestedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewBackRequestedEventArgs;
 using NavigationViewItem = Microsoft.UI.Xaml.Controls.NavigationViewItem;
 using NavigationViewItemInvokedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs;
 using SymbolIconSource = Microsoft.UI.Xaml.Controls.SymbolIconSource;
@@ -92,6 +93,7 @@ namespace E621Downloader {
 					}
 				}
 			}));
+			Loop();
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e) {
@@ -139,6 +141,27 @@ namespace E621Downloader {
 			ChangeUser(LocalSettings.Current.user_username);
 		}
 
+		private int downloadDelayedTime = 0;
+		private async void Loop() {
+			const int DELAY = 200;
+			const int WAIT_TIME = 3000;
+			while(true) {
+				if(DownloadsManager.HasDownloading()) {
+					ChangeDownloadRingIcon(LoadingType.Loading);
+					downloadDelayedTime = WAIT_TIME;
+				} else {
+					if(downloadDelayedTime <= 0) {
+						downloadDelayedTime = 0;
+						ChangeDownloadRingIcon(LoadingType.None);
+					} else {
+						ChangeDownloadRingIcon(LoadingType.Done);
+					}
+					downloadDelayedTime -= DELAY;
+				}
+				await Task.Delay(DELAY);
+			}
+		}
+
 		private CancellationTokenSource delayInputListener_cts;
 		public async void DelayInputKeyListener(int delay = 500) {
 			IsInputting = true;
@@ -166,6 +189,7 @@ namespace E621Downloader {
 				ToolTipService.SetToolTip(UserIconItem, null);
 				UserChangedInfoComplete?.Invoke();
 				UserChangedAvatarComplete?.Invoke(UserPicture.ProfilePicture as BitmapImage);
+				PicturePage.ClearVoted();
 				return;
 			}
 			ToolTipService.SetToolTip(UserIconItem, username);
@@ -180,8 +204,13 @@ namespace E621Downloader {
 			};
 			UserPicture.ProfilePicture = image;
 		}
+
 		public static BitmapImage GetUserIcon() {
 			return (BitmapImage)Instance.UserPicture.ProfilePicture;
+		}
+
+		public static void ChangeDownloadRingIcon(LoadingType type) {
+			Instance.DownloadRingIcon.LoadingType = type;
 		}
 
 		public static void ChangeCurrenttTags(params string[] strs) {
@@ -492,6 +521,18 @@ namespace E621Downloader {
 					throw new Exception("Result Type not found");
 			}
 			IsInSearchPopup = false;
+		}
+
+		private void MyFrame_Navigated(object sender, NavigationEventArgs e) {
+			MyNavigationView.IsBackEnabled = MyFrame.CanGoBack;
+		}
+
+		private void MyNavigationView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args) {
+			if(!MyFrame.CanGoBack) {
+				return;
+			}
+			MyFrame.GoBack();
+
 		}
 	}
 	public enum PageTag {

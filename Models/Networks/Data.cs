@@ -114,7 +114,7 @@ namespace E621Downloader.Models.Networks {
 			return new HttpResult<InMemoryRandomAccessStream>(result, code, stream, stopwatch.ElapsedMilliseconds, helper);
 		}
 
-		public static async Task<HttpResult<string>> PostRequestAsync(string url, KeyValuePair<string, string> pair, CancellationToken? token = null, string username = "", string api = "") {
+		public static async Task<HttpResult<string>> PostRequestAsync(string url, List<KeyValuePair<string, string>> pairs, CancellationToken? token = null, string username = "", string api = "") {
 			Stopwatch stopwatch = new();
 			stopwatch.Start();
 			HttpClient client = new();
@@ -123,8 +123,8 @@ namespace E621Downloader.Models.Networks {
 			HttpResultType result;
 			HttpStatusCode code;
 			string helper = "";
+			string content = "";
 			try {
-				var pairs = new List<KeyValuePair<string, string>>() { pair };
 				var data = new FormUrlEncodedContent(pairs);
 				if(token != null) {
 					message = await client.PostAsync(url, data, token.Value);
@@ -132,7 +132,7 @@ namespace E621Downloader.Models.Networks {
 					message = await client.PostAsync(url, data);
 				}
 				message.EnsureSuccessStatusCode();
-				string r = await message.Content.ReadAsStringAsync();
+				content = await message.Content.ReadAsStringAsync();
 				result = HttpResultType.Success;
 				code = message.StatusCode;
 			} catch(OperationCanceledException) {
@@ -148,7 +148,7 @@ namespace E621Downloader.Models.Networks {
 			}
 
 			stopwatch.Stop();
-			return new HttpResult<string>(result, code, "", stopwatch.ElapsedMilliseconds, helper);
+			return new HttpResult<string>(result, code, content, stopwatch.ElapsedMilliseconds, helper);
 		}
 
 		public static async Task<HttpResult<string>> DeleteRequestAsync(string url, CancellationToken? token = null, string username = "", string api = "") {

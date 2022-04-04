@@ -41,6 +41,13 @@ namespace E621Downloader {
 			this.InitializeComponent();
 			this.Suspending += OnSuspending;
 		}
+		public static string GetAppVersion() {
+			Package package = Package.Current;
+			PackageId packageId = package.Id;
+			PackageVersion version = packageId.Version;
+
+			return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+		}
 
 		protected override void OnLaunched(LaunchActivatedEventArgs e) {
 			if(Window.Current.Content is not Frame rootFrame) {

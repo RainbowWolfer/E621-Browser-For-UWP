@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Locals {
 	public class Listing {
-		public SingleListing CloudBlackList { get; set; } = new SingleListing("Cloud") { IsCloud = true, };
+		//public SingleListing CloudBlackList { get; set; } = new SingleListing("Cloud") { IsCloud = true, };
 		public List<SingleListing> LocalFollowingLists { get; set; } = new List<SingleListing>();
 		public List<SingleListing> LocalBlackLists { get; set; } = new List<SingleListing>();
 
@@ -21,7 +21,7 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public SingleListing GetGetDefaultBlackList() {
-			return LocalBlackLists.Append(CloudBlackList).ToList().Find(i => i.IsDefault) ?? new SingleListing("Error");
+			return LocalBlackLists.ToList().Find(i => i.IsDefault) ?? new SingleListing("Error");
 		}
 
 		public async Task AddFollowingList(string tag) {
@@ -70,10 +70,11 @@ namespace E621Downloader.Models.Locals {
 
 		public static Listing GetDefaultListing() {
 			return new Listing() {
-				CloudBlackList = new SingleListing($"{Data.GetSimpleHost()} Cloud") {
-					IsCloud = true,
-				},
 				LocalBlackLists = new List<SingleListing>() {
+					new SingleListing($"{Data.GetSimpleHost()} Cloud") {
+						IsCloud = true,
+						IsDefault = false,
+					},
 					new SingleListing("Default Black List") {
 						IsDefault = true,
 					},

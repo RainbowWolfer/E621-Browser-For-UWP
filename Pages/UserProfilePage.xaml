@@ -10,6 +10,21 @@
 	d:RequestedTheme="Dark"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+	<Page.Resources>
+		<Storyboard x:Name="WelcomeTextStoryboard">
+			<DoubleAnimation x:Name="WelcomeTextHeightAnimation" Storyboard.TargetName="WelcomeDetailText" Storyboard.TargetProperty="Height" EnableDependentAnimation="True">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="10" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+			<DoubleAnimation x:Name="WelcomeTextOpacityAnimation" Storyboard.TargetName="WelcomeDetailText" Storyboard.TargetProperty="Opacity" EnableDependentAnimation="True">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="10" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+		</Storyboard>
+	</Page.Resources>
+
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
@@ -29,7 +44,10 @@
 					</Border.Background>
 				</Border>
 			</Grid>
-			<TextBlock x:Name="WelcomeText" Text="привет" HorizontalAlignment="Center" FontSize="32" Margin="5,10,5,0" Foreground="#FFD700" PointerEntered="WelcomeText_PointerEntered" PointerExited="WelcomeText_PointerExited"/>
+			<StackPanel x:Name="WelcomeTextGrid" PointerEntered="WelcomeTextGrid_PointerEntered" PointerExited="WelcomeTextGrid_PointerExited">
+				<TextBlock x:Name="WelcomeText" Text="привет" HorizontalAlignment="Center" FontSize="32" Margin="5,10,5,0" Foreground="#FFD700"/>
+				<TextBlock x:Name="WelcomeDetailText" Foreground="#FFD700" Text="This is 'Hello' in Russian" TextAlignment="Center" Margin="5" Height="0" Opacity="0" FontSize="15"/>
+			</StackPanel>
 			<TextBlock x:Name="UsernameText" Text="RainbowWolfer" HorizontalAlignment="Center" Margin="10" FontSize="24"/>
 		</StackPanel>
 		<StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,40">
@@ -58,7 +76,6 @@
 					<FontIcon Glyph="&#xF3B1;" Margin="10,0,0,0"/>
 				</StackPanel>
 			</Button>
-			<Button x:Name="TestButton" FontSize="20" HorizontalAlignment="Center" Margin="10" Click="TestButton_Click" Content="Test"/>
 		</StackPanel>
 		<Grid Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
 			<ProgressRing x:Name="InfoLoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Width="200" IsActive="True"/>

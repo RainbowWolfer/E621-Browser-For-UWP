@@ -23,6 +23,8 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {
 	public sealed partial class UserProfilePage: Page {
+		private CoreCursor cursorBeforePointerEntered = null;
+
 		public UserProfilePage() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
@@ -41,12 +43,12 @@ namespace E621Downloader.Pages {
 				AvatarImage.ImageSource = image;
 			};
 		}
+
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			var pair = WelcomeInLanguages.GetRandomWelcomePair();
 			WelcomeText.Text = pair.Value;
-			ToolTipService.SetPlacement(WelcomeText, PlacementMode.Right);
-			ToolTipService.SetToolTip(WelcomeText, $"\"Hello\" in {pair.Key}");
+			WelcomeDetailText.Text = $"This is \"Hello\" in {pair.Key}";
 
 			UpdateUserInfo(E621User.Current);
 
@@ -55,7 +57,7 @@ namespace E621Downloader.Pages {
 			AvatarImage.ImageSource = MainPage.GetUserIcon();
 		}
 
-		private const int MAXITEMINPANEL = 35;
+		private const int MAX_ITEM_IN_PANEL = 35;
 		private void UpdateUserInfo(E621User user) {
 			PanelLeft.Children.Clear();
 			PanelRight.Children.Clear();
@@ -67,7 +69,7 @@ namespace E621Downloader.Pages {
 					string title = field.Name.Replace("_", " ").ToCamelCase();
 					string content = field.GetValue(E621User.Current).ToString();
 					targetPanel.Children.Add(new UserInfoLine(title, content));
-					if(i >= MAXITEMINPANEL) {
+					if(i >= MAX_ITEM_IN_PANEL) {
 						targetPanel = PanelRight;
 					}
 				}
@@ -94,16 +96,6 @@ namespace E621Downloader.Pages {
 			MainPage.NavigateToPostsBrowser(1, $"fav:{LocalSettings.Current.user_username}");
 		}
 
-		private CoreCursor cursorBeforePointerEntered = null;
-		private void WelcomeText_PointerEntered(object sender, PointerRoutedEventArgs e) {
-			cursorBeforePointerEntered = Window.Current.CoreWindow.PointerCursor;
-			Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Help, 0);
-		}
-
-		private void WelcomeText_PointerExited(object sender, PointerRoutedEventArgs e) {
-			Window.Current.CoreWindow.PointerCursor = cursorBeforePointerEntered;
-		}
-
 		private void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			MainPage.Instance.ChangeUser(LocalSettings.Current.user_username);
 		}
@@ -112,16 +104,25 @@ namespace E621Downloader.Pages {
 			MainPage.NavigateToPostsBrowser(1, $"votedup:anything");
 		}
 
-		private void TestButton_Click(object sender, RoutedEventArgs e) {
-			//if(E621User.Current == null) {
-			//	return;
-			//}
-			//HttpResult<string> result = await Data.PutRequestAsync(
-			//	$"https://{Data.GetHost()}/users/{E621User.Current.name}.json",
-			//	new KeyValuePair<string, string>("user[blacklisted_tags]", "feet\ncum")
-			//);
+		private void WelcomeTextGrid_PointerEntered(object sender, PointerRoutedEventArgs e) {
+			cursorBeforePointerEntered = Window.Current.CoreWindow.PointerCursor;
+			Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Help, 0);
 
-			//Debug.WriteLine(result.Result == HttpResultType.Success);
+			WelcomeTextHeightAnimation.From = WelcomeDetailText.Height;
+			WelcomeTextHeightAnimation.To = 20;
+			WelcomeTextOpacityAnimation.From = WelcomeDetailText.Opacity;
+			WelcomeTextOpacityAnimation.To = 1;
+			WelcomeTextStoryboard.Begin();
+		}
+
+		private void WelcomeTextGrid_PointerExited(object sender, PointerRoutedEventArgs e) {
+			Window.Current.CoreWindow.PointerCursor = cursorBeforePointerEntered;
+
+			WelcomeTextHeightAnimation.From = WelcomeDetailText.Height;
+			WelcomeTextHeightAnimation.To = 0;
+			WelcomeTextOpacityAnimation.From = WelcomeDetailText.Opacity;
+			WelcomeTextOpacityAnimation.To = 0;
+			WelcomeTextStoryboard.Begin();
 		}
 	}
 }

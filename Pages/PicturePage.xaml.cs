@@ -60,6 +60,8 @@ namespace E621Downloader.Pages {
 		private DataPackage imageDataPackage;
 		private bool TextInputing { get; set; } = false;
 
+		private static Dictionary<string, VoteType> Voted { get; } = new();
+
 		public PicturePage() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
@@ -177,6 +179,7 @@ namespace E621Downloader.Pages {
 			UpdateRatingColor();
 			UpdateTypeIcon();
 			UpdateSoundIcon();
+			UpdateVoteButtons();
 			UpdateFavoriteButton();
 			UpdateDescriptionSection();
 			UpdateOthers();
@@ -473,10 +476,31 @@ namespace E621Downloader.Pages {
 			}
 		}
 
+
+		private void UpdateVoteButtons() {
+			if(this.PostRef == null) {
+				return;
+			}
+			foreach(KeyValuePair<string, VoteType> item in Voted) {
+				Debug.WriteLine($"pair : {item.Key} - {item.Value}");
+			}
+			if(Voted.ContainsKey(PostRef.id)) {
+				VoteType type = Voted[PostRef.id];
+				UpVoteButton.IsChecked = type == VoteType.Up;
+				DownVoteButton.IsChecked = type == VoteType.Down;
+			} else {
+				UpVoteButton.IsChecked = false;
+				DownVoteButton.IsChecked = false;
+			}
+			UpVoteButton.IsEnabled = E621User.Current != null;
+			DownVoteButton.IsEnabled = E621User.Current != null;
+		}
+
 		private void UpdateFavoriteButton() {
 			if(this.PostRef == null) {
 				return;
 			}
+			FavoriteButton.IsEnabled = E621User.Current != null;
 			bool enable = this.PostRef.is_favorited;
 			FavoriteButton.IsChecked = enable;
 			if(enable) {
@@ -994,6 +1018,64 @@ namespace E621Downloader.Pages {
 			});
 			flyout.Closed += (s, args) => TextInputing = false;
 		}
+
+		private async void UpVoteButton_Click(object sender, RoutedEventArgs e) {
+			UpVoteIcon.Glyph = "\uE10C";
+			UpVoteButton.IsEnabled = false;
+			await SubmitVote(true);
+			UpVoteButton.IsEnabled = true;
+			UpVoteIcon.Glyph = "\uE96D";
+			UpVoteButton.IsChecked = !UpVoteButton.IsChecked;
+			if(UpVoteButton.IsChecked == true) {
+				DownVoteButton.IsChecked = false;
+			}
+			VoteType up = UpVoteButton.IsChecked == true ? VoteType.Up : VoteType.None;
+			if(Voted.ContainsKey(PostRef.id)) {
+				Voted[PostRef.id] = up;
+				Debug.WriteLine($"found and up id {PostRef.id}");
+			} else {
+				Voted.Add(PostRef.id, up);
+				Debug.WriteLine($"add and up id {PostRef.id}");
+			}
+		}
+
+		private async void DownVoteButton_Click(object sender, RoutedEventArgs e) {
+			DownVoteIcon.Glyph = "\uE10C";
+			DownVoteButton.IsEnabled = false;
+			await SubmitVote(false);
+			DownVoteButton.IsEnabled = true;
+			DownVoteIcon.Glyph = "\uE96E";
+			DownVoteButton.IsChecked = !DownVoteButton.IsChecked;
+			if(DownVoteButton.IsChecked == true) {
+				UpVoteButton.IsChecked = false;
+			}
+			VoteType down = DownVoteButton.IsChecked == true ? VoteType.Down : VoteType.None;
+			if(Voted.ContainsKey(PostRef.id)) {
+				Voted[PostRef.id] = down;
+				Debug.WriteLine($"found and down id {PostRef.id}");
+			} else {
+				Voted.Add(PostRef.id, down);
+				Debug.WriteLine($"add and down id {PostRef.id}");
+			}
+		}
+
+		private async Task SubmitVote(bool up) {
+			DataResult<E621Vote> result = await E621Vote.VotePost(PostRef.id, up ? 1 : -1, true);
+			if(result.ResultType == HttpResultType.Success) {
+				PostRef.score.total = result.Data.score;
+				PostRef.score.up = result.Data.up;
+				PostRef.score.down = result.Data.down;
+				UpdateScore();
+			}
+		}
+
+		public static void ClearVoted() {
+			Voted.Clear();
+		}
+
+		private enum VoteType {
+			None, Up, Down
+		}
 	}
 
 	public class GroupTagListWithColor: ObservableCollection<GroupTag> {
@@ -1084,5 +1166,6 @@ namespace E621Downloader.Pages {
 			ImageFile = storageFile;
 			MetaFile = metaFile;
 		}
+
 	}
 }

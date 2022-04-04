@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
 	d:RequestedTheme="Dark"
+	d:Width="2000"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Page.Resources>
@@ -17,8 +18,19 @@
 			<Setter Property="HorizontalAlignment" Value="Center"/>
 			<Setter Property="TextDecorations" Value="Underline"/>
 			<Setter Property="FontSize" Value="64"/>
-			<Setter Property="Margin" Value="30,10,20,10"/>
-			<Setter Property="HorizontalAlignment" Value="Left"/>
+			<Setter Property="Margin" Value="30,10,30,10"/>
+			<Setter Property="HorizontalAlignment" Value="Center"/>
+		</Style>
+		<Style x:Name="BorderGrid" TargetType="Grid">
+			<Setter Property="Background">
+				<Setter.Value>
+					<SolidColorBrush Color="Gray" Opacity="0.1"/>
+				</Setter.Value>
+			</Setter>
+			<Setter Property="VerticalAlignment" Value="Stretch"/>
+			<Setter Property="Margin" Value="20"/>
+			<Setter Property="Width" Value="400"/>
+			<Setter Property="CornerRadius" Value="20"/>
 		</Style>
 	</Page.Resources>
 
@@ -27,126 +39,170 @@
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-
-		<VisualStateManager.VisualStateGroups>
-			<VisualStateGroup>
-				<VisualState x:Name="WideLayout">
-					<VisualState.StateTriggers>
-						<AdaptiveTrigger MinWindowWidth="800"/>
-					</VisualState.StateTriggers>
-					<VisualState.Setters>
-						<Setter Target="SecondCol.(Grid.Row)" Value="0"/>
-						<Setter Target="SecondCol.(Grid.Column)" Value="1"/>
-						<Setter Target="SecondColumn.Width" Value="*"/>
-					</VisualState.Setters>
-				</VisualState>
-				<VisualState x:Name="NarrowLayout">
-					<VisualState.StateTriggers>
-						<AdaptiveTrigger MinWindowWidth="0"/>
-					</VisualState.StateTriggers>
-					<VisualState.Setters>
-						<Setter Target="SecondCol.(Grid.Row)" Value="1"/>
-						<Setter Target="SecondCol.(Grid.Column)" Value="0"/>
-						<Setter Target="SecondColumn.Width" Value="0"/>
-					</VisualState.Setters>
-				</VisualState>
-			</VisualStateGroup>
-		</VisualStateManager.VisualStateGroups>
-
-		<TextBlock Grid.ColumnSpan="2" Text="Settings Page" FontSize="48" HorizontalAlignment="Center" Margin="10"/>
-
-		<ScrollViewer Grid.Row="1">
-			<Grid>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition x:Name="SecondColumn" Width="*"/>
-				</Grid.ColumnDefinitions>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="auto"/>
-					<RowDefinition Height="auto"/>
-				</Grid.RowDefinitions>
-
-				<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
-					<TextBlock Text="Listing: " Style="{StaticResource SectionTitle}"/>
-					<StackPanel Orientation="Horizontal" Margin="50,0,0,0">
-						<Button x:Name="BlackListButton" VerticalAlignment="Center" Margin="10" Click="BlackListButton_Click">
-							<StackPanel Orientation="Horizontal">
-								<FontIcon Glyph="&#xE25B;"/>
-								<TextBlock Text="Black List" FontSize="20" VerticalAlignment="Center" Margin="10,0,0,0"/>
+		<TextBlock Text="Settings" HorizontalAlignment="Center" FontSize="48" Margin="10,10,10,0"/>
+		<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" HorizontalScrollBarVisibility="Visible" HorizontalScrollMode="Enabled">
+			<StackPanel Orientation="Horizontal" Padding="10">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="1.2*"/>
+					</Grid.RowDefinitions>
+					<Grid Style="{StaticResource BorderGrid}">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+						<TextBlock Text="LISTING" Style="{StaticResource SectionTitle}"/>
+						<ScrollViewer HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Grid.Row="1">
+							<StackPanel>
+								<Button x:Name="BlackListButton" HorizontalAlignment="Center" Width="300" Margin="10" Click="BlackListButton_Click">
+									<StackPanel Orientation="Horizontal">
+										<FontIcon Glyph="&#xE25B;"/>
+										<TextBlock Text="Black List" FontSize="20" VerticalAlignment="Center" Margin="20,0,0,0"/>
+									</StackPanel>
+								</Button>
+								<Button x:Name="FollowListButton" HorizontalAlignment="Center" Width="300" Margin="10" Click="FollowListButton_Click">
+									<StackPanel Orientation="Horizontal">
+										<FontIcon Glyph="&#xE00A;"/>
+										<TextBlock Text="Follow List" FontSize="20" VerticalAlignment="Center" Margin="20,0,0,0"/>
+									</StackPanel>
+								</Button>
 							</StackPanel>
-						</Button>
-						<Button x:Name="FollowListButton" VerticalAlignment="Center" Margin="10" Click="FollowListButton_Click">
-							<StackPanel Orientation="Horizontal">
-								<FontIcon Glyph="&#xE00A;"/>
-								<TextBlock Text="Follow List" FontSize="20" VerticalAlignment="Center" Margin="10,0,0,0"/>
+						</ScrollViewer>
+					</Grid>
+					<Grid Style="{StaticResource BorderGrid}" Grid.Row="1">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+						<TextBlock Text="LOCAL" Style="{StaticResource SectionTitle}"/>
+						<ScrollViewer HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Grid.Row="1">
+							<StackPanel>
+								<Button x:Name="DownloadPathButton" Content="Select Download Path" FontSize="20" Tapped="DownloadPathButton_Tapped" Margin="20,10,0,10" HorizontalAlignment="Center"/>
+								<Button x:Name="ClearDownloadPathButton" Content="Clear Download Path" FontSize="20" Tapped="ClearDownloadPathButton_Tapped" Margin="20,0,0,10" HorizontalAlignment="Center"/>
+								<TextBlock x:Name="DownloadPathTextBlock" Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,10" FontSize="20" HorizontalAlignment="Center"/>
 							</StackPanel>
-						</Button>
-					</StackPanel>
-					<!--<TextBlock Text="Theme: " Style="{StaticResource SectionTitle}"/>
-					<StackPanel Margin="40,0,0,0">
-						<RadioButton Margin="5" Content="Light" Checked="LightButton_Checked" Unchecked="LightButton_Checked"/>
-						<RadioButton Margin="5" Content="Dark" Checked="DarkButton_Checked" Unchecked="DarkButton_Checked"/>
-						<RadioButton Margin="5" Content="Follow System" IsChecked="True" Checked="FollowSystemButton_Checked" Unchecked="FollowSystemButton_Checked"/>
-					</StackPanel>-->
-					<TextBlock Text="General: " Style="{StaticResource SectionTitle}"/>
-					<StackPanel Margin="40,0,0,0">
-						<StackPanel Orientation="Horizontal">
-							<ToggleSwitch x:Name="CustomHostToggle" OffContent="Enable Custom Host" OnContent="Enable Custom Host" Margin="5" Toggled="CustomHostToggle_Toggled"/>
-							<Button x:Name="CustomHostButton" Content="E926.net" Margin="10,0,0,0" Tapped="CustomHostButton_Tapped"/>
-						</StackPanel>
-						<ToggleSwitch x:Name="CycleListToggle" OffContent="Enable Cycle List" OnContent="Enable Cycle List" Margin="5" Toggled="CycleListToggle_Toggled"/>
-						<ToggleSwitch x:Name="ConcatTagToggle" OffContent="Overlay Tags" OnContent="Concat Tags" Margin="5" Toggled="ConcatTagToggle_Toggled"/>
-						<ToggleSwitch x:Name="MediaPlayToggle" OffContent="Media Background Play" OnContent="Media Background Play" Margin="5" Toggled="MediaPlayToggle_Toggled"/>
-						<ToggleSwitch x:Name="MediaAutoPlayToggle" OffContent="Media Auto Play" OnContent="Media Auto Play" Margin="5" Toggled="MediaAutoPlayToggle_Toggled"/>
-						<StackPanel Orientation="Horizontal">
-							<ToggleSwitch x:Name="HotKeysToggle" OffContent="Enable Hot Keys" OnContent="Enable Hot Keys" Margin="5" Toggled="HotKeysToggle_Toggled"/>
-							<Button x:Name="HotKeysButton" Margin="10,0,0,0" FontSize="18" Tapped="HotKeysButton_Tapped">
+						</ScrollViewer>
+					</Grid>
+				</Grid>
+
+
+				<Grid Style="{StaticResource BorderGrid}">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					<TextBlock Text="GENERAL" Style="{StaticResource SectionTitle}"/>
+					<ScrollViewer HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Grid.Row="1">
+						<StackPanel>
+							<StackPanel HorizontalAlignment="Center">
 								<StackPanel Orientation="Horizontal">
-									<FontIcon Glyph="&#xE92E;"/>
-									<TextBlock Text="Hot Keys" Margin="10,0,0,0"/>
+									<ToggleSwitch x:Name="CustomHostToggle" OffContent="Enable Custom Host" OnContent="Enable Custom Host" Margin="5" Toggled="CustomHostToggle_Toggled"/>
+									<Button x:Name="CustomHostButton" Content="E926.net" Margin="10,0,0,0" Tapped="CustomHostButton_Tapped"/>
 								</StackPanel>
-							</Button>
-						</StackPanel>
-					</StackPanel>
-				</StackPanel>
-
-				<StackPanel x:Name="SecondCol" Grid.Row="0" Grid.Column="1">
-					<TextBlock Text="Local: " Style="{StaticResource SectionTitle}"/>
-					<StackPanel Orientation="Vertical" Margin="40,0,0,0">
-						<Button x:Name="DownloadPathButton" Content="Select Download Path" FontSize="20" Tapped="DownloadPathButton_Tapped" Margin="20,10,0,10" />
-						<Button x:Name="ClearDownloadPathButton" Content="Clear" FontSize="20" Tapped="ClearDownloadPathButton_Tapped" Margin="20,0,0,10" />
-						<TextBlock x:Name="DownloadPathTextBlock" Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,10" FontSize="20"/>
-					</StackPanel>
-					<TextBlock Text="About: " Style="{StaticResource SectionTitle}"/>
-					<StackPanel Margin="40,0,0,0">
-						<TextBlock FontSize="18" Text="Made By : RainbowWolfer" Margin="5"/>
-						<TextBlock FontSize="18" Text="Source From : E1547" Margin="5"/>
-						<TextBlock FontSize="18" d:Text="Version : 1.1.1.1" Text="{x:Bind Version}" Margin="5"/>
-						<Button x:Name="OfficialSiteButton" FontSize="18" Margin="5" Tapped="OfficialSiteButton_Tapped">
-							<StackPanel Orientation="Horizontal">
-								<FontIcon Glyph="&#xE80F;"/>
-								<TextBlock Text="Official SIte" Margin="10,0,0,0"/>
-							</StackPanel>
-						</Button>
-						<TextBlock FontSize="16" TextWrapping="Wrap" Margin="10,10,70,10" ToolTipService.Placement="Bottom" PointerEntered="TextBlock_PointerEntered" PointerExited="TextBlock_PointerExited">
-							This is a personal passionate project. You are expected to encounter something not working as intended. And many features are not implemented right now.
-							<ToolTipService.ToolTip>
-								I know there are already many e621 applications. but i really just wanna to put what i learnt into use. and nobody has done UWP version of e621, right?
-								And I know the download concept that i have done is kinda dumb. maybe i will rework on it (or not XD).
-							</ToolTipService.ToolTip>
-						</TextBlock>
-						<StackPanel Orientation="Horizontal">
-							<Button x:Name="EmailButton" FontSize="18" Margin="5" Tapped="EmailButton_Tapped">
+								<ToggleSwitch x:Name="CycleListToggle" OffContent="Enable Cycle List" OnContent="Enable Cycle List" Margin="5" Toggled="CycleListToggle_Toggled"/>
+								<ToggleSwitch x:Name="ConcatTagToggle" OffContent="Overlay Tags" OnContent="Concat Tags" Margin="5" Toggled="ConcatTagToggle_Toggled"/>
+								<ToggleSwitch x:Name="MediaPlayToggle" OffContent="Media Background Play" OnContent="Media Background Play" Margin="5" Toggled="MediaPlayToggle_Toggled"/>
+								<ToggleSwitch x:Name="MediaAutoPlayToggle" OffContent="Media Auto Play" OnContent="Media Auto Play" Margin="5" Toggled="MediaAutoPlayToggle_Toggled"/>
 								<StackPanel Orientation="Horizontal">
-									<FontIcon Glyph="&#xE715;"/>
-									<TextBlock Text="Contact Me" Margin="10,0,0,0"/>
+									<ToggleSwitch x:Name="HotKeysToggle" OffContent="Enable Hot Keys" OnContent="Enable Hot Keys" Margin="5" Toggled="HotKeysToggle_Toggled"/>
+									<Button x:Name="HotKeysButton" Margin="10,0,0,0" FontSize="18" Tapped="HotKeysButton_Tapped">
+										<StackPanel Orientation="Horizontal">
+											<FontIcon Glyph="&#xE92E;"/>
+											<TextBlock Text="Hot Keys" Margin="10,0,0,0"/>
+										</StackPanel>
+									</Button>
 								</StackPanel>
-							</Button>
-							<TextBlock Text="RainbowWolfer@Outlook.com" FontSize="18" VerticalAlignment="Center" Margin="10"/>
+							</StackPanel>
 						</StackPanel>
-					</StackPanel>
-				</StackPanel>
-			</Grid>
+					</ScrollViewer>
+				</Grid>
+				<Grid Style="{StaticResource BorderGrid}">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					<TextBlock Text="ABOUT" Style="{StaticResource SectionTitle}"/>
+					<ScrollViewer HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Grid.Row="1">
+						<StackPanel>
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="auto" MinHeight="35"/>
+									<RowDefinition Height="auto" MinHeight="35"/>
+									<RowDefinition Height="auto" MinHeight="35"/>
+									<RowDefinition Height="auto" MinHeight="35"/>
+									<RowDefinition Height="auto" MinHeight="35"/>
+									<RowDefinition Height="auto" MinHeight="35"/>
+									<RowDefinition Height="auto" MinHeight="35"/>
+									<RowDefinition Height="auto" MinHeight="35"/>
+									<RowDefinition Height="auto" MinHeight="35"/>
+									<RowDefinition Height="auto" MinHeight="35"/>
+									<RowDefinition Height="auto" MinHeight="35"/>
+								</Grid.RowDefinitions>
+								<TextBlock Text="Develop By" VerticalAlignment="Center" FontSize="16" TextAlignment="Right" Margin="0,0,10,0"/>
+								<HyperlinkButton Content="RainbowWolfer" Grid.Column="1" FontSize="16" NavigateUri="https://rainbowwolfer.github.io/"/>
+								<TextBlock Text="Service From" Grid.Row="1" FontSize="16" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0"/>
+								<HyperlinkButton x:Name="ServiceHyperLinkButton" Content="E1547" Grid.Row="1" Grid.Column="1" FontSize="16" Tapped="OfficialSiteButton_Tapped"/>
+								<TextBlock Text="Version" VerticalAlignment="Center" FontSize="16" Grid.Row="2" TextAlignment="Right" Margin="0,0,10,0"/>
+								<TextBlock d:Text="1.0.0.0" Text="{x:Bind Version}" VerticalAlignment="Center" FontSize="16" Grid.Row="2" Grid.Column="1" Margin="10,0,0,0"/>
+
+								<TextBlock Text="Project Source" Grid.Row="3" FontSize="16" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0"/>
+								<HyperlinkButton Content="Github" Grid.Row="3" Grid.Column="1" FontSize="16" NavigateUri="https://github.com/RainbowWolfer/E621Downloader"/>
+
+								<Rectangle Width="150" Height="3" Fill="Gray" Grid.Row="4" Grid.ColumnSpan="2" RadiusX="3" RadiusY="10"/>
+								<StackPanel Grid.Row="5" VerticalAlignment="Center" Margin="0,0,10,0">
+									<TextBlock Text="( Found a bug ? )" TextAlignment="Right"/>
+									<TextBlock Text="( Want someting new ? )" TextAlignment="Right"/>
+									<TextBlock Text="Contact Me !" FontSize="16" TextAlignment="Right"/>
+								</StackPanel>
+								<Button x:Name="EmailButton" Grid.Row="5" Grid.Column="1" Margin="10,0,0,0" Tapped="EmailButton_Tapped">
+									<StackPanel Orientation="Horizontal">
+										<TextBlock Text="Email"/>
+										<FontIcon Glyph="&#xE119;" Margin="10,0,0,0"/>
+									</StackPanel>
+								</Button>
+								<TextBlock Text="RainbowWolfer@Outlook.com" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="6"/>
+								<Rectangle Width="150" Height="3" Fill="Gray" Grid.Row="7" Grid.ColumnSpan="2" RadiusX="3" RadiusY="10"/>
+
+								<TextBlock Text="App Settings Folder" Grid.Row="8" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
+								<HyperlinkButton x:Name="LocalStateHyperButton" HorizontalAlignment="Center" Margin="10" Click="LocalStateHyperButton_Click" Grid.Row="8" Grid.Column="1">
+									<TextBlock x:Name="LocalStateHyperContentText" d:Text="C:\Users\rainb\AppData\Local\Packages\25737563C6D7A.E1547Browser_jhf51en8pd7sg\LocalState" TextWrapping="Wrap"/>
+								</HyperlinkButton>
+								<TextBlock Text="Font Used (Including Icons)" VerticalAlignment="Center" Grid.Row="9" TextAlignment="Right" Margin="0,0,10,0"/>
+								<TextBlock Text="Segoe UI&#10;Cascadia Mono&#10;Segoe Fluent Icons (Win11)&#10;Segoe MDL2 Assets (Win10)" Grid.Row="9" Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center"/>
+							</Grid>
+						</StackPanel>
+					</ScrollViewer>
+				</Grid>
+
+				<Grid Style="{StaticResource BorderGrid}">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="auto"/>
+					</Grid.RowDefinitions>
+					<TextBlock Text="NEW" Style="{StaticResource SectionTitle}"/>
+					<TextBlock Text="What's new in this version" Grid.Row="1" TextAlignment="Center" FontSize="18"/>
+					<ScrollViewer HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Grid.Row="2">
+						<StackPanel HorizontalAlignment="Center" Margin="20">
+							<TextBlock Text="- New follow &amp; black system" FontSize="24"/>
+							<TextBlock Text="- Cloud sync blacklist tags" FontSize="24"/>
+							<TextBlock Text="- Library page rework" FontSize="24"/>
+							<TextBlock Text="- Spot page improvements" FontSize="24"/>
+							<TextBlock Text="- Popup dialog shows progress" FontSize="24"/>
+							<TextBlock Text="- UI design improvements" FontSize="24"/>
+						</StackPanel>
+					</ScrollViewer>
+					<Grid Grid.Row="3" HorizontalAlignment="Center" Margin="10">
+						<HyperlinkButton Content="Please consider giving this app a review " NavigateUri="ms-windows-store://review/?ProductId=9P3751M5M4WJ" FontSize="16"/>
+					</Grid>
+				</Grid>
+			</StackPanel>
 		</ScrollViewer>
 	</Grid>
 </Page>

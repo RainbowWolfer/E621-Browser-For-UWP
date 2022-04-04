@@ -87,11 +87,21 @@ namespace E621Downloader.Views.CommentsSection {
 			MainPage.NavigateToPicturePage(post);
 		}
 
-		private void DownVoteButton_Tapped(object sender, TappedRoutedEventArgs e) {
+		private async void UpVoteButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			UpVoteButton.IsEnabled = false;
+			UpVoteIcon.Glyph = "\uE10C";
+			DataResult<E621Vote> result = await E621Vote.VoteComment(Comment.id, 1, true);
 
+			UpVoteIcon.Glyph = "\uE96D";
+			UpVoteButton.IsEnabled = true;
 		}
 
-		private void UpVoteButton_Tapped(object sender, TappedRoutedEventArgs e) {
+		private async void DownVoteButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			DownVoteButton.IsEnabled = false;
+			DownVoteIcon.Glyph = "\uE10C";
+			DataResult<E621Vote> result = await E621Vote.VoteComment(Comment.id, -1, true);
+			DownVoteIcon.Glyph = "\uE96E";
+			DownVoteButton.IsEnabled = true;
 
 		}
 

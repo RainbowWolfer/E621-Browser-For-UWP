@@ -21,6 +21,7 @@ using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using Windows.System;
 using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -32,20 +33,24 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Pages {
 	public sealed partial class SettingsPage: Page {
 		public static bool isDownloadPathChangingHandled = true;
-		public string Version => "Version: " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+		public string Version => $"{App.GetAppVersion()}";
 
 		private bool internalChanges = true;
 		public SettingsPage() {
 			this.InitializeComponent();
+			this.NavigationCacheMode = NavigationCacheMode.Required;
 			ClearDownloadPathButton.IsEnabled = Local.DownloadFolder != null;
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
+			LocalStateHyperContentText.Text = Local.LocalFolder.Path;
+
 			DownloadPathTextBlock.Text = Local.DownloadFolder == null ? "No Download Path Selected" : Local.DownloadFolder.Path;
 			CustomHostToggle.IsOn = LocalSettings.Current.customHostEnable;
 			CycleListToggle.IsOn = LocalSettings.Current.cycleList;
 			CustomHostButton.IsEnabled = LocalSettings.Current.customHostEnable;
+			CustomHostButton.Content = LocalSettings.Current.customHostEnable ? string.IsNullOrWhiteSpace(LocalSettings.Current.customHost) ? "Host" : LocalSettings.Current.customHost : "E926.net";
 			ConcatTagToggle.IsOn = LocalSettings.Current.concatTags;
 			MediaPlayToggle.IsOn = LocalSettings.Current.mediaBackgroundPlay;
 			MediaAutoPlayToggle.IsOn = LocalSettings.Current.mediaAutoPlay;
@@ -55,9 +60,7 @@ namespace E621Downloader.Pages {
 
 		private async void BlackListButton_Click(object sender, RoutedEventArgs e) {
 			BlackListButton.IsEnabled = false;
-			var list = Local.Listing.LocalBlackLists.ToList();
-			list.Insert(0, Local.Listing.CloudBlackList);
-			await PopupListingManager("Black List", list);
+			await PopupListingManager("Black List", Local.Listing.LocalBlackLists);
 			BlackListButton.IsEnabled = true;
 		}
 
@@ -290,6 +293,12 @@ namespace E621Downloader.Pages {
 			};
 			emailMessage.To.Add(new EmailRecipient("RainbowWolfer@Outlook.com", "RainbowWolfer"));
 			await EmailManager.ShowComposeNewEmailAsync(emailMessage);
+		}
+
+		private async void LocalStateHyperButton_Click(object sender, RoutedEventArgs e) {
+			await Launcher.LaunchFolderAsync(Local.LocalFolder, new FolderLauncherOptions() {
+				DesiredRemainingView = ViewSizePreference.UseMore
+			});
 		}
 
 		//private void LightButton_Checked(object sender, RoutedEventArgs e) {

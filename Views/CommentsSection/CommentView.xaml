@@ -12,7 +12,6 @@
 	<UserControl.Resources>
 		<Style x:Key="ScoreButton" TargetType="Button">
 			<Setter Property="Background" Value="Transparent"/>
-			<Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
 			<Setter Property="BorderThickness" Value="0"/>
 			<Setter Property="Height" Value="30"/>
 			<Setter Property="FontSize" Value="15"/>
@@ -45,9 +44,17 @@
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
-			<Button x:Name="UpVoteButton" Tapped="UpVoteButton_Tapped" Content="&#xE96D;" Style="{StaticResource ScoreButton}" Grid.Column="0" Padding="0" CornerRadius="5"/>
+			<Button x:Name="UpVoteButton" Tapped="UpVoteButton_Tapped" Style="{StaticResource ScoreButton}" Grid.Column="0" Padding="0" CornerRadius="5">
+				<Button.Content>
+					<FontIcon x:Name="UpVoteIcon" Glyph="&#xE96D;" Foreground="{StaticResource ButtonForegroundThemeBrush}"/>
+				</Button.Content>
+			</Button>
 			<TextBlock Text="{x:Bind Comment.score}" Grid.Column="1" FontSize="16" HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center"/>
-			<Button x:Name="DownVoteButton" Tapped="DownVoteButton_Tapped" Content="&#xE96E;" Style="{StaticResource ScoreButton}" Grid.Column="2" Padding="0" CornerRadius="5"/>
+			<Button x:Name="DownVoteButton" Tapped="DownVoteButton_Tapped" Style="{StaticResource ScoreButton}" Grid.Column="2" Padding="0" CornerRadius="5">
+				<Button.Content>
+					<FontIcon x:Name="DownVoteIcon" Glyph="&#xE96E;" Foreground="{StaticResource ButtonForegroundThemeBrush}"/>
+				</Button.Content>
+			</Button>
 		</Grid>
 		<Grid Grid.Row="3">
 			<Grid.ColumnDefinitions>

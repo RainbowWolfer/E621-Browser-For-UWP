@@ -67,7 +67,7 @@ namespace E621Downloader.Views {
 					BlackToggle.UncheckDefault();
 				};
 
-				var black_list = Local.Listing.LocalBlackLists.Append(Local.Listing.CloudBlackList).ToList();
+				var black_list = Local.Listing.LocalBlackLists.ToList();
 				BlackToggle.Initialize(tag, black_list);
 				BlackToggle.OnComboBoxChecked += dic => {
 					foreach(KeyValuePair<string, bool> item in dic) {

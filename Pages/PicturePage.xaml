@@ -119,39 +119,33 @@
 				<TextBlock x:Name="TitleText" FontFamily="Cascadia Mono" Text="#1231278 (E)" RelativePanel.RightOf="TypeIcon" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Foreground="Red"/>
 				<FontIcon x:Name="SoundIcon" Glyph="&#xE7BA;" Height="38" Width="40" FontSize="24" RelativePanel.RightOf="TitleText" Margin="5,0,0,0" Foreground="Yellow" ToolTipService.Placement="Bottom"/>
 				<Rectangle x:Name="Separator2" RelativePanel.RightOf="SoundIcon" Style="{StaticResource RectangleSeparator}" d:Fill="White"/>
-				<Button x:Name="UpVoteButton" Height="38" Width="38" Padding="0" FontFamily="Segoe MDL2 Assets" Content="&#xE96D;" RelativePanel.RightOf="Separator2" Foreground="LightGreen">
-					<Button.Resources>
+				<views:LockableToggleButton x:Name="UpVoteButton" Height="38" Width="38" Padding="0" RelativePanel.RightOf="Separator2" CornerRadius="4" BorderThickness="0" Click="UpVoteButton_Click" LockToggle="True">
+					<views:LockableToggleButton.Content>
+						<FontIcon x:Name="UpVoteIcon" Glyph="&#xE96D;" Foreground="LightGreen"/>
+					</views:LockableToggleButton.Content>
+					<views:LockableToggleButton.Resources>
 						<ResourceDictionary>
 							<ResourceDictionary.ThemeDictionaries>
-								<ResourceDictionary x:Key="Dark">
-									<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="LightGreen"/>
-									<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#333333"/>
+								<!--<ResourceDictionary x:Key="Dark">
+									<SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="Aquamarine"/>
+									<SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="Aqua"/>
+									<SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="Aqua"/>
 								</ResourceDictionary>
 								<ResourceDictionary x:Key="Light">
-									<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="LightGreen"/>
-									<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#333333"/>
-								</ResourceDictionary>
+									<SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="Aquamarine"/>
+									<SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="Aqua"/>
+									<SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="Aqua"/>
+								</ResourceDictionary>-->
 							</ResourceDictionary.ThemeDictionaries>
 						</ResourceDictionary>
-					</Button.Resources>
-				</Button>
+					</views:LockableToggleButton.Resources>
+				</views:LockableToggleButton>
 				<TextBlock x:Name="ScoreText" Text="1321" RelativePanel.RightOf="UpVoteButton" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Margin="10,0,10,0" ToolTipService.Placement="Bottom"/>
-				<Button x:Name="DownVoteButton" Height="38" Width="38" Padding="0" FontFamily="Segoe MDL2 Assets" Content="&#xE96E;" RelativePanel.RightOf="ScoreText" Foreground="OrangeRed">
-					<Button.Resources>
-						<ResourceDictionary>
-							<ResourceDictionary.ThemeDictionaries>
-								<ResourceDictionary x:Key="Dark">
-									<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="OrangeRed"/>
-									<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#333333"/>
-								</ResourceDictionary>
-								<ResourceDictionary x:Key="Light">
-									<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="OrangeRed"/>
-									<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#333333"/>
-								</ResourceDictionary>
-							</ResourceDictionary.ThemeDictionaries>
-						</ResourceDictionary>
-					</Button.Resources>
-				</Button>
+				<views:LockableToggleButton x:Name="DownVoteButton" Height="38" Width="38" Padding="0" FontFamily="Segoe MDL2 Assets" RelativePanel.RightOf="ScoreText" Click="DownVoteButton_Click" CornerRadius="4" BorderThickness="0" LockToggle="True">
+					<views:LockableToggleButton.Content>
+						<FontIcon x:Name="DownVoteIcon" Glyph="&#xE96E;" Foreground="OrangeRed"/>
+					</views:LockableToggleButton.Content>
+				</views:LockableToggleButton>
 				<Rectangle x:Name="Separator3" RelativePanel.RightOf="DownVoteButton" Style="{StaticResource RectangleSeparator}" d:Fill="White"/>
 				<ToggleButton x:Name="FavoriteButton" Height="38" Padding="10,0,10,0" RelativePanel.RightOf="Separator3" Tapped="FavoriteButton_Tapped" CornerRadius="4,0,0,4">
 					<StackPanel Orientation="Horizontal">
@@ -391,7 +385,11 @@
 					</Grid>
 				</SplitView.Content>
 			</SplitView>
-
 		</Grid>
+		<controls:TeachingTip x:Name="VoteResultTeachingTip" IsLightDismissEnabled="True" PreferredPlacement="Bottom" CloseButtonContent="OK" Title="Vote Successfully">
+			<controls:TeachingTip.IconSource>
+				<controls:FontIconSource Glyph="&#xE0E7;"/>
+			</controls:TeachingTip.IconSource>
+		</controls:TeachingTip>
 	</Grid>
 </Page>

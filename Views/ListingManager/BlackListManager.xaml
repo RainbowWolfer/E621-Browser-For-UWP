@@ -100,7 +100,7 @@
 					<ColumnDefinition Width="auto"/>
 				</Grid.ColumnDefinitions>
 				<CheckBox x:Name="DefaultCheckBox" HorizontalAlignment="Left" Click="DefaultCheckBox_Click" Margin="15,5,5,5">
-					<TextBlock Text="Default"/>
+					<TextBlock Text="Set Default"/>
 				</CheckBox>
 				<Button x:Name="MoreInfoButton" Grid.Column="1" Height="33" Margin="5" Padding="6">
 					<Button.Flyout>

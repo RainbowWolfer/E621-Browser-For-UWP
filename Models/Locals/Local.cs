@@ -30,7 +30,7 @@ namespace E621Downloader.Models.Locals {
 		private const string FAVORITESLISTNAME = "FavorutesList.json";
 		private const string LOCALSETTINGSNAME = "LocalSettings.settings";
 
-		private static StorageFolder LocalFolder => ApplicationData.Current.LocalFolder;
+		public static StorageFolder LocalFolder => ApplicationData.Current.LocalFolder;
 
 		public static StorageFile ListingFile { get; private set; }
 		//public static StorageFile BlackListFile { get; private set; }

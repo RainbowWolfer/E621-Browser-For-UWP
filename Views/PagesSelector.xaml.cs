@@ -34,8 +34,8 @@ namespace E621Downloader.Views {
 			get => maximum;
 			set {
 				maximum = value;
-				FromSlider.Maximum = maximum - 2;
-				ToSlider.Maximum = maximum - 2;
+				FromSlider.Maximum = maximum;
+				ToSlider.Maximum = maximum;
 			}
 		}
 
@@ -43,11 +43,13 @@ namespace E621Downloader.Views {
 			get => currentPage;
 			set {
 				currentPage = value;
-				int gap = Maximum - Minimum;
 				FromSlider.Value = currentPage;
-				ToSlider.Value = gap - currentPage;
+				ToSlider.Value = Gap - currentPage;
+				UpdateScoreLimit();
 			}
 		}
+
+		private int Gap => Maximum - Minimum + 2;
 
 		public PagesSelector() {
 			this.InitializeComponent();
@@ -55,18 +57,16 @@ namespace E621Downloader.Views {
 		}
 
 		private void CurrentPageButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			int gap = Maximum - Minimum;
 			FromSlider.Value = CurrentPage;
-			ToSlider.Value = gap - CurrentPage;
+			ToSlider.Value = Gap - CurrentPage;
 		}
 
 		private void FromSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
 			if(initializing) {
 				return;
 			}
-			int gap = Maximum - Minimum;
-			if(gap - (int)FromSlider.Value < (int)ToSlider.Value) {
-				ToSlider.Value = gap - (int)FromSlider.Value;
+			if(Gap - (int)FromSlider.Value < (int)ToSlider.Value) {
+				ToSlider.Value = Gap - (int)FromSlider.Value;
 			}
 			UpdateScoreLimit();
 		}
@@ -75,18 +75,16 @@ namespace E621Downloader.Views {
 			if(initializing) {
 				return;
 			}
-			int gap = Maximum - Minimum;
-			if((int)FromSlider.Value > gap - (int)ToSlider.Value) {
-				FromSlider.Value = gap - (int)ToSlider.Value;
+			if((int)FromSlider.Value > Gap - (int)ToSlider.Value) {
+				FromSlider.Value = Gap - (int)ToSlider.Value;
 			}
 			UpdateScoreLimit();
 		}
 
 
 		public (int from, int to) GetRange() {
-			int gap = Maximum - Minimum;
 			int from = (int)FromSlider.Value;
-			int to = (int)(gap - ToSlider.Value);
+			int to = (int)(Gap - ToSlider.Value);
 			return (from, to);
 		}
 

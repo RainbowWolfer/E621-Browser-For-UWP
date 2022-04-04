@@ -152,6 +152,8 @@
     <Compile Include="Models\KeyListener.cs" />
     <Compile Include="Models\Locals\FavoritesList.cs" />
     <Compile Include="Models\Locals\Listing.cs" />
+    <Compile Include="Models\Networks\DataResult.cs" />
+    <Compile Include="Models\Posts\E621Vote.cs" />
     <Compile Include="Models\Posts\Favorites.cs" />
     <Compile Include="Models\Locals\LocalSettings.cs" />
     <Compile Include="Models\Locals\WelcomeInLanguages.cs" />
@@ -286,6 +288,9 @@
     </Compile>
     <Compile Include="Views\ListingManager\BlackListManager.xaml.cs">
       <DependentUpon>BlackListManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoadingRingIcon.xaml.cs">
+      <DependentUpon>LoadingRingIcon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginHelpSection.xaml.cs">
       <DependentUpon>LoginHelpSection.xaml</DependentUpon>
@@ -579,6 +584,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ListingManager\BlackListManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoadingRingIcon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
