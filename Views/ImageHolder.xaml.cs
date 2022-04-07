@@ -38,8 +38,6 @@ namespace E621Downloader.Views {
 			get => _spanCol;
 			set {
 				_spanCol = Math.Clamp(value, 5, 15);
-				//_spanCol = value;
-				//Debug.WriteLine($"COL: {_spanCol}");
 				VariableSizedWrapGrid.SetColumnSpan(this, _spanCol);
 			}
 		}
@@ -47,8 +45,6 @@ namespace E621Downloader.Views {
 			get => _spanRow;
 			set {
 				_spanRow = Math.Clamp(value, 4, 15);
-				//_spanRow = value;
-				//Debug.WriteLine($"COL: {_spanRow}");
 				VariableSizedWrapGrid.SetRowSpan(this, _spanRow);
 			}
 		}
@@ -66,18 +62,17 @@ namespace E621Downloader.Views {
 		public BitmapImage Image { get; private set; }
 		private readonly PathType type;
 		private readonly string path;
+		private readonly Page page;
 
 		//private bool isLoaded;
-		private Page page;
 
 		public ImageHolder(Page page, Post post, int index, PathType type, string path) {
-			//Debug.WriteLine("Type: " + post.file.ext);
+			this.InitializeComponent();
 			this.page = page;
 			this.PostRef = post;
 			this.Index = index;
 			this.type = type;
 			this.path = path;
-			this.InitializeComponent();
 			OnImagedLoaded += (b) => this.Image = b;
 			if(LoadUrl != null) {
 				MyImage.Source = new BitmapImage(new Uri(LoadUrl));
@@ -96,9 +91,13 @@ namespace E621Downloader.Views {
 			SetRightClick();
 		}
 
+		public void BeginEntranceAnimation() {
+			EntranceAnimation.Begin();
+		}
+
 		private void SetRightClick() {
 			this.RightTapped += (s, e) => {
-				if(PostsBrowser.Instance?.MultipleSelectionMode ?? false) {
+				if(PostsBrowserPage.IsInMultipleSelectionMode()) {
 					return;
 				}
 				MenuFlyout flyout = new();
@@ -109,9 +108,9 @@ namespace E621Downloader.Views {
 						Icon = new FontIcon() { Glyph = "\uE152" },
 					};
 					item_select.Click += (sender, arg) => {
-						PostsBrowser.Instance.EnterSelectionMode();
+						PostsBrowserPage.SetSelectionMode(true);
 						IsSelected = true;
-						PostsBrowser.Instance.SelectFeedBack(this);
+						PostsBrowserPage.SetSelectionFeedback(this);
 					};
 					flyout.Items.Add(item_select);
 
@@ -171,11 +170,11 @@ namespace E621Downloader.Views {
 				return;
 			}
 			if(MainPage.Instance.currentTag == PageTag.PostsBrowser) {
-				if(PostsBrowser.Instance.MultipleSelectionMode) {
+				if(PostsBrowserPage.IsInMultipleSelectionMode()) {
 					IsSelected = !IsSelected;
-					PostsBrowser.Instance.SelectFeedBack(this);
+					PostsBrowserPage.SetSelectionFeedback(this);
 				} else {
-					App.PostsList.UpdatePostsList(PostsBrowser.Instance.Posts);
+					App.PostsList.UpdatePostsList(PostsBrowserPage.GetCurrentPosts());
 					App.PostsList.Current = PostRef;
 
 					MainPage.NavigateToPicturePage(PostRef);

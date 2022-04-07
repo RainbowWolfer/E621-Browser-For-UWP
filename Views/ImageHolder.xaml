@@ -6,12 +6,30 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+	d:RequestedTheme="Dark"
     d:DesignHeight="200"
     d:DesignWidth="200">
+
 	<UserControl.Resources>
 		<SolidColorBrush x:Key="TransparentBackground" Color="Gray" Opacity="0.5"/>
+		<Storyboard x:Name="EntranceAnimation">
+			<DoubleAnimation EnableDependentAnimation="True" Storyboard.TargetName="RootItem" Storyboard.TargetProperty="Opacity" From="0" To="1">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="10" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+			<DoubleAnimation Storyboard.TargetName="RootTransform" Storyboard.TargetProperty="Y" From="20" To="0">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="10" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+		</Storyboard>
 	</UserControl.Resources>
-	<GridViewItem>
+
+	<GridViewItem x:Name="RootItem">
+		<GridViewItem.RenderTransform>
+			<TranslateTransform x:Name="RootTransform" Y="0"/>
+		</GridViewItem.RenderTransform>
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="*"/>

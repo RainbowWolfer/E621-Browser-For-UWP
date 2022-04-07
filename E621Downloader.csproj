@@ -204,8 +204,8 @@
     <Compile Include="Pages\PicturePage.xaml.cs">
       <DependentUpon>PicturePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\PostsBrowser.xaml.cs">
-      <DependentUpon>PostsBrowser.xaml</DependentUpon>
+    <Compile Include="Pages\PostsBrowserPage.xaml.cs">
+      <DependentUpon>PostsBrowserPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SpotPage.xaml.cs">
       <DependentUpon>SpotPage.xaml</DependentUpon>
@@ -309,6 +309,9 @@
     </Compile>
     <Compile Include="Views\PostMoreInfoDialog.xaml.cs">
       <DependentUpon>PostMoreInfoDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PostsBrowserPaginator.xaml.cs">
+      <DependentUpon>PostsBrowserPaginator.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ResizeBar.xaml.cs">
       <DependentUpon>ResizeBar.xaml</DependentUpon>
@@ -475,7 +478,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\PostsBrowser.xaml">
+    <Page Include="Pages\PostsBrowserPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -612,6 +615,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PostMoreInfoDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PostsBrowserPaginator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

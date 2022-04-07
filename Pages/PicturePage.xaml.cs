@@ -99,9 +99,10 @@ namespace E621Downloader.Pages {
 			MyMediaPlayer.AutoPlay = EnableAutoPlay;
 			bool showNoPostGrid = false;
 			this.imageDataPackage = null;
-			if(p == null && PostRef == null && PostsBrowser.Instance != null && PostsBrowser.Instance.Posts != null && PostsBrowser.Instance.Posts.Count > 0) {
-				App.PostsList.UpdatePostsList(PostsBrowser.Instance.Posts);
-				p = PostsBrowser.Instance.Posts[0];
+			if(p == null && PostRef == null && PostsBrowserPage.HasLoaded()) {
+				List<Post> posts = PostsBrowserPage.GetCurrentPosts();
+				App.PostsList.UpdatePostsList(posts);
+				p = posts.FirstOrDefault();
 				App.PostsList.Current = p;
 			}
 			if(p is Post post) {

@@ -49,7 +49,7 @@ namespace E621Downloader {
 		public event Action<BitmapImage> UserChangedAvatarComplete;
 
 		public static MainPage Instance;
-		public PostsBrowser postsBrowser;
+		//public PostsBrowser postsBrowser;
 
 		public bool IsFullScreen {
 			get => ApplicationView.GetForCurrentView().IsFullScreenMode;
@@ -213,20 +213,15 @@ namespace E621Downloader {
 			Instance.DownloadRingIcon.LoadingType = type;
 		}
 
-		public static void ChangeCurrenttTags(params string[] strs) {
-			string result = "";
-			foreach(string item in strs) {
-				result += item + " ";
-			}
+		public static void ChangeCurrentTags(params string[] strs) {
+			string result = E621Tag.JoinTags(strs.Where(s => !string.IsNullOrWhiteSpace(s)).ToArray());
 			if(string.IsNullOrWhiteSpace(result)) {
 				result = "Tags";
 			}
 			Instance.TextBlockSearchTags.Text = result;
 		}
 
-		public static string[] GetCurrentTags() {
-			return PostsBrowser.Instance?.Tags ?? Array.Empty<string>();
-		}
+		public static string[] GetCurrentTags() => PostsBrowserPage.GetCurrentTags();
 
 		public static ContentDialog InstanceDialog { get; private set; }
 		public static bool IsShowingInstanceDialog { get; private set; }
@@ -414,7 +409,7 @@ namespace E621Downloader {
 			object parameter;
 			switch(tag) {
 				case PageTag.PostsBrowser:
-					target = typeof(PostsBrowser);
+					target = typeof(PostsBrowserPage);
 					parameter = parameter_postBrowser;
 					break;
 				case PageTag.Picture:
@@ -494,7 +489,7 @@ namespace E621Downloader {
 				Title = "Manage Your Search Tags",
 			};
 
-			var view = new TagsSelectionView(dialog, PostsBrowser.Instance?.Tags ?? Array.Empty<string>());
+			var view = new TagsSelectionView(dialog, PostsBrowserPage.GetCurrentTags());
 			dialog.Content = view;
 
 			await dialog.ShowAsync();

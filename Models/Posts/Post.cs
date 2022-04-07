@@ -21,7 +21,7 @@ namespace E621Downloader.Models.Posts {
 
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
-				return JsonConvert.DeserializeObject<PostsRoot>(result.Content).posts ?? new List<Post>();
+				return JsonConvert.DeserializeObject<PostsRoot>(result.Content)?.posts ?? new List<Post>();
 			} else if(result.Result == HttpResultType.Canceled) {
 				return null;
 			} else {
