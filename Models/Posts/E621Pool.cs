@@ -32,5 +32,6 @@ namespace E621Downloader.Models.Posts {
 		public int post_count;
 
 		public string Tag => $"pool:{id}";
+		public string TagName => $"pool:{name}";
 	}
 }

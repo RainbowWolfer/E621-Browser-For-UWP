@@ -706,17 +706,17 @@ namespace E621Downloader.Pages {
 			string tag = btn.Tag as string;
 			if(Local.Listing.CheckBlackList(tag)) {
 				await Local.Listing.RemoveBlackList(tag);
-				btn.Content = "\uF8AB";
+				((FontIcon)btn.Content).Glyph = "\uF8AB";
 				ToolTipService.SetToolTip(btn, "Add To BlackList");
 			} else {
 				await Local.Listing.AddBlackList(tag);
-				btn.Content = "\uEA43";
+				((FontIcon)btn.Content).Glyph = "\uEA43";
 				ToolTipService.SetToolTip(btn, "Remove From BlackList");
 
 				if(Local.Listing.CheckFollowingList(tag)) {
 					await Local.Listing.RemoveFollowingList(tag);
 					var followListButton = (btn.Parent as RelativePanel).Children.OfType<Button>().ToList().Find(b => b.Name == "FollowListButton");
-					followListButton.Content = "\uF8AA";
+					((FontIcon)followListButton.Content).Glyph = "\uF8AA";
 					ToolTipService.SetToolTip(followListButton, "Add To FollowList");
 				}
 			}
@@ -727,17 +727,17 @@ namespace E621Downloader.Pages {
 			string tag = btn.Tag as string;
 			if(Local.Listing.CheckFollowingList(tag)) {
 				await Local.Listing.RemoveFollowingList(tag);
-				btn.Content = "\uF8AA";
+				((FontIcon)btn.Content).Glyph = "\uF8AA";
 				ToolTipService.SetToolTip(btn, "Add To FollowList");
 			} else {
 				await Local.Listing.AddFollowingList(tag);
-				btn.Content = "\uE74D";
+				((FontIcon)btn.Content).Glyph = "\uE74D";
 				ToolTipService.SetToolTip(btn, "Delete From FollowList");
 
 				if(Local.Listing.CheckBlackList(tag)) {
 					await Local.Listing.RemoveBlackList(tag);
-					var blackListButton = (btn.Parent as RelativePanel).Children.OfType<Button>().ToList().Find(b => b.Name == "BlackListButton");
-					blackListButton.Content = "\uF8AB";
+					Button blackListButton = (btn.Parent as RelativePanel).Children.OfType<Button>().ToList().Find(b => b.Name == "BlackListButton");
+					((FontIcon)blackListButton.Content).Glyph = "\uF8AB";
 					ToolTipService.SetToolTip(blackListButton, "Add To BlackList");
 				}
 			}
@@ -747,10 +747,10 @@ namespace E621Downloader.Pages {
 			var btn = sender as Button;
 			string tag = btn.Tag as string;
 			if(Local.Listing.CheckBlackList(tag)) {
-				btn.Content = "\uEA43";
+				((FontIcon)btn.Content).Glyph = "\uEA43";
 				ToolTipService.SetToolTip(btn, "Remove From BlackList");
 			} else {
-				btn.Content = "\uF8AB";
+				((FontIcon)btn.Content).Glyph = "\uF8AB";
 				ToolTipService.SetToolTip(btn, "Add To BlackList");
 			}
 		}
@@ -759,10 +759,10 @@ namespace E621Downloader.Pages {
 			var btn = sender as Button;
 			string tag = btn.Tag as string;
 			if(Local.Listing.CheckFollowingList(tag)) {
-				btn.Content = "\uE74D";
+				((FontIcon)btn.Content).Glyph = "\uE74D";
 				ToolTipService.SetToolTip(btn, "Delete From FollowList");
 			} else {
-				btn.Content = "\uF8AA";
+				((FontIcon)btn.Content).Glyph = "\uF8AA";
 				ToolTipService.SetToolTip(btn, "Add To FollowList");
 			}
 		}

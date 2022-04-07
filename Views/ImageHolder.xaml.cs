@@ -27,6 +27,7 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Views {
 	public delegate void OnImageLoadedEventHandler(BitmapImage bitmap);
 	public sealed partial class ImageHolder: UserControl {
+		public string[] BelongedTags { get; set; }
 		public Post PostRef { get; private set; }
 		public int Index { get; private set; }
 
@@ -130,7 +131,8 @@ namespace E621Downloader.Views {
 				};
 				item_download.Click += async (sender, arg) => {
 					if(await DownloadsManager.CheckDownloadAvailableWithDialog()) {
-						if(await DownloadsManager.RegisterDownload(PostRef)) {
+						string title = E621Tag.JoinTags(BelongedTags);
+						if(await DownloadsManager.RegisterDownload(PostRef, title)) {
 							MainPage.CreateTip_SuccessDownload(page);
 						} else {
 							await MainPage.CreatePopupDialog("Error", "Downloads Failed");

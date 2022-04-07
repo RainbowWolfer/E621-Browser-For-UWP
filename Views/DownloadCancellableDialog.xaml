@@ -5,6 +5,7 @@
     xmlns:local="using:E621Downloader.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
 	d:RequestedTheme="Dark"
     d:DesignHeight="100"
@@ -14,9 +15,11 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
-		<TextBlock x:Name="MainText" Text="Downloading" Margin="0,0,0,5"/>
-		<Button x:Name="CancelButton" Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="CancelButton_Click">
+		<TextBlock x:Name="MainText" Text="Downloading" Margin="5,0,5,5"/>
+		<controls:ProgressBar IsIndeterminate="True" Grid.Row="1" Margin="5"/>
+		<Button x:Name="CancelButton" Grid.Row="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="CancelButton_Click" Margin="5,5,5,0">
 			<StackPanel Orientation="Horizontal">
 				<FontIcon Glyph="&#xE711;" VerticalAlignment="Center" Margin="5"/>
 				<TextBlock Text="Cancel" VerticalAlignment="Center" Margin="5"/>

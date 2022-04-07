@@ -74,7 +74,7 @@ namespace E621Downloader.Pages {
 
 		private PostBrowserParameter parameter;
 
-		private E621Pool pool;
+		//private E621Pool pool;
 
 		private CancellationTokenSource cts_loading;
 		private CancellationTokenSource cts_download;
@@ -87,15 +87,16 @@ namespace E621Downloader.Pages {
 				LoadingPanel.Visibility = isLoading ? Visibility.Visible : Visibility.Collapsed;
 				MyWrapGrid.Visibility = isLoading ? Visibility.Collapsed : Visibility.Visible;
 
-				InfoButton.IsEnabled = !isLoading;
-				MySplitViewButton.IsEnabled = !isLoading;
-				ViewButton.IsEnabled = !isLoading;
-				RefreshButton.IsEnabled = !isLoading;
-				SelectToggleButton.IsEnabled = !isLoading;
+				bool overralEnable = GetSelectedTab() != null && !IsLoading;
+				InfoButton.IsEnabled = overralEnable;
+				MySplitViewButton.IsEnabled = overralEnable;
+				ViewButton.IsEnabled = overralEnable;
+				RefreshButton.IsEnabled = overralEnable;
+				SelectToggleButton.IsEnabled = overralEnable;
 				if(DownloadButton.Tag is bool b && b) {
-					DownloadButton.IsEnabled = b && !IsLoading;
+					DownloadButton.IsEnabled = b && overralEnable;
 				} else {
-					DownloadButton.IsEnabled = !IsLoading;
+					DownloadButton.IsEnabled = overralEnable;
 				}
 				//uncheck selection
 			}
@@ -111,27 +112,40 @@ namespace E621Downloader.Pages {
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			if(e.Parameter is PostBrowserParameter parameter) {
+				this.parameter = (PostBrowserParameter)parameter.Clone();
 				ToTab(new PostsTab() {
 					Tags = parameter.Tags,
 					CurrentPage = parameter.Page,
 				});
 				//this.pool = null;
-				//this.parameter = (PostBrowserParameter)parameter.Clone();
-				//await LoadAsync(parameter.Page, parameter.Tags);
 			} else if(e.Parameter is E621Pool pool) {
+				this.parameter = new PostBrowserParameter(1, pool.Tag);
+				ToTab(new PostsTab() {
+					Pool = pool,
+				});
 				//this.pool = pool;
-				//await LoadAsync(pool);
+				//go or find new tab
 			} else if(this.parameter == null) {
+				this.parameter = new PostBrowserParameter(1, "");
 				ToTab(new PostsTab());
 				//this.pool = null;
-				//string[] tags = { "" };
-				//this.parameter = new PostBrowserParameter(1, tags);
-				//await LoadAsync(1, tags);
 			}
 			MainPage.ClearPostBrowserParameter();
 		}
 
-		public void ToTab(PostsTab tab) {
+		public async void ToTab(PostsTab tab) {
+			if(tab == null) {
+				IsLoading = false;
+				CancelLoading();
+				await Task.Delay(20);//idk but this works
+				ResetLoading();
+				Paginator.Reset();
+				TabsNavigationView.SelectedItem = null;
+				NoTabHint.Visibility = Visibility.Visible;
+				NoTabHintStoryboard.Begin();
+				return;
+			}
+			NoTabHint.Visibility = Visibility.Collapsed;
 			NavigationViewItem found = null;
 			foreach(NavigationViewItem item in GetAllNavitationViewItems()) {
 				if(item.Tag is PostsTab itemTag && tab.JoinedTags == itemTag.JoinedTags) {
@@ -175,9 +189,34 @@ namespace E621Downloader.Pages {
 				},
 				Text = "Close",
 			};
-			delete_item.Click += (s, e) => {
-
+			MenuFlyoutItem copy_item = new() {
+				Icon = new FontIcon() {
+					Glyph = "\uE8C8",
+				},
+				Text = "Copy",
+				IsEnabled = !string.IsNullOrWhiteSpace(tab.JoinedTags),
 			};
+			copy_item.Click += (s, e) => {
+				var dataPackage = new DataPackage() {
+					RequestedOperation = DataPackageOperation.Copy
+				};
+				dataPackage.SetText($"{tab.JoinedTags}");
+				Clipboard.SetContent(dataPackage);
+			};
+			delete_item.Click += (s, e) => {
+				TabsNavigationView.MenuItems.Remove(item);
+
+				List<NavigationViewItem> items = GetAllNavitationViewItems();
+				if(TabsNavigationView.SelectedItem == item) {
+					TabsNavigationView.SelectedItem = items.FirstOrDefault();
+				}
+				if(items.Count == 0) {
+					ToTab(null);
+				} else {
+					ToTab((PostsTab)items.First().Tag);
+				}
+			};
+			flyout.Items.Add(copy_item);
 			flyout.Items.Add(delete_item);
 			item.ContextFlyout = flyout;
 			return item;
@@ -208,51 +247,57 @@ namespace E621Downloader.Pages {
 			if(cts_loading != null) {
 				cts_loading.Cancel();
 				cts_loading.Dispose();
-				cts_loading = null;
 			}
+			cts_loading = null;
 		}
 
-		private async Task LoadAsync(PostsTab tab, bool refresh = false) {
-			IsLoading = true;
+		private void ResetLoading() {
+			NoTabHint.Visibility = Visibility.Collapsed;
 			AllBlackListHint.Visibility = Visibility.Collapsed;
 			NoDataHint.Visibility = Visibility.Collapsed;
 			MyWrapGrid.Children.Clear();
 
 			SelectToggleButton.IsChecked = false;
 			Paginator.Reset();
+			LoadingText.Text = "";
+		}
 
-			string[] tags = tab.Tags;
-			tags = tags.Where(t => !string.IsNullOrWhiteSpace(t)).ToArray();
-			UpdateInfoButton(tags);
-			MainPage.ChangeCurrentTags(tab.Tags);
+		private async Task LoadAsync(PostsTab tab, bool refresh = false) {
+			IsLoading = true;
+			ResetLoading();
+
+			LoadingText.Text = "Getting Ready";
 
 			CancelLoading();
-
-			await Task.Delay(100);
-
+			await Task.Delay(100);//must be greater than 10
 			cts_loading = new CancellationTokenSource();
 
 			if(tab.Posts != null && !refresh) {
 				IsLoading = false;
-				Paginator.LoadPaginator(tab.CurrentPage, tab.MaxPage);
+				if(tab.Pool == null) {
+					Paginator.LoadPaginator(tab.CurrentPage, tab.MaxPage);
+				}
 				await UpdateImageHolders(tab);
 				return;
 			}
-			string content;
-			string tag = "";
+
+			string[] tags = tab.Pool == null ? tab.Tags : new string[1] { tab.Pool.Tag };
+			tags = tags.Where(t => !string.IsNullOrWhiteSpace(t)).ToArray();
+			UpdateInfoButton(tags);
+			MainPage.ChangeCurrentTags(tab.Tags);
+
 			if(tags == null || tags.Length == 0) {
-				content = "Posts";
+				LoadingText.Text = "Loading Posts";
 			} else {
-				content = $"Tags: ({tag})";
-				tag = string.Join(' ', tags);
+				LoadingText.Text = $"Loading Tags: ({string.Join(' ', tags)})";
 			}
+
 			List<Post> posts = await Post.GetPostsByTagsAsync(cts_loading.Token, tab.CurrentPage, tags);
 
 			if(posts == null) {//cancelled
 				IsLoading = true;
 				return;
 			}
-			DownloadButton.IsEnabled = true;
 
 			tab.Unsupported = new List<Post>();
 			foreach(Post item in posts) {
@@ -269,9 +314,12 @@ namespace E621Downloader.Pages {
 				return;
 			}
 
-			await Paginator.LoadPaginator(tags, cts_loading.Token);
-			tab.CurrentPage = Paginator.CurrentPage;
-			tab.MaxPage = Paginator.MaxPage;
+			if(tab.Pool == null) {
+				LoadingText.Text = "Loading Paginator";
+				await Paginator.LoadPaginator(tags, cts_loading.Token);
+				tab.CurrentPage = Paginator.CurrentPage;
+				tab.MaxPage = Paginator.MaxPage;
+			}
 			IsLoading = false;
 			await UpdateImageHolders(tab);
 		}
@@ -341,8 +389,18 @@ namespace E621Downloader.Pages {
 			}
 
 			for(int i = 0; i < afterBlackListed.Count; i++) {
+				if(cts_loading == null || cts_loading.IsCancellationRequested) {
+					return;
+				}
+				try {
+					await Task.Delay(10, cts_loading.Token);
+				} catch(TaskCanceledException) {
+					return;
+				}
 				Post item = afterBlackListed[i];
-				ImageHolder holder = new(this, item, i, PathType.PostID, item.id);
+				ImageHolder holder = new(this, item, i, PathType.PostID, item.id) {
+					BelongedTags = tab.Tags,
+				};
 				MyWrapGrid.Children.Add(holder);
 				if(IsAdaptive) {
 					SetImageItemSize(!IsAdaptive, holder, item.sample, LocalSettings.Current.adaptiveSizeMultiplier);
@@ -350,17 +408,9 @@ namespace E621Downloader.Pages {
 					SetImageItemSize(!IsAdaptive, holder, item.sample, LocalSettings.Current.fixedHeight);
 				}
 				holder.OnImagedLoaded += (b) => {
-					Paginator.SetLoadCountText(tab.LoadedCount, tab.Posts.Count);
+					Paginator.SetLoadCountText(++tab.LoadedCount, tab.Posts.Count);
 				};
 				holder.BeginEntranceAnimation();
-				if(cts_loading == null || cts_loading.IsCancellationRequested) {
-					return;
-				}
-				try {
-					await Task.Delay(20, cts_loading.Token);
-				} catch(TaskCanceledException) {
-					return;
-				}
 			}
 		}
 
@@ -386,8 +436,8 @@ namespace E621Downloader.Pages {
 
 			poststInfolists.Clear();
 			poststInfolists.Add(new PostsInfoList("Deleted Posts", deletes));
-			poststInfolists.Add(new PostsInfoList("Hot Tags", hots));
 			poststInfolists.Add(new PostsInfoList("Blacklist", blacks));
+			poststInfolists.Add(new PostsInfoList("Hot Tags (Top 20)", hots));
 
 			PostsInfoListView.SelectedIndex = 0;
 
@@ -561,10 +611,10 @@ namespace E621Downloader.Pages {
 			} else {
 				bool downloadResult = false;
 				bool hasShownFail = false;
-				if(this.pool != null) {
+				if(tab.Pool != null) {
 					if(await new ContentDialog() {
 						Title = "Download Section",
-						Content = $"Do you want to download current pool ({this.pool.name})",
+						Content = $"Do you want to download current pool ({tab.Pool.name})",
 						PrimaryButtonText = "Yes",
 						CloseButtonText = "No",
 					}.ShowAsync() == ContentDialogResult.Primary) {
@@ -573,7 +623,7 @@ namespace E621Downloader.Pages {
 							cts_download = new CancellationTokenSource();
 							CreateDownloadDialog("Please Wait", "Handling Downloads");
 							await Task.Delay(50);
-							bool? result = await DownloadsManager.RegisterDownloads(cts_download.Token, tab.Posts, this.pool.name, UpdateContentText);
+							bool? result = await DownloadsManager.RegisterDownloads(cts_download.Token, tab.Posts, tab.Pool.name, UpdateContentText);
 							if(result == true) {
 								downloadResult = true;
 							} else if(result == null) {
@@ -677,7 +727,7 @@ namespace E621Downloader.Pages {
 			if(selected == null) {
 				return;
 			}
-			if(this.pool == null) {
+			if(selected.Pool == null) {
 				ContentDialog dialog = new() {
 					Title = E621Tag.JoinTags(selected.Tags),
 					CloseButtonText = "Back",
@@ -687,7 +737,7 @@ namespace E621Downloader.Pages {
 				await dialog.ShowAsync();
 				await Local.WriteListing();
 			} else {
-				await MainPage.CreatePopupDialog($"Pool:{this.pool.id}", new CurrentPoolInformation(this.pool));
+				await MainPage.CreatePopupDialog($"Pool:{selected.Pool.id}", new CurrentPoolInformation(selected.Pool));
 			}
 		}
 
@@ -711,20 +761,24 @@ namespace E621Downloader.Pages {
 			dataPackage.SetText($"{name}");
 			Clipboard.SetContent(dataPackage);
 		}
+
+		private async void NoTabSearchButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			await MainPage.Instance.PopupSearch();
+		}
 	}
 
 	public class PostsTab {
 		public string[] Tags { get; set; } = new string[0];
 		public List<Post> Posts { get; set; } = null;
+		public E621Pool Pool { get; set; } = null;
 		public int LoadedCount { get; set; } = 0;
 		public List<Post> Unsupported { get; set; } = new();
 		public Dictionary<string, long> BlackTags { get; set; } = new();
 		public Dictionary<string, long> AllTags { get; set; } = new();
 		public Dictionary<string, long> HotTags { get; set; } = new();
-		public E621Pool Pool { get; set; } = null;
 		public int MaxPage { get; set; } = 75;
 		public int CurrentPage { get; set; } = 1;
-		public string JoinedTags => E621Tag.JoinTags(Tags);
+		public string JoinedTags => Pool != null ? Pool.TagName : E621Tag.JoinTags(Tags);
 
 		public PostsTab() { }
 
@@ -757,7 +811,7 @@ namespace E621Downloader.Pages {
 	public class PostBrowserParameter: ICloneable {
 		public int Page { get; private set; }
 		public string[] Tags { get; private set; }
-		public PostBrowserParameter(int page, string[] tags) {
+		public PostBrowserParameter(int page, params string[] tags) {
 			Page = page;
 			Tags = tags;
 		}

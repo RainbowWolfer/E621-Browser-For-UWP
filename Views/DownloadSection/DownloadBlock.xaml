@@ -34,13 +34,14 @@
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 			<TextBlock x:Name="CountOverview" Text="Downloading... 0/0" FontSize="20" HorizontalAlignment="Center"/>
-			<Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="&#xE10C;" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0">
+			<Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" BorderThickness="0">
 				<Button.Flyout>
 					<MenuFlyout Placement="BottomEdgeAlignedLeft">
 						<MenuFlyoutItem x:Name="GoToLibraryItem" Text="Go To Library" Icon="Library" Click="GoToLibraryItem_Click"/>
 						<MenuFlyoutItem x:Name="DeleteItem" Text="Delete" Icon="Delete" Click="DeleteItem_Click"/>
 					</MenuFlyout>
 				</Button.Flyout>
+				<FontIcon Glyph="&#xE10C;"/>
 			</Button>
 		</Grid>
 	</Grid>

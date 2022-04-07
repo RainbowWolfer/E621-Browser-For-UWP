@@ -36,67 +36,77 @@
 				</DoubleAnimation.EasingFunction>
 			</DoubleAnimation>
 		</Storyboard>
+		<Storyboard x:Name="NoTabHintStoryboard">
+			<DoubleAnimation EnableDependentAnimation="True" Storyboard.TargetName="NoTabHint" Storyboard.TargetProperty="Opacity" From="0" To="1">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="10" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+			<DoubleAnimation EnableDependentAnimation="True" Storyboard.TargetName="NoTabHintTransform" Storyboard.TargetProperty="Y" From="30" To="0">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="10" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+		</Storyboard>
 		<CollectionViewSource x:Name="ContactsCVS2" Source="{x:Bind poststInfolists}" IsSourceGrouped="True"/>
 	</Page.Resources>
 
 	<Grid>
-		<controls:NavigationView x:Name="TabsNavigationView" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" ItemInvoked="TabsNavigationView_ItemInvoked" IsPaneOpen="False">
+		<controls:NavigationView x:Name="TabsNavigationView" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" ItemInvoked="TabsNavigationView_ItemInvoked" IsPaneOpen="False" PaneTitle="Tags Tab">
 			<controls:NavigationView.MenuItems>
-				<controls:NavigationViewItem Content="tags goes here" IsSelected="True">
-					<controls:NavigationViewItem.Icon>
-						<FontIcon Glyph="&#xE132;"/>
-					</controls:NavigationViewItem.Icon>
-				</controls:NavigationViewItem>
-				<controls:NavigationViewItem Content="tags goes here">
-					<controls:NavigationViewItem.Icon>
-						<FontIcon Glyph="&#xE132;"/>
-					</controls:NavigationViewItem.Icon>
-				</controls:NavigationViewItem>
-				<controls:NavigationViewItem Content="tags goes here">
-					<controls:NavigationViewItem.Icon>
-						<FontIcon Glyph="&#xE132;"/>
-					</controls:NavigationViewItem.Icon>
-				</controls:NavigationViewItem>
+
 			</controls:NavigationView.MenuItems>
+			<controls:NavigationView.PaneFooter>
+				<Grid Margin="5,5,5,0">
+					<Button x:Name="ViewButton" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Background="Transparent" BorderBrush="Transparent" Padding="8,5,8,6">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<FontIcon Glyph="&#xE2B2;"/>
+							<TextBlock Text="View Size" Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center" FontSize="16"/>
+						</Grid>
+						<Button.Flyout>
+							<Flyout Placement="Right">
+								<localviews:ImagesSizeDialog x:Name="ImagesSizeDialog" UpdateImagesLayout="ImagesSizeDialog_UpdateImagesLayout"/>
+							</Flyout>
+						</Button.Flyout>
+					</Button>
+				</Grid>
+			</controls:NavigationView.PaneFooter>
 			<controls:NavigationView.Content>
 				<Grid>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="auto"/>
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
-					<Button x:Name="MySplitViewButton" HorizontalAlignment="Right" VerticalAlignment="Stretch" Background="Transparent" BorderThickness="0" Tapped="MySplitViewButton_Tapped">
+					<Button x:Name="MySplitViewButton" HorizontalAlignment="Right" VerticalAlignment="Stretch" Background="Transparent" BorderThickness="0" Tapped="MySplitViewButton_Tapped" Margin="5">
 						<Button.Content>
 							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="Posts Info" Margin="2,0,0,0"/>
-								<FontIcon Glyph="&#xEA40;" Margin="10,0,0,0"/>
+								<TextBlock Text="Posts Info" FontSize="16" Margin="2,0,0,0"/>
+								<FontIcon Glyph="&#xEA40;" FontSize="20" Margin="10,0,0,0"/>
 							</StackPanel>
 						</Button.Content>
 					</Button>
-					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-						<Button x:Name="ViewButton" Content="View" Margin="5">
-							<Button.Flyout>
-								<Flyout Placement="Bottom">
-									<localviews:ImagesSizeDialog x:Name="ImagesSizeDialog" UpdateImagesLayout="ImagesSizeDialog_UpdateImagesLayout"/>
-								</Flyout>
-							</Button.Flyout>
-						</Button>
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
 						<Button x:Name="RefreshButton" Content="Refresh" Margin="5" Tapped="RefreshButton_Tapped"/>
 						<Button x:Name="DownloadButton" Content="Download" Margin="5" Tapped="DownloadButton_Tapped"/>
 						<ToggleButton x:Name="SelectToggleButton" Content="Select" Checked="SelectToggleButton_Checked" Unchecked="SelectToggleButton_Unchecked" Margin="5"/>
 						<TextBlock x:Name="SelectionCountTextBlock" Text="2/75" VerticalAlignment="Center" Margin="5" FontSize="18" Visibility="Collapsed"/>
 						<Button x:Name="AddFavoritesButton" Content="Favorites" Margin="5" Tapped="AddFavoritesButton_Tapped" Visibility="Collapsed"/>
 					</StackPanel>
-					<Button x:Name="InfoButton" Tapped="InfoButton_Tapped" HorizontalAlignment="Left" Height="40" VerticalAlignment="Center" Background="Transparent" BorderThickness="0">
+					<Button x:Name="InfoButton" Tapped="InfoButton_Tapped" HorizontalAlignment="Left" Height="40" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" Margin="5">
 						<Button.Content>
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE946;" FontSize="20" Margin="2,0,0,-2"/>
-								<TextBlock Text="Info" Margin="10,0,10,0" FontSize="18"/>
+								<TextBlock Text="Info" Margin="10,0,10,0" FontSize="16"/>
 							</StackPanel>
 						</Button.Content>
 					</Button>
-					<SplitView x:Name="MainSplitView" Grid.Row="1" FlowDirection="RightToLeft">
+					<SplitView x:Name="MainSplitView" Grid.Row="1" FlowDirection="RightToLeft" CornerRadius="0,15,15,0">
 						<SplitView.Pane>
-							<Grid>
+							<Grid Padding="5">
 								<ListView x:Name="PostsInfoListView" SelectionMode="Single" ShowsScrollingPlaceholders="True" ItemsSource="{Binding Source={StaticResource ContactsCVS2}}" FlowDirection="LeftToRight" IsItemClickEnabled="True" ItemClick="PostsInfoListView_ItemClick">
 									<ListView.ItemsPanel>
 										<ItemsPanelTemplate>
@@ -153,14 +163,25 @@
 										<FontIcon Glyph="&#xF133;" FontSize="64" Margin="5"/>
 										<TextBlock Text="Nothing here." FontSize="16" Margin="5"/>
 									</StackPanel>
-									<StackPanel x:Name="LoadingPanel" HorizontalAlignment="Center" VerticalAlignment="Center">
+									<StackPanel x:Name="LoadingPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
 										<controls:ProgressRing Width="150" Height="150" Margin="5"/>
-										<TextBlock Text="Loading" FontSize="18" TextAlignment="Center" Margin="5"/>
+										<TextBlock x:Name="LoadingText" Text="Loading" FontSize="18" TextAlignment="Center" Margin="5"/>
 									</StackPanel>
 									<ScrollViewer VerticalScrollMode="Auto">
 										<VariableSizedWrapGrid x:Name="MyWrapGrid" ItemHeight="{x:Bind ItemSize}" ItemWidth="{x:Bind ItemSize}" Orientation="Horizontal"/>
 									</ScrollViewer>
 								</Grid>
+								<StackPanel x:Name="NoTabHint" VerticalAlignment="Center" HorizontalAlignment="Center">
+									<StackPanel.RenderTransform>
+										<TranslateTransform x:Name="NoTabHintTransform" Y="0"/>
+									</StackPanel.RenderTransform>
+									<Button x:Name="NoTabSearchButton" Height="180" Width="180" CornerRadius="15" Tapped="NoTabSearchButton_Tapped">
+										<StackPanel>
+											<FontIcon Glyph="&#xEDE4;" FontSize="64" Margin="10"/>
+											<TextBlock Text="Search for somthing you like" TextWrapping="Wrap" FontSize="16" Margin="10" TextAlignment="Center"/>
+										</StackPanel>
+									</Button>
+								</StackPanel>
 								<Grid Grid.Row="1">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="*"/>

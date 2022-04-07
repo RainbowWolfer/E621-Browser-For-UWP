@@ -10,14 +10,6 @@
 
 	<Grid>
 		<TextBlock x:Name="TitleTextBlock" Text="No Downloads Currently" FontSize="48" HorizontalAlignment="Center" Visibility="Visible" Margin="20"/>
-		<GridView x:Name="MainGridView" SelectionMode="None" IsItemClickEnabled="True" ItemClick="MainGridView_ItemClick">
-			<GridView.ItemContainerStyle>
-				<Style TargetType="GridViewItem">
-					<Setter Property="Margin" Value="20"/>
-					<Setter Property="Height" Value="300"/>
-					<Setter Property="Width" Value="300"/>
-				</Style>
-			</GridView.ItemContainerStyle>
-		</GridView>
+		<GridView x:Name="MainGridView" SelectionMode="None" IsItemClickEnabled="True" ItemClick="MainGridView_ItemClick" Padding="15"/>
 	</Grid>
 </Page>

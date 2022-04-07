@@ -18,7 +18,7 @@
 		</Grid.RowDefinitions>
 		<AutoSuggestBox x:Name="MyInputBox" HorizontalAlignment="Stretch" Margin="5" Grid.Row="0" TextChanged="MyInputBox_TextChanged" PlaceholderText="Input Your Tags Here"/>
 
-		<ListView x:Name="InputList" ItemsSource="{x:Bind input}" Grid.Row="1" Grid.Column="0" SelectionMode="None" IsItemClickEnabled="False">
+		<ListView x:Name="InputList" d:ItemsSource="1 2 3" ItemsSource="{x:Bind input}" Grid.Row="1" Grid.Column="0" SelectionMode="None" IsItemClickEnabled="False">
 			<ListView.ItemTemplate>
 				<DataTemplate x:DataType="x:String">
 					<Grid>
@@ -27,7 +27,9 @@
 							<ColumnDefinition Width="auto"/>
 						</Grid.ColumnDefinitions>
 						<TextBlock Text="{x:Bind ToString()}" FontSize="16" VerticalAlignment="Center"/>
-						<Button x:Name="CloseButton" Tag="{x:Bind ToString()}" Content="&#xE106;" FontSize="12" FontFamily="Segoe MDL2 Assets" Grid.Column="1" Background="Transparent" BorderThickness="0" Height="30" Width="30" Tapped="CloseButton_Tapped" Padding="0"/>
+						<Button x:Name="CloseButton" Tag="{x:Bind ToString()}" FontSize="12" Grid.Column="1" Background="Transparent" BorderThickness="0" Height="30" Width="30" Tapped="CloseButton_Tapped" Padding="0">
+							<FontIcon Glyph="&#xE106;"/>
+						</Button>
 					</Grid>
 				</DataTemplate>
 			</ListView.ItemTemplate>

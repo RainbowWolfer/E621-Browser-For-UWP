@@ -108,7 +108,7 @@ namespace E621Downloader.Models.Download {
 			if(!CheckDownloadAvailable()) {
 				return false;
 			}
-			groupTitle = groupTitle.Replace(":", ";");
+			groupTitle = groupTitle.Replace(":", "-");
 			string filename = $"{post.id}.{post.file.ext}";
 			if(string.IsNullOrEmpty(groupTitle)) {
 				groupTitle = DEFAULTTITLE;

@@ -173,7 +173,7 @@
 									<TextBlock x:Name="LocalStateHyperContentText" d:Text="C:\Users\rainb\AppData\Local\Packages\25737563C6D7A.E1547Browser_jhf51en8pd7sg\LocalState" TextWrapping="Wrap"/>
 								</HyperlinkButton>
 								<TextBlock Text="Font Used (Including Icons)" VerticalAlignment="Center" Grid.Row="9" TextAlignment="Right" Margin="0,0,10,0"/>
-								<TextBlock Text="Segoe UI&#10;Cascadia Mono&#10;Segoe Fluent Icons (Win11)&#10;Segoe MDL2 Assets (Win10)" Grid.Row="9" Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center"/>
+								<TextBlock Text="Segoe UI&#10;Segoe UI Symbol&#10;Cascadia Mono&#10;Segoe Fluent Icons (Win11)&#10;Segoe MDL2 Assets (Win10)" Grid.Row="9" Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center"/>
 							</Grid>
 						</StackPanel>
 					</ScrollViewer>
@@ -196,6 +196,8 @@
 							<TextBlock Text="- Spot page improvements" FontSize="24"/>
 							<TextBlock Text="- Popup dialog shows progress" FontSize="24"/>
 							<TextBlock Text="- UI design improvements" FontSize="24"/>
+							<TextBlock Text="- New Posts Browser Page" FontSize="24"/>
+							<TextBlock Text="- UI Optimized for Windows 11" FontSize="24"/>
 						</StackPanel>
 					</ScrollViewer>
 					<Grid Grid.Row="3" HorizontalAlignment="Center" Margin="10">

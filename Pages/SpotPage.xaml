@@ -27,7 +27,9 @@
 						<ColumnDefinition Width="auto"/>
 						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
-					<Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" VerticalAlignment="Top" Margin="0" Background="Transparent" BorderThickness="0" Width="40" Height="40" FontSize="20" Tapped="HamburgerButton_Tapped"/>
+					<Button x:Name="HamburgerButton" VerticalAlignment="Top" Margin="0" Background="Transparent" BorderThickness="0" Width="40" Height="40" FontSize="20" Tapped="HamburgerButton_Tapped">
+						<FontIcon Glyph="&#xE700;"/>
+					</Button>
 					<TextBlock Grid.Column="1" Text="Filters" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
 					<StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical" Margin="10">
 						<Button x:Name="TagsButton" Content="Requested Tags" FontSize="18" HorizontalAlignment="Stretch" Tapped="TagsButton_Tapped"/>

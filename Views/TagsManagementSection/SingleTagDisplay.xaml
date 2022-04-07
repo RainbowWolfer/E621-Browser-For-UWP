@@ -21,7 +21,9 @@
 						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
 
-					<Button x:Name="DeleteButton" Grid.Column="0" FontFamily="Segoe MDL2 Assets" Content="&#xE106;" Background="Transparent" BorderThickness="0" Height="32" Width="32" Tapped="DeleteButton_Tapped" Padding="0" FontSize="12" Margin="-10,0,0,0"/>
+					<Button x:Name="DeleteButton" Grid.Column="0" Background="Transparent" BorderThickness="0" Height="32" Width="32" Tapped="DeleteButton_Tapped" Padding="0" FontSize="12" Margin="-10,0,0,0">
+						<FontIcon Glyph="&#xE106;"/>
+					</Button>
 					<TextBlock x:Name="TagText" Grid.Column="1" Text="TagGoesHere" VerticalAlignment="Center" FontSize="18" Margin="5,0,0,3" MaxWidth="170"/>
 					<ProgressRing x:Name="LoadingIcon" HorizontalAlignment="Right" Grid.Column="2" IsActive="True" Margin="0,0,-10,0" Visibility="Visible"/>
 					<!--Count : 20k -->

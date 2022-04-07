@@ -54,7 +54,7 @@ namespace E621Downloader {
 		public bool IsFullScreen {
 			get => ApplicationView.GetForCurrentView().IsFullScreenMode;
 			set {
-				FullScreenButton.Content = value ? "\uE73F" : "\uE740";
+				FullScreenIcon.Glyph = value ? "\uE73F" : "\uE740";
 				ApplicationView view = ApplicationView.GetForCurrentView();
 				if(view.IsFullScreenMode) {
 					view.ExitFullScreenMode();
@@ -480,7 +480,7 @@ namespace E621Downloader {
 			await PopupSearch();
 		}
 
-		private async Task PopupSearch() {
+		public async Task PopupSearch() {
 			if(IsInSearchPopup) {
 				return;
 			}

@@ -66,18 +66,22 @@ namespace E621Downloader.Pages.DownloadSection {
 					Tag = title,
 				};
 				stackPanel.Children.Add(new TextBlock() {
-					Text = title
+					Text = title,
+					VerticalAlignment = VerticalAlignment.Center,
 				});
 				var closeButton = new Button() {
 					Background = new SolidColorBrush(Colors.Transparent),
 					BorderThickness = new Thickness(0),
-					FontFamily = new FontFamily("Segoe MDL2 Assets"),
-					Content = "\uE10A",
+					Margin = new Thickness(5, 0, 0, 0),
+					Padding = new Thickness(7),
+					Content = new FontIcon() {
+						Glyph = "\uE10A",
+						FontSize = 14,
+					},
 				};
 				stackPanel.Children.Add(closeButton);
 				found = new NavigationViewItem() {
 					Icon = new FontIcon {
-						FontFamily = new FontFamily("Segoe MDL2 Assets"),
 						Glyph = "\uE9F9",
 					},
 					Content = stackPanel

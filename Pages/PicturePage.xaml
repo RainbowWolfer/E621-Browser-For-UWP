@@ -14,22 +14,11 @@
 	<Page.Resources>
 		<CollectionViewSource x:Name="ContactsCVS" Source="{x:Bind tags}" IsSourceGrouped="True"/>
 		<Style x:Key="TagButton" TargetType="Button">
-			<Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
 			<Setter Property="Background" Value="Transparent"/>
 			<Setter Property="BorderThickness" Value="0"/>
 			<Setter Property="Height" Value="40"/>
 			<Setter Property="Width" Value="40"/>
-		</Style>
-		<Style x:Key="ScoreButton" TargetType="Button">
-			<Setter Property="Background" Value="Transparent"/>
-			<Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-			<Setter Property="BorderThickness" Value="0"/>
-			<Setter Property="Height" Value="30"/>
-			<Setter Property="FontSize" Value="15"/>
-			<Setter Property="HorizontalContentAlignment" Value="Center"/>
-			<!--<Setter Property="Padding" Value="0"/>-->
-			<Setter Property="HorizontalAlignment" Value="Stretch"/>
-			<Setter Property="Margin" Value="3"/>
+			<Setter Property="RelativePanel.AlignVerticalCenterWithPanel" Value="True"/>
 		</Style>
 		<Style x:Key="RectangleSeparator" TargetType="Rectangle">
 			<Setter Property="Width" Value="3"/>
@@ -123,25 +112,9 @@
 					<views:LockableToggleButton.Content>
 						<FontIcon x:Name="UpVoteIcon" Glyph="&#xE96D;" Foreground="LightGreen"/>
 					</views:LockableToggleButton.Content>
-					<views:LockableToggleButton.Resources>
-						<ResourceDictionary>
-							<ResourceDictionary.ThemeDictionaries>
-								<!--<ResourceDictionary x:Key="Dark">
-									<SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="Aquamarine"/>
-									<SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="Aqua"/>
-									<SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="Aqua"/>
-								</ResourceDictionary>
-								<ResourceDictionary x:Key="Light">
-									<SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="Aquamarine"/>
-									<SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="Aqua"/>
-									<SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="Aqua"/>
-								</ResourceDictionary>-->
-							</ResourceDictionary.ThemeDictionaries>
-						</ResourceDictionary>
-					</views:LockableToggleButton.Resources>
 				</views:LockableToggleButton>
 				<TextBlock x:Name="ScoreText" Text="1321" RelativePanel.RightOf="UpVoteButton" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Margin="10,0,10,0" ToolTipService.Placement="Bottom"/>
-				<views:LockableToggleButton x:Name="DownVoteButton" Height="38" Width="38" Padding="0" FontFamily="Segoe MDL2 Assets" RelativePanel.RightOf="ScoreText" Click="DownVoteButton_Click" CornerRadius="4" BorderThickness="0" LockToggle="True">
+				<views:LockableToggleButton x:Name="DownVoteButton" Height="38" Width="38" Padding="0" RelativePanel.RightOf="ScoreText" Click="DownVoteButton_Click" CornerRadius="4" BorderThickness="0" LockToggle="True">
 					<views:LockableToggleButton.Content>
 						<FontIcon x:Name="DownVoteIcon" Glyph="&#xE96E;" Foreground="OrangeRed"/>
 					</views:LockableToggleButton.Content>
@@ -216,11 +189,17 @@
 					</ListView.ItemsPanel>
 					<ListView.ItemTemplate>
 						<DataTemplate x:DataType="local:GroupTag">
-							<RelativePanel Width="225" RightTapped="RelativePanel_RightTapped" Tag="{x:Bind Content}">
-								<Button x:Name="InfoButton" FontFamily="Segoe MDL2 Assets" Content="&#xE946;" RelativePanel.AlignVerticalCenterWithPanel="True" Style="{StaticResource TagButton}" Tapped="InfoButton_Tapped" Tag="{x:Bind Content}"/>
+							<RelativePanel Width="225" Height="45" RightTapped="RelativePanel_RightTapped" Tag="{x:Bind Content}">
+								<Button x:Name="InfoButton" RelativePanel.AlignVerticalCenterWithPanel="True" Style="{StaticResource TagButton}" Tapped="InfoButton_Tapped" Tag="{x:Bind Content}">
+									<FontIcon Glyph="&#xE946;" FontSize="16"/>
+								</Button>
 								<TextBlock x:Name="TagText" Text="{x:Bind Content}" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="2,0,20,0" TextWrapping="Wrap" Width="100" RelativePanel.RightOf="InfoButton" Foreground="{x:Bind Brush}"/>
-								<Button x:Name="BlackListButton" Style="{StaticResource TagButton}" Content="&#xF8AB;" Tag="{x:Bind Content}" RelativePanel.LeftOf="FollowListButton" Tapped="BlackListButton_Tapped" Loaded="BlackListButton_Loaded"/>
-								<Button x:Name="FollowListButton" Style="{StaticResource TagButton}" Content="&#xF8AA;" Tag="{x:Bind Content}" RelativePanel.AlignRightWithPanel="True" Tapped="FollowListButton_Tapped" Loaded="FollowListButton_Loaded"/>
+								<Button x:Name="BlackListButton" Style="{StaticResource TagButton}" Tag="{x:Bind Content}" RelativePanel.LeftOf="FollowListButton" Tapped="BlackListButton_Tapped" Loaded="BlackListButton_Loaded" Padding="2">
+									<FontIcon Glyph="&#xF8AB;" FontSize="16"/>
+								</Button>
+								<Button x:Name="FollowListButton" Style="{StaticResource TagButton}" Tag="{x:Bind Content}" RelativePanel.AlignRightWithPanel="True" Tapped="FollowListButton_Tapped" Loaded="FollowListButton_Loaded" Padding="2" Margin="0,0,5,0">
+									<FontIcon Glyph="&#xF8AA;" FontSize="16"/>
+								</Button>
 							</RelativePanel>
 						</DataTemplate>
 					</ListView.ItemTemplate>
@@ -251,11 +230,6 @@
 									<StackPanel Grid.Row="1" Padding="20">
 										<TextBlock x:Name="SourcesText" Text="Source" FontSize="24"/>
 										<ListView x:Name="SourcesView" SelectionMode="None" IsItemClickEnabled="False" MaxHeight="200">
-											<ListView.ItemContainerStyle>
-												<Style TargetType="ListViewItem">
-													<Setter Property="HorizontalContentAlignment" Value="Stretch" />
-												</Style>
-											</ListView.ItemContainerStyle>
 											<d:ListViewItem>
 												<HyperlinkButton Content="Microsoft home page" NavigateUri="http://www.microsoft.com" />
 											</d:ListViewItem>
@@ -274,11 +248,11 @@
 									</StackPanel>
 
 									<ListView x:Name="CommentsListView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="False" Padding="5">
-										<ListView.ItemContainerStyle>
-											<Style TargetType="ListViewItem">
-												<Setter Property="HorizontalContentAlignment" Value="Stretch" />
-											</Style>
-										</ListView.ItemContainerStyle>
+										<ListView.ItemContainerTransitions>
+											<TransitionCollection>
+												<EntranceThemeTransition IsStaggeringEnabled="True" />
+											</TransitionCollection>
+										</ListView.ItemContainerTransitions>
 									</ListView>
 
 									<TextBlock Visibility="Collapsed" x:Name="CommentsHint" Text="No Comments Yet" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -298,11 +272,6 @@
 												<Grid>
 													<TextBlock x:Name="PoolsHintText" Text="Not Found" HorizontalAlignment="Center" Visibility="Collapsed"/>
 													<ListView x:Name="PoolsListView" SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind PostRef.pools}" ItemClick="PoolsListView_ItemClick">
-														<ListView.ItemContainerStyle>
-															<Style TargetType="ListViewItem">
-																<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-															</Style>
-														</ListView.ItemContainerStyle>
 														<ListView.ItemTemplate>
 															<DataTemplate x:DataType="x:String">
 																<Grid ToolTipService.ToolTip="Description: ???&#x0a;Date: 2002-01-21" Tag="{x:Bind ToString()}">
@@ -372,15 +341,17 @@
 							</Image>
 						</ScrollViewer>
 						<ProgressRing x:Name="MyProgressRing" MaxHeight="300" MaxWidth="300" Margin="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>
-						<Button x:Name="LeftButton" FontFamily="Segoe MDL2 Assets" Content="&#xE26C;" Height="100" Opacity="0.2" PointerEntered="LeftButton_PointerEntered" PointerExited="LeftButton_PointerExited" Tapped="LeftButton_Tapped">
+						<Button x:Name="LeftButton" Height="100" Opacity="0.2" PointerEntered="LeftButton_PointerEntered" PointerExited="LeftButton_PointerExited" Tapped="LeftButton_Tapped">
 							<Button.Background>
 								<SolidColorBrush Color="Gray" Opacity="0.4"/>
 							</Button.Background>
+							<FontIcon Glyph="&#xE26C;"/>
 						</Button>
-						<Button x:Name="RightButton" FontFamily="Segoe MDL2 Assets" Content="&#xE26B;" Height="100" Opacity="0.2" HorizontalAlignment="Right" PointerEntered="RightButton_PointerEntered" PointerExited="RightButton_PointerExited" Tapped="RightButton_Tapped">
+						<Button x:Name="RightButton" Height="100" Opacity="0.2" HorizontalAlignment="Right" PointerEntered="RightButton_PointerEntered" PointerExited="RightButton_PointerExited" Tapped="RightButton_Tapped">
 							<Button.Background>
 								<SolidColorBrush Color="Gray" Opacity="0.4"/>
 							</Button.Background>
+							<FontIcon Glyph="&#xE26B;"/>
 						</Button>
 					</Grid>
 				</SplitView.Content>

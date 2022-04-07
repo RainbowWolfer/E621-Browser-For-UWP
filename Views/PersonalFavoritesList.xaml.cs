@@ -39,7 +39,7 @@ namespace E621Downloader.Views {
 				AddTextAnimation.Children[0].SetValue(DoubleAnimation.FromProperty, AddGrid.Height);
 				AddTextAnimation.Children[0].SetValue(DoubleAnimation.ToProperty, value ? 45 : 0);
 				AddTextAnimation.Begin();
-				AddButton.Content = value ? "\uE09C" : "\uE109";
+				AddButtonIcon.Glyph = value ? "\uE09C" : "\uE109";
 			}
 		}
 

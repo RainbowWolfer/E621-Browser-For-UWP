@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+	d:RequestedTheme="Dark"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -15,7 +16,9 @@
 		<TextBlock Text="API Key" Margin="0,10,0,5" FontSize="20"/>
 		<StackPanel Orientation="Horizontal">
 			<TextBox x:Name="APIBox" Width="365" Height="35" CornerRadius="4,0,0,4" TextChanged="APIBox_TextChanged" Padding="10,6,6,6"/>
-			<Button x:Name="PasteButton" Content="&#xE16D;" FontFamily="Segoe MDL2 Assets" Width="35" Height="35" CornerRadius="0,4,4,0" ToolTipService.ToolTip="Paste" Padding="0" Tapped="PasteButton_Tapped"/>
+			<Button x:Name="PasteButton" Width="35" Height="35" CornerRadius="0,4,4,0" ToolTipService.ToolTip="Paste" Padding="0" Tapped="PasteButton_Tapped">
+				<FontIcon Glyph="&#xE16D;"/>
+			</Button>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
 			<Button x:Name="SubmitButton" Margin="20" FontSize="24" Height="45" Tapped="SubmitButton_Tapped">

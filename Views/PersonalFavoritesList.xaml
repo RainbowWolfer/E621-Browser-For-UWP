@@ -53,9 +53,15 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="auto"/>
 			</Grid.ColumnDefinitions>
-			<Button x:Name="AcceptButton" Content="&#xE0E7;" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Stretch" Margin="5" Tapped="AcceptButton_Tapped" MinWidth="90"/>
-			<Button x:Name="AddButton" Content="&#xE109;" FontFamily="Segoe MDL2 Assets" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5" Tapped="AddButton_Tapped" MinWidth="90"/>
-			<Button x:Name="BackButton" Content="&#xE72B;" FontFamily="Segoe MDL2 Assets" Grid.Column="2" HorizontalAlignment="Stretch" Margin="5" Tapped="BackButton_Tapped" MinWidth="90" Visibility="{x:Bind BackButtonVisiblity}" IsEnabled="{x:Bind ShowBackButton}"/>
+			<Button x:Name="AcceptButton" HorizontalAlignment="Stretch" Margin="5" Tapped="AcceptButton_Tapped" MinWidth="90" Height="33">
+				<FontIcon Glyph="&#xE0E7;"/>
+			</Button>
+			<Button x:Name="AddButton" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5" Tapped="AddButton_Tapped" MinWidth="90" Height="33">
+				<FontIcon x:Name="AddButtonIcon" Glyph="&#xE109;"/>
+			</Button>
+			<Button x:Name="BackButton" Grid.Column="2" HorizontalAlignment="Stretch" Margin="5" Tapped="BackButton_Tapped" MinWidth="90" Visibility="{x:Bind BackButtonVisiblity}" IsEnabled="{x:Bind ShowBackButton}" Height="33">
+				<FontIcon Glyph="&#xE72B;" FontSize="16"/>
+			</Button>
 		</Grid>
 		<Grid x:Name="AddGrid" Grid.Row="4" Height="0">
 			<Grid.ColumnDefinitions>
@@ -63,7 +69,9 @@
 				<ColumnDefinition Width="auto"/>
 			</Grid.ColumnDefinitions>
 			<TextBox x:Name="NewTextBox" PlaceholderText="New List Name" CornerRadius="4,0,0,4" Padding="10,7,6,6" PreviewKeyDown="NewTextBox_PreviewKeyDown" Margin="5,5,0,5"/>
-			<Button x:Name="NewButton" Content="&#xE109;" FontFamily="Segoe MDL2 Assets" Padding="0" Grid.Column="1" Height="35" Width="35" CornerRadius="0,4,4,0" Tapped="NewButton_Tapped" Margin="0,5,5,5"/>
+			<Button x:Name="NewButton" Padding="0" Grid.Column="1" Height="35" Width="35" CornerRadius="0,4,4,0" Tapped="NewButton_Tapped" Margin="0,5,5,5">
+				<FontIcon Glyph="&#xE109;"/>
+			</Button>
 		</Grid>
 	</Grid>
 </UserControl>

@@ -22,7 +22,9 @@
 						<RowDefinition Height="*"/>
 						<RowDefinition Height="auto"/>
 					</Grid.RowDefinitions>
-					<Button x:Name="HamburgerButton" Height="40" Width="40" Content="&#xE700;" FontFamily="Segoe MDL2 Assets" Tapped="HamburgerButton_Tapped" Background="Transparent" BorderThickness="0" FontSize="18" Margin="5"/>
+					<Button x:Name="HamburgerButton" Height="40" Width="40" Tapped="HamburgerButton_Tapped" Background="Transparent" BorderThickness="0" FontSize="18" Margin="5">
+						<FontIcon Glyph="&#xE700;"/>
+					</Button>
 					<ToggleSwitch x:Name="SplitViewDisplayModeSwitch" HorizontalAlignment="Right" FlowDirection="RightToLeft" Margin="10,0,15,0" IsOn="False" OnContent="Overlay" OffContent="Inline" Toggled="SplitViewDisplayModeSwitch_Toggled"/>
 					<ToggleButton x:Name="FollowingButton" Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Height="40" IsChecked="True" FontSize="18" Tapped="FollowingButton_Tapped" Background="Transparent" BorderThickness="0" Margin="5">
 						<StackPanel Orientation="Horizontal">
@@ -153,11 +155,13 @@
 					</Grid>
 					<GridView x:Name="MainGridView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" Padding="10"/>
 					<StackPanel x:Name="Paginator" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-						<Button x:Name="LeftButton" Content="&#xE09A;" FontFamily="Segoe MDL2 Assets" Height="30" Width="50" Padding="0" Tapped="LeftButton_Tapped"/>
+						<Button x:Name="LeftButton" Height="30" Width="50" Padding="0" Tapped="LeftButton_Tapped">
+							<FontIcon Glyph="&#xE09A;"/>
+						</Button>
 						<TextBlock x:Name="PageText" Text="1" VerticalAlignment="Center" Margin="20,0,20,0" FontSize="20"/>
-						<Button x:Name="RightButton" Content="&#xE09B;" FontFamily="Segoe MDL2 Assets" Height="30" Width="50" Tapped="RightButton_Tapped"/>
-						<!--<controls:NumberBox x:Name="PageBox" Text="1" Minimum="1" Maximum="100" Width="120" Margin="10,0,0,0" CornerRadius="4,0,0,4" SpinButtonPlacementMode="Compact"/>-->
-						<!--<Button x:Name="ForwardButton" Content="&#xE0AE;" FontFamily="Segoe MDL2 Assets" Height="30" Width="30" CornerRadius="0,4,4,0" Padding="0" Tapped="ForwardButton_Tapped"/>-->
+						<Button x:Name="RightButton" Height="30" Width="50" Tapped="RightButton_Tapped">
+							<FontIcon Glyph="&#xE09B;"/>
+						</Button>
 					</StackPanel>
 				</Grid>
 			</SplitView.Content>
