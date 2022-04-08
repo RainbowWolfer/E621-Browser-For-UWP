@@ -5,12 +5,13 @@
     xmlns:local="using:E621Downloader.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
 	<Grid>
-		<ProgressRing x:Name="LoadingRing" IsActive="True" Width="100" Height="100" Margin="20"/>
+		<controls:ProgressRing x:Name="LoadingRing" IsActive="True" Width="100" Height="100" Margin="20"/>
 		<ScrollViewer>
 			<TextBlock x:Name="ContentText" TextWrapping="Wrap" FontSize="18"/>
 		</ScrollViewer>

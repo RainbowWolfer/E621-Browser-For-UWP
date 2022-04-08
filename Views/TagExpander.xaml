@@ -5,6 +5,7 @@
     xmlns:local="using:E621Downloader.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
@@ -20,7 +21,7 @@
 			</Button.Content>
 		</Button>
 		<StackPanel x:Name="ExpandPanel" Orientation="Vertical" Margin="10,4,10,10">
-			<ProgressBar x:Name="LoadingBar" IsIndeterminate="True" ShowPaused="False" ShowError="False"/>
+			<controls:ProgressBar x:Name="LoadingBar" IsIndeterminate="True" ShowPaused="False" ShowError="False"/>
 			<TextBlock x:Name="ConentText" Text="" TextWrapping="WrapWholeWords"/>
 		</StackPanel>
 	</StackPanel>
