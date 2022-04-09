@@ -4,6 +4,7 @@ using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Views;
 using E621Downloader.Views.ListingManager;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -300,6 +301,18 @@ namespace E621Downloader.Pages {
 				DesiredRemainingView = ViewSizePreference.UseMore
 			});
 		}
+
+		//private void RandomTagMaxCountText_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args) {
+		//	if(internalChanges) {
+		//		Debug.WriteLine("!");
+		//		return;
+		//	}
+		//	if(double.IsNaN(args.NewValue)) {
+		//		internalChanges = true;
+		//		RandomTagMaxCountText.Value = args.OldValue;
+		//		internalChanges = false;
+		//	}
+		//}
 
 		//private void LightButton_Checked(object sender, RoutedEventArgs e) {
 		//	var box = sender as RadioButton;

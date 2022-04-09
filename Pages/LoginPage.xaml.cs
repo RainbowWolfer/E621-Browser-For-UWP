@@ -68,7 +68,7 @@ namespace E621Downloader.Pages {
 				MainPage.NavigateTo(PageTag.UserProfile);
 				MainPage.Instance.ChangeUser(username);
 			} else {
-				await MainPage.CreatePopupDialog("Sign In Failed", "Please Check that your username and your api_key copied from the website is correct");
+				await MainPage.CreatePopupDialog("Sign In Failed", "Please Check that your username and your api_key copied from the website are correct");
 			}
 		}
 

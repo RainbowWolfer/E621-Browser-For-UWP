@@ -233,6 +233,9 @@ namespace E621Downloader.Pages.LibrarySection {
 		}
 
 		public static IEnumerable<(MetaFile meta, BitmapImage bitmap, StorageFile file)> OrderImages(IEnumerable<(MetaFile meta, BitmapImage bitmap, StorageFile file)> images, OrderType type, OrderEnum order) {
+			if(images == null) {
+				return images;
+			}
 			Func<(MetaFile meta, BitmapImage bitmap, StorageFile file), object> keySelector;
 			switch(type) {
 				case OrderType.Name:

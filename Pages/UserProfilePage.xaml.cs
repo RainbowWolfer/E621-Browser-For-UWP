@@ -66,6 +66,9 @@ namespace E621Downloader.Pages {
 				FieldInfo[] array = user.GetType().GetFields();
 				for(int i = 0; i < array.Length; i++) {
 					FieldInfo field = array[i];
+					if(field.Name == "blacklisted_tags") {
+						continue;
+					}
 					string title = field.Name.Replace("_", " ").ToCamelCase();
 					string content = field.GetValue(E621User.Current).ToString();
 					targetPanel.Children.Add(new UserInfoLine(title, content));

@@ -76,7 +76,7 @@
 				<Button x:Name="PasteImportButton" HorizontalAlignment="Stretch" Margin="5" Click="PasteImportButton_Click" ToolTipService.Placement="Bottom">
 					<StackPanel Orientation="Horizontal">
 						<TextBlock Text="Paste as New List" VerticalAlignment="Center" FontSize="16" Margin="0,0,10,0"/>
-						<FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE16D;" FontSize="20" VerticalAlignment="Center" Margin="0,5,0,0"/>
+						<FontIcon Glyph="&#xE16D;" FontSize="20" VerticalAlignment="Center" Margin="0,5,0,0"/>
 					</StackPanel>
 				</Button>
 				<views:AddButtonInput x:Name="AddButtonInput" PlaceholderText="New List Name"/>

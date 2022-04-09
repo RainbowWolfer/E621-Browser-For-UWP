@@ -49,7 +49,7 @@
 					<FontIcon x:Name="UpVoteIcon" Glyph="&#xE96D;" Foreground="{StaticResource ButtonForegroundThemeBrush}"/>
 				</Button.Content>
 			</Button>
-			<TextBlock Text="{x:Bind Comment.score}" Grid.Column="1" FontSize="16" HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center"/>
+			<TextBlock Text="{x:Bind Score, Mode=OneWay}" Grid.Column="1" FontSize="16" HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center"/>
 			<Button x:Name="DownVoteButton" Tapped="DownVoteButton_Tapped" Style="{StaticResource ScoreButton}" Grid.Column="2" Padding="0" CornerRadius="5">
 				<Button.Content>
 					<FontIcon x:Name="DownVoteIcon" Glyph="&#xE96E;" Foreground="{StaticResource ButtonForegroundThemeBrush}"/>

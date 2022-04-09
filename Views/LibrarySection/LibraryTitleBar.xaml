@@ -14,7 +14,7 @@
 
 	<RelativePanel VerticalAlignment="Top" Height="45">
 		<views:LockableToggleButton x:Name="ExpanderButton" Height="35" Width="35" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,0,10,0" Padding="2" CornerRadius="4" Click="ExpanderButton_Click" LockToggle="True">
-			<FontIcon x:Name="ExpanderIcon" FontFamily="Segoe Fluent Icons" Glyph="&#xE0E4;"/>
+			<FontIcon x:Name="ExpanderIcon" Glyph="&#xE0E4;"/>
 		</views:LockableToggleButton>
 		<TextBlock x:Name="TitleTextBlock" Text="Tab Name Here" FontSize="24" Margin="10,0,10,0" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.RightOf="ExpanderButton" Height="35"/>
 		<Button x:Name="OpenExplorerButton" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.RightOf="TitleTextBlock" Height="35" Click="OpenExplorerButton_Click">
@@ -34,7 +34,7 @@
 		</StackPanel>
 		<Button x:Name="AsecDesButton" Height="32" RelativePanel.LeftOf="OrderComboBox" RelativePanel.AlignVerticalCenterWithPanel="True" Padding="2" Margin="10,0,10,0" Click="AsecDesButton_Click">
 			<StackPanel Orientation="Horizontal">
-				<FontIcon x:Name="AsecDesIcon" FontFamily="Segoe Fluent Icons" Glyph="&#xE64F;" FontSize="14" Margin="10,0,10,0"/>
+				<FontIcon x:Name="AsecDesIcon" Glyph="&#xE64F;" FontSize="14" Margin="10,0,10,0"/>
 			</StackPanel>
 		</Button>
 		<ComboBox x:Name="OrderComboBox" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.LeftOf="MySearchBox" SelectedIndex="0" SelectionChanged="OrderComboBox_SelectionChanged">

@@ -99,6 +99,7 @@ namespace E621Downloader.Pages {
 			MyMediaPlayer.AutoPlay = EnableAutoPlay;
 			bool showNoPostGrid = false;
 			this.imageDataPackage = null;
+			CancelCTS();
 			if(p == null && PostRef == null && PostsBrowserPage.HasLoaded()) {
 				List<Post> posts = PostsBrowserPage.GetCurrentPosts();
 				App.PostsList.UpdatePostsList(posts);
@@ -119,14 +120,6 @@ namespace E621Downloader.Pages {
 			} else if(p is MixPost mix) {
 				switch(mix.Type) {
 					case PathType.PostID:
-						if(cts != null) {
-							try {
-								cts.Cancel();
-								cts.Dispose();
-							} finally {
-								cts = null;
-							}
-						}
 						if(mix.PostRef == this.PostRef) {
 							return;
 						}
@@ -215,6 +208,17 @@ namespace E621Downloader.Pages {
 			if(hasExecutedPause && MyMediaPlayer.Source != null && MyMediaPlayer.MediaPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Paused) {
 				MyMediaPlayer.MediaPlayer.Play();
 				hasExecutedPause = false;
+			}
+		}
+
+		private void CancelCTS() {
+			if(cts != null) {
+				try {
+					cts.Cancel();
+					cts.Dispose();
+				} finally {
+					cts = null;
+				}
 			}
 		}
 
@@ -482,9 +486,7 @@ namespace E621Downloader.Pages {
 			if(this.PostRef == null) {
 				return;
 			}
-			foreach(KeyValuePair<string, VoteType> item in Voted) {
-				Debug.WriteLine($"pair : {item.Key} - {item.Value}");
-			}
+
 			if(Voted.ContainsKey(PostRef.id)) {
 				VoteType type = Voted[PostRef.id];
 				UpVoteButton.IsChecked = type == VoteType.Up;
@@ -502,6 +504,7 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			FavoriteButton.IsEnabled = E621User.Current != null;
+			FavoriteListButton.IsEnabled = true;
 			bool enable = this.PostRef.is_favorited;
 			FavoriteButton.IsChecked = enable;
 			if(enable) {
@@ -902,26 +905,40 @@ namespace E621Downloader.Pages {
 			FavoriteText.Text = "Pending";
 			FavoriteIcon.Glyph = "\uE10C";
 			if(FavoriteButton.IsChecked.Value) {
-				HttpResult<string> result = await Favorites.PostAsync(this.PostRef.id);
+				if(cts == null) {
+					cts = new CancellationTokenSource();
+				}
+				HttpResult<string> result = await Favorites.PostAsync(this.PostRef.id, cts.Token);
 				if(result.Result == HttpResultType.Success) {
 					FavoriteText.Text = "Favorited";
 					FavoriteIcon.Glyph = "\uEB52";
+					this.PostRef.is_favorited = true;
+				} else if(result.Result == HttpResultType.Canceled) {
+					return;
 				} else {
 					FavoriteText.Text = "Favorite";
 					FavoriteIcon.Glyph = "\uEB51";
 					MainPage.CreateTip(this, result.StatusCode.ToString(), result.Helper, Symbol.Important, "OK");
 					FavoriteButton.IsChecked = false;
+					this.PostRef.is_favorited = false;
 				}
 			} else {
-				HttpResult<string> result = await Favorites.DeleteAsync(this.PostRef.id);
+				if(cts == null) {
+					cts = new CancellationTokenSource();
+				}
+				HttpResult<string> result = await Favorites.DeleteAsync(this.PostRef.id, cts.Token);
 				if(result.Result == HttpResultType.Success) {
 					FavoriteText.Text = "Favorite";
 					FavoriteIcon.Glyph = "\uEB51";
+					this.PostRef.is_favorited = false;
+				} else if(result.Result == HttpResultType.Canceled) {
+					return;
 				} else {
 					FavoriteText.Text = "Favorited";
 					FavoriteIcon.Glyph = "\uEB52";
 					MainPage.CreateTip(this, result.StatusCode.ToString(), result.Helper, Symbol.Important, "OK");
 					FavoriteButton.IsChecked = true;
+					this.PostRef.is_favorited = true;
 				}
 			}
 			FavoriteButton.IsEnabled = true;
@@ -1023,7 +1040,13 @@ namespace E621Downloader.Pages {
 		private async void UpVoteButton_Click(object sender, RoutedEventArgs e) {
 			UpVoteIcon.Glyph = "\uE10C";
 			UpVoteButton.IsEnabled = false;
-			await SubmitVote(true);
+			if(cts == null) {
+				cts = new CancellationTokenSource();
+			}
+			if(!await SubmitVote(true, cts.Token)) {
+				UpVoteIcon.Glyph = "\uE96D";
+				return;
+			}
 			UpVoteButton.IsEnabled = true;
 			UpVoteIcon.Glyph = "\uE96D";
 			UpVoteButton.IsChecked = !UpVoteButton.IsChecked;
@@ -1043,7 +1066,13 @@ namespace E621Downloader.Pages {
 		private async void DownVoteButton_Click(object sender, RoutedEventArgs e) {
 			DownVoteIcon.Glyph = "\uE10C";
 			DownVoteButton.IsEnabled = false;
-			await SubmitVote(false);
+			if(cts == null) {
+				cts = new CancellationTokenSource();
+			}
+			if(!await SubmitVote(false, cts.Token)) {
+				DownVoteIcon.Glyph = "\uE96E";
+				return;
+			}
 			DownVoteButton.IsEnabled = true;
 			DownVoteIcon.Glyph = "\uE96E";
 			DownVoteButton.IsChecked = !DownVoteButton.IsChecked;
@@ -1060,13 +1089,18 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		private async Task SubmitVote(bool up) {
-			DataResult<E621Vote> result = await E621Vote.VotePost(PostRef.id, up ? 1 : -1, true);
+		private async Task<bool> SubmitVote(bool up, CancellationToken token) {
+			DataResult<E621Vote> result = await E621Vote.VotePost(PostRef.id, up ? 1 : -1, true, token);
 			if(result.ResultType == HttpResultType.Success) {
 				PostRef.score.total = result.Data.score;
 				PostRef.score.up = result.Data.up;
 				PostRef.score.down = result.Data.down;
 				UpdateScore();
+			}
+			if(result.ResultType == HttpResultType.Canceled) {
+				return false;
+			} else {
+				return true;
 			}
 		}
 

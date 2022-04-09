@@ -111,7 +111,6 @@ namespace E621Downloader.Views {
 					Margin = new Thickness(0, 0, 0, 0),
 				};
 				var icon = new FontIcon() {
-					FontFamily = new FontFamily("Segoe Fluent Icons"),
 					Glyph = "\uEBC3",
 					Margin = new Thickness(10, 0, 0, 0)
 				};

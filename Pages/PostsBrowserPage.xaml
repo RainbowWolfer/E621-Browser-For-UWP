@@ -58,7 +58,7 @@
 			</controls:NavigationView.MenuItems>
 			<controls:NavigationView.PaneFooter>
 				<Grid Margin="5,5,5,0">
-					<Button x:Name="ViewButton" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Background="Transparent" BorderBrush="Transparent" Padding="8,5,8,6">
+					<Button x:Name="ViewButton" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Background="Transparent" BorderBrush="Transparent" Padding="8,5,8,6" ToolTipService.ToolTip="View">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="auto"/>

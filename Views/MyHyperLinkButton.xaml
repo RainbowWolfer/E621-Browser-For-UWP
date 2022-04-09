@@ -6,11 +6,21 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400"
+    d:DesignHeight="40"
+    d:DesignWidth="300"
     d:RequestedTheme="Dark">
 
-	<Button HorizontalAlignment="Stretch" Background="Transparent" BorderThickness="0" HorizontalContentAlignment="Left" Tapped="Button_Tapped" RightTapped="Button_RightTapped" IsRightTapEnabled="True">
-		<TextBlock x:Name="URLText" Text="www.rainbowwolfer.com" Foreground="ForestGreen" TextDecorations="Underline"/>
+	<Button HorizontalAlignment="Stretch" Background="Transparent" BorderThickness="0" HorizontalContentAlignment="Left" Tapped="Button_Tapped">
+		<StackPanel Orientation="Horizontal">
+			<Border CornerRadius="3" Margin="0,2,0,0">
+				<Image x:Name="IconImage" d:Source="/Icons/Twitter-icon.png" Height="20" VerticalAlignment="Center"/>
+			</Border>
+			<TextBlock x:Name="URLText" Text="rainbowwolfer.github.io" Foreground="ForestGreen" TextDecorations="Underline" Margin="10,0,0,0" VerticalAlignment="Center"/>
+		</StackPanel>
+		<Button.ContextFlyout>
+			<MenuFlyout>
+				<MenuFlyoutItem x:Name="CopyFlyoutItem" Icon="Copy" Text="Copy URL" Click="CopyFlyoutItem_Click"/>
+			</MenuFlyout>
+		</Button.ContextFlyout>
 	</Button>
 </UserControl>
