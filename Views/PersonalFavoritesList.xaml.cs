@@ -153,6 +153,7 @@ namespace E621Downloader.Views {
 		}
 
 		private void NewTextBox_PreviewKeyDown(object sender, KeyRoutedEventArgs e) {
+			MainPage.Instance.DelayInputKeyListener();
 			if(e.Key == VirtualKey.Enter) {
 				if(string.IsNullOrWhiteSpace(NewTextBox.Text)) {
 					return;

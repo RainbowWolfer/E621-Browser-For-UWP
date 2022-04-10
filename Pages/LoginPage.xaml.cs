@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -33,14 +34,6 @@ namespace E621Downloader.Pages {
 			this.InitializeComponent();
 			origin_brush_username = UsernameBox.BorderBrush;
 			origin_brush_apiKey = APIBox.BorderBrush;
-		}
-
-		private async void HelpButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			await new ContentDialog() {
-				Title = "Help",
-				Content = new LoginHelpSection(),
-				PrimaryButtonText = "Back",
-			}.ShowAsync();
 		}
 
 		private async void SubmitButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -85,6 +78,32 @@ namespace E621Downloader.Pages {
 
 		private void APIBox_TextChanged(object sender, TextChangedEventArgs e) {
 			APIBox.BorderBrush = origin_brush_apiKey;
+		}
+
+		private async void HelpItem_Click(object sender, RoutedEventArgs e) {
+			await new ContentDialog() {
+				Title = "Help",
+				Content = new LoginHelpSection(),
+				PrimaryButtonText = "Back",
+			}.ShowAsync();
+		}
+
+		private async void SignUpItem_Click(object sender, RoutedEventArgs e) {
+			if(!await Launcher.LaunchUriAsync(new Uri($"https://{Data.GetHost()}/users/new"))) {
+				await MainPage.CreatePopupDialog("Error", "Could not Open Default Browser");
+			}
+		}
+
+		private async void ResetPasswordItem_Click(object sender, RoutedEventArgs e) {
+			if(!await Launcher.LaunchUriAsync(new Uri($"https://{Data.GetHost()}/maintenance/user/password_reset/new"))) {
+				await MainPage.CreatePopupDialog("Error", "Could not Open Default Browser");
+			}
+		}
+
+		private async void LoginReminderItem_Click(object sender, RoutedEventArgs e) {
+			if(!await Launcher.LaunchUriAsync(new Uri($"https://{Data.GetHost()}/maintenance/user/login_reminder/new"))) {
+				await MainPage.CreatePopupDialog("Error", "Could not Open Default Browser");
+			}
 		}
 	}
 }

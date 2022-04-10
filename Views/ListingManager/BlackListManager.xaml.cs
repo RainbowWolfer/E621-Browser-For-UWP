@@ -532,7 +532,7 @@ namespace E621Downloader.Views.ListingManager {
 			TagInfoTeachingTip.Target = item;
 			TagInfoTeachingTip.Title = tag.Tag;
 			TagInfoTeachingTip.IsOpen = true;
-			string content = null;
+			string content;
 			if(tagsInfo.ContainsKey(tag.Tag)) {
 				content = tagsInfo[tag.Tag];
 			} else {

@@ -5,6 +5,7 @@
     xmlns:local="using:E621Downloader.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
 	d:RequestedTheme="Dark"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -27,11 +28,24 @@
 					<FontIcon Glyph="&#xE13D;" Margin="10,0,0,0"/>
 				</StackPanel>
 			</Button>
-			<Button x:Name="HelpButton" Margin="20" FontSize="24" Height="45" Width="45" ToolTipService.ToolTip="Help" Tapped="HelpButton_Tapped">
-				<StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-					<FontIcon Glyph="&#xE11B;"/>
-				</StackPanel>
-			</Button>
+			<controls:DropDownButton Content="More" FontSize="18" Height="45" Padding="15,0,15,0">
+				<controls:DropDownButton.Flyout>
+					<MenuFlyout Placement="BottomEdgeAlignedLeft">
+						<MenuFlyoutItem x:Name="HelpItem" Icon="Help" Text="Help" Click="HelpItem_Click"/>
+						<MenuFlyoutItem x:Name="SignUpItem" Icon="Edit" Text="Sign Up" Click="SignUpItem_Click"/>
+						<MenuFlyoutItem x:Name="ResetPasswordItem" Text="Reset Password" Click="ResetPasswordItem_Click">
+							<MenuFlyoutItem.Icon>
+								<FontIcon Glyph="&#xE248;"/>
+							</MenuFlyoutItem.Icon>
+						</MenuFlyoutItem>
+						<MenuFlyoutItem x:Name="LoginReminderItem" Text="Login Reminder" Click="LoginReminderItem_Click">
+							<MenuFlyoutItem.Icon>
+								<FontIcon Glyph="&#xEB50;"/>
+							</MenuFlyoutItem.Icon>
+						</MenuFlyoutItem>
+					</MenuFlyout>
+				</controls:DropDownButton.Flyout>
+			</controls:DropDownButton>
 		</StackPanel>
 	</StackPanel>
 </Page>
