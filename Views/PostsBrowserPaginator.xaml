@@ -44,7 +44,7 @@
 				<ColumnDefinition Width="auto"/>
 			</Grid.ColumnDefinitions>
 			<controls:ProgressBar x:Name="LoadingBar" IsIndeterminate="True" Margin="5"/>
-			<Button x:Name="RefreshButton" Grid.Column="1" Margin="5" Opacity="0" Width="0" d:Opacity="1" d:Width="44">
+			<Button x:Name="RefreshButton" Grid.Column="1" Margin="5" Opacity="0" Width="0" d:Opacity="1" d:Width="44" Tapped="RefreshButton_Tapped">
 				<FontIcon Glyph="&#xE72C;"/>
 			</Button>
 		</Grid>

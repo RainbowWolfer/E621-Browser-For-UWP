@@ -163,7 +163,7 @@
 								<TextBlock Text="Develop By" VerticalAlignment="Center" FontSize="16" TextAlignment="Right" Margin="0,0,10,0"/>
 								<HyperlinkButton Content="RainbowWolfer" Grid.Column="1" FontSize="16" NavigateUri="https://rainbowwolfer.github.io/"/>
 								<TextBlock Text="Service From" Grid.Row="1" FontSize="16" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0"/>
-								<HyperlinkButton x:Name="ServiceHyperLinkButton" Content="E1547" Grid.Row="1" Grid.Column="1" FontSize="16" Tapped="OfficialSiteButton_Tapped"/>
+								<HyperlinkButton x:Name="ServiceHyperLinkButton" Content="E621" Grid.Row="1" Grid.Column="1" FontSize="16" Tapped="OfficialSiteButton_Tapped"/>
 								<TextBlock Text="Version" VerticalAlignment="Center" FontSize="16" Grid.Row="2" TextAlignment="Right" Margin="0,0,10,0"/>
 								<TextBlock d:Text="1.0.0.0" Text="{x:Bind Version}" VerticalAlignment="Center" FontSize="16" Grid.Row="2" Grid.Column="1" Margin="10,0,0,0"/>
 

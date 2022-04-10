@@ -6,7 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:librarysection="using:E621Downloader.Pages.LibrarySection" xmlns:views="using:E621Downloader.Views"
+	xmlns:librarysection="using:E621Downloader.Pages.LibrarySection" 
+	xmlns:views="using:E621Downloader.Views"
 	mc:Ignorable="d"
 	d:RequestedTheme="Dark"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">

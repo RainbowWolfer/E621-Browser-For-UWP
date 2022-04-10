@@ -20,6 +20,9 @@ namespace E621Downloader.Views.LibrarySection {
 		public LibraryFolderDetailTooltip(StorageFolder folder) {
 			this.InitializeComponent();
 			this.folder = folder;
+			FolderNameText.Text = folder.Name;	
+			var date = folder.DateCreated;
+			CreatedDateText.Text = $"{date.Year}-{date.Month}-{date.Day} {date.Hour}:{date.Minute}:{date.Second}";
 		}
 	}
 }

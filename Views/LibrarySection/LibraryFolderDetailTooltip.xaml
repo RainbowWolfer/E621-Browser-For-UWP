@@ -20,9 +20,8 @@
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
-		<TextBlock Text="Folder Name Here" TextAlignment="Center" Grid.ColumnSpan="3"/>
+		<TextBlock x:Name="FolderNameText" d:Text="Folder Name Here" TextAlignment="Center" Grid.ColumnSpan="3"/>
 		<TextBlock Text="Created Date: " Grid.Row="1" TextAlignment="Right"/>
-		<TextBlock Text="0000-00-00 00:00:00" Grid.Row="1" Grid.Column="2"/>
-		
+		<TextBlock x:Name="CreatedDateText" d:Text="0000-00-00 00:00:00" Grid.Row="1" Grid.Column="2"/>
 	</Grid>
 </UserControl>

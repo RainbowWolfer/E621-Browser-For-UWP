@@ -34,11 +34,7 @@
 			</Grid>
 			<controls:ProgressBar x:Name="LoadingBar" IsIndeterminate="False" Grid.Row="1" Grid.ColumnSpan="3" Visibility="Collapsed" Margin="5" VerticalAlignment="Top"/>
 			<ListView x:Name="AutoCompletesListView" SelectionMode="None" IsItemClickEnabled="True" MaxHeight="500" Grid.Row="1" Grid.ColumnSpan="3" Margin="5" MinHeight="25" ItemClick="AutoCompletesListView_ItemClick">
-				<ListView.ItemContainerStyle>
-					<Style TargetType="ListViewItem">
-						<Setter Property="HorizontalAlignment" Value="Stretch"/>
-					</Style>
-				</ListView.ItemContainerStyle>
+				
 			</ListView>
 			<Button x:Name="RandomButton" HorizontalAlignment="Stretch" Margin="5,10,5,0" Tapped="RandomButton_Tapped" Grid.Column="0" Grid.Row="2">
 				<Button.Content>

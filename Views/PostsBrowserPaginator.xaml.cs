@@ -229,6 +229,10 @@ namespace E621Downloader.Views {
 				//await MainPage.CreatePopupDialog("Error", $"({s.Text}) is not a valid number");
 			}
 		}
+
+		private void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {
+
+		}
 	}
 
 	public enum LoadingStatus {

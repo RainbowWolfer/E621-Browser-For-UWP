@@ -76,6 +76,7 @@ namespace E621Downloader.Views {
 		}
 
 		public async void LoadFromPostID(MixPost mix, CancellationToken? token = null) {
+			LoadingRing.IsActive = true;
 			this.PostRef = await Post.GetPostByIDAsync(token, mix.ID);
 			mix.PostRef = this.PostRef;
 			if(this.PostRef == null) {

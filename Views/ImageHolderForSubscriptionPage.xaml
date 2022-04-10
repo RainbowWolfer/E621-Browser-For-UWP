@@ -5,6 +5,7 @@
     xmlns:local="using:E621Downloader.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
@@ -19,7 +20,7 @@
 		<Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="Gray" Opacity="0.01"/>
 		<TextBlock x:Name="HintText" Text="Failed" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Visibility="Collapsed"/>
 		<Image x:Name="MyImage" Stretch="Uniform"/>
-		<ProgressRing x:Name="LoadingRing" Margin="50" MinHeight="100" MinWidth="100"/>
+		<controls:ProgressRing x:Name="LoadingRing" Margin="50" MinHeight="100" MinWidth="100"/>
 		<local:TypeHintForImageHolder x:Name="TypeHint"/>
 		<Grid Grid.Row="1" Margin="5,0,5,0">
 			<local:BottomInformationForImageHolder x:Name="BottomInfo"/>
