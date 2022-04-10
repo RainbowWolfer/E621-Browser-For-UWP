@@ -114,10 +114,22 @@
 										</StackPanel>
 									</Button>
 								</StackPanel>
-								<!--<StackPanel Margin="5">
-									<TextBlock Text="Random Tag Max Count" VerticalAlignment="Center"/>
-									<Slider/>
-								</StackPanel>-->
+								<StackPanel Margin="5" ToolTipService.ToolTip="Not Finished">
+									<TextBlock Text="Random Tag Max Count" VerticalAlignment="Center" FontSize="16"/>
+									<StackPanel Orientation="Horizontal">
+										<TextBlock x:Name="RandomTagMaxText" Text="10K" VerticalAlignment="Center" Margin="5" FontSize="18" Width="50" TextAlignment="Center"/>
+										<Slider x:Name="RandomTagMaxSlider" StepFrequency="500" Value="10000" Minimum="100" Maximum="30000" Width="200" VerticalAlignment="Center" Margin="10,3,0,0" ValueChanged="RandomTagMaxSlider_ValueChanged" IsEnabled="False"/>
+									</StackPanel>
+								</StackPanel>
+								<StackPanel Margin="5">
+									<TextBlock Text="Theme" FontSize="16"/>
+									<StackPanel Orientation="Horizontal" Margin="5">
+										<RadioButton x:Name="LightThemeButton" Content="Light" MinWidth="80" Click="LightThemeButton_Click"/>
+										<RadioButton x:Name="DarkThemeButton" Content="Dark" MinWidth="80" Click="DarkThemeButton_Click"/>
+										<RadioButton x:Name="SystemThemeButton" Content="System" MinWidth="80" Click="SystemThemeButton_Click"/>
+									</StackPanel>
+									<TextBlock x:Name="ThemeChangedHintText" Text="* This change will be applied after &#10;restarting the application" Visibility="Collapsed" d:Visibility="Visible" TextAlignment="Left" Margin="10,0,0,0"/>
+								</StackPanel>
 							</StackPanel>
 						</StackPanel>
 					</ScrollViewer>
@@ -199,7 +211,7 @@
 							<TextBlock Text="- Cloud sync blacklist tags" FontSize="24"/>
 							<TextBlock Text="- Library page rework" FontSize="24"/>
 							<TextBlock Text="- Spot page improvements" FontSize="24"/>
-							<TextBlock Text="- Popup dialog shows progress" FontSize="24"/>
+							<TextBlock Text="- Loading shows progress" FontSize="24"/>
 							<TextBlock Text="- UI design improvements" FontSize="24"/>
 							<TextBlock Text="- New Posts Browser Page" FontSize="24"/>
 							<TextBlock Text="- UI Optimized for Windows 11" FontSize="24"/>

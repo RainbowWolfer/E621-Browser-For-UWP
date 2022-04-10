@@ -59,7 +59,7 @@
 				</controls:NavigationViewItem>
 			</controls:NavigationView.FooterMenuItems>
 			<controls:NavigationView.Content>
-				<Frame x:Name="MyFrame" Navigated="MyFrame_Navigated">
+				<Frame x:Name="MyFrame" Navigated="MyFrame_Navigated" NavigationFailed="MyFrame_NavigationFailed">
 					<Frame.ContentTransitions>
 						<TransitionCollection>
 							<NavigationThemeTransition/>

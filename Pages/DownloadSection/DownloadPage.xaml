@@ -7,6 +7,7 @@
 	xmlns:sys="using:Windows.Networking.BackgroundTransfer"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
 	mc:Ignorable="d"
 	d:RequestedTheme="Dark"
 	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -18,8 +19,8 @@
 		</Grid.RowDefinitions>
 
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="3*"/>
 			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="auto"/>
 		</Grid.ColumnDefinitions>
 
 		<Grid>
@@ -29,13 +30,20 @@
 			</Grid.ColumnDefinitions>
 			<ToggleButton x:Name="TitleButton" IsChecked="True" Content="Download Groups" Margin="10" Tapped="TitleButton_Tapped" IsHitTestVisible="False"/>
 			<NavigationView x:Name="MyNavigationView" Grid.Column="1" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" VerticalAlignment="Center" ItemInvoked="NavigationView_ItemInvoked">
-				
+
 			</NavigationView>
 		</Grid>
 
-		<AutoSuggestBox Grid.Column="1" Margin="20,0,70,0" VerticalAlignment="Center" QueryIcon="Find" QuerySubmitted="AutoSuggestBox_QuerySubmitted" MaxWidth="400"/>
-		<Button x:Name="HelpButton" Margin="20,0,20,0" Height="33" Width="33" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" ToolTipService.ToolTip="Help" Padding="0" Tapped="HelpButton_Tapped">
+		<!--<AutoSuggestBox Grid.Column="1" Margin="20,0,70,0" VerticalAlignment="Center" QueryIcon="Find" QuerySubmitted="AutoSuggestBox_QuerySubmitted" MaxWidth="400"/>-->
+		<Button x:Name="HelpButton" Margin="20,0,20,0" Height="33" Width="33" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" ToolTipService.ToolTip="Help" Padding="0">
 			<FontIcon Glyph="&#xE897;"/>
+			<Button.Flyout>
+				<Flyout Placement="Bottom">
+					<Grid Width="250">
+						<TextBlock TextWrapping="WrapWholeWords" Text="The Downloads Section is based on the tag you searched when starting downloading."/>
+					</Grid>
+				</Flyout>
+			</Button.Flyout>
 		</Button>
 
 		<Frame x:Name="MainFrame" Grid.Row="1" Margin="5" Grid.ColumnSpan="2" Navigating="MainFrame_Navigating" Navigated="MainFrame_Navigated">

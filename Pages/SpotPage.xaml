@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="using:E621Downloader.Views"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
 	d:RequestedTheme="Dark"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -132,8 +133,20 @@
 			</SplitView.Pane>
 			<SplitView.Content>
 				<Grid>
-					<ProgressRing x:Name="LoadingRing" Height="200" Width="200"/>
-					<GridView x:Name="MainGridView" SelectionMode="None" IsItemClickEnabled="False"/>
+					<GridView x:Name="MainGridView" SelectionMode="None" IsItemClickEnabled="False">
+						<GridView.Transitions>
+							<TransitionCollection>
+								<EntranceThemeTransition IsStaggeringEnabled="True"/>
+							</TransitionCollection>
+						</GridView.Transitions>
+					</GridView>
+					<controls:ProgressRing x:Name="LoadingRing" Height="200" Width="200" IsActive="False"/>
+					<Grid x:Name="NoDataHint" Visibility="Collapsed">
+						<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+							<FontIcon Glyph="&#xF133;" FontSize="68" Margin="5"/>
+							<TextBlock Text="Nothing Found" FontSize="20" Margin="5"/>
+						</StackPanel>
+					</Grid>
 				</Grid>
 			</SplitView.Content>
 		</SplitView>

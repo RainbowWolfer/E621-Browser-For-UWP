@@ -87,7 +87,6 @@ namespace E621Downloader.Pages.DownloadSection {
 					Content = stackPanel
 				};
 
-
 				closeButton.Tapped += (s, e) => {
 					MyNavigationView.MenuItems.Remove(found);
 					if(MyNavigationView.MenuItems.Count >= 1) {
@@ -101,11 +100,7 @@ namespace E621Downloader.Pages.DownloadSection {
 			}
 			MyNavigationView.SelectedItem = found;
 		}
-
-		private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) {
-
-		}
-
+		
 		private void TitleButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			EnableTitleButton(false);
 			MyNavigationView.SelectedItem = null;
@@ -130,12 +125,5 @@ namespace E621Downloader.Pages.DownloadSection {
 
 		}
 
-		private async void HelpButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			await new ContentDialog() {
-				Title = "Help",
-				Content = "The Downloads Section is based on the tag you searched when downloaded. I will be rework on this shortly and the meta system on local downloads is slow af I know that. I will fix it. \nAnd the search box does nothing, do not try that.",
-				CloseButtonText = "Back",
-			}.ShowAsync();
-		}
 	}
 }

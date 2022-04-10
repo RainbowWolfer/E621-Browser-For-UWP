@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
+using E621Downloader.Pages.DownloadSection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,15 +21,17 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Views.DownloadSection {
 	public sealed partial class DownloadBlock: UserControl {
 		private const int MAXCOLS = 7;
+		private readonly DownloadOverview parent;
 		public DownloadsGroup Group { get; private set; }
 
 		public List<SimpleDownloadProgressBar> Bars => new() {
 			Bar1, Bar2, Bar3, Bar4, Bar5, Bar6, Bar7
 		};
 
-		public DownloadBlock(DownloadsGroup group) {
+		public DownloadBlock(DownloadOverview parent, DownloadsGroup group) {
 			this.InitializeComponent();
 			this.DataContextChanged += (s, e) => Bindings.Update();
+			this.parent = parent;
 			this.Group = group;
 			UpdateCount();
 
@@ -84,7 +87,8 @@ namespace E621Downloader.Views.DownloadSection {
 		}
 
 		private void DeleteItem_Click(object sender, RoutedEventArgs e) {
-			//do cancel work
+			DownloadsManager.RemoveDownloads(Group);
+			parent.Remove(this);
 		}
 	}
 }

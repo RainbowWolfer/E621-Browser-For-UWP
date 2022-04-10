@@ -252,9 +252,6 @@
     <Compile Include="Views\DownloadSection\SimpleDownloadProgressBar.xaml.cs">
       <DependentUpon>SimpleDownloadProgressBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FavoritesDialog.xaml.cs">
-      <DependentUpon>FavoritesDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\HotKeysManager.xaml.cs">
       <DependentUpon>HotKeysManager.xaml</DependentUpon>
     </Compile>
@@ -344,9 +341,6 @@
     <Compile Include="Views\TagInformationDisplay.xaml.cs">
       <DependentUpon>TagInformationDisplay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TagsManagementSection\SingleTagDisplay.xaml.cs">
-      <DependentUpon>SingleTagDisplay.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\TagsManagementSection\SingleTagSuggestion.xaml.cs">
       <DependentUpon>SingleTagSuggestion.xaml</DependentUpon>
     </Compile>
@@ -427,7 +421,9 @@
     <Content Include="Assets\AppIcons\Wide310x150Logo.scale-400.png" />
     <Content Include="Assets\e612.png" />
     <Content Include="Assets\E612_Light.png" />
+    <Content Include="Assets\eSix-transparent.png" />
     <Content Include="Assets\esix2.jpg" />
+    <Content Include="Assets\esix2_transparent.png" />
     <Content Include="Assets\Images\Helper_Step2.png" />
     <Content Include="Assets\Images\Helper_Step1.png" />
     <None Include="Package.StoreAssociation.xml" />
@@ -546,10 +542,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FavoritesDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\HotKeysManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -663,10 +655,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TagInformationDisplay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TagsManagementSection\SingleTagDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

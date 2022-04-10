@@ -6,12 +6,14 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:controls="using:Microsoft.UI.Xaml.Controls" 
-	xmlns:views="using:E621Downloader.Views"
+	xmlns:views="using:E621Downloader.Views" 
+	xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
+	d:RequestedTheme="Dark"
 	mc:Ignorable="d"
-	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-	d:RequestedTheme="Dark">
+	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Page.Resources>
+		<!--<ui:AttachedDropShadow x:Name="CommonShadow" Offset="4" CastTo="{x:Bind TagText}"/>-->
 		<CollectionViewSource x:Name="ContactsCVS" Source="{x:Bind tags}" IsSourceGrouped="True"/>
 		<Style x:Key="TagButton" TargetType="Button">
 			<Setter Property="Background" Value="Transparent"/>
@@ -161,7 +163,7 @@
 									<FontIcon Glyph="&#xE91B;"/>
 								</MenuFlyoutItem.Icon>
 							</MenuFlyoutItem>
-							<MenuFlyoutItem x:Name="DebugItem" Text="Debug" Click="DebugItem_Click" Visibility="Visible">
+							<MenuFlyoutItem x:Name="DebugItem" Text="Debug" Click="DebugItem_Click" Visibility="Collapsed">
 								<MenuFlyoutItem.Icon>
 									<FontIcon Glyph="&#xE8A1;"/>
 								</MenuFlyoutItem.Icon>
@@ -179,7 +181,7 @@
 				</Button>
 			</RelativePanel>
 
-			<Grid Grid.RowSpan="2">
+			<Grid x:Name="MySubGrid" Grid.RowSpan="2">
 				<controls:ProgressRing x:Name="TagsLoadingRing" Height="150" Width="150" Visibility="Collapsed"/>
 				<ListView x:Name="TagsListView" ItemsSource="{Binding Source={StaticResource ContactsCVS}}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="TagsListView_ItemClick" Width="250" Grid.Row="1">
 					<ListView.ItemsPanel>
@@ -193,7 +195,7 @@
 								<Button x:Name="InfoButton" RelativePanel.AlignVerticalCenterWithPanel="True" Style="{StaticResource TagButton}" Tapped="InfoButton_Tapped" Tag="{x:Bind Content}">
 									<FontIcon Glyph="&#xE946;" FontSize="16"/>
 								</Button>
-								<TextBlock x:Name="TagText" Text="{x:Bind Content}" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="2,0,20,0" TextWrapping="Wrap" Width="100" RelativePanel.RightOf="InfoButton" Foreground="{x:Bind Brush}"/>
+								<TextBlock x:Name="TagText" Text="{x:Bind Content}" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="2,0,20,0" TextWrapping="Wrap" Width="100" RelativePanel.RightOf="InfoButton" Foreground="{x:Bind Brush}" Loaded="TagText_Loaded"/>
 								<Button x:Name="BlackListButton" Style="{StaticResource TagButton}" Tag="{x:Bind Content}" RelativePanel.LeftOf="FollowListButton" Tapped="BlackListButton_Tapped" Loaded="BlackListButton_Loaded" Padding="2">
 									<FontIcon Glyph="&#xF8AB;" FontSize="16"/>
 								</Button>

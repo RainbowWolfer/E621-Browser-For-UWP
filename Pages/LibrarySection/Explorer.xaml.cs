@@ -92,6 +92,7 @@ namespace E621Downloader.Pages.LibrarySection {
 					TitleBar.IsFolderBar = false;
 				} else if(args is LibraryFoldersArgs folderArgs) {
 					if(folderArgs.Folders == null) {
+						await Task.Delay(200);// just have this time for animation to play
 						await LoadDownloadFolders(folderArgs);
 					}
 					UpdateFolders(folderArgs);

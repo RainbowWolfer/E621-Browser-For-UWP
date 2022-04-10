@@ -38,7 +38,7 @@ namespace E621Downloader.Pages.DownloadSection {
 		public void Refresh() {
 			MainGridView.Items.Clear();
 			foreach(DownloadsGroup group in DownloadsManager.groups) {
-				MainGridView.Items.Add(new DownloadBlock(group) {
+				MainGridView.Items.Add(new DownloadBlock(this, group) {
 					Height = 300,
 					Width = 300,
 					Margin = new Thickness(5),
@@ -48,12 +48,17 @@ namespace E621Downloader.Pages.DownloadSection {
 			TitleTextBlock.Visibility = MainGridView.Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 		}
 
+		public void Remove(DownloadBlock block) {
+			if(MainGridView.Items.Contains(block)) {
+				MainGridView.Items.Remove(block);
+			}
+		}
+
 		private void MainGridView_ItemClick(object sender, ItemClickEventArgs e) {
 			DownloadBlock block = e.ClickedItem as DownloadBlock;
 			DownloadPage.Instance.NavigateTo(typeof(DownloadDetailsPage), block.Group);
 			DownloadPage.Instance.EnableTitleButton(true);
 			DownloadPage.Instance.SelectTitle(block.Group.Title);
-
 		}
 	}
 }

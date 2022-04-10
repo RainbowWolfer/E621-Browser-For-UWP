@@ -5,6 +5,7 @@
 	xmlns:local="using:E621Downloader.Views"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
 	mc:Ignorable="d"
 	d:DesignHeight="120"
 	d:DesignWidth="600"
@@ -24,7 +25,7 @@
 		<TextBlock x:Name="NameTextBlock" Text="Post : 2912928" FontSize="20" VerticalAlignment="Center" Margin="10,0,10,0"/>
 		<TextBlock x:Name="InfoTextBlock" Grid.Row="1" Grid.ColumnSpan="2" Text="" FontSize="20" Margin="20,0,120,0" VerticalAlignment="Center" RightTapped="InfoTextBlock_RightTapped"/>
 		<TextBlock x:Name="PercentageTextBlok" Grid.Column="2" Text="Pending..." HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
-		<ProgressBar x:Name="MyProgressBar" Grid.Column="1" Value="0" Maximum="1" VerticalAlignment="Center" Margin="10" ShowPaused="False" ShowError="False"/>
+		<controls:ProgressBar x:Name="MyProgressBar" Grid.Column="1" Value="0" Maximum="1" VerticalAlignment="Center" Margin="10" ShowPaused="False" ShowError="False"/>
 
 		<StackPanel Orientation="Horizontal" Grid.Row="1" Margin="10" Grid.ColumnSpan="2">
 

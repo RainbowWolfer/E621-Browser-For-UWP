@@ -4,7 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:E621Downloader.Pages.LibrarySection"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:librarysection="using:E621Downloader.Views.LibrarySection"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:librarysection="using:E621Downloader.Views.LibrarySection"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
 	mc:Ignorable="d"
 	d:RequestedTheme="Dark">
 
@@ -22,7 +24,7 @@
 		</Grid>
 		<Grid x:Name="LoadingGrid" Grid.Row="1" Visibility="Collapsed">
 			<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-				<ProgressRing x:Name="LoadingRing" Height="150" Width="150" IsActive="True" Margin="5"/>
+				<controls:ProgressRing x:Name="LoadingRing" Height="150" Width="150" IsActive="True" Margin="5"/>
 				<TextBlock x:Name="LoadingText" Text="Loading" TextAlignment="Center" FontSize="24" Margin="5"/>
 			</StackPanel>
 		</Grid>

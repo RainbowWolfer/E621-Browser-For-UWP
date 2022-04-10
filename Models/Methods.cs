@@ -44,5 +44,22 @@ namespace E621Downloader.Models {
 			}
 			return result;
 		}
+
+		public static string NumberToK(int number) {
+			if(number > 1000) {
+				int a = number / 1000;
+				int length = $"{number}".Length;
+				int pow = (int)Math.Pow(10, length - 1);
+				int head = int.Parse($"{number}".First().ToString());
+				int b = (number - pow * head) / (pow / 10);
+				if(b == 0) {
+					return $"{a}K";
+				} else {
+					return $"{a}.{b}K";
+				}
+			} else {
+				return $"{number}";
+			}
+		}
 	}
 }

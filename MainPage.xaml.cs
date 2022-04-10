@@ -94,12 +94,15 @@ namespace E621Downloader {
 				}
 			}));
 			Loop();
+
+			//ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			CreateInstantDialog("Please Wait", "Initializing Local Stuff");
 			await Local.Initialize();
+
 			HttpResult<string> result;
 			UpdateInstanceDialogContent($"Checking Connection to {Data.GetHost()}");
 			do {
@@ -455,7 +458,9 @@ namespace E621Downloader {
 				default:
 					throw new Exception("Tag Not Found");
 			}
+
 			MyFrame.Navigate(target, parameter, transition);
+
 			currentTag = tag;
 			if(updateNavigationViewItem) {
 				foreach(NavigationViewItem item in MyNavigationView.MenuItems
@@ -504,6 +509,22 @@ namespace E621Downloader {
 					break;
 				case TagsSelectionView.ResultType.Random:
 					CreateInstantDialog("Please Waiting", "Getting Your Tag");
+
+					//const int MAX_LOOP = 10;
+					//int index = 0;
+					//string tag = null;
+					//List<Post> posts;
+					//do {
+					//	posts = await Post.GetPostsByTagsAsync(cts.Token, 1, $"limit:5", "order:random");
+					//	if(posts == null || posts.Count == 0) {
+					//		continue;
+					//	}
+					//	foreach(Post item in posts) {
+
+					//	}
+					//	index++;
+					//} while(tag == null || index > MAX_LOOP);
+
 					Post post = (await Post.GetPostsByTagsAsync(cts.Token, 1, "limit:1", "order:random"))?.FirstOrDefault();
 					HideInstantDialog();
 					if(post != null) {
@@ -529,6 +550,11 @@ namespace E621Downloader {
 			MyFrame.GoBack();
 
 		}
+
+		private void MyFrame_NavigationFailed(object sender, NavigationFailedEventArgs e) {
+
+		}
+
 	}
 	public enum PageTag {
 		PostsBrowser = 0, Picture = 1, Library = 2, Subscription = 3, Spot = 4, Download = 5, UserProfile = 6, Welcome = 7, Settings,

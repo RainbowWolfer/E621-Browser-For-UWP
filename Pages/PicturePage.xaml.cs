@@ -412,14 +412,25 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			RemoveGroup();
-			AddNewGroup("Artist", tags.artist.ToGroupTag("#f2ac08".ToColor()));
-			AddNewGroup("Copyright", tags.copyright.ToGroupTag("#d0d".ToColor()));
-			AddNewGroup("Species", tags.species.ToGroupTag("#ed5d1f".ToColor()));
-			AddNewGroup("Character", tags.character.ToGroupTag("#0a0".ToColor()));
-			AddNewGroup("General", tags.general.ToGroupTag("#b4c7d9".ToColor()));
-			AddNewGroup("Meta", tags.meta.ToGroupTag("#fff".ToColor()));
-			AddNewGroup("Invalid", tags.invalid.ToGroupTag("#ff3d3d".ToColor()));
-			AddNewGroup("Lore", tags.lore.ToGroupTag("#282".ToColor()));
+			if(App.GetApplicationTheme() == ApplicationTheme.Dark) {
+				AddNewGroup("Artist", tags.artist.ToGroupTag("#F2AC08".ToColor()));
+				AddNewGroup("Copyright", tags.copyright.ToGroupTag("#D0D".ToColor()));
+				AddNewGroup("Species", tags.species.ToGroupTag("#ED5D1F".ToColor()));
+				AddNewGroup("Character", tags.character.ToGroupTag("#0A0".ToColor()));
+				AddNewGroup("General", tags.general.ToGroupTag("#B4C7D9".ToColor()));
+				AddNewGroup("Meta", tags.meta.ToGroupTag("#FFF".ToColor()));
+				AddNewGroup("Invalid", tags.invalid.ToGroupTag("#FF3D3D".ToColor()));
+				AddNewGroup("Lore", tags.lore.ToGroupTag("#282".ToColor()));
+			} else {
+				AddNewGroup("Artist", tags.artist.ToGroupTag("#E39B00".ToColor()));
+				AddNewGroup("Copyright", tags.copyright.ToGroupTag("#D0D".ToColor()));
+				AddNewGroup("Species", tags.species.ToGroupTag("#ED5D1F".ToColor()));
+				AddNewGroup("Character", tags.character.ToGroupTag("#0A0".ToColor()));
+				AddNewGroup("General", tags.general.ToGroupTag("#0B7EE2".ToColor()));
+				AddNewGroup("Meta", tags.meta.ToGroupTag("#000".ToColor()));
+				AddNewGroup("Invalid", tags.invalid.ToGroupTag("#FF3D3D".ToColor()));
+				AddNewGroup("Lore", tags.lore.ToGroupTag("#282".ToColor()));
+			}
 
 		}
 
@@ -793,9 +804,11 @@ namespace E621Downloader.Pages {
 			var dialog = new ContentDialog() {
 				Title = $"Tag Information: {name}",
 				CloseButtonText = "Back",
-				Content = new TagInformationDisplay(tags_pool, tag)
+				Content = new TagInformationDisplay(tags_pool, tag),
 			};
-			await dialog.ShowAsync();
+			MySubGrid.Children.Add(dialog);
+			dialog.Closed += (s, args) => MySubGrid.Children.Remove(dialog);
+			await dialog.ShowAsync(ContentDialogPlacement.Popup);
 		}
 
 		private void SplitViewModeSwitch_Toggled(object sender, RoutedEventArgs e) {
@@ -1110,6 +1123,15 @@ namespace E621Downloader.Pages {
 
 		private enum VoteType {
 			None, Up, Down
+		}
+
+		private void TagText_Loaded(object sender, RoutedEventArgs e) {
+			//var t = (TextBlock)sender;
+			//var shadow = new Microsoft.Toolkit.Uwp.UI.AttachedDropShadow() {
+			//	Offset = "4",
+			//};
+			//Microsoft.Toolkit.Uwp.UI.Effects.SetShadow(t, shadow);
+			//shadow.CastTo = t;
 		}
 	}
 

@@ -5,7 +5,8 @@
     xmlns:local="using:E621Downloader.Pages"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:views="using:E621Downloader.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:views="using:E621Downloader.Views"
 	mc:Ignorable="d"
     d:RequestedTheme="Dark"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -146,7 +147,7 @@
 							</StackPanel>
 						</Button>
 					</RelativePanel>
-					<ProgressRing x:Name="LoadingRing" Grid.Row="1" MinHeight="200" MinWidth="200" Margin="50"/>
+					<controls:ProgressRing x:Name="LoadingRing" Grid.Row="1" MinHeight="200" MinWidth="200" Margin="50"/>
 					<Grid x:Name="FavoritesListHintText" Grid.Row="1">
 						<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 							<FontIcon Glyph="&#xF133;" FontSize="68" Margin="5"/>

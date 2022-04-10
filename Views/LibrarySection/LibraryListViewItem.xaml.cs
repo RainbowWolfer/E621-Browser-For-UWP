@@ -38,7 +38,12 @@ namespace E621Downloader.Views.LibrarySection {
 					case ItemType.Folder:
 						FolderChildrenCountText.Visibility = Visibility.Visible;
 						ItemIcon.Glyph = "\uE838";
-						ItemIcon.Foreground = new SolidColorBrush(Colors.Yellow);
+						Color folderColor = App.GetApplicationTheme() switch {
+							ApplicationTheme.Light => Colors.Orange,
+							ApplicationTheme.Dark => Colors.Yellow,
+							_ => Colors.Yellow,
+						};
+						ItemIcon.Foreground = new SolidColorBrush(folderColor);
 						ItemImage.Visibility = Visibility.Collapsed;
 						BottomInfo.Visibility = Visibility.Collapsed;
 						break;

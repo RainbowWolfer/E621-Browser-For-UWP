@@ -111,7 +111,9 @@ namespace E621Downloader.Pages {
 
 		private async void StartButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			LoadingRing.IsActive = true;
-			List<string> tags = selectedTags.ToList();
+			MainGridView.Items.Clear();
+			NoDataHint.Visibility = Visibility.Collapsed;
+			List<string> tags = selectedTags.Concat(inputTags).ToList();
 			bool S = IncludeSafeCheckBox.IsChecked.Value;
 			bool Q = IncludeQuestionableCheckBox.IsChecked.Value;
 			bool E = IncludeExplicitCheckBox.IsChecked.Value;
@@ -189,9 +191,18 @@ namespace E621Downloader.Pages {
 
 			(int from, int to) = GetScoreRange();
 			tags.Add($"score:{from}..{to}");
+			if(cts != null) {
+				cts.Cancel();
+				cts.Dispose();
+				cts = null;
+			}
+			cts = new CancellationTokenSource();
 			List<Post> posts = await Post.GetPostsByRandomAsync(cts.Token, CurrentAmount, tags.ToArray());
-			if(posts == null || posts.Count == 0) {
-				await MainPage.CreatePopupDialog("Error", "There is No Post(s) Found");
+			if(posts == null) {	
+				LoadingRing.IsActive = false;
+				return;
+			} else if(posts.Count == 0) {
+				NoDataHint.Visibility = Visibility.Visible;
 			} else {
 				MainGridView.Items.Clear();
 				for(int i = 0; i < posts.Count; i++) {

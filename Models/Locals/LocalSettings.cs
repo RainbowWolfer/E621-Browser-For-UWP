@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
 namespace E621Downloader.Models.Locals {
 	public class LocalSettings {
 		public static LocalSettings Current { get; set; }
-		public static void Save() {
-			Local.WriteLocalSettings();
+		public static async void Save() {
+			await Local.WriteLocalSettings();
 		}
+
+		public int randomTagMaxCount;
 
 		public bool adaptiveGrid;
 		public double fixedHeight;
@@ -37,6 +40,7 @@ namespace E621Downloader.Models.Locals {
 		public bool CheckLocalUser() {
 			return !string.IsNullOrWhiteSpace(user_username) && !string.IsNullOrWhiteSpace(user_api);
 		}
+
 		public void SetLocalUser(string username, string api) {
 			user_username = username;
 			user_api = api;

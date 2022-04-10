@@ -58,6 +58,9 @@ namespace E621Downloader.Models.Posts {
 		}
 
 		public static string JoinTags(params string[] tags) {
+			if(tags == null) {
+				return "";
+			}
 			return string.Join(", ", tags).Trim().ToLower();
 		}
 

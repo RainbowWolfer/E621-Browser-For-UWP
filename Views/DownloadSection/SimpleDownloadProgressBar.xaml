@@ -5,6 +5,7 @@
     xmlns:local="using:E621Downloader.Views.DownloadSection"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="30"
     d:DesignWidth="300"
@@ -16,7 +17,7 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<FontIcon x:Name="MyIcon" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE10C;" Visibility="Visible" Width="20"/>
-		<ProgressBar x:Name="MyProgressBar" Grid.Column="1" Margin="5" Value="0.15" Maximum="1" Visibility="Visible" Width="270"/>
+		<controls:ProgressBar x:Name="MyProgressBar" Grid.Column="1" Margin="5" Value="0.15" Maximum="1" Visibility="Visible" Width="250"/>
 
 		<!--<TextBlock Grid.ColumnSpan="2" Text="·" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
 		<Ellipse x:Name="MyEllipse" Visibility="Collapsed" Grid.ColumnSpan="2" Width="5" Height="5" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{ThemeResource ApplicationForegroundThemeBrush}"/>

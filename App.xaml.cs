@@ -17,6 +17,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Networking.BackgroundTransfer;
+using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System;
 using Windows.UI.Xaml;
@@ -33,6 +34,8 @@ namespace E621Downloader {
 		//WUwPNbGDrfXnQoHfvU1nR3TD;
 		public static App Instance;
 
+		public const string IS_LIGHT_THEME = "IsLightTheme";
+
 		public static PostsList PostsList { get; private set; } = new PostsList();
 		public static BitmapImage DefaultAvatar { get; } = new BitmapImage(new Uri("ms-appx:///Assets/esix2.jpg"));
 
@@ -40,7 +43,69 @@ namespace E621Downloader {
 			Instance = this;
 			this.InitializeComponent();
 			this.Suspending += OnSuspending;
+
+			InitializeTheme();
+			switch(GetStoredTheme()) {
+				case ElementTheme.Light:
+					Current.RequestedTheme = ApplicationTheme.Light;
+					break;
+				case ElementTheme.Dark:
+					Current.RequestedTheme = ApplicationTheme.Dark;
+					break;
+			}
 		}
+
+		public static void InitializeTheme() {
+			if(ApplicationData.Current.LocalSettings.Values[IS_LIGHT_THEME] is null) {
+				ApplicationData.Current.LocalSettings.Values[IS_LIGHT_THEME] = 0;
+			}
+		}
+
+		public static ApplicationTheme GetApplicationTheme() {
+			return GetStoredTheme() switch {
+				ElementTheme.Light => ApplicationTheme.Light,
+				ElementTheme.Dark => ApplicationTheme.Dark,
+				_ => Current.RequestedTheme,
+			};
+		}
+
+		public static ElementTheme GetStoredTheme() {
+			if(Instance == null) {
+				return ElementTheme.Default;
+			}
+
+			if(ApplicationData.Current.LocalSettings.Values[IS_LIGHT_THEME] is int theme) {
+				if(theme == 1) {
+					return ElementTheme.Light;
+				} else if(theme == 2) {
+					return ElementTheme.Dark;
+				} else {
+					return ElementTheme.Default;
+				}
+			} else {
+				return ElementTheme.Default;
+			}
+		}
+
+		public static void SetStoredTheme(ElementTheme theme) {
+			if(Instance == null) {
+				return;
+			}
+			switch(theme) {
+				case ElementTheme.Default:
+					ApplicationData.Current.LocalSettings.Values[IS_LIGHT_THEME] = 0;
+					break;
+				case ElementTheme.Light:
+					ApplicationData.Current.LocalSettings.Values[IS_LIGHT_THEME] = 1;
+					break;
+				case ElementTheme.Dark:
+					ApplicationData.Current.LocalSettings.Values[IS_LIGHT_THEME] = 2;
+					break;
+				default:
+					break;
+			}
+		}
+
 		public static string GetAppVersion() {
 			Package package = Package.Current;
 			PackageId packageId = package.Id;
@@ -79,6 +144,7 @@ namespace E621Downloader {
 		void OnNavigationFailed(object sender, NavigationFailedEventArgs e) {
 			throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
 		}
+
 		private void OnSuspending(object sender, SuspendingEventArgs e) {
 			var deferral = e.SuspendingOperation.GetDeferral();
 			//TODO: Save application state and stop any background activity

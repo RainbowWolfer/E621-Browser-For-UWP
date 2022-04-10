@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Contacts;
 using Windows.ApplicationModel.Email;
@@ -37,10 +38,14 @@ namespace E621Downloader.Pages {
 		public string Version => $"{App.GetAppVersion()}";
 
 		private bool internalChanges = true;
+
+		private ElementTheme initialTheme;
+
 		public SettingsPage() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Required;
 			ClearDownloadPathButton.IsEnabled = Local.DownloadFolder != null;
+			initialTheme = App.GetStoredTheme();
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
@@ -56,6 +61,24 @@ namespace E621Downloader.Pages {
 			MediaPlayToggle.IsOn = LocalSettings.Current.mediaBackgroundPlay;
 			MediaAutoPlayToggle.IsOn = LocalSettings.Current.mediaAutoPlay;
 			HotKeysToggle.IsOn = LocalSettings.Current.enableHotKeys;
+
+			RandomTagMaxSlider.Value = LocalSettings.Current.randomTagMaxCount;
+			RandomTagMaxText.Text = Methods.NumberToK(LocalSettings.Current.randomTagMaxCount);
+
+			switch(App.GetStoredTheme()) {
+				case ElementTheme.Default:
+					SystemThemeButton.IsChecked = true;
+					break;
+				case ElementTheme.Light:
+					LightThemeButton.IsChecked = true;
+					break;
+				case ElementTheme.Dark:
+					DarkThemeButton.IsChecked = true;
+					break;
+				default:
+					break;
+			}
+
 			internalChanges = false;
 		}
 
@@ -300,6 +323,68 @@ namespace E621Downloader.Pages {
 			await Launcher.LaunchFolderAsync(Local.LocalFolder, new FolderLauncherOptions() {
 				DesiredRemainingView = ViewSizePreference.UseMore
 			});
+		}
+
+		private void LightThemeButton_Click(object sender, RoutedEventArgs e) {
+			if(internalChanges) {
+				return;
+			}
+			App.SetStoredTheme(ElementTheme.Light);
+			if(initialTheme == ElementTheme.Light) {
+				ThemeChangedHintText.Visibility = Visibility.Collapsed;
+			} else {
+				ThemeChangedHintText.Visibility = Visibility.Visible;
+			}
+		}
+
+		private void DarkThemeButton_Click(object sender, RoutedEventArgs e) {
+			if(internalChanges) {
+				return;
+			}
+			App.SetStoredTheme(ElementTheme.Dark);
+			if(initialTheme == ElementTheme.Dark) {
+				ThemeChangedHintText.Visibility = Visibility.Collapsed;
+			} else {
+				ThemeChangedHintText.Visibility = Visibility.Visible;
+			}
+		}
+
+		private void SystemThemeButton_Click(object sender, RoutedEventArgs e) {
+			if(internalChanges) {
+				return;
+			}
+			App.SetStoredTheme(ElementTheme.Default);
+			if(initialTheme == ElementTheme.Default) {
+				ThemeChangedHintText.Visibility = Visibility.Collapsed;
+			} else {
+				ThemeChangedHintText.Visibility = Visibility.Visible;
+			}
+		}
+
+		private void RandomTagMaxSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
+			if(internalChanges) {
+				return;
+			}
+			int value = (int)e.NewValue;
+			LocalSettings.Current.randomTagMaxCount = value;
+			RandomTagMaxText.Text = Methods.NumberToK(value);
+			DelayedSaveSetting();
+		}
+
+		private CancellationTokenSource cts;
+		private async void DelayedSaveSetting() {
+			if(cts != null) {
+				cts.Cancel();
+				cts.Dispose();
+				cts = null;
+			}
+			cts = new CancellationTokenSource();
+			try {
+				await Task.Delay(500, cts.Token);
+			} catch(TaskCanceledException) {
+				return;
+			}
+			LocalSettings.Save();
 		}
 
 		//private void RandomTagMaxCountText_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args) {

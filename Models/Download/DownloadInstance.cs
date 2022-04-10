@@ -65,8 +65,10 @@ namespace E621Downloader.Models.Download {
 						}
 					}
 				}));
+			} catch(TaskCanceledException) {
+				return;
 			} catch(Exception e) {
-				MainPage.CreateTip(MainPage.Instance, $"(#{metaFile.MyPost.id}) Download Fail", $"Errr Message: {e.Message}", Symbol.Important);
+				MainPage.CreateTip(MainPage.Instance, $"(#{metaFile.MyPost.id}) Download Fail", $"Error Message: {e.Message}", Symbol.Important);
 			}
 		}
 

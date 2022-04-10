@@ -1,4 +1,7 @@
-﻿using E621Downloader.Models.Networks;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Locals;
+using E621Downloader.Models.Networks;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +11,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -22,9 +26,11 @@ namespace E621Downloader.Pages {
 	public sealed partial class WelcomePage: Page {
 		private bool complete1 = false;
 		private bool complete2 = false;
+
 		public WelcomePage() {
 			this.InitializeComponent();
 		}
+
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			if(e.Parameter is long c && c != -1) {
@@ -32,6 +38,14 @@ namespace E621Downloader.Pages {
 			} else {
 				CountText.Text = "OFFLINE";
 			}
+
+			string hex = App.GetApplicationTheme() switch {
+				ApplicationTheme.Light => "#3E89C3",
+				ApplicationTheme.Dark => "#012E57",
+				_ => Application.Current.RequestedTheme == ApplicationTheme.Light ? "#3E89C3" : "#012E57",
+			};
+			MainGrid.Background = new SolidColorBrush(hex.ToColor());
+
 			MascotEntrance.Begin();
 			HintEntrance.Completed += (sender, arg) => complete1 = true;
 
@@ -41,6 +55,7 @@ namespace E621Downloader.Pages {
 
 			HintEntrance.BeginTime = new TimeSpan(0, 0, 0, 1, 0);
 			HintEntrance.Begin();
+
 		}
 
 		private void MascotImage_Tapped(object sender, TappedRoutedEventArgs e) {

@@ -17,6 +17,7 @@ using Windows.Storage.AccessCache;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Streams;
 using Windows.UI.Popups;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -298,7 +299,7 @@ namespace E621Downloader.Models.Locals {
 			return result;
 		}
 
-		public static async void WriteLocalSettings() {
+		public static async Task WriteLocalSettings() {
 			await FileIO.WriteTextAsync(LocalSettingsFile, JsonConvert.SerializeObject(LocalSettings.Current));
 		}
 
@@ -325,8 +326,9 @@ namespace E621Downloader.Models.Locals {
 					adaptiveGrid = true,
 					adaptiveSizeMultiplier = 1,
 					fixedHeight = 280,
+					randomTagMaxCount = 10000,
 				};
-				WriteLocalSettings();
+				await WriteLocalSettings();
 			}
 		}
 

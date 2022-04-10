@@ -137,6 +137,13 @@ namespace E621Downloader.Models.Download {
 			return instance;
 		}
 
+		public static void RemoveDownloads(DownloadsGroup group) {
+			if(groups.Contains(group)) {
+				groups.Remove(group);
+			}
+			group.downloads.ForEach(d => d.Cancel());
+		}
+
 		//public static DownloadInstance RestoreCompletedDownload(Post post) {
 
 		//	return null;
@@ -158,16 +165,16 @@ namespace E621Downloader.Models.Download {
 			return groups.Find(g => g.Title == title);
 		}
 
-		public static void Sort() {
-			foreach(DownloadsGroup g in groups) {
-				g.downloads.Sort((a, b) => {
-					if(a == b) {
-						return 0;
-					}
-					return 1;
-				});
-			}
-		}
+		//public static void Sort() {
+		//	foreach(DownloadsGroup g in groups) {
+		//		g.downloads.Sort((a, b) => {
+		//			if(a == b) {
+		//				return 0;
+		//			}
+		//			return 1;
+		//		});
+		//	}
+		//}
 
 		//public static List<DownloadsGroup> GetDownloadingGroups(){
 		//	return groups.Where(g=>g.);
