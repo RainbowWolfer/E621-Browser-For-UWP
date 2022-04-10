@@ -9,12 +9,12 @@
   <Identity
     Name="25737563C6D7A.E1547Browser"
     Publisher="CN=08AE6180-69D9-4F58-9803-4063AA29A554"
-    Version="1.0.5.0" />
+    Version="1.1.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="1146dfad-4d6d-406b-85e6-43855c69ae06" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>E1547 Browser</DisplayName>
+    <DisplayName>E621 Browser For UWP</DisplayName>
     <PublisherDisplayName>蔚家旭</PublisherDisplayName>
     <Logo>Assets\AppIcons\StoreLogo.png</Logo>
   </Properties>
@@ -32,10 +32,10 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="E621Downloader.App">
       <uap:VisualElements
-        DisplayName="E1547 Browser"
+        DisplayName="E621 Browser For UWP"
         Square150x150Logo="Assets\AppIcons\E621.png"
         Square44x44Logo="Assets\AppIcons\Square44x44Logo.png"
-        Description="E621Downloader"
+        Description="E621 Browser For UWP"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\AppIcons\Wide310x150Logo.png" Square71x71Logo="Assets\AppIcons\SmallTile.png" Square310x310Logo="Assets\AppIcons\LargeTile.png" ShortName="E1547 Downloader">
           <uap:ShowNameOnTiles>
