@@ -183,12 +183,7 @@
 									</Button>
 								</StackPanel>
 								<Grid Grid.Row="1">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="3*"/>
-										<ColumnDefinition Width="*"/>
-									</Grid.ColumnDefinitions>
-									<localviews:PostsBrowserPaginator x:Name="Paginator" Grid.Column="1"/>
+									<localviews:PostsBrowserPaginator x:Name="Paginator"/>
 								</Grid>
 							</Grid>
 						</SplitView.Content>

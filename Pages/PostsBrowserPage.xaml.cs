@@ -276,6 +276,7 @@ namespace E621Downloader.Pages {
 				IsLoading = false;
 				if(tab.Pool == null) {
 					Paginator.LoadPaginator(tab.CurrentPage, tab.MaxPage);
+					AssignPaginatorAction(tab);
 				}
 				await UpdateImageHolders(tab);
 				return;
@@ -317,11 +318,23 @@ namespace E621Downloader.Pages {
 			if(tab.Pool == null) {
 				LoadingText.Text = "Loading Paginator";
 				await Paginator.LoadPaginator(tags, cts_loading.Token);
+				AssignPaginatorAction(tab);
 				tab.CurrentPage = Paginator.CurrentPage;
 				tab.MaxPage = Paginator.MaxPage;
 			}
 			IsLoading = false;
 			await UpdateImageHolders(tab);
+		}
+
+		private void AssignPaginatorAction(PostsTab tab) {
+			Paginator.OnPageNavigate = async page => {
+				Paginator.CurrentPage = page;
+				tab.CurrentPage = page;
+				await LoadAsync(tab, true);
+			};
+			Paginator.OnRefresh = async () => {
+				await Paginator.LoadPaginator(tab.Tags, cts_loading.Token);
+			};
 		}
 
 		private async Task Reload() {

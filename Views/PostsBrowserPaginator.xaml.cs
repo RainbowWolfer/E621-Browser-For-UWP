@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
@@ -22,7 +23,8 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Views {
 	public sealed partial class PostsBrowserPaginator: UserControl {
-		public event Action<int> OnPageNavigate;
+		public Action<int> OnPageNavigate { get; set; }
+		public Action OnRefresh { get; set; }
 
 		private int maxPage;
 		private int currentPage;
@@ -93,7 +95,7 @@ namespace E621Downloader.Views {
 
 		public async Task LoadPaginator(string[] tags, CancellationToken? token = null) {
 			IsLoading = LoadingStatus.Loading;
-			DataResult<E621Paginator> result = await E621Paginator.GetAsync(tags, 1, token);
+			DataResult<E621Paginator> result = await E621Paginator.GetAsync(tags, CurrentPage, token);
 			switch(result.ResultType) {
 				case HttpResultType.Success:
 					CurrentPage = result.Data.currentPage;
@@ -217,21 +219,37 @@ namespace E621Downloader.Views {
 
 		}
 
-		private void ForwardButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(int.TryParse(((NumberBox)sender).Text, out int page)) {
-				if(page < 1 || page > maxPage) {
-					//await MainPage.CreatePopupDialog("Error", $"({page}) can only be in 1-{maxPage}");
-				} else {
-					//await LoadAsync(page, Tags);
-					OnPageNavigate?.Invoke(page);
-				}
-			} else {
-				//await MainPage.CreatePopupDialog("Error", $"({s.Text}) is not a valid number");
-			}
+		private async void ForwardButton_Click(object sender, RoutedEventArgs e) {
+			await Forward(PageInputText.Text);
+			//PageInputText.Text = "";
 		}
 
 		private void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			OnRefresh?.Invoke();
+		}
 
+		private async void PageInputText_KeyDown(object sender, KeyRoutedEventArgs e) {
+			if(e.Key == MainPage.SEARCH_KEY) {
+				MainPage.Instance.DelayInputKeyListener();
+			}
+			if(e.Key == VirtualKey.Enter) {
+				await Forward(PageInputText.Text);
+				PageInputText.Text = "";
+			} else if(e.Key == VirtualKey.Escape) {
+				PageInputText.Text = "";
+			}
+		}
+
+		private async Task Forward(string text) {
+			if(int.TryParse(text, out int page)) {
+				if(page < 1 || page > maxPage) {
+					await MainPage.CreatePopupDialog("Error", $"({page}) can only be in 1-{maxPage}");
+				} else {
+					OnPageNavigate?.Invoke(page);
+				}
+			} else {
+				await MainPage.CreatePopupDialog("Error", $"({text}) is not a valid number");
+			}
 		}
 	}
 
