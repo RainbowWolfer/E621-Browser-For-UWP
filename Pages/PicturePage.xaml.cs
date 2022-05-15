@@ -41,9 +41,9 @@ namespace E621Downloader.Pages {
 	public sealed partial class PicturePage: Page {
 		public Post PostRef { get; private set; }
 		public PathType PostType { get; private set; }
-		public readonly ObservableCollection<GroupTagListWithColor> tags;
-		private readonly Dictionary<string, E621Tag> tags_pool;//should i refresh on every entry?
-		public readonly List<E621Comment> comments;
+		public readonly ObservableCollection<GroupTagListWithColor> tags = new();
+		private readonly Dictionary<string, E621Tag> tags_pool = new();//should i refresh on every entry?
+		public readonly List<E621Comment> comments = new();
 
 		private bool commentsLoading;
 		private bool commentsLoaded;
@@ -65,9 +65,6 @@ namespace E621Downloader.Pages {
 		public PicturePage() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
-			tags = new ObservableCollection<GroupTagListWithColor>();
-			tags_pool = new Dictionary<string, E621Tag>();
-			comments = new List<E621Comment>();
 			this.DataContextChanged += (s, c) => Bindings.Update();
 			MyMediaPlayer.MediaPlayer.IsLoopingEnabled = true;
 			KeyListener.SubmitInstance(new KeyListenerInstance(key => {
@@ -159,6 +156,11 @@ namespace E621Downloader.Pages {
 				await LoadFromLocal(local);
 				PostType = PathType.Local;
 				path = local.ImageFile.Path;
+			} else if(p is string postID && !string.IsNullOrEmpty(postID)) {
+				if(this.PostRef?.id == postID) {
+					return;
+				}
+				//????????????????????
 			} else if(this.PostRef == null && p == null) {
 				MyProgressRing.IsActive = false;
 				showNoPostGrid = true;
@@ -203,6 +205,8 @@ namespace E621Downloader.Pages {
 				}
 				ParentImageHolder.Post_ID = this.PostRef.relationships.parent_id;
 				ParentImageHolder.Origin = this.PostRef;
+
+				Local.History.AddPostID(this.PostRef.id);
 			}
 
 			if(hasExecutedPause && MyMediaPlayer.Source != null && MyMediaPlayer.MediaPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Paused) {
@@ -720,7 +724,7 @@ namespace E621Downloader.Pages {
 			string tag = btn.Tag as string;
 			if(Local.Listing.CheckBlackList(tag)) {
 				await Local.Listing.RemoveBlackList(tag);
-				((FontIcon)btn.Content).Glyph = "\uF8AB";
+				((FontIcon)btn.Content).Glyph = "\uE108";
 				ToolTipService.SetToolTip(btn, "Add To BlackList");
 			} else {
 				await Local.Listing.AddBlackList(tag);
@@ -730,7 +734,7 @@ namespace E621Downloader.Pages {
 				if(Local.Listing.CheckFollowingList(tag)) {
 					await Local.Listing.RemoveFollowingList(tag);
 					var followListButton = (btn.Parent as RelativePanel).Children.OfType<Button>().ToList().Find(b => b.Name == "FollowListButton");
-					((FontIcon)followListButton.Content).Glyph = "\uF8AA";
+					((FontIcon)followListButton.Content).Glyph = "\uE109";
 					ToolTipService.SetToolTip(followListButton, "Add To FollowList");
 				}
 			}
@@ -741,7 +745,7 @@ namespace E621Downloader.Pages {
 			string tag = btn.Tag as string;
 			if(Local.Listing.CheckFollowingList(tag)) {
 				await Local.Listing.RemoveFollowingList(tag);
-				((FontIcon)btn.Content).Glyph = "\uF8AA";
+				((FontIcon)btn.Content).Glyph = "\uE109";
 				ToolTipService.SetToolTip(btn, "Add To FollowList");
 			} else {
 				await Local.Listing.AddFollowingList(tag);
@@ -751,7 +755,7 @@ namespace E621Downloader.Pages {
 				if(Local.Listing.CheckBlackList(tag)) {
 					await Local.Listing.RemoveBlackList(tag);
 					Button blackListButton = (btn.Parent as RelativePanel).Children.OfType<Button>().ToList().Find(b => b.Name == "BlackListButton");
-					((FontIcon)blackListButton.Content).Glyph = "\uF8AB";
+					((FontIcon)blackListButton.Content).Glyph = "\uE108";
 					ToolTipService.SetToolTip(blackListButton, "Add To BlackList");
 				}
 			}
@@ -764,7 +768,7 @@ namespace E621Downloader.Pages {
 				((FontIcon)btn.Content).Glyph = "\uEA43";
 				ToolTipService.SetToolTip(btn, "Remove From BlackList");
 			} else {
-				((FontIcon)btn.Content).Glyph = "\uF8AB";
+				((FontIcon)btn.Content).Glyph = "\uE108";
 				ToolTipService.SetToolTip(btn, "Add To BlackList");
 			}
 		}
@@ -776,7 +780,7 @@ namespace E621Downloader.Pages {
 				((FontIcon)btn.Content).Glyph = "\uE74D";
 				ToolTipService.SetToolTip(btn, "Delete From FollowList");
 			} else {
-				((FontIcon)btn.Content).Glyph = "\uF8AA";
+				((FontIcon)btn.Content).Glyph = "\uE109";
 				ToolTipService.SetToolTip(btn, "Add To FollowList");
 			}
 		}

@@ -307,7 +307,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void EmailButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			await ComposeEmail("[E1547 For UWP] Subject Here", "");
+			await ComposeEmail("[E621 Browser For UWP] Subject Here", "");
 		}
 
 		private async Task ComposeEmail(string subject, string messageBody) {
@@ -385,6 +385,19 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			LocalSettings.Save();
+		}
+
+		private async void HistoryButton_Click(object sender, RoutedEventArgs e) {
+			var dialog = new ContentDialog() {
+				Title = "History",
+				CloseButtonText = "Back",
+			};
+			var content = new HistoryDialogView(dialog);
+			dialog.Content = content;
+			dialog.Closing += (s, args) => {
+				//content.
+			};
+			await dialog.ShowAsync();
 		}
 
 		//private void RandomTagMaxCountText_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args) {

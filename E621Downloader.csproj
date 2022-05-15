@@ -149,8 +149,10 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\HistoryItem.cs" />
     <Compile Include="Models\KeyListener.cs" />
     <Compile Include="Models\Locals\FavoritesList.cs" />
+    <Compile Include="Models\Locals\History.cs" />
     <Compile Include="Models\Locals\Listing.cs" />
     <Compile Include="Models\Networks\DataResult.cs" />
     <Compile Include="Models\Posts\E621Vote.cs" />
@@ -161,7 +163,6 @@
     <Compile Include="Models\MyEnumerable.cs" />
     <Compile Include="Models\Networks\Data.cs" />
     <Compile Include="Models\Download\DownloadInstance.cs" />
-    <Compile Include="Models\Download\DownloadInstanceLocalManager.cs" />
     <Compile Include="Models\Download\DownloadsGroup.cs" />
     <Compile Include="Models\Download\DownloadsManager.cs" />
     <Compile Include="Models\E621Article.cs" />
@@ -251,6 +252,9 @@
     </Compile>
     <Compile Include="Views\DownloadSection\SimpleDownloadProgressBar.xaml.cs">
       <DependentUpon>SimpleDownloadProgressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HistoryDialogView.xaml.cs">
+      <DependentUpon>HistoryDialogView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\HotKeysManager.xaml.cs">
       <DependentUpon>HotKeysManager.xaml</DependentUpon>
@@ -539,6 +543,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DownloadSection\SimpleDownloadProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HistoryDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

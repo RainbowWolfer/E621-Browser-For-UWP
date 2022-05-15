@@ -25,11 +25,12 @@ namespace E621Downloader.Models.Locals {
 	public static class Local {
 		private static bool initialized = false;
 
-		private const string LISTINGNAME = "Listing.json";
-		private const string TOKENNAME = "Token.txt";
-		private const string DOWNLOADSINFONAME = "DownloadsInfo.json";
-		private const string FAVORITESLISTNAME = "FavorutesList.json";
-		private const string LOCALSETTINGSNAME = "LocalSettings.settings";
+		private const string LISTING_NAME = "Listing.json";
+		private const string TOKEN_NAME = "Token.txt";
+		private const string DOWNLOADS_INFO_NAME = "DownloadsInfo.json";
+		private const string FAVORITES_LIST_NAME = "FavorutesList.json";
+		private const string LOCAL_SETTINGS_NAME = "LocalSettings.settings";
+		private const string HISTORY_NAME = "History.json";
 
 		public static StorageFolder LocalFolder => ApplicationData.Current.LocalFolder;
 
@@ -41,10 +42,14 @@ namespace E621Downloader.Models.Locals {
 		public static StorageFile FavoritesListFile { get; private set; }
 		public static StorageFile LocalSettingsFile { get; private set; }
 
+		public static StorageFile HistoryFile { get; private set; }
+
 		//public static string[] FollowList { get; private set; }
 		//public static string[] BlackList { get; private set; }
 
 		public static Listing Listing { get; private set; }
+
+		public static History History { get; private set; }
 
 		private static string token;
 
@@ -57,15 +62,17 @@ namespace E621Downloader.Models.Locals {
 				throw new Exception("Local has been initialized more than one time!");
 			}
 			initialized = true;
-			ListingFile = await LocalFolder.CreateFileAsync(LISTINGNAME, CreationCollisionOption.OpenIfExists);
+			ListingFile = await LocalFolder.CreateFileAsync(LISTING_NAME, CreationCollisionOption.OpenIfExists);
 
-			FutureAccessTokenFile = await LocalFolder.CreateFileAsync(TOKENNAME, CreationCollisionOption.OpenIfExists);
+			FutureAccessTokenFile = await LocalFolder.CreateFileAsync(TOKEN_NAME, CreationCollisionOption.OpenIfExists);
 
-			DownloadsInfoFile = await LocalFolder.CreateFileAsync(DOWNLOADSINFONAME, CreationCollisionOption.OpenIfExists);
+			DownloadsInfoFile = await LocalFolder.CreateFileAsync(DOWNLOADS_INFO_NAME, CreationCollisionOption.OpenIfExists);
 
-			FavoritesListFile = await LocalFolder.CreateFileAsync(FAVORITESLISTNAME, CreationCollisionOption.OpenIfExists);
+			FavoritesListFile = await LocalFolder.CreateFileAsync(FAVORITES_LIST_NAME, CreationCollisionOption.OpenIfExists);
 
-			LocalSettingsFile = await LocalFolder.CreateFileAsync(LOCALSETTINGSNAME, CreationCollisionOption.OpenIfExists);
+			LocalSettingsFile = await LocalFolder.CreateFileAsync(LOCAL_SETTINGS_NAME, CreationCollisionOption.OpenIfExists);
+
+			HistoryFile = await LocalFolder.CreateFileAsync(HISTORY_NAME, CreationCollisionOption.OpenIfExists);
 
 			await Reload();
 		}
@@ -117,10 +124,21 @@ namespace E621Downloader.Models.Locals {
 
 		public static async Task Reload() {
 			await ReadListing();
+			await ReadHistory();
 			await ReadLocalSettings();
 			string token = await GetTokenFromFile();
 			await SetToken(token);
 			await ReadFavoritesLists();
+		}
+
+		public static async Task WriteHistory() {
+			string json = JsonConvert.SerializeObject(History, Formatting.Indented);
+			await FileIO.WriteTextAsync(HistoryFile, json);
+		}
+
+		public static async Task ReadHistory() {
+			string json = await FileIO.ReadTextAsync(HistoryFile);
+			History = JsonConvert.DeserializeObject<History>(json) ?? new();
 		}
 
 		public static async Task WriteListing() {
@@ -300,7 +318,7 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public static async Task WriteLocalSettings() {
-			await FileIO.WriteTextAsync(LocalSettingsFile, JsonConvert.SerializeObject(LocalSettings.Current));
+			await FileIO.WriteTextAsync(LocalSettingsFile, JsonConvert.SerializeObject(LocalSettings.Current, Formatting.Indented));
 		}
 
 		public static async Task ReadLocalSettings() {
@@ -339,7 +357,7 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public static async Task WriteFavoritesLists() {
-			await FileIO.WriteTextAsync(FavoritesListFile, JsonConvert.SerializeObject(FavoritesList.Table));
+			await FileIO.WriteTextAsync(FavoritesListFile, JsonConvert.SerializeObject(FavoritesList.Table, Formatting.Indented));
 		}
 
 		//F:\E621\creepypasta -momo_(creepypasta) rating;e\1820721.png

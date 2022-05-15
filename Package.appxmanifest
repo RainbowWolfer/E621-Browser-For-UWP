@@ -37,7 +37,7 @@
         Square44x44Logo="Assets\AppIcons\Square44x44Logo.png"
         Description="E621 Browser For UWP"
         BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\AppIcons\Wide310x150Logo.png" Square71x71Logo="Assets\AppIcons\SmallTile.png" Square310x310Logo="Assets\AppIcons\LargeTile.png" ShortName="E1547 Downloader">
+        <uap:DefaultTile Wide310x150Logo="Assets\AppIcons\Wide310x150Logo.png" Square71x71Logo="Assets\AppIcons\SmallTile.png" Square310x310Logo="Assets\AppIcons\LargeTile.png" ShortName="E621 Browser For UWP">
           <uap:ShowNameOnTiles>
             <uap:ShowOn Tile="wide310x150Logo"/>
             <uap:ShowOn Tile="square310x310Logo"/>

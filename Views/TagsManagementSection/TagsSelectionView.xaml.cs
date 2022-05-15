@@ -118,6 +118,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 					SetLoadingbar(false);
 				};
 			}
+			AutoCompletesListView.SelectedIndex = 0;
 		}
 
 		private void CalculateCurrentTags() {

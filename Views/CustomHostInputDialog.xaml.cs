@@ -57,7 +57,13 @@ namespace E621Downloader.Views {
 			Acceptbutton.IsEnabled = false;
 			ButtonContent.Visibility = Visibility.Collapsed;
 			LoadingPanel.Visibility = Visibility.Visible;
-			HttpResult<string> result = await Data.ReadURLAsync($"http://{Input.Text}/posts?limit=1", cts.Token);
+			string url = Input.Text.ToLower().Trim();
+			if(url == "e621.net") {
+				Confirm = true;
+				dialog.Hide();
+				return;
+			}
+			HttpResult<string> result = await Data.ReadURLAsync($"http://{url}/posts?limit=1", cts.Token);
 			if(result.Result == HttpResultType.Success) {
 				Confirm = true;
 				dialog.Hide();

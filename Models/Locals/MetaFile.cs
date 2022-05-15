@@ -28,7 +28,7 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public string ConvertJson() {
-			return JsonConvert.SerializeObject(this);
+			return JsonConvert.SerializeObject(this, Formatting.Indented);
 		}
 
 		public static MetaFile ReadFromJson(string content) {

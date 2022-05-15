@@ -32,7 +32,7 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader {
 	public sealed partial class App: Application {
 		//WUwPNbGDrfXnQoHfvU1nR3TD;
-		public static App Instance;
+		public static App Instance { get; private set; }
 
 		public const string IS_LIGHT_THEME = "IsLightTheme";
 

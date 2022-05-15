@@ -200,6 +200,10 @@ namespace E621Downloader {
 			E621User.Current = await E621User.GetAsync(username);
 			UserChangedInfoComplete?.Invoke();
 			string url = await E621User.GetAvatarURLAsync(E621User.Current);
+			if(string.IsNullOrWhiteSpace(url)) {
+				UserChangedAvatarComplete?.Invoke(UserPicture.ProfilePicture as BitmapImage);
+				return;
+			}
 			BitmapImage image = new(new Uri(this.BaseUri, url));
 			image.ImageOpened += (s, e) => {
 				UserChangedAvatarComplete?.Invoke(image);
@@ -502,7 +506,9 @@ namespace E621Downloader {
 				case TagsSelectionView.ResultType.None:
 					break;
 				case TagsSelectionView.ResultType.Search:
-					NavigateToPostsBrowser(1, view.GetTags());
+					string[] tags = view.GetTags();
+					NavigateToPostsBrowser(1, tags);
+					Local.History.AddTag(tags);
 					break;
 				case TagsSelectionView.ResultType.Hot:
 					NavigateToPostsBrowser(1, "order:rank");

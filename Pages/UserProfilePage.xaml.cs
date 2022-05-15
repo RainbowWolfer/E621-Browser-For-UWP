@@ -70,7 +70,7 @@ namespace E621Downloader.Pages {
 						continue;
 					}
 					string title = field.Name.Replace("_", " ").ToCamelCase();
-					string content = field.GetValue(E621User.Current).ToString();
+					string content = field.GetValue(E621User.Current)?.ToString() ?? "None";
 					targetPanel.Children.Add(new UserInfoLine(title, content));
 					if(i >= MAX_ITEM_IN_PANEL) {
 						targetPanel = PanelRight;
