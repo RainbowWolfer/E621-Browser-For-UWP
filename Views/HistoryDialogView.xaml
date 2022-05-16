@@ -10,62 +10,40 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
+	<UserControl.Resources>
+
+	</UserControl.Resources>
+
 	<Grid>
-		<Pivot>
-			<PivotItem Header="Search History">
+		<Pivot SelectionChanged="Pivot_SelectionChanged">
+			<PivotItem x:Name="SearchItem" Header="Search History">
 				<Grid>
-					<ListView x:Name="SearchHistoryListView" ItemsSource="{x:Bind tags}" Margin="10">
-						<ListView.ItemTemplate>
-							<DataTemplate x:DataType="models:HistoryItem">
-								<Grid>
-									<Grid.ContextFlyout>
-										<MenuFlyout>
-											<MenuFlyoutItem Tag="{x:Bind Value}" Text="Copy" Icon="Copy" Click="MenuFlyoutItem_Click"/>
-											<MenuFlyoutItem Tag="{x:Bind Value}" Text="Delete" Icon="Delete" Click="MenuFlyoutItem_Click_Delete_1"/>
-										</MenuFlyout>
-									</Grid.ContextFlyout>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="auto"/>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="auto"/>
-									</Grid.ColumnDefinitions>
-									<FontIcon Glyph="&#xE1CB;"/>
-									<TextBlock Text="{x:Bind Value}" Margin="10,0,0,0" FontSize="18" Grid.Column="1"/>
-									<TextBlock Text="{x:Bind Time}" Grid.Column="2"/>
-								</Grid>
-							</DataTemplate>
-						</ListView.ItemTemplate>
-					</ListView>
+					<ScrollViewer Padding="5" VerticalScrollMode="Enabled">
+						<StackPanel x:Name="SearchHistoryPanel">
+							<StackPanel.ChildrenTransitions>
+								<TransitionCollection>
+									<EntranceThemeTransition IsStaggeringEnabled="True" />
+								</TransitionCollection>
+							</StackPanel.ChildrenTransitions>
+						</StackPanel>
+					</ScrollViewer>
 					<StackPanel x:Name="SearchHistoryEmptyPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="50">
 						<FontIcon Glyph="&#xE11A;" FontSize="42" Margin="5"/>
 						<TextBlock Text="Nothing Here" FontSize="18" Margin="5"/>
 					</StackPanel>
 				</Grid>
 			</PivotItem>
-			<PivotItem Header="View History">
+			<PivotItem x:Name="ViewItem" Header="View History">
 				<Grid>
-					<ListView x:Name="ViewHistoryListView" ItemsSource="{x:Bind postIDs}" Margin="10" ItemClick="ViewHistoryListView_ItemClick" IsItemClickEnabled="True">
-						<ListView.ItemTemplate>
-							<DataTemplate x:DataType="models:HistoryItem">
-								<Grid>
-									<Grid.ContextFlyout>
-										<MenuFlyout>
-											<MenuFlyoutItem Tag="{x:Bind Value}" Text="Copy" Icon="Copy" Click="MenuFlyoutItem_Click"/>
-											<MenuFlyoutItem Tag="{x:Bind Value}" Text="Delete" Icon="Delete" Click="MenuFlyoutItem_Click_Delete_2"/>
-										</MenuFlyout>
-									</Grid.ContextFlyout>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="auto"/>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="auto"/>
-									</Grid.ColumnDefinitions>
-									<FontIcon Glyph="&#xE70B;"/>
-									<TextBlock Text="{x:Bind ValueWithHashTag}" Margin="10,0,0,0" FontSize="18" Grid.Column="1"/>
-									<TextBlock Text="{x:Bind Time}" Grid.Column="2"/>
-								</Grid>
-							</DataTemplate>
-						</ListView.ItemTemplate>
-					</ListView>
+					<ScrollViewer Padding="5" VerticalScrollMode="Enabled">
+						<StackPanel x:Name="ViewHistoryPanel">
+							<StackPanel.ChildrenTransitions>
+								<TransitionCollection>
+									<EntranceThemeTransition IsStaggeringEnabled="True" />
+								</TransitionCollection>
+							</StackPanel.ChildrenTransitions>
+						</StackPanel>
+					</ScrollViewer>
 					<StackPanel x:Name="ViewHistoryEmptyPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="50">
 						<FontIcon Glyph="&#xE11A;" FontSize="42" Margin="5"/>
 						<TextBlock Text="Nothing Here" FontSize="18" Margin="5"/>

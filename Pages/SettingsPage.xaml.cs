@@ -395,7 +395,7 @@ namespace E621Downloader.Pages {
 			var content = new HistoryDialogView(dialog);
 			dialog.Content = content;
 			dialog.Closing += (s, args) => {
-				//content.
+				content.CancelLoading();
 			};
 			await dialog.ShowAsync();
 		}

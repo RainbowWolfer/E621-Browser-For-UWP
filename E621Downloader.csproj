@@ -13,7 +13,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22000.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -314,6 +314,12 @@
     <Compile Include="Views\PostsBrowserPaginator.xaml.cs">
       <DependentUpon>PostsBrowserPaginator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RecentTagView.xaml.cs">
+      <DependentUpon>RecentTagView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RecentViewView.xaml.cs">
+      <DependentUpon>RecentViewView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ResizeBar.xaml.cs">
       <DependentUpon>ResizeBar.xaml</DependentUpon>
     </Compile>
@@ -431,6 +437,7 @@
     <Content Include="Assets\Images\Helper_Step2.png" />
     <Content Include="Assets\Images\Helper_Step1.png" />
     <None Include="Package.StoreAssociation.xml" />
+    <Content Include="Assets\RowBanner.png" />
     <Content Include="Icons\DeviantArt-icon.png" />
     <Content Include="Icons\Furaffinity-icon.png" />
     <Content Include="Icons\InkBunny-icon.png" />
@@ -623,6 +630,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PostsBrowserPaginator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RecentTagView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RecentViewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

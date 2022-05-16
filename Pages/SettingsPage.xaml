@@ -225,7 +225,7 @@
 									<StackPanel>
 										<TextBlock Text="- Fix a crash bug when the user logs in to the profile page while having no avatar" FontSize="24" TextWrapping="WrapWholeWords"/>
 										<TextBlock Text="- Fix some icons missing in Windows 10" FontSize="24" TextWrapping="WrapWholeWords"/>
-										<TextBlock Text="- Add a basic and simple history panel. (Rework later)" FontSize="24" TextWrapping="WrapWholeWords"/>
+										<TextBlock Text="- New history panel." FontSize="24" TextWrapping="WrapWholeWords"/>
 										<TextBlock Text="- Minor fixes" FontSize="24" TextWrapping="WrapWholeWords"/>
 									</StackPanel>
 								</controls:Expander.Content>

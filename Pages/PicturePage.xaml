@@ -110,7 +110,8 @@
 				<TextBlock x:Name="TitleText" FontFamily="Cascadia Mono" Text="#1231278 (E)" RelativePanel.RightOf="TypeIcon" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Foreground="Red"/>
 				<FontIcon x:Name="SoundIcon" Glyph="&#xE7BA;" Height="38" Width="40" FontSize="24" RelativePanel.RightOf="TitleText" Margin="5,0,0,0" Foreground="Yellow" ToolTipService.Placement="Bottom"/>
 				<Rectangle x:Name="Separator2" RelativePanel.RightOf="SoundIcon" Style="{StaticResource RectangleSeparator}" d:Fill="White"/>
-				<views:LockableToggleButton x:Name="UpVoteButton" Height="38" Width="38" Padding="0" RelativePanel.RightOf="Separator2" CornerRadius="4" BorderThickness="0" Click="UpVoteButton_Click" LockToggle="True">
+				<FontIcon x:Name="LoadingIcon" Glyph="&#xE10C;" FontSize="24" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.RightOf="Separator2" Visibility="Collapsed"/>
+				<views:LockableToggleButton x:Name="UpVoteButton" Height="38" Width="38" Padding="0" RelativePanel.RightOf="LoadingIcon" CornerRadius="4" BorderThickness="0" Click="UpVoteButton_Click" LockToggle="True">
 					<views:LockableToggleButton.Content>
 						<FontIcon x:Name="UpVoteIcon" Glyph="&#xE96D;" Foreground="LightGreen"/>
 					</views:LockableToggleButton.Content>

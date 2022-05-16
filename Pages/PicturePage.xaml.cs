@@ -62,6 +62,8 @@ namespace E621Downloader.Pages {
 
 		private static Dictionary<string, VoteType> Voted { get; } = new();
 
+		private bool isLoadingPost = false;
+
 		public PicturePage() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
@@ -160,7 +162,29 @@ namespace E621Downloader.Pages {
 				if(this.PostRef?.id == postID) {
 					return;
 				}
-				//????????????????????
+				RemoveGroup();
+				TagsLoadingRing.Visibility = Visibility.Visible;
+				if(App.PostsPool.ContainsKey(postID)) {
+					this.PostRef = App.PostsPool[postID];
+				} else {
+					cts = new CancellationTokenSource();
+					SetIsLoadingPost(true);
+					this.PostRef = await Post.GetPostByIDAsync(cts.Token, postID);
+					SetIsLoadingPost(false);
+					if(this.PostRef == null) {
+						return;
+					} else {
+						if(App.PostsPool.ContainsKey(postID)) {
+							App.PostsPool[postID] = this.PostRef;
+						} else {
+							App.PostsPool.Add(postID, this.PostRef);
+						}
+					}
+				}
+				UpdateDownloadButton(false);
+				await LoadFromPost(this.PostRef);
+				PostType = PathType.PostID;
+				path = this.PostRef.id;
 			} else if(this.PostRef == null && p == null) {
 				MyProgressRing.IsActive = false;
 				showNoPostGrid = true;
@@ -170,7 +194,9 @@ namespace E621Downloader.Pages {
 			UpdateTagsGroup(PostRef?.tags);
 			NoPostGrid.Visibility = showNoPostGrid ? Visibility.Visible : Visibility.Collapsed;
 			MainGrid.Visibility = !showNoPostGrid ? Visibility.Visible : Visibility.Collapsed;
+			TagsLoadingRing.Visibility = Visibility.Collapsed;
 			TitleText.Text = Title;
+			SetIsLoadingPost(false);
 			UpdateScore();
 			UpdateRatingColor();
 			UpdateTypeIcon();
@@ -551,6 +577,30 @@ namespace E621Downloader.Pages {
 			}
 		}
 
+		private void SetIsLoadingPost(bool loading) {
+			isLoadingPost = loading;
+			Visibility visibility;
+			if(loading) {
+				MainSplitView.IsPaneOpen = false;
+				MoreInfoButton.IsEnabled = false;
+				visibility = Visibility.Collapsed;
+				LoadingIcon.Visibility = Visibility.Visible;
+			} else {
+				MoreInfoButton.IsEnabled = true;
+				visibility = Visibility.Visible;
+				LoadingIcon.Visibility = Visibility.Collapsed;
+			}
+			UpVoteButton.Visibility = visibility;
+			ScoreText.Visibility = visibility;
+			DownVoteButton.Visibility = visibility;
+			Separator3.Visibility = visibility;
+			FavoriteButton.Visibility = visibility;
+			FavoriteListButton.Visibility = visibility;
+			DownloadButton.Visibility = visibility;
+			LeftButton.IsEnabled = !loading;
+			RightButton.IsEnabled = !loading;
+		}
+
 		private void UpdateOthers() {
 			if(PostRef == null) {
 				return;
@@ -847,10 +897,16 @@ namespace E621Downloader.Pages {
 		}
 
 		private void GoLeft() {
+			if(isLoadingPost) {
+				return;
+			}
 			MainPage.NavigateToPicturePage(App.PostsList.GoLeft());
 		}
 
 		private void GoRight() {
+			if(isLoadingPost) {
+				return;
+			}
 			MainPage.NavigateToPicturePage(App.PostsList.GoRight());
 		}
 

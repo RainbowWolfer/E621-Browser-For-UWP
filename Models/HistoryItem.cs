@@ -9,7 +9,7 @@ namespace E621Downloader.Models {
 		public string Value { get; set; }
 		public DateTime Time { get; set; }
 
-		public string ValueWithHashTag => $"#{Value}";
+		public string GetValueWithHashTag() => $"#{Value}";
 
 		public HistoryItem(string value, DateTime time) {
 			Value = value;

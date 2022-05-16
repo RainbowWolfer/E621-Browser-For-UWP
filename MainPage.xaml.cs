@@ -512,6 +512,7 @@ namespace E621Downloader {
 					break;
 				case TagsSelectionView.ResultType.Hot:
 					NavigateToPostsBrowser(1, "order:rank");
+					Local.History.AddTag("order:rank");
 					break;
 				case TagsSelectionView.ResultType.Random:
 					CreateInstantDialog("Please Waiting", "Getting Your Tag");
@@ -537,6 +538,7 @@ namespace E621Downloader {
 						List<string> all = post.tags.GetAllTags();
 						string tag = all[new Random().Next(all.Count)];
 						NavigateToPostsBrowser(1, tag);
+						Local.History.AddTag(tag);
 					}
 					break;
 				default:
