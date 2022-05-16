@@ -1,8 +1,9 @@
 # E621Downloader
 
 ## Microsoft Store
-    [Microsoft Store App URL](https://www.microsoft.com/store/apps/9P3751M5M4WJ)
-    [Microsoft Store Protocol Link](ms-windows-store://pdp/?productid=9P3751M5M4WJ)
+[Microsoft Store App URL](https://www.microsoft.com/store/apps/9P3751M5M4WJ)
+<br/>
+[Microsoft Store Protocol Link](ms-windows-store://pdp/?productid=9P3751M5M4WJ)
 
 ## Installation (By Source)
     1. Download the source code.
