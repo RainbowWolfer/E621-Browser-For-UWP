@@ -400,6 +400,22 @@ namespace E621Downloader.Pages {
 			await dialog.ShowAsync();
 		}
 
+		private async void ClearWallpapersCacheButton_Click(object sender, RoutedEventArgs e) {
+			if(await new ContentDialog() {
+				Title = "Confirmation",
+				Content = "Are you sure to delete all your wallpapers cache located in app settings folder",
+				PrimaryButtonText = "Yes",
+				CloseButtonText = "No",
+				DefaultButton = ContentDialogButton.Close,
+			}.ShowAsync() == ContentDialogResult.Primary) {
+				MainPage.CreateInstantDialog("Please wait", "Cleaning");
+				foreach(StorageFile item in await Local.WallpapersFolder.GetFilesAsync()) {
+					await item.DeleteAsync();
+				}
+				MainPage.HideInstantDialog();
+			}
+		}
+
 		//private void RandomTagMaxCountText_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args) {
 		//	if(internalChanges) {
 		//		Debug.WriteLine("!");

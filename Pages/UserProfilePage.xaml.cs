@@ -87,6 +87,7 @@ namespace E621Downloader.Pages {
 				Content = "Are you sure to log out?",
 				PrimaryButtonText = "Sure",
 				CloseButtonText = "Back",
+				DefaultButton = ContentDialogButton.Close,
 			}.ShowAsync() == ContentDialogResult.Primary) {
 				LocalSettings.Current.SetLocalUser("", "");
 				LocalSettings.Save();

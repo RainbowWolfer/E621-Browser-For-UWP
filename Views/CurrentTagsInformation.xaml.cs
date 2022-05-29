@@ -24,13 +24,21 @@ namespace E621Downloader.Views {
 
 		public CurrentTagsInformation(string[] tags, ContentDialog dialog) {
 			this.InitializeComponent();
-			this.tags = E621Tag.SortOutMetatags(tags);
 			this.dialog = dialog;
-			for(int i = 0; i < this.tags.Length; i++) {
-				ExpanderPanel.Children.Add(new TagExpander(this.tags[i]) {
+			if(tags.Length == 0) {
+				this.tags = tags;
+				ExpanderPanel.Children.Add(new TagExpander("") {
 					IsExpanded = true,
 					Margin = new Thickness(5),
 				});
+			} else {
+				this.tags = E621Tag.SortOutMetatags(tags);
+				for(int i = 0; i < this.tags.Length; i++) {
+					ExpanderPanel.Children.Add(new TagExpander(this.tags[i]) {
+						IsExpanded = true,
+						Margin = new Thickness(5),
+					});
+				}
 			}
 			filtered = E621Tag.FilterMetatags(this.tags);
 			string tag = E621Tag.JoinTags(filtered);

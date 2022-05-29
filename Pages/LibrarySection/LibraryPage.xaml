@@ -13,7 +13,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 
-	<controls:NavigationView x:Name="MainNavigationView" IsBackEnabled="False" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" ItemInvoked="MainNavigationView_ItemInvoked">
+	<controls:NavigationView x:Name="MainNavigationView" IsBackEnabled="False" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" ItemInvoked="MainNavigationView_ItemInvoked" PaneTitle="Folders">
 		<controls:NavigationView.MenuItems>
 			<controls:NavigationViewItem x:Name="FilterItem" Icon="Filter" Content="Filter"/>
 			<controls:NavigationViewItem x:Name="RootItem" Icon="Home" Content="Root"/>

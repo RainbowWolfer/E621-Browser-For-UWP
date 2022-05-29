@@ -16,7 +16,7 @@
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		<StackPanel Grid.Column="1" BorderThickness="2" BorderBrush="Gray" Margin="5" Padding="5" CornerRadius="10">
+		<StackPanel Grid.Column="1" BorderThickness="2" BorderBrush="Gray" Margin="5" Padding="5,5,15,5" CornerRadius="10">
 			<TextBlock Text="Pircture Page" Margin="10" FontSize="24"/>
 			<StackPanel Orientation="Horizontal">
 				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
@@ -59,8 +59,8 @@
 				<TextBlock Text="Zoom Out" VerticalAlignment="Center" Margin="10,0,0,0"/>
 			</StackPanel>
 		</StackPanel>
-		<StackPanel Grid.Column="0" BorderThickness="2" BorderBrush="Gray" Margin="5" Padding="5" CornerRadius="10">
-			<TextBlock Text="Main Page" Margin="10" FontSize="24"/>
+		<StackPanel Grid.Column="0" BorderThickness="2" BorderBrush="Gray" Margin="5" Padding="5,5,15,5" CornerRadius="10">
+			<TextBlock Text="Global" Margin="10" FontSize="24"/>
 			<StackPanel Orientation="Horizontal">
 				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
 					<TextBlock Text="Q" HorizontalAlignment="Center" VerticalAlignment="Center"/>

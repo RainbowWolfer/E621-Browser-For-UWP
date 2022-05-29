@@ -21,6 +21,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -77,12 +78,19 @@ namespace E621Downloader {
 
 		public const VirtualKey SEARCH_KEY = VirtualKey.Q;
 
+		private bool isInMaintenance = false;
+
 		public MainPage() {
 			Instance = this;
 			this.InitializeComponent();
+
+			var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+			coreTitleBar.ExtendViewIntoTitleBar = true;
+			Window.Current.SetTitleBar(AppTitleBar);
+
 			currentTag = PageTag.Welcome;
 			KeyListener.SubmitInstance(new KeyListenerInstance(async key => {
-				if(IsInputting) {
+				if(IsInputting || isInMaintenance) {
 					return;
 				}
 				if(key == SEARCH_KEY && !IsInSearchPopup) {
@@ -125,13 +133,22 @@ namespace E621Downloader {
 			string number = "";
 			if(result.Result == HttpResultType.Success) {
 				string data = result.Content;
-				int start = data.IndexOf("Serving ") + 8;
-				for(int i = start; i < data.Length; i++) {
-					if(data[i] == ',') {
-						continue;
-					}
-					if(char.IsDigit(data[i])) {
-						number += data[i];
+				if(data.Contains("performing maintenance")/* || true*/) {
+					MyNavigationView.IsPaneVisible = false;
+					NavigateTo(PageTag.Maintenance);
+					HideInstantDialog();
+					isInMaintenance = true;
+					return;
+				} else {
+					MyNavigationView.IsPaneVisible = true;
+					int start = data.IndexOf("Serving ") + 8;
+					for(int i = start; i < data.Length; i++) {
+						if(data[i] == ',') {
+							continue;
+						}
+						if(char.IsDigit(data[i])) {
+							number += data[i];
+						}
 					}
 				}
 			}
@@ -459,6 +476,10 @@ namespace E621Downloader {
 					target = typeof(SettingsPage);
 					parameter = null;
 					break;
+				case PageTag.Maintenance:
+					target = typeof(MaintenancePage);
+					parameter = null;
+					break;
 				default:
 					throw new Exception("Tag Not Found");
 			}
@@ -565,7 +586,7 @@ namespace E621Downloader {
 
 	}
 	public enum PageTag {
-		PostsBrowser = 0, Picture = 1, Library = 2, Subscription = 3, Spot = 4, Download = 5, UserProfile = 6, Welcome = 7, Settings,
+		PostsBrowser = 0, Picture = 1, Library = 2, Subscription = 3, Spot = 4, Download = 5, UserProfile = 6, Welcome = 7, Settings, Maintenance
 	}
 }
 

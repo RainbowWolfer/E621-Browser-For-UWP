@@ -202,6 +202,9 @@
     <Compile Include="Pages\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\MaintenancePage.xaml.cs">
+      <DependentUpon>MaintenancePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\PicturePage.xaml.cs">
       <DependentUpon>PicturePage.xaml</DependentUpon>
     </Compile>
@@ -289,6 +292,9 @@
     </Compile>
     <Compile Include="Views\ListingManager\BlackListManager.xaml.cs">
       <DependentUpon>BlackListManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoadingDialog.xaml.cs">
+      <DependentUpon>LoadingDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoadingRingIcon.xaml.cs">
       <DependentUpon>LoadingRingIcon.xaml</DependentUpon>
@@ -442,7 +448,9 @@
     <Content Include="Icons\Furaffinity-icon.png" />
     <Content Include="Icons\InkBunny-icon.png" />
     <Content Include="Icons\Instagram-icon.png" />
+    <Content Include="Icons\Patreon-icon.png" />
     <Content Include="Icons\Pixiv-icon.png" />
+    <Content Include="Icons\SubscribeStar-icon.png" />
     <Content Include="Icons\tumblr-icon.png" />
     <Content Include="Icons\Twitter-icon.png" />
     <Content Include="Icons\weasyl-icon.png" />
@@ -482,6 +490,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\MaintenancePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -598,6 +610,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ListingManager\BlackListManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoadingDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

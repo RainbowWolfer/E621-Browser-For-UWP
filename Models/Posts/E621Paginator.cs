@@ -73,7 +73,11 @@ namespace E621Downloader.Models.Posts {
 				});
 			} catch(Exception e) {
 				Debug.WriteLine(e);
-				return new DataResult<E621Paginator>(HttpResultType.Error, null);
+				//return 0 length paginator
+				return new DataResult<E621Paginator>(HttpResultType.Success, new E621Paginator() {
+					currentPage = 1,
+					pages = new int[] { 0 }
+				});
 			}
 		}
 

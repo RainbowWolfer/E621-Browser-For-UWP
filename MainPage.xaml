@@ -6,12 +6,33 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:data="using:E621Downloader.Models" 
-	xmlns:controls="using:Microsoft.UI.Xaml.Controls" xmlns:views="using:E621Downloader.Views"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls" 
+	xmlns:views="using:E621Downloader.Views"
 	mc:Ignorable="d"
 	d:RequestedTheme="Dark"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
 	<Grid>
-		<controls:NavigationView PaneDisplayMode="Top" x:Name="MyNavigationView" ItemInvoked="MyNavigationView_ItemInvoked" BackRequested="MyNavigationView_BackRequested">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<Grid x:Name="AppTitleBar" Background="Transparent" Height="28" Margin="0,2,0,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition x:Name="LeftPaddingColumn" Width="0"/>
+				<ColumnDefinition/>
+				<ColumnDefinition x:Name="RightPaddingColumn" Width="0"/>
+			</Grid.ColumnDefinitions>
+			<Image Source="Assets/E612_Light.png" Grid.Column="1" HorizontalAlignment="Left" Width="24" Height="24" Margin="8,0,0,0"/>
+			<TextBlock x:Name="AppTitleTextBlock" Text="E621 Browser For UWP" Style="{StaticResource CaptionTextBlockStyle}" FontSize="13" Grid.Column="1" VerticalAlignment="Center" Margin="42,2,0,0"/>
+		</Grid>
+
+		<AutoSuggestBox QueryIcon="Find"
+                        PlaceholderText="Search"
+                        HorizontalAlignment="Center"
+                        Width="260" Height="32" Visibility="Collapsed"/>
+
+		<controls:NavigationView x:Name="MyNavigationView" PaneDisplayMode="Top" ItemInvoked="MyNavigationView_ItemInvoked" BackRequested="MyNavigationView_BackRequested" Grid.Row="1">
 			<controls:NavigationView.MenuItems>
 				<controls:NavigationViewItem Icon="Home" Content="Home" Tag="0"/>
 				<controls:NavigationViewItem Icon="Pictures" Content="Picture" Tag="1"/>

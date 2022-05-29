@@ -53,7 +53,7 @@ namespace E621Downloader.Views {
 				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/Furaffinity-icon.png"));
 			} else if(url.StartsWith("www.deviantart") || url.StartsWith("deviantart")) {
 				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/DeviantArt-icon.png"));
-			} else if(url.StartsWith("inkbunny") || url.StartsWith("www.inkbunny")) {
+			} else if(url.StartsWith("www.inkbunny") || url.StartsWith("inkbunny")) {
 				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/InkBunny-icon.png"));
 			} else if(url.StartsWith("www.weasyl.com") || url.StartsWith("weasyl.com")) {
 				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/weasyl-icon.png"));
@@ -61,6 +61,10 @@ namespace E621Downloader.Views {
 				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/Pixiv-icon.png"));
 			} else if(url.StartsWith("www.instagram") || url.StartsWith("instagram")) {
 				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/Instagram-icon.png"));
+			} else if(url.StartsWith("www.patreon") || url.StartsWith("patreon")) {
+				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/Patreon-icon.png"));
+			} else if(url.StartsWith("www.subscribestar") || url.StartsWith("subscribestar")) {
+				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/SubscribeStar-icon.png"));
 			}
 		}
 

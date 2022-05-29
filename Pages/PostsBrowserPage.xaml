@@ -52,7 +52,7 @@
 	</Page.Resources>
 
 	<Grid>
-		<controls:NavigationView x:Name="TabsNavigationView" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" ItemInvoked="TabsNavigationView_ItemInvoked" IsPaneOpen="False" PaneTitle="Tags Tab">
+		<controls:NavigationView x:Name="TabsNavigationView" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" ItemInvoked="TabsNavigationView_ItemInvoked" IsPaneOpen="False" PaneTitle="Tags">
 			<controls:NavigationView.MenuItems>
 
 			</controls:NavigationView.MenuItems>

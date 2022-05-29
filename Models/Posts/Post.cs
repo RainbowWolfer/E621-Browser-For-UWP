@@ -13,7 +13,7 @@ namespace E621Downloader.Models.Posts {
 	public class Post {
 		public static async Task<List<Post>> GetPostsByTagsAsync(CancellationToken? token, int page, params string[] tags) {
 			if(page <= 0) {
-				throw new Exception("Page not valid");
+				page = 1;
 			}
 			string url = $"https://{Data.GetHost()}/posts.json?page={page}&tags=";
 			tags.ToList().ForEach((t) => url += t + "+");

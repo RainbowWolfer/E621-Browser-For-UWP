@@ -31,8 +31,11 @@ namespace E621Downloader.Models.Locals {
 		private const string FAVORITES_LIST_NAME = "FavorutesList.json";
 		private const string LOCAL_SETTINGS_NAME = "LocalSettings.settings";
 		private const string HISTORY_NAME = "History.json";
+		private const string WALLPAPERS_FOLDER_NAME = "WallpapersCache";
 
 		public static StorageFolder LocalFolder => ApplicationData.Current.LocalFolder;
+
+		public static StorageFolder WallpapersFolder { get; private set; }
 
 		public static StorageFile ListingFile { get; private set; }
 		//public static StorageFile BlackListFile { get; private set; }
@@ -58,6 +61,7 @@ namespace E621Downloader.Models.Locals {
 		public static async Task Initialize() {
 			Debug.WriteLine("Initializing Local");
 			Debug.WriteLine(LocalFolder.Path);
+
 			if(initialized) {
 				throw new Exception("Local has been initialized more than one time!");
 			}
@@ -73,6 +77,8 @@ namespace E621Downloader.Models.Locals {
 			LocalSettingsFile = await LocalFolder.CreateFileAsync(LOCAL_SETTINGS_NAME, CreationCollisionOption.OpenIfExists);
 
 			HistoryFile = await LocalFolder.CreateFileAsync(HISTORY_NAME, CreationCollisionOption.OpenIfExists);
+
+			WallpapersFolder = await LocalFolder.CreateFolderAsync(WALLPAPERS_FOLDER_NAME, CreationCollisionOption.OpenIfExists);
 
 			await Reload();
 		}

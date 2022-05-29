@@ -79,7 +79,7 @@ namespace E621Downloader.Views.DownloadSection {
 		public void UpdateCount() {
 			int l = Group.downloads.Count(d => d.metaFile.FinishedDownloading);
 			int r = Group.downloads.Count();
-			CountOverview.Text = $"Downloading... {l + 1}/{r}";
+			CountOverview.Text = $"Downloading... {l}/{r}";
 		}
 
 		private void GoToLibraryItem_Click(object sender, RoutedEventArgs e) {

@@ -80,6 +80,8 @@ namespace E621Downloader.Pages {
 		private CancellationTokenSource cts_download;
 		private bool isLoading;
 
+		private PostsTab CurrentTab { get; set; } = null;
+
 		public bool IsLoading {
 			get => isLoading;
 			private set {
@@ -134,6 +136,7 @@ namespace E621Downloader.Pages {
 		}
 
 		public async void ToTab(PostsTab tab) {
+			CurrentTab = tab;
 			if(tab == null) {
 				IsLoading = false;
 				CancelLoading();
@@ -464,7 +467,7 @@ namespace E621Downloader.Pages {
 		}
 
 		public void SelectFeedBack(ImageHolder imageHolder) {
-			//SelectionCountTextBlock.Text = $"{GetSelected().Count}/{Posts.Count}";
+			SelectionCountTextBlock.Text = $"{GetSelectedImages().Count}/{CurrentTab?.Posts.Count ?? 0}";
 		}
 
 		public void SetAllItemsSize(bool fixedHeight, double value) {
@@ -498,7 +501,8 @@ namespace E621Downloader.Pages {
 		}
 
 		private void UpdateInfoButton(string[] tags) {
-			InfoButton.Visibility = tags.Where(t => !string.IsNullOrWhiteSpace(t)).Count() > 0 ? Visibility.Visible : Visibility.Collapsed;
+			//no need to hide it if no tags
+			InfoButton.Visibility = true || tags.Where(t => !string.IsNullOrWhiteSpace(t)).Count() > 0 ? Visibility.Visible : Visibility.Collapsed;
 		}
 
 		private void ImagesSizeDialog_UpdateImagesLayout(bool isAdaptive, double value) {
@@ -742,7 +746,7 @@ namespace E621Downloader.Pages {
 			}
 			if(selected.Pool == null) {
 				ContentDialog dialog = new() {
-					Title = E621Tag.JoinTags(selected.Tags),
+					Title = selected.Tags.Length != 0 ? E621Tag.JoinTags(selected.Tags) : "Default",
 					CloseButtonText = "Back",
 				};
 				var content = new CurrentTagsInformation(selected.Tags, dialog);

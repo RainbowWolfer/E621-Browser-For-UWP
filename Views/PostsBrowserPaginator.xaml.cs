@@ -178,6 +178,17 @@ namespace E621Downloader.Views {
 			void P1(Button b) => NavigatePage(-1);
 			void P2(Button b) => NavigatePage(-2);
 
+			if(maxPage == 0) {
+				PageButtons.Children.Add(CreateButton("<"));
+				PageButtons.Children.Add(CreateButton("1"));
+				PageButtons.Children.Add(CreateButton(">"));
+				PageInputText.Visibility = Visibility.Collapsed;
+				ForwardButton.Visibility = Visibility.Collapsed;
+				return;
+			}
+			PageInputText.Visibility = Visibility.Visible;
+			ForwardButton.Visibility = Visibility.Visible;
+
 			List<FrameworkElement> btns = new() {
 				CreateButton('<', currentPage > 1 ? P1 : null)
 			};

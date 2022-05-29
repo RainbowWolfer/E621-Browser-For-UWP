@@ -28,7 +28,14 @@ namespace E621Downloader.Views {
 		private E621Tag tag;
 		public TagExpander(string tag) {
 			this.InitializeComponent();
-			Load(tag);
+			if(string.IsNullOrEmpty(tag)) {
+				TagText.Text = "Default";
+				ConentText.Text = "Order by newest";
+				LoadingBar.Visibility = Visibility.Collapsed;
+				ConentText.Visibility = Visibility.Visible;
+			} else {
+				Load(tag);
+			}
 		}
 
 		private async void Load(string tag) {

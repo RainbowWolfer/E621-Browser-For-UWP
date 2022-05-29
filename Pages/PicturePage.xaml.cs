@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,6 +26,7 @@ using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System;
+using Windows.System.UserProfile;
 using Windows.UI;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
@@ -205,6 +207,7 @@ namespace E621Downloader.Pages {
 			UpdateFavoriteButton();
 			UpdateDescriptionSection();
 			UpdateOthers();
+			UpdateSetAs();
 			ResetImage();
 			if(this.PostRef != null && p != null) {
 				if(MainSplitView.DisplayMode == SplitViewDisplayMode.Overlay) {
@@ -350,7 +353,7 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		private FileType GetFileType(Post post) {
+		public static FileType GetFileType(Post post) {
 			return post.file.ext.ToLower().Trim() switch {
 				"jpg" => FileType.Jpg,
 				"png" => FileType.Png,
@@ -616,6 +619,18 @@ namespace E621Downloader.Pages {
 			bool children = PostRef.relationships.children != null && PostRef.relationships.children.Count > 0;
 			ChildrenHintText.Visibility = !children ? Visibility.Visible : Visibility.Collapsed;
 			ChildrenGridView.Visibility = children ? Visibility.Visible : Visibility.Collapsed;
+		}
+
+		private void UpdateSetAs() {
+			if(PostRef == null) {
+				return;
+			}
+			SetAsItem.IsEnabled = IsAbleToSetAs(PostRef);
+		}
+
+		public static bool IsAbleToSetAs(Post post) {
+			FileType type = GetFileType(post);
+			return type == FileType.Png || type == FileType.Jpg || type == FileType.Gif;
 		}
 
 		private void MainImage_ImageOpened(object sender, RoutedEventArgs e) {
@@ -897,14 +912,14 @@ namespace E621Downloader.Pages {
 		}
 
 		private void GoLeft() {
-			if(isLoadingPost) {
+			if(isLoadingPost || cts_SetAs != null) {
 				return;
 			}
 			MainPage.NavigateToPicturePage(App.PostsList.GoLeft());
 		}
 
 		private void GoRight() {
-			if(isLoadingPost) {
+			if(isLoadingPost || cts_SetAs != null) {
 				return;
 			}
 			MainPage.NavigateToPicturePage(App.PostsList.GoRight());
@@ -1185,13 +1200,119 @@ namespace E621Downloader.Pages {
 			None, Up, Down
 		}
 
-		private void TagText_Loaded(object sender, RoutedEventArgs e) {
-			//var t = (TextBlock)sender;
-			//var shadow = new Microsoft.Toolkit.Uwp.UI.AttachedDropShadow() {
-			//	Offset = "4",
-			//};
-			//Microsoft.Toolkit.Uwp.UI.Effects.SetShadow(t, shadow);
-			//shadow.CastTo = t;
+		public static async Task<bool> SetWallpaperAsync(StorageFile file, CancellationToken token) {
+			bool success = false;
+			if(UserProfilePersonalizationSettings.IsSupported()) {
+				var profileSettings = UserProfilePersonalizationSettings.Current;
+				token.ThrowIfCancellationRequested();
+				success = await profileSettings.TrySetWallpaperImageAsync(file);
+			}
+			return success;
+		}
+
+		public static async Task<bool> SetLockScreenAsync(StorageFile file, CancellationToken token) {
+			bool success = false;
+			if(UserProfilePersonalizationSettings.IsSupported()) {
+				var profileSettings = UserProfilePersonalizationSettings.Current;
+				token.ThrowIfCancellationRequested();
+				success = await profileSettings.TrySetLockScreenImageAsync(file);
+			}
+			return success;
+		}
+
+		public static async Task<StorageFile> GetImageFile(PathType type, string pathForLocal, Post post, CancellationToken token) {
+			StorageFile file;
+			switch(type) {
+				case PathType.PostID: {
+						token.ThrowIfCancellationRequested();
+						file = await Local.WallpapersFolder.CreateFileAsync($"{post.id}.{post.file.ext}", CreationCollisionOption.GenerateUniqueName);
+						using HttpClient client = new();
+						token.ThrowIfCancellationRequested();
+						byte[] buffer = await client.GetByteArrayAsync(post.file.url);
+						token.ThrowIfCancellationRequested();
+						using Stream stream = await file.OpenStreamForWriteAsync();
+						stream.Write(buffer, 0, buffer.Length);
+					}
+					break;
+				case PathType.Local: {
+						token.ThrowIfCancellationRequested();
+						file = await StorageFile.GetFileFromPathAsync(pathForLocal);
+						token.ThrowIfCancellationRequested();
+						file = await file.CopyAsync(Local.WallpapersFolder);
+					}
+					break;
+				default:
+					throw new Exception();
+			}
+			return file;
+		}
+
+		private ContentDialog dialog;
+		private LoadingDialog dialog_content;
+		private CancellationTokenSource cts_SetAs = null;
+		private async void ShowLoadingDialog(string title, string content, Action onCancel = null) {
+			dialog_content = new LoadingDialog() {
+				DialogContent = content,
+				OnCancel = onCancel,
+			};
+			dialog = new ContentDialog() {
+				Title = title,
+				Content = dialog_content,
+				CloseButtonText = "Cancel",
+			};
+			await dialog.ShowAsync();
+		}
+
+		private void UpdateDialogContent(string content) {
+			if(dialog_content == null) {
+				return;
+			}
+			dialog_content.DialogContent = content;
+		}
+
+		private void HideLoadingDialog() {
+			dialog?.Hide();
+			dialog = null;
+		}
+
+		private void CancelLoading() {
+			if(cts_SetAs != null) {
+				cts_SetAs.Cancel();
+				cts_SetAs.Dispose();
+			}
+			cts_SetAs = null;
+		}
+
+		private async void SetAsWallpaperItem_Click(object sender, RoutedEventArgs e) {
+			if(sender is not MenuFlyoutItem item || !item.IsEnabled) {
+				return;
+			}
+			CancelLoading();
+			ShowLoadingDialog("Loading", "Getting Image", CancelLoading);
+			cts_SetAs = new CancellationTokenSource();
+			try {
+				StorageFile file = await GetImageFile(PostType, path, PostRef, cts_SetAs.Token);
+				UpdateDialogContent("Setting Wallpaper");
+				await SetWallpaperAsync(file, cts_SetAs.Token);
+			} catch(OperationCanceledException) { }
+			HideLoadingDialog();
+			CancelLoading();
+		}
+
+		private async void SetAsLockScreenItem_Click(object sender, RoutedEventArgs e) {
+			if(sender is not MenuFlyoutItem item || !item.IsEnabled) {
+				return;
+			}
+			CancelLoading();
+			ShowLoadingDialog("Loading", "Getting Image", CancelLoading);
+			cts_SetAs = new CancellationTokenSource();
+			try {
+				StorageFile file = await GetImageFile(PostType, path, PostRef, cts_SetAs.Token);
+				UpdateDialogContent("Setting Lockscreen");
+				await SetLockScreenAsync(file, cts_SetAs.Token);
+			} catch(OperationCanceledException) { }
+			HideLoadingDialog();
+			CancelLoading();
 		}
 	}
 

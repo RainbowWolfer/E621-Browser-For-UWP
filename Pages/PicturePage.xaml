@@ -164,6 +164,21 @@
 									<FontIcon Glyph="&#xE91B;"/>
 								</MenuFlyoutItem.Icon>
 							</MenuFlyoutItem>
+							<MenuFlyoutSubItem x:Name="SetAsItem" Text="Set As">
+								<MenuFlyoutSubItem.Icon>
+									<FontIcon Glyph="&#xEE71;"/>
+								</MenuFlyoutSubItem.Icon>
+								<MenuFlyoutItem x:Name="SetAsWallpaperItem" Text="Set As Wallpaper" Click="SetAsWallpaperItem_Click">
+									<MenuFlyoutItem.Icon>
+										<FontIcon Glyph="&#xE620;"/>
+									</MenuFlyoutItem.Icon>
+								</MenuFlyoutItem>
+								<MenuFlyoutItem x:Name="SetAsLockScreenItem" Text="Set As Lockscreen" Click="SetAsLockScreenItem_Click">
+									<MenuFlyoutItem.Icon>
+										<FontIcon Glyph="&#xEE3F;"/>
+									</MenuFlyoutItem.Icon>
+								</MenuFlyoutItem>
+							</MenuFlyoutSubItem>
 							<MenuFlyoutItem x:Name="DebugItem" Text="Debug" Click="DebugItem_Click" Visibility="Collapsed">
 								<MenuFlyoutItem.Icon>
 									<FontIcon Glyph="&#xE8A1;"/>
@@ -196,7 +211,7 @@
 								<Button x:Name="InfoButton" RelativePanel.AlignVerticalCenterWithPanel="True" Style="{StaticResource TagButton}" Tapped="InfoButton_Tapped" Tag="{x:Bind Content}">
 									<FontIcon Glyph="&#xE946;" FontSize="16"/>
 								</Button>
-								<TextBlock x:Name="TagText" Text="{x:Bind Content}" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="2,0,20,0" TextWrapping="Wrap" Width="100" RelativePanel.RightOf="InfoButton" Foreground="{x:Bind Brush}" Loaded="TagText_Loaded"/>
+								<TextBlock x:Name="TagText" Text="{x:Bind Content}" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="2,0,20,0" TextWrapping="Wrap" Width="100" RelativePanel.RightOf="InfoButton" Foreground="{x:Bind Brush}"/>
 								<Button x:Name="BlackListButton" Style="{StaticResource TagButton}" Tag="{x:Bind Content}" RelativePanel.LeftOf="FollowListButton" Tapped="BlackListButton_Tapped" Loaded="BlackListButton_Loaded" Padding="2">
 									<FontIcon Glyph="&#xE108;" FontSize="16"/>
 								</Button>
@@ -227,8 +242,8 @@
 										<RowDefinition Height="*"/>
 										<RowDefinition Height="auto"/>
 									</Grid.RowDefinitions>
-									<ScrollViewer>
-										<TextBlock x:Name="DescriptionText" Text="No Description" TextWrapping="Wrap" FontSize="18" Padding="20" />
+									<ScrollViewer Padding="20">
+										<TextBlock x:Name="DescriptionText" Text="No Description" TextWrapping="Wrap" FontSize="18" IsTextSelectionEnabled="True" VerticalAlignment="Top"/>
 									</ScrollViewer>
 									<StackPanel Grid.Row="1" Padding="20">
 										<TextBlock x:Name="SourcesText" Text="Source" FontSize="24"/>

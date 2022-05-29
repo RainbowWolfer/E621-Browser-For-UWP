@@ -9,10 +9,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -66,6 +68,11 @@ namespace E621Downloader.Views {
 		private readonly Page page;
 
 		//private bool isLoaded;
+
+		private ContentDialog dialog_setAs;
+		private LoadingDialog dialog_setAs_content;
+		private CancellationTokenSource cts_SetAs;
+
 
 		public ImageHolder(Page page, Post post, int index, PathType type, string path) {
 			this.InitializeComponent();
@@ -160,11 +167,101 @@ namespace E621Downloader.Views {
 				};
 				flyout.Items.Add(item_favorite);
 
+				MenuFlyoutSubItem item_setAs = new() {
+					Text = "Set As",
+					Icon = new FontIcon() { Glyph = "\uEE71" },
+				};
+
+				MenuFlyoutItem item_setAsWallpaper = new() {
+					Text = "Set As Wallpaper",
+					Icon = new FontIcon() { Glyph = "\uE620" },
+				};
+
+				item_setAsWallpaper.Click += Item_setAsWallpaper_Click;
+
+				MenuFlyoutItem item_setAsLockscreen = new() {
+					Text = "Set As LockScreen",
+					Icon = new FontIcon() { Glyph = "\uEE3F" },
+				};
+
+				item_setAsLockscreen.Click += Item_setAsLockscreen_Click;
+
+				item_setAs.IsEnabled = PicturePage.IsAbleToSetAs(PostRef);
+
+				item_setAs.Items.Add(item_setAsWallpaper);
+				item_setAs.Items.Add(item_setAsLockscreen);
+
+				flyout.Items.Add(item_setAs);
+
 				flyout.Placement = FlyoutPlacementMode.Left;
 				if(flyout.Items.Count != 0) {
 					flyout.ShowAt(s as UIElement, e.GetPosition(s as UIElement));
 				}
 			};
+		}
+		private async void ShowLoadingDialog(string title, string content, Action onCancel = null) {
+			dialog_setAs_content = new LoadingDialog() {
+				DialogContent = content,
+				OnCancel = onCancel,
+			};
+			dialog_setAs = new ContentDialog() {
+				Title = title,
+				Content = dialog_setAs_content,
+				CloseButtonText = "Cancel",
+			};
+			await dialog_setAs.ShowAsync();
+		}
+
+		private void UpdateDialogContent(string content) {
+			if(dialog_setAs_content == null) {
+				return;
+			}
+			dialog_setAs_content.DialogContent = content;
+		}
+
+		private void HideLoadingDialog() {
+			dialog_setAs?.Hide();
+			dialog_setAs = null;
+		}
+
+		private void CancelLoading() {
+			if(cts_SetAs != null) {
+				cts_SetAs.Cancel();
+				cts_SetAs.Dispose();
+			}
+			cts_SetAs = null;
+		}
+
+		private async void Item_setAsLockscreen_Click(object sender, RoutedEventArgs e) {
+			if(sender is not MenuFlyoutItem item || !item.IsEnabled) {
+				return;
+			}
+			CancelLoading();
+			ShowLoadingDialog("Loading", "Getting Image", CancelLoading);
+			cts_SetAs = new CancellationTokenSource();
+			try {
+				StorageFile file = await PicturePage.GetImageFile(PathType.PostID, "", PostRef, cts_SetAs.Token);
+				UpdateDialogContent("Setting Wallpaper");
+				await PicturePage.SetLockScreenAsync(file, cts_SetAs.Token);
+			} catch(OperationCanceledException) { }
+			HideLoadingDialog();
+			CancelLoading();
+		}
+
+		private async void Item_setAsWallpaper_Click(object sender, RoutedEventArgs e) {
+			if(sender is not MenuFlyoutItem item || !item.IsEnabled) {
+				return;
+			}
+			CancelLoading();
+			ShowLoadingDialog("Loading", "Getting Image", CancelLoading);
+			cts_SetAs = new CancellationTokenSource();
+			try {
+				StorageFile file = await PicturePage.GetImageFile(PathType.PostID, "", PostRef, cts_SetAs.Token);
+				UpdateDialogContent("Setting Wallpaper");
+				await PicturePage.SetWallpaperAsync(file, cts_SetAs.Token);
+			} catch(OperationCanceledException) { }
+			HideLoadingDialog();
+			CancelLoading();
 		}
 
 		private void Grid_Tapped(object sender, TappedRoutedEventArgs e) {
