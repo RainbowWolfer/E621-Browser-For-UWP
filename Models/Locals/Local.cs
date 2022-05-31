@@ -333,25 +333,7 @@ namespace E621Downloader.Models.Locals {
 				LocalSettings.Current = JsonConvert.DeserializeObject<LocalSettings>(await reader.ReadToEndAsync());
 			}
 			if(LocalSettings.Current == null) {
-				LocalSettings.Current = new LocalSettings() {
-					customHostEnable = false,
-					spot_fileType = FileType.Jpg,
-					spot_FilterType = SpotFilterType.All,
-					spot_includeExplicit = true,
-					spot_includeQuestoinable = false,
-					spot_includeSafe = false,
-					cycleList = true,
-					concatTags = false,
-					mediaBackgroundPlay = false,
-					mediaAutoPlay = true,
-					customHost = "",
-					spot_amount = 1,
-					enableHotKeys = true,
-					adaptiveGrid = true,
-					adaptiveSizeMultiplier = 1,
-					fixedHeight = 280,
-					randomTagMaxCount = 10000,
-				};
+				LocalSettings.Current = LocalSettings.GetDefault();
 				await WriteLocalSettings();
 			}
 		}

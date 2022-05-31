@@ -185,6 +185,15 @@ namespace E621Downloader.Pages {
 				await MainPage.CreatePopupDialog("Warning", "There is something downloading.\ncannot clear download path.");
 				return;
 			}
+			if(await new ContentDialog() {
+				Title = "Confirm",
+				Content = "Are you sure to clear download path?\n(your downloaded files will not be deleted)",
+				PrimaryButtonText = "Yes",
+				CloseButtonText = "No",
+				DefaultButton = ContentDialogButton.Close,
+			}.ShowAsync() != ContentDialogResult.Primary) {
+				return;
+			}
 			Local.ClearToken(Local.GetToken());
 			if(Local.GetToken() == null) {
 				ClearDownloadPathButton.IsEnabled = false;

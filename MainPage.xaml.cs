@@ -521,6 +521,9 @@ namespace E621Downloader {
 
 			var view = new TagsSelectionView(dialog, PostsBrowserPage.GetCurrentTags());
 			dialog.Content = view;
+			dialog.Opened += (s, e) => {
+				view.FocusTextBox();
+			};
 
 			await dialog.ShowAsync();
 			switch(view.Result) {

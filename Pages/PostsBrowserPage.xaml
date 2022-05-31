@@ -52,12 +52,29 @@
 	</Page.Resources>
 
 	<Grid>
-		<controls:NavigationView x:Name="TabsNavigationView" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" ItemInvoked="TabsNavigationView_ItemInvoked" IsPaneOpen="False" PaneTitle="Tags">
+		<Grid.KeyboardAccelerators>
+			<KeyboardAccelerator Key="F5" Invoked="Refresh_Invoked"/>
+			<KeyboardAccelerator Key="R" Modifiers="Control" Invoked="Refresh_Invoked"/>
+			<KeyboardAccelerator Key="W" Modifiers="Control" Invoked="CloseTab_Invoked"/>
+		</Grid.KeyboardAccelerators>
+		<controls:NavigationView x:Name="TabsNavigationView" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" ItemInvoked="TabsNavigationView_ItemInvoked" IsPaneOpen="False" PaneTitle="Tags" d:IsPaneOpen="True" PaneOpening="TabsNavigationView_PaneOpening" PaneClosing="TabsNavigationView_PaneClosing">
 			<controls:NavigationView.MenuItems>
 
 			</controls:NavigationView.MenuItems>
 			<controls:NavigationView.PaneFooter>
-				<Grid Margin="5,5,5,0">
+				<StackPanel Margin="5,5,5,0">
+					<Button x:Name="ResizePanelWidthButton" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Background="Transparent" BorderBrush="Transparent" Padding="8,5,8,6" ToolTipService.ToolTip="Resize Tabs Panel" Click="ResizePanelWidthButton_Click">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="auto"/>
+								<ColumnDefinition Width="auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<FontIcon Glyph="&#xE799;"/>
+							<TextBlock Text="Panel Width" Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center" FontSize="16"/>
+							<TextBlock x:Name="PanelWidthText" Text="(200)" Grid.Column="2" Margin="5,0,0,0" VerticalAlignment="Center" FontSize="16"/>
+						</Grid>
+					</Button>
 					<Button x:Name="ViewButton" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Background="Transparent" BorderBrush="Transparent" Padding="8,5,8,6" ToolTipService.ToolTip="View">
 						<Grid>
 							<Grid.ColumnDefinitions>
@@ -73,7 +90,7 @@
 							</Flyout>
 						</Button.Flyout>
 					</Button>
-				</Grid>
+				</StackPanel>
 			</controls:NavigationView.PaneFooter>
 			<controls:NavigationView.Content>
 				<Grid>

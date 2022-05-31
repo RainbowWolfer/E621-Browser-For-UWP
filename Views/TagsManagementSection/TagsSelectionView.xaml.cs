@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Posts;
+﻿using E621Downloader.Models.Networks;
+using E621Downloader.Models.Posts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -26,6 +27,8 @@ namespace E621Downloader.Views.TagsManagementSection {
 		private readonly Dictionary<string, E621Tag> tags_pool = new();
 		private readonly List<string> currentTags = new();
 
+		private int currentSelectedIndex = 0;
+
 		public TagsSelectionView(ContentDialog dialog, string[] tags) {
 			this.InitializeComponent();
 			this.dialog = dialog;
@@ -34,6 +37,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 			}
 			MySuggestBox.Text = MySuggestBox.Text.Trim();
 			MySuggestBox.SelectionStart = MySuggestBox.Text.Length;
+
 		}
 
 		private bool itemClick = false;
@@ -89,11 +93,11 @@ namespace E621Downloader.Views.TagsManagementSection {
 			} catch(TaskCanceledException) {
 				return;
 			}
-			await LoadAutoSuggestion(tag);
+			await LoadAutoSuggestionAsync(tag);
 		}
 
 		private CancellationTokenSource cts;
-		private async Task LoadAutoSuggestion(string tag) {
+		private async Task LoadAutoSuggestionAsync(string tag) {
 			try {
 				if(cts != null) {
 					cts.Cancel();
@@ -103,7 +107,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 			cts = new CancellationTokenSource();
 			SetLoadingbar(true);
 			AutoCompletesListView.Items.Clear();
-			E621AutoComplete[] acs = await E621AutoComplete.GetAsync(tag, cts.Token);
+			(E621AutoComplete[] acs, HttpResultType result) = await E621AutoComplete.GetAsync(tag, cts.Token);
 			AutoCompletesListView.Items.Clear();
 			//if(acs == null || acs.Length == 0) {
 			//	SetLoadingbar(false);
@@ -112,13 +116,18 @@ namespace E621Downloader.Views.TagsManagementSection {
 			foreach(E621AutoComplete item in acs) {
 				AutoCompletesListView.Items.Add(new SingleTagSuggestion(item));
 			}
-			var last = AutoCompletesListView.Items.Cast<SingleTagSuggestion>().LastOrDefault();
+			var last = GetItems().LastOrDefault();
 			if(last != null) {
 				last.Loaded += (s, e) => {
 					SetLoadingbar(false);
 				};
 			}
-			AutoCompletesListView.SelectedIndex = 0;
+			GetItems().FirstOrDefault()?.SetSelected(true);
+			currentSelectedIndex = 0;
+		}
+
+		private List<SingleTagSuggestion> GetItems() {
+			return AutoCompletesListView.Items.Cast<SingleTagSuggestion>().ToList();
 		}
 
 		private void CalculateCurrentTags() {
@@ -180,6 +189,10 @@ namespace E621Downloader.Views.TagsManagementSection {
 			None, Search, Hot, Random
 		}
 
+		public void FocusTextBox() {
+			MySuggestBox.Focus(FocusState.Programmatic);
+		}
+
 		private void MySuggestBox_PreviewKeyDown(object sender, KeyRoutedEventArgs e) {
 			if(e.Key == VirtualKey.Enter) {
 				Result = ResultType.Search;
@@ -201,6 +214,45 @@ namespace E621Downloader.Views.TagsManagementSection {
 				cts.Dispose();
 			}
 			dialog.Hide();
+		}
+
+		private void EnterKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+
+			args.Handled = true;
+		}
+
+		private void UpKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			List<SingleTagSuggestion> list = GetItems();
+			if(--currentSelectedIndex < 0) {
+				currentSelectedIndex = list.Count - 1;
+			}
+			for(int i = 0; i < list.Count; i++) {
+				list[i].IsSelected = i == currentSelectedIndex;
+				if(list[i].IsSelected) {
+
+				}
+			}
+			args.Handled = true;
+		}
+
+		private void DownKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			List<SingleTagSuggestion> list = GetItems();
+			Debug.WriteLine(currentSelectedIndex);
+			if(++currentSelectedIndex >= list.Count) {
+				currentSelectedIndex = 0;
+			}
+			Debug.WriteLine(currentSelectedIndex + "\n");
+			for(int i = 0; i < list.Count; i++) {
+				list[i].IsSelected = i == currentSelectedIndex;
+				if(list[i].IsSelected) {
+					//changed text
+				}
+			}
+			args.Handled = true;
+		}
+
+		private void MySuggestBox_Loaded(object sender, RoutedEventArgs e) {
+			FocusTextBox();
 		}
 	}
 }

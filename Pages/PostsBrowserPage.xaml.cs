@@ -25,6 +25,7 @@ using Windows.UI.Xaml.Navigation;
 using NavigationView = Microsoft.UI.Xaml.Controls.NavigationView;
 using NavigationViewItem = Microsoft.UI.Xaml.Controls.NavigationViewItem;
 using NavigationViewItemInvokedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs;
+using NavigationViewPaneClosingEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewPaneClosingEventArgs;
 
 namespace E621Downloader.Pages {
 	public sealed partial class PostsBrowserPage: Page {
@@ -109,6 +110,9 @@ namespace E621Downloader.Pages {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			ClearTabs();
+			LocalSettings.Current.tabsOpenLength = LocalSettings.Current.tabsOpenLength;
+			PanelWidthText.Text = $"({LocalSettings.Current.tabsOpenLength})";
+			ResizePanelWidthButton.Visibility = TabsNavigationView.IsPaneOpen ? Visibility.Visible : Visibility.Collapsed;
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
@@ -207,17 +211,7 @@ namespace E621Downloader.Pages {
 				Clipboard.SetContent(dataPackage);
 			};
 			delete_item.Click += (s, e) => {
-				TabsNavigationView.MenuItems.Remove(item);
-
-				List<NavigationViewItem> items = GetAllNavitationViewItems();
-				if(TabsNavigationView.SelectedItem == item) {
-					TabsNavigationView.SelectedItem = items.FirstOrDefault();
-				}
-				if(items.Count == 0) {
-					ToTab(null);
-				} else {
-					ToTab((PostsTab)items.First().Tag);
-				}
+				CloseTab(item);
 			};
 			flyout.Items.Add(copy_item);
 			flyout.Items.Add(delete_item);
@@ -244,6 +238,32 @@ namespace E621Downloader.Pages {
 				}
 			}
 			return null;
+		}
+
+		private NavigationViewItem GetSelectedTabItem() {
+			foreach(NavigationViewItem item in GetAllNavitationViewItems()) {
+				if(item.IsSelected) {
+					return item;
+				}
+			}
+			return null;
+		}
+
+		private void CloseTab(NavigationViewItem item) {
+			if(item == null) {
+				return;
+			}
+			TabsNavigationView.MenuItems.Remove(item);
+
+			List<NavigationViewItem> items = GetAllNavitationViewItems();
+			if(TabsNavigationView.SelectedItem == item) {
+				TabsNavigationView.SelectedItem = items.FirstOrDefault();
+			}
+			if(items.Count == 0) {
+				ToTab(null);
+			} else {
+				ToTab((PostsTab)items.First().Tag);
+			}
 		}
 
 		private void CancelLoading() {
@@ -781,6 +801,42 @@ namespace E621Downloader.Pages {
 
 		private async void NoTabSearchButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			await MainPage.Instance.PopupSearch();
+		}
+
+		private async void ResizePanelWidthButton_Click(object sender, RoutedEventArgs e) {
+			LocalSettings.Current.tabsOpenLength = LocalSettings.Current.tabsOpenLength switch {
+				200 => 250,
+				250 => 300,
+				300 => 350,
+				350 => 400,
+				400 => 200,
+				_ => 400,
+			};
+
+			TabsNavigationView.OpenPaneLength = LocalSettings.Current.tabsOpenLength;
+			PanelWidthText.Text = $"({LocalSettings.Current.tabsOpenLength})";
+			await Local.WriteLocalSettings();
+		}
+
+		private void TabsNavigationView_PaneOpening(NavigationView sender, object args) {
+			ResizePanelWidthButton.Visibility = Visibility.Visible;
+		}
+
+		private void TabsNavigationView_PaneClosing(NavigationView sender, NavigationViewPaneClosingEventArgs args) {
+			ResizePanelWidthButton.Visibility = Visibility.Collapsed;
+		}
+
+		private async void Refresh_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			if(IsLoading) {
+				return;
+			}
+			await Reload();
+			args.Handled = true;
+		}
+
+		private void CloseTab_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			CloseTab(GetSelectedTabItem());
+			args.Handled = true;
 		}
 	}
 

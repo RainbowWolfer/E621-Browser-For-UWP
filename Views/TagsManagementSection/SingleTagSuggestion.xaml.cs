@@ -18,10 +18,22 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Views.TagsManagementSection {
 	public sealed partial class SingleTagSuggestion: UserControl {
 		private readonly E621AutoComplete autoComplete;
+		private bool isSelected = false;
+
 		public int Category => autoComplete.category;
 		public string CompleteName => autoComplete.name;
 		public string AntecedentName => autoComplete.antecedent_name;
 		public string Count => Methods.NumberToK(autoComplete.post_count);
+
+		public bool IsSelected {
+			get => isSelected;
+			set {
+				isSelected = value;
+				RectangleWidthAnimation.From = CategoryRectangle.Width;
+				RectangleWidthAnimation.To = value ? 8 : 4;
+				SelectionStoryboard.Begin();
+			}
+		}
 
 		public SingleTagSuggestion(E621AutoComplete autoComplete) {
 			this.InitializeComponent();
@@ -37,5 +49,10 @@ namespace E621Downloader.Views.TagsManagementSection {
 					break;
 			}
 		}
+
+		public void SetSelected(bool value) {
+			IsSelected = value;
+		}
+
 	}
 }
