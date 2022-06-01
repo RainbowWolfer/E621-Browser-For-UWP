@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace E621Downloader.Models.Posts {
 	public class E621Paginator {
 		public static async Task<DataResult<E621Paginator>> GetAsync(string[] tags, int page = 1, CancellationToken? token = null) {
-			string tag = E621Tag.JoinTags(tags);
+			string tag = string.Join("+", tags).Trim().ToLower();
 			//foreach(var item in tags) {
 			//	tag += item + " ";
 			//}

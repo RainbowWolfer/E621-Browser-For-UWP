@@ -516,11 +516,12 @@ namespace E621Downloader {
 			}
 			IsInSearchPopup = true;
 			var dialog = new ContentDialog() {
-				Title = "Manage Your Search Tags",
+				Title = "Search Tags",
 			};
 
 			var view = new TagsSelectionView(dialog, PostsBrowserPage.GetCurrentTags());
 			dialog.Content = view;
+
 			dialog.Opened += (s, e) => {
 				view.FocusTextBox();
 			};

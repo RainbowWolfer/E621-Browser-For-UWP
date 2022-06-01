@@ -51,7 +51,7 @@
 		<CollectionViewSource x:Name="ContactsCVS2" Source="{x:Bind poststInfolists}" IsSourceGrouped="True"/>
 	</Page.Resources>
 
-	<Grid>
+	<Grid KeyboardAcceleratorPlacementMode="Hidden">
 		<Grid.KeyboardAccelerators>
 			<KeyboardAccelerator Key="F5" Invoked="Refresh_Invoked"/>
 			<KeyboardAccelerator Key="R" Modifiers="Control" Invoked="Refresh_Invoked"/>

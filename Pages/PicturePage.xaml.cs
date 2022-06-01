@@ -65,6 +65,7 @@ namespace E621Downloader.Pages {
 		private static Dictionary<string, VoteType> Voted { get; } = new();
 
 		private bool isLoadingPost = false;
+		private bool isControlInputing = false;
 
 		public PicturePage() {
 			this.InitializeComponent();
@@ -75,7 +76,10 @@ namespace E621Downloader.Pages {
 				if(MainPage.Instance.currentTag != PageTag.Picture) {
 					return;
 				}
-				if(TextInputing) {
+				if(key == VirtualKey.Control) {
+					isControlInputing = true;
+				}
+				if(TextInputing || isControlInputing) {
 					return;
 				}
 				if(this.PostRef == null) {
@@ -89,6 +93,10 @@ namespace E621Downloader.Pages {
 					ZoomIn();
 				} else if(key is VirtualKey.S or VirtualKey.Down) {
 					ZoomOut();
+				}
+			}, key => {
+				if(key == VirtualKey.Control) {
+					isControlInputing = false;
 				}
 			}));
 		}
@@ -851,6 +859,13 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void DownloadButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			await Download();
+		}
+
+		private async Task Download() {
+			if(PostType == PathType.Local) {
+				return;
+			}
 			if(await DownloadsManager.CheckDownloadAvailableWithDialog()) {
 				if(await DownloadsManager.RegisterDownload(PostRef)) {
 					MainPage.CreateTip_SuccessDownload(this);
@@ -912,14 +927,14 @@ namespace E621Downloader.Pages {
 		}
 
 		private void GoLeft() {
-			if(isLoadingPost || cts_SetAs != null) {
+			if(isLoadingPost || cts_SetAs != null || (MainPage.Instance?.IsInSearchPopup ?? false)) {
 				return;
 			}
 			MainPage.NavigateToPicturePage(App.PostsList.GoLeft());
 		}
 
 		private void GoRight() {
-			if(isLoadingPost || cts_SetAs != null) {
+			if(isLoadingPost || cts_SetAs != null || (MainPage.Instance?.IsInSearchPopup ?? false)) {
 				return;
 			}
 			MainPage.NavigateToPicturePage(App.PostsList.GoRight());
@@ -1313,6 +1328,10 @@ namespace E621Downloader.Pages {
 			} catch(OperationCanceledException) { }
 			HideLoadingDialog();
 			CancelLoading();
+		}
+
+		private async void DownloadKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			await Download();
 		}
 	}
 

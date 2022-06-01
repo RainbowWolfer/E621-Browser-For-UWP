@@ -19,14 +19,23 @@ namespace E621Downloader.Models {
 			}
 		}
 
+		public static void RegisterKeyUp(VirtualKey key) {
+			foreach(KeyListenerInstance item in GetInstances()) {
+				item.KeyUp?.Invoke(key);
+			}
+		}
+
 		public static IEnumerable<KeyListenerInstance> GetInstances() => Instances;
 	}
 
 	public class KeyListenerInstance {
 		public Action<VirtualKey> KeyDown { get; private set; }
+		public Action<VirtualKey> KeyUp { get; private set; }
 
-		public KeyListenerInstance(Action<VirtualKey> KeyDown) {
+		public KeyListenerInstance(Action<VirtualKey> KeyDown, Action<VirtualKey> KeyUp = null) {
 			this.KeyDown = KeyDown;
+			this.KeyUp = KeyUp;
 		}
+
 	}
 }

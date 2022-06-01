@@ -40,7 +40,7 @@
 		</Storyboard>
 	</Page.Resources>
 
-	<Grid>
+	<Grid KeyboardAcceleratorPlacementMode="Hidden">
 		<VisualStateManager.VisualStateGroups>
 			<VisualStateGroup x:Name="VisualStateGroup">
 				<VisualState x:Name="Wide">
@@ -75,6 +75,9 @@
 				</VisualState>
 			</VisualStateGroup>
 		</VisualStateManager.VisualStateGroups>
+		<Grid.KeyboardAccelerators>
+			<KeyboardAccelerator Key="D" Modifiers="Control" Invoked="DownloadKey_Invoked"/>
+		</Grid.KeyboardAccelerators>
 		<Grid x:Name="NoPostGrid" Visibility="Collapsed">
 			<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 				<Button x:Name="GotoHomeButton" HorizontalAlignment="Center" Margin="10" Tapped="GotoHomeButton_Tapped">
