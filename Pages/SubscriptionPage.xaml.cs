@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Locals;
+﻿using E621Downloader.Models.Inerfaces;
+using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Views;
 using System;
@@ -23,7 +24,7 @@ using Windows.UI.Xaml.Navigation;
 
 
 namespace E621Downloader.Pages {
-	public sealed partial class SubscriptionPage: Page {
+	public sealed partial class SubscriptionPage: Page, IPage {
 		private CancellationTokenSource cts;
 		private readonly List<FontIcon> icons = new();
 		private bool isSelecting = false;
@@ -393,6 +394,11 @@ namespace E621Downloader.Pages {
 				item.Height = value;
 				item.Width = value;
 			}
+		}
+
+		void IPage.UpdateNavigationItem() {
+			MainPage.Instance.currentTag = PageTag.Subscription;
+			MainPage.Instance.UpdateNavigationItem();
 		}
 
 		private enum LayoutType {

@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Views;
@@ -24,7 +25,7 @@ using Windows.UI.Xaml.Navigation;
 using SymbolIconSource = Microsoft.UI.Xaml.Controls.SymbolIconSource;
 
 namespace E621Downloader.Pages {
-	public sealed partial class SpotPage: Page {
+	public sealed partial class SpotPage: Page, IPage {
 		public static SpotPage Instance;
 		private int CurrentAmount => (int)AmountSlider.Value;
 		private string[] selectedTags = new string[0];
@@ -198,7 +199,7 @@ namespace E621Downloader.Pages {
 			}
 			cts = new CancellationTokenSource();
 			List<Post> posts = await Post.GetPostsByRandomAsync(cts.Token, CurrentAmount, tags.ToArray());
-			if(posts == null) {	
+			if(posts == null) {
 				LoadingRing.IsActive = false;
 				return;
 			} else if(posts.Count == 0) {
@@ -365,6 +366,11 @@ namespace E621Downloader.Pages {
 		private void RadioButton_WEBM_Click(object sender, RoutedEventArgs e) {
 			RadioButton_WEBM.IsChecked = true;
 			LocalSettings.Current.spot_fileType = FileType.Webm;
+		}
+
+		void IPage.UpdateNavigationItem() {
+			MainPage.Instance.currentTag = PageTag.Spot;
+			MainPage.Instance.UpdateNavigationItem();
 		}
 	}
 

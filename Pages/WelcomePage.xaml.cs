@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using Microsoft.Toolkit.Uwp.Helpers;
@@ -23,7 +24,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {
-	public sealed partial class WelcomePage: Page {
+	public sealed partial class WelcomePage: Page, IPage {
 		private bool complete1 = false;
 		private bool complete2 = false;
 
@@ -88,5 +89,9 @@ namespace E621Downloader.Pages {
 			MascotTransition.Begin();
 		}
 
+		void IPage.UpdateNavigationItem() {
+			MainPage.Instance.currentTag = PageTag.Welcome;
+			MainPage.Instance.ClearNavigationItemSelected();
+		}
 	}
 }

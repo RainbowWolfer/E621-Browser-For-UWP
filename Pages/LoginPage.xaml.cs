@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
@@ -27,7 +28,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {
-	public sealed partial class LoginPage: Page {
+	public sealed partial class LoginPage: Page, IPage {
 		private Brush origin_brush_username;
 		private Brush origin_brush_apiKey;
 		public LoginPage() {
@@ -104,6 +105,11 @@ namespace E621Downloader.Pages {
 			if(!await Launcher.LaunchUriAsync(new Uri($"https://{Data.GetHost()}/maintenance/user/login_reminder/new"))) {
 				await MainPage.CreatePopupDialog("Error", "Could not Open Default Browser");
 			}
+		}
+
+		void IPage.UpdateNavigationItem() {
+			MainPage.Instance.currentTag = PageTag.UserProfile;
+			MainPage.Instance.UpdateNavigationItem();
 		}
 	}
 }

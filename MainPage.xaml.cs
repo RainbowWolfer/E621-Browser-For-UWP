@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
+using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
@@ -58,10 +59,12 @@ namespace E621Downloader {
 				FullScreenIcon.Glyph = value ? "\uE73F" : "\uE740";
 				ApplicationView view = ApplicationView.GetForCurrentView();
 				if(view.IsFullScreenMode) {
+					AppTitleBar.Visibility = Visibility.Visible;
 					view.ExitFullScreenMode();
 					ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
 				} else {
 					if(view.TryEnterFullScreenMode()) {
+						AppTitleBar.Visibility = Visibility.Collapsed;
 						ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
 					}
 				}
@@ -80,6 +83,7 @@ namespace E621Downloader {
 
 		private bool isInMaintenance = false;
 
+		private readonly List<TeachingTip> downloadsTips = new();
 		public MainPage() {
 			Instance = this;
 			this.InitializeComponent();
@@ -87,6 +91,8 @@ namespace E621Downloader {
 			var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
 			coreTitleBar.ExtendViewIntoTitleBar = true;
 			Window.Current.SetTitleBar(AppTitleBar);
+
+			AppTitleBar.Visibility = IsFullScreen ? Visibility.Collapsed : Visibility.Visible;
 
 			currentTag = PageTag.Welcome;
 			KeyListener.SubmitInstance(new KeyListenerInstance(async key => {
@@ -298,11 +304,20 @@ namespace E621Downloader {
 					NavigateTo(PageTag.Download);
 				};
 				panel.Children.Add(tip);
-				await Task.Delay(5000);
-				tip.IsOpen = false;
+
 				tip.Closed += (s, e) => {
 					panel.Children.Remove(tip);
 				};
+
+				tip.CloseButtonClick += (s, e) => {
+					foreach(TeachingTip item in Instance.downloadsTips) {
+						item.IsOpen = false;
+					}
+				};
+
+				Instance.downloadsTips.Add(tip);
+				await Task.Delay(3000);
+				tip.IsOpen = false;
 			} else {
 				throw new Exception("Page's Content is not a valid Panel");
 			}
@@ -329,6 +344,7 @@ namespace E621Downloader {
 			tip.Closed += (s, e) => {
 				parent.Children.Remove(tip);
 			};
+
 		}
 
 		public static void CreateTip(Page page, string titile, string subtitle, Symbol? icon = null, string closeText = "Got it!", bool isLightDismissEnabled = false, TeachingTipPlacementMode placement = TeachingTipPlacementMode.TopRight, Thickness? margin = null, int delayTime = 5000) {
@@ -488,15 +504,28 @@ namespace E621Downloader {
 
 			currentTag = tag;
 			if(updateNavigationViewItem) {
-				foreach(NavigationViewItem item in MyNavigationView.MenuItems
-					.Concat(MyNavigationView.FooterMenuItems)
-					.Append(MyNavigationView.SettingsItem)
-				) {
-					if(Convert(item.Tag as string) == currentTag) {
-						item.IsSelected = true;
-						break;
-					}
+				UpdateNavigationItem();
+			}
+		}
+
+		public void UpdateNavigationItem() {
+			foreach(NavigationViewItem item in MyNavigationView.MenuItems
+						.Concat(MyNavigationView.FooterMenuItems)
+						.Append(MyNavigationView.SettingsItem)
+						.Cast<NavigationViewItem>()) {
+				if(Convert(item.Tag as string) == currentTag) {
+					item.IsSelected = true;
+					break;
 				}
+			}
+		}
+
+		public void ClearNavigationItemSelected() {
+			foreach(NavigationViewItem item in MyNavigationView.MenuItems
+						.Concat(MyNavigationView.FooterMenuItems)
+						.Append(MyNavigationView.SettingsItem)
+						.Cast<NavigationViewItem>()) {
+				item.IsSelected = false;
 			}
 		}
 
@@ -581,7 +610,9 @@ namespace E621Downloader {
 				return;
 			}
 			MyFrame.GoBack();
-
+			if(MyFrame.Content is IPage iPage) {
+				iPage.UpdateNavigationItem();
+			}
 		}
 
 		private void MyFrame_NavigationFailed(object sender, NavigationFailedEventArgs e) {

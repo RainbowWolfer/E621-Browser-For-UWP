@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Locals;
+﻿using E621Downloader.Models.Inerfaces;
+using E621Downloader.Models.Locals;
 using E621Downloader.Views.LibrarySection;
 using Microsoft.UI.Xaml.Controls;
 using System;
@@ -25,7 +26,7 @@ using NavigationViewItem = Microsoft.UI.Xaml.Controls.NavigationViewItem;
 using NavigationViewItemInvokedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs;
 
 namespace E621Downloader.Pages.LibrarySection {
-	public sealed partial class LibraryPage: Page {
+	public sealed partial class LibraryPage: Page, IPage {
 		public static LibraryPage Instance;
 
 		private int size;
@@ -275,6 +276,11 @@ namespace E621Downloader.Pages.LibrarySection {
 			ListViewTypeToggle.IsChecked = false;
 			GridViewTypeToggle.IsChecked = true;
 			ViewType = ItemsGroupViewType.GridView;
+		}
+
+		void IPage.UpdateNavigationItem() {
+			MainPage.Instance.currentTag = PageTag.Library;
+			MainPage.Instance.UpdateNavigationItem();
 		}
 	}
 

@@ -7,12 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="500"
+    d:DesignWidth="1000"
     d:RequestedTheme="Dark"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Grid>
 		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
@@ -66,6 +68,46 @@
 					<TextBlock Text="Q" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 				</Border>
 				<TextBlock Text="Search Popup" VerticalAlignment="Center" Margin="10,0,0,0"/>
+			</StackPanel>
+		</StackPanel>
+		<StackPanel Grid.Column="2" BorderThickness="2" BorderBrush="Gray" Margin="5" Padding="5,5,15,5" CornerRadius="10">
+			<TextBlock Text="Home Page" Margin="10" FontSize="24"/>
+			<StackPanel Orientation="Horizontal">
+				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+					<TextBlock Text="F5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<Rectangle Width="2" Fill="Gray" Height="20" RadiusX="10" RadiusY="2"/>
+				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+					<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+					<TextBlock Text="R" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<TextBlock Text="Refresh" VerticalAlignment="Center" Margin="10,0,0,0"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+					<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+					<TextBlock Text="W" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<TextBlock Text="Close Tab" VerticalAlignment="Center" Margin="10,0,0,0"/>
+			</StackPanel>
+		</StackPanel>
+		<StackPanel Grid.Column="3" BorderThickness="2" BorderBrush="Gray" Margin="5" Padding="5,5,15,5" CornerRadius="10">
+			<TextBlock Text="Picture Page" Margin="10" FontSize="24"/>
+			<StackPanel Orientation="Horizontal">
+				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+					<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+					<TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<TextBlock Text="Download" VerticalAlignment="Center" Margin="10,0,0,0"/>
 			</StackPanel>
 		</StackPanel>
 	</Grid>

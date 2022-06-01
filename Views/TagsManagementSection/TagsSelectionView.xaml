@@ -85,7 +85,7 @@
 			</Grid>
 			<controls:ProgressBar x:Name="LoadingBar" IsIndeterminate="False" Grid.Row="2" Grid.ColumnSpan="3" Visibility="Collapsed" Margin="5" VerticalAlignment="Top"/>
 			<ListView x:Name="AutoCompletesListView" SelectionMode="None" IsItemClickEnabled="True" MaxHeight="500" Grid.Row="2" Grid.ColumnSpan="3" Margin="5" MinHeight="25" ItemClick="AutoCompletesListView_ItemClick"/>
-			<Button x:Name="SearchButton" HorizontalAlignment="Stretch" Margin="5,10,5,0" Tapped="SearcButton_Tapped" Grid.Column="0" Grid.Row="3">
+			<Button x:Name="SearchButton" HorizontalAlignment="Stretch" Margin="5,10,5,0" Tapped="SearchButton_Tapped" Grid.Column="0" Grid.Row="3">
 				<Button.Content>
 					<StackPanel Orientation="Horizontal">
 						<FontIcon Glyph="&#xE721;" FontSize="16" Margin="0,0,10,0"/>

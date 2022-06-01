@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -32,6 +33,20 @@ namespace E621Downloader.Views.TagsManagementSection {
 				RectangleWidthAnimation.From = CategoryRectangle.Width;
 				RectangleWidthAnimation.To = value ? 8 : 4;
 				SelectionStoryboard.Begin();
+
+				if(isSelected) {
+					RootPanel.BorderBrush = new SolidColorBrush(Colors.Red);
+					RootPanel.BorderThickness = new Thickness(1.5);
+					RootPanel.CornerRadius = new CornerRadius(5);
+					CategoryRectangle.RadiusX = 0;
+					CategoryRectangle.RadiusY = 0;
+				} else {
+					RootPanel.BorderBrush = new SolidColorBrush(Colors.Transparent);
+					RootPanel.BorderThickness = new Thickness(0);
+					RootPanel.CornerRadius = new CornerRadius(0);
+					CategoryRectangle.RadiusX = 2;
+					CategoryRectangle.RadiusY = 2;
+				}
 			}
 		}
 

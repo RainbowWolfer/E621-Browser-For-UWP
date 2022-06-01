@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models.Download;
+using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Views;
@@ -28,7 +29,7 @@ using NavigationViewItemInvokedEventArgs = Microsoft.UI.Xaml.Controls.Navigation
 using NavigationViewPaneClosingEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewPaneClosingEventArgs;
 
 namespace E621Downloader.Pages {
-	public sealed partial class PostsBrowserPage: Page {
+	public sealed partial class PostsBrowserPage: Page, IPage {
 		public static bool IsInMultipleSelectionMode() {
 			return Instance?.MultipleSelectionMode ?? false;
 		}
@@ -110,8 +111,6 @@ namespace E621Downloader.Pages {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			ClearTabs();
-			LocalSettings.Current.tabsOpenLength = LocalSettings.Current.tabsOpenLength;
-			PanelWidthText.Text = $"({LocalSettings.Current.tabsOpenLength})";
 			ResizePanelWidthButton.Visibility = TabsNavigationView.IsPaneOpen ? Visibility.Visible : Visibility.Collapsed;
 		}
 
@@ -137,6 +136,10 @@ namespace E621Downloader.Pages {
 				//this.pool = null;
 			}
 			MainPage.ClearPostBrowserParameter();
+
+
+			LocalSettings.Current.tabsOpenLength = LocalSettings.Current.tabsOpenLength;
+			PanelWidthText.Text = $"({LocalSettings.Current.tabsOpenLength})";
 		}
 
 		public async void ToTab(PostsTab tab) {
@@ -837,6 +840,11 @@ namespace E621Downloader.Pages {
 		private void CloseTab_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
 			CloseTab(GetSelectedTabItem());
 			args.Handled = true;
+		}
+
+		void IPage.UpdateNavigationItem() {
+			MainPage.Instance.currentTag = PageTag.PostsBrowser;
+			MainPage.Instance.UpdateNavigationItem();
 		}
 	}
 

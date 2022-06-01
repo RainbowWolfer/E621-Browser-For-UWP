@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
+using E621Downloader.Models.Inerfaces;
 using E621Downloader.Views;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages.DownloadSection {
-	public sealed partial class DownloadPage: Page {
+	public sealed partial class DownloadPage: Page, IPage {
 		public static DownloadPage Instance;
 
 		public DownloadPage() {
@@ -100,7 +101,7 @@ namespace E621Downloader.Pages.DownloadSection {
 			}
 			MyNavigationView.SelectedItem = found;
 		}
-		
+
 		private void TitleButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			EnableTitleButton(false);
 			MyNavigationView.SelectedItem = null;
@@ -125,5 +126,9 @@ namespace E621Downloader.Pages.DownloadSection {
 
 		}
 
+		void IPage.UpdateNavigationItem() {
+			MainPage.Instance.currentTag = PageTag.Download;
+			MainPage.Instance.UpdateNavigationItem();
+		}
 	}
 }

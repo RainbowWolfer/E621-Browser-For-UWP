@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
+using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
@@ -40,7 +41,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {
-	public sealed partial class PicturePage: Page {
+	public sealed partial class PicturePage: Page, IPage {
 		public Post PostRef { get; private set; }
 		public PathType PostType { get; private set; }
 		public readonly ObservableCollection<GroupTagListWithColor> tags = new();
@@ -695,10 +696,16 @@ namespace E621Downloader.Pages {
 		}
 
 		private void ZoomIn() {
+			if(MainPage.Instance?.IsInSearchPopup ?? false) {
+				return;
+			}
 			Zoom(1.2);
 		}
 
 		private void ZoomOut() {
+			if(MainPage.Instance?.IsInSearchPopup ?? false) {
+				return;
+			}
 			Zoom(0.8);
 		}
 
@@ -1332,6 +1339,11 @@ namespace E621Downloader.Pages {
 
 		private async void DownloadKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
 			await Download();
+		}
+
+		void IPage.UpdateNavigationItem() {
+			MainPage.Instance.currentTag = PageTag.Picture;
+			MainPage.Instance.UpdateNavigationItem();
 		}
 	}
 

@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
@@ -22,7 +23,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {
-	public sealed partial class UserProfilePage: Page {
+	public sealed partial class UserProfilePage: Page, IPage {
 		private CoreCursor cursorBeforePointerEntered = null;
 
 		public UserProfilePage() {
@@ -127,6 +128,11 @@ namespace E621Downloader.Pages {
 			WelcomeTextOpacityAnimation.From = WelcomeDetailText.Opacity;
 			WelcomeTextOpacityAnimation.To = 0;
 			WelcomeTextStoryboard.Begin();
+		}
+
+		void IPage.UpdateNavigationItem() {
+			MainPage.Instance.currentTag = PageTag.UserProfile;
+			MainPage.Instance.UpdateNavigationItem();
 		}
 	}
 }

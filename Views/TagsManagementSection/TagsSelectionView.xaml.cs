@@ -117,14 +117,30 @@ namespace E621Downloader.Views.TagsManagementSection {
 
 		}
 
+		private bool ableToHide = true;
+
 		private void Dialog_Closing(ContentDialog sender, ContentDialogClosingEventArgs args) {
+			//SingleTagSuggestion selected = GetSelectedItem();
+			//if(selected != null) {
+			//	selected.IsSelected = false;
+			//} else {
+			//	Hide();
+			//	args.Cancel = false;
+			//}
+			args.Cancel = !ableToHide;
+		}
+
+		private void EscapeKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
 			SingleTagSuggestion selected = GetSelectedItem();
 			if(selected != null) {
 				selected.IsSelected = false;
-				args.Cancel = true;
+				ableToHide = false;
+				args.Handled = true;
 			} else {
+				ableToHide = true;
+				Result = ResultType.None;
 				Hide();
-				args.Cancel = false;
+				args.Handled = true;
 			}
 		}
 
@@ -369,11 +385,13 @@ namespace E621Downloader.Views.TagsManagementSection {
 		public string[] GetTags() => currentTags.ToArray();
 
 		private void DialogBackButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			ableToHide = true;
 			Result = ResultType.None;
 			Hide();
 		}
 
-		private void SearcButton_Tapped(object sender, TappedRoutedEventArgs e) {
+		private void SearchButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			ableToHide = true;
 			Result = ResultType.Search;
 			Hide();
 		}
@@ -399,11 +417,6 @@ namespace E621Downloader.Views.TagsManagementSection {
 			MySuggestBox.SelectionStart = MySuggestBox.Text.Length;
 		}
 
-		private void SearchButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			Result = ResultType.Search;
-			Hide();
-		}
-
 		private void Hide() {
 			if(cts != null) {
 				cts.Cancel();
@@ -421,8 +434,8 @@ namespace E621Downloader.Views.TagsManagementSection {
 				string tag = selected.CompleteName;
 				string word = GetCurrentWord(out int index);
 				MySuggestBox.Text = MySuggestBox.Text.Replace(word, tag);
-				MySuggestBox.SelectionStart = index;
-
+				//MySuggestBox.SelectionStart = index;
+				PutSelectionAtTheEnd();
 				AutoCompletesListView.Items.Clear();
 			} else {
 				Result = ResultType.Search;
@@ -471,18 +484,6 @@ namespace E621Downloader.Views.TagsManagementSection {
 			args.Handled = true;
 		}
 
-		private void EscapeKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
-			//SingleTagSuggestion selected = GetSelectedItem();
-			//if(selected != null) {
-			//	selected.IsSelected = false;
-			//}
-			//else {
-			//	Result = ResultType.None;
-			//	Hide();
-			//	args.Handled = true;
-			//}
-		}
-
 		private void MySuggestBox_Loaded(object sender, RoutedEventArgs e) {
 			FocusTextBox();
 		}
@@ -499,11 +500,13 @@ namespace E621Downloader.Views.TagsManagementSection {
 		}
 
 		private void HotItem_Click(object sender, RoutedEventArgs e) {
+			ableToHide = true;
 			Result = ResultType.Hot;
 			Hide();
 		}
 
 		private void RandomItem_Click(object sender, RoutedEventArgs e) {
+			ableToHide = true;
 			Result = ResultType.Random;
 			Hide();
 		}

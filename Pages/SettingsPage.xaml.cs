@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
+using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Views;
@@ -33,7 +34,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {
-	public sealed partial class SettingsPage: Page {
+	public sealed partial class SettingsPage: Page, IPage {
 		public static bool isDownloadPathChangingHandled = true;
 		public string Version => $"{App.GetAppVersion()}";
 
@@ -260,13 +261,13 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void HotKeysButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(await new ContentDialog() {
+			var dialog = new ContentDialog() {
 				Title = "Hot Keys",
 				Content = new HotKeysManager(),
 				CloseButtonText = "Back",
-			}.ShowAsync() == ContentDialogResult.Primary) {
-
-			}
+			};
+			dialog.Resources["ContentDialogMaxWidth"] = 1000;
+			await dialog.ShowAsync();
 		}
 
 		private void HotKeysToggle_Toggled(object sender, RoutedEventArgs e) {
@@ -423,6 +424,11 @@ namespace E621Downloader.Pages {
 				}
 				MainPage.HideInstantDialog();
 			}
+		}
+
+		void IPage.UpdateNavigationItem() {
+			MainPage.Instance.currentTag = PageTag.Settings;
+			MainPage.Instance.UpdateNavigationItem();
 		}
 
 		//private void RandomTagMaxCountText_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args) {

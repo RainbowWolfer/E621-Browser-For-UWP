@@ -150,6 +150,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\HistoryItem.cs" />
+    <Compile Include="Models\Inerfaces\IPage.cs" />
     <Compile Include="Models\KeyListener.cs" />
     <Compile Include="Models\Locals\FavoritesList.cs" />
     <Compile Include="Models\Locals\History.cs" />
