@@ -10,5 +10,6 @@ namespace E621Downloader.Pages.LibrarySection {
 		void UpdateSize(int size);
 		LibraryItemsGroupView GetGroupView();
 		void RefreshRequest();
+		void DisplayHeader(bool enabled);
 	}
 }

@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Download;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Download;
 using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
@@ -116,6 +117,7 @@ namespace E621Downloader.Pages {
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
+			this.FocusModeUpdate();
 			if(e.Parameter is PostBrowserParameter parameter) {
 				this.parameter = (PostBrowserParameter)parameter.Clone();
 				ToTab(new PostsTab() {
@@ -136,7 +138,6 @@ namespace E621Downloader.Pages {
 				//this.pool = null;
 			}
 			MainPage.ClearPostBrowserParameter();
-
 
 			LocalSettings.Current.tabsOpenLength = LocalSettings.Current.tabsOpenLength;
 			PanelWidthText.Text = $"({LocalSettings.Current.tabsOpenLength})";
@@ -846,6 +847,14 @@ namespace E621Downloader.Pages {
 			MainPage.Instance.currentTag = PageTag.PostsBrowser;
 			MainPage.Instance.UpdateNavigationItem();
 		}
+
+		void IPage.FocusMode(bool enabled) {
+			//TabsNavigationView.IsPaneVisible = !enabled;
+			if(enabled) {
+				TabsNavigationView.IsPaneOpen = false;
+			}
+		}
+
 	}
 
 	public class PostsTab {

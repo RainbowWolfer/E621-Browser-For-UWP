@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Inerfaces;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Views;
@@ -80,6 +81,7 @@ namespace E621Downloader.Pages {
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
+			this.FocusModeUpdate();
 			UpdateFavoritesTable();
 		}
 
@@ -399,6 +401,12 @@ namespace E621Downloader.Pages {
 		void IPage.UpdateNavigationItem() {
 			MainPage.Instance.currentTag = PageTag.Subscription;
 			MainPage.Instance.UpdateNavigationItem();
+		}
+
+		void IPage.FocusMode(bool enabled) {
+			if(enabled) {
+				MainSplitView.IsPaneOpen = false;
+			}
 		}
 
 		private enum LayoutType {

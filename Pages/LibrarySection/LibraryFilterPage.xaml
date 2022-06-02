@@ -27,7 +27,7 @@
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
-		<Grid Margin="5">
+		<Grid x:Name="HeaderGrid" Margin="5">
 			<librarysection:LibraryTitleBar x:Name="TitleBar" Title="Filter" ShowExplorerButton="False" IsExpanded="True"/>
 		</Grid>
 		<StackPanel x:Name="FilterGrid" Visibility="Visible" Margin="10" Grid.Row="1" CornerRadius="10" Height="250" Padding="10">

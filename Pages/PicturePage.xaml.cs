@@ -100,10 +100,12 @@ namespace E621Downloader.Pages {
 					isControlInputing = false;
 				}
 			}));
+
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
+			this.FocusModeUpdate();
 			object p = e.Parameter;
 			MainPage.ClearPicturePageParameter();
 			MyMediaPlayer.AutoPlay = EnableAutoPlay;
@@ -1057,16 +1059,28 @@ namespace E621Downloader.Pages {
 		}
 
 		private void ToggleTagsButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			DisplayTagsView();
+		}
+
+		private void DisplayTagsView(bool? enabled = null) {
 			double from = TagsListView.Width;
+			TagsDisplay.Children[0].SetValue(DoubleAnimation.FromProperty, from);
 			double to;
-			if(TagsListView.Width <= 125) {
+			if(enabled == true) {
 				to = 250;
 				ToggleTagsButtonIcon.Glyph = "\uE8A0";
-			} else {
+			} else if(enabled == false) {
 				to = 0;
 				ToggleTagsButtonIcon.Glyph = "\uE89F";
+			} else {
+				if(TagsListView.Width <= 125) {
+					to = 250;
+					ToggleTagsButtonIcon.Glyph = "\uE8A0";
+				} else {
+					to = 0;
+					ToggleTagsButtonIcon.Glyph = "\uE89F";
+				}
 			}
-			TagsDisplay.Children[0].SetValue(DoubleAnimation.FromProperty, from);
 			TagsDisplay.Children[0].SetValue(DoubleAnimation.ToProperty, to);
 			TagsDisplay.Begin();
 		}
@@ -1344,6 +1358,17 @@ namespace E621Downloader.Pages {
 		void IPage.UpdateNavigationItem() {
 			MainPage.Instance.currentTag = PageTag.Picture;
 			MainPage.Instance.UpdateNavigationItem();
+		}
+
+		void IPage.FocusMode(bool enabled) {
+			HeaderDisplayAnimatoin.From = HeaderPanel.Height;
+			if(enabled) {
+				DisplayTagsView(false);
+				HeaderDisplayAnimatoin.To = 0;
+			} else {
+				HeaderDisplayAnimatoin.To = 58;
+			}
+			HeaderDisplayStoryboard.Begin();
 		}
 	}
 

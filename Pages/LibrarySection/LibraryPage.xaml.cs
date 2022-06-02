@@ -282,6 +282,11 @@ namespace E621Downloader.Pages.LibrarySection {
 			MainPage.Instance.currentTag = PageTag.Library;
 			MainPage.Instance.UpdateNavigationItem();
 		}
+
+		void IPage.FocusMode(bool enabled) {
+			MainNavigationView.IsPaneVisible = !enabled;
+			Current.DisplayHeader(!enabled);
+		}
 	}
 
 	public enum OrderType {

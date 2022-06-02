@@ -19,7 +19,7 @@
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<Grid Margin="5">
+		<Grid x:Name="HeaderGrid" Margin="5">
 			<librarysection:LibraryTitleBar x:Name="TitleBar" ShowExpanderButton="False" ShowExplorerButton="True"/>
 		</Grid>
 		<Grid x:Name="LoadingGrid" Grid.Row="1" Visibility="Collapsed">

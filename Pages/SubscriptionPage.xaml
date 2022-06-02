@@ -98,7 +98,7 @@
 						<RowDefinition Height="*"/>
 						<RowDefinition Height="auto"/>
 					</Grid.RowDefinitions>
-					<RelativePanel>
+					<RelativePanel x:Name="HeaderPanel">
 						<TextBlock x:Name="TitleText" Text="Hello World" FontSize="22" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,0,0,0"/>
 						<Button x:Name="RefreshContentButton" FontSize="16" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="RefreshContentButton_Tapped" Margin="5,0,5,0">
 							<StackPanel Orientation="Horizontal">

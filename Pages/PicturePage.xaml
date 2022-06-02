@@ -38,6 +38,13 @@
 				</DoubleAnimation.EasingFunction>
 			</DoubleAnimation>
 		</Storyboard>
+		<Storyboard x:Name="HeaderDisplayStoryboard">
+			<DoubleAnimation x:Name="HeaderDisplayAnimatoin" EnableDependentAnimation="True" Storyboard.TargetName="HeaderPanel" Storyboard.TargetProperty="Height">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="20" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+		</Storyboard>
 	</Page.Resources>
 
 	<Grid KeyboardAcceleratorPlacementMode="Hidden">
@@ -104,7 +111,7 @@
 				<ColumnDefinition Width="auto"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<RelativePanel Grid.Column="1" Visibility="Visible" Margin="10">
+			<RelativePanel x:Name="HeaderPanel" Grid.Column="1" Visibility="Visible" Padding="10" Height="58">
 				<Button x:Name="ToggleTagsButton" Height="38" Width="50" Padding="0" Tapped="ToggleTagsButton_Tapped">
 					<FontIcon x:Name="ToggleTagsButtonIcon" Glyph="&#xE8A0;"/>
 				</Button>

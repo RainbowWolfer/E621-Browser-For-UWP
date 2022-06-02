@@ -19,11 +19,13 @@ using Windows.ApplicationModel.Contacts;
 using Windows.ApplicationModel.Email;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Foundation.Metadata;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using Windows.System;
 using Windows.UI.Core;
+using Windows.UI.Shell;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -431,6 +433,24 @@ namespace E621Downloader.Pages {
 			MainPage.Instance.UpdateNavigationItem();
 		}
 
+		void IPage.FocusMode(bool enabled) { }
+
+		private async void PinButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(!ApiInformation.IsTypePresent("Windows.UI.Shell.TaskbarManager")) {
+				return;
+			}
+			TaskbarManager bar = TaskbarManager.GetDefault();
+			if(!bar.IsSupported) {
+				return;
+			}
+			if(!bar.IsPinningAllowed) {
+				return;
+			}
+			if(await bar.IsCurrentAppPinnedAsync()) {
+				return;
+			}
+			await bar.RequestPinCurrentAppAsync();
+		}
 		//private void RandomTagMaxCountText_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args) {
 		//	if(internalChanges) {
 		//		Debug.WriteLine("!");

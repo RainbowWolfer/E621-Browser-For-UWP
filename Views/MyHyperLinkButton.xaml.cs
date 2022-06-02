@@ -19,20 +19,6 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Views {
 	public sealed partial class MyHyperLinkButton: UserControl {
-		//twitter
-		//www.twitter
-		//pbs.twimg -> twitter
-		//www.furaffinity
-		//d.furaffinity
-		//www.deviantart
-		//deviantart
-		//inkbunny
-		//www.inkbunny
-
-		//www.instagram
-		//instagram
-
-		//
 		private readonly string url;
 
 		public MyHyperLinkButton(string url) {
@@ -44,27 +30,40 @@ namespace E621Downloader.Views {
 			} else if(url.StartsWith("http://")) {
 				url = url.Substring(7);
 			}
+			string path = null;
 			if(url.Contains("tumblr")) {//something.tumblr.com
-				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/tumblr-icon.png"));
+				path = "ms-appx:///Icons/tumblr-icon.png";
 			}
 			if(url.StartsWith("twitter") || url.StartsWith("www.twitter") || url.StartsWith("pbs.twimg")) {
-				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/Twitter-icon.png"));
+				path = "ms-appx:///Icons/Twitter-icon.png";
 			} else if(url.StartsWith("www.furaffinity") || url.StartsWith("furaffinity") || url.StartsWith("d.furaffinity")) {
-				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/Furaffinity-icon.png"));
+				path = "ms-appx:///Icons/Furaffinity-icon.png";
 			} else if(url.StartsWith("www.deviantart") || url.StartsWith("deviantart")) {
-				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/DeviantArt-icon.png"));
+				path = "ms-appx:///Icons/DeviantArt-icon.png";
 			} else if(url.StartsWith("www.inkbunny") || url.StartsWith("inkbunny")) {
-				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/InkBunny-icon.png"));
+				path = "ms-appx:///Icons/InkBunny-icon.png";
 			} else if(url.StartsWith("www.weasyl.com") || url.StartsWith("weasyl.com")) {
-				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/weasyl-icon.png"));
+				path = "ms-appx:///Icons/weasyl-icon.png";
 			} else if(url.StartsWith("www.pixiv") || url.StartsWith("pixiv")) {
-				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/Pixiv-icon.png"));
+				path = "ms-appx:///Icons/Pixiv-icon.png";
 			} else if(url.StartsWith("www.instagram") || url.StartsWith("instagram")) {
-				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/Instagram-icon.png"));
+				path = "ms-appx:///Icons/Instagram-icon.png";
 			} else if(url.StartsWith("www.patreon") || url.StartsWith("patreon")) {
-				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/Patreon-icon.png"));
+				path = "ms-appx:///Icons/Patreon-icon.png";
 			} else if(url.StartsWith("www.subscribestar") || url.StartsWith("subscribestar")) {
-				IconImage.Source = new BitmapImage(new Uri("ms-appx:///Icons/SubscribeStar-icon.png"));
+				path = "ms-appx:///Icons/SubscribeStar-icon.png";
+			} else if(url.StartsWith("mega")) {
+				path = "ms-appx:///Icons/Mega-icon.png";
+			} else if(url.StartsWith("furrynetwork")) {
+				path = "ms-appx:///Icons/FurryNetwork-icon.png";
+			} else if(url.StartsWith("t.me")) {
+				path = "ms-appx:///Icons/Telegram-icon.png";
+			} else if(url.StartsWith("newgrounds") || url.StartsWith("www.newgrounds")) {
+				path = "ms-appx:///Icons/NewGrounds-icon.png";
+			}
+
+			if(path != null) {
+				IconImage.Source = new BitmapImage(new Uri(path));
 			}
 		}
 

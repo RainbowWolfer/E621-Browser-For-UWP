@@ -28,6 +28,7 @@ using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI.Popups;
+using Windows.UI.StartScreen;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -53,23 +54,40 @@ namespace E621Downloader {
 		public static MainPage Instance;
 		//public PostsBrowser postsBrowser;
 
-		public bool IsFullScreen {
-			get => ApplicationView.GetForCurrentView().IsFullScreenMode;
-			set {
-				FullScreenIcon.Glyph = value ? "\uE73F" : "\uE740";
+		public ScreenMode ScreenMode {
+			get => screenMode;
+			private set {
+				screenMode = value;
 				ApplicationView view = ApplicationView.GetForCurrentView();
-				if(view.IsFullScreenMode) {
-					AppTitleBar.Visibility = Visibility.Visible;
-					view.ExitFullScreenMode();
-					ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
-				} else {
-					if(view.TryEnterFullScreenMode()) {
-						AppTitleBar.Visibility = Visibility.Collapsed;
-						ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
-					}
+				switch(screenMode) {
+					case ScreenMode.Normal:
+						FullScreenIcon.Glyph = "\uE1D9";
+						view.ExitFullScreenMode();
+						ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
+						MyNavigationView.IsPaneVisible = true;
+						(MyFrame.Content as IPage)?.FocusMode(false);
+						break;
+					case ScreenMode.FullScreen:
+						FullScreenIcon.Glyph = "\uE1D8";
+						if(view.TryEnterFullScreenMode()) {
+							ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
+						}
+						MyNavigationView.IsPaneVisible = true;
+						(MyFrame.Content as IPage)?.FocusMode(false);
+						break;
+					case ScreenMode.Focus:
+						if(view.TryEnterFullScreenMode()) {
+							ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
+						}
+						MyNavigationView.IsPaneVisible = false;
+						(MyFrame.Content as IPage)?.FocusMode(true);
+						break;
+					default:
+						throw new NotImplementedException();
 				}
 			}
 		}
+
 		public PageTag currentTag;
 
 		private object parameter_picture;
@@ -87,12 +105,26 @@ namespace E621Downloader {
 		public MainPage() {
 			Instance = this;
 			this.InitializeComponent();
-
+			CoreApplication.GetCurrentView().CoreWindow.SizeChanged += (s, e) => {
+				if(!ApplicationView.GetForCurrentView().IsFullScreenMode) {
+					ScreenMode = ScreenMode.Normal;
+				}
+			};
+			if(!ApplicationView.GetForCurrentView().IsFullScreenMode) {
+				ScreenMode = ScreenMode.Normal;
+			} else {
+				ScreenMode = ScreenMode.FullScreen;
+			}
 			var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
 			coreTitleBar.ExtendViewIntoTitleBar = true;
 			Window.Current.SetTitleBar(AppTitleBar);
-
-			AppTitleBar.Visibility = IsFullScreen ? Visibility.Collapsed : Visibility.Visible;
+			coreTitleBar.IsVisibleChanged += (sender, e) => {
+				if(sender.IsVisible) {
+					AppTitleBar.Visibility = Visibility.Visible;
+				} else {
+					AppTitleBar.Visibility = Visibility.Collapsed;
+				}
+			};
 
 			currentTag = PageTag.Welcome;
 			KeyListener.SubmitInstance(new KeyListenerInstance(async key => {
@@ -108,8 +140,6 @@ namespace E621Downloader {
 				}
 			}));
 			Loop();
-
-			//ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e) {
@@ -530,10 +560,23 @@ namespace E621Downloader {
 		}
 
 		private void FullScreenButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			IsFullScreen = !IsFullScreen;
+			if(ScreenMode == ScreenMode.FullScreen) {
+				ScreenMode = ScreenMode.Normal;
+			} else {
+				ScreenMode = ScreenMode.FullScreen;
+			}
+		}
+
+		private void FocusModeButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(ScreenMode == ScreenMode.Focus) {
+				ScreenMode = ScreenMode.Normal;
+			} else {
+				ScreenMode = ScreenMode.Focus;
+			}
 		}
 
 		private CancellationTokenSource cts = new();
+		private ScreenMode screenMode;
 
 		private async void CurrentTagsButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			await PopupSearch();
@@ -620,8 +663,13 @@ namespace E621Downloader {
 		}
 
 	}
+
 	public enum PageTag {
 		PostsBrowser = 0, Picture = 1, Library = 2, Subscription = 3, Spot = 4, Download = 5, UserProfile = 6, Welcome = 7, Settings, Maintenance
+	}
+
+	public enum ScreenMode {
+		Normal, FullScreen, Focus
 	}
 }
 

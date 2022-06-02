@@ -65,8 +65,11 @@
 							</StackPanel>
 						</Button.Content>
 					</Button>
-					<Button x:Name="FullScreenButton" Background="Transparent" BorderThickness="0" Height="40" Width="45" Tapped="FullScreenButton_Tapped"  ToolTipService.ToolTip="Switch FullScreen" Margin="10,0,0,0">
-						<FontIcon x:Name="FullScreenIcon" Glyph="&#xE740;"/>
+					<Button x:Name="FullScreenButton" Background="Transparent" BorderThickness="0" Height="40" Width="45" Tapped="FullScreenButton_Tapped" ToolTipService.ToolTip="Switch FullScreen" Margin="10,0,0,0">
+						<FontIcon x:Name="FullScreenIcon" Glyph="&#xE1D9;" FontSize="16"/>
+					</Button>
+					<Button x:Name="FocusModeButton" Background="Transparent" BorderThickness="0" Height="40" Width="45" ToolTipService.ToolTip="Enter Focus Mode" Tapped="FocusModeButton_Tapped">
+						<FontIcon Glyph="&#xE2B4;" FontSize="16"/>
 					</Button>
 				</StackPanel>
 			</controls:NavigationView.PaneFooter>

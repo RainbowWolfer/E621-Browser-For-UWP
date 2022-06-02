@@ -65,6 +65,7 @@ namespace E621Downloader.Pages {
 		}
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
+			this.FocusModeUpdate();
 			onTask = true;
 		}
 		protected override void OnNavigatedFrom(NavigationEventArgs e) {
@@ -371,6 +372,12 @@ namespace E621Downloader.Pages {
 		void IPage.UpdateNavigationItem() {
 			MainPage.Instance.currentTag = PageTag.Spot;
 			MainPage.Instance.UpdateNavigationItem();
+		}
+
+		void IPage.FocusMode(bool enabled) {
+			if(enabled) {
+				MainSplitView.IsPaneOpen = false;
+			}
 		}
 	}
 

@@ -114,7 +114,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 
 
 			MySuggestBox_TextChanged(null, null);
-
+			CalculateCurrentTags();
 		}
 
 		private bool ableToHide = true;
@@ -187,6 +187,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 					DelayLoad(current);
 				}
 			}
+			CalculateCurrentTags();
 		}
 
 		private void MySuggestBox_TextChanged(object sender, TextChangedEventArgs e) {

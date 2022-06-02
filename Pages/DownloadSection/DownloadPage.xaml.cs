@@ -36,6 +36,7 @@ namespace E621Downloader.Pages.DownloadSection {
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
+			this.FocusModeUpdate();
 			RefreshCurrentContent();
 		}
 
@@ -130,5 +131,7 @@ namespace E621Downloader.Pages.DownloadSection {
 			MainPage.Instance.currentTag = PageTag.Download;
 			MainPage.Instance.UpdateNavigationItem();
 		}
+
+		void IPage.FocusMode(bool enable) { }
 	}
 }

@@ -20,6 +20,7 @@ using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System;
+using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -47,6 +48,7 @@ namespace E621Downloader {
 			this.Suspending += OnSuspending;
 
 			InitializeTheme();
+
 			switch(GetStoredTheme()) {
 				case ElementTheme.Light:
 					Current.RequestedTheme = ApplicationTheme.Light;
@@ -55,6 +57,8 @@ namespace E621Downloader {
 					Current.RequestedTheme = ApplicationTheme.Dark;
 					break;
 			}
+
+			//SetJumpList();
 		}
 
 		public static void InitializeTheme() {
@@ -158,6 +162,26 @@ namespace E621Downloader {
 			//TODO: Save application state and stop any background activity
 			deferral.Complete();
 		}
+
+		private async void SetJumpList() {
+			if(!JumpList.IsSupported()) {
+				return;
+			}
+			var jumpList = await JumpList.LoadCurrentAsync();
+			jumpList.SystemGroupKind = JumpListSystemGroupKind.None;
+
+			jumpList.Items.Clear();
+
+			var item = JumpListItem.CreateWithArguments("Argument", "DisplayName");
+			item.Description = "Description";
+			item.GroupName = "Group Name";
+			item.Logo = new Uri("ms-appx:///Icons/Twitter-icon.png");
+
+			jumpList.Items.Add(item);
+
+			await jumpList.SaveAsync();
+		}
+
 	}
 
 	public enum LOR {

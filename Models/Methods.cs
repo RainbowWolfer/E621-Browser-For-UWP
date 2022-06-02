@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Posts;
+﻿using E621Downloader.Models.Inerfaces;
+using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,11 @@ namespace E621Downloader.Models {
 			} else {
 				return $"{number}";
 			}
+		}
+
+
+		public static void FocusModeUpdate(this IPage page){
+			page.FocusMode(MainPage.Instance.ScreenMode == ScreenMode.Focus);
 		}
 	}
 }

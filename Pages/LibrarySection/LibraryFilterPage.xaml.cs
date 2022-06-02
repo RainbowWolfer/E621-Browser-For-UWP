@@ -426,5 +426,10 @@ namespace E621Downloader.Pages.LibrarySection {
 				TotalFoundText.Text = $"Total Found: {args.TotalCount}";
 			}
 		}
+
+		public void DisplayHeader(bool enabled) {
+			HeaderGrid.Visibility = enabled ? Visibility.Visible : Visibility.Collapsed;
+			FilterGrid.Visibility = enabled ? Visibility.Visible : Visibility.Collapsed;
+		}
 	}
 }

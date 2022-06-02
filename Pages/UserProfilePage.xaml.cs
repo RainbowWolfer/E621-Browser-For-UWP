@@ -134,5 +134,7 @@ namespace E621Downloader.Pages {
 			MainPage.Instance.currentTag = PageTag.UserProfile;
 			MainPage.Instance.UpdateNavigationItem();
 		}
+
+		void IPage.FocusMode(bool enabled) { }
 	}
 }

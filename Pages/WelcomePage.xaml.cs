@@ -93,5 +93,7 @@ namespace E621Downloader.Pages {
 			MainPage.Instance.currentTag = PageTag.Welcome;
 			MainPage.Instance.ClearNavigationItemSelected();
 		}
+
+		void IPage.FocusMode(bool enabled) { }
 	}
 }

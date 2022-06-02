@@ -447,11 +447,15 @@
     <Content Include="Assets\RowBanner.png" />
     <Content Include="Icons\DeviantArt-icon.png" />
     <Content Include="Icons\Furaffinity-icon.png" />
+    <Content Include="Icons\FurryNetwork-icon.png" />
     <Content Include="Icons\InkBunny-icon.png" />
     <Content Include="Icons\Instagram-icon.png" />
+    <Content Include="Icons\Mega-icon.png" />
+    <Content Include="Icons\NewGrounds-icon.png" />
     <Content Include="Icons\Patreon-icon.png" />
     <Content Include="Icons\Pixiv-icon.png" />
     <Content Include="Icons\SubscribeStar-icon.png" />
+    <Content Include="Icons\Telegram-icon.png" />
     <Content Include="Icons\tumblr-icon.png" />
     <Content Include="Icons\Twitter-icon.png" />
     <Content Include="Icons\weasyl-icon.png" />
