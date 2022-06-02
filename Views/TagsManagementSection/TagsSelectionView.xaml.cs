@@ -29,7 +29,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 		private readonly List<string> currentTags = new();
 
 		private int currentSelectedIndex = -1;
-		private bool hasSelectionChanged = false;
+		//private bool hasSelectionChanged = false;
 
 		private QuickOptionsOrder order = QuickOptionsOrder.Default;
 		private QuickOptionsType type = QuickOptionsType.All;
@@ -115,6 +115,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 
 			MySuggestBox_TextChanged(null, null);
 			CalculateCurrentTags();
+
 		}
 
 		private bool ableToHide = true;
@@ -343,7 +344,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 			}
 			//GetItems().FirstOrDefault()?.SetSelected(true);
 			currentSelectedIndex = -1;
-			hasSelectionChanged = false;
+			//hasSelectionChanged = false;
 		}
 
 		private List<SingleTagSuggestion> GetItems() {
@@ -453,11 +454,11 @@ namespace E621Downloader.Views.TagsManagementSection {
 			for(int i = 0; i < list.Count; i++) {
 				list[i].IsSelected = i == currentSelectedIndex;
 			}
-			if(list.Count == 0 || list.Count == 1) {
-				hasSelectionChanged = false;
-			} else {
-				hasSelectionChanged = true;
-			}
+			//if(list.Count == 0 || list.Count == 1) {
+			//	hasSelectionChanged = false;
+			//} else {
+			//	hasSelectionChanged = true;
+			//}
 		}
 
 		private void SelectionDown() {
@@ -468,11 +469,11 @@ namespace E621Downloader.Views.TagsManagementSection {
 			for(int i = 0; i < list.Count; i++) {
 				list[i].IsSelected = i == currentSelectedIndex;
 			}
-			if(list.Count == 0 || list.Count == 1) {
-				hasSelectionChanged = false;
-			} else {
-				hasSelectionChanged = true;
-			}
+			//if(list.Count == 0 || list.Count == 1) {
+			//	hasSelectionChanged = false;
+			//} else {
+			//	hasSelectionChanged = true;
+			//}
 		}
 
 		private void UpKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {

@@ -242,7 +242,7 @@ namespace E621Downloader.Views {
 			try {
 				StorageFile file = await PicturePage.GetImageFile(PathType.PostID, "", PostRef, cts_SetAs.Token);
 				UpdateDialogContent("Setting Wallpaper");
-				await PicturePage.SetLockScreenAsync(file, cts_SetAs.Token);
+				await PicturePage.SetLockScreenAsync(file);
 			} catch(OperationCanceledException) { }
 			HideLoadingDialog();
 			CancelLoading();
@@ -258,7 +258,7 @@ namespace E621Downloader.Views {
 			try {
 				StorageFile file = await PicturePage.GetImageFile(PathType.PostID, "", PostRef, cts_SetAs.Token);
 				UpdateDialogContent("Setting Wallpaper");
-				await PicturePage.SetWallpaperAsync(file, cts_SetAs.Token);
+				await PicturePage.SetWallpaperAsync(file);
 			} catch(OperationCanceledException) { }
 			HideLoadingDialog();
 			CancelLoading();

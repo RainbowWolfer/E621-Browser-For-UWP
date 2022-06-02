@@ -1236,24 +1236,20 @@ namespace E621Downloader.Pages {
 			None, Up, Down
 		}
 
-		public static async Task<bool> SetWallpaperAsync(StorageFile file, CancellationToken token) {
-			bool success = false;
+		public static async Task SetWallpaperAsync(StorageFile file) {
 			if(UserProfilePersonalizationSettings.IsSupported()) {
 				var profileSettings = UserProfilePersonalizationSettings.Current;
-				token.ThrowIfCancellationRequested();
-				success = await profileSettings.TrySetWallpaperImageAsync(file);
+				//token.ThrowIfCancellationRequested();
+				await profileSettings.TrySetWallpaperImageAsync(file);
 			}
-			return success;
 		}
 
-		public static async Task<bool> SetLockScreenAsync(StorageFile file, CancellationToken token) {
-			bool success = false;
+		public static async Task SetLockScreenAsync(StorageFile file) {
 			if(UserProfilePersonalizationSettings.IsSupported()) {
 				var profileSettings = UserProfilePersonalizationSettings.Current;
-				token.ThrowIfCancellationRequested();
-				success = await profileSettings.TrySetLockScreenImageAsync(file);
+				//token.ThrowIfCancellationRequested();
+				await profileSettings.TrySetLockScreenImageAsync(file);
 			}
-			return success;
 		}
 
 		public static async Task<StorageFile> GetImageFile(PathType type, string pathForLocal, Post post, CancellationToken token) {
@@ -1329,7 +1325,7 @@ namespace E621Downloader.Pages {
 			try {
 				StorageFile file = await GetImageFile(PostType, path, PostRef, cts_SetAs.Token);
 				UpdateDialogContent("Setting Wallpaper");
-				await SetWallpaperAsync(file, cts_SetAs.Token);
+				await SetWallpaperAsync(file);
 			} catch(OperationCanceledException) { }
 			HideLoadingDialog();
 			CancelLoading();
@@ -1345,7 +1341,7 @@ namespace E621Downloader.Pages {
 			try {
 				StorageFile file = await GetImageFile(PostType, path, PostRef, cts_SetAs.Token);
 				UpdateDialogContent("Setting Lockscreen");
-				await SetLockScreenAsync(file, cts_SetAs.Token);
+				await SetLockScreenAsync(file);
 			} catch(OperationCanceledException) { }
 			HideLoadingDialog();
 			CancelLoading();
