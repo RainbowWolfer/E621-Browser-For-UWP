@@ -42,6 +42,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {
 	public sealed partial class PicturePage: Page, IPage {
+		public static string[] CurrentTags { get; set; }
 		public Post PostRef { get; private set; }
 		public PathType PostType { get; private set; }
 		public readonly ObservableCollection<GroupTagListWithColor> tags = new();
@@ -876,7 +877,7 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			if(await DownloadsManager.CheckDownloadAvailableWithDialog()) {
-				if(await DownloadsManager.RegisterDownload(PostRef)) {
+				if(await DownloadsManager.RegisterDownload(PostRef, CurrentTags)) {
 					MainPage.CreateTip_SuccessDownload(this);
 				} else {
 					await MainPage.CreatePopupDialog("Error", "Downloads Failed");

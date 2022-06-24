@@ -66,7 +66,7 @@ namespace E621Downloader.Pages {
 			Instance?.SelectFeedBack(imageHolder);
 		}
 
-		private static PostsBrowserPage Instance;
+		public static PostsBrowserPage Instance { get; private set; }
 		public int ItemSize { get => 50; }
 		public readonly ObservableCollection<PostsInfoList> poststInfolists = new();
 
@@ -83,7 +83,7 @@ namespace E621Downloader.Pages {
 		private CancellationTokenSource cts_download;
 		private bool isLoading;
 
-		private PostsTab CurrentTab { get; set; } = null;
+		public PostsTab CurrentTab { get; private set; } = null;
 
 		public bool IsLoading {
 			get => isLoading;
@@ -355,6 +355,7 @@ namespace E621Downloader.Pages {
 
 		private void AssignPaginatorAction(PostsTab tab) {
 			Paginator.OnPageNavigate = async page => {
+				Debug.WriteLine(page);
 				Paginator.CurrentPage = page;
 				tab.CurrentPage = page;
 				await LoadAsync(tab, true);

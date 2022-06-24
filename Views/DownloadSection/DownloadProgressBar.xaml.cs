@@ -79,7 +79,7 @@ namespace E621Downloader.Views.DownloadSection {
 		}
 
 		private void OpenButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			MainPage.NavigateToPicturePage(Instance.metaFile.MyPost);
+			MainPage.NavigateToPicturePage(Instance.metaFile.MyPost, Array.Empty<string>());
 		}
 
 		private void InfoTextBlock_RightTapped(object sender, RightTappedRoutedEventArgs e) {

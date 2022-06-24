@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Pages;
+using E621Downloader.Views.LibrarySection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,8 @@ namespace E621Downloader.Models.Locals {
 		public bool spot_includeExplicit;
 		public int spot_amount;
 
+		public ItemsGroupViewType library_viewType;
+
 		public string user_username = "";
 		public string user_api = "";
 
@@ -68,6 +71,7 @@ namespace E621Downloader.Models.Locals {
 				fixedHeight = 280,
 				randomTagMaxCount = 10000,
 				tabsOpenLength = 300,
+				library_viewType = ItemsGroupViewType.ListView,
 			};
 		}
 	}

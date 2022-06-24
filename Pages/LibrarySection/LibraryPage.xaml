@@ -12,50 +12,60 @@
 	d:RequestedTheme="Dark"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-
-	<controls:NavigationView x:Name="MainNavigationView" IsBackEnabled="False" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" ItemInvoked="MainNavigationView_ItemInvoked" PaneTitle="Folders" IsPaneVisible="True">
-		<controls:NavigationView.MenuItems>
-			<controls:NavigationViewItem x:Name="FilterItem" Icon="Filter" Content="Filter"/>
-			<controls:NavigationViewItem x:Name="RootItem" Icon="Home" Content="Root"/>
-			<controls:NavigationViewItemHeader Content="Opened Tabs"/>
-		</controls:NavigationView.MenuItems>
-		<controls:NavigationView.PaneFooter>
-			<StackPanel>
+	<Grid>
+		<controls:NavigationView x:Name="MainNavigationView" IsBackEnabled="False" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" ItemInvoked="MainNavigationView_ItemInvoked" PaneTitle="Folders" IsPaneVisible="True">
+			<controls:NavigationView.MenuItems>
+				<controls:NavigationViewItem x:Name="FilterItem" Icon="Filter" Content="Filter"/>
+				<controls:NavigationViewItem x:Name="RootItem" Icon="Home" Content="Root"/>
+				<controls:NavigationViewItemHeader Content="Opened Tabs"/>
+			</controls:NavigationView.MenuItems>
+			<controls:NavigationView.PaneFooter>
+				<StackPanel>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="50"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<Button x:Name="ViewTypeMinorButton" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Margin="5" Click="ViewTypeMinorButton_Click" Padding="8,5,8,6" VerticalAlignment="Center" HorizontalAlignment="Center">
+							<FontIcon x:Name="ViewTypeMinorIcon" Glyph="&#xE14C;" />
+						</Button>
+						<views:LockableToggleButton x:Name="ListViewTypeToggle" Grid.Column="1" HorizontalAlignment="Stretch" CornerRadius="4" Margin="5" LockToggle="True" IsChecked="True" Click="ListViewTypeToggle_Click">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="List View"/>
+								<FontIcon Glyph="&#xE14C;" Margin="10,0,0,0"/>
+							</StackPanel>
+						</views:LockableToggleButton>
+						<views:LockableToggleButton x:Name="GridViewTypeToggle" Grid.Column="2" HorizontalAlignment="Stretch" CornerRadius="4" Margin="5" LockToggle="True" Click="GridViewTypeToggle_Click">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="Grid View"/>
+								<FontIcon Glyph="&#xE154;" Margin="10,0,0,0"/>
+							</StackPanel>
+						</views:LockableToggleButton>
+					</Grid>
+					<views:ResizeBar VerticalAlignment="Bottom" Minimum="50" Maximum="400" Step="10" Size="100" OnSizeChanged="ResizeBar_OnSizeChanged" Margin="5,0,5,0"/>
+				</StackPanel>
+			</controls:NavigationView.PaneFooter>
+			<controls:NavigationView.Content>
 				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="50"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
-					<Button x:Name="ViewTypeMinorButton" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Margin="5" Click="ViewTypeMinorButton_Click" Padding="8,5,8,6" VerticalAlignment="Center" HorizontalAlignment="Center">
-						<FontIcon x:Name="ViewTypeMinorIcon" Glyph="&#xE14C;" />
-					</Button>
-					<views:LockableToggleButton x:Name="ListViewTypeToggle" Grid.Column="1" HorizontalAlignment="Stretch" CornerRadius="4" Margin="5" LockToggle="True" IsChecked="True" Click="ListViewTypeToggle_Click">
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="List View"/>
-							<FontIcon Glyph="&#xE14C;" Margin="10,0,0,0"/>
-						</StackPanel>
-					</views:LockableToggleButton>
-					<views:LockableToggleButton x:Name="GridViewTypeToggle" Grid.Column="2" HorizontalAlignment="Stretch" CornerRadius="4" Margin="5" LockToggle="True" Click="GridViewTypeToggle_Click">
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="Grid View"/>
-							<FontIcon Glyph="&#xE154;" Margin="10,0,0,0"/>
-						</StackPanel>
-					</views:LockableToggleButton>
+					<Frame x:Name="MainFrame">
+						<Frame.ContentTransitions>
+							<TransitionCollection>
+								<NavigationThemeTransition/>
+							</TransitionCollection>
+						</Frame.ContentTransitions>
+					</Frame>
 				</Grid>
-				<views:ResizeBar VerticalAlignment="Bottom" Minimum="50" Maximum="400" Step="10" Size="100" OnSizeChanged="ResizeBar_OnSizeChanged" Margin="5,0,5,0"/>
+			</controls:NavigationView.Content>
+		</controls:NavigationView>
+		<ContentDialog x:Name="RenameDialog" IsPrimaryButtonEnabled="False" PrimaryButtonText="Rename" CloseButtonText="Back" DefaultButton="Close" Title="Rename">
+			<ContentDialog.KeyboardAccelerators>
+				<KeyboardAccelerator x:Name="DialogEnterKey" Key="Enter" Invoked="DialogEnterKey_Invoked" ScopeOwner="{x:Bind DialogRenameBox}"/>
+			</ContentDialog.KeyboardAccelerators>
+			<StackPanel>
+				<TextBox x:Name="DialogRenameBox" Margin="0,0,0,5" TextChanged="DialogRenameBox_TextChanged"/>
+				<TextBlock x:Name="DialogErrorText" Visibility="Collapsed" TextAlignment="Center" Foreground="Red" FontSize="18"/>
 			</StackPanel>
-		</controls:NavigationView.PaneFooter>
-		<controls:NavigationView.Content>
-			<Grid>
-				<Frame x:Name="MainFrame">
-					<Frame.ContentTransitions>
-						<TransitionCollection>
-							<NavigationThemeTransition/>
-						</TransitionCollection>
-					</Frame.ContentTransitions>
-				</Frame>
-			</Grid>
-		</controls:NavigationView.Content>
-	</controls:NavigationView>
+		</ContentDialog>
+	</Grid>
 </Page>

@@ -63,9 +63,47 @@ namespace E621Downloader.Models {
 			}
 		}
 
+		public static string ToDuo(this int number) {
+			if(number <= 0) {
+				return number.ToString();
+			} else if(number < 10) {
+				return $"0{number}";
+			} else {
+				return number.ToString();
+			}
+		}
 
-		public static void FocusModeUpdate(this IPage page){
+		public static void FocusModeUpdate(this IPage page) {
 			page.FocusMode(MainPage.Instance.ScreenMode == ScreenMode.Focus);
+		}
+
+		public static string GetDate(DateTime dateTime) {
+			return $"{dateTime.Year}:{dateTime.Month.ToDuo()}:{dateTime.Day.ToDuo()}";
+		}
+		public static string GetDate() => GetDate(DateTime.Now);
+
+		public static string GetTime(DateTime dateTime) {
+			return $"{dateTime.Hour.ToDuo()}:{dateTime.Minute.ToDuo()}:{dateTime.Second.ToDuo()}";
+		}
+		public static string GetTime() => GetTime(DateTime.Now);
+
+		public static string GetDateTime(DateTime dateTime) {
+			return $"{GetDate(dateTime)} {GetTime(dateTime)}";
+		}
+		public static string GetDateTime() => GetDateTime(DateTime.Now);
+
+		public static void Print<T, W>(this Dictionary<T, W> dic, Func<T, object> key = null, Func<W, object> value = null) {
+			Debug.WriteLine($"Print Dictionary: {dic}");
+			if(key == null) {
+				key = i => i;
+			}
+			if(value == null) {
+				value = i => i;
+			}
+			int index = 0;
+			foreach(KeyValuePair<T, W> item in dic) {
+				Debug.WriteLine($"{index++} -> {key.Invoke(item.Key)} : {value.Invoke(item.Value)}");
+			}
 		}
 	}
 }

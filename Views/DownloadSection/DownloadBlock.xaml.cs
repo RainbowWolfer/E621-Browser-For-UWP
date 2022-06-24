@@ -69,7 +69,7 @@ namespace E621Downloader.Views.DownloadSection {
 
 		public bool IsAllCompleted() {
 			foreach(SimpleDownloadProgressBar item in Bars) {
-				if(item.Instance.Status != BackgroundTransferStatus.Completed) {
+				if(item.Instance?.Status != BackgroundTransferStatus.Completed) {
 					return false;
 				}
 			}

@@ -276,13 +276,13 @@ namespace E621Downloader.Views {
 					App.PostsList.UpdatePostsList(PostsBrowserPage.GetCurrentPosts());
 					App.PostsList.Current = PostRef;
 
-					MainPage.NavigateToPicturePage(PostRef);
+					MainPage.NavigateToPicturePage(PostRef, PostsBrowserPage.Instance?.CurrentTab?.Tags);
 				}
 			} else if(MainPage.Instance.currentTag == PageTag.Spot) {
 				App.PostsList.UpdatePostsList(SpotPage.Instance.Posts);
 				App.PostsList.Current = PostRef;
 
-				MainPage.NavigateToPicturePage(PostRef);
+				MainPage.NavigateToPicturePage(PostRef, new string[] { "Spot", Methods.GetDate() });
 			}
 		}
 

@@ -107,7 +107,7 @@ namespace E621Downloader.Views {
 					dialog.Hide();
 					App.PostsList.UpdatePostsList(Local.History.PostIDs.Select(p => p.Value).Cast<object>().ToList());
 					App.PostsList.Current = v;
-					MainPage.NavigateToPicturePage(v);
+					MainPage.NavigateToPicturePage(v, Array.Empty<string>());
 				};
 				views.Add(view);
 				panels_views[type].Children.Add(view);

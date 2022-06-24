@@ -426,9 +426,12 @@ namespace E621Downloader {
 		}
 
 		/// <summary> Used to solve the problem of navtigating to self in PicturePage </summary>
-		public static void NavigateToPicturePage(object parameter = null) {
+		public static void NavigateToPicturePage(object parameter = null, string[] tags = null) {
 			Instance.parameter_picture = parameter;
 			Instance.JumpToPage(PageTag.Picture);
+			if(tags != null) {
+				PicturePage.CurrentTags = tags;
+			}
 			ClearPicturePageParameter();
 		}
 

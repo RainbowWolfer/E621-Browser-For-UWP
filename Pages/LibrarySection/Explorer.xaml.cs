@@ -1,10 +1,12 @@
-﻿using E621Downloader.Models.Locals;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Views;
 using E621Downloader.Views.FoldersSelectionSection;
 using E621Downloader.Views.LibrarySection;
 using E621Downloader.Views.LocalTagsManagementSection;
 using E621Downloader.Views.TagsManagementSection;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,6 +19,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.Storage.Search;
 using Windows.System;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -88,7 +91,7 @@ namespace E621Downloader.Pages.LibrarySection {
 					if(imagesArgs.Files == null) {
 						await LoadImages(imagesArgs);
 					}
-					UpdateImages(imagesArgs);
+					UpdateImagesAsync(imagesArgs);
 					TitleBar.IsFolderBar = false;
 				} else if(args is LibraryFoldersArgs folderArgs) {
 					if(folderArgs.Folders == null) {
@@ -99,7 +102,7 @@ namespace E621Downloader.Pages.LibrarySection {
 					TitleBar.IsFolderBar = true;
 				} else if(args is LibraryFilterArgs filterArgs) {
 					if(filterArgs.Files != null) {
-						UpdateImages(filterArgs);
+						UpdateImagesAsync(filterArgs);
 					}
 					TitleBar.IsFolderBar = false;
 				}
@@ -152,7 +155,7 @@ namespace E621Downloader.Pages.LibrarySection {
 				if(load) {
 					await LoadImages(imagesArgs);
 				}
-				UpdateImages(imagesArgs, matchedName);
+				UpdateImagesAsync(imagesArgs, matchedName);
 			} else if(args is LibraryFoldersArgs folderArgs) {
 				if(load) {
 					await LoadDownloadFolders(folderArgs);
@@ -183,33 +186,47 @@ namespace E621Downloader.Pages.LibrarySection {
 			IsLoading = false;
 		}
 
-		private void UpdateImages(ILibraryImagesArgs args, string matchedName = null) {
+		private async void UpdateImagesAsync(ILibraryImagesArgs args, string matchedName = null) {
 			List<(MetaFile meta, BitmapImage bitmap, StorageFile file)> files = args.Files;
 			if(!string.IsNullOrWhiteSpace(matchedName)) {
 				files = files.Where(f => f.file.Name.Contains(matchedName)).ToList();
 			}
-			files = OrderImages(files, libraryPage.OrderType, libraryPage.Order).ToList();
+			files = (await OrderImagesAsync(files, libraryPage.OrderType, libraryPage.Order, () => {
+				IsLoading = true;
+				LoadingText.Text = "Sorting";
+			}, () => {
+				IsLoading = false;
+			})).ToList();
 			GroupView.SetImages(files);
 		}
 
-		private void UpdateFolders(LibraryFoldersArgs args, string matchedName = null) {
+		private async void UpdateFolders(LibraryFoldersArgs args, string matchedName = null) {
 			List<StorageFolder> folders = args.Folders;
 			if(!string.IsNullOrWhiteSpace(matchedName)) {
 				folders = folders.Where(f => f.Name.Contains(matchedName)).ToList();
 			}
-			folders = OrderFolders(folders, libraryPage.OrderType, libraryPage.Order).ToList();
+			folders = (await OrderFolders(folders, libraryPage.OrderType, libraryPage.Order, () => {
+				IsLoading = true;
+				LoadingText.Text = "Sorting";
+			}, () => {
+				IsLoading = false;
+			})).ToList();
 			GroupView.SetFolders(folders);
 		}
 
-		public static IEnumerable<StorageFolder> OrderFolders(IEnumerable<StorageFolder> folders, OrderType type, OrderEnum order) {
+		public static async ValueTask<IEnumerable<StorageFolder>> OrderFolders(IEnumerable<StorageFolder> folders, OrderType type, OrderEnum order, Action startSorting = null, Action finishSorting = null) {
+			startSorting?.Invoke();
 			Func<StorageFolder, object> keySelector;
-
 			switch(type) {
 				case OrderType.Name:
 					keySelector = s => s.Name;
 					break;
 				case OrderType.Date:
-					keySelector = s => s.DateCreated;
+					Dictionary<StorageFolder, DateTimeOffset> modifiedTime = new();
+					foreach(StorageFolder item in folders) {
+						modifiedTime.Add(item, (await item.GetBasicPropertiesAsync()).DateModified);
+					}
+					keySelector = s => modifiedTime[s];
 					break;
 				case OrderType.Size:
 				case OrderType.Type:
@@ -230,20 +247,26 @@ namespace E621Downloader.Pages.LibrarySection {
 					return folders;
 			}
 
+			finishSorting?.Invoke();
 			return list;
 		}
 
-		public static IEnumerable<(MetaFile meta, BitmapImage bitmap, StorageFile file)> OrderImages(IEnumerable<(MetaFile meta, BitmapImage bitmap, StorageFile file)> images, OrderType type, OrderEnum order) {
+		public static async ValueTask<IEnumerable<(MetaFile meta, BitmapImage bitmap, StorageFile file)>> OrderImagesAsync(IEnumerable<(MetaFile meta, BitmapImage bitmap, StorageFile file)> images, OrderType type, OrderEnum order, Action startSorting = null, Action finishSorting = null) {
 			if(images == null) {
 				return images;
 			}
+			startSorting?.Invoke();
 			Func<(MetaFile meta, BitmapImage bitmap, StorageFile file), object> keySelector;
 			switch(type) {
 				case OrderType.Name:
 					keySelector = s => s.file.Name;
 					break;
 				case OrderType.Date:
-					keySelector = s => s.file.DateCreated;
+					Dictionary<StorageFile, DateTimeOffset> modifiedTime = new();
+					foreach(StorageFile item in images.Select(i => i.file)) {
+						modifiedTime.Add(item, (await item.GetBasicPropertiesAsync()).DateModified);
+					}
+					keySelector = s => modifiedTime[s.file];
 					break;
 				case OrderType.Size:
 					keySelector = s => s.meta.MyPost.file.size;
@@ -268,7 +291,12 @@ namespace E621Downloader.Pages.LibrarySection {
 					return images;
 			}
 
+			finishSorting?.Invoke();
 			return list;
+		}
+
+		public static void CreateItemContextMenu(){
+			
 		}
 
 		public void RefreshRequest() {

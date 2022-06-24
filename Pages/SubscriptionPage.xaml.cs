@@ -26,6 +26,9 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {
 	public sealed partial class SubscriptionPage: Page, IPage {
+		public static SubscriptionPage Instance { get; private set; }
+		public static string CurrentTag { get; private set; }
+
 		private CancellationTokenSource cts;
 		private readonly List<FontIcon> icons = new();
 		private bool isSelecting = false;
@@ -36,7 +39,7 @@ namespace E621Downloader.Pages {
 		private int currentFollowingPage = 1;
 
 		private LayoutType CurrentLayout { get; set; }
-		private string currentListName;
+		public string CurrentListName { get; private set; }
 
 		public bool IsSelecting {
 			get => isSelecting;
@@ -74,6 +77,7 @@ namespace E621Downloader.Pages {
 		public List<object> PostsList { get; private set; }
 
 		public SubscriptionPage() {
+			Instance = this;
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			LoadFollowing(1);
@@ -98,7 +102,7 @@ namespace E621Downloader.Pages {
 			if(page is <= 0 or >= 100) {
 				return;
 			}
-			UpdateTitle("Following");
+			UpdateTitleAndSetTag("Following");
 			UpdatePage();
 			RefreshContentButton.IsEnabled = false;
 			SwitchLayout(LayoutType.Following);
@@ -122,7 +126,7 @@ namespace E621Downloader.Pages {
 				}
 				PostsList = new List<object>();
 				PostsList.AddRange(posts);
-				if(posts != null) {
+				if(posts != null && cts != null) {
 					foreach(Post post in posts) {
 						var image = new ImageHolderForSubscriptionPage(this) {
 							Height = Size,
@@ -142,20 +146,21 @@ namespace E621Downloader.Pages {
 			if(string.IsNullOrWhiteSpace(listName)) {
 				return;
 			}
-			UpdateTitle(listName);
+			UpdateTitleAndSetTag(listName);
 			RefreshContentButton.IsEnabled = false;
-			currentListName = listName;
+			CurrentListName = listName;
 			SwitchLayout(LayoutType.Favorites);
 			FollowingButton.IsChecked = false;
 			if(cts != null) {
 				cts.Cancel();
 				cts.Dispose();
+				cts = null;
 			}
 			cts = new CancellationTokenSource();
 			LoadingRing.IsActive = true;
 			FavoritesList list = FavoritesList.Table.Find(l => l.Name == listName);
 			PostsList = new List<object>();
-			if(list != null) {
+			if(list != null && cts != null) {
 				MainGridView.Items.Clear();
 				foreach(FavoriteItem item in list.Items) {
 					var image = new ImageHolderForSubscriptionPage(this, listName) {
@@ -187,7 +192,7 @@ namespace E621Downloader.Pages {
 					LoadFollowing(1);
 					break;
 				case LayoutType.Favorites:
-					LoadFavorites(currentListName);
+					LoadFavorites(CurrentListName);
 					break;
 				default:
 					throw new Exception();
@@ -223,8 +228,9 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		private void UpdateTitle(string title) {
+		private void UpdateTitleAndSetTag(string title) {
 			TitleText.Text = title;
+			CurrentTag = title;
 		}
 
 		private void HamburgerButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -337,11 +343,11 @@ namespace E621Downloader.Pages {
 		private async void DeleteContentButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(await new ContentDialog() {
 				Title = "Confirmation",
-				Content = $"Are you sure to delete list ({currentListName})",
+				Content = $"Are you sure to delete list ({CurrentListName})",
 				PrimaryButtonText = "Yes",
 				CloseButtonText = "No",
 			}.ShowAsync() == ContentDialogResult.Primary) {
-				FavoritesList.Table.RemoveAll(l => currentListName == l.Name);
+				FavoritesList.Table.RemoveAll(l => CurrentListName == l.Name);
 				FavoritesList.Save();
 				UpdateFavoritesTable();
 				if(FavoritesList.Table.Count > 1) {
@@ -354,18 +360,18 @@ namespace E621Downloader.Pages {
 
 		private async void RenameButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			var dialog = new ContentDialog() {
-				Title = $"Rename - {currentListName}",
+				Title = $"Rename - {CurrentListName}",
 			};
-			var content = new FavoritesListNameModify(false, dialog, items.Select(i => i.Title), currentListName);
+			var content = new FavoritesListNameModify(false, dialog, items.Select(i => i.Title), CurrentListName);
 			dialog.Content = content;
 			await dialog.ShowAsync();
 			if(content.Confirm) {
-				FavoritesList found = FavoritesList.Table.Find(l => l.Name == currentListName);
+				FavoritesList found = FavoritesList.Table.Find(l => l.Name == CurrentListName);
 				if(found != null) {
 					found.Name = content.Input;
 					FavoritesList.Save();
 					UpdateFavoritesTable();
-					UpdateTitle(content.Input);
+					UpdateTitleAndSetTag(content.Input);
 				}
 			}
 		}

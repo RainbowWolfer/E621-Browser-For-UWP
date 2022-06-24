@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -27,7 +28,7 @@ using NavigationViewItemInvokedEventArgs = Microsoft.UI.Xaml.Controls.Navigation
 
 namespace E621Downloader.Pages.LibrarySection {
 	public sealed partial class LibraryPage: Page, IPage {
-		public static LibraryPage Instance;
+		public static LibraryPage Instance { get; private set; }
 
 		private int size;
 		public int Size {
@@ -41,8 +42,8 @@ namespace E621Downloader.Pages.LibrarySection {
 		public ILibraryGridPage Current { get; private set; }
 
 		private ItemsGroupViewType viewType = ItemsGroupViewType.ListView;
-		private OrderEnum order = OrderEnum.Asc;
-		private OrderType orderType = OrderType.Name;
+		private OrderEnum order = OrderEnum.Desc;
+		private OrderType orderType = OrderType.Date;
 
 		public ItemsGroupViewType ViewType {
 			get => viewType;
@@ -51,6 +52,8 @@ namespace E621Downloader.Pages.LibrarySection {
 				if(Current != null) {
 					Current.GetGroupView().ViewType = viewType;
 					Current.GetGroupView().Update();
+					LocalSettings.Current.library_viewType = viewType;
+					LocalSettings.Save();
 				}
 			}
 		}
@@ -83,6 +86,7 @@ namespace E621Downloader.Pages.LibrarySection {
 				Title = "Root",
 				RootFolder = Local.DownloadFolder,
 			};
+			InitializeGroupViewType();
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
@@ -278,14 +282,74 @@ namespace E621Downloader.Pages.LibrarySection {
 			ViewType = ItemsGroupViewType.GridView;
 		}
 
+		private void InitializeGroupViewType() {
+			ViewType = LocalSettings.Current.library_viewType;
+			switch(ViewType) {
+				case ItemsGroupViewType.ListView:
+					ViewTypeMinorIcon.Glyph = "\uE154";
+					ListViewTypeToggle.IsChecked = true;
+					GridViewTypeToggle.IsChecked = false;
+					break;
+				case ItemsGroupViewType.GridView:
+					ViewTypeMinorIcon.Glyph = "\uE14C";
+					ListViewTypeToggle.IsChecked = false;
+					GridViewTypeToggle.IsChecked = true;
+					break;
+				default:
+					throw new Exception();
+			}
+		}
+
+		public async Task ShowRenameDialog(string originName, Action<string> onRename) {
+			RenameDialog.Tag = onRename;
+			DialogRenameBox.Tag = originName;
+			DialogRenameBox.Text = originName;
+			DialogRenameBox.SelectAll();
+			RenameDialog.IsPrimaryButtonEnabled = false;
+			if(await RenameDialog.ShowAsync() == ContentDialogResult.Primary) {
+				onRename.Invoke(DialogRenameBox.Text.Trim());
+			}
+		}
+
+		private void DialogRenameBox_TextChanged(object sender, TextChangedEventArgs e) {
+			var originName = DialogRenameBox.Tag as string;
+			var text = DialogRenameBox.Text;
+			if(string.IsNullOrEmpty(text)) {
+				DialogErrorText.Text = "Cannot be empty";
+				DialogErrorText.Visibility = Visibility.Visible;
+				RenameDialog.IsPrimaryButtonEnabled = false;
+			} else if(originName == text) {
+				DialogErrorText.Text = "Cannot be the same as before";
+				DialogErrorText.Visibility = Visibility.Visible;
+				RenameDialog.IsPrimaryButtonEnabled = false;
+			} else {
+				DialogErrorText.Visibility = Visibility.Collapsed;
+				RenameDialog.IsPrimaryButtonEnabled = true;
+			}
+		}
+
 		void IPage.UpdateNavigationItem() {
 			MainPage.Instance.currentTag = PageTag.Library;
 			MainPage.Instance.UpdateNavigationItem();
 		}
 
 		void IPage.FocusMode(bool enabled) {
-			MainNavigationView.IsPaneVisible = !enabled;
+			try {//leave it be, it throws parameters error.
+				MainNavigationView.IsPaneVisible = !enabled;
+			} catch { }
 			Current.DisplayHeader(!enabled);
+		}
+
+		private void DialogEnterKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			args.Handled = true;
+			var originName = DialogRenameBox.Tag as string;
+			var text = DialogRenameBox.Text;
+			if(!string.IsNullOrEmpty(text) && originName != text) {
+				if(RenameDialog.Tag is Action<string> action) {
+					action.Invoke(text.Trim());
+				}
+				RenameDialog.Hide();
+			}
 		}
 	}
 

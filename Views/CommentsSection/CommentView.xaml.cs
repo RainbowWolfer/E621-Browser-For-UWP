@@ -131,7 +131,7 @@ namespace E621Downloader.Views.CommentsSection {
 			MainPage.CreateInstantDialog("Please Wait...", $"Loading Post: {User.avatar_id}");
 			Post post = await Post.GetPostByIDAsync(Cts.Token, User.avatar_id);
 			MainPage.HideInstantDialog();
-			MainPage.NavigateToPicturePage(post);
+			MainPage.NavigateToPicturePage(post, Array.Empty<string>());
 		}
 
 		private async void UpVoteButton_Tapped(object sender, TappedRoutedEventArgs e) {

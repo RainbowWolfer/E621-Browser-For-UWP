@@ -70,7 +70,7 @@ namespace E621Downloader.Views {
 				}
 				App.PostsList.UpdatePostsList(parent.PostsList);
 				App.PostsList.Current = post;
-				MainPage.NavigateToPicturePage(this.PostRef);
+				MainPage.NavigateToPicturePage(this.PostRef, new string[] { SubscriptionPage.CurrentTag });
 			};
 			this.RightTapped += ImageHolderForSubscriptionPage_RightTappedForFollowing;
 		}
@@ -101,7 +101,7 @@ namespace E621Downloader.Views {
 				}
 				App.PostsList.UpdatePostsList(parent.PostsList);
 				App.PostsList.Current = mix;
-				MainPage.NavigateToPicturePage(this.PostRef);
+				MainPage.NavigateToPicturePage(this.PostRef, new string[] { SubscriptionPage.CurrentTag });
 			};
 			this.RightTapped += ImageHolderForSubscriptionPage_RightTappedForPostID;
 		}
@@ -140,7 +140,10 @@ namespace E621Downloader.Views {
 				}
 				App.PostsList.UpdatePostsList(parent.PostsList);
 				App.PostsList.Current = mix;
-				MainPage.NavigateToPicturePage(new SubscriptionImageParameter(this.PostRef, file));
+				MainPage.NavigateToPicturePage(
+					new SubscriptionImageParameter(this.PostRef, file),
+					new string[] { SubscriptionPage.CurrentTag }
+				);
 			};
 			this.RightTapped += ImageHolderForSubscriptionPage_RightTappedForLocal;
 		}

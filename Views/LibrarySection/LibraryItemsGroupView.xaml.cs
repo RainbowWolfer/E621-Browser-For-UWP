@@ -4,6 +4,7 @@ using E621Downloader.Pages;
 using E621Downloader.Pages.LibrarySection;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -58,20 +59,20 @@ namespace E621Downloader.Views.LibrarySection {
 		public void UpdateSize(int size) {
 			switch(viewType) {
 				case ItemsGroupViewType.ListView: {
-					double height = LibraryListViewItem.BASE_HEIGHT * (size / 100d);
-					foreach(LibraryListViewItem item in MyListView.Items) {
-						item.Height = height;
+						double height = LibraryListViewItem.BASE_HEIGHT * (size / 100d);
+						foreach(LibraryListViewItem item in MyListView.Items.Cast<LibraryListViewItem>()) {
+							item.Height = height;
+						}
+						break;
 					}
-					break;
-				}
 				case ItemsGroupViewType.GridView: {
-					double height = LibraryGridViewItem.BASE_HEIGHT * (size / 100d);
-					foreach(LibraryGridViewItem item in MyGridView.Items) {
-						item.Height = height;
-						item.Width = height + 30;
+						double height = LibraryGridViewItem.BASE_HEIGHT * (size / 100d);
+						foreach(LibraryGridViewItem item in MyGridView.Items.Cast<LibraryGridViewItem>()) {
+							item.Height = height;
+							item.Width = height + 30;
+						}
+						break;
 					}
-					break;
-				}
 				default:
 					throw new Exception($"View Type ({viewType}) Not Found");
 			}
@@ -89,8 +90,10 @@ namespace E621Downloader.Views.LibrarySection {
 					if(item is LibraryFolder folder) {
 						viewItem.ItemType = ItemType.Folder;
 						ToolTipService.SetToolTip(viewItem, new LibraryFolderDetailTooltip(folder.Folder));
+						viewItem.ContextFlyout = GetContextMenu(item);
 					} else if(item is LibraryImage image) {
 						viewItem.ItemType = image.ItemType;
+						viewItem.ContextFlyout = GetContextMenu(item);
 					}
 					MyGridView.Items.Add(viewItem);
 					//await Task.Delay(5);
@@ -113,8 +116,10 @@ namespace E621Downloader.Views.LibrarySection {
 					if(item is LibraryFolder folder) {
 						viewItem.ItemType = ItemType.Folder;
 						ToolTipService.SetToolTip(viewItem, new LibraryFolderDetailTooltip(folder.Folder));
+						viewItem.ContextFlyout = GetContextMenu(item);
 					} else if(item is LibraryImage image) {
 						viewItem.ItemType = image.ItemType;
+						viewItem.ContextFlyout = GetContextMenu(item);
 					}
 					MyListView.Items.Add(viewItem);
 					//await Task.Delay(5);
@@ -175,28 +180,127 @@ namespace E621Downloader.Views.LibrarySection {
 			Update();
 		}
 
+		private void Open(LibraryItem item) {
+			if(item is LibraryFolder folder) {
+				Library.ToTab(folder.Folder);
+			} else if(item is LibraryImage image) {
+				App.PostsList.UpdatePostsList(LibraryItems.Where(i => i is LibraryImage).Cast<LibraryImage>().ToList());
+				App.PostsList.Current = image;
+				MainPage.NavigateToPicturePage(image);
+			}
+		}
+
+		private async void ConfirmDelete(LibraryItem item) {
+			if(await new ContentDialog() {
+				Title = "Confirm",
+				Content = "Are you sure to delete this item",
+				PrimaryButtonText = "Yes",
+				CloseButtonText = "No",
+				DefaultButton = ContentDialogButton.Close,
+			}.ShowAsync() == ContentDialogResult.Primary) {
+				try {
+					if(item is LibraryFolder folder) {
+						await folder.Folder.DeleteAsync();
+					} else if(item is LibraryImage image) {
+						await image.File.DeleteAsync();
+					}
+				} catch(Exception ex) {
+					Debug.WriteLine(ex.Message);
+				}
+
+				for(int i = 0; i < MyGridView.Items.Count; i++) {
+					if(MyGridView.Items[i] is LibraryGridViewItem viewItem && viewItem.Item == item) {
+						MyGridView.Items.RemoveAt(i);
+						break;
+					}
+				}
+
+				for(int i = 0; i < MyListView.Items.Count; i++) {
+					if(MyListView.Items[i] is LibraryListViewItem viewItem && viewItem.Item == item) {
+						MyListView.Items.RemoveAt(i);
+						break;
+					}
+				}
+
+			}
+		}
+
+		private async void Rename(LibraryItem item) {
+			string originName = "";
+			if(item is LibraryFolder folder) {
+				originName = folder.Folder.Name;
+			} else if(item is LibraryImage image) {
+				originName = image.File.Name;
+			}
+
+			await LibraryPage.Instance.ShowRenameDialog(originName, async newName => {
+				try {
+					if(item is LibraryFolder folder) {
+						await folder.Folder.RenameAsync(newName);
+					} else if(item is LibraryImage image) {
+						await image.File.RenameAsync(newName);
+					}
+				} catch(Exception ex) {
+					Debug.WriteLine(ex.Message);
+				}
+
+				for(int i = 0; i < MyGridView.Items.Count; i++) {
+					if(MyGridView.Items[i] is LibraryGridViewItem viewItem && viewItem.Item == item) {
+						viewItem.ItemName = newName;
+						break;
+					}
+				}
+
+				for(int i = 0; i < MyListView.Items.Count; i++) {
+					if(MyListView.Items[i] is LibraryListViewItem viewItem && viewItem.Item == item) {
+						viewItem.ItemName = newName;
+						break;
+					}
+				}
+			});
+		}
+
 		private void MyListView_ItemClick(object sender, ItemClickEventArgs e) {
 			if(e.ClickedItem is LibraryListViewItem item) {
-				if(item.Item is LibraryFolder folder) {
-					Library.ToTab(folder.Folder);
-				} else if(item.Item is LibraryImage image) {
-					App.PostsList.UpdatePostsList(LibraryItems.Where(i => i is LibraryImage).Cast<LibraryImage>().ToList());
-					App.PostsList.Current = image;
-					MainPage.NavigateToPicturePage(image);
-				}
+				Open(item.Item);
 			}
 		}
 
 		private void MyGridView_ItemClick(object sender, ItemClickEventArgs e) {
 			if(e.ClickedItem is LibraryGridViewItem item) {
-				if(item.Item is LibraryFolder folder) {
-					Library.ToTab(folder.Folder);
-				} else if(item.Item is LibraryImage image) {
-					App.PostsList.UpdatePostsList(LibraryItems.Where(i => i is LibraryImage).Cast<LibraryImage>().ToList());
-					App.PostsList.Current = image;
-					MainPage.NavigateToPicturePage(image);
-				}
+				Open(item.Item);
 			}
+		}
+
+		public MenuFlyout GetContextMenu(LibraryItem item) {
+			MenuFlyout flyout = new() {
+				Placement = FlyoutPlacementMode.RightEdgeAlignedTop,
+			};
+			MenuFlyoutItem item_open = new() {
+				Text = "Open",
+				Icon = new FontIcon { Glyph = "\uE197" },
+			};
+			MenuFlyoutItem item_delete = new() {
+				Text = "Delete",
+				Icon = new FontIcon { Glyph = "\uE107" },
+			};
+			MenuFlyoutItem item_rename = new() {
+				Text = "Rename",
+				Icon = new FontIcon { Glyph = "\uE13E" },
+			};
+			item_open.Click += (s, e) => {
+				Open(item);
+			};
+			item_delete.Click += (s, e) => {
+				ConfirmDelete(item);
+			};
+			item_rename.Click += (s, e) => {
+				Rename(item);
+			};
+			flyout.Items.Add(item_open);
+			flyout.Items.Add(item_delete);
+			flyout.Items.Add(item_rename);
+			return flyout;
 		}
 	}
 

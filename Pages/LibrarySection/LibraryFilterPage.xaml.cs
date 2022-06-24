@@ -310,12 +310,12 @@ namespace E621Downloader.Pages.LibrarySection {
 			return true;
 		}
 
-		private void UpdateImages(string matchedName = null) {
+		private async void UpdateImages(string matchedName = null) {
 			List<(MetaFile meta, BitmapImage bitmap, StorageFile file)> files = args.Files;
 			if(!string.IsNullOrWhiteSpace(matchedName)) {
 				files = files.Where(f => f.file.Name.Contains(matchedName)).ToList();
 			}
-			files = Explorer.OrderImages(files, libraryPage.OrderType, libraryPage.Order).ToList();
+			files = (await Explorer.OrderImagesAsync(files, libraryPage.OrderType, libraryPage.Order)).ToList();
 			GroupView.SetImages(files);
 		}
 

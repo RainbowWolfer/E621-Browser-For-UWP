@@ -59,6 +59,7 @@ namespace E621Downloader {
 			}
 
 			//SetJumpList();
+
 		}
 
 		public static void InitializeTheme() {
@@ -145,7 +146,7 @@ namespace E621Downloader {
 					KeyListener.RegisterKeyDown(args.VirtualKey);
 				}
 			};
-			
+
 			Window.Current.CoreWindow.KeyUp += (sender, args) => {
 				if(LocalSettings.Current?.enableHotKeys ?? true) {
 					KeyListener.RegisterKeyUp(args.VirtualKey);

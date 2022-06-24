@@ -12,7 +12,53 @@
     d:DesignHeight="80"
     d:DesignWidth="1200">
 
+
+
 	<RelativePanel VerticalAlignment="Top" Height="45">
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup x:Name="VisualStateGroup">
+				<VisualState x:Name="Wide">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="1260"/>
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="OpenInExplorerText.Visibility" Value="Visible"/>
+						<Setter Target="RefreshText.Visibility" Value="Visible"/>
+						<Setter Target="MySearchBox.MinWidth" Value="250"/>
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="Normal">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="950"/>
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="OpenInExplorerText.Visibility" Value="Collapsed"/>
+						<Setter Target="RefreshText.Visibility" Value="Visible"/>
+						<Setter Target="MySearchBox.MinWidth" Value="250"/>
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="Narrow">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="700"/>
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="OpenInExplorerText.Visibility" Value="Collapsed"/>
+						<Setter Target="RefreshText.Visibility" Value="Collapsed"/>
+						<Setter Target="MySearchBox.MinWidth" Value="250"/>
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="SuperNarrow">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="0"/>
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="OpenInExplorerText.Visibility" Value="Collapsed"/>
+						<Setter Target="RefreshText.Visibility" Value="Collapsed"/>
+						<Setter Target="MySearchBox.MinWidth" Value="150"/>
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
 		<views:LockableToggleButton x:Name="ExpanderButton" Height="35" Width="35" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,0,10,0" Padding="2" CornerRadius="4" Click="ExpanderButton_Click" LockToggle="True">
 			<FontIcon x:Name="ExpanderIcon" Glyph="&#xE0E4;"/>
 		</views:LockableToggleButton>
@@ -20,14 +66,14 @@
 		<Button x:Name="OpenExplorerButton" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.RightOf="TitleTextBlock" Height="35" Click="OpenExplorerButton_Click">
 			<StackPanel Orientation="Horizontal">
 				<FontIcon Glyph="&#xEC50;" />
-				<TextBlock Text="Open in Explorer" Margin="10,0,0,0"/>
+				<TextBlock x:Name="OpenInExplorerText" Text="Open in Explorer" Margin="10,0,0,0"/>
 			</StackPanel>
 		</Button>
 		<StackPanel x:Name="RefreshPanel" Orientation="Horizontal" RelativePanel.RightOf="OpenExplorerButton" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,0,10,0">
 			<Button x:Name="RefreshButton" Click="RefreshButton_Click" Height="35">
 				<StackPanel Orientation="Horizontal">
 					<FontIcon Glyph="&#xE72C;" VerticalAlignment="Center" FontSize="18"/>
-					<TextBlock Text="Refresh" Margin="10,0,0,0" VerticalAlignment="Center"/>
+					<TextBlock x:Name="RefreshText" Text="Refresh" Margin="10,0,0,0" VerticalAlignment="Center"/>
 				</StackPanel>
 			</Button>
 			<TextBlock x:Name="LocalChangedHintText" Text="Local Changes has been Made &#10;Please Refresh to view new Downloaded Files" Margin="5,0,0,0" Visibility="Collapsed"/>

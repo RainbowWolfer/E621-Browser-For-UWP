@@ -26,6 +26,7 @@
 				<ListView.ItemContainerTransitions>
 					<TransitionCollection>
 						<EntranceThemeTransition IsStaggeringEnabled="True" />
+						<AddDeleteThemeTransition/>
 					</TransitionCollection>
 				</ListView.ItemContainerTransitions>
 			</ListView>
@@ -44,6 +45,7 @@
 				<GridView.ItemContainerTransitions>
 					<TransitionCollection>
 						<EntranceThemeTransition IsStaggeringEnabled="True" />
+						<AddDeleteThemeTransition/>
 					</TransitionCollection>
 				</GridView.ItemContainerTransitions>
 			</GridView>

@@ -69,7 +69,7 @@
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="auto"/>
 				</Grid.ColumnDefinitions>
-				<TextBox x:Name="MySuggestBox" SelectionChanged="MySuggestBox_SelectionChanged" TextChanged="MySuggestBox_TextChanged" PreviewKeyDown="MySuggestBox_PreviewKeyDown" FontSize="22" Height="40" CornerRadius="4,0,0,4" Loaded="MySuggestBox_Loaded"/>
+				<TextBox x:Name="MySuggestBox" SelectionChanged="MySuggestBox_SelectionChanged" TextChanged="MySuggestBox_TextChanged" PreviewKeyDown="MySuggestBox_PreviewKeyDown" FontSize="22" Height="40" CornerRadius="4,0,0,4" Loaded="MySuggestBox_Loaded" TabIndex="0"/>
 				<Button x:Name="MoreButton" Grid.Column="1" Height="40" Width="40" FontSize="24" Padding="0" CornerRadius="0,4,4,0" ToolTipService.ToolTip="More Options">
 					<FontIcon Glyph="&#xE10C;"/>
 					<Button.Flyout>

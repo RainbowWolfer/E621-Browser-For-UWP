@@ -3,6 +3,7 @@ using E621Downloader.Models.Posts;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -140,7 +141,9 @@ namespace E621Downloader.Views {
 						Height = 40,
 						Width = 40,
 					};
-					result.Tapped += (s, e) => action.Invoke(s as Button);
+					result.Tapped += (s, e) => {
+						action.Invoke(s as Button);
+					};
 				} else {
 					result = new TextBlock() {
 						Text = content.ToString(),
@@ -172,6 +175,7 @@ namespace E621Downloader.Views {
 				} else {
 					page = i;
 				}
+				Debug.WriteLine(page);
 				OnPageNavigate?.Invoke(page);
 			}
 
@@ -202,7 +206,8 @@ namespace E621Downloader.Views {
 				btns.Add(CreateButton(currentPage - 1, b => NavigatePage(currentPage - 1)));
 			} else {
 				for(int i = 1; i < currentPage; i++) {
-					btns.Add(CreateButton(i, b => NavigatePage(i)));
+					int index = i;//it works! don't change it.
+					btns.Add(CreateButton(i, b => NavigatePage(index)));
 				}
 			}
 
