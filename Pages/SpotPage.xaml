@@ -17,10 +17,6 @@
 				<Grid Margin="5">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="50"/>
-						<RowDefinition Height="auto"/>
-						<RowDefinition Height="auto"/>
-						<RowDefinition Height="auto"/>
-						<RowDefinition Height="auto"/>
 						<RowDefinition Height="*"/>
 						<RowDefinition Height="auto"/>
 					</Grid.RowDefinitions>
@@ -31,104 +27,108 @@
 					<Button x:Name="HamburgerButton" VerticalAlignment="Top" Margin="0" Background="Transparent" BorderThickness="0" Width="40" Height="40" FontSize="20" Tapped="HamburgerButton_Tapped">
 						<FontIcon Glyph="&#xE700;"/>
 					</Button>
-					<TextBlock Grid.Column="1" Text="Filters" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
-					<StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical" Margin="10">
-						<Button x:Name="TagsButton" Content="Requested Tags" FontSize="18" HorizontalAlignment="Stretch" Tapped="TagsButton_Tapped"/>
-						<Grid HorizontalAlignment="Stretch">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="*"/>
-								<ColumnDefinition Width="*"/>
-							</Grid.ColumnDefinitions>
-							<TextBlock x:Name="InputTagsText" Text="All Tags" VerticalAlignment="Center" Margin="10" FontSize="15" TextAlignment="Center"/>
-							<TextBlock x:Name="SelectedTagsText" Text="From All Followings" VerticalAlignment="Center" Margin="10" FontSize="15" TextAlignment="Center" Grid.Column="1"/>
-						</Grid>
-					</StackPanel>
-					<Grid Grid.Row="2" Grid.Column="1" Margin="10,0,0,0">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
-						<Grid.RowDefinitions>
-							<RowDefinition Height="auto"/>
-							<RowDefinition Height="*"/>
-						</Grid.RowDefinitions>
-						<Button x:Name="TypeSwitchButton" HorizontalAlignment="Stretch" Margin="5" Height="35" Click="TypeSwitchButton_Click">
-							<StackPanel Orientation="Horizontal">
-								<FontIcon x:Name="TypeSwitchButtonIcon" Glyph="&#xE8A9;"/>
-								<TextBlock x:Name="TypeSwitchButtonText" Width="50" TextAlignment="Center" Text="All/Exclude/Specify" Margin="10,0,0,0"/>
-							</StackPanel>
-						</Button>
-						<Button HorizontalAlignment="Left" Margin="5" Grid.Column="1" Height="35">
-							<FontIcon Glyph="&#xE946;" />
-							<Button.Flyout>
-								<Flyout Placement="RightEdgeAlignedTop">
-									<StackPanel>
-										<TextBlock Text="Decleration" TextAlignment="Center" FontSize="16"/>
-										<TextBlock Text="This filter techniques uses e621 tags system, so it can only be one 'type:something' or '-type:something' or no restriction." TextWrapping="Wrap" MaxWidth="250"/>
-									</StackPanel>
-								</Flyout>
-							</Button.Flyout>
-						</Button>
-						<StackPanel x:Name="TypePanel" VerticalAlignment="Center" Grid.Row="1">
-							<StackPanel HorizontalAlignment="Center">
-								<RadioButton x:Name="RadioButton_PNG" Content="Type: PNG" Click="RadioButton_PNG_Click"/>
-								<RadioButton x:Name="RadioButton_JPG" Content="Type: JPG" Click="RadioButton_JPG_Click"/>
-								<RadioButton x:Name="RadioButton_GIF" Content="TYPE: GIF" Click="RadioButton_GIF_Click"/>
-								<RadioButton x:Name="RadioButton_WEBM" Content="TYPE: WEBM" Click="RadioButton_WEBM_Click"/>
-								<Grid ToolTipService.ToolTip="SWF is not yet supported in UWP&#10;(Or anypony can tell me how to do it)">
-									<Rectangle Fill="Transparent"/>
-									<RadioButton x:Name="RadioButton_Anim" Content="TYPE: Anim" IsEnabled="False"/>
+					<TextBlock x:Uid="FiltersText" Grid.Column="1" Text="Filters" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+					<ScrollViewer Grid.Column="1" Grid.Row="1" HorizontalScrollMode="Disabled" VerticalScrollMode="Enabled" VerticalAlignment="Top">
+						<StackPanel>
+							<StackPanel Grid.Row="0" Orientation="Vertical" Margin="10">
+								<Button x:Uid="TagsButtonContent" x:Name="TagsButton" Content="Requested Tags" FontSize="18" HorizontalAlignment="Stretch" Tapped="TagsButton_Tapped"/>
+								<Grid HorizontalAlignment="Stretch">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+									<TextBlock x:Uid="DefaultInputTagsText" x:Name="InputTagsText" Text="All Tags" VerticalAlignment="Center" Margin="10" FontSize="15" TextAlignment="Center"/>
+									<TextBlock x:Uid="DefaultSelectedTagsText" x:Name="SelectedTagsText" Text="From All Followings" VerticalAlignment="Center" Margin="10" FontSize="15" TextAlignment="Center" Grid.Column="1"/>
 								</Grid>
 							</StackPanel>
-							<!--<CheckBox x:Name="AllowWebmCheckBox" Content="Allow Webm" Checked="AllowWebmCheckBox_Checked" Unchecked="AllowWebmCheckBox_Checked"/>
+							<Grid Grid.Row="1" Margin="10,0,0,0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="auto"/>
+									<RowDefinition Height="*"/>
+								</Grid.RowDefinitions>
+								<Button x:Name="TypeSwitchButton" HorizontalAlignment="Stretch" Margin="5" Height="35" Click="TypeSwitchButton_Click">
+									<StackPanel Orientation="Horizontal">
+										<FontIcon x:Name="TypeSwitchButtonIcon" Glyph="&#xE8A9;"/>
+										<TextBlock x:Uid="DefaultTypesSwitchText" x:Name="TypeSwitchButtonText" Width="50" TextAlignment="Center" Text="All/Exclude/Specify" Margin="10,0,0,0"/>
+									</StackPanel>
+								</Button>
+								<Button HorizontalAlignment="Left" Margin="5" Grid.Column="1" Height="35">
+									<FontIcon Glyph="&#xE946;" />
+									<Button.Flyout>
+										<Flyout Placement="RightEdgeAlignedTop">
+											<StackPanel>
+												<TextBlock x:Uid="SpotDeclarationText" Text="Declaration" TextAlignment="Center" FontSize="16"/>
+												<TextBlock x:Uid="SpotDeclarationDetailText" Text="This filtering technique uses the e621 tags system, so it can only be one 'type:something' or '-type:something' or no restriction." TextWrapping="Wrap" MaxWidth="250"/>
+											</StackPanel>
+										</Flyout>
+									</Button.Flyout>
+								</Button>
+								<StackPanel x:Name="TypePanel" VerticalAlignment="Center" Grid.Row="1">
+									<StackPanel HorizontalAlignment="Center">
+										<RadioButton x:Uid="TypePNGButtonContent" x:Name="RadioButton_PNG" Content="Type: PNG" Click="RadioButton_PNG_Click"/>
+										<RadioButton x:Uid="TypeJPGButtonContent" x:Name="RadioButton_JPG" Content="Type: JPG" Click="RadioButton_JPG_Click"/>
+										<RadioButton x:Uid="TypeGIFButtonContent" x:Name="RadioButton_GIF" Content="TYPE: GIF" Click="RadioButton_GIF_Click"/>
+										<RadioButton x:Uid="TypeWEBMButtonContent" x:Name="RadioButton_WEBM" Content="TYPE: WEBM" Click="RadioButton_WEBM_Click"/>
+										<Grid x:Uid="TypeANIMButtonToolTip" ToolTipService.ToolTip="SWF is not yet supported in UWP&#10;(Or anypony can tell me how to do it)">
+											<Rectangle Fill="Transparent"/>
+											<RadioButton x:Uid="TypeANIMButtonContent" x:Name="RadioButton_Anim" Content="TYPE: Anim" IsEnabled="False"/>
+										</Grid>
+									</StackPanel>
+									<!--<CheckBox x:Name="AllowWebmCheckBox" Content="Allow Webm" Checked="AllowWebmCheckBox_Checked" Unchecked="AllowWebmCheckBox_Checked"/>
 							<CheckBox x:Name="AllowGifCheckBox" Content="Allow Gif" Checked="AllowGifCheckBox_Checked" Unchecked="AllowGifCheckBox_Checked"/>
 							<CheckBox IsEnabled="False" x:Name="AllowImageCheckBox" Content="Allow Image" Checked="AllowImageCheckBox_Checked" Unchecked="AllowImageCheckBox_Checked"/>-->
-						</StackPanel>
-						<StackPanel x:Name="RatingPanel" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
-							<StackPanel HorizontalAlignment="Center">
-								<CheckBox x:Name="IncludeSafeCheckBox" Content="Include Safe" Checked="IncludeSafeCheckBox_Checked" Unchecked="IncludeSafeCheckBox_Checked"/>
-								<CheckBox x:Name="IncludeQuestionableCheckBox" Content="Include Questionable" IsChecked="False" Checked="IncludeQuestionableCheckBox_Checked" Unchecked="IncludeQuestionableCheckBox_Checked"/>
-								<CheckBox x:Name="IncludeExplicitCheckBox" Content="Include Explicit" Checked="IncludeExplicitCheckBox_Checked"
+								</StackPanel>
+								<StackPanel x:Name="RatingPanel" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
+									<StackPanel HorizontalAlignment="Center">
+										<CheckBox x:Uid="IncludeSafeCheckBoxContent" x:Name="IncludeSafeCheckBox" Content="Include Safe" Checked="IncludeSafeCheckBox_Checked" Unchecked="IncludeSafeCheckBox_Checked"/>
+										<CheckBox x:Uid="IncludeQuestionableCheckBoxContent" x:Name="IncludeQuestionableCheckBox" Content="Include Questionable" IsChecked="False" Checked="IncludeQuestionableCheckBox_Checked" Unchecked="IncludeQuestionableCheckBox_Checked"/>
+										<CheckBox x:Uid="IncludeExplicitCheckBoxContent" x:Name="IncludeExplicitCheckBox" Content="Include Explicit" Checked="IncludeExplicitCheckBox_Checked"
 							Unchecked="IncludeExplicitCheckBox_Checked"/>
+									</StackPanel>
+								</StackPanel>
+							</Grid>
+							<StackPanel Grid.Row="2" Margin="10,10,40,10">
+								<TextBlock x:Uid="DefaultAmountText" x:Name="AmountText" Text="Amount: 1" FontSize="20"/>
+								<Slider x:Name="AmountSlider" Value="1" Minimum="1" Maximum="50" ValueChanged="AmountSlider_ValueChanged"/>
+							</StackPanel>
+							<StackPanel Grid.Row="3" Margin="10,0,40,0">
+								<TextBlock x:Uid="ScoreLimitText" x:Name="ScoreLimitText" Text="Score Limit:" FontSize="20"/>
+								<Grid Margin="10,5,0,0">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="auto"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="auto"/>
+										<RowDefinition Height="auto"/>
+									</Grid.RowDefinitions>
+									<TextBlock x:Uid="FromText" Text="From" Margin="5" VerticalAlignment="Center" FontSize="16"/>
+									<TextBlock x:Uid="ToText" Text="To" Grid.Row="1" Margin="5" VerticalAlignment="Center" FontSize="16"/>
+									<Slider x:Name="FromSlider" ValueChanged="FromSlider_ValueChanged" Grid.Column="1" Minimum="-40" Maximum="100" StepFrequency="1" Value="0" IsThumbToolTipEnabled="False" VerticalAlignment="Center"/>
+									<Slider x:Name="ToSlider" ValueChanged="ToSlider_ValueChanged" Grid.Column="1" Grid.Row="1" Minimum="-40" Maximum="100" StepFrequency="1" Value="-40" FlowDirection="RightToLeft" IsThumbToolTipEnabled="False" VerticalAlignment="Center"/>
+								</Grid>
+							</StackPanel>
+							<StackPanel Grid.Row="4" VerticalAlignment="Bottom">
+								<Button x:Name="StartButton" Tapped="StartButton_Tapped" FontSize="18" Margin="10" HorizontalAlignment="Stretch">
+									<StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+										<FontIcon FontFamily="Segoe UI Symbol" Glyph="&#x1F3B2;" Margin="0,0,10,0"/>
+										<TextBlock x:Uid="GetRandomText" Text="Get Random"/>
+									</StackPanel>
+								</Button>
+								<Button x:Name="ClearButton" Tapped="ClearButton_Tapped" FontSize="18" HorizontalAlignment="Stretch" Margin="10,0,10,10">
+									<StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+										<FontIcon Glyph="&#xE894;" FontSize="14" Margin="0,0,10,0"/>
+										<TextBlock x:Uid="ClearText" Text="Clear"/>
+									</StackPanel>
+								</Button>
 							</StackPanel>
 						</StackPanel>
-					</Grid>
-					<StackPanel Grid.Column="1" Grid.Row="3" Margin="10,10,40,10">
-						<TextBlock x:Name="AmountText" Text="Amount: 1" FontSize="20"/>
-						<Slider x:Name="AmountSlider" Value="1" Minimum="1" Maximum="50" ValueChanged="AmountSlider_ValueChanged"/>
-					</StackPanel>
-					<StackPanel Grid.Row="4" Grid.Column="1" Margin="10,0,40,0">
-						<TextBlock x:Name="ScoreLimitText" Text="Score Limit:" FontSize="20"/>
-						<Grid Margin="10,5,0,0">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="auto"/>
-								<ColumnDefinition Width="*"/>
-							</Grid.ColumnDefinitions>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="auto"/>
-								<RowDefinition Height="auto"/>
-							</Grid.RowDefinitions>
-							<TextBlock Text="From:" Margin="5" VerticalAlignment="Center" FontSize="16"/>
-							<TextBlock Text="To:" Grid.Row="1" Margin="5" VerticalAlignment="Center" FontSize="16"/>
-							<Slider x:Name="FromSlider" ValueChanged="FromSlider_ValueChanged" Grid.Column="1" Minimum="-40" Maximum="100" StepFrequency="1" Value="0" IsThumbToolTipEnabled="False" VerticalAlignment="Center"/>
-							<Slider x:Name="ToSlider" ValueChanged="ToSlider_ValueChanged" Grid.Column="1" Grid.Row="1" Minimum="-40" Maximum="100" StepFrequency="1" Value="-40" FlowDirection="RightToLeft" IsThumbToolTipEnabled="False" VerticalAlignment="Center"/>
-						</Grid>
-					</StackPanel>
-					<StackPanel Grid.Column="1" Grid.Row="5" VerticalAlignment="Bottom">
-						<Button x:Name="StartButton" Tapped="StartButton_Tapped" FontSize="18" Margin="10" HorizontalAlignment="Stretch">
-							<StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-								<FontIcon FontFamily="Segoe UI Symbol" Glyph="&#x1F3B2;" Margin="0,0,10,0"/>
-								<TextBlock Text="Get Random"/>
-							</StackPanel>
-						</Button>
-						<Button x:Name="ClearButton" Tapped="ClearButton_Tapped" FontSize="18" HorizontalAlignment="Stretch" Margin="10,0,10,10">
-							<StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-								<FontIcon Glyph="&#xE894;" FontSize="14" Margin="0,0,10,0"/>
-								<TextBlock Text="Clear"/>
-							</StackPanel>
-						</Button>
-					</StackPanel>
-					<views:ResizeBar Grid.Row="6" Grid.ColumnSpan="2" OnSizeChanged="ResizeBar_OnSizeChanged"/>
+					</ScrollViewer>
+					<views:ResizeBar Grid.Row="2" Grid.ColumnSpan="2" OnSizeChanged="ResizeBar_OnSizeChanged"/>
 				</Grid>
 			</SplitView.Pane>
 			<SplitView.Content>
@@ -144,7 +144,7 @@
 					<Grid x:Name="NoDataHint" Visibility="Collapsed">
 						<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 							<FontIcon Glyph="&#xF133;" FontSize="68" Margin="5"/>
-							<TextBlock Text="Nothing Found" FontSize="20" Margin="5"/>
+							<TextBlock x:Uid="NothingFoundText" Text="Nothing Found" FontSize="20" Margin="5"/>
 						</StackPanel>
 					</Grid>
 				</Grid>

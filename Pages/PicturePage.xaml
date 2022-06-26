@@ -90,13 +90,13 @@
 				<Button x:Name="GotoHomeButton" HorizontalAlignment="Center" Margin="10" Tapped="GotoHomeButton_Tapped">
 					<StackPanel Orientation="Horizontal">
 						<FontIcon Glyph="&#xEA8A;" Margin="0,0,15,0" FontSize="26"/>
-						<TextBlock Text="Go to Posts Browser" FontSize="26"/>
+						<TextBlock x:Uid="Go to Posts Browser" Text="Go to Posts Browser" FontSize="26"/>
 					</StackPanel>
 				</Button>
-				<TextBlock Text="No Post Selected" FontSize="48" Margin="10"/>
+				<TextBlock x:Uid="No Post Selected" Text="No Post Selected" FontSize="48" Margin="10"/>
 				<Button x:Name="GotoLibraryButton" HorizontalAlignment="Center" Margin="10" FontSize="26" Tapped="GotoLibraryButton_Tapped">
 					<StackPanel Orientation="Horizontal">
-						<TextBlock Text="Go to Local Library" FontSize="26"/>
+						<TextBlock x:Uid="Go to Local Library" Text="Go to Local Library" FontSize="26"/>
 						<FontIcon Glyph="&#xE8F1;" Margin="15,0,0,0" FontSize="26"/>
 					</StackPanel>
 				</Button>
@@ -112,7 +112,7 @@
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 			<RelativePanel x:Name="HeaderPanel" Grid.Column="1" Visibility="Visible" Padding="10" Height="58">
-				<Button x:Name="ToggleTagsButton" Height="38" Width="50" Padding="0" Tapped="ToggleTagsButton_Tapped">
+				<Button x:Uid="ToggleTagsButtonToolTip" x:Name="ToggleTagsButton" Height="38" Width="50" Padding="0" Tapped="ToggleTagsButton_Tapped" ToolTipService.ToolTip="Toggle Tags Pane">
 					<FontIcon x:Name="ToggleTagsButtonIcon" Glyph="&#xE8A0;"/>
 				</Button>
 				<Rectangle x:Name="Separator1" RelativePanel.RightOf="ToggleTagsButton" Style="{StaticResource RectangleSeparator}" d:Fill="White"/>
@@ -120,14 +120,14 @@
 				<TextBlock x:Name="TitleText" FontFamily="Cascadia Mono" Text="#1231278 (E)" RelativePanel.RightOf="TypeIcon" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Foreground="Red"/>
 				<FontIcon x:Name="SoundIcon" Glyph="&#xE7BA;" Height="38" Width="40" FontSize="24" RelativePanel.RightOf="TitleText" Margin="5,0,0,0" Foreground="Yellow" ToolTipService.Placement="Bottom"/>
 				<Rectangle x:Name="Separator2" RelativePanel.RightOf="SoundIcon" Style="{StaticResource RectangleSeparator}" d:Fill="White"/>
-				<FontIcon x:Name="LoadingIcon" Glyph="&#xE10C;" FontSize="24" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.RightOf="Separator2" Visibility="Collapsed"/>
-				<views:LockableToggleButton x:Name="UpVoteButton" Height="38" Width="38" Padding="0" RelativePanel.RightOf="LoadingIcon" CornerRadius="4" BorderThickness="0" Click="UpVoteButton_Click" LockToggle="True">
+				<FontIcon x:Uid="LoadingToolTip" x:Name="LoadingIcon" Glyph="&#xE10C;" FontSize="24" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.RightOf="Separator2" Visibility="Collapsed" ToolTipService.ToolTip="Loading"/>
+				<views:LockableToggleButton x:Uid="VoteUpToolTip" x:Name="UpVoteButton" Height="38" Width="38" Padding="0" RelativePanel.RightOf="LoadingIcon" CornerRadius="4" BorderThickness="0" Click="UpVoteButton_Click" LockToggle="True" ToolTipService.ToolTip="Vote Up">
 					<views:LockableToggleButton.Content>
 						<FontIcon x:Name="UpVoteIcon" Glyph="&#xE96D;" Foreground="LightGreen"/>
 					</views:LockableToggleButton.Content>
 				</views:LockableToggleButton>
 				<TextBlock x:Name="ScoreText" Text="1321" RelativePanel.RightOf="UpVoteButton" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="24" Margin="10,0,10,0" ToolTipService.Placement="Bottom"/>
-				<views:LockableToggleButton x:Name="DownVoteButton" Height="38" Width="38" Padding="0" RelativePanel.RightOf="ScoreText" Click="DownVoteButton_Click" CornerRadius="4" BorderThickness="0" LockToggle="True">
+				<views:LockableToggleButton x:Uid="VoteDownToolTip" x:Name="DownVoteButton" Height="38" Width="38" Padding="0" RelativePanel.RightOf="ScoreText" Click="DownVoteButton_Click" CornerRadius="4" BorderThickness="0" LockToggle="True" ToolTipService.ToolTip="Vote Down">
 					<views:LockableToggleButton.Content>
 						<FontIcon x:Name="DownVoteIcon" Glyph="&#xE96E;" Foreground="OrangeRed"/>
 					</views:LockableToggleButton.Content>
@@ -136,7 +136,7 @@
 				<ToggleButton x:Name="FavoriteButton" Height="38" Padding="10,0,10,0" RelativePanel.RightOf="Separator3" Tapped="FavoriteButton_Tapped" CornerRadius="4,0,0,4">
 					<StackPanel Orientation="Horizontal">
 						<FontIcon x:Name="FavoriteIcon" Glyph="&#xEB51;"/>
-						<TextBlock x:Name="FavoriteText" Text="Favorite" Margin="10,0,0,0"/>
+						<TextBlock x:Uid="FavoriteText" x:Name="FavoriteText" Text="Favorite" Margin="10,0,0,0"/>
 					</StackPanel>
 				</ToggleButton>
 				<views:LockableToggleButton x:Name="FavoriteListButton" Height="38" Width="38" RelativePanel.RightOf="FavoriteButton" Padding="0" CornerRadius="0,4,4,0" Tapped="FavoriteListButton_Tapped" LockToggle="True">
@@ -147,49 +147,49 @@
 				<Button x:Name="DownloadButton" Height="38" Padding="10,0,10,0" RelativePanel.RightOf="FavoriteListButton" Margin="10,0,0,0" Tapped="DownloadButton_Tapped">
 					<StackPanel Orientation="Horizontal">
 						<FontIcon x:Name="DownloadIcon" Glyph="&#xE118;"/>
-						<TextBlock x:Name="DownloadText" Text="Download" Margin="10,0,0,0"/>
+						<TextBlock x:Uid="DownloadText" x:Name="DownloadText" Text="Download" Margin="10,0,0,0"/>
 					</StackPanel>
 				</Button>
 
-				<controls:DropDownButton FontSize="18" Content="Action" Height="38" RelativePanel.LeftOf="MoreInfoButton" CornerRadius="5" BorderThickness="0" Background="Transparent" Margin="0,0,10,0">
+				<controls:DropDownButton x:Uid="MoreActionContent" FontSize="18" Content="Action" Height="38" RelativePanel.LeftOf="MoreInfoButton" CornerRadius="5" BorderThickness="0" Background="Transparent" Margin="0,0,10,0">
 					<controls:DropDownButton.Flyout>
 						<MenuFlyout Placement="Bottom">
-							<MenuFlyoutItem x:Name="MoreInfoItem" Text="More Info" Click="MoreInfoItem_Click">
+							<MenuFlyoutItem x:Uid="MoreInfoText" x:Name="MoreInfoItem" Text="More Info" Click="MoreInfoItem_Click">
 								<MenuFlyoutItem.Icon>
 									<FontIcon Glyph="&#xE946;"/>
 								</MenuFlyoutItem.Icon>
 							</MenuFlyoutItem>
-							<MenuFlyoutItem x:Name="BrowserItem" Text="Open In Browser" Click="BrowserItem_Click">
+							<MenuFlyoutItem x:Uid="OpenInBrowserText" x:Name="BrowserItem" Text="Open In Browser" Click="BrowserItem_Click">
 								<MenuFlyoutItem.Icon>
 									<FontIcon Glyph="&#xE12B;"/>
 								</MenuFlyoutItem.Icon>
 							</MenuFlyoutItem>
-							<MenuFlyoutItem x:Name="CopyItem" Text="Copy ID" Click="CopyItem_Click">
+							<MenuFlyoutItem x:Uid="CopyIDText" x:Name="CopyItem" Text="Copy ID" Click="CopyItem_Click">
 								<MenuFlyoutItem.Icon>
 									<FontIcon Glyph="&#xE16F;"/>
 								</MenuFlyoutItem.Icon>
 							</MenuFlyoutItem>
-							<MenuFlyoutItem x:Name="CopyImageItem" Text="Copy Image" Click="CopyImageItem_Click">
+							<MenuFlyoutItem x:Uid="CopyImageText" x:Name="CopyImageItem" Text="Copy Image" Click="CopyImageItem_Click">
 								<MenuFlyoutItem.Icon>
 									<FontIcon Glyph="&#xE91B;"/>
 								</MenuFlyoutItem.Icon>
 							</MenuFlyoutItem>
-							<MenuFlyoutSubItem x:Name="SetAsItem" Text="Set As">
+							<MenuFlyoutSubItem x:Uid="SetAsText" x:Name="SetAsItem" Text="Set As">
 								<MenuFlyoutSubItem.Icon>
 									<FontIcon Glyph="&#xEE71;"/>
 								</MenuFlyoutSubItem.Icon>
-								<MenuFlyoutItem x:Name="SetAsWallpaperItem" Text="Set As Wallpaper" Click="SetAsWallpaperItem_Click">
+								<MenuFlyoutItem x:Uid="SetAsWallpaperItemText" x:Name="SetAsWallpaperItem" Text="Set As Wallpaper" Click="SetAsWallpaperItem_Click">
 									<MenuFlyoutItem.Icon>
 										<FontIcon Glyph="&#xE620;"/>
 									</MenuFlyoutItem.Icon>
 								</MenuFlyoutItem>
-								<MenuFlyoutItem x:Name="SetAsLockScreenItem" Text="Set As Lockscreen" Click="SetAsLockScreenItem_Click">
+								<MenuFlyoutItem x:Uid="SetAsLockScreenItemText" x:Name="SetAsLockScreenItem" Text="Set As Lock-screen" Click="SetAsLockScreenItem_Click">
 									<MenuFlyoutItem.Icon>
 										<FontIcon Glyph="&#xEE3F;"/>
 									</MenuFlyoutItem.Icon>
 								</MenuFlyoutItem>
 							</MenuFlyoutSubItem>
-							<MenuFlyoutItem x:Name="DebugItem" Text="Debug" Click="DebugItem_Click" Visibility="Collapsed">
+							<MenuFlyoutItem x:Uid="DebugItemText" x:Name="DebugItem" Text="Debug" Click="DebugItem_Click" Visibility="Collapsed">
 								<MenuFlyoutItem.Icon>
 									<FontIcon Glyph="&#xE8A1;"/>
 								</MenuFlyoutItem.Icon>
@@ -200,7 +200,7 @@
 				<Button x:Name="MoreInfoButton" RelativePanel.AlignRightWithPanel="True" FontSize="18" Background="Transparent" BorderThickness="0" Height="38" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="MoreInfoButton_Tapped" Padding="7,0,7,0">
 					<Button.Content>
 						<StackPanel Orientation="Horizontal">
-							<TextBlock x:Name="MoreInfoText" Text="More Info" Margin="5"/>
+							<TextBlock x:Uid="MoreInfoText" x:Name="MoreInfoText" Text="More Info" Margin="5"/>
 							<FontIcon Glyph="&#xE169;" Margin="5"/>
 						</StackPanel>
 					</Button.Content>
@@ -246,7 +246,7 @@
 				<SplitView.Pane>
 					<Grid>
 						<Pivot x:Name="InformationPivot" SelectionChanged="InformationPivot_SelectionChanged">
-							<PivotItem Header="Description">
+							<PivotItem x:Uid="DescriptionHeader" Header="Description" Tag="Description">
 								<Grid>
 									<Grid.RowDefinitions>
 										<RowDefinition Height="*"/>
@@ -256,7 +256,7 @@
 										<TextBlock x:Name="DescriptionText" Text="No Description" TextWrapping="Wrap" FontSize="18" IsTextSelectionEnabled="True" VerticalAlignment="Top"/>
 									</ScrollViewer>
 									<StackPanel Grid.Row="1" Padding="20">
-										<TextBlock x:Name="SourcesText" Text="Source" FontSize="24"/>
+										<TextBlock x:Uid="SourcesText" x:Name="SourcesText" Text="Source" FontSize="24"/>
 										<ListView x:Name="SourcesView" SelectionMode="None" IsItemClickEnabled="False" MaxHeight="200">
 											<d:ListViewItem>
 												<HyperlinkButton Content="Microsoft home page" NavigateUri="http://www.microsoft.com" />
@@ -268,10 +268,10 @@
 									</StackPanel>
 								</Grid>
 							</PivotItem>
-							<PivotItem Header="Comments" Margin="0">
+							<PivotItem x:Uid="CommentsHeader" Header="Comments" Margin="0" Tag="Comments">
 								<Grid>
 									<StackPanel x:Name="LoadingSection" Visibility="Visible" Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-										<TextBlock Text="Loading Comments" FontSize="22" Margin="5" />
+										<TextBlock x:Uid="LoadingCommentsText" Text="Loading Comments" FontSize="22" Margin="5" />
 										<controls:ProgressBar IsIndeterminate="True" Margin="5" />
 									</StackPanel>
 
@@ -283,26 +283,26 @@
 										</ListView.ItemContainerTransitions>
 									</ListView>
 
-									<TextBlock Visibility="Collapsed" x:Name="CommentsHint" Text="No Comments Yet" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+									<TextBlock x:Uid="NoCommentsYetText" Visibility="Collapsed" x:Name="CommentsHint" Text="No Comments Yet" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 								</Grid>
 							</PivotItem>
-							<PivotItem Header="Relations">
+							<PivotItem x:Uid="RelationsHeader" Header="Relations" Tag="Relations">
 								<ScrollViewer>
 									<StackPanel>
 										<controls:Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,5,0,5" IsExpanded="True">
 											<controls:Expander.Header>
 												<StackPanel Orientation="Horizontal">
 													<FontIcon Glyph="&#xE292;" FontSize="22"/>
-													<TextBlock Text="Pools" Margin="15,0,0,0" FontSize="22"/>
+													<TextBlock x:Uid="PoolsText" Text="Pools" Margin="15,0,0,0" FontSize="22"/>
 												</StackPanel>
 											</controls:Expander.Header>
 											<controls:Expander.Content>
 												<Grid>
-													<TextBlock x:Name="PoolsHintText" Text="Not Found" HorizontalAlignment="Center" Visibility="Collapsed"/>
+													<TextBlock x:Uid="NotFoundText" x:Name="PoolsHintText" Text="Not Found" HorizontalAlignment="Center" Visibility="Collapsed"/>
 													<ListView x:Name="PoolsListView" SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind PostRef.pools}" ItemClick="PoolsListView_ItemClick">
 														<ListView.ItemTemplate>
 															<DataTemplate x:DataType="x:String">
-																<Grid ToolTipService.ToolTip="Description: ???&#x0a;Date: 2002-01-21" Tag="{x:Bind ToString()}">
+																<Grid Tag="{x:Bind ToString()}">
 																	<FontIcon Glyph="&#xE158;" HorizontalAlignment="Left"/>
 																	<TextBlock Text="#" FontSize="18" Margin="35,0,0,0"/>
 																	<TextBlock Text="{x:Bind ToString()}" FontSize="18" Margin="47,0,0,0"/>
@@ -318,12 +318,12 @@
 											<controls:Expander.Header>
 												<StackPanel Orientation="Horizontal">
 													<FontIcon Glyph="&#xE8CF;" FontSize="22"/>
-													<TextBlock Text="Parent" Margin="15,0,0,0" FontSize="22"/>
+													<TextBlock x:Uid="ParentText" Text="Parent" Margin="15,0,0,0" FontSize="22"/>
 												</StackPanel>
 											</controls:Expander.Header>
 											<controls:Expander.Content>
 												<Grid>
-													<TextBlock x:Name="ParentHintText" Text="Not Found" HorizontalAlignment="Center"/>
+													<TextBlock x:Uid="NotFoundText" x:Name="ParentHintText" Text="Not Found" HorizontalAlignment="Center"/>
 													<GridViewItem x:Name="ParentImageHolderParent" Height="330" Width="400">
 														<views:ImageHolderForPicturePage x:Name="ParentImageHolder"/>
 													</GridViewItem>
@@ -334,12 +334,12 @@
 											<controls:Expander.Header>
 												<StackPanel Orientation="Horizontal">
 													<FontIcon Glyph="&#xE902;" FontSize="22"/>
-													<TextBlock Text="Children" Margin="15,0,0,0" FontSize="22"/>
+													<TextBlock x:Uid="ChildrenText" Text="Children" Margin="15,0,0,0" FontSize="22"/>
 												</StackPanel>
 											</controls:Expander.Header>
 											<controls:Expander.Content>
 												<Grid>
-													<TextBlock x:Name="ChildrenHintText" Text="Not Found" HorizontalAlignment="Center"/>
+													<TextBlock x:Uid="NotFoundText" x:Name="ChildrenHintText" Text="Not Found" HorizontalAlignment="Center"/>
 													<GridView x:Name="ChildrenGridView" SelectionMode="None" IsItemClickEnabled="True">
 														<GridView.ItemContainerStyle>
 															<Style TargetType="GridViewItem">
@@ -354,12 +354,12 @@
 								</ScrollViewer>
 							</PivotItem>
 						</Pivot>
-						<ToggleSwitch Height="38" x:Name="SplitViewModeSwitch" IsOn="True" OnContent="Overlay" OffContent="Inline" FlowDirection="RightToLeft" Margin="0,5,20,0" Toggled="SplitViewModeSwitch_Toggled" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+						<ToggleSwitch x:Uid="SplitViewModeSwitch" Height="38" x:Name="SplitViewModeSwitch" IsOn="True" OnContent="Overlay" OffContent="Inline" FlowDirection="RightToLeft" Margin="0,5,20,0" Toggled="SplitViewModeSwitch_Toggled" HorizontalAlignment="Right" VerticalAlignment="Top"/>
 					</Grid>
 				</SplitView.Pane>
 				<SplitView.Content>
 					<Grid>
-						<TextBlock x:Name="HintText" Text="Type SWF not supported" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Visibility="Collapsed"/>
+						<TextBlock x:Uid="Type SWF not supported Text" x:Name="HintText" Text="Type SWF not supported" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Visibility="Collapsed"/>
 						<MediaPlayerElement x:Name="MyMediaPlayer" AutoPlay="False" AreTransportControlsEnabled="True" Margin="0,0,0,0"/>
 						<ScrollViewer x:Name="MyScrollViewer" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
 							<Image x:Name="MainImage" DoubleTapped="MainImage_DoubleTapped" PointerWheelChanged="MainImage_PointerWheelChanged" RenderTransformOrigin="0,0" ManipulationMode="TranslateX,TranslateY,Scale" ManipulationDelta="MainImage_ManipulationDelta" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" ImageOpened="MainImage_ImageOpened">
@@ -368,7 +368,7 @@
 								</Image.RenderTransform>
 							</Image>
 						</ScrollViewer>
-						<controls:ProgressRing x:Name="MyProgressRing" Height="200" Width="200" Margin="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>
+						<controls:ProgressRing x:Name="MyProgressRing" Height="150" Width="150" Margin="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>
 						<Button x:Name="LeftButton" Height="100" Opacity="0.2" PointerEntered="LeftButton_PointerEntered" PointerExited="LeftButton_PointerExited" Tapped="LeftButton_Tapped">
 							<Button.Background>
 								<SolidColorBrush Color="Gray" Opacity="0.4"/>
@@ -385,10 +385,5 @@
 				</SplitView.Content>
 			</SplitView>
 		</Grid>
-		<controls:TeachingTip x:Name="VoteResultTeachingTip" IsLightDismissEnabled="True" PreferredPlacement="Bottom" CloseButtonContent="OK" Title="Vote Successfully">
-			<controls:TeachingTip.IconSource>
-				<controls:FontIconSource Glyph="&#xE0E7;"/>
-			</controls:TeachingTip.IconSource>
-		</controls:TeachingTip>
 	</Grid>
 </Page>

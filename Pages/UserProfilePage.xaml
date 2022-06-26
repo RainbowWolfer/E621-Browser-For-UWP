@@ -53,26 +53,26 @@
 		<StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,40">
 			<Button x:Name="FavoritesButton" FontSize="20" HorizontalAlignment="Center" Tapped="FavoritesButton_Tapped" Margin="10">
 				<StackPanel Orientation="Horizontal">
-					<TextBlock Text="Favorites"/>
+					<TextBlock x:Uid="UserFavorites" Text="Favorites"/>
 					<FontIcon Glyph="&#xE113;" Margin="10,0,0,0"/>
 				</StackPanel>
 			</Button>
 			<Button x:Name="VotedButton" FontSize="20" HorizontalAlignment="Center" Tapped="VotedButton_Tapped">
 				<StackPanel Orientation="Horizontal">
-					<TextBlock Text="Voted Up"/>
+					<TextBlock x:Uid="UserVotedUp" Text="Voted Up"/>
 					<FontIcon Glyph="&#xE74A;" Margin="10,0,0,0"/>
 				</StackPanel>
 			</Button>
 			<Rectangle Fill="Gray" Width="100" Height="3" Margin="10" RadiusX="2" RadiusY="10"/>
 			<Button x:Name="RefreshButton" FontSize="20" HorizontalAlignment="Center" Tapped="RefreshButton_Tapped">
 				<StackPanel Orientation="Horizontal">
-					<TextBlock Text="Refresh"/>
+					<TextBlock x:Uid="RefreshText" Text="Refresh"/>
 					<FontIcon Glyph="&#xE72C;" Margin="10,0,0,0"/>
 				</StackPanel>
 			</Button>
 			<Button x:Name="LogoutButton" FontSize="20" HorizontalAlignment="Center" Margin="10" Tapped="LogoutButton_Tapped">
 				<StackPanel Orientation="Horizontal">
-					<TextBlock Text="Logout"/>
+					<TextBlock x:Uid="UserLogout" Text="Logout"/>
 					<FontIcon Glyph="&#xF3B1;" Margin="10,0,0,0"/>
 				</StackPanel>
 			</Button>

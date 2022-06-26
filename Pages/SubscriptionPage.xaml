@@ -26,11 +26,11 @@
 					<Button x:Name="HamburgerButton" Height="40" Width="40" Tapped="HamburgerButton_Tapped" Background="Transparent" BorderThickness="0" FontSize="18" Margin="5">
 						<FontIcon Glyph="&#xE700;"/>
 					</Button>
-					<ToggleSwitch x:Name="SplitViewDisplayModeSwitch" HorizontalAlignment="Right" FlowDirection="RightToLeft" Margin="10,0,15,0" IsOn="False" OnContent="Overlay" OffContent="Inline" Toggled="SplitViewDisplayModeSwitch_Toggled"/>
+					<ToggleSwitch x:Uid="SplitViewModeSwitch" x:Name="SplitViewDisplayModeSwitch" HorizontalAlignment="Right" FlowDirection="RightToLeft" Margin="10,0,15,0" IsOn="False" OnContent="Overlay" OffContent="Inline" Toggled="SplitViewDisplayModeSwitch_Toggled"/>
 					<ToggleButton x:Name="FollowingButton" Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Height="40" IsChecked="True" FontSize="18" Tapped="FollowingButton_Tapped" Background="Transparent" BorderThickness="0" Margin="5">
 						<StackPanel Orientation="Horizontal">
 							<FontIcon Glyph="&#xE1CF;"/>
-							<TextBlock Text="Your Following" Margin="15,0,0,0"/>
+							<TextBlock x:Uid="Your Following" Text="Your Following" Margin="15,0,0,0"/>
 						</StackPanel>
 					</ToggleButton>
 					<Grid Grid.Row="2" Height="40" Margin="55,5,10,0">
@@ -38,16 +38,16 @@
 							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="auto"/>
 						</Grid.ColumnDefinitions>
-						<ToggleButton x:Name="SelectionToggleButton" HorizontalAlignment="Stretch" Tapped="SelectionToggleButton_Tapped">
+						<ToggleButton x:Name="SelectionToggleButton" HorizontalAlignment="Stretch" Click="SelectionToggleButton_Click">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE762;"/>
-								<TextBlock Text="Selection" Margin="10,0,0,0"/>
+								<TextBlock x:Uid="SelectionText" Text="Selection" Margin="10,0,0,0"/>
 							</StackPanel>
 						</ToggleButton>
 						<Button x:Name="DeleteButton" Grid.Column="1" Width="115" Visibility="Collapsed" Tapped="DeleteButton_Tapped" Margin="10,0,0,0">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE107;"/>
-								<TextBlock Text="Delete" Margin="10,0,0,0"/>
+								<TextBlock x:Uid="DeleteText" Text="Delete" Margin="10,0,0,0"/>
 							</StackPanel>
 						</Button>
 					</Grid>
@@ -59,18 +59,18 @@
 						<Button x:Name="RefreshButton" HorizontalAlignment="Stretch" Tapped="RefreshButton_Tapped" Margin="0,0,5,0">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE149;"/>
-								<TextBlock Text="Refresh" Margin="10,0,0,0"/>
+								<TextBlock x:Uid="RefreshText" Text="Refresh" Margin="10,0,0,0"/>
 							</StackPanel>
 						</Button>
 						<Button x:Name="AddNewButton" HorizontalAlignment="Stretch" Tapped="AddNewButton_Tapped" Margin="5,0,0,0" Grid.Column="1">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE109;"/>
-								<TextBlock Text="Add New" Margin="10,0,0,0"/>
+								<TextBlock x:Uid="AddNewText" Text="Add New" Margin="10,0,0,0"/>
 							</StackPanel>
 						</Button>
 					</Grid>
 					<Grid x:Name="FavoritesTableHintText" Grid.Row="4" Margin="50">
-						<TextBlock Text="You do not have any favorites List&#10;Go Create your own one" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" TextAlignment="Center" TextWrapping="Wrap"/>
+						<TextBlock x:Uid="SubscriptionListEmptyText" Text="You do not have any favorites List&#10;Go Create your own one" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" TextAlignment="Center" TextWrapping="Wrap"/>
 					</Grid>
 					<ListView x:Name="FavoritesListView" Grid.Row="4" ItemsSource="{x:Bind items}" d:ItemsSource="1 2 3" Margin="0,5,0,0" SelectionMode="Single" SelectionChanged="FavoritesListView_SelectionChanged" Padding="5">
 						<ListView.ItemTemplate>
@@ -103,36 +103,36 @@
 						<Button x:Name="RefreshContentButton" FontSize="16" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="RefreshContentButton_Tapped" Margin="5,0,5,0">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE149;" FontSize="16"/>
-								<TextBlock Text="Refresh" Margin="10,0,0,0"/>
+								<TextBlock x:Uid="RefreshText" Text="Refresh" Margin="10,0,0,0"/>
 							</StackPanel>
 						</Button>
 						<Button x:Name="DeleteContentButton" FontSize="16" RelativePanel.LeftOf="RefreshContentButton" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="DeleteContentButton_Tapped" Margin="5,0,5,0">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE107;" FontSize="16"/>
-								<TextBlock Text="Delete" Margin="10,0,0,0"/>
+								<TextBlock x:Uid="DeleteText" Text="Delete" Margin="10,0,0,0"/>
 							</StackPanel>
 						</Button>
 						<Button x:Name="RenameButton" FontSize="16" RelativePanel.LeftOf="DeleteContentButton" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="RenameButton_Tapped" Margin="5,0,5,0">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE13E;" FontSize="16"/>
-								<TextBlock Text="Rename" Margin="10,0,0,0"/>
+								<TextBlock x:Uid="RenameText" Text="Rename" Margin="10,0,0,0"/>
 							</StackPanel>
 						</Button>
 						<controls:DropDownButton x:Name="SortDropDown" FontSize="16" RelativePanel.LeftOf="RenameButton" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="5,0,5,0">
 							<controls:DropDownButton.Content>
 								<StackPanel Orientation="Horizontal">
 									<FontIcon Glyph="&#xE174;" FontSize="16"/>
-									<TextBlock Text="Sort" Margin="10,0,0,0"/>
+									<TextBlock x:Uid="SortText" Text="Sort" Margin="10,0,0,0"/>
 								</StackPanel>
 							</controls:DropDownButton.Content>
 							<controls:DropDownButton.Flyout>
 								<MenuFlyout Placement="Bottom">
-									<MenuFlyoutItem Text="Alphabet">
+									<MenuFlyoutItem x:Uid="NameText" Text="Name">
 										<MenuFlyoutItem.Icon>
 											<FontIcon Glyph="&#xE97E;"/>
 										</MenuFlyoutItem.Icon>
 									</MenuFlyoutItem>
-									<MenuFlyoutItem Text="Time">
+									<MenuFlyoutItem x:Uid="TimeText" Text="Time">
 										<MenuFlyoutItem.Icon>
 											<FontIcon Glyph="&#xEC92;"/>
 										</MenuFlyoutItem.Icon>
@@ -143,7 +143,7 @@
 						<Button x:Name="ManageButton" FontSize="16" RelativePanel.LeftOf="SortDropDown" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="ManageButton_Tapped" Margin="5,0,5,0">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE178;" FontSize="16"/>
-								<TextBlock Text="Manage" Margin="10,0,0,0"/>
+								<TextBlock x:Uid="ManageText" Text="Manage" Margin="10,0,0,0"/>
 							</StackPanel>
 						</Button>
 					</RelativePanel>
@@ -151,7 +151,7 @@
 					<Grid x:Name="FavoritesListHintText" Grid.Row="1">
 						<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 							<FontIcon Glyph="&#xF133;" FontSize="68" Margin="5"/>
-							<TextBlock Text="Nothing is in this list" FontSize="20" Margin="5"/>
+							<TextBlock x:Uid="Nothing is in this list Text" Text="Nothing is in this list" FontSize="20" Margin="5"/>
 						</StackPanel>
 					</Grid>
 					<GridView x:Name="MainGridView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" Padding="10"/>

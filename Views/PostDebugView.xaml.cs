@@ -23,14 +23,15 @@ namespace E621Downloader.Views {
 			this.post = post;
 			this.InitializeComponent();
 
-			int i = 0;
-			foreach(var item in App.PostsList.GetItems()) {
-				string content = item.ToString();
-				if(item is Post p) {
-					content = $"ID_{p.id}";
-				}
-				Add($"list_{++i}", content);
-			}
+			//int i = 0;
+			//foreach(var item in App.PostsList.GetItems()) {
+			//	string content = item.ToString();
+			//	if(item is Post p) {
+			//		content = $"ID_{p.id}";
+			//	}
+			//	Add($"list_{++i}", content);
+			//}
+			Add($"list size", App.PostsList.GetItems().Count());
 
 			Add("id", post.id);
 			Add("created_at", post.created_at);
@@ -127,13 +128,14 @@ namespace E621Downloader.Views {
 			var titleTB = new TextBlock() {
 				Text = title + " : ",
 				FontSize = FONTSIZE,
-				Margin = new Thickness(2, 0, 2, 0)
+				Margin = new Thickness(2, 0, 2, 0),
 			};
 			var contentTB = new TextBlock() {
 				Text = content == null ? "NULL" : content.ToString(),
 				FontSize = FONTSIZE,
 				Margin = new Thickness(2, 0, 2, 0),
 				TextWrapping = TextWrapping.Wrap,
+				IsTextSelectionEnabled = true,
 			};
 			panel.Children.Add(titleTB);
 			panel.Children.Add(contentTB);

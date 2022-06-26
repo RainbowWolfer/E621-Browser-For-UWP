@@ -415,7 +415,7 @@ namespace E621Downloader.Pages {
 		private async void ClearWallpapersCacheButton_Click(object sender, RoutedEventArgs e) {
 			if(await new ContentDialog() {
 				Title = "Confirmation",
-				Content = "Are you sure to delete all your wallpapers cache located in app settings folder",
+				Content = "Are you sure to delete all your wallpapers cache located in the APP settings folder",
 				PrimaryButtonText = "Yes",
 				CloseButtonText = "No",
 				DefaultButton = ContentDialogButton.Close,
@@ -451,38 +451,5 @@ namespace E621Downloader.Pages {
 			}
 			await bar.RequestPinCurrentAppAsync();
 		}
-		//private void RandomTagMaxCountText_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args) {
-		//	if(internalChanges) {
-		//		Debug.WriteLine("!");
-		//		return;
-		//	}
-		//	if(double.IsNaN(args.NewValue)) {
-		//		internalChanges = true;
-		//		RandomTagMaxCountText.Value = args.OldValue;
-		//		internalChanges = false;
-		//	}
-		//}
-
-		//private void LightButton_Checked(object sender, RoutedEventArgs e) {
-		//	var box = sender as RadioButton;
-		//	if(!box.IsChecked.Value) {
-		//		return;
-		//	}
-		//	MainPage.Instance.RequestedTheme = ElementTheme.Light;
-		//}
-		//private void DarkButton_Checked(object sender, RoutedEventArgs e) {
-		//	var box = sender as RadioButton;
-		//	if(!box.IsChecked.Value) {
-		//		return;
-		//	}
-		//	MainPage.Instance.RequestedTheme = ElementTheme.Dark;
-		//}
-		//private void FollowSystemButton_Checked(object sender, RoutedEventArgs e) {
-		//	var box = sender as RadioButton;
-		//	if(!box.IsChecked.Value) {
-		//		return;
-		//	}
-		//	MainPage.Instance.RequestedTheme = ElementTheme.Default;
-		//}
 	}
 }

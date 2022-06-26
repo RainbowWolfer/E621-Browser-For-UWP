@@ -23,10 +23,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel.Resources;
+using Windows.ApplicationModel.Resources.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.StartScreen;
 using Windows.UI.ViewManagement;
@@ -54,6 +57,7 @@ namespace E621Downloader {
 		public static MainPage Instance;
 		//public PostsBrowser postsBrowser;
 
+		private const string SETTING_ITEM_TAG = "Settings";
 		public ScreenMode ScreenMode {
 			get => screenMode;
 			private set {
@@ -102,6 +106,7 @@ namespace E621Downloader {
 		private bool isInMaintenance = false;
 
 		private readonly List<TeachingTip> downloadsTips = new();
+
 		public MainPage() {
 			Instance = this;
 			this.InitializeComponent();
@@ -138,17 +143,26 @@ namespace E621Downloader {
 						IsInSearchPopup = false;
 					}
 				}
+				if(key == VirtualKey.Escape || key == VirtualKey.F12 || key == VirtualKey.F11) {
+					try {
+						if(ScreenMode == ScreenMode.Focus) {
+							ScreenMode = ScreenMode.Normal;
+						}
+					} catch(Exception ex) {
+						Debug.WriteLine(ex);
+					}
+				}
 			}));
 			Loop();
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
-			CreateInstantDialog("Please Wait", "Initializing Local Stuff");
+			CreateInstantDialog("Please Wait".Language(), "Initializing Local Stuff".Language());
 			await Local.Initialize();
 
 			HttpResult<string> result;
-			UpdateInstanceDialogContent($"Checking Connection to {Data.GetHost()}");
+			UpdateInstanceDialogContent("Checking Connection to".Language() + $" {Data.GetHost()}");
 			do {
 				result = await Data.ReadURLAsync($"https://{Data.GetHost()}/", null);
 				if(result.Result == HttpResultType.Success) {
@@ -156,15 +170,15 @@ namespace E621Downloader {
 				}
 				HideInstantDialog();
 				ContentDialogResult dialogResult = await new ContentDialog() {
-					Title = "Error",
-					Content = "No Internet Connection",
-					SecondaryButtonText = "Retry",
-					PrimaryButtonText = "Start in Offline Mode",
+					Title = "Error".Language(),
+					Content = "No Internet Connection".Language(),
+					SecondaryButtonText = "Retry".Language(),
+					PrimaryButtonText = "Start in Off-line Mode".Language(),
 				}.ShowAsync();
 				if(dialogResult == ContentDialogResult.Primary) {
 					break;
 				}
-				CreateInstantDialog("Please Wait", "Checking Internet");
+				CreateInstantDialog("Please Wait".Language(), "Checking Internet".Language());
 			} while(result.Result == HttpResultType.Error);
 			string number = "";
 			if(result.Result == HttpResultType.Success) {
@@ -318,16 +332,16 @@ namespace E621Downloader {
 		public static async void CreateTip_SuccessDownload(Page page) {
 			if(page.Content is Panel panel) {
 				var tip = new TeachingTip() {
-					Title = "Notification",
-					Subtitle = "Successfully Start Downloading",
+					Title = "Notification".Language(),
+					Subtitle = "Successfully Start Downloading".Language(),
 					IconSource = new SymbolIconSource() {
 						Symbol = Symbol.Accept,
 					},
 					PreferredPlacement = TeachingTipPlacementMode.TopRight,
 					PlacementMargin = new Thickness(20),
 					IsLightDismissEnabled = false,
-					ActionButtonContent = "Go to downloads",
-					CloseButtonContent = "Got it",
+					ActionButtonContent = "Go to downloads".Language(),
+					CloseButtonContent = "Got it".Language(),
 					IsOpen = true,
 				};
 				tip.ActionButtonClick += (sender, args) => {
@@ -425,7 +439,7 @@ namespace E621Downloader {
 			ClearPostBrowserParameter();
 		}
 
-		/// <summary> Used to solve the problem of navtigating to self in PicturePage </summary>
+		/// <summary> Used to solve the problem of navigating to self in PicturePage </summary>
 		public static void NavigateToPicturePage(object parameter = null, string[] tags = null) {
 			Instance.parameter_picture = parameter;
 			Instance.JumpToPage(PageTag.Picture);
@@ -456,6 +470,9 @@ namespace E621Downloader {
 		//click from NavitaionViewItem
 		private void MyNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
 			string tag = args.InvokedItemContainer.Tag as string;
+			if(args.IsSettingsInvoked){
+				tag = SETTING_ITEM_TAG;
+			}
 			PageTag pageTag = Convert(tag) ?? throw new Exception("Tag Not Found");
 			if(currentTag == pageTag) {
 				return;
@@ -469,7 +486,7 @@ namespace E621Downloader {
 			}
 			if(int.TryParse(tag, out int tagInt)) {
 				return (PageTag)tagInt;
-			} else if(tag == "Settings") {
+			} else if(tag == SETTING_ITEM_TAG) {
 				return PageTag.Settings;
 			} else {
 				return null;
@@ -591,7 +608,7 @@ namespace E621Downloader {
 			}
 			IsInSearchPopup = true;
 			var dialog = new ContentDialog() {
-				Title = "Search Tags",
+				Title = "Search Tags".Language(),
 			};
 
 			var view = new TagsSelectionView(dialog, PostsBrowserPage.GetCurrentTags());
@@ -615,7 +632,7 @@ namespace E621Downloader {
 					Local.History.AddTag("order:rank");
 					break;
 				case TagsSelectionView.ResultType.Random:
-					CreateInstantDialog("Please Waiting", "Getting Your Tag");
+					CreateInstantDialog("Please Wait".Language(), "Getting Your Tag".Language());
 
 					//const int MAX_LOOP = 10;
 					//int index = 0;

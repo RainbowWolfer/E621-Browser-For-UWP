@@ -41,7 +41,7 @@
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<TextBlock Text="Settings" HorizontalAlignment="Center" FontSize="48" Margin="10,10,10,0"/>
+		<TextBlock x:Uid="SettingsText" Text="Settings" HorizontalAlignment="Center" FontSize="48" Margin="10,10,10,0"/>
 		<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" HorizontalScrollBarVisibility="Visible" HorizontalScrollMode="Enabled">
 			<StackPanel Orientation="Horizontal" Padding="10">
 				<Grid>
@@ -54,19 +54,19 @@
 							<RowDefinition Height="auto"/>
 							<RowDefinition Height="*"/>
 						</Grid.RowDefinitions>
-						<TextBlock Text="LISTING" Style="{StaticResource SectionTitle}"/>
+						<TextBlock x:Uid="LISTINGText" Text="LISTING" Style="{StaticResource SectionTitle}"/>
 						<ScrollViewer HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Grid.Row="1">
 							<StackPanel>
 								<Button x:Name="BlackListButton" HorizontalAlignment="Center" Width="300" Margin="10" Click="BlackListButton_Click">
 									<StackPanel Orientation="Horizontal">
 										<FontIcon Glyph="&#xE25B;"/>
-										<TextBlock Text="Black List" FontSize="20" VerticalAlignment="Center" Margin="20,0,0,0"/>
+										<TextBlock x:Uid="BlacklistText" Text="Blacklist" FontSize="20" VerticalAlignment="Center" Margin="20,0,0,0"/>
 									</StackPanel>
 								</Button>
 								<Button x:Name="FollowListButton" HorizontalAlignment="Center" Width="300" Margin="10" Click="FollowListButton_Click">
 									<StackPanel Orientation="Horizontal">
 										<FontIcon Glyph="&#xE00A;"/>
-										<TextBlock Text="Follow List" FontSize="20" VerticalAlignment="Center" Margin="20,0,0,0"/>
+										<TextBlock x:Uid="FollowListText" Text="Follow List" FontSize="20" VerticalAlignment="Center" Margin="20,0,0,0"/>
 									</StackPanel>
 								</Button>
 							</StackPanel>
@@ -77,12 +77,12 @@
 							<RowDefinition Height="auto"/>
 							<RowDefinition Height="*"/>
 						</Grid.RowDefinitions>
-						<TextBlock Text="LOCAL" Style="{StaticResource SectionTitle}"/>
+						<TextBlock x:Uid="LOCALText" Text="LOCAL" Style="{StaticResource SectionTitle}"/>
 						<ScrollViewer HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Grid.Row="1">
 							<StackPanel>
-								<Button x:Name="DownloadPathButton" Content="Select Download Path" FontSize="20" Tapped="DownloadPathButton_Tapped" Margin="20,10,0,10" HorizontalAlignment="Center"/>
-								<Button x:Name="ClearDownloadPathButton" Content="Clear Download Path" FontSize="20" Tapped="ClearDownloadPathButton_Tapped" Margin="20,0,0,10" HorizontalAlignment="Center"/>
-								<TextBlock x:Name="DownloadPathTextBlock" Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,10" FontSize="20" HorizontalAlignment="Center"/>
+								<Button x:Uid="SelectDownloadPathContent" x:Name="DownloadPathButton" Content="Select Download Path" FontSize="20" Tapped="DownloadPathButton_Tapped" Margin="20,10,0,10" HorizontalAlignment="Center"/>
+								<Button x:Uid="ClearDownloadPathContent" x:Name="ClearDownloadPathButton" Content="Clear Download Path" FontSize="20" Tapped="ClearDownloadPathButton_Tapped" Margin="20,0,0,10" HorizontalAlignment="Center"/>
+								<TextBlock x:Uid="NoPathSelectedText" x:Name="DownloadPathTextBlock" Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,10" FontSize="20" HorizontalAlignment="Center"/>
 							</StackPanel>
 						</ScrollViewer>
 					</Grid>
@@ -93,27 +93,27 @@
 						<RowDefinition Height="auto"/>
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
-					<TextBlock Text="GENERAL" Style="{StaticResource SectionTitle}"/>
+					<TextBlock x:Uid="GENERALText" Text="GENERAL" Style="{StaticResource SectionTitle}"/>
 					<ScrollViewer HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Grid.Row="1">
 						<StackPanel>
 							<StackPanel HorizontalAlignment="Center">
 								<Button x:Name="HistoryButton" Margin="5" HorizontalAlignment="Center" Width="250" FontSize="18" Click="HistoryButton_Click">
 									<StackPanel Orientation="Horizontal">
 										<FontIcon Glyph="&#xF739;"/>
-										<TextBlock Text="History" Margin="15,0,0,0"/>
+										<TextBlock x:Uid="HistoryText" Text="History" Margin="15,0,0,0"/>
 									</StackPanel>
 								</Button>
 								<Button x:Name="ClearWallpapersCacheButton" Margin="5" HorizontalAlignment="Center" Width="250" FontSize="18" Click="ClearWallpapersCacheButton_Click">
 									<StackPanel Orientation="Horizontal">
 										<FontIcon Glyph="&#xEA99;"/>
-										<TextBlock Text="Clear Wallpapers Cache" Margin="15,0,0,0"/>
+										<TextBlock x:Uid="ClearWallpapersCacheText" Text="Clear Wallpapers Cache" Margin="15,0,0,0"/>
 									</StackPanel>
 								</Button>
 								<StackPanel Orientation="Horizontal">
-									<ToggleSwitch x:Name="CustomHostToggle" OffContent="Enable Custom Host" OnContent="Enable Custom Host" Margin="5" Toggled="CustomHostToggle_Toggled"/>
+									<ToggleSwitch x:Uid="CustomHostToggle" x:Name="CustomHostToggle" OffContent="Enable Custom Host" OnContent="Enable Custom Host" Margin="5" Toggled="CustomHostToggle_Toggled"/>
 									<Button x:Name="CustomHostButton" Content="E926.net" Margin="10,0,0,0" Tapped="CustomHostButton_Tapped"/>
 								</StackPanel>
-								<ToggleSwitch x:Name="CycleListToggle" OffContent="Enable Cycle List" OnContent="Enable Cycle List" Margin="5" Toggled="CycleListToggle_Toggled"/>
+								<ToggleSwitch x:Uid="" x:Name="CycleListToggle" OffContent="Enable Cycle List" OnContent="Enable Cycle List" Margin="5" Toggled="CycleListToggle_Toggled"/>
 								<ToggleSwitch x:Name="ConcatTagToggle" OffContent="Overlay Tags" OnContent="Concat Tags" Margin="5" Toggled="ConcatTagToggle_Toggled"/>
 								<ToggleSwitch x:Name="MediaPlayToggle" OffContent="Media Background Play" OnContent="Media Background Play" Margin="5" Toggled="MediaPlayToggle_Toggled"/>
 								<ToggleSwitch x:Name="MediaAutoPlayToggle" OffContent="Media Auto Play" OnContent="Media Auto Play" Margin="5" Toggled="MediaAutoPlayToggle_Toggled"/>
@@ -192,7 +192,7 @@
 								<Rectangle Width="150" Height="3" Fill="Gray" Grid.Row="4" Grid.ColumnSpan="2" RadiusX="3" RadiusY="10"/>
 								<StackPanel Grid.Row="5" VerticalAlignment="Center" Margin="0,0,10,0">
 									<TextBlock Text="( Found a bug ? )" TextAlignment="Right"/>
-									<TextBlock Text="( Want someting new ? )" TextAlignment="Right"/>
+									<TextBlock Text="( Want something new ? )" TextAlignment="Right"/>
 									<TextBlock Text="Contact Me !" FontSize="16" TextAlignment="Right"/>
 								</StackPanel>
 								<Button x:Name="EmailButton" Grid.Row="5" Grid.Column="1" Margin="10,0,0,0" Tapped="EmailButton_Tapped">
@@ -236,7 +236,7 @@
 							<controls:Expander Header="2022-06-03 (v1.1.4.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
 								<controls:Expander.Content>
 									<StackPanel>
-										<TextBlock Text="- Some new hotkeys" FontSize="24" TextWrapping="WrapWholeWords"/>
+										<TextBlock Text="- Some new hot-keys" FontSize="24" TextWrapping="WrapWholeWords"/>
 										<TextBlock Text="- New Focus Mode" FontSize="24" TextWrapping="WrapWholeWords"/>
 										<TextBlock Text="- Search Dialog Rework" FontSize="24" TextWrapping="WrapWholeWords"/>
 										<TextBlock Text="- Some bugs fix" FontSize="24" TextWrapping="WrapWholeWords"/>

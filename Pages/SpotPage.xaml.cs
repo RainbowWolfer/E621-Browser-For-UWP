@@ -86,17 +86,17 @@ namespace E621Downloader.Pages {
 		}
 
 		private void AmountSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
-			AmountText.Text = "Amount: " + (int)e.NewValue;
+			AmountText.Text = "Amount".Language() + ": " + (int)e.NewValue;
 			LocalSettings.Current.spot_amount = (int)e.NewValue;
 		}
 
 		private async void TagsButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			SpotTagsSelection content = new();
 			ContentDialog dialog = new() {
-				Title = "Select Your Tags",
+				Title = "Select Your Tags".Language(),
 				Content = content,
-				PrimaryButtonText = "Confirm",
-				SecondaryButtonText = "Back",
+				PrimaryButtonText = "Confirm".Language(),
+				SecondaryButtonText = "Back".Language(),
 			};
 			content.Initialize(inputTags, selectedTags);
 			if(await dialog.ShowAsync() == ContentDialogResult.Primary) {
@@ -107,8 +107,8 @@ namespace E621Downloader.Pages {
 		}
 
 		private void UpdateTagsText(string[] input, string[] selected) {
-			InputTagsText.Text = input.Length == 0 ? "All Tags" : $"Input: {input.Length}";
-			SelectedTagsText.Text = selected.Length == 0 ? "No Followings Selected" : $"Following: {selected.Length}";
+			InputTagsText.Text = input.Length == 0 ? "All Tags".Language() : "Input".Language() + $": {input.Length}";
+			SelectedTagsText.Text = selected.Length == 0 ? "No Followings Selected".Language() : "Following".Language() + $": {selected.Length}";
 		}
 
 		private async void StartButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -138,8 +138,8 @@ namespace E621Downloader.Pages {
 				var tip = new TeachingTip() {
 					IsOpen = true,
 					Target = RatingPanel,
-					Title = "Parameters Error",
-					Subtitle = "Please Select At Least One Rating",
+					Title = "Parameters Error".Language(),
+					Subtitle = "Please Select At Least One Rating".Language(),
 					PreferredPlacement = TeachingTipPlacementMode.Right,
 					IconSource = new SymbolIconSource() {
 						Symbol = Symbol.Important,
@@ -257,10 +257,10 @@ namespace E621Downloader.Pages {
 
 		private void ScoreRangeSlider_ValueChanged(object sender, RangeChangedEventArgs e) {
 			var slider = sender as RangeSelector;
-			string start = slider.RangeStart <= slider.Minimum ? "Minimum" : $"{slider.RangeStart}";
-			string end = slider.RangeEnd >= slider.Maximum ? "Maximum" : $"{slider.RangeEnd}";
+			string start = slider.RangeStart <= slider.Minimum ? "Minimum".Language() : $"{slider.RangeStart}";
+			string end = slider.RangeEnd >= slider.Maximum ? "Maximum".Language() : $"{slider.RangeEnd}";
 			Debug.WriteLine(start + " : " + end);
-			ScoreLimitText.Text = $"Score Limit: ({start} - {end})";
+			ScoreLimitText.Text = "Score Limit".Language() + $": ({start} - {end})";
 		}
 
 		private void SizeButton_Click(object sender, RoutedEventArgs e) {
@@ -290,7 +290,7 @@ namespace E621Downloader.Pages {
 		private void UpdateScoreLimit() {
 			int from = (int)FromSlider.Value * 100;
 			int to = (int)(60 - ToSlider.Value) * 100;
-			ScoreLimitText.Text = $"Score Limit: ({from} - {to + 50})";
+			ScoreLimitText.Text = "Score Limit".Language() + $": ({from} - {to + 50})";
 		}
 
 		private (int from, int to) GetScoreRange() {
@@ -346,7 +346,7 @@ namespace E621Downloader.Pages {
 				SpotFilterType.Specify => "\uE153",
 				_ => "\uE10C",
 			};
-			TypeSwitchButtonText.Text = LocalSettings.Current.spot_FilterType.ToString();
+			TypeSwitchButtonText.Text = LocalSettings.Current.spot_FilterType.ToString().Language();
 		}
 
 		private void RadioButton_PNG_Click(object sender, RoutedEventArgs e) {

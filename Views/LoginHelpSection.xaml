@@ -12,14 +12,14 @@
 
     <ScrollViewer>
 		<StackPanel>
-			<TextBlock Text="Step One:" FontSize="24"/>
+			<TextBlock x:Uid="Step One" Text="Step One:" FontSize="24"/>
 			<TextBlock Margin="5">
-                <Run>Go To</Run>
+                <Run x:Uid="Go To">Go To</Run>
                 <Hyperlink NavigateUri="https://e621.net/session/new">https://e621.net/session/new</Hyperlink>
-                <Run>And Login</Run>
+                <Run x:Uid="And Login">And Login</Run>
 			</TextBlock>
-			<TextBlock Text="Step Two:" FontSize="24"/>
-			<TextBlock Text="Go to 'Manage API Access' And Copy The API Key" Margin="5"/>
+			<TextBlock x:Uid="Step Two" Text="Step Two:" FontSize="24"/>
+			<TextBlock x:Uid="Go to 'Manage API Access' And Copy The API Key" Text="Go to 'Manage API Access' And Copy The API Key" Margin="5"/>
 			<Image Source="/Assets/Images/Helper_Step1.png" Margin="5"/>
 		</StackPanel>
 	</ScrollViewer>

@@ -189,7 +189,7 @@ namespace E621Downloader.Pages {
 				Icon = new FontIcon() {
 					Glyph = "\uE132",
 				},
-				Content = string.IsNullOrWhiteSpace(tab.JoinedTags) ? "( Default Tab )" : tab.JoinedTags,
+				Content = string.IsNullOrWhiteSpace(tab.JoinedTags) ? "( Default Tab )".Language() : tab.JoinedTags,
 				Tag = tab,
 			};
 			ToolTipService.SetToolTip(item, item.Content);
@@ -198,13 +198,13 @@ namespace E621Downloader.Pages {
 				Icon = new FontIcon() {
 					Glyph = "\uE10A",
 				},
-				Text = "Close",
+				Text = "Close".Language(),
 			};
 			MenuFlyoutItem copy_item = new() {
 				Icon = new FontIcon() {
 					Glyph = "\uE8C8",
 				},
-				Text = "Copy",
+				Text = "Copy".Language(),
 				IsEnabled = !string.IsNullOrWhiteSpace(tab.JoinedTags),
 			};
 			copy_item.Click += (s, e) => {
@@ -293,7 +293,7 @@ namespace E621Downloader.Pages {
 			IsLoading = true;
 			ResetLoading();
 
-			LoadingText.Text = "Getting Ready";
+			LoadingText.Text = "Getting Ready".Language();
 
 			CancelLoading();
 			await Task.Delay(100);//must be greater than 10
@@ -315,14 +315,14 @@ namespace E621Downloader.Pages {
 			MainPage.ChangeCurrentTags(tab.Tags);
 
 			if(tags == null || tags.Length == 0) {
-				LoadingText.Text = "Loading Posts";
+				LoadingText.Text = "Loading Posts".Language();
 			} else {
-				LoadingText.Text = $"Loading Tags: ({string.Join(' ', tags)})";
+				LoadingText.Text = "Loading Tags".Language() + $": ({string.Join(' ', tags)})";
 			}
 
 			List<Post> posts = await Post.GetPostsByTagsAsync(cts_loading.Token, tab.CurrentPage, tags);
 
-			if(posts == null) {//cancelled
+			if(posts == null) {//canceled
 				IsLoading = true;
 				return;
 			}
@@ -343,7 +343,7 @@ namespace E621Downloader.Pages {
 			}
 
 			if(tab.Pool == null) {
-				LoadingText.Text = "Loading Paginator";
+				LoadingText.Text = "Loading Paginator".Language();
 				await Paginator.LoadPaginator(tags, cts_loading.Token);
 				AssignPaginatorAction(tab);
 				tab.CurrentPage = Paginator.CurrentPage;
@@ -355,7 +355,6 @@ namespace E621Downloader.Pages {
 
 		private void AssignPaginatorAction(PostsTab tab) {
 			Paginator.OnPageNavigate = async page => {
-				Debug.WriteLine(page);
 				Paginator.CurrentPage = page;
 				tab.CurrentPage = page;
 				await LoadAsync(tab, true);
@@ -458,7 +457,7 @@ namespace E621Downloader.Pages {
 		public void UpdatePostsInfo(PostsTab tab) {
 			List<PostInfoLine> deletes = new();
 			foreach(Post item in tab.Unsupported) {
-				deletes.Add(new PostInfoLine(item.id, $"file type: {item.file.ext}"));
+				deletes.Add(new PostInfoLine(item.id, "File type".Language() + $": {item.file.ext}"));
 			}
 
 			List<PostInfoLine> hots = new();
@@ -476,9 +475,9 @@ namespace E621Downloader.Pages {
 			}
 
 			poststInfolists.Clear();
-			poststInfolists.Add(new PostsInfoList("Deleted Posts", deletes));
-			poststInfolists.Add(new PostsInfoList("Blacklist", blacks));
-			poststInfolists.Add(new PostsInfoList("Hot Tags (Top 20)", hots));
+			poststInfolists.Add(new PostsInfoList("Deleted Posts".Language(), deletes));
+			poststInfolists.Add(new PostsInfoList("Blacklist".Language(), blacks));
+			poststInfolists.Add(new PostsInfoList("Hot Tags (Top 20)".Language(), hots));
 
 			PostsInfoListView.SelectedIndex = 0;
 
@@ -629,15 +628,15 @@ namespace E621Downloader.Pages {
 			}
 			if(MultipleSelectionMode) {
 				if(await new ContentDialog() {
-					Title = "Download Selection",
-					Content = "Do you want to download the selected",
-					PrimaryButtonText = "Yes",
-					CloseButtonText = "No",
+					Title = "Download Selection".Language(),
+					Content = "Do you want to download the selected".Language(),
+					PrimaryButtonText = "Yes".Language(),
+					CloseButtonText = "No".Language(),
 				}.ShowAsync() == ContentDialogResult.Primary) {
 					if(await DownloadsManager.CheckDownloadAvailableWithDialog()) {
 						CancelDownloads();
 						cts_download = new CancellationTokenSource();
-						CreateDownloadDialog("Please Wait", "Handling Downloads");
+						CreateDownloadDialog("Please Wait".Language(), "Handling Downloads".Language());
 						bool? result = await DownloadsManager.RegisterDownloads(cts_download.Token, GetSelectedImages().Select(i => i.PostRef), tab.Tags, UpdateContentText);
 						if(result == true) {
 							MainPage.CreateTip_SuccessDownload(this);
@@ -645,7 +644,7 @@ namespace E621Downloader.Pages {
 						} else if(result == null) {
 							return;
 						} else {
-							await MainPage.CreatePopupDialog("Error", "Downloads Failed");
+							await MainPage.CreatePopupDialog("Error".Language(), "Downloads Failed".Language());
 						}
 						HideDownloadDialog();
 					}
@@ -655,15 +654,15 @@ namespace E621Downloader.Pages {
 				bool hasShownFail = false;
 				if(tab.Pool != null) {
 					if(await new ContentDialog() {
-						Title = "Download Section",
-						Content = $"Do you want to download current pool ({tab.Pool.name})",
-						PrimaryButtonText = "Yes",
-						CloseButtonText = "No",
+						Title = "Download Section".Language(),
+						Content = "Do you want to download current pool".Language() + $" ({tab.Pool.name})",
+						PrimaryButtonText = "Yes".Language(),
+						CloseButtonText = "No".Language(),
 					}.ShowAsync() == ContentDialogResult.Primary) {
 						if(await DownloadsManager.CheckDownloadAvailableWithDialog(() => hasShownFail = true)) {
 							CancelDownloads();
 							cts_download = new CancellationTokenSource();
-							CreateDownloadDialog("Please Wait", "Handling Downloads");
+							CreateDownloadDialog("Please Wait".Language(), "Handling Downloads".Language());
 							await Task.Delay(50);
 							bool? result = await DownloadsManager.RegisterDownloads(cts_download.Token, tab.Posts, tab.Pool.name, UpdateContentText);
 							if(result == true) {
@@ -681,15 +680,15 @@ namespace E621Downloader.Pages {
 						CurrentPage = tab.CurrentPage,
 					};
 					if(await new ContentDialog() {
-						Title = "Download Selection",
+						Title = "Download Selection".Language(),
 						Content = pagesSelector,
-						CloseButtonText = "Back",
-						PrimaryButtonText = "Confirm",
+						CloseButtonText = "Back".Language(),
+						PrimaryButtonText = "Confirm".Language(),
 					}.ShowAsync() == ContentDialogResult.Primary) {
 						if(await DownloadsManager.CheckDownloadAvailableWithDialog(() => hasShownFail = true)) {
 							CancelDownloads();
 							cts_download = new CancellationTokenSource();
-							CreateDownloadDialog("Please Wait", "Handling Downloads");
+							CreateDownloadDialog("Please Wait".Language(), "Handling Downloads".Language());
 							await Task.Delay(50);
 							var all = new List<Post>();
 							(int from, int to) = pagesSelector.GetRange();
@@ -697,7 +696,7 @@ namespace E621Downloader.Pages {
 								all.AddRange(tab.Posts);
 							} else {
 								for(int i = from; i <= to; i++) {
-									UpdateContentText($"Handling Downloads\nGetting Page {i}/{to}");
+									UpdateContentText("Handling Downloads".Language() + "\n" + "Getting Page".Language() + $" {i}/{to}");
 									if(cts_download == null) {
 										HideDownloadDialog();
 										return;
@@ -724,7 +723,7 @@ namespace E621Downloader.Pages {
 				if(downloadResult) {
 					MainPage.CreateTip_SuccessDownload(this);
 				} else if(!hasShownFail) {
-					await MainPage.CreatePopupDialog("Error", "Downloads Failed");
+					await MainPage.CreatePopupDialog("Error".Language(), "Downloads Failed".Language());
 				}
 
 			}
@@ -753,7 +752,7 @@ namespace E621Downloader.Pages {
 
 		private async void AddFavoritesButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			var dialog = new ContentDialog() {
-				Title = "Favorites",
+				Title = "Favorites".Language(),
 			};
 			var list = new PersonalFavoritesListForMultiple(dialog, PathType.PostID, GetSelectedImages().Select(i => i.PostRef));
 			dialog.Content = list;
@@ -771,15 +770,15 @@ namespace E621Downloader.Pages {
 			}
 			if(selected.Pool == null) {
 				ContentDialog dialog = new() {
-					Title = selected.Tags.Length != 0 ? E621Tag.JoinTags(selected.Tags) : "Default",
-					CloseButtonText = "Back",
+					Title = selected.Tags.Length != 0 ? E621Tag.JoinTags(selected.Tags) : "Default".Language(),
+					CloseButtonText = "Back".Language(),
 				};
 				var content = new CurrentTagsInformation(selected.Tags, dialog);
 				dialog.Content = content;
 				await dialog.ShowAsync();
 				await Local.WriteListing();
 			} else {
-				await MainPage.CreatePopupDialog($"Pool:{selected.Pool.id}", new CurrentPoolInformation(selected.Pool));
+				await MainPage.CreatePopupDialog("Pool".Language() + $":{selected.Pool.id}", new CurrentPoolInformation(selected.Pool));
 			}
 		}
 

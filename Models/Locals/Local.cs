@@ -38,7 +38,6 @@ namespace E621Downloader.Models.Locals {
 		public static StorageFolder WallpapersFolder { get; private set; }
 
 		public static StorageFile ListingFile { get; private set; }
-		//public static StorageFile BlackListFile { get; private set; }
 
 		public static StorageFile FutureAccessTokenFile { get; private set; }
 		public static StorageFile DownloadsInfoFile { get; private set; }
@@ -46,9 +45,6 @@ namespace E621Downloader.Models.Locals {
 		public static StorageFile LocalSettingsFile { get; private set; }
 
 		public static StorageFile HistoryFile { get; private set; }
-
-		//public static string[] FollowList { get; private set; }
-		//public static string[] BlackList { get; private set; }
 
 		public static Listing Listing { get; private set; }
 
@@ -82,19 +78,6 @@ namespace E621Downloader.Models.Locals {
 
 			await Reload();
 		}
-
-		//public async static Task<List<DownloadInstanceLocalManager.DownloadInstanceLocal>> GetDownloadsInfo() {
-		//	Stream stream = await DownloadsInfoFile.OpenStreamForReadAsync();
-		//	StreamReader reader = new StreamReader(stream);
-		//	var ReList = JsonConvert.DeserializeObject<List<DownloadInstanceLocalManager.DownloadInstanceLocal>>(reader.ReadToEnd());
-		//	return ReList;
-		//}
-
-		//public async static void WriteDownloadsInfo() {
-		//	string json = JsonConvert.SerializeObject(DownloadsManager.downloads);
-		//	await FileIO.WriteTextAsync(DownloadsInfoFile, json);
-		//}
-
 
 		public static async Task WriteTokenToFile(string token) {
 			await FileIO.WriteTextAsync(FutureAccessTokenFile, token);
@@ -163,15 +146,16 @@ namespace E621Downloader.Models.Locals {
 
 		public static MetaFile CreateMetaFile(StorageFile file, Post post, string groupName) {
 			MetaFile meta = new(file.Path, groupName, post);
-			WriteMetaFile(meta, file, post);
+			WriteMetaFile(meta, file);
 			return meta;
 		}
-		private static async void WriteMetaFile(MetaFile meta, StorageFile file, Post post) {
+
+		private static async void WriteMetaFile(MetaFile meta, StorageFile file) {
 			try {
 				StorageFolder folder = await file.GetParentAsync();
 				//An exception of type 'System.IO.FileLoadException' occurred in System.Private.CoreLib.dll but was not handled in user code
 				//The process cannot access the file because it is being used by another process. (Exception from HRESULT: 0x80070020)
-				StorageFile target = await folder.CreateFileAsync($"{post.id}.meta", CreationCollisionOption.ReplaceExisting);
+				StorageFile target = await folder.CreateFileAsync($"{file.Name}.meta", CreationCollisionOption.ReplaceExisting);
 				await FileIO.WriteTextAsync(target, meta.ConvertJson());
 			} catch(Exception e) {
 				Debug.WriteLine(e.Message);
@@ -180,8 +164,8 @@ namespace E621Downloader.Models.Locals {
 		public static async void WriteMetaFile(MetaFile meta, Post post, string groupName) {
 			//System.IO.FileLoadException: 'The process cannot access the file because it is being used by another process. (Exception from HRESULT: 0x80070020)'
 			try {
-				(MetaFile, StorageFile) file = await GetMetaFile(post.id.ToString(), groupName);
-				WriteMetaFile(meta, file.Item2, post);
+				(MetaFile _, StorageFile file) = await GetMetaFile(post.id.ToString(), groupName);
+				WriteMetaFile(meta, file);
 			} catch(Exception e) {
 				Debug.WriteLine(e.Message);
 			}
@@ -277,7 +261,7 @@ namespace E621Downloader.Models.Locals {
 			return Pair.Convert(pairs, p => p.IsValid);
 		}
 
-		public static async Task<(MetaFile, StorageFile)> GetMetaFile(string postID, string groupName) {
+		public static async Task<(MetaFile meta, StorageFile file)> GetMetaFile(string postID, string groupName) {
 			StorageFolder folder = await DownloadFolder.GetFolderAsync(groupName);
 			StorageFile file = await folder.GetFileAsync($"{postID}.meta");
 			using Stream stream = await file.OpenStreamForReadAsync();

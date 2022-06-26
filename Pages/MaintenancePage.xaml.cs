@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Networks;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Networks;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
@@ -57,9 +58,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void IconImage_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(!await Launcher.LaunchUriAsync(new Uri($"https://{Data.GetHost()}"))) {
-				await MainPage.CreatePopupDialog("Error", "Could not Open Default Browser");
-			}
+			await Methods.OpenBrowser($"https://{Data.GetHost()}");
 		}
 	}
 }

@@ -34,16 +34,16 @@
 
 		<controls:NavigationView x:Name="MyNavigationView" PaneDisplayMode="Top" ItemInvoked="MyNavigationView_ItemInvoked" BackRequested="MyNavigationView_BackRequested" Grid.Row="1">
 			<controls:NavigationView.MenuItems>
-				<controls:NavigationViewItem Icon="Home" Content="Home" Tag="0"/>
-				<controls:NavigationViewItem Icon="Pictures" Content="Picture" Tag="1"/>
-				<controls:NavigationViewItem Icon="Library" Content="Library" Tag="2"/>
-				<controls:NavigationViewItem Icon="Link" Content="Subcription" Tag="3"/>
-				<controls:NavigationViewItem Content="Spot" Tag="4">
+				<controls:NavigationViewItem x:Uid="Home" Icon="Home" Content="Home" Tag="0"/>
+				<controls:NavigationViewItem x:Uid="Picture" Icon="Pictures" Content="Picture" Tag="1"/>
+				<controls:NavigationViewItem x:Uid="Library" Icon="Library" Content="Library" Tag="2"/>
+				<controls:NavigationViewItem x:Uid="Subscription" Icon="Link" Content="Subscription" Tag="3"/>
+				<controls:NavigationViewItem x:Uid="Spot" Content="Spot" Tag="4">
 					<controls:NavigationViewItem.Icon>
 						<FontIcon Glyph="&#xF272;"/>
 					</controls:NavigationViewItem.Icon>
 				</controls:NavigationViewItem>
-				<controls:NavigationViewItem Icon="Download" Tag="5">
+				<controls:NavigationViewItem x:Uid="DownloadContent" Icon="Download" Tag="5">
 					<controls:NavigationViewItem.Content>
 						<StackPanel Orientation="Horizontal">
 							<TextBlock Text="Downloads" VerticalAlignment="Center"/>
@@ -65,10 +65,10 @@
 							</StackPanel>
 						</Button.Content>
 					</Button>
-					<Button x:Name="FullScreenButton" Background="Transparent" BorderThickness="0" Height="40" Width="45" Tapped="FullScreenButton_Tapped" ToolTipService.ToolTip="Switch FullScreen" Margin="10,0,0,0">
+					<Button x:Uid="SwitchFullScreen" x:Name="FullScreenButton" Background="Transparent" BorderThickness="0" Height="40" Width="45" Tapped="FullScreenButton_Tapped" ToolTipService.ToolTip="Switch FullScreen" Margin="10,0,0,0">
 						<FontIcon x:Name="FullScreenIcon" Glyph="&#xE1D9;" FontSize="16"/>
 					</Button>
-					<Button x:Name="FocusModeButton" Background="Transparent" BorderThickness="0" Height="40" Width="45" ToolTipService.ToolTip="Enter Focus Mode" Tapped="FocusModeButton_Tapped">
+					<Button x:Uid="EnterFocusMode" x:Name="FocusModeButton" Background="Transparent" BorderThickness="0" Height="40" Width="45" ToolTipService.ToolTip="Enter Focus Mode" Tapped="FocusModeButton_Tapped">
 						<FontIcon Glyph="&#xE2B4;" FontSize="16"/>
 					</Button>
 				</StackPanel>

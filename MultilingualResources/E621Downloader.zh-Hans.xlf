@@ -1,0 +1,1003 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="zh-Hans" original="E621DOWNLOADER/STRINGS/EN-US/RESOURCES.RESW" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.1.12.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="E621DOWNLOADER/STRINGS/EN-US/RESOURCES.RESW" datatype="resx">
+        <trans-unit id="Library.Content" translate="yes" xml:space="preserve">
+          <source>Library</source>
+          <target state="final">本地</target>
+        </trans-unit>
+        <trans-unit id="Picture.Content" translate="yes" xml:space="preserve">
+          <source>Picture</source>
+          <target state="final">图片</target>
+        </trans-unit>
+        <trans-unit id="Spot.Content" translate="yes" xml:space="preserve">
+          <source>Spot</source>
+          <target state="final">发现</target>
+        </trans-unit>
+        <trans-unit id="Subscription.Content" translate="yes" xml:space="preserve">
+          <source>Subscription</source>
+          <target state="final">订阅</target>
+        </trans-unit>
+        <trans-unit id="SwitchFullScreen.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Switch FullScreen</source>
+          <target state="final">切换全屏</target>
+        </trans-unit>
+        <trans-unit id="Home.Content" translate="yes" xml:space="preserve">
+          <source>Home</source>
+          <target state="final">主页</target>
+        </trans-unit>
+        <trans-unit id="EnterFocusMode.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Enter Focus Mode</source>
+          <target state="final">进入专注模式</target>
+        </trans-unit>
+        <trans-unit id="Please Wait" translate="yes" xml:space="preserve">
+          <source>Please Wait</source>
+          <target state="final">请稍后</target>
+        </trans-unit>
+        <trans-unit id="Checking Connection to" translate="yes" xml:space="preserve">
+          <source>Checking Connection to</source>
+          <target state="final">正在检查连接</target>
+        </trans-unit>
+        <trans-unit id="Checking Internet" translate="yes" xml:space="preserve">
+          <source>Checking Internet</source>
+          <target state="final">正在检查网络</target>
+        </trans-unit>
+        <trans-unit id="Error" translate="yes" xml:space="preserve">
+          <source>Error</source>
+          <target state="final">错误</target>
+        </trans-unit>
+        <trans-unit id="Getting Your Tag" translate="yes" xml:space="preserve">
+          <source>Getting Your Tag</source>
+          <target state="final">正在获得标签</target>
+        </trans-unit>
+        <trans-unit id="Go to downloads" translate="yes" xml:space="preserve">
+          <source>Go to downloads</source>
+          <target state="final">前往下载</target>
+        </trans-unit>
+        <trans-unit id="Got it" translate="yes" xml:space="preserve">
+          <source>Got it</source>
+          <target state="final">知道了</target>
+        </trans-unit>
+        <trans-unit id="Initializing Local Stuff" translate="yes" xml:space="preserve">
+          <source>Initializing Local Stuff</source>
+          <target state="final">正在初始化本地</target>
+        </trans-unit>
+        <trans-unit id="No Internet Connection" translate="yes" xml:space="preserve">
+          <source>No Internet Connection</source>
+          <target state="final">无网络连接</target>
+        </trans-unit>
+        <trans-unit id="Notification" translate="yes" xml:space="preserve">
+          <source>Notification</source>
+          <target state="final">通知</target>
+        </trans-unit>
+        <trans-unit id="Retry" translate="yes" xml:space="preserve">
+          <source>Retry</source>
+          <target state="final">重试</target>
+        </trans-unit>
+        <trans-unit id="Search Tags" translate="yes" xml:space="preserve">
+          <source>Search Tags</source>
+          <target state="final">搜索标签</target>
+        </trans-unit>
+        <trans-unit id="Start in Off-line Mode" translate="yes" xml:space="preserve">
+          <source>Start in Off-line Mode</source>
+          <target state="final">以离线模式开始</target>
+        </trans-unit>
+        <trans-unit id="Successfully Start Downloading" translate="yes" xml:space="preserve">
+          <source>Successfully Start Downloading</source>
+          <target state="final">成功开始下载</target>
+        </trans-unit>
+        <trans-unit id="Here is Search Button.Text" translate="yes" xml:space="preserve">
+          <source>Here is Search Button</source>
+          <target state="final">搜索按钮在这</target>
+        </trans-unit>
+        <trans-unit id="Here is Home Page.Text" translate="yes" xml:space="preserve">
+          <source>Here is Home Page</source>
+          <target state="final">主页按钮在这</target>
+        </trans-unit>
+        <trans-unit id="Posts.Text" translate="yes" xml:space="preserve">
+          <source>Posts</source>
+          <target state="final">条推文</target>
+        </trans-unit>
+        <trans-unit id="Serving.Text" translate="yes" xml:space="preserve">
+          <source>Serving</source>
+          <target state="final">拥有</target>
+        </trans-unit>
+        <trans-unit id="HomeNavPaneTitle.PaneTitle" translate="yes" xml:space="preserve">
+          <source>Tags</source>
+          <target state="final">标签</target>
+        </trans-unit>
+        <trans-unit id="Panel Width.Text" translate="yes" xml:space="preserve">
+          <source>Panel Width</source>
+          <target state="final">面板宽度</target>
+        </trans-unit>
+        <trans-unit id="Resize Tabs Panel ToolTip.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Resize Tabs Panel</source>
+          <target state="final">调整标签面板大小</target>
+        </trans-unit>
+        <trans-unit id="View Size 1.Text" translate="yes" xml:space="preserve">
+          <source>View Size</source>
+          <target state="final">浏览尺寸</target>
+        </trans-unit>
+        <trans-unit id="View Size 2.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>View Size</source>
+          <target state="final">浏览尺寸</target>
+        </trans-unit>
+        <trans-unit id="AllInBlackList.Text" translate="yes" xml:space="preserve">
+          <source>It seems all of the posts are in blacklist.</source>
+          <target state="final">看起来所有的推文都在黑名单里</target>
+        </trans-unit>
+        <trans-unit id="CopyItem.Text" translate="yes" xml:space="preserve">
+          <source>Copy</source>
+          <target state="final">复制</target>
+        </trans-unit>
+        <trans-unit id="DownloadButton.Content" translate="yes" xml:space="preserve">
+          <source>Download</source>
+          <target state="final">下载</target>
+        </trans-unit>
+        <trans-unit id="HomeSearchText.Text" translate="yes" xml:space="preserve">
+          <source>Search for something you like</source>
+          <target state="final">搜点你喜欢的东西吧</target>
+        </trans-unit>
+        <trans-unit id="InfoText.Text" translate="yes" xml:space="preserve">
+          <source>Info</source>
+          <target state="final">信息</target>
+        </trans-unit>
+        <trans-unit id="LoadingText.Text" translate="yes" xml:space="preserve">
+          <source>Loading</source>
+          <target state="final">正在加载</target>
+        </trans-unit>
+        <trans-unit id="NothingHereText.Text" translate="yes" xml:space="preserve">
+          <source>Nothing here.</source>
+          <target state="final">这里啥都没有</target>
+        </trans-unit>
+        <trans-unit id="Posts Info.Text" translate="yes" xml:space="preserve">
+          <source>Posts Info</source>
+          <target state="final">推文信息</target>
+        </trans-unit>
+        <trans-unit id="RefreshButton.Content" translate="yes" xml:space="preserve">
+          <source>Refresh</source>
+          <target state="final">刷新</target>
+        </trans-unit>
+        <trans-unit id="SelectToggleButton.Content" translate="yes" xml:space="preserve">
+          <source>Select</source>
+          <target state="final">多选</target>
+        </trans-unit>
+        <trans-unit id="AddFavoritesButton.Content" translate="yes" xml:space="preserve">
+          <source>Favorites</source>
+          <target state="final">收藏</target>
+        </trans-unit>
+        <trans-unit id="Favorites" translate="yes" xml:space="preserve">
+          <source>Favorites</source>
+          <target state="final">收藏</target>
+        </trans-unit>
+        <trans-unit id="( Default Tab )" translate="yes" xml:space="preserve">
+          <source>( Default Tab )</source>
+          <target state="final">( 默认标签 )</target>
+        </trans-unit>
+        <trans-unit id="Copy" translate="yes" xml:space="preserve">
+          <source>Copy</source>
+          <target state="final">复制</target>
+        </trans-unit>
+        <trans-unit id="Close" translate="yes" xml:space="preserve">
+          <source>Close</source>
+          <target state="final">关闭</target>
+        </trans-unit>
+        <trans-unit id="Getting Ready" translate="yes" xml:space="preserve">
+          <source>Getting Ready</source>
+          <target state="final">正在准备好</target>
+        </trans-unit>
+        <trans-unit id="Loading Posts" translate="yes" xml:space="preserve">
+          <source>Loading Posts</source>
+          <target state="final">正在加载推图</target>
+        </trans-unit>
+        <trans-unit id="Loading Tags" translate="yes" xml:space="preserve">
+          <source>Loading Tags</source>
+          <target state="final">正在加载标签</target>
+        </trans-unit>
+        <trans-unit id="Loading Paginator" translate="yes" xml:space="preserve">
+          <source>Loading Paginator</source>
+          <target state="final">正在加载页码</target>
+        </trans-unit>
+        <trans-unit id="Deleted Posts" translate="yes" xml:space="preserve">
+          <source>Deleted Posts</source>
+          <target state="final">已删除的推图</target>
+        </trans-unit>
+        <trans-unit id="Blacklist" translate="yes" xml:space="preserve">
+          <source>Blacklist</source>
+          <target state="final">黑名单</target>
+        </trans-unit>
+        <trans-unit id="Hot Tags (Top 20)" translate="yes" xml:space="preserve">
+          <source>Hot Tags (Top 20)</source>
+          <target state="final">热门标签（前20）</target>
+        </trans-unit>
+        <trans-unit id="File type" translate="yes" xml:space="preserve">
+          <source>File type</source>
+          <target state="final">文件类型</target>
+        </trans-unit>
+        <trans-unit id="Download Selection" translate="yes" xml:space="preserve">
+          <source>Download Selection</source>
+          <target state="final">下载区块</target>
+        </trans-unit>
+        <trans-unit id="Do you want to download the selected" translate="yes" xml:space="preserve">
+          <source>Do you want to download the selected</source>
+          <target state="final">是否要下载选定的推文</target>
+        </trans-unit>
+        <trans-unit id="Yes" translate="yes" xml:space="preserve">
+          <source>Yes</source>
+          <target state="final">是</target>
+        </trans-unit>
+        <trans-unit id="No" translate="yes" xml:space="preserve">
+          <source>No</source>
+          <target state="final">否</target>
+        </trans-unit>
+        <trans-unit id="Handling Downloads" translate="yes" xml:space="preserve">
+          <source>Handling Downloads</source>
+          <target state="final">正在处理下载</target>
+        </trans-unit>
+        <trans-unit id="Downloads Failed" translate="yes" xml:space="preserve">
+          <source>Downloads Failed</source>
+          <target state="final">下载失败</target>
+        </trans-unit>
+        <trans-unit id="Do you want to download current pool" translate="yes" xml:space="preserve">
+          <source>Do you want to download current pool</source>
+          <target state="final">是否要下载当前推文池</target>
+        </trans-unit>
+        <trans-unit id="Back" translate="yes" xml:space="preserve">
+          <source>Back</source>
+          <target state="final">返回</target>
+        </trans-unit>
+        <trans-unit id="Confirm" translate="yes" xml:space="preserve">
+          <source>Confirm</source>
+          <target state="final">确认</target>
+        </trans-unit>
+        <trans-unit id="Getting Page" translate="yes" xml:space="preserve">
+          <source>Getting Page</source>
+          <target state="final">正在获得页面</target>
+        </trans-unit>
+        <trans-unit id="Default" translate="yes" xml:space="preserve">
+          <source>Default</source>
+          <target state="final">默认</target>
+        </trans-unit>
+        <trans-unit id="Pool" translate="yes" xml:space="preserve">
+          <source>Pool</source>
+          <target state="final">推文池</target>
+        </trans-unit>
+        <trans-unit id="UserFavorites.Text" translate="yes" xml:space="preserve">
+          <source>Favorites</source>
+          <target state="final">用户最爱</target>
+        </trans-unit>
+        <trans-unit id="UserVotedUp.Text" translate="yes" xml:space="preserve">
+          <source>Voted Up</source>
+          <target state="final">用户点赞</target>
+        </trans-unit>
+        <trans-unit id="UserLogout.Text" translate="yes" xml:space="preserve">
+          <source>Logout</source>
+          <target state="final">登出</target>
+        </trans-unit>
+        <trans-unit id="UserSignIn.Text" translate="yes" xml:space="preserve">
+          <source>SIGN IN</source>
+          <target state="final">登录</target>
+        </trans-unit>
+        <trans-unit id="UserUsername.Text" translate="yes" xml:space="preserve">
+          <source>Username</source>
+          <target state="final">用户名</target>
+        </trans-unit>
+        <trans-unit id="UserAPIKey.Text" translate="yes" xml:space="preserve">
+          <source>API Key</source>
+          <target state="final">API密钥</target>
+        </trans-unit>
+        <trans-unit id="UserPasteToolTip.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Paste</source>
+          <target state="final">粘贴</target>
+        </trans-unit>
+        <trans-unit id="UserSubmit.Text" translate="yes" xml:space="preserve">
+          <source>Submit</source>
+          <target state="final">提交</target>
+        </trans-unit>
+        <trans-unit id="UserMoreButton.Content" translate="yes" xml:space="preserve">
+          <source>More</source>
+          <target state="final">更多</target>
+        </trans-unit>
+        <trans-unit id="UserHelpItem.Text" translate="yes" xml:space="preserve">
+          <source>Help</source>
+          <target state="final">帮助</target>
+        </trans-unit>
+        <trans-unit id="UserSignUpItem.Text" translate="yes" xml:space="preserve">
+          <source>Sign Up</source>
+          <target state="final">注册</target>
+        </trans-unit>
+        <trans-unit id="UserResetPasswordItem.Text" translate="yes" xml:space="preserve">
+          <source>Reset Password</source>
+          <target state="final">重置密码</target>
+        </trans-unit>
+        <trans-unit id="UserLoginReminderItem.Text" translate="yes" xml:space="preserve">
+          <source>Login Reminder</source>
+          <target state="final">登录提醒</target>
+        </trans-unit>
+        <trans-unit id="Warning" translate="yes" xml:space="preserve">
+          <source>Warning</source>
+          <target state="final">警告</target>
+        </trans-unit>
+        <trans-unit id="You Need to enter your username and api key" translate="yes" xml:space="preserve">
+          <source>You Need to enter your username and api key</source>
+          <target state="final">你需要输入你的用户名与API密码</target>
+        </trans-unit>
+        <trans-unit id="Checking Sign In Parameters" translate="yes" xml:space="preserve">
+          <source>Checking Sign In Parameters</source>
+          <target state="final">正在检查登录参数</target>
+        </trans-unit>
+        <trans-unit id="Sign In Failed" translate="yes" xml:space="preserve">
+          <source>Sign In Failed</source>
+          <target state="final">登陆失败</target>
+        </trans-unit>
+        <trans-unit id="Please Check that your username and your api_key copied from the website are correct" translate="yes" xml:space="preserve">
+          <source>Please Check that your username and your api_key copied from the website are correct</source>
+          <target state="final">请检查输入的用户名与从网页复制的API密钥正确</target>
+        </trans-unit>
+        <trans-unit id="Help" translate="yes" xml:space="preserve">
+          <source>Help</source>
+          <target state="final">帮助</target>
+        </trans-unit>
+        <trans-unit id="Could not Open Default Browser" translate="yes" xml:space="preserve">
+          <source>Could not Open Default Browser</source>
+          <target state="final">无法打开默认浏览器</target>
+        </trans-unit>
+        <trans-unit id="Step One.Text" translate="yes" xml:space="preserve">
+          <source>Step One:</source>
+          <target state="final">第一步：</target>
+        </trans-unit>
+        <trans-unit id="Go To.Text" translate="yes" xml:space="preserve">
+          <source>Go To</source>
+          <target state="final">前往</target>
+        </trans-unit>
+        <trans-unit id="And Login.Text" translate="yes" xml:space="preserve">
+          <source>And Login</source>
+          <target state="final">并且登录</target>
+        </trans-unit>
+        <trans-unit id="Step Two.Text" translate="yes" xml:space="preserve">
+          <source>Step Two:</source>
+          <target state="final">第二步：</target>
+        </trans-unit>
+        <trans-unit id="Go to 'Manage API Access' And Copy The API Key.Text" translate="yes" xml:space="preserve">
+          <source>Go to 'Manage API Access' And Copy The API Key</source>
+          <target state="final">前往 'Manage API Access' 并且复制API密钥</target>
+        </trans-unit>
+        <trans-unit id="The E621 is performing maintenance on the site and its servers! Keep an eye on the.Text" translate="yes" xml:space="preserve">
+          <source>The E621 is performing maintenance on the site and its servers! Keep an eye on the</source>
+          <target state="final">E621 正在对站点及其服务器进行维护！ 密切关注</target>
+        </trans-unit>
+        <trans-unit id="for more details.Text" translate="yes" xml:space="preserve">
+          <source>for more details</source>
+          <target state="final">以获得更多细节</target>
+        </trans-unit>
+        <trans-unit id="Thanks for your patience.Text" translate="yes" xml:space="preserve">
+          <source>Thanks for your patience!</source>
+          <target state="final">感谢你的耐心！</target>
+        </trans-unit>
+        <trans-unit id="Go to Posts Browser.Text" translate="yes" xml:space="preserve">
+          <source>Go to Posts Browser</source>
+          <target state="final">前往推图浏览器</target>
+        </trans-unit>
+        <trans-unit id="No Post Selected.Text" translate="yes" xml:space="preserve">
+          <source>No Post Selected</source>
+          <target state="final">没有选择推图</target>
+        </trans-unit>
+        <trans-unit id="Go to Local Library.Text" translate="yes" xml:space="preserve">
+          <source>Go to Local Library</source>
+          <target state="final">前往本地图库</target>
+        </trans-unit>
+        <trans-unit id="ToggleTagsButtonToolTip.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Toggle Tags Pane</source>
+          <target state="final">切换标签面板</target>
+        </trans-unit>
+        <trans-unit id="LoadingToolTip.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Loading</source>
+          <target state="final">正在加载</target>
+        </trans-unit>
+        <trans-unit id="VoteUpToolTip.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Vote Up</source>
+          <target state="final">点赞</target>
+        </trans-unit>
+        <trans-unit id="VoteDownToolTip.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Vote Down</source>
+          <target state="final">踩</target>
+        </trans-unit>
+        <trans-unit id="FavoriteText.Text" translate="yes" xml:space="preserve">
+          <source>Favorite</source>
+          <target state="final">收藏</target>
+        </trans-unit>
+        <trans-unit id="DownloadText.Text" translate="yes" xml:space="preserve">
+          <source>Download</source>
+          <target state="final">下载</target>
+        </trans-unit>
+        <trans-unit id="MoreActionContent.Content" translate="yes" xml:space="preserve">
+          <source>Action</source>
+          <target state="final">动作</target>
+        </trans-unit>
+        <trans-unit id="MoreInfoText.Text" translate="yes" xml:space="preserve">
+          <source>More Info</source>
+          <target state="final">更多信息</target>
+        </trans-unit>
+        <trans-unit id="OpenInBrowserText.Text" translate="yes" xml:space="preserve">
+          <source>Open In Browser</source>
+          <target state="final">在浏览器中打开</target>
+        </trans-unit>
+        <trans-unit id="CopyIDText.Text" translate="yes" xml:space="preserve">
+          <source>Copy ID</source>
+          <target state="final">复制ID</target>
+        </trans-unit>
+        <trans-unit id="CopyImageText.Text" translate="yes" xml:space="preserve">
+          <source>Copy Image</source>
+          <target state="final">复制图片</target>
+        </trans-unit>
+        <trans-unit id="SetAsText.Text" translate="yes" xml:space="preserve">
+          <source>Set As</source>
+          <target state="final">设置为</target>
+        </trans-unit>
+        <trans-unit id="SetAsWallpaperItemText.Text" translate="yes" xml:space="preserve">
+          <source>Set As Wallpaper</source>
+          <target state="final">设置为壁纸</target>
+        </trans-unit>
+        <trans-unit id="SetAsLockScreenItemText.Text" translate="yes" xml:space="preserve">
+          <source>Set As Lock-screen</source>
+          <target state="final">设置为锁屏</target>
+        </trans-unit>
+        <trans-unit id="DebugItemText.Text" translate="yes" xml:space="preserve">
+          <source>Debug</source>
+          <target state="final">调试</target>
+        </trans-unit>
+        <trans-unit id="DescriptionHeader.Header" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <target state="final">描述</target>
+        </trans-unit>
+        <trans-unit id="NoDescriptionText.Text" translate="yes" xml:space="preserve">
+          <source>No Description</source>
+          <target state="final">无描述</target>
+        </trans-unit>
+        <trans-unit id="SourcesText.Text" translate="yes" xml:space="preserve">
+          <source>Source</source>
+          <target state="final">源</target>
+        </trans-unit>
+        <trans-unit id="CommentsHeader.Header" translate="yes" xml:space="preserve">
+          <source>Comments</source>
+          <target state="final">评论</target>
+        </trans-unit>
+        <trans-unit id="LoadingCommentsText.Text" translate="yes" xml:space="preserve">
+          <source>Loading Comments</source>
+          <target state="final">正在加载评论</target>
+        </trans-unit>
+        <trans-unit id="NoCommentsYetText.Text" translate="yes" xml:space="preserve">
+          <source>No Comments Yet</source>
+          <target state="final">还没有评论</target>
+        </trans-unit>
+        <trans-unit id="RelationsHeader.Header" translate="yes" xml:space="preserve">
+          <source>Relations</source>
+          <target state="final">关系</target>
+        </trans-unit>
+        <trans-unit id="PoolsText.Text" translate="yes" xml:space="preserve">
+          <source>Pools</source>
+          <target state="final">推图池</target>
+        </trans-unit>
+        <trans-unit id="NotFoundText.Text" translate="yes" xml:space="preserve">
+          <source>Not Found</source>
+          <target state="final">没找到</target>
+        </trans-unit>
+        <trans-unit id="ParentText.Text" translate="yes" xml:space="preserve">
+          <source>Parent</source>
+          <target state="final">父</target>
+        </trans-unit>
+        <trans-unit id="SplitViewModeSwitch.OnContent" translate="yes" xml:space="preserve">
+          <source>Overlay</source>
+          <target state="final">覆盖</target>
+        </trans-unit>
+        <trans-unit id="SplitViewModeSwitch.OffContent" translate="yes" xml:space="preserve">
+          <source>Inline</source>
+          <target state="final">并排</target>
+        </trans-unit>
+        <trans-unit id="Type SWF not supported Text.Text" translate="yes" xml:space="preserve">
+          <source>Type SWF not supported</source>
+          <target state="final">类型SWF不支持</target>
+        </trans-unit>
+        <trans-unit id="ChildrenText.Text" translate="yes" xml:space="preserve">
+          <source>Children</source>
+          <target state="final">子集</target>
+        </trans-unit>
+        <trans-unit id="# No Post" translate="yes" xml:space="preserve">
+          <source># No Post</source>
+          <target state="final"># 无推图</target>
+        </trans-unit>
+        <trans-unit id="Post" translate="yes" xml:space="preserve">
+          <source>Post</source>
+          <target state="final">推图</target>
+        </trans-unit>
+        <trans-unit id="has no valid file URL" translate="yes" xml:space="preserve">
+          <source>has no valid file URL</source>
+          <target state="final">没有合法的文件URL</target>
+        </trans-unit>
+        <trans-unit id="Type" translate="yes" xml:space="preserve">
+          <source>Type</source>
+          <target state="final">类型</target>
+        </trans-unit>
+        <trans-unit id="not supported" translate="yes" xml:space="preserve">
+          <source>not supported</source>
+          <target state="final">不支持</target>
+        </trans-unit>
+        <trans-unit id="Local Post" translate="yes" xml:space="preserve">
+          <source>Local Post</source>
+          <target state="final">本地推图</target>
+        </trans-unit>
+        <trans-unit id="Load Failed" translate="yes" xml:space="preserve">
+          <source>Load Failed</source>
+          <target state="final">加载失败</target>
+        </trans-unit>
+        <trans-unit id="Type SWF not supported" translate="yes" xml:space="preserve">
+          <source>Type SWF not supported</source>
+          <target state="final">类型SWF不支持</target>
+        </trans-unit>
+        <trans-unit id="Upvote" translate="yes" xml:space="preserve">
+          <source>Upvote</source>
+          <target state="final">点赞</target>
+        </trans-unit>
+        <trans-unit id="Downvote" translate="yes" xml:space="preserve">
+          <source>Downvote</source>
+          <target state="final">踩</target>
+        </trans-unit>
+        <trans-unit id="This Video Has 'Sound_Warning' Tag" translate="yes" xml:space="preserve">
+          <source>This Video Has 'Sound_Warning' Tag</source>
+          <target state="final">这个视频有 '声音警告' 标签</target>
+        </trans-unit>
+        <trans-unit id="This Video Has 'Sound' Tag" translate="yes" xml:space="preserve">
+          <source>This Video Has 'Sound' Tag</source>
+          <target state="final">这个视频有 '声音' 标签</target>
+        </trans-unit>
+        <trans-unit id="Rating" translate="yes" xml:space="preserve">
+          <source>Rating</source>
+          <target state="final">评级</target>
+        </trans-unit>
+        <trans-unit id="No Rating" translate="yes" xml:space="preserve">
+          <source>No Rating</source>
+          <target state="final">没有评级</target>
+        </trans-unit>
+        <trans-unit id="Artist" translate="yes" xml:space="preserve">
+          <source>Artist</source>
+          <target state="final">作者</target>
+        </trans-unit>
+        <trans-unit id="Copyright" translate="yes" xml:space="preserve">
+          <source>Copyright</source>
+          <target state="final">版权</target>
+        </trans-unit>
+        <trans-unit id="Species" translate="yes" xml:space="preserve">
+          <source>Species</source>
+          <target state="final">物种</target>
+        </trans-unit>
+        <trans-unit id="Character" translate="yes" xml:space="preserve">
+          <source>Character</source>
+          <target state="final">角色</target>
+        </trans-unit>
+        <trans-unit id="General" translate="yes" xml:space="preserve">
+          <source>General</source>
+          <target state="final">通用</target>
+        </trans-unit>
+        <trans-unit id="Meta" translate="yes" xml:space="preserve">
+          <source>Meta</source>
+          <target state="final">元数据</target>
+        </trans-unit>
+        <trans-unit id="Invalid" translate="yes" xml:space="preserve">
+          <source>Invalid</source>
+          <target state="final">无效</target>
+        </trans-unit>
+        <trans-unit id="Lore" translate="yes" xml:space="preserve">
+          <source>Lore</source>
+          <target state="final">理论</target>
+        </trans-unit>
+        <trans-unit id="Favorited" translate="yes" xml:space="preserve">
+          <source>Favorited</source>
+          <target state="final">已是最爱</target>
+        </trans-unit>
+        <trans-unit id="Favorite" translate="yes" xml:space="preserve">
+          <source>Favorite</source>
+          <target state="final">最爱</target>
+        </trans-unit>
+        <trans-unit id="No Description" translate="yes" xml:space="preserve">
+          <source>No Description</source>
+          <target state="final">无描述</target>
+        </trans-unit>
+        <trans-unit id="No Source" translate="yes" xml:space="preserve">
+          <source>No Source</source>
+          <target state="final">无源</target>
+        </trans-unit>
+        <trans-unit id="Source" translate="yes" xml:space="preserve">
+          <source>Source</source>
+          <target state="final">源</target>
+        </trans-unit>
+        <trans-unit id="Sources" translate="yes" xml:space="preserve">
+          <source>Sources</source>
+          <target state="final">多个源</target>
+        </trans-unit>
+        <trans-unit id="Add To Blacklist" translate="yes" xml:space="preserve">
+          <source>Add To Blacklist</source>
+          <target state="final">加入黑名单</target>
+        </trans-unit>
+        <trans-unit id="Remove From Blacklist" translate="yes" xml:space="preserve">
+          <source>Remove From Blacklist</source>
+          <target state="final">从黑名单移除</target>
+        </trans-unit>
+        <trans-unit id="Add To Follow List" translate="yes" xml:space="preserve">
+          <source>Add To Follow List</source>
+          <target state="final">加入关注名单</target>
+        </trans-unit>
+        <trans-unit id="Remove From Follow List" translate="yes" xml:space="preserve">
+          <source>Remove From FollowList</source>
+          <target state="final">从关注名单移除</target>
+        </trans-unit>
+        <trans-unit id="Tag Information" translate="yes" xml:space="preserve">
+          <source>Tag Information</source>
+          <target state="final">标签信息</target>
+        </trans-unit>
+        <trans-unit id="More Info" translate="yes" xml:space="preserve">
+          <source>More Info</source>
+          <target state="final">更多信息</target>
+        </trans-unit>
+        <trans-unit id="Debug Info" translate="yes" xml:space="preserve">
+          <source>Debug Info</source>
+          <target state="final">调试信息</target>
+        </trans-unit>
+        <trans-unit id="Pending" translate="yes" xml:space="preserve">
+          <source>Pending</source>
+          <target state="final">等待中</target>
+        </trans-unit>
+        <trans-unit id="OK" translate="yes" xml:space="preserve">
+          <source>OK</source>
+          <target state="final">OK</target>
+        </trans-unit>
+        <trans-unit id="Copy Tag" translate="yes" xml:space="preserve">
+          <source>Copy Tag</source>
+          <target state="final">复制标签</target>
+        </trans-unit>
+        <trans-unit id="Concat Search" translate="yes" xml:space="preserve">
+          <source>Concat Search</source>
+          <target state="final">附加搜索</target>
+        </trans-unit>
+        <trans-unit id="Overlay Search" translate="yes" xml:space="preserve">
+          <source>Overlay Search</source>
+          <target state="final">覆盖搜索</target>
+        </trans-unit>
+        <trans-unit id="Loading Pool" translate="yes" xml:space="preserve">
+          <source>Loading Pool</source>
+          <target state="final">正在加入推图池</target>
+        </trans-unit>
+        <trans-unit id="Cancel" translate="yes" xml:space="preserve">
+          <source>Cancel</source>
+          <target state="final">取消</target>
+        </trans-unit>
+        <trans-unit id="Loading" translate="yes" xml:space="preserve">
+          <source>Loading</source>
+          <target state="final">正在加载</target>
+        </trans-unit>
+        <trans-unit id="Getting Image" translate="yes" xml:space="preserve">
+          <source>Getting Image</source>
+          <target state="final">正在获得图片</target>
+        </trans-unit>
+        <trans-unit id="Setting Wallpaper" translate="yes" xml:space="preserve">
+          <source>Setting Wallpaper</source>
+          <target state="final">正在设置成壁纸</target>
+        </trans-unit>
+        <trans-unit id="Setting Lock-screen" translate="yes" xml:space="preserve">
+          <source>Setting Lock-screen</source>
+          <target state="final">正在设置成锁屏</target>
+        </trans-unit>
+        <trans-unit id="Local" translate="yes" xml:space="preserve">
+          <source>Local</source>
+          <target state="final">本地</target>
+        </trans-unit>
+        <trans-unit id="Download" translate="yes" xml:space="preserve">
+          <source>Download</source>
+          <target state="final">下载</target>
+        </trans-unit>
+        <trans-unit id="DownloadContent.Content" translate="yes" xml:space="preserve">
+          <source>Download</source>
+          <target state="final">下载</target>
+        </trans-unit>
+        <trans-unit id="RefreshText.Text" translate="yes" xml:space="preserve">
+          <source>Refresh</source>
+          <target state="final">刷新</target>
+        </trans-unit>
+        <trans-unit id="Your Following.Text" translate="yes" xml:space="preserve">
+          <source>Your Following</source>
+          <target state="final">你的关注</target>
+        </trans-unit>
+        <trans-unit id="SelectionText.Text" translate="yes" xml:space="preserve">
+          <source>Selection</source>
+          <target state="final">选择</target>
+        </trans-unit>
+        <trans-unit id="DeleteText.Text" translate="yes" xml:space="preserve">
+          <source>Delete</source>
+          <target state="final">删除</target>
+        </trans-unit>
+        <trans-unit id="AddNewText.Text" translate="yes" xml:space="preserve">
+          <source>Add New</source>
+          <target state="final">添加</target>
+        </trans-unit>
+        <trans-unit id="SubscriptionListEmptyText.Text" translate="yes" xml:space="preserve">
+          <source>You do not have any favorites List
+Go Create your own one</source>
+          <target state="final">你没有任何的最爱列表
+去创建一个吧</target>
+        </trans-unit>
+        <trans-unit id="RenameText.Text" translate="yes" xml:space="preserve">
+          <source>Rename</source>
+          <target state="final">重命名</target>
+        </trans-unit>
+        <trans-unit id="SortText.Text" translate="yes" xml:space="preserve">
+          <source>Sort</source>
+          <target state="final">排序</target>
+        </trans-unit>
+        <trans-unit id="NameText.Text" translate="yes" xml:space="preserve">
+          <source>Name</source>
+          <target state="final">名称</target>
+        </trans-unit>
+        <trans-unit id="TimeText.Text" translate="yes" xml:space="preserve">
+          <source>Time</source>
+          <target state="final">时间</target>
+        </trans-unit>
+        <trans-unit id="ManageText.Text" translate="yes" xml:space="preserve">
+          <source>Manage</source>
+          <target state="final">管理</target>
+        </trans-unit>
+        <trans-unit id="Nothing is in this list Text.Text" translate="yes" xml:space="preserve">
+          <source>Nothing is in this list</source>
+          <target state="final">这个列表里啥都没有</target>
+        </trans-unit>
+        <trans-unit id="Following" translate="yes" xml:space="preserve">
+          <source>Following</source>
+          <target state="final">关注</target>
+        </trans-unit>
+        <trans-unit id="Add New Favorites List" translate="yes" xml:space="preserve">
+          <source>Add New Favorites List</source>
+          <target state="final">添加新关注列表</target>
+        </trans-unit>
+        <trans-unit id="Are you sure to delete" translate="yes" xml:space="preserve">
+          <source>Are you sure to delete</source>
+          <target state="final">你确定要删除</target>
+        </trans-unit>
+        <trans-unit id="favorites list(s)" translate="yes" xml:space="preserve">
+          <source>favorites list(s)</source>
+          <target state="final">个最爱列表吗</target>
+        </trans-unit>
+        <trans-unit id="Are you sure to delete list" translate="yes" xml:space="preserve">
+          <source>Are you sure to delete list</source>
+          <target state="final">你确定要删除列表</target>
+        </trans-unit>
+        <trans-unit id="Rename" translate="yes" xml:space="preserve">
+          <source>Rename</source>
+          <target state="final">重命名</target>
+        </trans-unit>
+        <trans-unit id="Follow List" translate="yes" xml:space="preserve">
+          <source>Follow List</source>
+          <target state="final">关注列表</target>
+        </trans-unit>
+        <trans-unit id="Select Page Range Text.Text" translate="yes" xml:space="preserve">
+          <source>Select Page Range</source>
+          <target state="final">选择页面范围</target>
+        </trans-unit>
+        <trans-unit id="Select Current Page Text" translate="yes" xml:space="preserve">
+          <source>Select Current Page</source>
+          <target state="final">选择当前页</target>
+        </trans-unit>
+        <trans-unit id="Go To Settings" translate="yes" xml:space="preserve">
+          <source>Go To Settings</source>
+          <target state="final">前往设置</target>
+        </trans-unit>
+        <trans-unit id="Download Folder Not Found.&#xA;Would you like to get it set?" translate="yes" xml:space="preserve">
+          <source>Download Folder Not Found.
+Would you like to get it set?</source>
+          <target state="final">未找到下载文件夹.
+请前往设置</target>
+        </trans-unit>
+        <trans-unit id="Getting Folder" translate="yes" xml:space="preserve">
+          <source>Getting Folder</source>
+          <target state="final">正在获得文件夹</target>
+        </trans-unit>
+        <trans-unit id="Creating Download File" translate="yes" xml:space="preserve">
+          <source>Creating Download File</source>
+          <target state="final">正在创建下载文件</target>
+        </trans-unit>
+        <trans-unit id="FiltersText.Text" translate="yes" xml:space="preserve">
+          <source>Filters</source>
+          <target state="final">筛选</target>
+        </trans-unit>
+        <trans-unit id="TagsButtonContent.Content" translate="yes" xml:space="preserve">
+          <source>Requested Tags</source>
+          <target state="final">请求标签</target>
+        </trans-unit>
+        <trans-unit id="DefaultInputTagsText.Text" translate="yes" xml:space="preserve">
+          <source>All Tags</source>
+          <target state="final">所有的标签</target>
+        </trans-unit>
+        <trans-unit id="DefaultSelectedTagsText.Text" translate="yes" xml:space="preserve">
+          <source>From All Followings</source>
+          <target state="final">包含所有的关注者</target>
+        </trans-unit>
+        <trans-unit id="DefaultTypesSwitchText.Text" translate="yes" xml:space="preserve">
+          <source>All/Exclude/Specify</source>
+          <target state="final">所有/排除/指定</target>
+        </trans-unit>
+        <trans-unit id="SpotDeclarationText.Text" translate="yes" xml:space="preserve">
+          <source>Declaration</source>
+          <target state="final">声明</target>
+        </trans-unit>
+        <trans-unit id="SpotDeclarationDetailText.Text" translate="yes" xml:space="preserve">
+          <source>This filtering technique uses the e621 tags system, so it can only be one 'type:something' or '-type:something' or no restriction.</source>
+          <target state="needs-review-translation">此筛选技术使用 e621 标签系统，因此它只能是一个 'type:something' 或 '-type:something' 或没有限制。</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+        </trans-unit>
+        <trans-unit id="TypePNGButtonContent.Content" translate="yes" xml:space="preserve">
+          <source>Type: PNG</source>
+          <target state="final">类型: PNG</target>
+        </trans-unit>
+        <trans-unit id="TypeJPGButtonContent.Content" translate="yes" xml:space="preserve">
+          <source>Type: JPG</source>
+          <target state="final">类型: JPG</target>
+        </trans-unit>
+        <trans-unit id="TypeGIFButtonContent.Content" translate="yes" xml:space="preserve">
+          <source>Type: GIF</source>
+          <target state="final">类型: GIF</target>
+        </trans-unit>
+        <trans-unit id="TypeWEBMButtonContent.Content" translate="yes" xml:space="preserve">
+          <source>Type: WEBM</source>
+          <target state="final">类型: WEBM</target>
+        </trans-unit>
+        <trans-unit id="TypeANIMButtonToolTip.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>SWF is not yet supported in UWP
+(Or anypony can tell me how to do it)</source>
+          <target state="final">类型SWF还未在UWP里支持
+(或者有谁来告诉我怎么做)</target>
+        </trans-unit>
+        <trans-unit id="TypeANIMButtonContent.Content" translate="yes" xml:space="preserve">
+          <source>Type: ANIM</source>
+          <target state="final">类型: ANIM</target>
+        </trans-unit>
+        <trans-unit id="IncludeSafeCheckBoxContent.Content" translate="yes" xml:space="preserve">
+          <source>Include Safe</source>
+          <target state="final">包含 Safe</target>
+        </trans-unit>
+        <trans-unit id="IncludeQuestionableCheckBoxContent.Content" translate="yes" xml:space="preserve">
+          <source>Include Questionable</source>
+          <target state="final">包含 Questionable</target>
+        </trans-unit>
+        <trans-unit id="IncludeExplicitCheckBoxContent.Content" translate="yes" xml:space="preserve">
+          <source>Include Explicit</source>
+          <target state="final">包含 Explicit</target>
+        </trans-unit>
+        <trans-unit id="DefaultAmountText.Text" translate="yes" xml:space="preserve">
+          <source>Amount: 1</source>
+          <target state="final">数量: 1</target>
+        </trans-unit>
+        <trans-unit id="ScoreLimitText.Text" translate="yes" xml:space="preserve">
+          <source>Score Limit:</source>
+          <target state="final">分数限制:</target>
+        </trans-unit>
+        <trans-unit id="FromText.Text" translate="yes" xml:space="preserve">
+          <source>From</source>
+          <target state="final">从</target>
+        </trans-unit>
+        <trans-unit id="Totext.Text" translate="yes" xml:space="preserve">
+          <source>To</source>
+          <target state="final">到</target>
+        </trans-unit>
+        <trans-unit id="GetRandomText.Text" translate="yes" xml:space="preserve">
+          <source>Get Random</source>
+          <target state="final">随机获得</target>
+        </trans-unit>
+        <trans-unit id="ClearText.Text" translate="yes" xml:space="preserve">
+          <source>Clear</source>
+          <target state="final">清除</target>
+        </trans-unit>
+        <trans-unit id="NothingFoundText" translate="yes" xml:space="preserve">
+          <source>Nothing Found</source>
+          <target state="final">啥都没找到</target>
+        </trans-unit>
+        <trans-unit id="Amount" translate="yes" xml:space="preserve">
+          <source>Amount</source>
+          <target state="final">数量</target>
+        </trans-unit>
+        <trans-unit id="Select Your Tags" translate="yes" xml:space="preserve">
+          <source>Select Your Tags</source>
+          <target state="final">选择你的标签</target>
+        </trans-unit>
+        <trans-unit id="All Tags" translate="yes" xml:space="preserve">
+          <source>All Tags</source>
+          <target state="final">所有的标签</target>
+        </trans-unit>
+        <trans-unit id="Input" translate="yes" xml:space="preserve">
+          <source>Input</source>
+          <target state="final">输入</target>
+        </trans-unit>
+        <trans-unit id="No Followings Selected" translate="yes" xml:space="preserve">
+          <source>No Followings Selected</source>
+          <target state="final">没有选择关注者</target>
+        </trans-unit>
+        <trans-unit id="Parameters Error" translate="yes" xml:space="preserve">
+          <source>Parameters Error</source>
+          <target state="final">参数错误</target>
+        </trans-unit>
+        <trans-unit id="Please Select At Least One Rating" translate="yes" xml:space="preserve">
+          <source>Please Select At Least One Rating</source>
+          <target state="final">请选择至少一个评级</target>
+        </trans-unit>
+        <trans-unit id="Minimum" translate="yes" xml:space="preserve">
+          <source>Minimum</source>
+          <target state="final">最小</target>
+        </trans-unit>
+        <trans-unit id="Maximum" translate="yes" xml:space="preserve">
+          <source>Maximum</source>
+          <target state="final">最大</target>
+        </trans-unit>
+        <trans-unit id="Score Limit" translate="yes" xml:space="preserve">
+          <source>Score Limit</source>
+          <target state="final">分数限制</target>
+        </trans-unit>
+        <trans-unit id="All" translate="yes" xml:space="preserve">
+          <source>All</source>
+          <target state="final">所有</target>
+        </trans-unit>
+        <trans-unit id="Exclude" translate="yes" xml:space="preserve">
+          <source>Exclude</source>
+          <target state="final">排除</target>
+        </trans-unit>
+        <trans-unit id="Specify" translate="yes" xml:space="preserve">
+          <source>Specify</source>
+          <target state="final">指定</target>
+        </trans-unit>
+        <trans-unit id="SettingsText.Text" translate="yes" xml:space="preserve">
+          <source>Settings</source>
+          <target state="new">Settings</target>
+        </trans-unit>
+        <trans-unit id="LISTINGText.Text" translate="yes" xml:space="preserve">
+          <source>LISTINGText</source>
+          <target state="new">LISTINGText</target>
+        </trans-unit>
+        <trans-unit id="BlacklistText.Text" translate="yes" xml:space="preserve">
+          <source>Blacklist</source>
+          <target state="new">Blacklist</target>
+        </trans-unit>
+        <trans-unit id="FollowListText.Text" translate="yes" xml:space="preserve">
+          <source>Follow List</source>
+          <target state="new">Follow List</target>
+        </trans-unit>
+        <trans-unit id="LOCALText.Text" translate="yes" xml:space="preserve">
+          <source>LOCAL</source>
+          <target state="new">LOCAL</target>
+        </trans-unit>
+        <trans-unit id="SelectDownloadPathContent.Content" translate="yes" xml:space="preserve">
+          <source>Select Download Path</source>
+          <target state="new">Select Download Path</target>
+        </trans-unit>
+        <trans-unit id="ClearDownloadPathContent.Content" translate="yes" xml:space="preserve">
+          <source>Clear Download Path</source>
+          <target state="new">Clear Download Path</target>
+        </trans-unit>
+        <trans-unit id="NoPathSelectedText.Text" translate="yes" xml:space="preserve">
+          <source>No Path Selected</source>
+          <target state="new">No Path Selected</target>
+        </trans-unit>
+        <trans-unit id="GENERALText.Text" translate="yes" xml:space="preserve">
+          <source>GENERAL</source>
+          <target state="new">GENERAL</target>
+        </trans-unit>
+        <trans-unit id="HistoryText.Text" translate="yes" xml:space="preserve">
+          <source>History</source>
+          <target state="new">History</target>
+        </trans-unit>
+        <trans-unit id="ClearWallpapersCacheText.Text" translate="yes" xml:space="preserve">
+          <source>Clear Wallpapers Cache</source>
+          <target state="new">Clear Wallpapers Cache</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

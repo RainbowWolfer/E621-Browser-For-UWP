@@ -3,6 +3,7 @@ using E621Downloader.Models.Posts;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -42,10 +43,10 @@ namespace E621Downloader.Models.Download {
 			MainPage.HideInstantDialog();
 			if(Local.DownloadFolder == null) {
 				if(await new ContentDialog() {
-					Title = "Error",
-					Content = "Download Folder Not Found.\nWould you like to get it set?",
-					PrimaryButtonText = "Go To Settings",
-					SecondaryButtonText = "Back",
+					Title = "Error".Language(),
+					Content = "Download Folder Not Found.\nWould you like to get it set?".Language(),
+					PrimaryButtonText = "Go To Settings".Language(),
+					SecondaryButtonText = "Back".Language(),
 				}.ShowAsync() == ContentDialogResult.Primary) {
 					MainPage.NavigateTo(PageTag.Settings);
 				}
@@ -68,7 +69,7 @@ namespace E621Downloader.Models.Download {
 			if(string.IsNullOrWhiteSpace(groupTitle)) {
 				groupTitle = DEFAULTTITLE;
 			}
-			onProgress?.Invoke($"Handling Downloads\nGetting Folder - ({groupTitle})");
+			onProgress?.Invoke("Handling Downloads".Language() + "\n" + "Getting Folder".Language() + $" - ({groupTitle})");
 			if(token.IsCancellationRequested) {
 				return null;
 			}
@@ -86,11 +87,11 @@ namespace E621Downloader.Models.Download {
 				if(string.IsNullOrEmpty(groupTitle)) {
 					groupTitle = DEFAULTTITLE;
 				}
-				onProgress?.Invoke($"Handling Downloads\t{index}/{posts.Count()}\nCreating Download File - ({filename})");
+				onProgress?.Invoke("Handling Downloads".Language() + $"\t{index}/{posts.Count()}\n" + "Creating Download File".Language() + $" - ({filename})");
 				if(token.IsCancellationRequested) {
 					return null;
 				}
-				StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+				StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.GenerateUniqueName);
 				RegisterDownload(item, new Uri(item.file.url), file, groupTitle);
 				index++;
 			}
@@ -114,7 +115,7 @@ namespace E621Downloader.Models.Download {
 				groupTitle = DEFAULTTITLE;
 			}
 			StorageFolder folder = await Local.DownloadFolder.CreateFolderAsync(groupTitle, CreationCollisionOption.OpenIfExists);
-			StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+			StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.GenerateUniqueName);
 			RegisterDownload(post, new Uri(post.file.url), file, groupTitle);
 			return true;
 		}
@@ -144,41 +145,10 @@ namespace E621Downloader.Models.Download {
 			group.downloads.ForEach(d => d.Cancel());
 		}
 
-		//public static DownloadInstance RestoreCompletedDownload(Post post) {
-
-		//	return null;
-		//}
-
-		//public static async Task RestoreIncompletedDownloads() {
-		//	var list = await Local.GetAllMetaFiles();
-		//	foreach(MetaFile meta in list) {
-		//		if(meta.FinishedDownloading) {
-		//			continue;
-		//		}
-		//		Post post = meta.MyPost;
-		//		string groupName = meta.Group;
-		//		RegisterDownload(post, groupName);
-		//	}
-		//}
-
 		public static DownloadsGroup FindGroup(string title) {
 			return groups.Find(g => g.Title == title);
 		}
 
-		//public static void Sort() {
-		//	foreach(DownloadsGroup g in groups) {
-		//		g.downloads.Sort((a, b) => {
-		//			if(a == b) {
-		//				return 0;
-		//			}
-		//			return 1;
-		//		});
-		//	}
-		//}
-
-		//public static List<DownloadsGroup> GetDownloadingGroups(){
-		//	return groups.Where(g=>g.);
-		//}
 
 	}
 }

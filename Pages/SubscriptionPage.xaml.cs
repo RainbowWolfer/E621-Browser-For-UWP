@@ -102,7 +102,7 @@ namespace E621Downloader.Pages {
 			if(page is <= 0 or >= 100) {
 				return;
 			}
-			UpdateTitleAndSetTag("Following");
+			UpdateTitleAndSetTag("Following".Language());
 			UpdatePage();
 			RefreshContentButton.IsEnabled = false;
 			SwitchLayout(LayoutType.Following);
@@ -244,8 +244,8 @@ namespace E621Downloader.Pages {
 			LoadFollowing(CurrentFollowingPage);
 		}
 
-		private void SelectionToggleButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			e.Handled = true;
+		private void SelectionToggleButton_Click(object sender, RoutedEventArgs e) {
+			//e.Handled = true;
 			if(SelectionToggleButton.IsChecked.Value) {
 				previousIndex = FavoritesListView.SelectedIndex;
 				IsSelecting = true;
@@ -256,10 +256,10 @@ namespace E621Downloader.Pages {
 
 		private async void DeleteButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(await new ContentDialog() {
-				Title = "Confirmation",
-				Content = $"Are you sure to delete {Selected.Count} favorites list(s)",
-				PrimaryButtonText = "Yes",
-				CloseButtonText = "No",
+				Title = "Confirm".Language(),
+				Content = "Are you sure to delete".Language() + $" {Selected.Count} " + "favorites list(s)".Language() + "?",
+				PrimaryButtonText = "Yes".Language(),
+				CloseButtonText = "No".Language(),
 			}.ShowAsync() == ContentDialogResult.Primary) {
 				FavoritesList.Table.RemoveAll(l => Selected.Select(s => s.Title).Contains(l.Name));
 				FavoritesList.Save();
@@ -269,7 +269,7 @@ namespace E621Downloader.Pages {
 
 		private async void AddNewButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			var dialog = new ContentDialog() {
-				Title = "Add New Favorites Lists",
+				Title = "Add New Favorites List".Language(),
 			};
 			var content = new FavoritesListNameModify(true, dialog, items.Select(i => i.Title));
 			dialog.Content = content;
@@ -342,10 +342,10 @@ namespace E621Downloader.Pages {
 
 		private async void DeleteContentButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(await new ContentDialog() {
-				Title = "Confirmation",
-				Content = $"Are you sure to delete list ({CurrentListName})",
-				PrimaryButtonText = "Yes",
-				CloseButtonText = "No",
+				Title = "Confirmation".Language(),
+				Content = "Are you sure to delete list".Language() + $" ({CurrentListName})",
+				PrimaryButtonText = "Yes".Language(),
+				CloseButtonText = "No".Language(),
 			}.ShowAsync() == ContentDialogResult.Primary) {
 				FavoritesList.Table.RemoveAll(l => CurrentListName == l.Name);
 				FavoritesList.Save();
@@ -360,7 +360,7 @@ namespace E621Downloader.Pages {
 
 		private async void RenameButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			var dialog = new ContentDialog() {
-				Title = $"Rename - {CurrentListName}",
+				Title = "Rename".Language() + $" - {CurrentListName}",
 			};
 			var content = new FavoritesListNameModify(false, dialog, items.Select(i => i.Title), CurrentListName);
 			dialog.Content = content;
@@ -377,7 +377,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void ManageButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			await SettingsPage.PopupListingManager("Follow List", Local.Listing.LocalFollowingLists);
+			await SettingsPage.PopupListingManager("Follow List".Language(), Local.Listing.LocalFollowingLists);
 
 		}
 
@@ -418,6 +418,7 @@ namespace E621Downloader.Pages {
 		private enum LayoutType {
 			Following, Favorites
 		}
+
 	}
 
 	public class FavoriteListViewItem {

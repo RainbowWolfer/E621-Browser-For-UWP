@@ -14,6 +14,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Resources.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Networking.BackgroundTransfer;
@@ -45,6 +46,8 @@ namespace E621Downloader {
 		public App() {
 			Instance = this;
 			this.InitializeComponent();
+			//read local stored language preference
+			//ResourceContext.SetGlobalQualifierValue("Language", "en-US");
 			this.Suspending += OnSuspending;
 
 			InitializeTheme();
@@ -59,6 +62,26 @@ namespace E621Downloader {
 			}
 
 			//SetJumpList();
+			IReadOnlyList<string> userLanguages = Windows.System.UserProfile.GlobalizationPreferences.Languages;
+			foreach(string language in userLanguages) {
+				Debug.WriteLine(language);
+			}
+
+			Debug.WriteLine("\n");
+
+			IReadOnlyList<string> userLanguages2 = Windows.Globalization.ApplicationLanguages.ManifestLanguages;
+			foreach(string language in userLanguages2) {
+				Debug.WriteLine(language);
+			}
+
+			Debug.WriteLine("\n");
+
+			//string runtimeLanguages = Windows.ApplicationModel.Resources.Core.ResourceContext.GetForCurrentView().QualifierValues["Language"];
+			//Debug.WriteLine(runtimeLanguages);
+
+			//IReadOnlyList<string> runtimeLanguages2 = Windows.ApplicationModel.Resources.Core.ResourceContext.GetForCurrentView().Languages;
+			//runtimeLanguages2 = Windows.Globalization.ApplicationLanguages.Languages;
+			//Debug.WriteLine(runtimeLanguages2);
 
 		}
 

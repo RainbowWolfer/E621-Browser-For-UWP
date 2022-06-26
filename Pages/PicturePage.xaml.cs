@@ -56,7 +56,7 @@ namespace E621Downloader.Pages {
 		private string path;
 
 		public bool EnableAutoPlay => LocalSettings.Current?.mediaAutoPlay ?? false;
-		public string Title => PostRef == null ? "# No Post" :
+		public string Title => PostRef == null ? "# No Post".Language() :
 			$"#{PostRef.id} ({PostRef.rating.ToUpper()})";
 
 		private CancellationTokenSource cts;
@@ -101,6 +101,11 @@ namespace E621Downloader.Pages {
 					isControlInputing = false;
 				}
 			}));
+#if DEBUG
+			DebugItem.Visibility = Visibility.Visible;
+#else
+			DebugItem.Visibility = Visibility.Collapsed;
+#endif
 
 		}
 
@@ -281,7 +286,7 @@ namespace E621Downloader.Pages {
 				MyMediaPlayer.Visibility = Visibility.Collapsed;
 				MyScrollViewer.Visibility = Visibility.Collapsed;
 				MyProgressRing.IsActive = false;
-				await MainPage.CreatePopupDialog("Error", $"Post({post.id}) has no valid file url");
+				await MainPage.CreatePopupDialog("Error".Language(), "Post".Language() + $"({post.id}) " + "has no valid file URL".Language());
 				return;
 			}
 			FileType type = GetFileType(post);
@@ -313,7 +318,7 @@ namespace E621Downloader.Pages {
 					MyProgressRing.IsActive = false;
 					break;
 				default:
-					await MainPage.CreatePopupDialog("Error", $"Type({type}) not supported");
+					await MainPage.CreatePopupDialog("Error".Language(), "Type".Language() + $" ({type}) " + "not supported".Language());
 					break;
 			}
 		}
@@ -338,7 +343,7 @@ namespace E621Downloader.Pages {
 						};
 						imageDataPackage.SetBitmap(RandomAccessStreamReference.CreateFromFile(local.ImageFile));
 					} catch(Exception e) {
-						await MainPage.CreatePopupDialog("Error", $"Local Post({local.ImagePost.id}) - {local.ImageFile.Path} Load Failed\n{e.Message}");
+						await MainPage.CreatePopupDialog("Error".Language(), "Local Post".Language() + $"({local.ImagePost.id}) - {local.ImageFile.Path} " + "Load Failed".Language() + $"\n{e.Message}");
 					}
 					MyMediaPlayer.Source = null;
 					MyProgressRing.IsActive = false;
@@ -353,14 +358,14 @@ namespace E621Downloader.Pages {
 				case FileType.Anim:
 					MyMediaPlayer.Visibility = Visibility.Collapsed;
 					MyScrollViewer.Visibility = Visibility.Collapsed;
-					HintText.Text = $"Type SWF not supported";
+					HintText.Text = $"Type SWF not supported".Language();
 					HintText.Visibility = Visibility.Visible;
 					MyProgressRing.IsActive = false;
 					break;
 				default:
-					HintText.Text = $"Type ({type}) not supported";
+					HintText.Text = "Type".Language() + $" ({type}) " + "not supported".Language();
 					HintText.Visibility = Visibility.Visible;
-					await MainPage.CreatePopupDialog("Error", $"Type({type}) not supported");
+					await MainPage.CreatePopupDialog("Error".Language(), "Type".Language() + $" ({type}) " + "not supported".Language());
 					break;
 			}
 		}
@@ -378,11 +383,11 @@ namespace E621Downloader.Pages {
 
 		private void UpdateDownloadButton(bool isLocal) {
 			if(isLocal) {
-				DownloadText.Text = "Local";
+				DownloadText.Text = "Local".Language();
 				DownloadIcon.Glyph = "\uE159";
 				DownloadButton.IsEnabled = false;
 			} else {
-				DownloadText.Text = "Download";
+				DownloadText.Text = "Download".Language();
 				DownloadIcon.Glyph = "\uE118";
 				DownloadButton.IsEnabled = true;
 			}
@@ -393,7 +398,7 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			ScoreText.Text = $"{PostRef.score.total}";
-			ToolTipService.SetToolTip(ScoreText, $"Upvote: {PostRef.score.up}\nDownvote: {Math.Abs(PostRef.score.down)}");
+			ToolTipService.SetToolTip(ScoreText, "Upvote".Language() + $": {PostRef.score.up}\n" + "Downvote".Language() + $": {Math.Abs(PostRef.score.down)}");
 		}
 
 		private void UpdateTypeIcon() {
@@ -406,7 +411,7 @@ namespace E621Downloader.Pages {
 				"webm" => "\uE714",
 				_ => "\uE9CE",
 			};
-			ToolTipService.SetToolTip(TypeIcon, $"Type: {PostRef.file.ext.Trim().ToCamelCase()}");
+			ToolTipService.SetToolTip(TypeIcon, "Type".Language() + $": {PostRef.file.ext.Trim().ToCamelCase()}");
 		}
 
 		private void UpdateSoundIcon() {
@@ -417,11 +422,11 @@ namespace E621Downloader.Pages {
 			if(list.Contains("sound_warning")) {
 				SoundIcon.Visibility = Visibility.Visible;
 				SoundIcon.Foreground = new SolidColorBrush(Colors.Red);
-				ToolTipService.SetToolTip(SoundIcon, "This Video Has Sound_Warning Tag");
+				ToolTipService.SetToolTip(SoundIcon, "This Video Has 'Sound_Warning' Tag".Language());
 			} else if(list.Contains("sound")) {
 				SoundIcon.Visibility = Visibility.Visible;
 				SoundIcon.Foreground = new SolidColorBrush(Colors.Yellow);
-				ToolTipService.SetToolTip(SoundIcon, "This Video Has Sound Tag");
+				ToolTipService.SetToolTip(SoundIcon, "This Video Has 'Sound' Tag".Language());
 			} else {
 				SoundIcon.Visibility = Visibility.Collapsed;
 			}
@@ -436,16 +441,16 @@ namespace E621Downloader.Pages {
 			string tooltip;
 			if(rating == "e") {
 				color = Colors.Red;
-				tooltip = "Rating: Explicit";
+				tooltip = "Rating".Language() + ": Explicit";
 			} else if(rating == "q") {
 				color = Colors.Yellow;
-				tooltip = "Rating: Questionable";
+				tooltip = "Rating".Language() + ": Questionable";
 			} else if(rating == "s") {
 				color = Colors.Green;
-				tooltip = "Rating: Safe";
+				tooltip = "Rating".Language() + ": Safe";
 			} else {
 				color = Colors.White;
-				tooltip = "No Rating";
+				tooltip = "No Rating".Language();
 			}
 			TitleText.Foreground = new SolidColorBrush(color);
 			ToolTipService.SetToolTip(TitleText, tooltip);
@@ -458,23 +463,23 @@ namespace E621Downloader.Pages {
 			}
 			RemoveGroup();
 			if(App.GetApplicationTheme() == ApplicationTheme.Dark) {
-				AddNewGroup("Artist", tags.artist.ToGroupTag("#F2AC08".ToColor()));
-				AddNewGroup("Copyright", tags.copyright.ToGroupTag("#D0D".ToColor()));
-				AddNewGroup("Species", tags.species.ToGroupTag("#ED5D1F".ToColor()));
-				AddNewGroup("Character", tags.character.ToGroupTag("#0A0".ToColor()));
-				AddNewGroup("General", tags.general.ToGroupTag("#B4C7D9".ToColor()));
-				AddNewGroup("Meta", tags.meta.ToGroupTag("#FFF".ToColor()));
-				AddNewGroup("Invalid", tags.invalid.ToGroupTag("#FF3D3D".ToColor()));
-				AddNewGroup("Lore", tags.lore.ToGroupTag("#282".ToColor()));
+				AddNewGroup("Artist".Language(), tags.artist.ToGroupTag("#F2AC08".ToColor()));
+				AddNewGroup("Copyright".Language(), tags.copyright.ToGroupTag("#D0D".ToColor()));
+				AddNewGroup("Species".Language(), tags.species.ToGroupTag("#ED5D1F".ToColor()));
+				AddNewGroup("Character".Language(), tags.character.ToGroupTag("#0A0".ToColor()));
+				AddNewGroup("General".Language(), tags.general.ToGroupTag("#B4C7D9".ToColor()));
+				AddNewGroup("Meta".Language(), tags.meta.ToGroupTag("#FFF".ToColor()));
+				AddNewGroup("Invalid".Language(), tags.invalid.ToGroupTag("#FF3D3D".ToColor()));
+				AddNewGroup("Lore".Language(), tags.lore.ToGroupTag("#282".ToColor()));
 			} else {
-				AddNewGroup("Artist", tags.artist.ToGroupTag("#E39B00".ToColor()));
-				AddNewGroup("Copyright", tags.copyright.ToGroupTag("#D0D".ToColor()));
-				AddNewGroup("Species", tags.species.ToGroupTag("#ED5D1F".ToColor()));
-				AddNewGroup("Character", tags.character.ToGroupTag("#0A0".ToColor()));
-				AddNewGroup("General", tags.general.ToGroupTag("#0B7EE2".ToColor()));
-				AddNewGroup("Meta", tags.meta.ToGroupTag("#000".ToColor()));
-				AddNewGroup("Invalid", tags.invalid.ToGroupTag("#FF3D3D".ToColor()));
-				AddNewGroup("Lore", tags.lore.ToGroupTag("#282".ToColor()));
+				AddNewGroup("Artist".Language(), tags.artist.ToGroupTag("#E39B00".ToColor()));
+				AddNewGroup("Copyright".Language(), tags.copyright.ToGroupTag("#D0D".ToColor()));
+				AddNewGroup("Species".Language(), tags.species.ToGroupTag("#ED5D1F".ToColor()));
+				AddNewGroup("Character".Language(), tags.character.ToGroupTag("#0A0".ToColor()));
+				AddNewGroup("General".Language(), tags.general.ToGroupTag("#0B7EE2".ToColor()));
+				AddNewGroup("Meta".Language(), tags.meta.ToGroupTag("#000".ToColor()));
+				AddNewGroup("Invalid".Language(), tags.invalid.ToGroupTag("#FF3D3D".ToColor()));
+				AddNewGroup("Lore".Language(), tags.lore.ToGroupTag("#282".ToColor()));
 			}
 
 		}
@@ -564,28 +569,28 @@ namespace E621Downloader.Pages {
 			bool enable = this.PostRef.is_favorited;
 			FavoriteButton.IsChecked = enable;
 			if(enable) {
-				FavoriteText.Text = "Favorited";
+				FavoriteText.Text = "Favorited".Language();
 				FavoriteIcon.Glyph = "\uEB52";
 			} else {
-				FavoriteText.Text = "Favorite";
+				FavoriteText.Text = "Favorite".Language();
 				FavoriteIcon.Glyph = "\uEB51";
 			}
 			FavoriteListButton.IsChecked = enable;
 		}
 
 		private void UpdateDescriptionSection() {
-			DescriptionText.Text = PostRef != null && !string.IsNullOrEmpty(PostRef.description) ? PostRef.description : "No Description";
+			DescriptionText.Text = PostRef != null && !string.IsNullOrEmpty(PostRef.description) ? PostRef.description : "No Description".Language();
 			SourcesView.Items.Clear();
 			if(PostRef != null) {
 				foreach(string item in PostRef.sources) {
 					SourcesView.Items.Add(new MyHyperLinkButton(item));
 				}
 				if(PostRef.sources.Count == 0) {
-					SourcesText.Text = "No Source";
+					SourcesText.Text = "No Source".Language();
 				} else if(PostRef.sources.Count == 1) {
-					SourcesText.Text = "Source";
+					SourcesText.Text = "Source".Language();
 				} else {
-					SourcesText.Text = "Sources";
+					SourcesText.Text = "Sources".Language();
 				}
 			} else {
 				SourcesText.Text = "";
@@ -659,7 +664,7 @@ namespace E621Downloader.Pages {
 			PointerPoint point = e.GetCurrentPoint(MainImage);
 			double posX = point.Position.X;
 			double posY = point.Position.Y;
-			Debug.WriteLine($"{(int)posX}-{(int)posY} <=> {(int)MainImage.ActualWidth / 2}-{(int)MainImage.ActualHeight / 2}");
+			//Debug.WriteLine($"{(int)posX}-{(int)posY} <=> {(int)MainImage.ActualWidth / 2}-{(int)MainImage.ActualHeight / 2}");
 
 			double scroll = point.Properties.MouseWheelDelta > 0 ? 1.2 : 0.8;
 
@@ -808,17 +813,17 @@ namespace E621Downloader.Pages {
 			if(Local.Listing.CheckBlackList(tag)) {
 				await Local.Listing.RemoveBlackList(tag);
 				((FontIcon)btn.Content).Glyph = "\uE108";
-				ToolTipService.SetToolTip(btn, "Add To BlackList");
+				ToolTipService.SetToolTip(btn, "Add To Blacklist".Language());
 			} else {
 				await Local.Listing.AddBlackList(tag);
 				((FontIcon)btn.Content).Glyph = "\uEA43";
-				ToolTipService.SetToolTip(btn, "Remove From BlackList");
+				ToolTipService.SetToolTip(btn, "Remove From Blacklist".Language());
 
 				if(Local.Listing.CheckFollowingList(tag)) {
 					await Local.Listing.RemoveFollowingList(tag);
 					var followListButton = (btn.Parent as RelativePanel).Children.OfType<Button>().ToList().Find(b => b.Name == "FollowListButton");
 					((FontIcon)followListButton.Content).Glyph = "\uE109";
-					ToolTipService.SetToolTip(followListButton, "Add To FollowList");
+					ToolTipService.SetToolTip(followListButton, "Add To Follow List".Language());
 				}
 			}
 		}
@@ -829,17 +834,17 @@ namespace E621Downloader.Pages {
 			if(Local.Listing.CheckFollowingList(tag)) {
 				await Local.Listing.RemoveFollowingList(tag);
 				((FontIcon)btn.Content).Glyph = "\uE109";
-				ToolTipService.SetToolTip(btn, "Add To FollowList");
+				ToolTipService.SetToolTip(btn, "Add To Follow List".Language());
 			} else {
 				await Local.Listing.AddFollowingList(tag);
 				((FontIcon)btn.Content).Glyph = "\uE74D";
-				ToolTipService.SetToolTip(btn, "Delete From FollowList");
+				ToolTipService.SetToolTip(btn, "Remove From Follow List");
 
 				if(Local.Listing.CheckBlackList(tag)) {
 					await Local.Listing.RemoveBlackList(tag);
 					Button blackListButton = (btn.Parent as RelativePanel).Children.OfType<Button>().ToList().Find(b => b.Name == "BlackListButton");
 					((FontIcon)blackListButton.Content).Glyph = "\uE108";
-					ToolTipService.SetToolTip(blackListButton, "Add To BlackList");
+					ToolTipService.SetToolTip(blackListButton, "Add To Blacklist".Language());
 				}
 			}
 		}
@@ -849,10 +854,10 @@ namespace E621Downloader.Pages {
 			string tag = btn.Tag as string;
 			if(Local.Listing.CheckBlackList(tag)) {
 				((FontIcon)btn.Content).Glyph = "\uEA43";
-				ToolTipService.SetToolTip(btn, "Remove From BlackList");
+				ToolTipService.SetToolTip(btn, "Remove From BlackList".Language());
 			} else {
 				((FontIcon)btn.Content).Glyph = "\uE108";
-				ToolTipService.SetToolTip(btn, "Add To BlackList");
+				ToolTipService.SetToolTip(btn, "Add To BlackList".Language());
 			}
 		}
 
@@ -861,10 +866,10 @@ namespace E621Downloader.Pages {
 			string tag = btn.Tag as string;
 			if(Local.Listing.CheckFollowingList(tag)) {
 				((FontIcon)btn.Content).Glyph = "\uE74D";
-				ToolTipService.SetToolTip(btn, "Delete From FollowList");
+				ToolTipService.SetToolTip(btn, "Remove From Follow List".Language());
 			} else {
 				((FontIcon)btn.Content).Glyph = "\uE109";
-				ToolTipService.SetToolTip(btn, "Add To FollowList");
+				ToolTipService.SetToolTip(btn, "Add To Follow List".Language());
 			}
 		}
 
@@ -880,7 +885,7 @@ namespace E621Downloader.Pages {
 				if(await DownloadsManager.RegisterDownload(PostRef, CurrentTags)) {
 					MainPage.CreateTip_SuccessDownload(this);
 				} else {
-					await MainPage.CreatePopupDialog("Error", "Downloads Failed");
+					await MainPage.CreatePopupDialog("Error".Language(), "Downloads Failed".Language());
 				}
 			}
 		}
@@ -896,8 +901,8 @@ namespace E621Downloader.Pages {
 			string tag = (sender as Button).Tag as string;
 			string name = tag;
 			var dialog = new ContentDialog() {
-				Title = $"Tag Information: {name}",
-				CloseButtonText = "Back",
+				Title = "Tag Information".Language() + $": {name}",
+				CloseButtonText = "Back".Language(),
 				Content = new TagInformationDisplay(tags_pool, tag),
 			};
 			MySubGrid.Children.Add(dialog);
@@ -951,7 +956,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void InformationPivot_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			if(e.AddedItems != null && e.AddedItems.Count > 0 && e.AddedItems[0] is PivotItem item && item.Header as string == "Comments" && !commentsLoaded && !commentsLoading) {
+			if(e.AddedItems != null && e.AddedItems.Count > 0 && e.AddedItems[0] is PivotItem item && item.Tag as string == "Comments" && !commentsLoaded && !commentsLoading) {
 				if(PostRef != null) {
 					LoadCommentsAsync();
 				} else {
@@ -965,9 +970,9 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			var dialog = new ContentDialog() {
-				Title = "More Info",
+				Title = "More Info".Language(),
 				Content = new PostMoreInfoDialog(PostRef),
-				PrimaryButtonText = "Back",
+				PrimaryButtonText = "Back".Language(),
 			};
 			await dialog.ShowAsync();
 		}
@@ -976,9 +981,7 @@ namespace E621Downloader.Pages {
 			if(PostRef == null) {
 				return;
 			}
-			if(!await Launcher.LaunchUriAsync(new Uri($"https://{Data.GetHost()}/posts/{PostRef.id}"))) {
-				await MainPage.CreatePopupDialog("Error", "Could not Open Default Browser");
-			}
+			await Methods.OpenBrowser($"https://{Data.GetHost()}/posts/{PostRef.id}");
 		}
 
 		private void CopyItem_Click(object sender, RoutedEventArgs e) {
@@ -1004,9 +1007,9 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			var dialog = new ContentDialog() {
-				Title = "Debug Info",
+				Title = "Debug Info".Language(),
 				Content = new PostDebugView(PostRef),
-				PrimaryButtonText = "Back",
+				PrimaryButtonText = "Back".Language(),
 			};
 			await dialog.ShowAsync();
 		}
@@ -1015,7 +1018,7 @@ namespace E621Downloader.Pages {
 			e.Handled = true;
 			FavoriteButton.IsEnabled = false;
 			FavoriteListButton.IsEnabled = false;
-			FavoriteText.Text = "Pending";
+			FavoriteText.Text = "Pending".Language();
 			FavoriteIcon.Glyph = "\uE10C";
 			if(FavoriteButton.IsChecked.Value) {
 				if(cts == null) {
@@ -1023,15 +1026,15 @@ namespace E621Downloader.Pages {
 				}
 				HttpResult<string> result = await Favorites.PostAsync(this.PostRef.id, cts.Token);
 				if(result.Result == HttpResultType.Success) {
-					FavoriteText.Text = "Favorited";
+					FavoriteText.Text = "Favorited".Language();
 					FavoriteIcon.Glyph = "\uEB52";
 					this.PostRef.is_favorited = true;
 				} else if(result.Result == HttpResultType.Canceled) {
 					return;
 				} else {
-					FavoriteText.Text = "Favorite";
+					FavoriteText.Text = "Favorite".Language();
 					FavoriteIcon.Glyph = "\uEB51";
-					MainPage.CreateTip(this, result.StatusCode.ToString(), result.Helper, Symbol.Important, "OK");
+					MainPage.CreateTip(this, result.StatusCode.ToString(), result.Helper, Symbol.Important, "OK".Language());
 					FavoriteButton.IsChecked = false;
 					this.PostRef.is_favorited = false;
 				}
@@ -1041,15 +1044,15 @@ namespace E621Downloader.Pages {
 				}
 				HttpResult<string> result = await Favorites.DeleteAsync(this.PostRef.id, cts.Token);
 				if(result.Result == HttpResultType.Success) {
-					FavoriteText.Text = "Favorite";
+					FavoriteText.Text = "Favorite".Language();
 					FavoriteIcon.Glyph = "\uEB51";
 					this.PostRef.is_favorited = false;
 				} else if(result.Result == HttpResultType.Canceled) {
 					return;
 				} else {
-					FavoriteText.Text = "Favorited";
+					FavoriteText.Text = "Favorited".Language();
 					FavoriteIcon.Glyph = "\uEB52";
-					MainPage.CreateTip(this, result.StatusCode.ToString(), result.Helper, Symbol.Important, "OK");
+					MainPage.CreateTip(this, result.StatusCode.ToString(), result.Helper, Symbol.Important, "OK".Language());
 					FavoriteButton.IsChecked = true;
 					this.PostRef.is_favorited = true;
 				}
@@ -1098,7 +1101,7 @@ namespace E621Downloader.Pages {
 			string tag = (string)((Panel)sender).Tag;
 			MenuFlyout flyout = new();
 			MenuFlyoutItem item_copy = new() {
-				Text = "Copy Tag",
+				Text = "Copy Tag".Language(),
 				Icon = new FontIcon() { Glyph = "\uE8C8" },
 			};
 			item_copy.Click += (s, arg) => {
@@ -1113,7 +1116,7 @@ namespace E621Downloader.Pages {
 			};
 			flyout.Items.Add(item_copy);
 			MenuFlyoutItem item_concat = new() {
-				Text = "Concat Search",
+				Text = "Concat Search".Language(),
 				Icon = new FontIcon() { Glyph = "\uE109" },
 			};
 			item_concat.Click += (s, arg) => {
@@ -1122,7 +1125,7 @@ namespace E621Downloader.Pages {
 			};
 			flyout.Items.Add(item_concat);
 			MenuFlyoutItem item_overlay = new() {
-				Text = "Overlay Search",
+				Text = "Overlay Search".Language(),
 				Icon = new FontIcon() { Glyph = "\uE71E" },
 			};
 			item_overlay.Click += (s, arg) => {
@@ -1138,7 +1141,7 @@ namespace E621Downloader.Pages {
 
 		private async void PoolsListView_ItemClick(object sender, ItemClickEventArgs e) {
 			string id = (string)e.ClickedItem;
-			MainPage.CreateInstantDialog("Please Wait", $"Loading Pool ({id})");
+			MainPage.CreateInstantDialog("Please Wait".Language(), "Loading Pool".Language() + $" ({id})");
 			E621Pool pool = await E621Pool.GetAsync(id);
 			MainPage.HideInstantDialog();
 			MainPage.NavigateToPostsBrowser(pool);
@@ -1181,10 +1184,10 @@ namespace E621Downloader.Pages {
 			VoteType up = UpVoteButton.IsChecked == true ? VoteType.Up : VoteType.None;
 			if(Voted.ContainsKey(PostRef.id)) {
 				Voted[PostRef.id] = up;
-				Debug.WriteLine($"found and up id {PostRef.id}");
+				//Debug.WriteLine($"found and up id {PostRef.id}");
 			} else {
 				Voted.Add(PostRef.id, up);
-				Debug.WriteLine($"add and up id {PostRef.id}");
+				//Debug.WriteLine($"add and up id {PostRef.id}");
 			}
 		}
 
@@ -1207,10 +1210,10 @@ namespace E621Downloader.Pages {
 			VoteType down = DownVoteButton.IsChecked == true ? VoteType.Down : VoteType.None;
 			if(Voted.ContainsKey(PostRef.id)) {
 				Voted[PostRef.id] = down;
-				Debug.WriteLine($"found and down id {PostRef.id}");
+				//Debug.WriteLine($"found and down id {PostRef.id}");
 			} else {
 				Voted.Add(PostRef.id, down);
-				Debug.WriteLine($"add and down id {PostRef.id}");
+				//Debug.WriteLine($"add and down id {PostRef.id}");
 			}
 		}
 
@@ -1291,7 +1294,7 @@ namespace E621Downloader.Pages {
 			dialog = new ContentDialog() {
 				Title = title,
 				Content = dialog_content,
-				CloseButtonText = "Cancel",
+				CloseButtonText = "Cancel".Language(),
 			};
 			await dialog.ShowAsync();
 		}
@@ -1321,7 +1324,7 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			CancelLoading();
-			ShowLoadingDialog("Loading", "Getting Image", CancelLoading);
+			ShowLoadingDialog("Loading".Language(), "Getting Image".Language(), CancelLoading);
 			cts_SetAs = new CancellationTokenSource();
 			try {
 				StorageFile file = await GetImageFile(PostType, path, PostRef, cts_SetAs.Token);
@@ -1337,11 +1340,11 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			CancelLoading();
-			ShowLoadingDialog("Loading", "Getting Image", CancelLoading);
+			ShowLoadingDialog("Loading".Language(), "Getting Image".Language(), CancelLoading);
 			cts_SetAs = new CancellationTokenSource();
 			try {
 				StorageFile file = await GetImageFile(PostType, path, PostRef, cts_SetAs.Token);
-				UpdateDialogContent("Setting Lockscreen");
+				UpdateDialogContent("Setting Lock-screen".Language());
 				await SetLockScreenAsync(file);
 			} catch(OperationCanceledException) { }
 			HideLoadingDialog();

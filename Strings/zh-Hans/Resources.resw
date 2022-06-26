@@ -1,0 +1,723 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Library.Content" xml:space="preserve">
+    <value>本地</value>
+  </data>
+  <data name="Picture.Content" xml:space="preserve">
+    <value>图片</value>
+  </data>
+  <data name="Spot.Content" xml:space="preserve">
+    <value>发现</value>
+  </data>
+  <data name="Subscription.Content" xml:space="preserve">
+    <value>订阅</value>
+  </data>
+  <data name="SwitchFullScreen.ToolTipService.ToolTip" xml:space="preserve">
+    <value>切换全屏</value>
+  </data>
+  <data name="Home.Content" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="EnterFocusMode.ToolTipService.ToolTip" xml:space="preserve">
+    <value>进入专注模式</value>
+  </data>
+  <data name="Please Wait" xml:space="preserve">
+    <value>请稍后</value>
+  </data>
+  <data name="Checking Connection to" xml:space="preserve">
+    <value>正在检查连接</value>
+  </data>
+  <data name="Checking Internet" xml:space="preserve">
+    <value>正在检查网络</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="Getting Your Tag" xml:space="preserve">
+    <value>正在获得标签</value>
+  </data>
+  <data name="Go to downloads" xml:space="preserve">
+    <value>前往下载</value>
+  </data>
+  <data name="Got it" xml:space="preserve">
+    <value>知道了</value>
+  </data>
+  <data name="Initializing Local Stuff" xml:space="preserve">
+    <value>正在初始化本地</value>
+  </data>
+  <data name="No Internet Connection" xml:space="preserve">
+    <value>无网络连接</value>
+  </data>
+  <data name="Notification" xml:space="preserve">
+    <value>通知</value>
+  </data>
+  <data name="Retry" xml:space="preserve">
+    <value>重试</value>
+  </data>
+  <data name="Search Tags" xml:space="preserve">
+    <value>搜索标签</value>
+  </data>
+  <data name="Start in Off-line Mode" xml:space="preserve">
+    <value>以离线模式开始</value>
+  </data>
+  <data name="Successfully Start Downloading" xml:space="preserve">
+    <value>成功开始下载</value>
+  </data>
+  <data name="Here is Search Button.Text" xml:space="preserve">
+    <value>搜索按钮在这</value>
+  </data>
+  <data name="Here is Home Page.Text" xml:space="preserve">
+    <value>主页按钮在这</value>
+  </data>
+  <data name="Posts.Text" xml:space="preserve">
+    <value>条推文</value>
+  </data>
+  <data name="Serving.Text" xml:space="preserve">
+    <value>拥有</value>
+  </data>
+  <data name="HomeNavPaneTitle.PaneTitle" xml:space="preserve">
+    <value>标签</value>
+  </data>
+  <data name="Panel Width.Text" xml:space="preserve">
+    <value>面板宽度</value>
+  </data>
+  <data name="Resize Tabs Panel ToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>调整标签面板大小</value>
+  </data>
+  <data name="View Size 1.Text" xml:space="preserve">
+    <value>浏览尺寸</value>
+  </data>
+  <data name="View Size 2.ToolTipService.ToolTip" xml:space="preserve">
+    <value>浏览尺寸</value>
+  </data>
+  <data name="AllInBlackList.Text" xml:space="preserve">
+    <value>看起来所有的推文都在黑名单里</value>
+  </data>
+  <data name="CopyItem.Text" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="DownloadButton.Content" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="HomeSearchText.Text" xml:space="preserve">
+    <value>搜点你喜欢的东西吧</value>
+  </data>
+  <data name="InfoText.Text" xml:space="preserve">
+    <value>信息</value>
+  </data>
+  <data name="LoadingText.Text" xml:space="preserve">
+    <value>正在加载</value>
+  </data>
+  <data name="NothingHereText.Text" xml:space="preserve">
+    <value>这里啥都没有</value>
+  </data>
+  <data name="Posts Info.Text" xml:space="preserve">
+    <value>推文信息</value>
+  </data>
+  <data name="RefreshButton.Content" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="SelectToggleButton.Content" xml:space="preserve">
+    <value>多选</value>
+  </data>
+  <data name="AddFavoritesButton.Content" xml:space="preserve">
+    <value>收藏</value>
+  </data>
+  <data name="Favorites" xml:space="preserve">
+    <value>收藏</value>
+  </data>
+  <data name="( Default Tab )" xml:space="preserve">
+    <value>( 默认标签 )</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="Getting Ready" xml:space="preserve">
+    <value>正在准备好</value>
+  </data>
+  <data name="Loading Posts" xml:space="preserve">
+    <value>正在加载推图</value>
+  </data>
+  <data name="Loading Tags" xml:space="preserve">
+    <value>正在加载标签</value>
+  </data>
+  <data name="Loading Paginator" xml:space="preserve">
+    <value>正在加载页码</value>
+  </data>
+  <data name="Deleted Posts" xml:space="preserve">
+    <value>已删除的推图</value>
+  </data>
+  <data name="Blacklist" xml:space="preserve">
+    <value>黑名单</value>
+  </data>
+  <data name="Hot Tags (Top 20)" xml:space="preserve">
+    <value>热门标签（前20）</value>
+  </data>
+  <data name="File type" xml:space="preserve">
+    <value>文件类型</value>
+  </data>
+  <data name="Download Selection" xml:space="preserve">
+    <value>下载区块</value>
+  </data>
+  <data name="Do you want to download the selected" xml:space="preserve">
+    <value>是否要下载选定的推文</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="Handling Downloads" xml:space="preserve">
+    <value>正在处理下载</value>
+  </data>
+  <data name="Downloads Failed" xml:space="preserve">
+    <value>下载失败</value>
+  </data>
+  <data name="Do you want to download current pool" xml:space="preserve">
+    <value>是否要下载当前推文池</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>返回</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="Getting Page" xml:space="preserve">
+    <value>正在获得页面</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="Pool" xml:space="preserve">
+    <value>推文池</value>
+  </data>
+  <data name="UserFavorites.Text" xml:space="preserve">
+    <value>用户最爱</value>
+  </data>
+  <data name="UserVotedUp.Text" xml:space="preserve">
+    <value>用户点赞</value>
+  </data>
+  <data name="UserLogout.Text" xml:space="preserve">
+    <value>登出</value>
+  </data>
+  <data name="UserSignIn.Text" xml:space="preserve">
+    <value>登录</value>
+  </data>
+  <data name="UserUsername.Text" xml:space="preserve">
+    <value>用户名</value>
+  </data>
+  <data name="UserAPIKey.Text" xml:space="preserve">
+    <value>API密钥</value>
+  </data>
+  <data name="UserPasteToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>粘贴</value>
+  </data>
+  <data name="UserSubmit.Text" xml:space="preserve">
+    <value>提交</value>
+  </data>
+  <data name="UserMoreButton.Content" xml:space="preserve">
+    <value>更多</value>
+  </data>
+  <data name="UserHelpItem.Text" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="UserSignUpItem.Text" xml:space="preserve">
+    <value>注册</value>
+  </data>
+  <data name="UserResetPasswordItem.Text" xml:space="preserve">
+    <value>重置密码</value>
+  </data>
+  <data name="UserLoginReminderItem.Text" xml:space="preserve">
+    <value>登录提醒</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="You Need to enter your username and api key" xml:space="preserve">
+    <value>你需要输入你的用户名与API密码</value>
+  </data>
+  <data name="Checking Sign In Parameters" xml:space="preserve">
+    <value>正在检查登录参数</value>
+  </data>
+  <data name="Sign In Failed" xml:space="preserve">
+    <value>登陆失败</value>
+  </data>
+  <data name="Please Check that your username and your api_key copied from the website are correct" xml:space="preserve">
+    <value>请检查输入的用户名与从网页复制的API密钥正确</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="Could not Open Default Browser" xml:space="preserve">
+    <value>无法打开默认浏览器</value>
+  </data>
+  <data name="Step One.Text" xml:space="preserve">
+    <value>第一步：</value>
+  </data>
+  <data name="Go To.Text" xml:space="preserve">
+    <value>前往</value>
+  </data>
+  <data name="And Login.Text" xml:space="preserve">
+    <value>并且登录</value>
+  </data>
+  <data name="Step Two.Text" xml:space="preserve">
+    <value>第二步：</value>
+  </data>
+  <data name="Go to 'Manage API Access' And Copy The API Key.Text" xml:space="preserve">
+    <value>前往 'Manage API Access' 并且复制API密钥</value>
+  </data>
+  <data name="The E621 is performing maintenance on the site and its servers! Keep an eye on the.Text" xml:space="preserve">
+    <value>E621 正在对站点及其服务器进行维护！ 密切关注</value>
+  </data>
+  <data name="for more details.Text" xml:space="preserve">
+    <value>以获得更多细节</value>
+  </data>
+  <data name="Thanks for your patience.Text" xml:space="preserve">
+    <value>感谢你的耐心！</value>
+  </data>
+  <data name="Go to Posts Browser.Text" xml:space="preserve">
+    <value>前往推图浏览器</value>
+  </data>
+  <data name="No Post Selected.Text" xml:space="preserve">
+    <value>没有选择推图</value>
+  </data>
+  <data name="Go to Local Library.Text" xml:space="preserve">
+    <value>前往本地图库</value>
+  </data>
+  <data name="ToggleTagsButtonToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>切换标签面板</value>
+  </data>
+  <data name="LoadingToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>正在加载</value>
+  </data>
+  <data name="VoteUpToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>点赞</value>
+  </data>
+  <data name="VoteDownToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>踩</value>
+  </data>
+  <data name="FavoriteText.Text" xml:space="preserve">
+    <value>收藏</value>
+  </data>
+  <data name="DownloadText.Text" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="MoreActionContent.Content" xml:space="preserve">
+    <value>动作</value>
+  </data>
+  <data name="MoreInfoText.Text" xml:space="preserve">
+    <value>更多信息</value>
+  </data>
+  <data name="OpenInBrowserText.Text" xml:space="preserve">
+    <value>在浏览器中打开</value>
+  </data>
+  <data name="CopyIDText.Text" xml:space="preserve">
+    <value>复制ID</value>
+  </data>
+  <data name="CopyImageText.Text" xml:space="preserve">
+    <value>复制图片</value>
+  </data>
+  <data name="SetAsText.Text" xml:space="preserve">
+    <value>设置为</value>
+  </data>
+  <data name="SetAsWallpaperItemText.Text" xml:space="preserve">
+    <value>设置为壁纸</value>
+  </data>
+  <data name="SetAsLockScreenItemText.Text" xml:space="preserve">
+    <value>设置为锁屏</value>
+  </data>
+  <data name="DebugItemText.Text" xml:space="preserve">
+    <value>调试</value>
+  </data>
+  <data name="DescriptionHeader.Header" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="NoDescriptionText.Text" xml:space="preserve">
+    <value>无描述</value>
+  </data>
+  <data name="SourcesText.Text" xml:space="preserve">
+    <value>源</value>
+  </data>
+  <data name="CommentsHeader.Header" xml:space="preserve">
+    <value>评论</value>
+  </data>
+  <data name="LoadingCommentsText.Text" xml:space="preserve">
+    <value>正在加载评论</value>
+  </data>
+  <data name="NoCommentsYetText.Text" xml:space="preserve">
+    <value>还没有评论</value>
+  </data>
+  <data name="RelationsHeader.Header" xml:space="preserve">
+    <value>关系</value>
+  </data>
+  <data name="PoolsText.Text" xml:space="preserve">
+    <value>推图池</value>
+  </data>
+  <data name="NotFoundText.Text" xml:space="preserve">
+    <value>没找到</value>
+  </data>
+  <data name="ParentText.Text" xml:space="preserve">
+    <value>父</value>
+  </data>
+  <data name="SplitViewModeSwitch.OnContent" xml:space="preserve">
+    <value>覆盖</value>
+  </data>
+  <data name="SplitViewModeSwitch.OffContent" xml:space="preserve">
+    <value>并排</value>
+  </data>
+  <data name="Type SWF not supported Text.Text" xml:space="preserve">
+    <value>类型SWF不支持</value>
+  </data>
+  <data name="ChildrenText.Text" xml:space="preserve">
+    <value>子集</value>
+  </data>
+  <data name="# No Post" xml:space="preserve">
+    <value># 无推图</value>
+  </data>
+  <data name="Post" xml:space="preserve">
+    <value>推图</value>
+  </data>
+  <data name="has no valid file URL" xml:space="preserve">
+    <value>没有合法的文件URL</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="not supported" xml:space="preserve">
+    <value>不支持</value>
+  </data>
+  <data name="Local Post" xml:space="preserve">
+    <value>本地推图</value>
+  </data>
+  <data name="Load Failed" xml:space="preserve">
+    <value>加载失败</value>
+  </data>
+  <data name="Type SWF not supported" xml:space="preserve">
+    <value>类型SWF不支持</value>
+  </data>
+  <data name="Upvote" xml:space="preserve">
+    <value>点赞</value>
+  </data>
+  <data name="Downvote" xml:space="preserve">
+    <value>踩</value>
+  </data>
+  <data name="This Video Has 'Sound_Warning' Tag" xml:space="preserve">
+    <value>这个视频有 '声音警告' 标签</value>
+  </data>
+  <data name="This Video Has 'Sound' Tag" xml:space="preserve">
+    <value>这个视频有 '声音' 标签</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>评级</value>
+  </data>
+  <data name="No Rating" xml:space="preserve">
+    <value>没有评级</value>
+  </data>
+  <data name="Artist" xml:space="preserve">
+    <value>作者</value>
+  </data>
+  <data name="Copyright" xml:space="preserve">
+    <value>版权</value>
+  </data>
+  <data name="Species" xml:space="preserve">
+    <value>物种</value>
+  </data>
+  <data name="Character" xml:space="preserve">
+    <value>角色</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>通用</value>
+  </data>
+  <data name="Meta" xml:space="preserve">
+    <value>元数据</value>
+  </data>
+  <data name="Invalid" xml:space="preserve">
+    <value>无效</value>
+  </data>
+  <data name="Lore" xml:space="preserve">
+    <value>理论</value>
+  </data>
+  <data name="Favorited" xml:space="preserve">
+    <value>已是最爱</value>
+  </data>
+  <data name="Favorite" xml:space="preserve">
+    <value>最爱</value>
+  </data>
+  <data name="No Description" xml:space="preserve">
+    <value>无描述</value>
+  </data>
+  <data name="No Source" xml:space="preserve">
+    <value>无源</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>源</value>
+  </data>
+  <data name="Sources" xml:space="preserve">
+    <value>多个源</value>
+  </data>
+  <data name="Add To Blacklist" xml:space="preserve">
+    <value>加入黑名单</value>
+  </data>
+  <data name="Remove From Blacklist" xml:space="preserve">
+    <value>从黑名单移除</value>
+  </data>
+  <data name="Add To Follow List" xml:space="preserve">
+    <value>加入关注名单</value>
+  </data>
+  <data name="Remove From Follow List" xml:space="preserve">
+    <value>从关注名单移除</value>
+  </data>
+  <data name="Tag Information" xml:space="preserve">
+    <value>标签信息</value>
+  </data>
+  <data name="More Info" xml:space="preserve">
+    <value>更多信息</value>
+  </data>
+  <data name="Debug Info" xml:space="preserve">
+    <value>调试信息</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>等待中</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Copy Tag" xml:space="preserve">
+    <value>复制标签</value>
+  </data>
+  <data name="Concat Search" xml:space="preserve">
+    <value>附加搜索</value>
+  </data>
+  <data name="Overlay Search" xml:space="preserve">
+    <value>覆盖搜索</value>
+  </data>
+  <data name="Loading Pool" xml:space="preserve">
+    <value>正在加入推图池</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>正在加载</value>
+  </data>
+  <data name="Getting Image" xml:space="preserve">
+    <value>正在获得图片</value>
+  </data>
+  <data name="Setting Wallpaper" xml:space="preserve">
+    <value>正在设置成壁纸</value>
+  </data>
+  <data name="Setting Lock-screen" xml:space="preserve">
+    <value>正在设置成锁屏</value>
+  </data>
+  <data name="Local" xml:space="preserve">
+    <value>本地</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="DownloadContent.Content" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="RefreshText.Text" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="Your Following.Text" xml:space="preserve">
+    <value>你的关注</value>
+  </data>
+  <data name="SelectionText.Text" xml:space="preserve">
+    <value>选择</value>
+  </data>
+  <data name="DeleteText.Text" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="AddNewText.Text" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="SubscriptionListEmptyText.Text" xml:space="preserve">
+    <value>你没有任何的最爱列表
+去创建一个吧</value>
+  </data>
+  <data name="RenameText.Text" xml:space="preserve">
+    <value>重命名</value>
+  </data>
+  <data name="SortText.Text" xml:space="preserve">
+    <value>排序</value>
+  </data>
+  <data name="NameText.Text" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="TimeText.Text" xml:space="preserve">
+    <value>时间</value>
+  </data>
+  <data name="ManageText.Text" xml:space="preserve">
+    <value>管理</value>
+  </data>
+  <data name="Nothing is in this list Text.Text" xml:space="preserve">
+    <value>这个列表里啥都没有</value>
+  </data>
+  <data name="Following" xml:space="preserve">
+    <value>关注</value>
+  </data>
+  <data name="Add New Favorites List" xml:space="preserve">
+    <value>添加新关注列表</value>
+  </data>
+  <data name="Are you sure to delete" xml:space="preserve">
+    <value>你确定要删除</value>
+  </data>
+  <data name="favorites list(s)" xml:space="preserve">
+    <value>个最爱列表吗</value>
+  </data>
+  <data name="Are you sure to delete list" xml:space="preserve">
+    <value>你确定要删除列表</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>重命名</value>
+  </data>
+  <data name="Follow List" xml:space="preserve">
+    <value>关注列表</value>
+  </data>
+  <data name="Select Page Range Text.Text" xml:space="preserve">
+    <value>选择页面范围</value>
+  </data>
+  <data name="Select Current Page Text" xml:space="preserve">
+    <value>选择当前页</value>
+  </data>
+  <data name="Go To Settings" xml:space="preserve">
+    <value>前往设置</value>
+  </data>
+  <data name="Download Folder Not Found.&#xA;Would you like to get it set?" xml:space="preserve">
+    <value>未找到下载文件夹.
+请前往设置</value>
+  </data>
+  <data name="Getting Folder" xml:space="preserve">
+    <value>正在获得文件夹</value>
+  </data>
+  <data name="Creating Download File" xml:space="preserve">
+    <value>正在创建下载文件</value>
+  </data>
+  <data name="FiltersText.Text" xml:space="preserve">
+    <value>筛选</value>
+  </data>
+  <data name="TagsButtonContent.Content" xml:space="preserve">
+    <value>请求标签</value>
+  </data>
+  <data name="DefaultInputTagsText.Text" xml:space="preserve">
+    <value>所有的标签</value>
+  </data>
+  <data name="DefaultSelectedTagsText.Text" xml:space="preserve">
+    <value>包含所有的关注者</value>
+  </data>
+  <data name="DefaultTypesSwitchText.Text" xml:space="preserve">
+    <value>所有/排除/指定</value>
+  </data>
+  <data name="SpotDeclarationText.Text" xml:space="preserve">
+    <value>声明</value>
+  </data>
+  <data name="SpotDeclarationDetailText.Text" xml:space="preserve">
+    <value>此筛选技术使用 e621 标签系统，因此它只能是一个 'type:something' 或 '-type:something' 或没有限制。</value>
+  </data>
+  <data name="TypePNGButtonContent.Content" xml:space="preserve">
+    <value>类型: PNG</value>
+  </data>
+  <data name="TypeJPGButtonContent.Content" xml:space="preserve">
+    <value>类型: JPG</value>
+  </data>
+  <data name="TypeGIFButtonContent.Content" xml:space="preserve">
+    <value>类型: GIF</value>
+  </data>
+  <data name="TypeWEBMButtonContent.Content" xml:space="preserve">
+    <value>类型: WEBM</value>
+  </data>
+  <data name="TypeANIMButtonToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>类型SWF还未在UWP里支持
+(或者有谁来告诉我怎么做)</value>
+  </data>
+  <data name="TypeANIMButtonContent.Content" xml:space="preserve">
+    <value>类型: ANIM</value>
+  </data>
+  <data name="IncludeSafeCheckBoxContent.Content" xml:space="preserve">
+    <value>包含 Safe</value>
+  </data>
+  <data name="IncludeQuestionableCheckBoxContent.Content" xml:space="preserve">
+    <value>包含 Questionable</value>
+  </data>
+  <data name="IncludeExplicitCheckBoxContent.Content" xml:space="preserve">
+    <value>包含 Explicit</value>
+  </data>
+  <data name="DefaultAmountText.Text" xml:space="preserve">
+    <value>数量: 1</value>
+  </data>
+  <data name="ScoreLimitText.Text" xml:space="preserve">
+    <value>分数限制:</value>
+  </data>
+  <data name="FromText.Text" xml:space="preserve">
+    <value>从</value>
+  </data>
+  <data name="Totext.Text" xml:space="preserve">
+    <value>到</value>
+  </data>
+  <data name="GetRandomText.Text" xml:space="preserve">
+    <value>随机获得</value>
+  </data>
+  <data name="ClearText.Text" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="NothingFoundText" xml:space="preserve">
+    <value>啥都没找到</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>数量</value>
+  </data>
+  <data name="Select Your Tags" xml:space="preserve">
+    <value>选择你的标签</value>
+  </data>
+  <data name="All Tags" xml:space="preserve">
+    <value>所有的标签</value>
+  </data>
+  <data name="Input" xml:space="preserve">
+    <value>输入</value>
+  </data>
+  <data name="No Followings Selected" xml:space="preserve">
+    <value>没有选择关注者</value>
+  </data>
+  <data name="Parameters Error" xml:space="preserve">
+    <value>参数错误</value>
+  </data>
+  <data name="Please Select At Least One Rating" xml:space="preserve">
+    <value>请选择至少一个评级</value>
+  </data>
+  <data name="Minimum" xml:space="preserve">
+    <value>最小</value>
+  </data>
+  <data name="Maximum" xml:space="preserve">
+    <value>最大</value>
+  </data>
+  <data name="Score Limit" xml:space="preserve">
+    <value>分数限制</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>所有</value>
+  </data>
+  <data name="Exclude" xml:space="preserve">
+    <value>排除</value>
+  </data>
+  <data name="Specify" xml:space="preserve">
+    <value>指定</value>
+  </data>
+</root>

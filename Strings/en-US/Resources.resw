@@ -1,0 +1,900 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="AddFavoritesButton.Content" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+	<data name="AllInBlackList.Text" xml:space="preserve">
+    <value>It seems all of the posts are in blacklist.</value>
+  </data>
+	<data name="Checking Connection to" xml:space="preserve">
+    <value>Checking Connection to</value>
+  </data>
+	<data name="Checking Internet" xml:space="preserve">
+    <value>Checking Internet</value>
+  </data>
+	<data name="CopyItem.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+	<data name="DownloadContent.Content" xml:space="preserve">
+    <value>Download</value>
+  </data>
+	<data name="DownloadButton.Content" xml:space="preserve">
+    <value>Download</value>
+  </data>
+	<data name="EnterFocusMode.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Enter Focus Mode</value>
+  </data>
+	<data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+	<data name="Favorites" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+	<data name="Getting Your Tag" xml:space="preserve">
+    <value>Getting Your Tag</value>
+  </data>
+	<data name="Go to downloads" xml:space="preserve">
+    <value>Go to downloads</value>
+  </data>
+	<data name="Got it" xml:space="preserve">
+    <value>Got it</value>
+  </data>
+	<data name="Here is Home Page.Text" xml:space="preserve">
+    <value>Here is Home Page</value>
+  </data>
+	<data name="Here is Search Button.Text" xml:space="preserve">
+    <value>Here is Search Button</value>
+  </data>
+	<data name="Home.Content" xml:space="preserve">
+    <value>Home</value>
+  </data>
+	<data name="HomeNavPaneTitle.PaneTitle" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+	<data name="HomeSearchText.Text" xml:space="preserve">
+    <value>Search for something you like</value>
+  </data>
+	<data name="InfoText.Text" xml:space="preserve">
+    <value>Info</value>
+  </data>
+	<data name="Initializing Local Stuff" xml:space="preserve">
+    <value>Initializing Local Stuff</value>
+  </data>
+	<data name="Library.Content" xml:space="preserve">
+    <value>Library</value>
+  </data>
+	<data name="LoadingText.Text" xml:space="preserve">
+    <value>Loading</value>
+  </data>
+	<data name="No Internet Connection" xml:space="preserve">
+    <value>No Internet Connection</value>
+  </data>
+	<data name="NothingHereText.Text" xml:space="preserve">
+    <value>Nothing here.</value>
+  </data>
+	<data name="Notification" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+	<data name="Panel Width.Text" xml:space="preserve">
+    <value>Panel Width</value>
+  </data>
+	<data name="Picture.Content" xml:space="preserve">
+    <value>Picture</value>
+  </data>
+	<data name="Please Wait" xml:space="preserve">
+    <value>Please Wait</value>
+  </data>
+	<data name="Posts Info.Text" xml:space="preserve">
+    <value>Posts Info</value>
+  </data>
+	<data name="Posts.Text" xml:space="preserve">
+    <value>Posts</value>
+  </data>
+	<data name="RefreshButton.Content" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+	<data name="Resize Tabs Panel ToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Resize Tabs Panel</value>
+  </data>
+	<data name="Retry" xml:space="preserve">
+    <value>Retry</value>
+  </data>
+	<data name="Search Tags" xml:space="preserve">
+    <value>Search Tags</value>
+  </data>
+	<data name="SelectToggleButton.Content" xml:space="preserve">
+    <value>Select</value>
+  </data>
+	<data name="Serving.Text" xml:space="preserve">
+    <value>Serving</value>
+  </data>
+	<data name="Spot.Content" xml:space="preserve">
+    <value>Spot</value>
+  </data>
+	<data name="Start in Off-line Mode" xml:space="preserve">
+    <value>Start in Off-line Mode</value>
+  </data>
+	<data name="Subscription.Content" xml:space="preserve">
+    <value>Subscription</value>
+  </data>
+	<data name="Successfully Start Downloading" xml:space="preserve">
+    <value>Successfully Start Downloading</value>
+  </data>
+	<data name="SwitchFullScreen.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Switch FullScreen</value>
+  </data>
+	<data name="View Size 1.Text" xml:space="preserve">
+    <value>View Size</value>
+  </data>
+	<data name="View Size 2.ToolTipService.ToolTip" xml:space="preserve">
+    <value>View Size</value>
+  </data>
+	<data name="( Default Tab )" xml:space="preserve">
+    <value>( Default Tab )</value>
+  </data>
+	<data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+	<data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+	<data name="Getting Ready" xml:space="preserve">
+    <value>Getting Ready</value>
+  </data>
+	<data name="Loading Posts" xml:space="preserve">
+    <value>Loading Posts</value>
+  </data>
+	<data name="Loading Tags" xml:space="preserve">
+    <value>Loading Tags</value>
+  </data>
+	<data name="Loading Paginator" xml:space="preserve">
+    <value>Loading Paginator</value>
+  </data>
+	<data name="Deleted Posts" xml:space="preserve">
+    <value>Deleted Posts</value>
+  </data>
+	<data name="Blacklist" xml:space="preserve">
+    <value>Blacklist</value>
+  </data>
+	<data name="Hot Tags (Top 20)" xml:space="preserve">
+    <value>Hot Tags (Top 20)</value>
+  </data>
+	<data name="File type" xml:space="preserve">
+    <value>File type</value>
+  </data>
+	<data name="Download Selection" xml:space="preserve">
+    <value>Download Selection</value>
+  </data>
+	<data name="Do you want to download the selected" xml:space="preserve">
+    <value>Do you want to download the selected</value>
+  </data>
+	<data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+	<data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+	<data name="Handling Downloads" xml:space="preserve">
+    <value>Handling Downloads</value>
+  </data>
+	<data name="Downloads Failed" xml:space="preserve">
+    <value>Downloads Failed</value>
+  </data>
+	<data name="Do you want to download current pool" xml:space="preserve">
+    <value>Do you want to download current pool</value>
+  </data>
+	<data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+	<data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+	<data name="Getting Page" xml:space="preserve">
+    <value>Getting Page</value>
+  </data>
+	<data name="Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+	<data name="Pool" xml:space="preserve">
+    <value>Pool</value>
+  </data>
+	<data name="UserFavorites.Text" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+	<data name="UserVotedUp.Text" xml:space="preserve">
+    <value>Voted Up</value>
+  </data>
+	<data name="RefreshText.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+	<data name="UserLogout.Text" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+	<data name="UserSignIn.Text" xml:space="preserve">
+    <value>SIGN IN</value>
+  </data>
+	<data name="UserUsername.Text" xml:space="preserve">
+    <value>Username</value>
+  </data>
+	<data name="UserAPIKey.Text" xml:space="preserve">
+    <value>API Key</value>
+  </data>
+	<data name="UserPasteToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+	<data name="UserSubmit.Text" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+	<data name="UserMoreButton.Content" xml:space="preserve">
+    <value>More</value>
+  </data>
+	<data name="UserHelpItem.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+	<data name="UserSignUpItem.Text" xml:space="preserve">
+    <value>Sign Up</value>
+  </data>
+	<data name="UserResetPasswordItem.Text" xml:space="preserve">
+    <value>Reset Password</value>
+  </data>
+	<data name="UserLoginReminderItem.Text" xml:space="preserve">
+    <value>Login Reminder</value>
+  </data>
+	<data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+	<data name="You Need to enter your username and api key" xml:space="preserve">
+    <value>You Need to enter your username and api key</value>
+  </data>
+	<data name="Checking Sign In Parameters" xml:space="preserve">
+    <value>Checking Sign In Parameters</value>
+  </data>
+	<data name="Sign In Failed" xml:space="preserve">
+    <value>Sign In Failed</value>
+  </data>
+	<data name="Please Check that your username and your api_key copied from the website are correct" xml:space="preserve">
+    <value>Please Check that your username and your api_key copied from the website are correct</value>
+  </data>
+	<data name="Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+	<data name="Could not Open Default Browser" xml:space="preserve">
+    <value>Could not Open Default Browser</value>
+  </data>
+	<data name="Step One.Text" xml:space="preserve">
+    <value>Step One:</value>
+  </data>
+	<data name="Go To.Text" xml:space="preserve">
+    <value>Go To</value>
+  </data>
+	<data name="And Login.Text" xml:space="preserve">
+    <value>And Login</value>
+  </data>
+	<data name="Step Two.Text" xml:space="preserve">
+    <value>Step Two:</value>
+  </data>
+	<data name="Go to 'Manage API Access' And Copy The API Key.Text" xml:space="preserve">
+    <value>Go to 'Manage API Access' And Copy The API Key</value>
+  </data>
+	<data name="The E621 is performing maintenance on the site and its servers! Keep an eye on the.Text" xml:space="preserve">
+    <value>The E621 is performing maintenance on the site and its servers! Keep an eye on the</value>
+  </data>
+	<data name="for more details.Text" xml:space="preserve">
+    <value>for more details</value>
+  </data>
+	<data name="Thanks for your patience.Text" xml:space="preserve">
+    <value>Thanks for your patience!</value>
+  </data>
+	<data name="Go to Posts Browser.Text" xml:space="preserve">
+    <value>Go to Posts Browser</value>
+  </data>
+	<data name="No Post Selected.Text" xml:space="preserve">
+    <value>No Post Selected</value>
+  </data>
+	<data name="Go to Local Library.Text" xml:space="preserve">
+    <value>Go to Local Library</value>
+  </data>
+	<data name="ToggleTagsButtonToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Toggle Tags Pane</value>
+  </data>
+	<data name="LoadingToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Loading</value>
+  </data>
+	<data name="VoteUpToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Vote Up</value>
+  </data>
+	<data name="VoteDownToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Vote Down</value>
+  </data>
+	<data name="FavoriteText.Text" xml:space="preserve">
+    <value>Favorite</value>
+  </data>
+	<data name="DownloadText.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+	<data name="MoreActionContent.Content" xml:space="preserve">
+    <value>Action</value>
+  </data>
+	<data name="MoreInfoText.Text" xml:space="preserve">
+    <value>More Info</value>
+  </data>
+	<data name="OpenInBrowserText.Text" xml:space="preserve">
+    <value>Open In Browser</value>
+  </data>
+	<data name="CopyIDText.Text" xml:space="preserve">
+    <value>Copy ID</value>
+  </data>
+	<data name="CopyImageText.Text" xml:space="preserve">
+    <value>Copy Image</value>
+  </data>
+	<data name="SetAsText.Text" xml:space="preserve">
+    <value>Set As</value>
+  </data>
+	<data name="SetAsWallpaperItemText.Text" xml:space="preserve">
+    <value>Set As Wallpaper</value>
+  </data>
+	<data name="SetAsLockScreenItemText.Text" xml:space="preserve">
+    <value>Set As Lock-screen</value>
+  </data>
+	<data name="DebugItemText.Text" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+	<data name="DescriptionHeader.Header" xml:space="preserve">
+    <value>Description</value>
+  </data>
+	<data name="NoDescriptionText.Text" xml:space="preserve">
+    <value>No Description</value>
+  </data>
+	<data name="SourcesText.Text" xml:space="preserve">
+    <value>Source</value>
+  </data>
+	<data name="CommentsHeader.Header" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+	<data name="LoadingCommentsText.Text" xml:space="preserve">
+    <value>Loading Comments</value>
+  </data>
+	<data name="NoCommentsYetText.Text" xml:space="preserve">
+    <value>No Comments Yet</value>
+  </data>
+	<data name="RelationsHeader.Header" xml:space="preserve">
+    <value>Relations</value>
+  </data>
+	<data name="PoolsText.Text" xml:space="preserve">
+    <value>Pools</value>
+  </data>
+	<data name="NotFoundText.Text" xml:space="preserve">
+    <value>Not Found</value>
+  </data>
+	<data name="ParentText.Text" xml:space="preserve">
+    <value>Parent</value>
+  </data>
+	<data name="SplitViewModeSwitch.OnContent" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+	<data name="SplitViewModeSwitch.OffContent" xml:space="preserve">
+    <value>Inline</value>
+  </data>
+	<data name="Type SWF not supported Text.Text" xml:space="preserve">
+    <value>Type SWF not supported</value>
+  </data>
+	<data name="ChildrenText.Text" xml:space="preserve">
+    <value>Children</value>
+  </data>
+	<data name="# No Post" xml:space="preserve">
+    <value># No Post</value>
+  </data>
+	<data name="Post" xml:space="preserve">
+    <value>Post</value>
+  </data>
+	<data name="has no valid file URL" xml:space="preserve">
+    <value>has no valid file URL</value>
+  </data>
+	<data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+	<data name="not supported" xml:space="preserve">
+    <value>not supported</value>
+  </data>
+	<data name="Local Post" xml:space="preserve">
+    <value>Local Post</value>
+  </data>
+	<data name="Load Failed" xml:space="preserve">
+    <value>Load Failed</value>
+  </data>
+	<data name="Type SWF not supported" xml:space="preserve">
+    <value>Type SWF not supported</value>
+  </data>
+	<data name="Upvote" xml:space="preserve">
+    <value>Upvote</value>
+  </data>
+	<data name="Downvote" xml:space="preserve">
+    <value>Downvote</value>
+  </data>
+	<data name="This Video Has 'Sound_Warning' Tag" xml:space="preserve">
+    <value>This Video Has 'Sound_Warning' Tag</value>
+  </data>
+	<data name="This Video Has 'Sound' Tag" xml:space="preserve">
+    <value>This Video Has 'Sound' Tag</value>
+  </data>
+	<data name="Rating" xml:space="preserve">
+    <value>Rating</value>
+  </data>
+	<data name="No Rating" xml:space="preserve">
+    <value>No Rating</value>
+  </data>
+	<data name="Artist" xml:space="preserve">
+    <value>Artist</value>
+  </data>
+	<data name="Copyright" xml:space="preserve">
+    <value>Copyright</value>
+  </data>
+	<data name="Species" xml:space="preserve">
+    <value>Species</value>
+  </data>
+	<data name="Character" xml:space="preserve">
+    <value>Character</value>
+  </data>
+	<data name="General" xml:space="preserve">
+    <value>General</value>
+  </data>
+	<data name="Meta" xml:space="preserve">
+    <value>Meta</value>
+  </data>
+	<data name="Invalid" xml:space="preserve">
+    <value>Invalid</value>
+  </data>
+	<data name="Lore" xml:space="preserve">
+    <value>Lore</value>
+  </data>
+	<data name="Favorited" xml:space="preserve">
+    <value>Favorited</value>
+  </data>
+	<data name="Favorite" xml:space="preserve">
+    <value>Favorite</value>
+  </data>
+	<data name="No Description" xml:space="preserve">
+    <value>No Description</value>
+  </data>
+	<data name="No Source" xml:space="preserve">
+    <value>No Source</value>
+  </data>
+	<data name="Source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+	<data name="Sources" xml:space="preserve">
+    <value>Sources</value>
+  </data>
+	<data name="Add To Blacklist" xml:space="preserve">
+    <value>Add To Blacklist</value>
+  </data>
+	<data name="Remove From Blacklist" xml:space="preserve">
+    <value>Remove From Blacklist</value>
+  </data>
+	<data name="Add To Follow List" xml:space="preserve">
+    <value>Add To Follow List</value>
+  </data>
+	<data name="Remove From Follow List" xml:space="preserve">
+    <value>Remove From FollowList</value>
+  </data>
+	<data name="Tag Information" xml:space="preserve">
+    <value>Tag Information</value>
+  </data>
+	<data name="More Info" xml:space="preserve">
+    <value>More Info</value>
+  </data>
+	<data name="Debug Info" xml:space="preserve">
+    <value>Debug Info</value>
+  </data>
+	<data name="Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+	<data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+	<data name="Copy Tag" xml:space="preserve">
+    <value>Copy Tag</value>
+  </data>
+	<data name="Concat Search" xml:space="preserve">
+    <value>Concat Search</value>
+  </data>
+	<data name="Overlay Search" xml:space="preserve">
+    <value>Overlay Search</value>
+  </data>
+	<data name="Loading Pool" xml:space="preserve">
+    <value>Loading Pool</value>
+  </data>
+	<data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+	<data name="Loading" xml:space="preserve">
+    <value>Loading</value>
+  </data>
+	<data name="Getting Image" xml:space="preserve">
+    <value>Getting Image</value>
+  </data>
+	<data name="Setting Wallpaper" xml:space="preserve">
+    <value>Setting Wallpaper</value>
+  </data>
+	<data name="Setting Lock-screen" xml:space="preserve">
+    <value>Setting Lock-screen</value>
+  </data>
+	<data name="Local" xml:space="preserve">
+    <value>Local</value>
+  </data>
+	<data name="Download" xml:space="preserve">
+    <value>Download</value>
+  </data>
+	<data name="Your Following.Text" xml:space="preserve">
+    <value>Your Following</value>
+  </data>
+	<data name="SelectionText.Text" xml:space="preserve">
+    <value>Selection</value>
+  </data>
+	<data name="DeleteText.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+	<data name="AddNewText.Text" xml:space="preserve">
+    <value>Add New</value>
+  </data>
+	<data name="SubscriptionListEmptyText.Text" xml:space="preserve">
+    <value>You do not have any favorites List&#10;Go Create your own one</value>
+  </data>
+	<data name="RenameText.Text" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+	<data name="SortText.Text" xml:space="preserve">
+    <value>Sort</value>
+  </data>
+	<data name="NameText.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+	<data name="TimeText.Text" xml:space="preserve">
+    <value>Time</value>
+  </data>
+	<data name="ManageText.Text" xml:space="preserve">
+    <value>Manage</value>
+  </data>
+	<data name="Nothing is in this list Text.Text" xml:space="preserve">
+    <value>Nothing is in this list</value>
+  </data>
+	<data name="Following" xml:space="preserve">
+    <value>Following</value>
+  </data>
+	<data name="Add New Favorites List" xml:space="preserve">
+    <value>Add New Favorites List</value>
+  </data>
+	<data name="Are you sure to delete" xml:space="preserve">
+    <value>Are you sure to delete</value>
+  </data>
+	<data name="favorites list(s)" xml:space="preserve">
+    <value>favorites list(s)</value>
+  </data>
+	<data name="Are you sure to delete list" xml:space="preserve">
+    <value>Are you sure to delete list</value>
+  </data>
+	<data name="Rename" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+	<data name="Follow List" xml:space="preserve">
+    <value>Follow List</value>
+  </data>
+	<data name="Select Page Range Text.Text" xml:space="preserve">
+    <value>Select Page Range</value>
+  </data>
+	<data name="Select Current Page Text" xml:space="preserve">
+    <value>Select Current Page</value>
+  </data>
+	<data name="Download Folder Not Found.&#10;Would you like to get it set?" xml:space="preserve">
+    <value>Download Folder Not Found.&#10;Would you like to get it set?</value>
+  </data>
+	<data name="Go To Settings" xml:space="preserve">
+    <value>Go To Settings</value>
+  </data>
+	<data name="Getting Folder" xml:space="preserve">
+    <value>Getting Folder</value>
+  </data>
+	<data name="Creating Download File" xml:space="preserve">
+    <value>Creating Download File</value>
+  </data>
+	<data name="FiltersText.Text" xml:space="preserve">
+    <value>Filters</value>
+  </data>
+	<data name="TagsButtonContent.Content" xml:space="preserve">
+    <value>Requested Tags</value>
+  </data>
+	<data name="DefaultInputTagsText.Text" xml:space="preserve">
+    <value>All Tags</value>
+  </data>
+	<data name="DefaultSelectedTagsText.Text" xml:space="preserve">
+    <value>From All Followings</value>
+  </data>
+	<data name="DefaultTypesSwitchText.Text" xml:space="preserve">
+    <value>All/Exclude/Specify</value>
+  </data>
+	<data name="SpotDeclarationText.Text" xml:space="preserve">
+    <value>Declaration</value>
+  </data>
+	<data name="SpotDeclarationDetailText.Text" xml:space="preserve">
+    <value>This filtering technique uses the e621 tags system, so it can only be one 'type:something' or '-type:something' or no restriction.</value>
+  </data>
+	<data name="TypePNGButtonContent.Content" xml:space="preserve">
+    <value>Type: PNG</value>
+  </data>
+	<data name="TypeJPGButtonContent.Content" xml:space="preserve">
+    <value>Type: JPG</value>
+  </data>
+	<data name="TypeGIFButtonContent.Content" xml:space="preserve">
+    <value>Type: GIF</value>
+  </data>
+	<data name="TypeWEBMButtonContent.Content" xml:space="preserve">
+    <value>Type: WEBM</value>
+  </data>
+	<data name="TypeANIMButtonToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>SWF is not yet supported in UWP&#10;(Or anypony can tell me how to do it)</value>
+  </data>
+	<data name="TypeANIMButtonContent.Content" xml:space="preserve">
+    <value>Type: ANIM</value>
+  </data>
+	<data name="IncludeSafeCheckBoxContent.Content" xml:space="preserve">
+    <value>Include Safe</value>
+  </data>
+	<data name="IncludeQuestionableCheckBoxContent.Content" xml:space="preserve">
+    <value>Include Questionable</value>
+  </data>
+	<data name="IncludeExplicitCheckBoxContent.Content" xml:space="preserve">
+    <value>Include Explicit</value>
+  </data>
+	<data name="DefaultAmountText.Text" xml:space="preserve">
+    <value>Amount: 1</value>
+  </data>
+	<data name="ScoreLimitText.Text" xml:space="preserve">
+    <value>Score Limit:</value>
+  </data>
+	<data name="FromText.Text" xml:space="preserve">
+    <value>From</value>
+  </data>
+	<data name="Totext.Text" xml:space="preserve">
+    <value>To</value>
+  </data>
+	<data name="GetRandomText.Text" xml:space="preserve">
+    <value>Get Random</value>
+  </data>
+	<data name="ClearText.Text" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+	<data name="NothingFoundText" xml:space="preserve">
+    <value>Nothing Found</value>
+  </data>
+	<data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+	<data name="Select Your Tags" xml:space="preserve">
+    <value>Select Your Tags</value>
+  </data>
+	<data name="All Tags" xml:space="preserve">
+    <value>All Tags</value>
+  </data>
+	<data name="Input" xml:space="preserve">
+    <value>Input</value>
+  </data>
+	<data name="No Followings Selected" xml:space="preserve">
+    <value>No Followings Selected</value>
+  </data>
+	<data name="Parameters Error" xml:space="preserve">
+    <value>Parameters Error</value>
+  </data>
+	<data name="Please Select At Least One Rating" xml:space="preserve">
+    <value>Please Select At Least One Rating</value>
+  </data>
+	<data name="Minimum" xml:space="preserve">
+    <value>Minimum</value>
+  </data>
+	<data name="Maximum" xml:space="preserve">
+    <value>Maximum</value>
+  </data>
+	<data name="Score Limit" xml:space="preserve">
+    <value>Score Limit</value>
+  </data>
+	<data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+	<data name="Exclude" xml:space="preserve">
+    <value>Exclude</value>
+  </data>
+	<data name="Specify" xml:space="preserve">
+    <value>Specify</value>
+  </data>
+	<data name="SettingsText.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+	<data name="LISTINGText.Text" xml:space="preserve">
+    <value>LISTINGText</value>
+  </data>
+	<data name="BlacklistText.Text" xml:space="preserve">
+    <value>Blacklist</value>
+  </data>
+	<data name="FollowListText.Text" xml:space="preserve">
+    <value>Follow List</value>
+  </data>
+	<data name="LOCALText.Text" xml:space="preserve">
+    <value>LOCAL</value>
+  </data>
+	<data name="SelectDownloadPathContent.Content" xml:space="preserve">
+    <value>Select Download Path</value>
+  </data>
+	<data name="ClearDownloadPathContent.Content" xml:space="preserve">
+    <value>Clear Download Path</value>
+  </data>
+	<data name="NoPathSelectedText.Text" xml:space="preserve">
+    <value>No Path Selected</value>
+  </data>
+	<data name="GENERALText.Text" xml:space="preserve">
+    <value>GENERAL</value>
+  </data>
+	<data name="HistoryText.Text" xml:space="preserve">
+    <value>History</value>
+  </data>
+	<data name="ClearWallpapersCacheText.Text" xml:space="preserve">
+    <value>Clear Wallpapers Cache</value>
+  </data>
+	<data name="CustomHostToggle.OnContent" xml:space="preserve">
+    <value>Enable Custom Host</value>
+  </data>
+	<data name="CustomHostToggle.OffContent" xml:space="preserve">
+    <value>Enable Custom Host</value>
+  </data>
+	<data name="" xml:space="preserve">
+    <value></value>
+  </data>
+	<data name="" xml:space="preserve">
+    <value></value>
+  </data>
+	<data name="" xml:space="preserve">
+    <value></value>
+  </data>
+	<data name="" xml:space="preserve">
+    <value></value>
+  </data>
+	<data name="" xml:space="preserve">
+    <value></value>
+  </data>
+	<data name="" xml:space="preserve">
+    <value></value>
+  </data>
+	<data name="" xml:space="preserve">
+    <value></value>
+  </data>
+	<data name="" xml:space="preserve">
+    <value></value>
+  </data>
+	<data name="" xml:space="preserve">
+    <value></value>
+  </data>
+	<data name="" xml:space="preserve">
+    <value></value>
+  </data>
+	<data name="" xml:space="preserve">
+    <value></value>
+  </data>
+	<data name="" xml:space="preserve">
+    <value></value>
+  </data>
+</root>

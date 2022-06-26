@@ -19,7 +19,7 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<Grid Margin="5">
-			<TextBlock Text="Select Page Range" FontSize="16"/>
+			<TextBlock x:Uid="Select Page Range Text" Text="Select Page Range" FontSize="16"/>
 			<TextBlock x:Name="RangeText" Text="( 1 - 23 )" TextAlignment="Right" FontSize="16"/>
 		</Grid>
 		<Slider x:Name="FromSlider" Minimum="1" Grid.Row="1" Margin="5,0,5,0" IsThumbToolTipEnabled="False" ValueChanged="FromSlider_ValueChanged"/>
@@ -27,7 +27,7 @@
 		<Button x:Name="CurrentPageButton" Grid.Row="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="5,5,5,-5" Tapped="CurrentPageButton_Tapped">
 			<StackPanel Orientation="Horizontal">
 				<FontIcon Glyph="&#xE0E4;" VerticalAlignment="Center"/>
-				<TextBlock Text="Select Current Page" VerticalAlignment="Center" Margin="10,0,0,0"/>
+				<TextBlock x:Uid="Select Current Page Text" Text="Select Current Page" VerticalAlignment="Center" Margin="10,0,0,0"/>
 			</StackPanel>
 		</Button>
 	</Grid>

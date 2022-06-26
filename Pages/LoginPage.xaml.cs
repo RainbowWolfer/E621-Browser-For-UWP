@@ -29,8 +29,8 @@ using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {
 	public sealed partial class LoginPage: Page, IPage {
-		private Brush origin_brush_username;
-		private Brush origin_brush_apiKey;
+		private readonly Brush origin_brush_username;
+		private readonly Brush origin_brush_apiKey;
 		public LoginPage() {
 			this.InitializeComponent();
 			origin_brush_username = UsernameBox.BorderBrush;
@@ -50,10 +50,10 @@ namespace E621Downloader.Pages {
 				hasEmpty = true;
 			}
 			if(hasEmpty) {
-				MainPage.CreateTip(this, "Warning", "You Need to enter your username and api key", Symbol.Important, "Back", true, TeachingTipPlacementMode.Top);
+				MainPage.CreateTip(this, "Warning".Language(), "You Need to enter your username and api key".Language(), Symbol.Important, "Back", true, TeachingTipPlacementMode.Top);
 				return;
 			}
-			MainPage.CreateInstantDialog("Please Wait", "Checking Sign In Parameters");
+			MainPage.CreateInstantDialog("Please Wait".Language(), "Checking Sign In Parameters".Language());
 			HttpResult<string> result = await Data.ReadURLAsync($"https://{Data.GetHost()}/favorites.json", null, username, apiKey);
 			MainPage.HideInstantDialog();
 			if(result.Result == HttpResultType.Success) {
@@ -62,7 +62,7 @@ namespace E621Downloader.Pages {
 				MainPage.NavigateTo(PageTag.UserProfile);
 				MainPage.Instance.ChangeUser(username);
 			} else {
-				await MainPage.CreatePopupDialog("Sign In Failed", "Please Check that your username and your api_key copied from the website are correct");
+				await MainPage.CreatePopupDialog("Sign In Failed".Language(), "Please Check that your username and your api_key copied from the website are correct".Language());
 			}
 		}
 
@@ -83,28 +83,22 @@ namespace E621Downloader.Pages {
 
 		private async void HelpItem_Click(object sender, RoutedEventArgs e) {
 			await new ContentDialog() {
-				Title = "Help",
+				Title = "Help".Language(),
 				Content = new LoginHelpSection(),
-				PrimaryButtonText = "Back",
+				PrimaryButtonText = "Back".Language(),
 			}.ShowAsync();
 		}
 
 		private async void SignUpItem_Click(object sender, RoutedEventArgs e) {
-			if(!await Launcher.LaunchUriAsync(new Uri($"https://{Data.GetHost()}/users/new"))) {
-				await MainPage.CreatePopupDialog("Error", "Could not Open Default Browser");
-			}
+			await Methods.OpenBrowser($"https://{Data.GetHost()}/users/new");
 		}
 
 		private async void ResetPasswordItem_Click(object sender, RoutedEventArgs e) {
-			if(!await Launcher.LaunchUriAsync(new Uri($"https://{Data.GetHost()}/maintenance/user/password_reset/new"))) {
-				await MainPage.CreatePopupDialog("Error", "Could not Open Default Browser");
-			}
+			await Methods.OpenBrowser($"https://{Data.GetHost()}/maintenance/user/password_reset/new");
 		}
 
 		private async void LoginReminderItem_Click(object sender, RoutedEventArgs e) {
-			if(!await Launcher.LaunchUriAsync(new Uri($"https://{Data.GetHost()}/maintenance/user/login_reminder/new"))) {
-				await MainPage.CreatePopupDialog("Error", "Could not Open Default Browser");
-			}
+			await Methods.OpenBrowser($"https://{Data.GetHost()}/maintenance/user/login_reminder/new");
 		}
 
 		void IPage.UpdateNavigationItem() {
