@@ -23,7 +23,7 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<local:ListingToggleSplitButton x:Uid="FollowToggle" x:Name="FollowingToggle" OffIcon="&#xEB51;" OnIcon="&#xEB52;" OnText="Following" OffText="Follow" Margin="5" OnSettingsClick="FollowingToggle_OnSettingsClick"/>
-		<local:ListingToggleSplitButton x:Name="BlackToggle" Grid.Column="1" OffIcon="&#xEA39;" OnIcon="&#xEA39;" OnText="Blocking" OffText="Block" Margin="5" OnSettingsClick="BlackToggle_OnSettingsClick"/>
+		<local:ListingToggleSplitButton x:Uid="BlackToggle" x:Name="BlackToggle" Grid.Column="1" OffIcon="&#xEA39;" OnIcon="&#xEA39;" OnText="Blocking" OffText="Block" Margin="5" OnSettingsClick="BlackToggle_OnSettingsClick"/>
 
 		<ScrollViewer Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0" Height="300">
 			<StackPanel x:Name="ExpanderPanel">

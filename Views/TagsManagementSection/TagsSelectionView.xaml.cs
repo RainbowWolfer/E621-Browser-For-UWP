@@ -163,6 +163,8 @@ namespace E621Downloader.Views.TagsManagementSection {
 			AutoCompletesListView.Items.Clear();
 			CalculateCurrentTags();
 			itemClick = true;
+			FocusTextBox();
+			PutSelectionAtTheEnd();
 		}
 
 		private string word = null;
