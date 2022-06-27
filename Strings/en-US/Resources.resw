@@ -861,40 +861,157 @@
 	<data name="CustomHostToggle.OffContent" xml:space="preserve">
     <value>Enable Custom Host</value>
   </data>
-	<data name="" xml:space="preserve">
-    <value></value>
+	<data name="CycleListToggle.OnContent" xml:space="preserve">
+    <value>Enable Cycle List</value>
   </data>
-	<data name="" xml:space="preserve">
-    <value></value>
+	<data name="CycleListToggle.OffContent" xml:space="preserve">
+    <value>Enable Cycle List</value>
   </data>
-	<data name="" xml:space="preserve">
-    <value></value>
+	<data name="ConcatTagToggle.OnContent" xml:space="preserve">
+    <value>Concat Tags</value>
   </data>
-	<data name="" xml:space="preserve">
-    <value></value>
+	<data name="ConcatTagToggle.OffContent" xml:space="preserve">
+    <value>Overlay Tags</value>
   </data>
-	<data name="" xml:space="preserve">
-    <value></value>
+	<data name="MediaPlayToggle.OnContent" xml:space="preserve">
+    <value>Media Background Play</value>
   </data>
-	<data name="" xml:space="preserve">
-    <value></value>
+	<data name="MediaPlayToggle.OffContent" xml:space="preserve">
+    <value>Media Background Play</value>
   </data>
-	<data name="" xml:space="preserve">
-    <value></value>
+	<data name="MediaAutoPlayToggle.OnContent" xml:space="preserve">
+    <value>Media Auto Play</value>
   </data>
-	<data name="" xml:space="preserve">
-    <value></value>
+	<data name="MediaAutoPlayToggle.OffContent" xml:space="preserve">
+    <value>Media Auto Play</value>
   </data>
-	<data name="" xml:space="preserve">
-    <value></value>
+	<data name="HotKeysToggle.OnContent" xml:space="preserve">
+    <value>Enable Hot Keys</value>
   </data>
-	<data name="" xml:space="preserve">
-    <value></value>
+	<data name="HotKeysToggle.OffContent" xml:space="preserve">
+    <value>Enable Hot Keys</value>
   </data>
-	<data name="" xml:space="preserve">
-    <value></value>
+	<data name="RandomTagMaxCountText.Text" xml:space="preserve">
+    <value>Random Tag Max Count</value>
   </data>
-	<data name="" xml:space="preserve">
-    <value></value>
+	<data name="HotKeysText.Text" xml:space="preserve">
+    <value>Hot Keys</value>
+  </data>
+	<data name="ThemeText.Text" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+	<data name="LightThemeButtonContent.Content" xml:space="preserve">
+    <value>Light</value>
+  </data>
+	<data name="DarkThemeButtonContent.Content" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+	<data name="SystemThemeButtonContent.Content" xml:space="preserve">
+    <value>System</value>
+  </data>
+	<data name="ThemeChangedHintText.Text" xml:space="preserve">
+    <value>* This change will be applied after &#10;restarting the application</value>
+  </data>
+	<data name="PinToTaskbarText.Text" xml:space="preserve">
+    <value>Pin To Taskbar</value>
+  </data>
+	<data name="ABOUTText.Text" xml:space="preserve">
+    <value>ABOUT</value>
+  </data>
+	<data name="DevelopByText.Text" xml:space="preserve">
+    <value>Develop By</value>
+  </data>
+	<data name="ServiceFromText.Text" xml:space="preserve">
+    <value>Service From</value>
+  </data>
+	<data name="VersionText.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
+	<data name="ProjectSourceText.Text" xml:space="preserve">
+    <value>Project Source</value>
+  </data>
+	<data name="ContactMeLine1.Text" xml:space="preserve">
+    <value>( Found a bug ? )</value>
+  </data>
+	<data name="ContactMeLine2.Text" xml:space="preserve">
+    <value>( Want something new ? )</value>
+  </data>
+	<data name="ContactMeLine3.Text" xml:space="preserve">
+    <value>Contact Me !</value>
+  </data>
+	<data name="EmailText.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+	<data name="AppSettingsFolderText.Text" xml:space="preserve">
+    <value>App Settings Folder</value>
+  </data>
+	<data name="FontUsedText.Text" xml:space="preserve">
+    <value>Font Used (Including Icons)</value>
+  </data>
+	<data name="NEWText.Text" xml:space="preserve">
+    <value>NEW</value>
+  </data>
+	<data name="WhatsNewText.Text" xml:space="preserve">
+    <value>What's new in this version</value>
+  </data>
+	<data name="KnownIssueHeader.Header" xml:space="preserve">
+    <value>Known Issue</value>
+  </data>
+	<data name="RateAppContent.Content" xml:space="preserve">
+    <value>Please consider giving this app a review</value>
+  </data>
+	<data name="V1140L1.Text" xml:space="preserve">
+    <value>- Some new hot-keys</value>
+  </data>
+	<data name="V1140L2.Text" xml:space="preserve">
+    <value>- New Focus Mode</value>
+  </data>
+	<data name="V1140L3.Text" xml:space="preserve">
+    <value>- Search Dialog Rework</value>
+  </data>
+	<data name="V1140L4.Text" xml:space="preserve">
+    <value>- Some bugs fix</value>
+  </data>
+	<data name="V1140L5.Text" xml:space="preserve">
+    <value>- Minor changes</value>
+  </data>
+	<data name="V1130L1.Text" xml:space="preserve">
+    <value>- Fix a crash bug when the user logs in to the profile page while having no avatar</value>
+  </data>
+	<data name="V1130L2.Text" xml:space="preserve">
+    <value>- Fix some icons missing in Windows 10</value>
+  </data>
+	<data name="V1130L3.Text" xml:space="preserve">
+    <value>- New history panel</value>
+  </data>
+	<data name="V1130L4.Text" xml:space="preserve">
+    <value>- Minor fixes</value>
+  </data>
+	<data name="V1120L1.Text" xml:space="preserve">
+    <value>- New follow &amp; black system</value>
+  </data>
+	<data name="V1120L2.Text" xml:space="preserve">
+    <value>- Cloud sync blacklist tags</value>
+  </data>
+	<data name="V1120L3.Text" xml:space="preserve">
+    <value>- Library page rework</value>
+  </data>
+	<data name="V1120L4.Text" xml:space="preserve">
+    <value>- Spot page improvements</value>
+  </data>
+	<data name="V1120L5.Text" xml:space="preserve">
+    <value>- Loading shows progress</value>
+  </data>
+	<data name="V1120L6.Text" xml:space="preserve">
+    <value>- UI design improvements</value>
+  </data>
+	<data name="V1120L7.Text" xml:space="preserve">
+    <value>- New Posts Browser Page</value>
+  </data>
+	<data name="V1120L8.Text" xml:space="preserve">
+    <value>- UI Optimized for Windows 11</value>
+  </data>
+	<data name="KnownIssueL1.Text" xml:space="preserve">
+    <value>- The listviews of UWP display differently in Win11 and Win10, so the app in Win10 will experience row width not matching its parent</value>
   </data>
 </root>

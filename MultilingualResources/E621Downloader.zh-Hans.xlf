@@ -955,47 +955,261 @@ Would you like to get it set?</source>
         </trans-unit>
         <trans-unit id="SettingsText.Text" translate="yes" xml:space="preserve">
           <source>Settings</source>
-          <target state="new">Settings</target>
+          <target state="final">设置</target>
         </trans-unit>
         <trans-unit id="LISTINGText.Text" translate="yes" xml:space="preserve">
           <source>LISTINGText</source>
-          <target state="new">LISTINGText</target>
+          <target state="final">列表</target>
         </trans-unit>
         <trans-unit id="BlacklistText.Text" translate="yes" xml:space="preserve">
           <source>Blacklist</source>
-          <target state="new">Blacklist</target>
+          <target state="final">黑名单</target>
         </trans-unit>
         <trans-unit id="FollowListText.Text" translate="yes" xml:space="preserve">
           <source>Follow List</source>
-          <target state="new">Follow List</target>
+          <target state="final">关注名单</target>
         </trans-unit>
         <trans-unit id="LOCALText.Text" translate="yes" xml:space="preserve">
           <source>LOCAL</source>
-          <target state="new">LOCAL</target>
+          <target state="final">本地</target>
         </trans-unit>
         <trans-unit id="SelectDownloadPathContent.Content" translate="yes" xml:space="preserve">
           <source>Select Download Path</source>
-          <target state="new">Select Download Path</target>
+          <target state="final">选择下载路径</target>
         </trans-unit>
         <trans-unit id="ClearDownloadPathContent.Content" translate="yes" xml:space="preserve">
           <source>Clear Download Path</source>
-          <target state="new">Clear Download Path</target>
+          <target state="final">清空下载路径</target>
         </trans-unit>
         <trans-unit id="NoPathSelectedText.Text" translate="yes" xml:space="preserve">
           <source>No Path Selected</source>
-          <target state="new">No Path Selected</target>
+          <target state="final">没有选择路径</target>
         </trans-unit>
         <trans-unit id="GENERALText.Text" translate="yes" xml:space="preserve">
           <source>GENERAL</source>
-          <target state="new">GENERAL</target>
+          <target state="final">通用</target>
         </trans-unit>
         <trans-unit id="HistoryText.Text" translate="yes" xml:space="preserve">
           <source>History</source>
-          <target state="new">History</target>
+          <target state="final">历史</target>
         </trans-unit>
         <trans-unit id="ClearWallpapersCacheText.Text" translate="yes" xml:space="preserve">
           <source>Clear Wallpapers Cache</source>
-          <target state="new">Clear Wallpapers Cache</target>
+          <target state="final">清空壁纸缓存</target>
+        </trans-unit>
+        <trans-unit id="CustomHostToggle.OnContent" translate="yes" xml:space="preserve">
+          <source>Enable Custom Host</source>
+          <target state="final">开启自定义域名</target>
+        </trans-unit>
+        <trans-unit id="CustomHostToggle.OffContent" translate="yes" xml:space="preserve">
+          <source>Enable Custom Host</source>
+          <target state="final">开启自定义域名</target>
+        </trans-unit>
+        <trans-unit id="CycleListToggle.OnContent" translate="yes" xml:space="preserve">
+          <source>Enable Cycle List</source>
+          <target state="final">开启循环浏览</target>
+        </trans-unit>
+        <trans-unit id="CycleListToggle.OffContent" translate="yes" xml:space="preserve">
+          <source>Enable Cycle List</source>
+          <target state="final">开启循环浏览</target>
+        </trans-unit>
+        <trans-unit id="ConcatTagToggle.OnContent" translate="yes" xml:space="preserve">
+          <source>Concat Tags</source>
+          <target state="final">附加标签</target>
+        </trans-unit>
+        <trans-unit id="ConcatTagToggle.OffContent" translate="yes" xml:space="preserve">
+          <source>Overlay Tags</source>
+          <target state="final">覆盖标签</target>
+        </trans-unit>
+        <trans-unit id="MediaPlayToggle.OnContent" translate="yes" xml:space="preserve">
+          <source>Media Background Play</source>
+          <target state="final">视频后台播放</target>
+        </trans-unit>
+        <trans-unit id="MediaPlayToggle.OffContent" translate="yes" xml:space="preserve">
+          <source>Media Background Play</source>
+          <target state="final">视频后台播放</target>
+        </trans-unit>
+        <trans-unit id="MediaAutoPlayToggle.OnContent" translate="yes" xml:space="preserve">
+          <source>Media Auto Play</source>
+          <target state="final">视频自动播放</target>
+        </trans-unit>
+        <trans-unit id="MediaAutoPlayToggle.OffContent" translate="yes" xml:space="preserve">
+          <source>Media Auto Play</source>
+          <target state="final">视频自动播放</target>
+        </trans-unit>
+        <trans-unit id="HotKeysToggle.OnContent" translate="yes" xml:space="preserve">
+          <source>Enable Hot Keys</source>
+          <target state="final">开启热键</target>
+        </trans-unit>
+        <trans-unit id="HotKeysToggle.OffContent" translate="yes" xml:space="preserve">
+          <source>Enable Hot Keys</source>
+          <target state="final">开启热键</target>
+        </trans-unit>
+        <trans-unit id="RandomTagMaxCountText.Text" translate="yes" xml:space="preserve">
+          <source>Random Tag Max Count</source>
+          <target state="final">随机标签最大数量</target>
+        </trans-unit>
+        <trans-unit id="HotKeysText.Text" translate="yes" xml:space="preserve">
+          <source>Hot Keys</source>
+          <target state="final">热键</target>
+        </trans-unit>
+        <trans-unit id="ThemeText.Text" translate="yes" xml:space="preserve">
+          <source>Theme</source>
+          <target state="final">主题</target>
+        </trans-unit>
+        <trans-unit id="LightThemeButtonContent.Content" translate="yes" xml:space="preserve">
+          <source>Light</source>
+          <target state="final">亮主题</target>
+        </trans-unit>
+        <trans-unit id="DarkThemeButtonContent.Content" translate="yes" xml:space="preserve">
+          <source>Dark</source>
+          <target state="final">暗主题</target>
+        </trans-unit>
+        <trans-unit id="SystemThemeButtonContent.Content" translate="yes" xml:space="preserve">
+          <source>System</source>
+          <target state="final">跟随系统</target>
+        </trans-unit>
+        <trans-unit id="ThemeChangedHintText.Text" translate="yes" xml:space="preserve">
+          <source>* This change will be applied after 
+restarting the application</source>
+          <target state="final">* 此项更改只会在重启软
+件后生效</target>
+        </trans-unit>
+        <trans-unit id="PinToTaskbarText.Text" translate="yes" xml:space="preserve">
+          <source>Pin To Taskbar</source>
+          <target state="final">固定到任务栏</target>
+        </trans-unit>
+        <trans-unit id="ABOUTText.Text" translate="yes" xml:space="preserve">
+          <source>ABOUT</source>
+          <target state="final">关于</target>
+        </trans-unit>
+        <trans-unit id="DevelopByText.Text" translate="yes" xml:space="preserve">
+          <source>Develop By</source>
+          <target state="final">开发者</target>
+        </trans-unit>
+        <trans-unit id="ServiceFromText.Text" translate="yes" xml:space="preserve">
+          <source>Service From</source>
+          <target state="final">服务来源</target>
+        </trans-unit>
+        <trans-unit id="VersionText.Text" translate="yes" xml:space="preserve">
+          <source>Version</source>
+          <target state="final">版本</target>
+        </trans-unit>
+        <trans-unit id="ProjectSourceText.Text" translate="yes" xml:space="preserve">
+          <source>Project Source</source>
+          <target state="final">项目源代码</target>
+        </trans-unit>
+        <trans-unit id="ContactMeLine1.Text" translate="yes" xml:space="preserve">
+          <source>( Found a bug ? )</source>
+          <target state="final">( 找到了BUG？ )</target>
+        </trans-unit>
+        <trans-unit id="ContactMeLine2.Text" translate="yes" xml:space="preserve">
+          <source>( Want something new ? )</source>
+          <target state="final">( 想要新功能？ )</target>
+        </trans-unit>
+        <trans-unit id="ContactMeLine3.Text" translate="yes" xml:space="preserve">
+          <source>Contact Me !</source>
+          <target state="final">联系我！</target>
+        </trans-unit>
+        <trans-unit id="EmailText.Text" translate="yes" xml:space="preserve">
+          <source>Email</source>
+          <target state="final">发送邮件</target>
+        </trans-unit>
+        <trans-unit id="AppSettingsFolderText.Text" translate="yes" xml:space="preserve">
+          <source>App Settings Folder</source>
+          <target state="final">软件设置文件夹</target>
+        </trans-unit>
+        <trans-unit id="FontUsedText.Text" translate="yes" xml:space="preserve">
+          <source>Font Used (Including Icons)</source>
+          <target state="final">所使用字体（包含图标）</target>
+        </trans-unit>
+        <trans-unit id="NEWText.Text" translate="yes" xml:space="preserve">
+          <source>NEW</source>
+          <target state="final">新</target>
+        </trans-unit>
+        <trans-unit id="WhatsNewText.Text" translate="yes" xml:space="preserve">
+          <source>What's new in this version</source>
+          <target state="final">这个版本里有啥新东西</target>
+        </trans-unit>
+        <trans-unit id="KnownIssueHeader.Header" translate="yes" xml:space="preserve">
+          <source>Known Issue</source>
+          <target state="final">已知问题</target>
+        </trans-unit>
+        <trans-unit id="RateAppContent.Content" translate="yes" xml:space="preserve">
+          <source>Please consider giving this app a review</source>
+          <target state="final">请考虑给这个软件一个评分</target>
+        </trans-unit>
+        <trans-unit id="V1140L1.Text" translate="yes" xml:space="preserve">
+          <source>- Some new hot-keys</source>
+          <target state="final">- 新增一些热键</target>
+        </trans-unit>
+        <trans-unit id="V1140L2.Text" translate="yes" xml:space="preserve">
+          <source>- New Focus Mode</source>
+          <target state="final">- 新专注模式</target>
+        </trans-unit>
+        <trans-unit id="V1140L3.Text" translate="yes" xml:space="preserve">
+          <source>- Search Dialog Rework</source>
+          <target state="final">- 搜索弹窗重做</target>
+        </trans-unit>
+        <trans-unit id="V1140L4.Text" translate="yes" xml:space="preserve">
+          <source>- Some bugs fix</source>
+          <target state="final">- 一些BUG修复</target>
+        </trans-unit>
+        <trans-unit id="V1140L5.Text" translate="yes" xml:space="preserve">
+          <source>- Minor changes</source>
+          <target state="final">- 微小改动</target>
+        </trans-unit>
+        <trans-unit id="V1130L1.Text" translate="yes" xml:space="preserve">
+          <source>- Fix a crash bug when the user logs in to the profile page while having no avatar</source>
+          <target state="final">- 修复用户在没有头像的情况下登录个人资料页面时崩溃的错误</target>
+        </trans-unit>
+        <trans-unit id="V1130L2.Text" translate="yes" xml:space="preserve">
+          <source>- Fix some icons missing in Windows 10</source>
+          <target state="final">- 修复 Windows 10 中缺少的一些图标</target>
+        </trans-unit>
+        <trans-unit id="V1130L3.Text" translate="yes" xml:space="preserve">
+          <source>- New history panel</source>
+          <target state="final">- 新历史面板</target>
+        </trans-unit>
+        <trans-unit id="V1130L4.Text" translate="yes" xml:space="preserve">
+          <source>- Minor fixes</source>
+          <target state="final">- 微小修复</target>
+        </trans-unit>
+        <trans-unit id="V1120L1.Text" translate="yes" xml:space="preserve">
+          <source>- New follow &amp; black system</source>
+          <target state="final">- 新关注与黑名单系统</target>
+        </trans-unit>
+        <trans-unit id="V1120L2.Text" translate="yes" xml:space="preserve">
+          <source>- Cloud sync blacklist tags</source>
+          <target state="final">- 云同步黑名单标签</target>
+        </trans-unit>
+        <trans-unit id="V1120L3.Text" translate="yes" xml:space="preserve">
+          <source>- Library page rework</source>
+          <target state="final">- 本地库页面重做</target>
+        </trans-unit>
+        <trans-unit id="V1120L4.Text" translate="yes" xml:space="preserve">
+          <source>- Spot page improvements</source>
+          <target state="final">- 发现页面改进</target>
+        </trans-unit>
+        <trans-unit id="V1120L5.Text" translate="yes" xml:space="preserve">
+          <source>- Loading shows progress</source>
+          <target state="final">- 加载显示进度</target>
+        </trans-unit>
+        <trans-unit id="V1120L6.Text" translate="yes" xml:space="preserve">
+          <source>- UI design improvements</source>
+          <target state="final">- 页面设计改进</target>
+        </trans-unit>
+        <trans-unit id="V1120L7.Text" translate="yes" xml:space="preserve">
+          <source>- New Posts Browser Page</source>
+          <target state="final">- 新推图浏览页面</target>
+        </trans-unit>
+        <trans-unit id="V1120L8.Text" translate="yes" xml:space="preserve">
+          <source>- UI Optimized for Windows 11</source>
+          <target state="final">- 针对 Windows 11 优化的页面设计</target>
+        </trans-unit>
+        <trans-unit id="KnownIssueL1.Text" translate="yes" xml:space="preserve">
+          <source>- The listviews of UWP display differently in Win11 and Win10, so the app in Win10 will experience row width not matching its parent</source>
+          <target state="final">- UWP的listviews在Win11和Win10中显示不同，所以Win10中的应用会出现行宽不匹配其父级的问题</target>
         </trans-unit>
       </group>
     </body>

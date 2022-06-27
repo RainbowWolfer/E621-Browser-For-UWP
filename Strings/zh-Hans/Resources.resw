@@ -720,4 +720,197 @@
   <data name="Specify" xml:space="preserve">
     <value>指定</value>
   </data>
+  <data name="SettingsText.Text" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="LISTINGText.Text" xml:space="preserve">
+    <value>列表</value>
+  </data>
+  <data name="BlacklistText.Text" xml:space="preserve">
+    <value>黑名单</value>
+  </data>
+  <data name="FollowListText.Text" xml:space="preserve">
+    <value>关注名单</value>
+  </data>
+  <data name="LOCALText.Text" xml:space="preserve">
+    <value>本地</value>
+  </data>
+  <data name="SelectDownloadPathContent.Content" xml:space="preserve">
+    <value>选择下载路径</value>
+  </data>
+  <data name="ClearDownloadPathContent.Content" xml:space="preserve">
+    <value>清空下载路径</value>
+  </data>
+  <data name="NoPathSelectedText.Text" xml:space="preserve">
+    <value>没有选择路径</value>
+  </data>
+  <data name="GENERALText.Text" xml:space="preserve">
+    <value>通用</value>
+  </data>
+  <data name="HistoryText.Text" xml:space="preserve">
+    <value>历史</value>
+  </data>
+  <data name="ClearWallpapersCacheText.Text" xml:space="preserve">
+    <value>清空壁纸缓存</value>
+  </data>
+  <data name="CustomHostToggle.OnContent" xml:space="preserve">
+    <value>开启自定义域名</value>
+  </data>
+  <data name="CustomHostToggle.OffContent" xml:space="preserve">
+    <value>开启自定义域名</value>
+  </data>
+  <data name="CycleListToggle.OnContent" xml:space="preserve">
+    <value>开启循环浏览</value>
+  </data>
+  <data name="CycleListToggle.OffContent" xml:space="preserve">
+    <value>开启循环浏览</value>
+  </data>
+  <data name="ConcatTagToggle.OnContent" xml:space="preserve">
+    <value>附加标签</value>
+  </data>
+  <data name="ConcatTagToggle.OffContent" xml:space="preserve">
+    <value>覆盖标签</value>
+  </data>
+  <data name="MediaPlayToggle.OnContent" xml:space="preserve">
+    <value>视频后台播放</value>
+  </data>
+  <data name="MediaPlayToggle.OffContent" xml:space="preserve">
+    <value>视频后台播放</value>
+  </data>
+  <data name="MediaAutoPlayToggle.OnContent" xml:space="preserve">
+    <value>视频自动播放</value>
+  </data>
+  <data name="MediaAutoPlayToggle.OffContent" xml:space="preserve">
+    <value>视频自动播放</value>
+  </data>
+  <data name="HotKeysToggle.OnContent" xml:space="preserve">
+    <value>开启热键</value>
+  </data>
+  <data name="HotKeysToggle.OffContent" xml:space="preserve">
+    <value>开启热键</value>
+  </data>
+  <data name="RandomTagMaxCountText.Text" xml:space="preserve">
+    <value>随机标签最大数量</value>
+  </data>
+  <data name="HotKeysText.Text" xml:space="preserve">
+    <value>热键</value>
+  </data>
+  <data name="ThemeText.Text" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="LightThemeButtonContent.Content" xml:space="preserve">
+    <value>亮主题</value>
+  </data>
+  <data name="DarkThemeButtonContent.Content" xml:space="preserve">
+    <value>暗主题</value>
+  </data>
+  <data name="SystemThemeButtonContent.Content" xml:space="preserve">
+    <value>跟随系统</value>
+  </data>
+  <data name="ThemeChangedHintText.Text" xml:space="preserve">
+    <value>* 此项更改只会在重启软
+件后生效</value>
+  </data>
+  <data name="PinToTaskbarText.Text" xml:space="preserve">
+    <value>固定到任务栏</value>
+  </data>
+  <data name="ABOUTText.Text" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="DevelopByText.Text" xml:space="preserve">
+    <value>开发者</value>
+  </data>
+  <data name="ServiceFromText.Text" xml:space="preserve">
+    <value>服务来源</value>
+  </data>
+  <data name="VersionText.Text" xml:space="preserve">
+    <value>版本</value>
+  </data>
+  <data name="ProjectSourceText.Text" xml:space="preserve">
+    <value>项目源代码</value>
+  </data>
+  <data name="ContactMeLine1.Text" xml:space="preserve">
+    <value>( 找到了BUG？ )</value>
+  </data>
+  <data name="ContactMeLine2.Text" xml:space="preserve">
+    <value>( 想要新功能？ )</value>
+  </data>
+  <data name="ContactMeLine3.Text" xml:space="preserve">
+    <value>联系我！</value>
+  </data>
+  <data name="EmailText.Text" xml:space="preserve">
+    <value>发送邮件</value>
+  </data>
+  <data name="AppSettingsFolderText.Text" xml:space="preserve">
+    <value>软件设置文件夹</value>
+  </data>
+  <data name="FontUsedText.Text" xml:space="preserve">
+    <value>所使用字体（包含图标）</value>
+  </data>
+  <data name="NEWText.Text" xml:space="preserve">
+    <value>新</value>
+  </data>
+  <data name="WhatsNewText.Text" xml:space="preserve">
+    <value>这个版本里有啥新东西</value>
+  </data>
+  <data name="KnownIssueHeader.Header" xml:space="preserve">
+    <value>已知问题</value>
+  </data>
+  <data name="RateAppContent.Content" xml:space="preserve">
+    <value>请考虑给这个软件一个评分</value>
+  </data>
+  <data name="V1140L1.Text" xml:space="preserve">
+    <value>- 新增一些热键</value>
+  </data>
+  <data name="V1140L2.Text" xml:space="preserve">
+    <value>- 新专注模式</value>
+  </data>
+  <data name="V1140L3.Text" xml:space="preserve">
+    <value>- 搜索弹窗重做</value>
+  </data>
+  <data name="V1140L4.Text" xml:space="preserve">
+    <value>- 一些BUG修复</value>
+  </data>
+  <data name="V1140L5.Text" xml:space="preserve">
+    <value>- 微小改动</value>
+  </data>
+  <data name="V1130L1.Text" xml:space="preserve">
+    <value>- 修复用户在没有头像的情况下登录个人资料页面时崩溃的错误</value>
+  </data>
+  <data name="V1130L2.Text" xml:space="preserve">
+    <value>- 修复 Windows 10 中缺少的一些图标</value>
+  </data>
+  <data name="V1130L3.Text" xml:space="preserve">
+    <value>- 新历史面板</value>
+  </data>
+  <data name="V1130L4.Text" xml:space="preserve">
+    <value>- 微小修复</value>
+  </data>
+  <data name="V1120L1.Text" xml:space="preserve">
+    <value>- 新关注与黑名单系统</value>
+  </data>
+  <data name="V1120L2.Text" xml:space="preserve">
+    <value>- 云同步黑名单标签</value>
+  </data>
+  <data name="V1120L3.Text" xml:space="preserve">
+    <value>- 本地库页面重做</value>
+  </data>
+  <data name="V1120L4.Text" xml:space="preserve">
+    <value>- 发现页面改进</value>
+  </data>
+  <data name="V1120L5.Text" xml:space="preserve">
+    <value>- 加载显示进度</value>
+  </data>
+  <data name="V1120L6.Text" xml:space="preserve">
+    <value>- 页面设计改进</value>
+  </data>
+  <data name="V1120L7.Text" xml:space="preserve">
+    <value>- 新推图浏览页面</value>
+  </data>
+  <data name="V1120L8.Text" xml:space="preserve">
+    <value>- 针对 Windows 11 优化的页面设计</value>
+  </data>
+  <data name="KnownIssueL1.Text" xml:space="preserve">
+    <value>- UWP的listviews在Win11和Win10中显示不同，所以Win10中的应用会出现行宽不匹配其父级的问题</value>
+  </data>
 </root>

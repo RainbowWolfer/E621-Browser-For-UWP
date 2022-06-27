@@ -113,39 +113,39 @@
 									<ToggleSwitch x:Uid="CustomHostToggle" x:Name="CustomHostToggle" OffContent="Enable Custom Host" OnContent="Enable Custom Host" Margin="5" Toggled="CustomHostToggle_Toggled"/>
 									<Button x:Name="CustomHostButton" Content="E926.net" Margin="10,0,0,0" Tapped="CustomHostButton_Tapped"/>
 								</StackPanel>
-								<ToggleSwitch x:Uid="" x:Name="CycleListToggle" OffContent="Enable Cycle List" OnContent="Enable Cycle List" Margin="5" Toggled="CycleListToggle_Toggled"/>
-								<ToggleSwitch x:Name="ConcatTagToggle" OffContent="Overlay Tags" OnContent="Concat Tags" Margin="5" Toggled="ConcatTagToggle_Toggled"/>
-								<ToggleSwitch x:Name="MediaPlayToggle" OffContent="Media Background Play" OnContent="Media Background Play" Margin="5" Toggled="MediaPlayToggle_Toggled"/>
-								<ToggleSwitch x:Name="MediaAutoPlayToggle" OffContent="Media Auto Play" OnContent="Media Auto Play" Margin="5" Toggled="MediaAutoPlayToggle_Toggled"/>
+								<ToggleSwitch x:Uid="CycleListToggle" x:Name="CycleListToggle" OffContent="Enable Cycle List" OnContent="Enable Cycle List" Margin="5" Toggled="CycleListToggle_Toggled"/>
+								<ToggleSwitch x:Uid="ConcatTagToggle" x:Name="ConcatTagToggle" OffContent="Overlay Tags" OnContent="Concat Tags" Margin="5" Toggled="ConcatTagToggle_Toggled"/>
+								<ToggleSwitch x:Uid="MediaPlayToggle" x:Name="MediaPlayToggle" OffContent="Media Background Play" OnContent="Media Background Play" Margin="5" Toggled="MediaPlayToggle_Toggled"/>
+								<ToggleSwitch x:Uid="MediaAutoPlayToggle" x:Name="MediaAutoPlayToggle" OffContent="Media Auto Play" OnContent="Media Auto Play" Margin="5" Toggled="MediaAutoPlayToggle_Toggled"/>
 								<StackPanel Orientation="Horizontal">
 									<ToggleSwitch x:Name="HotKeysToggle" OffContent="Enable Hot Keys" OnContent="Enable Hot Keys" Margin="5" Toggled="HotKeysToggle_Toggled"/>
 									<Button x:Name="HotKeysButton" Margin="10,0,0,0" FontSize="18" Tapped="HotKeysButton_Tapped">
 										<StackPanel Orientation="Horizontal">
 											<FontIcon Glyph="&#xE92E;"/>
-											<TextBlock Text="Hot Keys" Margin="10,0,0,0"/>
+											<TextBlock x:Uid="HotKeysText" Text="Hot Keys" Margin="10,0,0,0"/>
 										</StackPanel>
 									</Button>
 								</StackPanel>
 								<StackPanel Margin="5" ToolTipService.ToolTip="Not Finished">
-									<TextBlock Text="Random Tag Max Count" VerticalAlignment="Center" FontSize="16"/>
+									<TextBlock x:Uid="RandomTagMaxCountText" Text="Random Tag Max Count" VerticalAlignment="Center" FontSize="16"/>
 									<StackPanel Orientation="Horizontal">
 										<TextBlock x:Name="RandomTagMaxText" Text="10K" VerticalAlignment="Center" Margin="5" FontSize="18" Width="50" TextAlignment="Center"/>
 										<Slider x:Name="RandomTagMaxSlider" StepFrequency="500" Value="10000" Minimum="100" Maximum="30000" Width="200" VerticalAlignment="Center" Margin="10,3,0,0" ValueChanged="RandomTagMaxSlider_ValueChanged" IsEnabled="False"/>
 									</StackPanel>
 								</StackPanel>
 								<StackPanel Margin="5">
-									<TextBlock Text="Theme" FontSize="16"/>
+									<TextBlock x:Uid="ThemeText" Text="Theme" FontSize="16"/>
 									<StackPanel Orientation="Horizontal" Margin="5">
-										<RadioButton x:Name="LightThemeButton" Content="Light" MinWidth="80" Click="LightThemeButton_Click"/>
-										<RadioButton x:Name="DarkThemeButton" Content="Dark" MinWidth="80" Click="DarkThemeButton_Click"/>
-										<RadioButton x:Name="SystemThemeButton" Content="System" MinWidth="80" Click="SystemThemeButton_Click"/>
+										<RadioButton x:Uid="LightThemeButtonContent" x:Name="LightThemeButton" Content="Light" MinWidth="80" Click="LightThemeButton_Click"/>
+										<RadioButton x:Uid="DarkThemeButtonContent" x:Name="DarkThemeButton" Content="Dark" MinWidth="80" Click="DarkThemeButton_Click"/>
+										<RadioButton x:Uid="SystemThemeButtonContent" x:Name="SystemThemeButton" Content="System" MinWidth="80" Click="SystemThemeButton_Click"/>
 									</StackPanel>
-									<TextBlock x:Name="ThemeChangedHintText" Text="* This change will be applied after &#10;restarting the application" Visibility="Collapsed" d:Visibility="Visible" TextAlignment="Left" Margin="10,0,0,0"/>
+									<TextBlock x:Uid="ThemeChangedHintText" x:Name="ThemeChangedHintText" Text="* This change will be applied after &#10;restarting the application" Visibility="Collapsed" d:Visibility="Visible" TextAlignment="Left" Margin="10,0,0,0"/>
 								</StackPanel>
 								<Button x:Name="PinButton" Margin="5" HorizontalAlignment="Stretch" Tapped="PinButton_Tapped">
 									<StackPanel Orientation="Horizontal">
 										<FontIcon Glyph="&#xE141;"/>
-										<TextBlock Text="Pin To Taskbar" Margin="10,0,0,0" FontSize="16"/>
+										<TextBlock x:Uid="PinToTaskbarText" Text="Pin To Taskbar" Margin="10,0,0,0" FontSize="16"/>
 									</StackPanel>
 								</Button>
 							</StackPanel>
@@ -158,7 +158,7 @@
 						<RowDefinition Height="303*"/>
 						<RowDefinition Height="178*"/>
 					</Grid.RowDefinitions>
-					<TextBlock Text="ABOUT" Style="{StaticResource SectionTitle}" Margin="0,10,0,9"/>
+					<TextBlock x:Uid="ABOUTText" Text="ABOUT" Style="{StaticResource SectionTitle}" Margin="0,10,0,9"/>
 					<ScrollViewer HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Margin="0,105,0,0" Grid.RowSpan="3">
 						<StackPanel>
 							<Grid>
@@ -179,36 +179,36 @@
 									<RowDefinition Height="auto" MinHeight="35"/>
 									<RowDefinition Height="auto" MinHeight="35"/>
 								</Grid.RowDefinitions>
-								<TextBlock Text="Develop By" VerticalAlignment="Center" FontSize="16" TextAlignment="Right" Margin="0,0,10,0"/>
+								<TextBlock x:Uid="DevelopByText" Text="Develop By" VerticalAlignment="Center" FontSize="16" TextAlignment="Right" Margin="0,0,10,0"/>
 								<HyperlinkButton Content="RainbowWolfer" Grid.Column="1" FontSize="16" NavigateUri="https://rainbowwolfer.github.io/"/>
-								<TextBlock Text="Service From" Grid.Row="1" FontSize="16" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0"/>
+								<TextBlock x:Uid="ServiceFromText" Text="Service From" Grid.Row="1" FontSize="16" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0"/>
 								<HyperlinkButton x:Name="ServiceHyperLinkButton" Content="E621" Grid.Row="1" Grid.Column="1" FontSize="16" Tapped="OfficialSiteButton_Tapped"/>
-								<TextBlock Text="Version" VerticalAlignment="Center" FontSize="16" Grid.Row="2" TextAlignment="Right" Margin="0,0,10,0"/>
+								<TextBlock x:Uid="VersionText" Text="Version" VerticalAlignment="Center" FontSize="16" Grid.Row="2" TextAlignment="Right" Margin="0,0,10,0"/>
 								<TextBlock d:Text="1.0.0.0" Text="{x:Bind Version}" VerticalAlignment="Center" FontSize="16" Grid.Row="2" Grid.Column="1" Margin="10,0,0,0"/>
 
-								<TextBlock Text="Project Source" Grid.Row="3" FontSize="16" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0"/>
+								<TextBlock x:Uid="ProjectSourceText" Text="Project Source" Grid.Row="3" FontSize="16" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0"/>
 								<HyperlinkButton Content="Github" Grid.Row="3" Grid.Column="1" FontSize="16" NavigateUri="https://github.com/RainbowWolfer/E621-Browser-For-UWP"/>
 
 								<Rectangle Width="150" Height="3" Fill="Gray" Grid.Row="4" Grid.ColumnSpan="2" RadiusX="3" RadiusY="10"/>
 								<StackPanel Grid.Row="5" VerticalAlignment="Center" Margin="0,0,10,0">
-									<TextBlock Text="( Found a bug ? )" TextAlignment="Right"/>
-									<TextBlock Text="( Want something new ? )" TextAlignment="Right"/>
-									<TextBlock Text="Contact Me !" FontSize="16" TextAlignment="Right"/>
+									<TextBlock x:Uid="ContactMeLine1" Text="( Found a bug ? )" TextAlignment="Right"/>
+									<TextBlock x:Uid="ContactMeLine2" Text="( Want something new ? )" TextAlignment="Right"/>
+									<TextBlock x:Uid="ContactMeLine3" Text="Contact Me !" FontSize="16" TextAlignment="Right"/>
 								</StackPanel>
 								<Button x:Name="EmailButton" Grid.Row="5" Grid.Column="1" Margin="10,0,0,0" Tapped="EmailButton_Tapped">
 									<StackPanel Orientation="Horizontal">
-										<TextBlock Text="Email"/>
+										<TextBlock x:Uid="EmailText" Text="Email"/>
 										<FontIcon Glyph="&#xE119;" Margin="10,0,0,0"/>
 									</StackPanel>
 								</Button>
-								<TextBlock Text="RainbowWolfer@Outlook.com" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="6"/>
+								<TextBlock Text="RainbowWolfer@outlook.com" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="6" IsTextSelectionEnabled="True" Padding="10,2,10,2"/>
 								<Rectangle Width="150" Height="3" Fill="Gray" Grid.Row="7" Grid.ColumnSpan="2" RadiusX="3" RadiusY="10"/>
 
-								<TextBlock Text="App Settings Folder" Grid.Row="8" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
+								<TextBlock x:Uid="AppSettingsFolderText" Text="App Settings Folder" Grid.Row="8" TextAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
 								<HyperlinkButton x:Name="LocalStateHyperButton" HorizontalAlignment="Center" Margin="10" Click="LocalStateHyperButton_Click" Grid.Row="8" Grid.Column="1">
 									<TextBlock x:Name="LocalStateHyperContentText" d:Text="C:\Users\rainb\AppData\Local\Packages\25737563C6D7A.E621Browser_jhf51en8pd7sg\LocalState" TextWrapping="Wrap"/>
 								</HyperlinkButton>
-								<TextBlock Text="Font Used (Including Icons)" VerticalAlignment="Center" Grid.Row="9" TextAlignment="Right" Margin="0,0,10,0"/>
+								<TextBlock x:Uid="FontUsedText" Text="Font Used (Including Icons)" VerticalAlignment="Center" Grid.Row="9" TextAlignment="Right" Margin="0,0,10,0"/>
 								<TextBlock Text="Segoe UI&#10;Segoe UI Symbol&#10;Cascadia Mono&#10;Segoe Fluent Icons (Win11)&#10;Segoe MDL2 Assets (Win10)" Grid.Row="9" Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center"/>
 							</Grid>
 						</StackPanel>
@@ -222,56 +222,56 @@
 						<RowDefinition Height="*"/>
 						<RowDefinition Height="auto"/>
 					</Grid.RowDefinitions>
-					<TextBlock Text="NEW" Style="{StaticResource SectionTitle}"/>
-					<TextBlock Text="What's new in this version" Grid.Row="1" TextAlignment="Center" FontSize="18"/>
+					<TextBlock x:Uid="NEWText" Text="NEW" Style="{StaticResource SectionTitle}"/>
+					<TextBlock x:Uid="WhatsNewText" Text="What's new in this version" Grid.Row="1" TextAlignment="Center" FontSize="18"/>
 					<ScrollViewer HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Grid.Row="2">
 						<StackPanel HorizontalAlignment="Stretch" Margin="20">
-							<controls:Expander Header="Known Issue" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5">
+							<controls:Expander x:Uid="KnownIssueHeader" Header="Known Issue" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5">
 								<controls:Expander.Content>
 									<StackPanel>
-										<TextBlock Text="- The listviews of UWP display differently in Win11 and Win10, so the app in Win10 will experience row width not matching its parent" FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="KnownIssueL1" Text="- The listviews of UWP display differently in Win11 and Win10, so the app in Win10 will experience row width not matching its parent" FontSize="22" TextWrapping="WrapWholeWords"/>
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>
 							<controls:Expander Header="2022-06-03 (v1.1.4.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
 								<controls:Expander.Content>
 									<StackPanel>
-										<TextBlock Text="- Some new hot-keys" FontSize="24" TextWrapping="WrapWholeWords"/>
-										<TextBlock Text="- New Focus Mode" FontSize="24" TextWrapping="WrapWholeWords"/>
-										<TextBlock Text="- Search Dialog Rework" FontSize="24" TextWrapping="WrapWholeWords"/>
-										<TextBlock Text="- Some bugs fix" FontSize="24" TextWrapping="WrapWholeWords"/>
-										<TextBlock Text="- Minor changes" FontSize="24" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1140L1" Text="- Some new hot-keys" FontSize="24" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1140L2" Text="- New Focus Mode" FontSize="24" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1140L3" Text="- Search Dialog Rework" FontSize="24" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1140L4" Text="- Some bugs fix" FontSize="24" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1140L5" Text="- Minor changes" FontSize="24" TextWrapping="WrapWholeWords"/>
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>
 							<controls:Expander Header="2022-05-15 (v1.1.3.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5">
 								<controls:Expander.Content>
 									<StackPanel>
-										<TextBlock Text="- Fix a crash bug when the user logs in to the profile page while having no avatar" FontSize="24" TextWrapping="WrapWholeWords"/>
-										<TextBlock Text="- Fix some icons missing in Windows 10" FontSize="24" TextWrapping="WrapWholeWords"/>
-										<TextBlock Text="- New history panel" FontSize="24" TextWrapping="WrapWholeWords"/>
-										<TextBlock Text="- Minor fixes" FontSize="24" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1130L1" Text="- Fix a crash bug when the user logs in to the profile page while having no avatar" FontSize="24" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1130L2" Text="- Fix some icons missing in Windows 10" FontSize="24" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1130L3" Text="- New history panel" FontSize="24" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1130L4" Text="- Minor fixes" FontSize="24" TextWrapping="WrapWholeWords"/>
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>
 							<controls:Expander Header="2022-04-11 (v1.1.2.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5">
 								<controls:Expander.Content>
 									<StackPanel>
-										<TextBlock Text="- New follow &amp; black system" FontSize="24"/>
-										<TextBlock Text="- Cloud sync blacklist tags" FontSize="24"/>
-										<TextBlock Text="- Library page rework" FontSize="24"/>
-										<TextBlock Text="- Spot page improvements" FontSize="24"/>
-										<TextBlock Text="- Loading shows progress" FontSize="24"/>
-										<TextBlock Text="- UI design improvements" FontSize="24"/>
-										<TextBlock Text="- New Posts Browser Page" FontSize="24"/>
-										<TextBlock Text="- UI Optimized for Windows 11" FontSize="24"/>
+										<TextBlock x:Uid="V1120L1" Text="- New follow &amp; black system" FontSize="24"/>
+										<TextBlock x:Uid="V1120L2" Text="- Cloud sync blacklist tags" FontSize="24"/>
+										<TextBlock x:Uid="V1120L3" Text="- Library page rework" FontSize="24"/>
+										<TextBlock x:Uid="V1120L4" Text="- Spot page improvements" FontSize="24"/>
+										<TextBlock x:Uid="V1120L5" Text="- Loading shows progress" FontSize="24"/>
+										<TextBlock x:Uid="V1120L6" Text="- UI design improvements" FontSize="24"/>
+										<TextBlock x:Uid="V1120L7" Text="- New Posts Browser Page" FontSize="24"/>
+										<TextBlock x:Uid="V1120L8" Text="- UI Optimized for Windows 11" FontSize="24"/>
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>
 						</StackPanel>
 					</ScrollViewer>
 					<Grid Grid.Row="3" HorizontalAlignment="Center" Margin="10">
-						<HyperlinkButton Content="Please consider giving this app a review " NavigateUri="ms-windows-store://review/?ProductId=9P3751M5M4WJ" FontSize="16"/>
+						<HyperlinkButton x:Uid="RateAppContent" Content="Please consider giving this app a review" NavigateUri="ms-windows-store://review/?ProductId=9P3751M5M4WJ" FontSize="16"/>
 					</Grid>
 				</Grid>
 			</StackPanel>
