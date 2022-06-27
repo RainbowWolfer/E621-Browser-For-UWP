@@ -30,9 +30,6 @@ namespace E621Downloader.Pages.LibrarySection {
 		private LibraryPage libraryPage;
 		private LibraryFilterArgs args;
 
-		//private readonly List<string> selectedTags = new List<string>();
-		//private readonly List<StorageFolder> folders = new List<StorageFolder>();
-
 		private bool initializing = true;
 		private bool isLoading = false;
 
@@ -165,10 +162,10 @@ namespace E621Downloader.Pages.LibrarySection {
 			}
 			var foldersView = new FoldersSelectionView(libraryPage.RootFoldersArgs.Folders, args.SelectedFolders);
 			if(await new ContentDialog() {
-				Title = "Manage Your Search Tags",
+				Title = "Manage Your Search Tags".Language(),
 				Content = foldersView,
-				PrimaryButtonText = "Confirm",
-				CloseButtonText = "Back",
+				PrimaryButtonText = "Confirm".Language(),
+				CloseButtonText = "Back".Language(),
 			}.ShowAsync() == ContentDialogResult.Primary) {
 				args.SelectedFolders.Clear();
 				string tooltip = "";
@@ -185,7 +182,7 @@ namespace E621Downloader.Pages.LibrarySection {
 
 		private async void TagsButton_Click(object sender, RoutedEventArgs e) {
 			var dialog = new ContentDialog() {
-				Title = "Manage Your Search Tags",
+				Title = "Manage Your Search Tags".Language(),
 			};
 			var content = new LocalTagsManagementView(dialog, args.SelectedTags.ToArray());
 			dialog.Content = content;
@@ -226,34 +223,34 @@ namespace E621Downloader.Pages.LibrarySection {
 			if(!args.SafeCheck && !args.QuestionableCheck && !args.ExplicitCheck) {
 				InsufficientRequirements.PreferredPlacement = TeachingTipPlacementMode.Bottom;
 				InsufficientRequirements.Target = RatingIcon;
-				InsufficientRequirements.Subtitle = "Please Select Least One CheckBox";
+				InsufficientRequirements.Subtitle = "Please Select Least One CheckBox".Language();
 				InsufficientRequirements.IsOpen = true;
 				return false;
 			} else if(!args.ImageCheck && !args.GifCheck && !args.WebmCheck) {
 				InsufficientRequirements.PreferredPlacement = TeachingTipPlacementMode.Bottom;
 				InsufficientRequirements.Target = TypeIcon;
-				InsufficientRequirements.Subtitle = "Please Select Least One CheckBox";
+				InsufficientRequirements.Subtitle = "Please Select Least One CheckBox".Language();
 				InsufficientRequirements.IsOpen = true;
 				return false;
 			} else if(args.SelectedFolders.Count == 0) {
 				InsufficientRequirements.PreferredPlacement = TeachingTipPlacementMode.Right;
 				InsufficientRequirements.Target = FoldersButton;
-				InsufficientRequirements.Subtitle = "Please Select Least One Folder";
+				InsufficientRequirements.Subtitle = "Please Select Least One Folder".Language();
 				InsufficientRequirements.IsOpen = true;
 				return false;
 			}
 			IsLoading = true;
 			GroupView.ClearItems();
-			LoadingText.Text = $"Loading";
+			LoadingText.Text = "Loading".Language();
 			int foldersCount = args.SelectedFolders.Count;
 			var result = new List<(MetaFile meta, BitmapImage image, StorageFile file)>();
 			for(int i = 0; i < args.SelectedFolders.Count; i++) {
 				StorageFolder folder = args.SelectedFolders[i];
 				IReadOnlyList<StorageFile> files = await folder.GetFilesAsync();
 				var list = await Local.GetMetaFiles(folder, (next, index, length) => {
-					LoadingText.Text = $"Loading" +
-						$"\n(File: {next.Name}) {index}/{length}" +
-						$"\n(Folder: /{folder.Name}/) {i + 1}/{foldersCount}";
+					LoadingText.Text = "Loading".Language() +
+						"\n(" + "File".Language() + $": {next.Name}) {index}/{length}" +
+						"\n(" + "Folder".Language() + $": /{folder.Name}/) {i + 1}/{foldersCount}";
 				});
 				result.AddRange(list);
 			}
@@ -413,9 +410,9 @@ namespace E621Downloader.Pages.LibrarySection {
 
 		private void UpdateAndOrText() {
 			if(args.IsAnd) {
-				AndOrText.Text = "AND";
+				AndOrText.Text = "AND".Language();
 			} else {
-				AndOrText.Text = "OR";
+				AndOrText.Text = "OR".Language();
 			}
 		}
 
@@ -423,7 +420,7 @@ namespace E621Downloader.Pages.LibrarySection {
 			if(args.TotalCount == -1) {
 				TotalFoundText.Text = "";
 			} else {
-				TotalFoundText.Text = $"Total Found: {args.TotalCount}";
+				TotalFoundText.Text = "Total Found" + $": {args.TotalCount}";
 			}
 		}
 

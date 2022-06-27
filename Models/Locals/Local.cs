@@ -155,7 +155,7 @@ namespace E621Downloader.Models.Locals {
 				StorageFolder folder = await file.GetParentAsync();
 				//An exception of type 'System.IO.FileLoadException' occurred in System.Private.CoreLib.dll but was not handled in user code
 				//The process cannot access the file because it is being used by another process. (Exception from HRESULT: 0x80070020)
-				StorageFile target = await folder.CreateFileAsync($"{file.Name}.meta", CreationCollisionOption.ReplaceExisting);
+				StorageFile target = await folder.CreateFileAsync($"{file.DisplayName}.meta", CreationCollisionOption.ReplaceExisting);
 				await FileIO.WriteTextAsync(target, meta.ConvertJson());
 			} catch(Exception e) {
 				Debug.WriteLine(e.Message);
@@ -337,20 +337,21 @@ namespace E621Downloader.Models.Locals {
 			StorageFile file;
 			try {
 				file = await StorageFile.GetFileFromPathAsync(path);
-			} catch(FileNotFoundException) {
+			} catch(Exception) {
 				return (null, null);
 			}
-			string metaPath = path.Substring(0, path.LastIndexOf('.')) + ".meta";
-			StorageFile metaFile;
-			try {
-				metaFile = await StorageFile.GetFileFromPathAsync(metaPath);
-			} catch(FileNotFoundException) {
-				return (file, null);
-			}
 			MetaFile meta;
-			using(Stream stream = await metaFile.OpenStreamForReadAsync()) {
+			try {
+				string metaPath;
+				metaPath = path.Substring(0, path.LastIndexOf('.')) + ".meta";
+				StorageFile metaFile;
+				metaFile = await StorageFile.GetFileFromPathAsync(metaPath);
+
+				using Stream stream = await metaFile.OpenStreamForReadAsync();
 				using StreamReader reader = new(stream);
 				meta = JsonConvert.DeserializeObject<MetaFile>(await reader.ReadToEndAsync());
+			} catch(FileNotFoundException) {
+				return (file, null);
 			}
 			return (file, meta);
 		}

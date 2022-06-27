@@ -132,9 +132,6 @@
 	<data name="CopyItem.Text" xml:space="preserve">
     <value>Copy</value>
   </data>
-	<data name="DownloadContent.Content" xml:space="preserve">
-    <value>Download</value>
-  </data>
 	<data name="DownloadButton.Content" xml:space="preserve">
     <value>Download</value>
   </data>
@@ -187,7 +184,7 @@
     <value>No Internet Connection</value>
   </data>
 	<data name="NothingHereText.Text" xml:space="preserve">
-    <value>Nothing here.</value>
+    <value>Nothing here</value>
   </data>
 	<data name="Notification" xml:space="preserve">
     <value>Notification</value>
@@ -204,7 +201,7 @@
 	<data name="Posts Info.Text" xml:space="preserve">
     <value>Posts Info</value>
   </data>
-	<data name="Posts.Text" xml:space="preserve">
+	<data name="PostsText.Text" xml:space="preserve">
     <value>Posts</value>
   </data>
 	<data name="RefreshButton.Content" xml:space="preserve">
@@ -699,7 +696,7 @@
 	<data name="Select Page Range Text.Text" xml:space="preserve">
     <value>Select Page Range</value>
   </data>
-	<data name="Select Current Page Text" xml:space="preserve">
+	<data name="Select Current Page Text.Text" xml:space="preserve">
     <value>Select Current Page</value>
   </data>
 	<data name="Download Folder Not Found.&#10;Would you like to get it set?" xml:space="preserve">
@@ -780,7 +777,7 @@
 	<data name="ClearText.Text" xml:space="preserve">
     <value>Clear</value>
   </data>
-	<data name="NothingFoundText" xml:space="preserve">
+	<data name="NothingFoundText.Text" xml:space="preserve">
     <value>Nothing Found</value>
   </data>
 	<data name="Amount" xml:space="preserve">
@@ -948,7 +945,7 @@
 	<data name="FontUsedText.Text" xml:space="preserve">
     <value>Font Used (Including Icons)</value>
   </data>
-	<data name="NEWText.Text" xml:space="preserve">
+	<data name="NEWALLCAPText.Text" xml:space="preserve">
     <value>NEW</value>
   </data>
 	<data name="WhatsNewText.Text" xml:space="preserve">
@@ -1013,5 +1010,746 @@
   </data>
 	<data name="KnownIssueL1.Text" xml:space="preserve">
     <value>- The listviews of UWP display differently in Win11 and Win10, so the app in Win10 will experience row width not matching its parent</value>
+  </data>
+	<data name="FilterText.Text" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+	<data name="ShowAllContent.Content" xml:space="preserve">
+    <value>Show All</value>
+  </data>
+	<data name="DownloadingContent.Content" xml:space="preserve">
+    <value>Downloading</value>
+  </data>
+	<data name="DownloadedContent.Content" xml:space="preserve">
+    <value>Downloaded</value>
+  </data>
+	<data name="OpenInLibraryText.Text" xml:space="preserve">
+    <value>Open in Library</value>
+  </data>
+	<data name="OpenInFolderText.Text" xml:space="preserve">
+    <value>Open in Explorer</value>
+  </data>
+	<data name="Downloads" xml:space="preserve">
+    <value>Downloads</value>
+  </data>
+	<data name="NoDownloadsCurrentlyText.Text" xml:space="preserve">
+    <value>No Downloads Currently</value>
+  </data>
+	<data name="DownloadGroupsContent.Content" xml:space="preserve">
+    <value>Download Groups</value>
+  </data>
+	<data name="DownloadPageHelpText.Text" xml:space="preserve">
+    <value>The Downloads Section is based on the tag you searched when starting downloading.</value>
+  </data>
+	<data name="Loading File" xml:space="preserve">
+    <value>Loading File</value>
+  </data>
+	<data name="Loading Folders" xml:space="preserve">
+    <value>Loading Folders</value>
+  </data>
+	<data name="Sorting" xml:space="preserve">
+    <value>Sorting</value>
+  </data>
+	<data name="ActiveFoldersText.Text" xml:space="preserve">
+    <value>Active Folders</value>
+  </data>
+	<data name="CurrentTagsText.Text" xml:space="preserve">
+    <value>Current Tags</value>
+  </data>
+	<data name="AndText.Text" xml:space="preserve">
+    <value>And</value>
+  </data>
+	<data name="RatingSafeContent.Content" xml:space="preserve">
+    <value>Rating: Safe</value>
+  </data>
+	<data name="RatingQuestionableContent.Content" xml:space="preserve">
+    <value>Rating: Questionable</value>
+  </data>
+	<data name="RatingExplicitContent.Content" xml:space="preserve">
+    <value>Rating: Explicit</value>
+  </data>
+	<data name="TypeImageContent.Content" xml:space="preserve">
+    <value>Type: Image</value>
+  </data>
+	<data name="TypeGifContent.Content" xml:space="preserve">
+    <value>Type: Gif</value>
+  </data>
+	<data name="TypeWebmContent.Content" xml:space="preserve">
+    <value>Type: Webm</value>
+  </data>
+	<data name="ScoreColonText.Text" xml:space="preserve">
+    <value>Score :</value>
+  </data>
+	<data name="SearchText.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+	<data name="WarningTitle.Title" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+	<data name="Manage Your Search Tags" xml:space="preserve">
+    <value>Manage Your Search Tags</value>
+  </data>
+	<data name="Please Select Least One CheckBox" xml:space="preserve">
+    <value>Please Select Least One CheckBox</value>
+  </data>
+	<data name="Please Select Least One Folder" xml:space="preserve">
+    <value>Please Select Least One Folder</value>
+  </data>
+	<data name="File" xml:space="preserve">
+    <value>File</value>
+  </data>
+	<data name="Folder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+	<data name="AND" xml:space="preserve">
+    <value>AND</value>
+  </data>
+	<data name="OR" xml:space="preserve">
+    <value>OR</value>
+  </data>
+	<data name="Total Found" xml:space="preserve">
+    <value>Total Found</value>
+  </data>
+	<data name="NoFolderPageHintText.Text" xml:space="preserve">
+    <value>You have not selected your download folder&#x0a;Please go to the settings page and choose your download folder</value>
+  </data>
+	<data name="GoTotSetttingsText.Text" xml:space="preserve">
+    <value>Go To Settings</value>
+  </data>
+	<data name="FilterItemContent.Content" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+	<data name="RootItemContent.Content" xml:space="preserve">
+    <value>Root</value>
+  </data>
+	<data name="ListViewText.Text" xml:space="preserve">
+    <value>List View</value>
+  </data>
+	<data name="GridViewText.Text" xml:space="preserve">
+    <value>Grid View</value>
+  </data>
+	<data name="RenameDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+	<data name="RenameDialog.CloseButtonText" xml:space="preserve">
+    <value>Back</value>
+  </data>
+	<data name="RenameDialog.Title" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+	<data name="Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+	<data name="Root" xml:space="preserve">
+    <value>Root</value>
+  </data>
+	<data name="Cannot be empty" xml:space="preserve">
+    <value>Cannot be empty</value>
+  </data>
+	<data name="Cannot be the same as before" xml:space="preserve">
+    <value>Cannot be the same as before</value>
+  </data>
+	<data name="Title Not Set" xml:space="preserve">
+    <value>Title Not Set</value>
+  </data>
+	<data name="ReplyContent.Content" xml:space="preserve">
+    <value>Reply</value>
+  </data>
+	<data name="ReportContent.Content" xml:space="preserve">
+    <value>Report</value>
+  </data>
+	<data name="Avatar Load Fail" xml:space="preserve">
+    <value>Avatar Load Fail</value>
+  </data>
+	<data name="No Avatar" xml:space="preserve">
+    <value>No Avatar</value>
+  </data>
+	<data name="Loading Post" xml:space="preserve">
+    <value>Loading Post</value>
+  </data>
+	<data name="Downloading" xml:space="preserve">
+    <value>Downloading</value>
+  </data>
+	<data name="DefaultDownloadingOverViewText.Text" xml:space="preserve">
+    <value>Downloading... 0/0</value>
+  </data>
+	<data name="GoToLibraryItemText.Text" xml:space="preserve">
+    <value>Go To Library</value>
+  </data>
+	<data name="DefaultPendingText.Text" xml:space="preserve">
+    <value>Pending...</value>
+  </data>
+	<data name="OpenText.Text" xml:space="preserve">
+    <value>Open</value>
+  </data>
+	<data name="RemoveText.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+	<data name="PauseText.Text" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+	<data name="CancelText.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+	<data name="Posts" xml:space="preserve">
+    <value>Posts</value>
+  </data>
+	<data name="Pause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+	<data name="Resume" xml:space="preserve">
+    <value>Resume</value>
+  </data>
+	<data name="Copy URL" xml:space="preserve">
+    <value>Copy URL</value>
+  </data>
+	<data name="ReverseSelectionContent.Content" xml:space="preserve">
+    <value>Reverse Selection</value>
+  </data>
+	<data name="CreatedDateText.Text" xml:space="preserve">
+    <value>Created Date: </value>
+  </data>
+	<data name="Are you sure to delete this item" xml:space="preserve">
+    <value>Are you sure to delete this item</value>
+  </data>
+	<data name="Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+	<data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+	<data name="OpenInExplorerText.Text" xml:space="preserve">
+    <value>Open in Explorer</value>
+  </data>
+	<data name="LocalChangedHintText.Text" xml:space="preserve">
+    <value>Local Changes has been Made &#10;Please Refresh to view new Downloaded Files</value>
+  </data>
+	<data name="DateContent.Content" xml:space="preserve">
+    <value>Date</value>
+  </data>
+	<data name="SizeContent.Content" xml:space="preserve">
+    <value>Size</value>
+  </data>
+	<data name="NameContent.Content" xml:space="preserve">
+    <value>Name</value>
+  </data>
+	<data name="TypeContent.Content" xml:space="preserve">
+    <value>Type</value>
+  </data>
+	<data name="SetAsDefaultText.Text" xml:space="preserve">
+    <value>Set As Default</value>
+  </data>
+	<data name="PasteAsNewListText.Text" xml:space="preserve">
+    <value>Paste as New List</value>
+  </data>
+	<data name="SetDefaultText.Text" xml:space="preserve">
+    <value>Set Default</value>
+  </data>
+	<data name="BlacklistCloudHintText.Text" xml:space="preserve">
+    <value>This is synced with the account settings. Be careful not to override your original black list tags</value>
+  </data>
+	<data name="ActionsText.Text" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+	<data name="ImportClipboardItemText.Text" xml:space="preserve">
+    <value>Import from Clipboard (Override)</value>
+  </data>
+	<data name="ExportClipboardItemText.Text" xml:space="preserve">
+    <value>Export to Clipboard</value>
+  </data>
+	<data name="ClearAllTagsItemText.Text" xml:space="preserve">
+    <value>Clear All</value>
+  </data>
+	<data name="DownloadCloudItemText.Text" xml:space="preserve">
+    <value>Load From Cloud</value>
+  </data>
+	<data name="UploadCloudItemText.Text" xml:space="preserve">
+    <value>Upload To Cloud</value>
+  </data>
+	<data name="NoTagsText.Text" xml:space="preserve">
+    <value>No Tags</value>
+  </data>
+	<data name="SyncText.Text" xml:space="preserve">
+    <value>Sync</value>
+  </data>
+	<data name="DeleteConfirmTeachingTip.Title" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+	<data name="DeleteConfirmTeachingTip.Subtitle" xml:space="preserve">
+    <value>Are you sure to delete this list?</value>
+  </data>
+	<data name="DeleteConfirmTeachingTip.ActionButtonContent" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+	<data name="DeleteConfirmTeachingTip.CloseButtonContent" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+	<data name="RenameTeachingTip.Title" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+	<data name="RenameTeachingTip.ActionButtonContent" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+	<data name="RenameTeachingTip.CloseButtonContent" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+	<data name="CenteredClearAllComfirmTeachingTip.Title" xml:space="preserve">
+    <value>Clear All Tags</value>
+  </data>
+	<data name="CenteredClearAllComfirmTeachingTip.ActionButtonContent" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+	<data name="CenteredClearAllComfirmTeachingTip.CloseButtonContent" xml:space="preserve">
+    <value>No</value>
+  </data>
+	<data name="CenteredUploadComfirmTeachingTip.Title" xml:space="preserve">
+    <value>Upload Warning</value>
+  </data>
+	<data name="CenteredUploadComfirmTeachingTip.ActionButtonContent" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+	<data name="CenteredUploadComfirmTeachingTip.CloseButtonContent" xml:space="preserve">
+    <value>No</value>
+  </data>
+	<data name="CenteredUploadResultTeachingTip.Title" xml:space="preserve">
+    <value>Upload Result</value>
+  </data>
+	<data name="CenteredUploadResultTeachingTip.CloseButtonContent" xml:space="preserve">
+    <value>OK</value>
+  </data>
+	<data name="CenteredTagsOverrideConfirmTeachingTip.Title" xml:space="preserve">
+    <value>Tags Override</value>
+  </data>
+	<data name="CenteredTagsOverrideConfirmTeachingTip.ActionButtonContent" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+	<data name="CenteredTagsOverrideConfirmTeachingTip.CloseButtonContent" xml:space="preserve">
+    <value>No</value>
+  </data>
+	<data name="TagInfoTeachingTip.CloseButtonContent" xml:space="preserve">
+    <value>Back</value>
+  </data>
+	<data name="Paste Text" xml:space="preserve">
+    <value>Paste Text</value>
+  </data>
+	<data name="Are you sure to delete ({{0}}) with {{1}} tags" xml:space="preserve">
+    <value>Are you sure to delete ({{0}}) with {{1}} tags</value>
+  </data>
+	<data name="Paste Format Error" xml:space="preserve">
+    <value>Paste Format Error</value>
+  </data>
+	<data name="Same as before" xml:space="preserve">
+    <value>Same as before</value>
+  </data>
+	<data name="Already existed" xml:space="preserve">
+    <value>Already existed</value>
+  </data>
+	<data name="Are you sure to delete {{0}} tags in ({{1}}) list?" xml:space="preserve">
+    <value>Are you sure to delete {{0}} tags in ({{1}}) list?</value>
+  </data>
+	<data name="Upload User: ( {{0}} )&#x0a;Warning! This action will override the tags existing in the cloud, do you want to continue?" xml:space="preserve">
+    <value>Upload User: ( {{0}} )&#x0a;Warning! This action will override the tags existing in the cloud, do you want to continue?</value>
+  </data>
+	<data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+	<data name="Are you sure to override current tags?" xml:space="preserve">
+    <value>Are you sure to override current tags?</value>
+  </data>
+	<data name="Post Count" xml:space="preserve">
+    <value>Post Count</value>
+  </data>
+	<data name="Tag Category" xml:space="preserve">
+    <value>Tag Category</value>
+  </data>
+	<data name="TagInputPlaceHolder.PlaceholderText" xml:space="preserve">
+    <value>Input Your Tags Here</value>
+  </data>
+	<data name="ConfirmContent.Content" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+	<data name="BackContent.Content" xml:space="preserve">
+    <value>Back</value>
+  </data>
+	<data name="DefaultOrderButtonContent.Content" xml:space="preserve">
+    <value>Order</value>
+  </data>
+	<data name="DefaultText.Text" xml:space="preserve">
+    <value>Default</value>
+  </data>
+	<data name="NewText.Text" xml:space="preserve">
+    <value>New</value>
+  </data>
+	<data name="ScoreText.Text" xml:space="preserve">
+    <value>Score</value>
+  </data>
+	<data name="RankText.Text" xml:space="preserve">
+    <value>Rank</value>
+  </data>
+	<data name="RandomText.Text" xml:space="preserve">
+    <value>Random</value>
+  </data>
+	<data name="DefaultTypeButtonContent.Content" xml:space="preserve">
+    <value>Type</value>
+  </data>
+	<data name="AllText.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+	<data name="JPGText.Text" xml:space="preserve">
+    <value>JPG</value>
+  </data>
+	<data name="PNGText.Text" xml:space="preserve">
+    <value>PNG</value>
+  </data>
+	<data name="GIFText.Text" xml:space="preserve">
+    <value>GIF</value>
+  </data>
+	<data name="WEBMText.Text" xml:space="preserve">
+    <value>WEBM</value>
+  </data>
+	<data name="ANIMText.Text" xml:space="preserve">
+    <value>ANIM</value>
+  </data>
+	<data name="DefaultRatingButtonContent.Content" xml:space="preserve">
+    <value>Rating</value>
+  </data>
+	<data name="SafeText.Text" xml:space="preserve">
+    <value>Safe</value>
+  </data>
+	<data name="QuestionableText.Text" xml:space="preserve">
+    <value>Questionable</value>
+  </data>
+	<data name="ExplicitText.Text" xml:space="preserve">
+    <value>Explicit</value>
+  </data>
+	<data name="MoreOptionsToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>More Options</value>
+  </data>
+	<data name="InPoolContent.Content" xml:space="preserve">
+    <value>In Pool</value>
+  </data>
+	<data name="DeletedContent.Content" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+	<data name="MoreText.Text" xml:space="preserve">
+    <value>More</value>
+  </data>
+	<data name="HotText.Text" xml:space="preserve">
+    <value>Hot</value>
+  </data>
+	<data name="BackText.Text" xml:space="preserve">
+    <value>Back</value>
+  </data>
+	<data name="Order" xml:space="preserve">
+    <value>Order</value>
+  </data>
+	<data name="New" xml:space="preserve">
+    <value>New</value>
+  </data>
+	<data name="Score" xml:space="preserve">
+    <value>Score</value>
+  </data>
+	<data name="Rank" xml:space="preserve">
+    <value>Rank</value>
+  </data>
+	<data name="Random" xml:space="preserve">
+    <value>Random</value>
+  </data>
+	<data name="Not Found" xml:space="preserve">
+    <value>Not Found</value>
+  </data>
+	<data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
+	<data name="Follow" xml:space="preserve">
+    <value>Follow</value>
+  </data>
+	<data name="FollowText.Text" xml:space="preserve">
+    <value>Follow</value>
+  </data>
+	<data name="CreateDateText.Text" xml:space="preserve">
+    <value>Create Date</value>
+  </data>
+	<data name="UpdateDateText.Text" xml:space="preserve">
+    <value>Update Date</value>
+  </data>
+	<data name="CategoryText.Text" xml:space="preserve">
+    <value>Category</value>
+  </data>
+	<data name="CreatorNameText.Text" xml:space="preserve">
+    <value>Creator Name</value>
+  </data>
+	<data name="DescriptionText.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+	<data name="FollowToggle.OnText" xml:space="preserve">
+    <value>Following</value>
+  </data>
+	<data name="FollowToggle.OffText" xml:space="preserve">
+    <value>Follow</value>
+  </data>
+	<data name="BlackToggle.OnText" xml:space="preserve">
+    <value>Blocking</value>
+  </data>
+	<data name="BlackToggle.OffText" xml:space="preserve">
+    <value>Block</value>
+  </data>
+	<data name="HostNamePlaceholder.PlaceholderText" xml:space="preserve">
+    <value>Host Name</value>
+  </data>
+	<data name="AcceptText.Text" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+	<data name="Empty input is not allowed" xml:space="preserve">
+    <value>Empty input is not allowed</value>
+  </data>
+	<data name="It is not a valid host name" xml:space="preserve">
+    <value>It is not a valid host name</value>
+  </data>
+	<data name="Host Name is not supported" xml:space="preserve">
+    <value>Host Name is not supported</value>
+  </data>
+	<data name="DownloadingText.Text" xml:space="preserve">
+    <value>Downloading</value>
+  </data>
+	<data name="ErrorText.Text" xml:space="preserve">
+    <value>Error</value>
+  </data>
+	<data name="AddText.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+	<data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+	<data name="SearchHistoryHeader.Header" xml:space="preserve">
+    <value>Search History</value>
+  </data>
+	<data name="ViewHistoryHeader.Header" xml:space="preserve">
+    <value>View History</value>
+  </data>
+	<data name="Today" xml:space="preserve">
+    <value>Today</value>
+  </data>
+	<data name="Yesterday" xml:space="preserve">
+    <value>Yesterday</value>
+  </data>
+	<data name="This Month" xml:space="preserve">
+    <value>This Month</value>
+  </data>
+	<data name="Last Month" xml:space="preserve">
+    <value>Last Month</value>
+  </data>
+	<data name="Earlier" xml:space="preserve">
+    <value>Earlier</value>
+  </data>
+	<data name="PicturePageText.Text" xml:space="preserve">
+    <value>Picture Page</value>
+  </data>
+	<data name="PreviousPictureText.Text" xml:space="preserve">
+    <value>Previous Picture</value>
+  </data>
+	<data name="NextPictureText.Text" xml:space="preserve">
+    <value>Next Picture</value>
+  </data>
+	<data name="ZoomInText.Text" xml:space="preserve">
+    <value>Zoom In</value>
+  </data>
+	<data name="ZoomOutText.Text" xml:space="preserve">
+    <value>Zoom Out</value>
+  </data>
+	<data name="GlobalText.Text" xml:space="preserve">
+    <value>Global</value>
+  </data>
+	<data name="SearchPopupText.Text" xml:space="preserve">
+    <value>Search Popup</value>
+  </data>
+	<data name="HomePageText.Text" xml:space="preserve">
+    <value>Home Page</value>
+  </data>
+	<data name="CloseTabText.Text" xml:space="preserve">
+    <value>Close Tab</value>
+  </data>
+	<data name="Select This" xml:space="preserve">
+    <value>Select This</value>
+  </data>
+	<data name="Hide This Image" xml:space="preserve">
+    <value>Hide This Image</value>
+  </data>
+	<data name="Download This" xml:space="preserve">
+    <value>Download This</value>
+  </data>
+	<data name="Add Favorites" xml:space="preserve">
+    <value>Add Favorites</value>
+  </data>
+	<data name="Set As" xml:space="preserve">
+    <value>Set As</value>
+  </data>
+	<data name="Set As Wallpaper" xml:space="preserve">
+    <value>Set As Wallpaper</value>
+  </data>
+	<data name="Set As Lock-screen" xml:space="preserve">
+    <value>Set As Lock-screen</value>
+  </data>
+	<data name="DeletedPostHintText.Text" xml:space="preserve">
+    <value>Post was Deleted</value>
+  </data>
+	<data name="Loading Siblings" xml:space="preserve">
+    <value>Loading Siblings</value>
+  </data>
+	<data name="Remove From This" xml:space="preserve">
+    <value>Remove From This</value>
+  </data>
+	<data name="Are you sure to delete Post" xml:space="preserve">
+    <value>Are you sure to delete Post</value>
+  </data>
+	<data name="List ({{0}}) not found" xml:space="preserve">
+    <value>List ({{0}}) not found.</value>
+  </data>
+	<data name="Manage Favorites" xml:space="preserve">
+    <value>Manage Favorites</value>
+  </data>
+	<data name="Open In Browser" xml:space="preserve">
+    <value>Open In Browser</value>
+  </data>
+	<data name="FixedHeightContent.Content" xml:space="preserve">
+    <value>Fixed Height</value>
+  </data>
+	<data name="AdaptiveHeightContent.Content" xml:space="preserve">
+    <value>Adaptive Height</value>
+  </data>
+	<data name="Not Logged In" xml:space="preserve">
+    <value>Not Logged In</value>
+  </data>
+	<data name="Using ({{0}}) Account" xml:space="preserve">
+    <value>Using ({{0}}) Account</value>
+  </data>
+	<data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+	<data name="Page" xml:space="preserve">
+    <value>Page</value>
+  </data>
+	<data name="E621FavoriteText.Text" xml:space="preserve">
+    <value>E621 Favorite</value>
+  </data>
+	<data name="LocalFavoritesListText.Text" xml:space="preserve">
+    <value>Local Favorites List</value>
+  </data>
+	<data name="NoListFoundText.Text" xml:space="preserve">
+    <value>No List Found</value>
+  </data>
+	<data name="E621 Favorited" xml:space="preserve">
+    <value>E621 Favorited</value>
+  </data>
+	<data name="E621 Favorite" xml:space="preserve">
+    <value>E621 Favorite</value>
+  </data>
+	<data name="CreatedDate2Text.Text" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
+	<data name="SizeText.Text" xml:space="preserve">
+    <value>Size</value>
+  </data>
+	<data name="ApproverIDText.Text" xml:space="preserve">
+    <value>Approver ID</value>
+  </data>
+	<data name="UploaderIDText.Text" xml:space="preserve">
+    <value>Uploader ID</value>
+  </data>
+	<data name="UpdatedDateText.Text" xml:space="preserve">
+    <value>Updated Date</value>
+  </data>
+	<data name="TagsCountText.Text" xml:space="preserve">
+    <value>Tags Count</value>
+  </data>
+	<data name="ArtistSlashText.Text" xml:space="preserve">
+    <value>Artist   - </value>
+  </data>
+	<data name="CopyrightSlashText.Text" xml:space="preserve">
+    <value>Copyright   - </value>
+  </data>
+	<data name="SpeciesSlashText.Text" xml:space="preserve">
+    <value>Species   - </value>
+  </data>
+	<data name="CharacterSlashText.Text" xml:space="preserve">
+    <value>Character   - </value>
+  </data>
+	<data name="GeneralSlashText.Text" xml:space="preserve">
+    <value>General   - </value>
+  </data>
+	<data name="MetaSlashText.Text" xml:space="preserve">
+    <value>Meta   - </value>
+  </data>
+	<data name="InvalidSlashText.Text" xml:space="preserve">
+    <value>Invalid   - </value>
+  </data>
+	<data name="LoreSlashText.Text" xml:space="preserve">
+    <value>Lore   - </value>
+  </data>
+	<data name="JumpToPagePlaceholder.PlaceholderText" xml:space="preserve">
+    <value>Jump to page</value>
+  </data>
+	<data name="({{0}}) can only be in 1-{{1}}" xml:space="preserve">
+    <value>({{0}}) can only be in 1-{{1}}</value>
+  </data>
+	<data name="({{0}}) is not a valid number" xml:space="preserve">
+    <value>({{0}}) is not a valid number</value>
+  </data>
+	<data name="Current Size" xml:space="preserve">
+    <value>Current Size</value>
+  </data>
+	<data name="Order by newest" xml:space="preserve">
+    <value>Order by newest</value>
+  </data>
+	<data name="No Wiki Found" xml:space="preserve">
+    <value>No Wiki Found</value>
+  </data>
+	<data name="Count" xml:space="preserve">
+    <value>Count</value>
+  </data>
+	<data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+	<data name="Relative" xml:space="preserve">
+    <value>Relative</value>
+  </data>
+	<data name="Up" xml:space="preserve">
+    <value>Up</value>
+  </data>
+	<data name="Down" xml:space="preserve">
+    <value>Down</value>
+  </data>
+	<data name="Parent" xml:space="preserve">
+    <value>Parent</value>
+  </data>
+	<data name="Children" xml:space="preserve">
+    <value>Children</value>
+  </data>
+	<data name="Created At" xml:space="preserve">
+    <value>Created At</value>
+  </data>
+	<data name="Tags" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+	<data name="Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+	<data name="Width" xml:space="preserve">
+    <value>Width</value>
+  </data>
+	<data name="Height" xml:space="preserve">
+    <value>Height</value>
+  </data>
+	<data name="NewListNamePlaceholder.PlaceholderText" xml:space="preserve">
+    <value>New List Name</value>
+  </data>
+	<data name="Error Loading Local" xml:space="preserve">
+    <value>Error Loading Local</value>
+  </data>
+	<data name="OpenedTabsContent.Content" xml:space="preserve">
+    <value>Opened Tabs</value>
+  </data>
+	<data name="FoldersPaneTitle.PaneTitle" xml:space="preserve">
+    <value>Folders</value>
   </data>
 </root>

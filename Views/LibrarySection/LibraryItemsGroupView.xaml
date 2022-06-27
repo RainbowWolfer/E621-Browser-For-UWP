@@ -20,7 +20,7 @@
 			</Grid.ChildrenTransitions>
 			<StackPanel x:Name="ListViewNoDataPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
 				<FontIcon Glyph="&#xF133;" FontSize="100" Margin="5"/>
-				<TextBlock Text="Nothing Found" TextAlignment="Center" Margin="5" FontSize="24"/>
+				<TextBlock x:Uid="NothingFoundText" Text="Nothing Found" TextAlignment="Center" Margin="5" FontSize="24"/>
 			</StackPanel>
 			<ListView x:Name="MyListView" SelectionMode="None" IsItemClickEnabled="True" ItemClick="MyListView_ItemClick" Padding="20,0,20,20">
 				<ListView.ItemContainerTransitions>
@@ -39,7 +39,7 @@
 			</Grid.ChildrenTransitions>
 			<StackPanel x:Name="GridViewNoDataPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
 				<FontIcon Glyph="&#xF133;" FontSize="100" Margin="5"/>
-				<TextBlock Text="Nothing Found" TextAlignment="Center" Margin="5" FontSize="24"/>
+				<TextBlock x:Uid="NothingFoundText" Text="Nothing Found" TextAlignment="Center" Margin="5" FontSize="24"/>
 			</StackPanel>
 			<GridView x:Name="MyGridView" SelectionMode="None" IsItemClickEnabled="True" ItemClick="MyGridView_ItemClick" Padding="20,0,20,20">
 				<GridView.ItemContainerTransitions>

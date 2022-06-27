@@ -33,7 +33,7 @@
 				</DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>
-		<Button x:Name="ReverseButton" Tapped="ReverseButton_Tapped" Content="Reverse Selection" HorizontalAlignment="Stretch" Grid.Column="1" Margin="5"/>
+		<Button x:Uid="ReverseSelectionContent" x:Name="ReverseButton" Tapped="ReverseButton_Tapped" Content="Reverse Selection" HorizontalAlignment="Stretch" Grid.Column="1" Margin="5"/>
 		<ListView x:Name="FollowingTagsListView" Grid.Row="1" Grid.Column="1" ItemsSource="{x:Bind Followings}" SelectionMode="Multiple" Margin="5">
 			<ListView.ItemTemplate>
 				<DataTemplate x:DataType="x:String">

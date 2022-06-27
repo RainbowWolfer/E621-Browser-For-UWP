@@ -16,7 +16,7 @@
 
 	<Grid>
 		<Pivot SelectionChanged="Pivot_SelectionChanged">
-			<PivotItem x:Name="SearchItem" Header="Search History">
+			<PivotItem x:Uid="SearchHistoryHeader" x:Name="SearchItem" Header="Search History">
 				<Grid>
 					<ScrollViewer Padding="5" VerticalScrollMode="Enabled">
 						<StackPanel x:Name="SearchHistoryPanel">
@@ -29,11 +29,11 @@
 					</ScrollViewer>
 					<StackPanel x:Name="SearchHistoryEmptyPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="50">
 						<FontIcon Glyph="&#xE11A;" FontSize="42" Margin="5"/>
-						<TextBlock Text="Nothing Here" FontSize="18" Margin="5"/>
+						<TextBlock x:Uid="NothingHereText" Text="Nothing Here" FontSize="18" Margin="5"/>
 					</StackPanel>
 				</Grid>
 			</PivotItem>
-			<PivotItem x:Name="ViewItem" Header="View History">
+			<PivotItem x:Uid="ViewHistoryHeader" x:Name="ViewItem" Header="View History">
 				<Grid>
 					<ScrollViewer Padding="5" VerticalScrollMode="Enabled">
 						<StackPanel x:Name="ViewHistoryPanel">
@@ -46,7 +46,7 @@
 					</ScrollViewer>
 					<StackPanel x:Name="ViewHistoryEmptyPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="50">
 						<FontIcon Glyph="&#xE11A;" FontSize="42" Margin="5"/>
-						<TextBlock Text="Nothing Here" FontSize="18" Margin="5"/>
+						<TextBlock x:Uid="NothingHereText" Text="Nothing Here" FontSize="18" Margin="5"/>
 					</StackPanel>
 				</Grid>
 			</PivotItem>

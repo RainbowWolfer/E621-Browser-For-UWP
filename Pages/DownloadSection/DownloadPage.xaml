@@ -28,7 +28,7 @@
 				<ColumnDefinition Width="auto"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<ToggleButton x:Name="TitleButton" IsChecked="True" Content="Download Groups" Margin="10" Tapped="TitleButton_Tapped" IsHitTestVisible="False"/>
+			<ToggleButton x:Uid="DownloadGroupsContent" x:Name="TitleButton" IsChecked="True" Content="Download Groups" Margin="10" Tapped="TitleButton_Tapped" IsHitTestVisible="False"/>
 			<NavigationView x:Name="MyNavigationView" Grid.Column="1" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" VerticalAlignment="Center" ItemInvoked="NavigationView_ItemInvoked">
 
 			</NavigationView>
@@ -40,7 +40,7 @@
 			<Button.Flyout>
 				<Flyout Placement="Bottom">
 					<Grid Width="250">
-						<TextBlock TextWrapping="WrapWholeWords" Text="The Downloads Section is based on the tag you searched when starting downloading."/>
+						<TextBlock x:Uid="DownloadPageHelpText" TextWrapping="WrapWholeWords" Text="The Downloads Section is based on the tag you searched when starting downloading."/>
 					</Grid>
 				</Flyout>
 			</Button.Flyout>

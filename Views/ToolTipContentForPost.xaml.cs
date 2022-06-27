@@ -27,25 +27,25 @@ namespace E621Downloader.Views {
 					RelativeTagsText.Visibility = Visibility.Collapsed;
 				} else {
 					RelativeTagsText.Visibility = Visibility.Visible;
-					RelativeTagsText.Text = $"Relative: ({string.Join(", ", value)})";
+					RelativeTagsText.Text = " · " + "Relative".Language() + $": ({string.Join(", ", value)})";
 				}
 			}
 		}
 
 		public ToolTipContentForPost(Post post, bool local = false) {
 			this.InitializeComponent();
-			ID.Text = $"#{post.id}" + (local ? " - Local" : "");
-			UP.Text = $" · Up - {Math.Abs(post.score.up)}";
-			DOWN.Text = $" · Down - {Math.Abs(post.score.down)}";
-			TYPE.Text = $" · Type - {post.file.ext.ToUpper()}";
-			string parent = post.relationships.parent_id == null ? "None" : $"#{post.relationships.parent_id}";
-			PARENT.Text = $" · Parent - {parent}";
-			CHILDREN.Text = $" · Children - {post.relationships.children.Count}";
-			CREATE.Text = $" · Created At - {post.created_at}";
-			TAGS.Text = $" · Tags - {post.tags.GetAllTags().Count}";
-			SIZE.Text = $" · Size - {Methods.ConvertSizeToKB(post.file.size)}";
-			WIDTH.Text = $" · Width - {post.file.width}";
-			HEIGHT.Text = $" · Height - {post.file.height}";
+			ID.Text = $"#{post.id}" + (local ? " - " + "Local".Language() : "");
+			UP.Text = $" · " + "Up".Language() + $" - {Math.Abs(post.score.up)}";
+			DOWN.Text = $" · " + "Down".Language() + $" - {Math.Abs(post.score.down)}";
+			TYPE.Text = $" · " + "Type".Language() + $" - {post.file.ext.ToUpper()}";
+			string parent = post.relationships.parent_id == null ? "None".Language() : $"#{post.relationships.parent_id}";
+			PARENT.Text = $" · " + "Parent".Language() + $" - {parent}";
+			CHILDREN.Text = $" · " + "Children".Language() + $" - {post.relationships.children.Count}";
+			CREATE.Text = $" · " + "Created At".Language() + $" - {post.created_at}";
+			TAGS.Text = $" · " + "Tags".Language() + $" - {post.tags.GetAllTags().Count}";
+			SIZE.Text = $" · " + "Size".Language() + $" - {Methods.ConvertSizeToKB(post.file.size)}";
+			WIDTH.Text = $" · " + "Width".Language() + $" - {post.file.width}";
+			HEIGHT.Text = $" · " + "Height".Language() + $" - {post.file.height}";
 		}
 	}
 }

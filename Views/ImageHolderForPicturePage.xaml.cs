@@ -83,7 +83,7 @@ namespace E621Downloader.Views {
 					return;
 				}
 				List<Post> siblings = new();
-				MainPage.CreateInstantDialog("Please Wait", "Loading Siblings");
+				MainPage.CreateInstantDialog("Please Wait".Language(), "Loading Siblings".Language());
 				if(!string.IsNullOrWhiteSpace(Origin.relationships.parent_id)) {
 					siblings.Add(Target);
 					List<Post> result = (await Post.GetPostsByTagsAsync(cts.Token, 1, $"parent:{Origin.relationships.parent_id}")).Where(p => CheckPostAvailable(p)).ToList();

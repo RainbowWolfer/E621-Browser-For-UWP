@@ -1,4 +1,5 @@
-﻿using System;
+﻿using E621Downloader.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -69,7 +70,7 @@ namespace E621Downloader.Views {
 
 		private void SizeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
 			Size = (int)e.NewValue;
-			ToolTipService.SetToolTip(SizeButton, "Current Size : " + Size);
+			ToolTipService.SetToolTip(SizeButton, "Current Size".Language() + " : " + Size);
 		}
 	}
 }

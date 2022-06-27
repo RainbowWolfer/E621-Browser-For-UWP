@@ -87,7 +87,7 @@ namespace E621Downloader.Views {
 			} else {
 				MyProgressRing.IsActive = false;
 				MyProgressRing.Visibility = Visibility.Collapsed;
-				FailureTextBlock.Text = "Failed";
+				FailureTextBlock.Text = "Error".Language();
 				this.Visibility = Visibility.Visible;
 				VariableSizedWrapGrid.SetColumnSpan(this, SpanCol);
 				VariableSizedWrapGrid.SetRowSpan(this, SpanRow);
@@ -112,7 +112,7 @@ namespace E621Downloader.Views {
 
 				if(MainPage.Instance.currentTag == PageTag.PostsBrowser) {
 					MenuFlyoutItem item_select = new() {
-						Text = "Select This",
+						Text = "Select This".Language(),
 						Icon = new FontIcon() { Glyph = "\uE152" },
 					};
 					item_select.Click += (sender, arg) => {
@@ -123,7 +123,7 @@ namespace E621Downloader.Views {
 					flyout.Items.Add(item_select);
 
 					MenuFlyoutItem item_hide = new() {
-						Text = "Hide This Image",
+						Text = "Hide This Image".Language(),
 						Icon = new FontIcon() { Glyph = "\uE894" },
 					};
 					item_hide.Click += (sender, arg) => {
@@ -133,7 +133,7 @@ namespace E621Downloader.Views {
 				}
 
 				MenuFlyoutItem item_download = new() {
-					Text = "Download This",
+					Text = "Download This".Language(),
 					Icon = new FontIcon() { Glyph = "\uE896" },
 				};
 				item_download.Click += async (sender, arg) => {
@@ -142,19 +142,19 @@ namespace E621Downloader.Views {
 						if(await DownloadsManager.RegisterDownload(PostRef, title)) {
 							MainPage.CreateTip_SuccessDownload(page);
 						} else {
-							await MainPage.CreatePopupDialog("Error", "Downloads Failed");
+							await MainPage.CreatePopupDialog("Error".Language(), "Downloads Failed".Language());
 						}
 					}
 				};
 				flyout.Items.Add(item_download);
 
 				MenuFlyoutItem item_favorite = new() {
-					Text = "Add Favorites",
+					Text = "Add Favorites".Language(),
 					Icon = new FontIcon() { Glyph = "\uE0A5" },
 				};
 				item_favorite.Click += async (sender, arg) => {
 					var dialog = new ContentDialog() {
-						Title = "Favorites",
+						Title = "Favorites".Language(),
 					};
 					var list = new PersonalFavoritesList(dialog, type, path) {
 						Width = 300,
@@ -168,19 +168,19 @@ namespace E621Downloader.Views {
 				flyout.Items.Add(item_favorite);
 
 				MenuFlyoutSubItem item_setAs = new() {
-					Text = "Set As",
+					Text = "Set As".Language(),
 					Icon = new FontIcon() { Glyph = "\uEE71" },
 				};
 
 				MenuFlyoutItem item_setAsWallpaper = new() {
-					Text = "Set As Wallpaper",
+					Text = "Set As Wallpaper".Language(),
 					Icon = new FontIcon() { Glyph = "\uE620" },
 				};
 
 				item_setAsWallpaper.Click += Item_setAsWallpaper_Click;
 
 				MenuFlyoutItem item_setAsLockscreen = new() {
-					Text = "Set As LockScreen",
+					Text = "Set As Lock-screen".Language(),
 					Icon = new FontIcon() { Glyph = "\uEE3F" },
 				};
 
@@ -207,7 +207,7 @@ namespace E621Downloader.Views {
 			dialog_setAs = new ContentDialog() {
 				Title = title,
 				Content = dialog_setAs_content,
-				CloseButtonText = "Cancel",
+				CloseButtonText = "Cancel".Language(),
 			};
 			await dialog_setAs.ShowAsync();
 		}
@@ -237,11 +237,11 @@ namespace E621Downloader.Views {
 				return;
 			}
 			CancelLoading();
-			ShowLoadingDialog("Loading", "Getting Image", CancelLoading);
+			ShowLoadingDialog("Loading".Language(), "Getting Image".Language(), CancelLoading);
 			cts_SetAs = new CancellationTokenSource();
 			try {
 				StorageFile file = await PicturePage.GetImageFile(PathType.PostID, "", PostRef, cts_SetAs.Token);
-				UpdateDialogContent("Setting Wallpaper");
+				UpdateDialogContent("Setting Lock-screen".Language());
 				await PicturePage.SetLockScreenAsync(file);
 			} catch(OperationCanceledException) { }
 			HideLoadingDialog();
@@ -253,11 +253,11 @@ namespace E621Downloader.Views {
 				return;
 			}
 			CancelLoading();
-			ShowLoadingDialog("Loading", "Getting Image", CancelLoading);
+			ShowLoadingDialog("Loading".Language(), "Getting Image".Language(), CancelLoading);
 			cts_SetAs = new CancellationTokenSource();
 			try {
 				StorageFile file = await PicturePage.GetImageFile(PathType.PostID, "", PostRef, cts_SetAs.Token);
-				UpdateDialogContent("Setting Wallpaper");
+				UpdateDialogContent("Setting Wallpaper".Language());
 				await PicturePage.SetWallpaperAsync(file);
 			} catch(OperationCanceledException) { }
 			HideLoadingDialog();

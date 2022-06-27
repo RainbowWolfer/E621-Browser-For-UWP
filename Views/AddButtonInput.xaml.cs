@@ -1,4 +1,5 @@
-﻿using System;
+﻿using E621Downloader.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -73,11 +74,11 @@ namespace E621Downloader.Views {
 		private bool Warn() {
 			string text = Box.Text;
 			if(string.IsNullOrWhiteSpace(text)) {
-				WarningTip.Subtitle = "Cannot be empty";
+				WarningTip.Subtitle = "Cannot be empty".Language();
 				WarningTip.IsOpen = true;
 				return true;
 			} else if(Existing.Contains(text)) {
-				WarningTip.Subtitle = "Already existed";
+				WarningTip.Subtitle = "Already existed".Language();
 				WarningTip.IsOpen = true;
 				return true;
 			}

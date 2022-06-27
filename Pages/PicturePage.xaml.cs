@@ -154,10 +154,13 @@ namespace E621Downloader.Pages {
 						path = mix.ID;
 						break;
 					case PathType.Local:
-						if(!mix.LocalLoaded) {
-							(StorageFile, MetaFile) result = await Local.GetDownloadFile(path);
-							mix.ImageFile = result.Item1;
-							mix.MetaFile = result.Item2;
+						if(!mix.HasLocalLoaded) {
+							(StorageFile file, MetaFile meta) = await Local.GetDownloadFile(mix.MetaFile.FilePath);
+							if(file == null || meta == null) {
+								break;
+							}
+							mix.ImageFile = file;
+							mix.MetaFile = meta;
 						}
 						this.PostRef = mix.MetaFile.MyPost;
 						UpdateDownloadButton(true);
@@ -1428,7 +1431,7 @@ namespace E621Downloader.Pages {
 		public StorageFile ImageFile { get; set; }
 		public MetaFile MetaFile { get; set; }
 		// -------------------------
-		public bool LocalLoaded => ImageFile != null && MetaFile != null;
+		public bool HasLocalLoaded => ImageFile != null && MetaFile != null;
 		Post ILocalImage.ImagePost => MetaFile.MyPost;
 		StorageFile ILocalImage.ImageFile => ImageFile;
 

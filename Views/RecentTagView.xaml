@@ -24,8 +24,8 @@
 				<ColumnDefinition Width="auto"/>
 			</Grid.ColumnDefinitions>
 			<FontIcon Glyph="&#xE1CB;" Margin="5,0,0,0"/>
-			<TextBlock x:Name="ValueText" FontSize="18" Text="Hello World" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0"/>
-			<TextBlock x:Name="TimeText" Text="Time goes here" Grid.Column="2" VerticalAlignment="Center" Margin="10,0,10,0"/>
+			<TextBlock x:Name="ValueText" FontSize="18" d:Text="Hello World" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0"/>
+			<TextBlock x:Name="TimeText" d:Text="Time goes here" Grid.Column="2" VerticalAlignment="Center" Margin="10,0,10,0"/>
 		</Grid>
 	</Button>
 </UserControl>

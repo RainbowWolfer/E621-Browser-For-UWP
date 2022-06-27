@@ -32,7 +32,7 @@
 			<StackPanel x:Name="PageButtons" Orientation="Horizontal" VerticalAlignment="Center">
 
 			</StackPanel>
-			<TextBox x:Name="PageInputText" Width="110" Margin="10,0,0,0" PlaceholderText="Jump to page" Height="32" CornerRadius="4,0,0,4" BorderThickness="1,1,0,1" KeyDown="PageInputText_KeyDown"/>
+			<TextBox x:Uid="JumpToPagePlaceholder" x:Name="PageInputText" Width="110" Margin="10,0,0,0" PlaceholderText="Jump to page" Height="32" CornerRadius="4,0,0,4" BorderThickness="1,1,0,1" KeyDown="PageInputText_KeyDown"/>
 			<Button x:Name="ForwardButton" Height="32" CornerRadius="0,4,4,0" BorderThickness="0" Click="ForwardButton_Click">
 				<FontIcon Glyph="&#xE111;" FontSize="14"/>
 			</Button>

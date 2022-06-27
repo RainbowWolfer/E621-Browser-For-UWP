@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Posts;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Posts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,7 +38,7 @@ namespace E621Downloader.Views {
 		}
 
 		private string Check(object content) {
-			return string.IsNullOrWhiteSpace($"{content}") ? "None" : $"{content}";
+			return string.IsNullOrWhiteSpace($"{content}") ? "None".Language() : $"{content}";
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Inerfaces;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Views.LibrarySection;
 using Microsoft.UI.Xaml.Controls;
@@ -79,11 +80,11 @@ namespace E621Downloader.Pages.LibrarySection {
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			FilterArgs = new LibraryFilterArgs() {
 				Parent = this,
-				Title = "Filter",
+				Title = "Filter".Language(),
 			};
 			RootFoldersArgs = new LibraryFoldersArgs() {
 				Parent = this,
-				Title = "Root",
+				Title = "Root".Language(),
 				RootFolder = Local.DownloadFolder,
 			};
 			InitializeGroupViewType();
@@ -94,7 +95,7 @@ namespace E621Downloader.Pages.LibrarySection {
 			if(!SettingsPage.isDownloadPathChangingHandled) {
 				RootFoldersArgs = new LibraryFoldersArgs() {
 					Parent = this,
-					Title = "Root",
+					Title = "Root".Language(),
 					RootFolder = Local.DownloadFolder,
 				};
 				NavigateToHome();
@@ -157,7 +158,7 @@ namespace E621Downloader.Pages.LibrarySection {
 					Icon = new FontIcon() {
 						Glyph = "\uE10A",
 					},
-					Text = "Close",
+					Text = "Close".Language(),
 				};
 				delete_item.Click += (s, e) => Delete_Item_Click(newMenuItem);
 				flyout.Items.Add(delete_item);
@@ -315,7 +316,7 @@ namespace E621Downloader.Pages.LibrarySection {
 			var originName = DialogRenameBox.Tag as string;
 			var text = DialogRenameBox.Text;
 			if(string.IsNullOrEmpty(text)) {
-				DialogErrorText.Text = "Cannot be empty";
+				DialogErrorText.Text = "Cannot be empty".Language();
 				DialogErrorText.Visibility = Visibility.Visible;
 				RenameDialog.IsPrimaryButtonEnabled = false;
 			} else if(originName == text) {
@@ -367,7 +368,7 @@ namespace E621Downloader.Pages.LibrarySection {
 
 	public abstract class LibraryPassArgs {
 		public LibraryPage Parent { get; set; } = null;
-		public string Title { get; set; } = "Title Not Set";
+		public string Title { get; set; } = "Title Not Set".Language();
 		public bool NeedRefresh { get; set; }
 	}
 

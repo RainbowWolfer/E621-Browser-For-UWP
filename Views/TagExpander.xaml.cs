@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Posts;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Posts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,7 +30,7 @@ namespace E621Downloader.Views {
 		public TagExpander(string tag) {
 			this.InitializeComponent();
 			if(string.IsNullOrEmpty(tag)) {
-				TagText.Text = "Default";
+				TagText.Text = "Default".Language();
 				ConentText.Text = "Order by newest";
 				LoadingBar.Visibility = Visibility.Collapsed;
 				ConentText.Visibility = Visibility.Visible;
@@ -43,11 +44,11 @@ namespace E621Downloader.Views {
 			LoadingBar.Visibility = Visibility.Visible;
 			ConentText.Visibility = Visibility.Collapsed;
 			this.tag = await E621Tag.GetFirstAsync(tag);
-			TagText.Text = $"{tag ?? "Not Found"} ({this.tag?.post_count ?? 0})";
+			TagText.Text = $"{tag ?? "Not Found".Language()} ({this.tag?.post_count ?? 0})";
 			if(this.tag != null && !this.tag.IsWikiLoaded) {
 				await this.tag.LoadWikiAsync();
 			}
-			ConentText.Text = this.tag?.Wiki?.body ?? "No Wiki Found";
+			ConentText.Text = this.tag?.Wiki?.body ?? "No Wiki Found".Language();
 			LoadingBar.Visibility = Visibility.Collapsed;
 			ConentText.Visibility = Visibility.Visible;
 		}

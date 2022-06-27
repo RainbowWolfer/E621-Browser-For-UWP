@@ -43,10 +43,10 @@
 						<FontIcon Glyph="&#xF272;"/>
 					</controls:NavigationViewItem.Icon>
 				</controls:NavigationViewItem>
-				<controls:NavigationViewItem x:Uid="DownloadContent" Icon="Download" Tag="5">
+				<controls:NavigationViewItem Icon="Download" Tag="5">
 					<controls:NavigationViewItem.Content>
 						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="Downloads" VerticalAlignment="Center"/>
+							<TextBlock x:Uid="DownloadText" Text="Downloads" VerticalAlignment="Center"/>
 							<views:LoadingRingIcon x:Name="DownloadRingIcon" Margin="10,0,0,0"/>
 						</StackPanel>
 					</controls:NavigationViewItem.Content>

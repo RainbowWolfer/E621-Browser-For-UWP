@@ -230,12 +230,12 @@ namespace E621Downloader.Views {
 
 		private string GetRecentTypeString(RecentType recentType) {
 			return recentType switch {
-				RecentType.Today => "Today",
-				RecentType.Yesterday => "Yesterday",
-				RecentType.ThisMonth => "This Month",
-				RecentType.LastMonth => "Last Month",
-				RecentType.Earlier => "Earlier",
-				_ => "None",
+				RecentType.Today => "Today".Language(),
+				RecentType.Yesterday => "Yesterday".Language(),
+				RecentType.ThisMonth => "This Month".Language(),
+				RecentType.LastMonth => "Last Month".Language(),
+				RecentType.Earlier => "Earlier".Language(),
+				_ => "None".Language(),
 			};
 		}
 

@@ -20,7 +20,7 @@
 		</Grid.RowDefinitions>
 		<Rectangle Fill="#444444" Grid.RowSpan="2"/>
 		<Image x:Name="MyImage" Stretch="Uniform"/>
-		<TextBlock x:Name="HintText" Text="Post was Deleled" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Visibility="Collapsed" TextWrapping="Wrap" TextAlignment="Center"/>
+		<TextBlock x:Uid="DeletedPostHintText" x:Name="HintText" Text="Post was Deleted" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Visibility="Collapsed" TextWrapping="Wrap" TextAlignment="Center"/>
 		<ProgressRing x:Name="LoadingRing" Width="200" Height="200" Margin="50" IsActive="True"/>
 		<local:TypeHintForImageHolder x:Name="TypeHint"/>
 		<Grid Grid.Row="1" Margin="5,0,5,0">

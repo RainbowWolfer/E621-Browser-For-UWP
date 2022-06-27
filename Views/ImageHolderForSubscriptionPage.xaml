@@ -18,7 +18,7 @@
 		</Grid.RowDefinitions>
 		<!--Make sure that right tap works on empty image-->
 		<Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="Gray" Opacity="0.01"/>
-		<TextBlock x:Name="HintText" Text="Failed" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Visibility="Collapsed"/>
+		<TextBlock x:Uid="ErrorText" x:Name="HintText" Text="Error" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Visibility="Collapsed"/>
 		<Image x:Name="MyImage" Stretch="Uniform"/>
 		<controls:ProgressRing x:Name="LoadingRing" Margin="50" MinHeight="100" MinWidth="100"/>
 		<local:TypeHintForImageHolder x:Name="TypeHint"/>

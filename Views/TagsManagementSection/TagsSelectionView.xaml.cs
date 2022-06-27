@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Networks;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using System;
@@ -42,13 +43,13 @@ namespace E621Downloader.Views.TagsManagementSection {
 			private set {
 				order = value;
 				OrderDropDownButton.Content = order switch {
-					QuickOptionsOrder.Default => "Order",
-					QuickOptionsOrder.New => "New",
-					QuickOptionsOrder.Score => "Score",
-					QuickOptionsOrder.Favorite => "Favorite",
-					QuickOptionsOrder.Rank => "Rank",
-					QuickOptionsOrder.Random => "Random",
-					_ => "Not Found",
+					QuickOptionsOrder.Default => "Order".Language(),
+					QuickOptionsOrder.New => "New".Language(),
+					QuickOptionsOrder.Score => "Score".Language(),
+					QuickOptionsOrder.Favorite => "Favorite".Language(),
+					QuickOptionsOrder.Rank => "Rank".Language(),
+					QuickOptionsOrder.Random => "Random".Language(),
+					_ => "Not Found".Language(),
 				};
 			}
 		}
@@ -58,13 +59,13 @@ namespace E621Downloader.Views.TagsManagementSection {
 			private set {
 				type = value;
 				TypeDropDownButton.Content = type switch {
-					QuickOptionsType.All => "Type",
+					QuickOptionsType.All => "Type".Language(),
 					QuickOptionsType.PNG => "PNG",
 					QuickOptionsType.JPG => "JPG",
 					QuickOptionsType.GIF => "GIF",
 					QuickOptionsType.WEBM => "WEBM",
 					QuickOptionsType.ANIM => "ANIM",
-					_ => "Not Found",
+					_ => "Not Found".Language(),
 				};
 			}
 		}
@@ -74,11 +75,11 @@ namespace E621Downloader.Views.TagsManagementSection {
 			private set {
 				rating = value;
 				RatingDropDownButton.Content = rating switch {
-					QuickOptionsRating.All => "Rating",
+					QuickOptionsRating.All => "Rating".Language(),
 					QuickOptionsRating.Safe => "Safe",
 					QuickOptionsRating.Questionable => "Questionable",
 					QuickOptionsRating.Explicit => "Explicit",
-					_ => "Not Found",
+					_ => "Not Found".Language(),
 				};
 			}
 		}
@@ -99,7 +100,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 			}
 		}
 
-		private bool internalChange = false;//throught list selection & quick options click
+		private bool internalChange = false;//through list selection & quick options click
 
 		public TagsSelectionView(ContentDialog dialog, string[] tags) {
 			this.InitializeComponent();

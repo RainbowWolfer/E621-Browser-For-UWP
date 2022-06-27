@@ -19,7 +19,7 @@
 		<TextBox x:Name="InputBox" PlaceholderText="Your List Name" d:Text="Hello World" Height="32" TextChanged="InputBox_TextChanged"/>
 		<StackPanel x:Name="HintPanel" Grid.Row="1" Orientation="Horizontal" Margin="10,10,10,5" HorizontalAlignment="Center" Visibility="Collapsed">
 			<FontIcon Glyph="&#xE946;"/>
-			<TextBlock x:Name="HintText" Text="Error" Margin="10,0,0,0"/>
+			<TextBlock x:Uid="ErrorText" x:Name="HintText" Text="Error" Margin="10,0,0,0"/>
 		</StackPanel>
 		<Grid Grid.Row="2">
 			<Grid.ColumnDefinitions>
@@ -29,13 +29,13 @@
 			<Button x:Name="AddButton" HorizontalAlignment="Stretch" Margin="5" Tapped="AddButton_Tapped" IsEnabled="False">
 				<StackPanel Orientation="Horizontal">
 					<FontIcon x:Name="ConfirmIcon" Glyph="&#xE109;"/>
-					<TextBlock x:Name="ConfirmText" Text="Add" Margin="10,0,0,0"/>
+					<TextBlock x:Uid="AddText" x:Name="ConfirmText" Text="Add" Margin="10,0,0,0"/>
 				</StackPanel>
 			</Button>
 			<Button x:Name="BackButton" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Tapped="BackButton_Tapped">
 				<StackPanel Orientation="Horizontal">
 					<FontIcon Glyph="&#xE0A6;"/>
-					<TextBlock Text="Back" Margin="10,0,0,0"/>
+					<TextBlock x:Uid="BackText" Text="Back" Margin="10,0,0,0"/>
 				</StackPanel>
 			</Button>
 		</Grid>

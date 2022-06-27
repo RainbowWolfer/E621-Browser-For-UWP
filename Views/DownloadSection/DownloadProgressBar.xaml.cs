@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
+using E621Downloader.Pages;
 using E621Downloader.Pages.DownloadSection;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace E621Downloader.Views.DownloadSection {
 			PageParent = parent;
 			Instance = instance;
 			UpdateInfo();
-			NameTextBlock.Text = "Posts: " + instance.PostRef.id;
+			NameTextBlock.Text = "Posts".Language() + ": " + instance.PostRef.id;
 			InfoTextBlock.Text = instance.PostRef.file.url;
 
 			Instance.DedicatedDownloadingAction = (p) => {
@@ -40,10 +41,10 @@ namespace E621Downloader.Views.DownloadSection {
 			};
 			//Debug.WriteLine(Instance.Status);
 			if(Instance.Status == BackgroundTransferStatus.Running) {
-				TextBlock_PauseButton.Text = "Pause";
+				TextBlock_PauseButton.Text = "Pause".Language();
 				FontIcon_PauseButton.Glyph = "\uE769";
 			} else {
-				TextBlock_PauseButton.Text = "Resume";
+				TextBlock_PauseButton.Text = "Resume".Language();
 				FontIcon_PauseButton.Glyph = "\uE102";
 			}
 
@@ -52,7 +53,11 @@ namespace E621Downloader.Views.DownloadSection {
 		private void UpdateInfo() {
 			MyProgressBar.Value = Instance.DownloadProgress;
 			//InfoTextBlock.Text = Instance.PostRef.file.url;
-			PercentageTextBlok.Text = string.Format("{0}%   {1} KB / {2} KB", Instance.Percentage, Instance.ReceivedKB, Instance.TotalKB);
+			if(Instance.TotalBytesToReceive <= 0) {
+				PercentageTextBlok.Text = "Pending".Language() + "...";
+			} else {
+				PercentageTextBlok.Text = string.Format("{0}%   {1} KB / {2} KB", Instance.Percentage, Instance.ReceivedKB, Instance.TotalKB);
+			}
 			if(Instance.TotalBytesToReceive == Instance.BytesReceived && Instance.TotalBytesToReceive != 0) {
 				DownloadingPanel.Visibility = Visibility.Collapsed;
 				DownloadedPanel.Visibility = Visibility.Visible;
@@ -65,11 +70,11 @@ namespace E621Downloader.Views.DownloadSection {
 			//}
 			if(Instance.Status == BackgroundTransferStatus.Running) {
 				Instance.Pause();
-				TextBlock_PauseButton.Text = "Resume";
+				TextBlock_PauseButton.Text = "Resume".Language();
 				FontIcon_PauseButton.Glyph = "\uE102";
 			} else {
 				Instance.Resume();
-				TextBlock_PauseButton.Text = "Pause";
+				TextBlock_PauseButton.Text = "Pause".Language();
 				FontIcon_PauseButton.Glyph = "\uE769";
 			}
 		}
@@ -79,7 +84,14 @@ namespace E621Downloader.Views.DownloadSection {
 		}
 
 		private void OpenButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			MainPage.NavigateToPicturePage(Instance.metaFile.MyPost, Array.Empty<string>());
+			MainPage.NavigateToPicturePage(
+			new MixPost(PathType.Local, Instance.metaFile.FilePath) {
+				MetaFile = Instance.metaFile,
+				ID = Instance.metaFile.MyPost.id,
+				PostRef = Instance.metaFile.MyPost,
+			},
+			Array.Empty<string>()
+		);
 		}
 
 		private void InfoTextBlock_RightTapped(object sender, RightTappedRoutedEventArgs e) {
@@ -87,11 +99,11 @@ namespace E621Downloader.Views.DownloadSection {
 				Placement = FlyoutPlacementMode.Bottom,
 			};
 			MenuFlyoutItem copy_item = new() {
-				Text = "Copy URL",
+				Text = "Copy URL".Language(),
 				Icon = new FontIcon() { Glyph = "\uE8C8" },
 			};
 			flyout.Items.Add(copy_item);
-			flyout.ShowAt(sender as TextBlock);
+			flyout.ShowAt(sender as TextBlock, e.GetPosition(sender as TextBlock));
 		}
 	}
 }

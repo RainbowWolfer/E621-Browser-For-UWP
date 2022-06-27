@@ -13,11 +13,11 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Grid>
-		<controls:NavigationView x:Name="MainNavigationView" IsBackEnabled="False" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" ItemInvoked="MainNavigationView_ItemInvoked" PaneTitle="Folders" IsPaneVisible="True">
+		<controls:NavigationView x:Uid="FoldersPaneTitle" x:Name="MainNavigationView" IsBackEnabled="False" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" ItemInvoked="MainNavigationView_ItemInvoked" PaneTitle="Folders" IsPaneVisible="True">
 			<controls:NavigationView.MenuItems>
-				<controls:NavigationViewItem x:Name="FilterItem" Icon="Filter" Content="Filter"/>
-				<controls:NavigationViewItem x:Name="RootItem" Icon="Home" Content="Root"/>
-				<controls:NavigationViewItemHeader Content="Opened Tabs"/>
+				<controls:NavigationViewItem x:Uid="FilterItemContent" x:Name="FilterItem" Icon="Filter" Content="Filter"/>
+				<controls:NavigationViewItem x:Uid="RootItemContent" x:Name="RootItem" Icon="Home" Content="Root"/>
+				<controls:NavigationViewItemHeader x:Uid="OpenedTabsContent" Content="Opened Tabs"/>
 			</controls:NavigationView.MenuItems>
 			<controls:NavigationView.PaneFooter>
 				<StackPanel>
@@ -32,13 +32,13 @@
 						</Button>
 						<views:LockableToggleButton x:Name="ListViewTypeToggle" Grid.Column="1" HorizontalAlignment="Stretch" CornerRadius="4" Margin="5" LockToggle="True" IsChecked="True" Click="ListViewTypeToggle_Click">
 							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="List View"/>
+								<TextBlock x:Uid="ListViewText" Text="List View"/>
 								<FontIcon Glyph="&#xE14C;" Margin="10,0,0,0"/>
 							</StackPanel>
 						</views:LockableToggleButton>
 						<views:LockableToggleButton x:Name="GridViewTypeToggle" Grid.Column="2" HorizontalAlignment="Stretch" CornerRadius="4" Margin="5" LockToggle="True" Click="GridViewTypeToggle_Click">
 							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="Grid View"/>
+								<TextBlock x:Uid="GridViewText" Text="Grid View"/>
 								<FontIcon Glyph="&#xE154;" Margin="10,0,0,0"/>
 							</StackPanel>
 						</views:LockableToggleButton>

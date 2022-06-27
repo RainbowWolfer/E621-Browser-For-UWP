@@ -10,7 +10,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Grid>
-		<TextBlock x:Name="TitleTextBlock" Text="No Downloads Currently" FontSize="48" HorizontalAlignment="Center" Visibility="Visible" Margin="20"/>
+		<TextBlock x:Uid="NoDownloadsCurrentlyText" x:Name="TitleTextBlock" Text="No Downloads Currently" FontSize="48" HorizontalAlignment="Center" Visibility="Visible" Margin="20"/>
 		<GridView x:Name="MainGridView" SelectionMode="None" IsItemClickEnabled="True" ItemClick="MainGridView_ItemClick" Padding="15"/>
 	</Grid>
 </Page>

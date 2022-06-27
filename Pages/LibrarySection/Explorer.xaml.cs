@@ -144,7 +144,7 @@ namespace E621Downloader.Pages.LibrarySection {
 				return;
 			}
 			await Launcher.LaunchFolderAsync(folder, new FolderLauncherOptions() {
-				DesiredRemainingView = ViewSizePreference.UseMore
+				DesiredRemainingView = ViewSizePreference.UseMore,
 			});
 		}
 
@@ -168,9 +168,9 @@ namespace E621Downloader.Pages.LibrarySection {
 
 		private async Task LoadImages(LibraryImagesArgs imagesArgs) {
 			IsLoading = true;
-			LoadingText.Text = "Getting Folder";
+			LoadingText.Text = "Getting Folder".Language();
 			var list = await Local.GetMetaFiles(imagesArgs.Belonger, (next, i, length) => {
-				LoadingText.Text = $"Loading File\n({next.Name})\n{i}/{length}";
+				LoadingText.Text = "Loading File".Language() + $"\n({next.Name})\n{i}/{length}";
 			});
 			imagesArgs.Files = list;
 			IsLoading = false;
@@ -178,7 +178,7 @@ namespace E621Downloader.Pages.LibrarySection {
 
 		private async Task LoadDownloadFolders(LibraryFoldersArgs folderArgs) {
 			IsLoading = true;
-			LoadingText.Text = "Loading Folders";
+			LoadingText.Text = "Loading Folders".Language();
 			if(Local.DownloadFolder != null) {
 				StorageFolder[] folders = await Local.GetDownloadsFolders();
 				folderArgs.Folders = folders.ToList();
@@ -193,7 +193,7 @@ namespace E621Downloader.Pages.LibrarySection {
 			}
 			files = (await OrderImagesAsync(files, libraryPage.OrderType, libraryPage.Order, () => {
 				IsLoading = true;
-				LoadingText.Text = "Sorting";
+				LoadingText.Text = "Sorting".Language();
 			}, () => {
 				IsLoading = false;
 			})).ToList();
@@ -207,7 +207,7 @@ namespace E621Downloader.Pages.LibrarySection {
 			}
 			folders = (await OrderFolders(folders, libraryPage.OrderType, libraryPage.Order, () => {
 				IsLoading = true;
-				LoadingText.Text = "Sorting";
+				LoadingText.Text = "Sorting".Language();
 			}, () => {
 				IsLoading = false;
 			})).ToList();
@@ -295,8 +295,8 @@ namespace E621Downloader.Pages.LibrarySection {
 			return list;
 		}
 
-		public static void CreateItemContextMenu(){
-			
+		public static void CreateItemContextMenu() {
+
 		}
 
 		public void RefreshRequest() {

@@ -20,7 +20,7 @@
 			<ColumnDefinition Width="auto"/>
 		</Grid.ColumnDefinitions>
 		<FontIcon x:Name="ItemIcon" Glyph="&#xE838;" FontSize="30" Margin="10" VerticalAlignment="Center"/>
-		<TextBlock x:Name="ItemNameText" Text="Item Name Here" Grid.Column="1" VerticalAlignment="Center" FontSize="24" Margin="5"/>
+		<TextBlock x:Name="ItemNameText" d:Text="Item Name Here" Grid.Column="1" VerticalAlignment="Center" FontSize="24" Margin="5"/>
 		<Border Grid.Column="2" Margin="20,5,20,5" CornerRadius="8">
 			<Image x:Name="ItemImage" d:Source="/Assets/e612.png" Stretch="UniformToFill" VerticalAlignment="Center"/>
 		</Border>

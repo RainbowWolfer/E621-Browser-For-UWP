@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Networks;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using System;
@@ -103,18 +104,18 @@ namespace E621Downloader.Views.CommentsSection {
 					if(result.Result == HttpResultType.Success) {
 						bi = new BitmapImage();
 						await bi.SetSourceAsync(result.Content);
-						ToolTipService.SetToolTip(Avatar, $"Post: {User.avatar_id}");
+						ToolTipService.SetToolTip(Avatar, "Post".Language() + $": {User.avatar_id}");
 						Avatar.Tapped += Avatar_Tapped;
 					} else {
 						bi = App.DefaultAvatar;
-						ToolTipService.SetToolTip(Avatar, $"Avatar Load Fail\n{result.Helper}");
+						ToolTipService.SetToolTip(Avatar, "Avatar Load Fail".Language() + $"\n{result.Helper}");
 					}
 				} catch {
 					return;
 				}
 			} else {
 				bi = App.DefaultAvatar;
-				ToolTipService.SetToolTip(Avatar, "No Avatar");
+				ToolTipService.SetToolTip(Avatar, "No Avatar".Language());
 			}
 			AvatorLoadingRing.IsActive = false;
 			Avatar.Source = bi;
@@ -128,7 +129,7 @@ namespace E621Downloader.Views.CommentsSection {
 			if(User == null || User.avatar_id == null) {
 				return;
 			}
-			MainPage.CreateInstantDialog("Please Wait...", $"Loading Post: {User.avatar_id}");
+			MainPage.CreateInstantDialog("Please Wait".Language() + "...", "Loading Post".Language() + $": {User.avatar_id}");
 			Post post = await Post.GetPostByIDAsync(Cts.Token, User.avatar_id);
 			MainPage.HideInstantDialog();
 			MainPage.NavigateToPicturePage(post, Array.Empty<string>());

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using E621Downloader.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -69,9 +70,7 @@ namespace E621Downloader.Views {
 
 		private async void Button_Tapped(object sender, TappedRoutedEventArgs e) {
 			try {
-				if(!await Launcher.LaunchUriAsync(new Uri(url))) {
-					await MainPage.CreatePopupDialog("Error", "Could not Open Default Browser");
-				}
+				await Methods.OpenBrowser(url);
 			} catch { }
 		}
 

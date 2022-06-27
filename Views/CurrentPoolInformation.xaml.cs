@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Locals;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace E621Downloader.Views {
 	public sealed partial class CurrentPoolInformation: UserControl {
 		public E621Pool Pool { get; private set; }
 		public string ID => $"#{Pool.id}";
-		public string Description => string.IsNullOrWhiteSpace(Pool.description) ? "None" : Pool.description;
+		public string Description => string.IsNullOrWhiteSpace(Pool.description) ? "None".Language() : Pool.description;
 		private bool initializing = true;
 		public CurrentPoolInformation(E621Pool pool) {
 			this.InitializeComponent();
@@ -35,7 +36,7 @@ namespace E621Downloader.Views {
 				return;
 			}
 			bool isOn = (sender as ToggleButton).IsChecked.Value;
-			FollowText.Text = isOn ? "Following" : "Follow";
+			FollowText.Text = isOn ? "Following".Language() : "Follow".Language();
 			if(isOn) {
 				if(!Local.Listing.CheckFollowingList(Pool.Tag)) {
 					await Local.Listing.AddFollowingList(Pool.Tag);

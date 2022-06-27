@@ -222,7 +222,7 @@
 						<RowDefinition Height="*"/>
 						<RowDefinition Height="auto"/>
 					</Grid.RowDefinitions>
-					<TextBlock x:Uid="NEWText" Text="NEW" Style="{StaticResource SectionTitle}"/>
+					<TextBlock x:Uid="NEWALLCAPText" Text="NEW" Style="{StaticResource SectionTitle}"/>
 					<TextBlock x:Uid="WhatsNewText" Text="What's new in this version" Grid.Row="1" TextAlignment="Center" FontSize="18"/>
 					<ScrollViewer HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Grid.Row="2">
 						<StackPanel HorizontalAlignment="Stretch" Margin="20">

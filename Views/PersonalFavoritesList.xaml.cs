@@ -76,10 +76,10 @@ namespace E621Downloader.Views {
 				if(ShowE621FavoriteButton) {
 					E621FavoriteButton.IsChecked = value;
 					if(value) {
-						FavoriteText.Text = "E621 Favorited";
+						FavoriteText.Text = "E621 Favorited".Language();
 						FavoriteIcon.Glyph = "\uEB52";
 					} else {
-						FavoriteText.Text = "E621 Favorite";
+						FavoriteText.Text = "E621 Favorite".Language();
 						FavoriteIcon.Glyph = "\uEB51";
 					}
 				}
@@ -224,16 +224,16 @@ namespace E621Downloader.Views {
 				return;
 			}
 			E621FavoriteButton.IsEnabled = false;
-			FavoriteText.Text = "Pending";
+			FavoriteText.Text = "Pending".Language();
 			FavoriteIcon.Glyph = "\uE10C";
 
 			if(E621FavoriteButton.IsChecked.Value) {
 				HttpResult<string> result = await Favorites.PostAsync(path);
 				if(result.Result == HttpResultType.Success) {
-					FavoriteText.Text = "E621 Favorited";
+					FavoriteText.Text = "E621 Favorited".Language();
 					FavoriteIcon.Glyph = "\uEB52";
 				} else {
-					FavoriteText.Text = "E621 Favorite";
+					FavoriteText.Text = "E621 Favorite".Language();
 					FavoriteIcon.Glyph = "\uEB51";
 					MainPage.CreateTip(MainGrid, result.StatusCode.ToString(), result.Helper, Symbol.Important, "OK");
 					E621FavoriteButton.IsChecked = false;
@@ -241,12 +241,12 @@ namespace E621Downloader.Views {
 			} else {
 				HttpResult<string> result = await Favorites.DeleteAsync(path);
 				if(result.Result == HttpResultType.Success) {
-					FavoriteText.Text = "E621 Favorite";
+					FavoriteText.Text = "E621 Favorite".Language();
 					FavoriteIcon.Glyph = "\uEB51";
 				} else {
-					FavoriteText.Text = "E621 Favorited";
+					FavoriteText.Text = "E621 Favorited".Language();
 					FavoriteIcon.Glyph = "\uEB52";
-					MainPage.CreateTip(MainGrid, result.StatusCode.ToString(), result.Helper, Symbol.Important, "OK");
+					MainPage.CreateTip(MainGrid, result.StatusCode.ToString(), result.Helper, Symbol.Important, "OK".Language());
 					E621FavoriteButton.IsChecked = true;
 				}
 			}

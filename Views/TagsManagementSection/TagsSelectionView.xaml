@@ -30,37 +30,37 @@
 				<RowDefinition Height="auto" MinHeight="10"/>
 				<RowDefinition Height="auto"/>
 			</Grid.RowDefinitions>
-			<controls:DropDownButton x:Name="OrderDropDownButton" Content="Order" HorizontalAlignment="Stretch" Margin="5">
+			<controls:DropDownButton x:Uid="DefaultOrderButtonContent" x:Name="OrderDropDownButton" Content="Order" HorizontalAlignment="Stretch" Margin="5">
 				<controls:DropDownButton.Flyout>
 					<MenuFlyout Placement="Bottom">
-						<MenuFlyoutItem x:Name="ItemOrderDefault" Text="Default" Click="ItemOrderDefault_Click"/>
-						<MenuFlyoutItem x:Name="ItemOrderNew" Text="New" Click="ItemOrderNew_Click"/>
-						<MenuFlyoutItem x:Name="ItemOrderScore" Text="Score" Click="ItemOrderScore_Click"/>
-						<MenuFlyoutItem x:Name="ItemOrderFavorite" Text="Favorite" Click="ItemOrderFavorite_Click"/>
-						<MenuFlyoutItem x:Name="ItemOrderRank" Text="Rank" Click="ItemOrderRank_Click"/>
-						<MenuFlyoutItem x:Name="ItemOrderRandom" Text="Random" Click="ItemOrderRandom_Click"/>
+						<MenuFlyoutItem x:Uid="DefaultText" x:Name="ItemOrderDefault" Text="Default" Click="ItemOrderDefault_Click"/>
+						<MenuFlyoutItem x:Uid="NewText" x:Name="ItemOrderNew" Text="New" Click="ItemOrderNew_Click"/>
+						<MenuFlyoutItem x:Uid="ScoreText" x:Name="ItemOrderScore" Text="Score" Click="ItemOrderScore_Click"/>
+						<MenuFlyoutItem x:Uid="FavoriteText" x:Name="ItemOrderFavorite" Text="Favorite" Click="ItemOrderFavorite_Click"/>
+						<MenuFlyoutItem x:Uid="RankText" x:Name="ItemOrderRank" Text="Rank" Click="ItemOrderRank_Click"/>
+						<MenuFlyoutItem x:Uid="RandomText" x:Name="ItemOrderRandom" Text="Random" Click="ItemOrderRandom_Click"/>
 					</MenuFlyout>
 				</controls:DropDownButton.Flyout>
 			</controls:DropDownButton>
-			<controls:DropDownButton x:Name="TypeDropDownButton" Content="Type" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1">
+			<controls:DropDownButton x:Uid="DefaultTypeButtonContent" x:Name="TypeDropDownButton" Content="Type" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1">
 				<controls:DropDownButton.Flyout>
 					<MenuFlyout Placement="Bottom">
-						<MenuFlyoutItem x:Name="ItemTypeAll" Text="All" Click="ItemTypeAll_Click"/>
-						<MenuFlyoutItem x:Name="ItemTypeJPG" Text="JPG" Click="ItemTypeJPG_Click"/>
-						<MenuFlyoutItem x:Name="ItemTypePNG" Text="PNG" Click="ItemTypePNG_Click"/>
-						<MenuFlyoutItem x:Name="ItemTypeGIF" Text="GIF" Click="ItemTypeGIF_Click"/>
-						<MenuFlyoutItem x:Name="ItemTypeWEBM" Text="WEBM" Click="ItemTypeWEBM_Click"/>
-						<MenuFlyoutItem x:Name="ItemTypeANIM" Text="ANIM" IsEnabled="False" Click="ItemTypeANIM_Click"/>
+						<MenuFlyoutItem x:Uid="AllText" x:Name="ItemTypeAll" Text="All" Click="ItemTypeAll_Click"/>
+						<MenuFlyoutItem x:Uid="JPGText" x:Name="ItemTypeJPG" Text="JPG" Click="ItemTypeJPG_Click"/>
+						<MenuFlyoutItem x:Uid="PNGText" x:Name="ItemTypePNG" Text="PNG" Click="ItemTypePNG_Click"/>
+						<MenuFlyoutItem x:Uid="GIFText" x:Name="ItemTypeGIF" Text="GIF" Click="ItemTypeGIF_Click"/>
+						<MenuFlyoutItem x:Uid="WEBMText" x:Name="ItemTypeWEBM" Text="WEBM" Click="ItemTypeWEBM_Click"/>
+						<MenuFlyoutItem x:Uid="ANIMText" x:Name="ItemTypeANIM" Text="ANIM" IsEnabled="False" Click="ItemTypeANIM_Click"/>
 					</MenuFlyout>
 				</controls:DropDownButton.Flyout>
 			</controls:DropDownButton>
-			<controls:DropDownButton x:Name="RatingDropDownButton" Content="Rating" HorizontalAlignment="Stretch" Margin="5" Grid.Column="2">
+			<controls:DropDownButton x:Uid="DefaultRatingButtonContent" x:Name="RatingDropDownButton" Content="Rating" HorizontalAlignment="Stretch" Margin="5" Grid.Column="2">
 				<controls:DropDownButton.Flyout>
 					<MenuFlyout Placement="Bottom">
-						<MenuFlyoutItem x:Name="ItemRatingAll" Text="All" Click="ItemRatingAll_Click"/>
-						<MenuFlyoutItem x:Name="ItemRatingSafe" Text="Safe" Click="ItemRatingSafe_Click"/>
-						<MenuFlyoutItem x:Name="ItemRatingQuestionable" Text="Questionable" Click="ItemRatingQuestionable_Click"/>
-						<MenuFlyoutItem x:Name="ItemRatingExplicit" Text="Explicit" Click="ItemRatingExplicit_Click"/>
+						<MenuFlyoutItem x:Uid="AllText" x:Name="ItemRatingAll" Text="All" Click="ItemRatingAll_Click"/>
+						<MenuFlyoutItem x:Uid="SafeText" x:Name="ItemRatingSafe" Text="Safe" Click="ItemRatingSafe_Click"/>
+						<MenuFlyoutItem x:Uid="QuestionableText" x:Name="ItemRatingQuestionable" Text="Questionable" Click="ItemRatingQuestionable_Click"/>
+						<MenuFlyoutItem x:Uid="ExplicitText" x:Name="ItemRatingExplicit" Text="Explicit" Click="ItemRatingExplicit_Click"/>
 					</MenuFlyout>
 				</controls:DropDownButton.Flyout>
 			</controls:DropDownButton>
@@ -70,14 +70,14 @@
 					<ColumnDefinition Width="auto"/>
 				</Grid.ColumnDefinitions>
 				<TextBox x:Name="MySuggestBox" SelectionChanged="MySuggestBox_SelectionChanged" TextChanged="MySuggestBox_TextChanged" PreviewKeyDown="MySuggestBox_PreviewKeyDown" FontSize="22" Height="40" CornerRadius="4,0,0,4" Loaded="MySuggestBox_Loaded" TabIndex="0"/>
-				<Button x:Name="MoreButton" Grid.Column="1" Height="40" Width="40" FontSize="24" Padding="0" CornerRadius="0,4,4,0" ToolTipService.ToolTip="More Options">
+				<Button x:Uid="MoreOptionsToolTip" x:Name="MoreButton" Grid.Column="1" Height="40" Width="40" FontSize="24" Padding="0" CornerRadius="0,4,4,0" ToolTipService.ToolTip="More Options">
 					<FontIcon Glyph="&#xE10C;"/>
 					<Button.Flyout>
 						<Flyout x:Name="MoreFlyout" Placement="Bottom">
 							<StackPanel>
 								<TextBlock Text="More Options" Margin="5"/>
-								<CheckBox x:Name="IsInPoolBox" Content="In Pool" Click="IsInPoolBox_Click"/>
-								<CheckBox x:Name="IsDeletedBox" Content="Deleted" Click="IsDeletedBOx_Click"/>
+								<CheckBox x:Uid="InPoolContent" x:Name="IsInPoolBox" Content="In Pool" Click="IsInPoolBox_Click"/>
+								<CheckBox x:Uid="DeletedContent" x:Name="IsDeletedBox" Content="Deleted" Click="IsDeletedBOx_Click"/>
 							</StackPanel>
 						</Flyout>
 					</Button.Flyout>
@@ -89,22 +89,22 @@
 				<Button.Content>
 					<StackPanel Orientation="Horizontal">
 						<FontIcon Glyph="&#xE721;" FontSize="16" Margin="0,0,10,0"/>
-						<TextBlock Text="Search" FontSize="16"/>
+						<TextBlock x:Uid="SearchText" Text="Search" FontSize="16"/>
 					</StackPanel>
 				</Button.Content>
 			</Button>
 			<controls:DropDownButton x:Name="QuickOptionsDropDownButton" HorizontalAlignment="Stretch" Margin="5,10,5,0" Grid.Column="1" Grid.Row="3">
 				<StackPanel Orientation="Horizontal">
-					<TextBlock Text="More" FontSize="16"/>
+					<TextBlock x:Uid="MoreText" Text="More" FontSize="16"/>
 				</StackPanel>
 				<controls:DropDownButton.Flyout>
 					<MenuFlyout Placement="Bottom">
-						<MenuFlyoutItem x:Name="HotItem" Text="Hot" Click="HotItem_Click">
+						<MenuFlyoutItem x:Uid="HotText" x:Name="HotItem" Text="Hot" Click="HotItem_Click">
 							<MenuFlyoutItem.Icon>
 								<FontIcon Glyph="&#x1F525;" FontFamily="Segoe UI Symbol"/>
 							</MenuFlyoutItem.Icon>
 						</MenuFlyoutItem>
-						<MenuFlyoutItem x:Name="RandomItem" Text="Random" Click="RandomItem_Click">
+						<MenuFlyoutItem x:Uid="RandomText" x:Name="RandomItem" Text="Random" Click="RandomItem_Click">
 							<MenuFlyoutItem.Icon>
 								<FontIcon Glyph="&#x1F3B2;" FontFamily="Segoe UI Symbol"/>
 							</MenuFlyoutItem.Icon>
@@ -116,7 +116,7 @@
 				<Button.Content>
 					<StackPanel Orientation="Horizontal">
 						<FontIcon Glyph="&#xE72B;" FontSize="16" Margin="0,0,10,0"/>
-						<TextBlock Text="Back" FontSize="16"/>
+						<TextBlock x:Uid="BackText" Text="Back" FontSize="16"/>
 					</StackPanel>
 				</Button.Content>
 			</Button>

@@ -87,7 +87,7 @@ namespace E621Downloader.Pages.DownloadSection {
 		}
 
 		public void UpdateDownloadsInfo() {
-			DownloadsInfoBlock.Text = $"Downloads {list.Count(d => d.Status == BackgroundTransferStatus.Completed || d.DownloadProgress >= 1)}/{list.Count}";
+			DownloadsInfoBlock.Text = "Downloads".Language() + $" {list.Count(d => d.Status == BackgroundTransferStatus.Completed || d.DownloadProgress >= 1)}/{list.Count}";
 		}
 
 		private async void OpenFolderButton_Tapped(object sender, TappedRoutedEventArgs e) {

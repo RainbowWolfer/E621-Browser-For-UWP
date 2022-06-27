@@ -28,38 +28,38 @@
 		<StackPanel Margin="5">
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 				<FontIcon Glyph="&#xEE93;"/>
-				<TextBlock Text="Created Date" FontSize="20" Margin="10,0,0,0"/>
+				<TextBlock x:Uid="CreatedDate2Text" Text="Created Date" FontSize="20" Margin="10,0,0,0"/>
 			</StackPanel>
 			<TextBlock x:Name="CreatedDateText" Text="2022-01-12 21:06:22" Margin="5" TextAlignment="Center"/>
 			<Rectangle Style="{StaticResource Spliter}"/>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 				<FontIcon Glyph="&#xECA5;"/>
-				<TextBlock Text="Size" FontSize="20" Margin="10,0,0,0"/>
+				<TextBlock x:Uid="SizeText" Text="Size" FontSize="20" Margin="10,0,0,0"/>
 			</StackPanel>
 			<TextBlock x:Name="SizeText" Text="1920 x 1080 ( 641KB ) " Margin="5" TextAlignment="Center"/>
 			<Rectangle Style="{StaticResource Spliter}"/>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 				<FontIcon Glyph="&#xE2AF;"/>
-				<TextBlock Text="Approver ID" FontSize="20" Margin="10,0,0,0"/>
+				<TextBlock x:Uid="ApproverIDText" Text="Approver ID" FontSize="20" Margin="10,0,0,0"/>
 			</StackPanel>
 			<TextBlock x:Name="ApproverText" Text="307200" Margin="5" TextAlignment="Center"/>
 			<Rectangle Style="{StaticResource Spliter}"/>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 				<FontIcon Glyph="&#xE898;"/>
-				<TextBlock Text="Uploader ID" FontSize="20" Margin="10,0,0,0"/>
+				<TextBlock x:Uid="UploaderIDText" Text="Uploader ID" FontSize="20" Margin="10,0,0,0"/>
 			</StackPanel>
 			<TextBlock x:Name="UploaderText" Text="307200" Margin="5" TextAlignment="Center"/>
 		</StackPanel>
 		<StackPanel Margin="5" Grid.Column="1">
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 				<FontIcon Glyph="&#x1F4C5;" FontFamily="Segoe UI Symbol"/>
-				<TextBlock Text="Updated Date" FontSize="20" Margin="10,0,0,0"/>
+				<TextBlock x:Uid="UpdatedDateText" Text="Updated Date" FontSize="20" Margin="10,0,0,0"/>
 			</StackPanel>
 			<TextBlock Name="UpdatedDateText" Text="2022-01-12 21:06:22" Margin="5" TextAlignment="Center"/>
 			<Rectangle Style="{StaticResource Spliter}"/>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 				<FontIcon Glyph="&#xE8EC;"/>
-				<TextBlock Text="Tags Count" FontSize="20" Margin="10,0,0,0"/>
+				<TextBlock x:Uid="TagsCountText" Text="Tags Count" FontSize="20" Margin="10,0,0,0"/>
 			</StackPanel>
 			<Grid Margin="0,5,-40,0">
 				<Grid.ColumnDefinitions>
@@ -76,14 +76,14 @@
 					<RowDefinition Height="auto"/>
 					<RowDefinition Height="auto"/>
 				</Grid.RowDefinitions>
-				<TextBlock Text="Artist   - " Grid.Row="0" TextAlignment="Right"/>
-				<TextBlock Text="Copyright   - " Grid.Row="1" TextAlignment="Right"/>
-				<TextBlock Text="Species   - " Grid.Row="2" TextAlignment="Right"/>
-				<TextBlock Text="Character   - " Grid.Row="3" TextAlignment="Right"/>
-				<TextBlock Text="General   - " Grid.Row="4" TextAlignment="Right"/>
-				<TextBlock Text="Meta   - " Grid.Row="5" TextAlignment="Right"/>
-				<TextBlock Text="Invalid   - " Grid.Row="6" TextAlignment="Right"/>
-				<TextBlock Text="Lore   - " Grid.Row="7" TextAlignment="Right"/>
+				<TextBlock x:Uid="ArtistSlashText" Text="Artist   - " Grid.Row="0" TextAlignment="Right"/>
+				<TextBlock x:Uid="CopyrightSlashText" Text="Copyright   - " Grid.Row="1" TextAlignment="Right"/>
+				<TextBlock x:Uid="SpeciesSlashText" Text="Species   - " Grid.Row="2" TextAlignment="Right"/>
+				<TextBlock x:Uid="CharacterSlashText" Text="Character   - " Grid.Row="3" TextAlignment="Right"/>
+				<TextBlock x:Uid="GeneralSlashText" Text="General   - " Grid.Row="4" TextAlignment="Right"/>
+				<TextBlock x:Uid="MetaSlashText" Text="Meta   - " Grid.Row="5" TextAlignment="Right"/>
+				<TextBlock x:Uid="InvalidSlashText" Text="Invalid   - " Grid.Row="6" TextAlignment="Right"/>
+				<TextBlock x:Uid="LoreSlashText" Text="Lore   - " Grid.Row="7" TextAlignment="Right"/>
 				<TextBlock x:Name="ArtistTag" Text="1" Grid.Column="1" Grid.Row="0" Margin="10,0,0,0"/>
 				<TextBlock x:Name="CopyrightTag" Text="1" Grid.Column="1" Grid.Row="1" Margin="10,0,0,0"/>
 				<TextBlock x:Name="SpeciesTag" Text="1" Grid.Column="1" Grid.Row="2" Margin="10,0,0,0"/>

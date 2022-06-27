@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Locals;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
 using Microsoft.UI.Xaml.Controls;
@@ -113,7 +114,7 @@ namespace E621Downloader.Views.ListingManager {
 				PasteImportButton.IsEnabled = enable;
 				PasteImportButton.Tag = text;
 				if(PasteImportButton.IsEnabled) {
-					ToolTipService.SetToolTip(PasteImportButton, $"Paste Text:\n{text}");
+					ToolTipService.SetToolTip(PasteImportButton, "Paste Text".Language() + $":\n{text}");
 				} else {
 					ToolTipService.SetToolTip(PasteImportButton, "");
 				}
@@ -121,7 +122,7 @@ namespace E621Downloader.Views.ListingManager {
 				ImportClipboardItem.IsEnabled = enable;
 				ImportClipboardItem.Tag = text;
 				if(ImportClipboardItem.IsEnabled) {
-					ToolTipService.SetToolTip(ImportClipboardItem, $"Paste Text:\n{text}");
+					ToolTipService.SetToolTip(ImportClipboardItem, "Paste Text".Language() + $":\n{text}");
 				} else {
 					ToolTipService.SetToolTip(ImportClipboardItem, "");
 				}
@@ -238,7 +239,8 @@ namespace E621Downloader.Views.ListingManager {
 			} else {
 				DeleteConfirmTeachingTip.PreferredPlacement = TeachingTipPlacementMode.Center;
 			}
-			DeleteConfirmTeachingTip.Subtitle = $"Are you sure to delete ({tag.Name}) with {tag.Tags.Count} tags";
+			//DeleteConfirmTeachingTip.Subtitle = $"Are you sure to delete ({tag.Name}) with {tag.Tags.Count} tags";
+			DeleteConfirmTeachingTip.Subtitle = "Are you sure to delete ({{0}}) with {{1}} tags".Language(tag.Name, tag.Tags.Count);
 			DeleteConfirmTeachingTip.IsOpen = true;
 		}
 
@@ -252,7 +254,7 @@ namespace E621Downloader.Views.ListingManager {
 				result = tag.Trim().Split('\n', '\r', '\t', ' ').ToList();
 			}
 			if(error) {
-				CenteredTeachingTip.Subtitle = "Paste Format Error";
+				CenteredTeachingTip.Subtitle = "Paste Format Error".Language();
 				CenteredTeachingTip.IsOpen = true;
 			} else {
 				OnPasteImport?.Invoke(result.ToArray());
@@ -333,15 +335,15 @@ namespace E621Downloader.Views.ListingManager {
 			}
 			if(string.IsNullOrWhiteSpace(text)) {
 				RenameHint.Visibility = Visibility.Visible;
-				RenameHint.Text = "Cannot be empty";
+				RenameHint.Text = "Cannot be empty".Language();
 				return;
 			} else if(text == originalName) {
 				RenameHint.Visibility = Visibility.Visible;
-				RenameHint.Text = "Same as before";
+				RenameHint.Text = "Same as before".Language();
 				return;
 			} else if(Items.Any(i => i.Name == text)) {
 				RenameHint.Visibility = Visibility.Visible;
-				RenameHint.Text = "Already existed";
+				RenameHint.Text = "Already existed".Language();
 				return;
 			}
 			OnListingRename?.Invoke(item, text);
@@ -439,7 +441,8 @@ namespace E621Downloader.Views.ListingManager {
 			if(current == null) {
 				return;
 			}
-			CenteredClearAllComfirmTeachingTip.Subtitle = $"Are you sure to delete {Tags.Count} tags in ({current.Name}) list?";
+			//CenteredClearAllComfirmTeachingTip.Subtitle = $"Are you sure to delete {Tags.Count} tags in ({current.Name}) list?";
+			CenteredClearAllComfirmTeachingTip.Subtitle = "Are you sure to delete {{0}} tags in ({{1}}) list?".Language(Tags.Count, current.Name);
 			CenteredClearAllComfirmTeachingTip.IsOpen = true;
 		}
 
@@ -455,8 +458,9 @@ namespace E621Downloader.Views.ListingManager {
 			if(E621User.Current == null) {
 				return;
 			}
-			CenteredUploadComfirmTeachingTip.Subtitle = $"Upload User: ( {E621User.Current.name} )\n" +
-				$"Warning! This action will override the tags existing in the cloud, do you want to continue?";
+			//CenteredUploadComfirmTeachingTip.Subtitle = $"Upload User: ( {E621User.Current.name} )\n" +
+			//	$"Warning! This action will override the tags existing in the cloud, do you want to continue?";
+			CenteredUploadComfirmTeachingTip.Subtitle = "Upload User: ( {{0}} )\nWarning! This action will override the tags existing in the cloud, do you want to continue?".Language(E621User.Current.name);
 			CenteredUploadComfirmTeachingTip.IsOpen = true;
 		}
 
@@ -479,7 +483,7 @@ namespace E621Downloader.Views.ListingManager {
 				new KeyValuePair<string, string>("user[blacklisted_tags]", tags)
 			);
 			bool success = result.Result == HttpResultType.Success;
-			CenteredUploadResultTeachingTip.Subtitle = success ? $"Success" : $"Error";
+			CenteredUploadResultTeachingTip.Subtitle = success ? "Success".Language() : "Error".Language();
 			CenteredUploadResultTeachingTip.IsOpen = true;
 			if(cloudLoadingBar != null) {
 				cloudLoadingBar.Visibility = Visibility.Collapsed;
@@ -500,14 +504,14 @@ namespace E621Downloader.Views.ListingManager {
 				result = tag.Trim().Split('\n', '\r', '\t', ' ').ToList();
 			}
 			if(error) {
-				CenteredTeachingTip.Subtitle = "Paste Format Error";
+				CenteredTeachingTip.Subtitle = "Paste Format Error".Language();
 				CenteredTeachingTip.IsOpen = true;
 			} else {
 				if(current.Tags.Count == 0) {
 					current.Tags = result.ToList();
 					LoadTags(current);
 				} else {
-					CenteredTagsOverrideConfirmTeachingTip.Subtitle = "Are you sure to override current tags?";
+					CenteredTagsOverrideConfirmTeachingTip.Subtitle = "Are you sure to override current tags?".Language();
 					CenteredTagsOverrideConfirmTeachingTip.Tag = result.ToList();
 					CenteredTagsOverrideConfirmTeachingTip.IsOpen = true;
 				}
@@ -541,7 +545,7 @@ namespace E621Downloader.Views.ListingManager {
 				if(result == null) {
 					return;
 				}
-				content = $"Post Count: {result.post_count}      Tag Category: {E621Tag.GetCategory(result.category)}";
+				content = "Post Count".Language() + $": {result.post_count}      " + "Tag Category".Language() + $": {E621Tag.GetCategory(result.category)}";
 				tagsInfo.Add(tag.Tag, content);
 			}
 			if(string.IsNullOrEmpty(content)) {

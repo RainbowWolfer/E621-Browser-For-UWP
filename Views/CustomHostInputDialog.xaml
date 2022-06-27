@@ -17,7 +17,7 @@
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
-		<TextBox x:Name="Input" PlaceholderText="Host Name" Margin="5" TextChanged="Input_TextChanged" FontSize="26"/>
+		<TextBox x:Uid="HostNamePlaceholder" x:Name="Input" PlaceholderText="Host Name" Margin="5" TextChanged="Input_TextChanged" FontSize="26"/>
 		<StackPanel x:Name="HintPanel" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" Visibility="Collapsed" Margin="5">
 			<FontIcon Glyph="&#xE946;"/>
 			<TextBlock x:Name="HintText" d:Text="Hello World" Margin="10,0,0,0"/>
@@ -31,7 +31,7 @@
 				<Grid>
 					<StackPanel x:Name="ButtonContent" Orientation="Horizontal">
 						<FontIcon Glyph="&#xE008;"/>
-						<TextBlock Text="Accept" Margin="10,0,0,0"/>
+						<TextBlock x:Uid="AcceptText" Text="Accept" Margin="10,0,0,0"/>
 					</StackPanel>
 					<Grid x:Name="LoadingPanel" Height="20" Visibility="Collapsed">
 						<controls:ProgressBar IsIndeterminate="True" Width="100"/>
@@ -41,7 +41,7 @@
 			<Button x:Name="BackButton" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5" Tapped="BackButton_Tapped">
 				<StackPanel Orientation="Horizontal">
 					<FontIcon Glyph="&#xE0A6;"/>
-					<TextBlock Text="Back" Margin="10,0,0,0"/>
+					<TextBlock x:Uid="BackText" Text="Back" Margin="10,0,0,0"/>
 				</StackPanel>
 			</Button>
 		</Grid>

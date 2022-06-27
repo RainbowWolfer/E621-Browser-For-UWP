@@ -83,7 +83,7 @@
 			</StackPanel.RenderTransform>
 			<TextBlock x:Uid="Serving" Text="Serving" HorizontalAlignment="Center" Margin="0,0,0,-10"/>
 			<TextBlock x:Name="CountText" Text="2415669" FontSize="64" FontWeight="SemiBold" CharacterSpacing="200" TextDecorations="Underline"/>
-			<TextBlock x:Uid="Posts" Text="Posts" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+			<TextBlock x:Uid="PostsText" Text="Posts" HorizontalAlignment="Center" Margin="0,10,0,0"/>
 		</StackPanel>
 	</Grid>
 </Page>

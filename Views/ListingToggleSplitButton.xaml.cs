@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Locals;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using System;
 using System.Collections.Generic;
@@ -128,9 +129,9 @@ namespace E621Downloader.Views {
 				string tooltip;
 				if(E621User.Current == null) {
 					box.IsEnabled = false;
-					tooltip = "Not Logged In";
+					tooltip = "Not Logged In".Language();
 				} else {
-					tooltip = $"Using ({E621User.Current.name}) Account";
+					tooltip = "Using ({{0}}) Account".Language(E621User.Current.name);
 				}
 				ToolTipService.SetToolTip(box, tooltip);
 
@@ -151,7 +152,7 @@ namespace E621Downloader.Views {
 			foreach(ComboBoxLine item in lists.Where(l => !l.IsCloud).OrderByDescending(l => l.IsDefault)) {
 				string name;
 				if(item.IsDefault) {
-					name = $"(Default) {item.Name}";
+					name = "(" + "Default".Language() + $") {item.Name}";
 				} else {
 					name = item.Name;
 				}
@@ -173,7 +174,7 @@ namespace E621Downloader.Views {
 				VerticalAlignment = VerticalAlignment.Center,
 			};
 			var gotoSettingsText = new TextBlock() {
-				Text = "Settings",
+				Text = "Settings".Language(),
 				VerticalAlignment = VerticalAlignment.Center,
 			};
 			buttonPanel.Children.Add(gotoSettingsIcon);

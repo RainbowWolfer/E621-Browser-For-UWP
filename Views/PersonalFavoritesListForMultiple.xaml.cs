@@ -44,7 +44,7 @@ namespace E621Downloader.Views {
 		private void E621FavoriteButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			e.Handled = true;
 			E621FavoriteButton.IsEnabled = false;
-			FavoriteText.Text = "Pending";
+			FavoriteText.Text = "Pending".Language();
 			FavoriteIcon.Glyph = "\uE10C";
 
 			//if(E621FavoriteButton.IsChecked.Value) {

@@ -15,7 +15,7 @@
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<Button x:Name="ReverseSelectionButton" Content="Reverse Selection" HorizontalAlignment="Stretch" VerticalAlignment="Center" Click="ReverseSelectionButton_Click" Margin="5"/>
+		<Button x:Uid="ReverseSelectionContent" x:Name="ReverseSelectionButton" Content="Reverse Selection" HorizontalAlignment="Stretch" VerticalAlignment="Center" Click="ReverseSelectionButton_Click" Margin="5"/>
 		<ListView x:Name="MyListView" ItemsSource="{x:Bind folders}" SelectionMode="Multiple" IsItemClickEnabled="False" Grid.Row="1" Loaded="MyListView_Loaded">
 			<ListView.ItemContainerTransitions>
 				<TransitionCollection>

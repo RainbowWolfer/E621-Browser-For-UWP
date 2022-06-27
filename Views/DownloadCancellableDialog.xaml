@@ -17,12 +17,12 @@
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
-		<TextBlock x:Name="MainText" Text="Downloading" Margin="5,0,5,5"/>
+		<TextBlock x:Uid="DownloadingText" x:Name="MainText" Text="Downloading" Margin="5,0,5,5"/>
 		<controls:ProgressBar IsIndeterminate="True" Grid.Row="1" Margin="5"/>
 		<Button x:Name="CancelButton" Grid.Row="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="CancelButton_Click" Margin="5,5,5,0">
 			<StackPanel Orientation="Horizontal">
 				<FontIcon Glyph="&#xE711;" VerticalAlignment="Center" Margin="5"/>
-				<TextBlock Text="Cancel" VerticalAlignment="Center" Margin="5"/>
+				<TextBlock x:Uid="CancelText" Text="Cancel" VerticalAlignment="Center" Margin="5"/>
 			</StackPanel>
 		</Button>
 	</Grid>

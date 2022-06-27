@@ -91,10 +91,15 @@ namespace E621Downloader.Pages {
 
 		public void UpdateFavoritesTable() {
 			items.Clear();
+			int selectedIndex = -1;
 			for(int i = 0; i < FavoritesList.Table.Count; i++) {
 				FavoritesList item = FavoritesList.Table[i];
 				items.Add(new FavoriteListViewItem(i, item.Name, item.Items.Count));
+				if(item.Name == CurrentListName){
+					selectedIndex = i;
+				}
 			}
+			FavoritesListView.SelectedIndex = selectedIndex;
 			FavoritesTableHintText.Visibility = items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 		}
 

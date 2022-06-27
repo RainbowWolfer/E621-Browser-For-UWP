@@ -1,4 +1,5 @@
-﻿using System;
+﻿using E621Downloader.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -91,9 +92,9 @@ namespace E621Downloader.Views {
 		private void UpdateScoreLimit() {
 			var (from, to) = GetRange();
 			if(from == to) {
-				RangeText.Text = $"( Page: {from} )";
+				RangeText.Text = "( " + "Page".Language() + $": {from} )";
 			} else {
-				RangeText.Text = $"( Page: {from} - {to} )";
+				RangeText.Text = "( " + "Page".Language() + $": {from} - {to} )";
 			}
 		}
 

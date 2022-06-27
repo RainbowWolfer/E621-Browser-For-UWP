@@ -111,13 +111,19 @@ namespace E621Downloader.Models {
 		}
 
 
-		public static string Language(this string str) {
+		public static string Language(this string str, params object[] args) {
 			if(string.IsNullOrWhiteSpace(str)) {
 				return str;
 			}
 			if(CoreWindow.GetForCurrentThread() != null) {
 				try {
-					return ResourceLoader.GetForCurrentView().GetString(str);
+					var result = ResourceLoader.GetForCurrentView().GetString(str);
+					try {
+						for(int i = 0; i < args.Length; i++) {
+							result = result.Replace("{{" + i + "}}", args[i].ToString());
+						}
+					} catch { }
+					return result;
 				} catch(Exception ex) {
 					Debug.WriteLine(ex.Message);
 					return "String Not Found";

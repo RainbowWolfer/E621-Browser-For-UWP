@@ -21,7 +21,7 @@
 			<ToggleButton.Content>
 				<StackPanel Orientation="Horizontal">
 					<FontIcon x:Name="FavoriteIcon" Glyph="&#xEB51;" FontSize="16"/>
-					<TextBlock x:Name="FavoriteText" Text="E621 Favorite" Margin="10,0,0,0" FontSize="16"/>
+					<TextBlock x:Uid="E621FavoriteText" x:Name="FavoriteText" Text="E621 Favorite" Margin="10,0,0,0" FontSize="16"/>
 				</StackPanel>
 			</ToggleButton.Content>
 		</ToggleButton>
@@ -46,13 +46,13 @@
 			<Button x:Name="AcceptButton" HorizontalAlignment="Stretch" FontSize="16" Margin="5" Tapped="AcceptButton_Tapped">
 				<StackPanel Orientation="Horizontal">
 					<FontIcon Glyph="&#xE001;"/>
-					<TextBlock Text="Accept" Margin="10,0,0,0"/>
+					<TextBlock x:Uid="AcceptText" Text="Accept" Margin="10,0,0,0"/>
 				</StackPanel>
 			</Button>
 			<Button x:Name="BackButton" HorizontalAlignment="Stretch" FontSize="16" Margin="5" Grid.Column="1" Tapped="BackButton_Tapped">
 				<StackPanel Orientation="Horizontal">
 					<FontIcon Glyph="&#xE0A6;"/>
-					<TextBlock Text="Back" Margin="10,0,0,0"/>
+					<TextBlock x:Uid="BackText" Text="Back" Margin="10,0,0,0"/>
 				</StackPanel>
 			</Button>
 		</Grid>

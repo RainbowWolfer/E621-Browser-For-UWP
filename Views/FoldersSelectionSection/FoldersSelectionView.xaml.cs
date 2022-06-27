@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Views.FoldersSelectionSection {
 	public sealed partial class FoldersSelectionView: UserControl {
 		private readonly ObservableCollection<StorageFolder> folders;
-		private List<StorageFolder> defaultSelected;
+		private readonly List<StorageFolder> defaultSelected;
 		public FoldersSelectionView(List<StorageFolder> folders, List<StorageFolder> selected) {
 			this.InitializeComponent();
 			this.folders = new ObservableCollection<StorageFolder>();

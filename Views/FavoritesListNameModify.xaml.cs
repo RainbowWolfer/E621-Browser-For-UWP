@@ -1,4 +1,5 @@
-﻿using System;
+﻿using E621Downloader.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -27,10 +28,10 @@ namespace E621Downloader.Views {
 			this.original = original;
 			if(isAdd) {
 				ConfirmIcon.Glyph = "\uE109";
-				ConfirmText.Text = "Add";
+				ConfirmText.Text = "Add".Language();
 			} else {
 				ConfirmIcon.Glyph = "\uE001";
-				ConfirmText.Text = "Confirm";
+				ConfirmText.Text = "Confirm".Language();
 			}
 			if(!string.IsNullOrWhiteSpace(original)) {
 				InputBox.Text = original;
@@ -55,11 +56,11 @@ namespace E621Downloader.Views {
 				return;
 			}
 			if(!string.IsNullOrWhiteSpace(original) && input == original) {
-				HintText.Text = $"Cannot be the Same as Before";
+				HintText.Text = $"Cannot be the Same as Before".Language();
 				HintPanel.Visibility = Visibility.Visible;
 				return;
 			} else if(existedNames.Contains(input)) {
-				HintText.Text = $"\"{input}\" Already Exists";
+				HintText.Text = $"\"{input}\" " + "Already existed".Language();
 				HintPanel.Visibility = Visibility.Visible;
 				return;
 			} else {

@@ -11,10 +11,10 @@
 
     <Grid>
 		<StackPanel x:Name="HintPanel" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
-			<TextBlock x:Name="HintText" Text="You have not selected your download folder&#x0a;Please go to the settings page and choose your download folder" TextAlignment="Center" FontSize="32" TextWrapping="Wrap"/>
+			<TextBlock x:Uid="NoFolderPageHintText" x:Name="HintText" Text="You have not selected your download folder&#x0a;Please go to the settings page and choose your download folder" TextAlignment="Center" FontSize="32" TextWrapping="Wrap"/>
 			<Button x:Name="HintActionButton" HorizontalAlignment="Center" Margin="20" Click="HintActionButton_Click">
 				<StackPanel Orientation="Horizontal">
-					<TextBlock x:Name="HintButtonText" Text="Go To Settings" FontSize="25"/>
+					<TextBlock x:Uid="GoTotSetttingsText" x:Name="HintButtonText" Text="Go To Settings" FontSize="25"/>
 					<FontIcon x:Name="HintButtonIcon" Glyph="&#xE713;" Margin="15,0,0,0" FontSize="25"/>
 				</StackPanel>
 			</Button>

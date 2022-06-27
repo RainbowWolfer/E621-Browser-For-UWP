@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Networks;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
 using Microsoft.UI.Xaml.Controls;
 using System;
@@ -124,7 +125,7 @@ namespace E621Downloader.Views {
 		}
 
 		public void SetLoadCountText(int loaded, int max) {
-			LoadCountText.Text = $"Posts : {loaded}/{max}";
+			LoadCountText.Text = $"{loaded}/{max}";
 		}
 
 		private void UpdatePaginator(int currentPage, int maxPage) {
@@ -259,12 +260,12 @@ namespace E621Downloader.Views {
 		private async Task Forward(string text) {
 			if(int.TryParse(text, out int page)) {
 				if(page < 1 || page > maxPage) {
-					await MainPage.CreatePopupDialog("Error", $"({page}) can only be in 1-{maxPage}");
+					await MainPage.CreatePopupDialog("Error".Language(), "({{0}}) can only be in 1-{{1}}".Language(page, maxPage));
 				} else {
 					OnPageNavigate?.Invoke(page);
 				}
 			} else {
-				await MainPage.CreatePopupDialog("Error", $"({text}) is not a valid number");
+				await MainPage.CreatePopupDialog("Error".Language(), "({{0}}) is not a valid number".Language(text));
 			}
 		}
 	}

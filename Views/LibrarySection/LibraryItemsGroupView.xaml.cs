@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Locals;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using E621Downloader.Pages.LibrarySection;
@@ -192,10 +193,10 @@ namespace E621Downloader.Views.LibrarySection {
 
 		private async void ConfirmDelete(LibraryItem item) {
 			if(await new ContentDialog() {
-				Title = "Confirm",
-				Content = "Are you sure to delete this item",
-				PrimaryButtonText = "Yes",
-				CloseButtonText = "No",
+				Title = "Confirm".Language(),
+				Content = "Are you sure to delete this item".Language(),
+				PrimaryButtonText = "Yes".Language(),
+				CloseButtonText = "No".Language(),
 				DefaultButton = ContentDialogButton.Close,
 			}.ShowAsync() == ContentDialogResult.Primary) {
 				try {
@@ -277,15 +278,15 @@ namespace E621Downloader.Views.LibrarySection {
 				Placement = FlyoutPlacementMode.RightEdgeAlignedTop,
 			};
 			MenuFlyoutItem item_open = new() {
-				Text = "Open",
+				Text = "Open".Language(),
 				Icon = new FontIcon { Glyph = "\uE197" },
 			};
 			MenuFlyoutItem item_delete = new() {
-				Text = "Delete",
+				Text = "Delete".Language(),
 				Icon = new FontIcon { Glyph = "\uE107" },
 			};
 			MenuFlyoutItem item_rename = new() {
-				Text = "Rename",
+				Text = "Rename".Language(),
 				Icon = new FontIcon { Glyph = "\uE13E" },
 			};
 			item_open.Click += (s, e) => {

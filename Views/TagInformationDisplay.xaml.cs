@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Posts;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Posts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,7 +30,7 @@ namespace E621Downloader.Views {
 			LoadingRing.IsActive = true;
 			E621Tag e621tag;
 			int count = 0;
-			string description = "No Wiki Found";
+			string description = "No Wiki Found".Language();
 			if(pool.ContainsKey(tag)) {
 				e621tag = pool[tag];
 			} else {
@@ -41,9 +42,9 @@ namespace E621Downloader.Views {
 				if(!e621tag.IsWikiLoaded) {
 					await e621tag.LoadWikiAsync();
 				}
-				description = e621tag.Wiki?.body ?? "No Wiki Found";
+				description = e621tag.Wiki?.body ?? "No Wiki Found".Language();
 			}
-			ContentText.Text = $"Count: {count}\nDescription: {description}";
+			ContentText.Text = "Count".Language() + $": {count}\n" + "Description".Language() + $": {description}";
 			LoadingRing.IsActive = false;
 		}
 	}

@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Networks;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Networks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -38,11 +39,11 @@ namespace E621Downloader.Views {
 			if(string.IsNullOrWhiteSpace(Input.Text)) {
 				Acceptbutton.IsEnabled = false;
 				HintPanel.Visibility = Visibility.Visible;
-				HintText.Text = "Empty input is not allowed";
+				HintText.Text = "Empty input is not allowed".Language();
 			} else if(Uri.CheckHostName(Input.Text) == UriHostNameType.Unknown) {
 				Acceptbutton.IsEnabled = false;
 				HintPanel.Visibility = Visibility.Visible;
-				HintText.Text = "It is not a valid host name";
+				HintText.Text = "It is not a valid host name".Language();
 			} else {
 				Acceptbutton.IsEnabled = true;
 				HintPanel.Visibility = Visibility.Collapsed;
@@ -71,7 +72,7 @@ namespace E621Downloader.Views {
 				ButtonContent.Visibility = Visibility.Visible;
 				LoadingPanel.Visibility = Visibility.Collapsed;
 				HintPanel.Visibility = Visibility.Visible;
-				HintText.Text = "Host Name is not supported";
+				HintText.Text = "Host Name is not supported".Language();
 				Acceptbutton.IsEnabled = true;
 			}
 		}

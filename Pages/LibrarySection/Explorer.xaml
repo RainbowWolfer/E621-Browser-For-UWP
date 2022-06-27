@@ -25,7 +25,7 @@
 		<Grid x:Name="LoadingGrid" Grid.Row="1" Visibility="Collapsed">
 			<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
 				<controls:ProgressRing x:Name="LoadingRing" Height="150" Width="150" IsActive="True" Margin="5"/>
-				<TextBlock x:Name="LoadingText" Text="Loading" TextAlignment="Center" FontSize="24" Margin="5"/>
+				<TextBlock x:Uid="LoadingText" x:Name="LoadingText" Text="Loading" TextAlignment="Center" FontSize="24" Margin="5"/>
 			</StackPanel>
 		</Grid>
 		<librarysection:LibraryItemsGroupView x:Name="GroupView" Grid.Row="1" Padding="5"/>

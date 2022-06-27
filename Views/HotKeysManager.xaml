@@ -19,7 +19,7 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<StackPanel Grid.Column="1" BorderThickness="2" BorderBrush="Gray" Margin="5" Padding="5,5,15,5" CornerRadius="10">
-			<TextBlock Text="Pircture Page" Margin="10" FontSize="24"/>
+			<TextBlock x:Uid="PicturePageText" Text="Picture Page" Margin="10" FontSize="24"/>
 			<StackPanel Orientation="Horizontal">
 				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
 					<TextBlock Text="A" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -28,7 +28,7 @@
 				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
 					<FontIcon FontFamily="Segoe UI Symbol" Glyph="&#x2190;" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 				</Border>
-				<TextBlock Text="Previous Picture" VerticalAlignment="Center" Margin="10,0,0,0"/>
+				<TextBlock x:Uid="PreviousPictureText" Text="Previous Picture" VerticalAlignment="Center" Margin="10,0,0,0"/>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
 				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
@@ -38,7 +38,7 @@
 				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
 					<FontIcon FontFamily="Segoe UI Symbol" Glyph="&#x2192;" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 				</Border>
-				<TextBlock Text="Next Picture" VerticalAlignment="Center" Margin="10,0,0,0"/>
+				<TextBlock x:Uid="NextPictureText" Text="Next Picture" VerticalAlignment="Center" Margin="10,0,0,0"/>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
 				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
@@ -48,7 +48,7 @@
 				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
 					<FontIcon FontFamily="Segoe UI Symbol" Glyph="&#x2191;" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 				</Border>
-				<TextBlock Text="Zoom In" VerticalAlignment="Center" Margin="10,0,0,0"/>
+				<TextBlock x:Uid="ZoomInText" Text="Zoom In" VerticalAlignment="Center" Margin="10,0,0,0"/>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
 				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
@@ -58,20 +58,30 @@
 				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
 					<FontIcon FontFamily="Segoe UI Symbol" Glyph="&#x2193;" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 				</Border>
-				<TextBlock Text="Zoom Out" VerticalAlignment="Center" Margin="10,0,0,0"/>
+				<TextBlock x:Uid="ZoomOutText" Text="Zoom Out" VerticalAlignment="Center" Margin="10,0,0,0"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+					<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+					<TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<TextBlock x:Uid="DownloadText" Text="Download" VerticalAlignment="Center" Margin="10,0,0,0"/>
 			</StackPanel>
 		</StackPanel>
 		<StackPanel Grid.Column="0" BorderThickness="2" BorderBrush="Gray" Margin="5" Padding="5,5,15,5" CornerRadius="10">
-			<TextBlock Text="Global" Margin="10" FontSize="24"/>
+			<TextBlock x:Uid="GlobalText" Text="Global" Margin="10" FontSize="24"/>
 			<StackPanel Orientation="Horizontal">
 				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
 					<TextBlock Text="Q" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 				</Border>
-				<TextBlock Text="Search Popup" VerticalAlignment="Center" Margin="10,0,0,0"/>
+				<TextBlock x:Uid="SearchPopupText" Text="Search Popup" VerticalAlignment="Center" Margin="10,0,0,0"/>
 			</StackPanel>
 		</StackPanel>
 		<StackPanel Grid.Column="2" BorderThickness="2" BorderBrush="Gray" Margin="5" Padding="5,5,15,5" CornerRadius="10">
-			<TextBlock Text="Home Page" Margin="10" FontSize="24"/>
+			<TextBlock x:Uid="HomePageText" Text="Home Page" Margin="10" FontSize="24"/>
 			<StackPanel Orientation="Horizontal">
 				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
 					<TextBlock Text="F5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -84,7 +94,7 @@
 				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
 					<TextBlock Text="R" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 				</Border>
-				<TextBlock Text="Refresh" VerticalAlignment="Center" Margin="10,0,0,0"/>
+				<TextBlock x:Uid="RefreshText" Text="Refresh" VerticalAlignment="Center" Margin="10,0,0,0"/>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
 				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
@@ -94,20 +104,7 @@
 				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
 					<TextBlock Text="W" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 				</Border>
-				<TextBlock Text="Close Tab" VerticalAlignment="Center" Margin="10,0,0,0"/>
-			</StackPanel>
-		</StackPanel>
-		<StackPanel Grid.Column="3" BorderThickness="2" BorderBrush="Gray" Margin="5" Padding="5,5,15,5" CornerRadius="10">
-			<TextBlock Text="Picture Page" Margin="10" FontSize="24"/>
-			<StackPanel Orientation="Horizontal">
-				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
-					<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-				</Border>
-				<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
-				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
-					<TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-				</Border>
-				<TextBlock Text="Download" VerticalAlignment="Center" Margin="10,0,0,0"/>
+				<TextBlock x:Uid="CloseTabText" Text="Close Tab" VerticalAlignment="Center" Margin="10,0,0,0"/>
 			</StackPanel>
 		</StackPanel>
 	</Grid>

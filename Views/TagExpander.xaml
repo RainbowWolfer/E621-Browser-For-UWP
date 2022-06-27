@@ -15,7 +15,7 @@
 		<Button x:Name="ExpandButton" Background="Transparent" BorderThickness="0" Tapped="Button_Tapped" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
 			<Button.Content>
 				<RelativePanel>
-					<TextBlock x:Name="TagText" FontFamily="Cascadia Mono" Text="Tag Goes Here" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="26"/>
+					<TextBlock x:Name="TagText" FontFamily="Cascadia Mono" d:Text="Tag Goes Here" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="26"/>
 					<FontIcon x:Name="TitleIcon" Glyph="&#xE0E4;" FontSize="20" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,0,10,0"/>
 				</RelativePanel>
 			</Button.Content>

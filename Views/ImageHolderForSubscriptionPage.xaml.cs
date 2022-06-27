@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Download;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Download;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
@@ -44,8 +45,8 @@ namespace E621Downloader.Views {
 				HintText.Visibility = Visibility.Visible;
 				LoadingRing.IsActive = false;
 			} else {
+				MyImage.ImageOpened += ImageHolderForSubscriptionPage_ImageOpened;
 				MyImage.Source = new BitmapImage(new Uri(post.sample.url ?? post.preview.url));
-				(MyImage.Source as BitmapImage).ImageOpened += ImageHolderForSubscriptionPage_ImageOpened;
 			}
 			TypeHint.PostRef = post;
 			BottomInfo.PostRef = post;
@@ -87,8 +88,8 @@ namespace E621Downloader.Views {
 				HintText.Visibility = Visibility.Visible;
 				LoadingRing.IsActive = false;
 			} else {
+				MyImage.ImageOpened += ImageHolderForSubscriptionPage_ImageOpened;
 				MyImage.Source = new BitmapImage(new Uri(url));
-				(MyImage.Source as BitmapImage).ImageOpened += ImageHolderForSubscriptionPage_ImageOpened;
 			}
 			TypeHint.PostRef = this.PostRef;
 			BottomInfo.PostRef = this.PostRef;
@@ -107,9 +108,14 @@ namespace E621Downloader.Views {
 		}
 
 		public async void LoadFromLocal(MixPost mix, CancellationToken? token = null) {
-			(StorageFile, MetaFile) result = await Local.GetDownloadFile(mix.LocalPath);
-			StorageFile file = result.Item1;
-			MetaFile meta = result.Item2;
+			(StorageFile file, MetaFile meta) = await Local.GetDownloadFile(mix.LocalPath);
+			if(file == null || meta == null) {
+				LoadingRing.IsActive = false;
+				HintText.Visibility = Visibility.Visible;
+				HintText.Text = "Error Loading Local".Language();
+				ToolTipService.SetToolTip(HintText, mix.LocalPath);
+				return;
+			}
 			mix.ImageFile = file;
 			mix.MetaFile = meta;
 			BitmapImage bitmap = new();
@@ -119,14 +125,13 @@ namespace E621Downloader.Views {
 			} else if(new string[] { ".jpg", ".png" }.Contains(file?.FileType)) {
 				mode = ThumbnailMode.PicturesView;
 			}
+			bitmap.ImageOpened += ImageHolderForSubscriptionPage_ImageOpened;
 			using(StorageItemThumbnail thumbnail = await file?.GetThumbnailAsync(mode)) {
 				if(thumbnail != null) {
-					using(Stream stream = thumbnail.AsStreamForRead()) {
-						bitmap.SetSource(stream.AsRandomAccessStream());
-					}
+					using Stream stream = thumbnail.AsStreamForRead();
+					bitmap.SetSource(stream.AsRandomAccessStream());
 				}
 			}
-			bitmap.ImageOpened += ImageHolderForSubscriptionPage_ImageOpened;
 			MyImage.Source = bitmap;
 			this.PostRef = meta?.MyPost;
 			TypeHint.PostRef = this.PostRef;
@@ -182,17 +187,17 @@ namespace E621Downloader.Views {
 			get {
 				MenuFlyoutItem item = new() {
 					Icon = new FontIcon() { Glyph = "\uE107" },
-					Text = "Remove From This"
+					Text = "Remove From This".Language(),
 				};
 				item.Click += async (sender, args) => {
 					if(string.IsNullOrWhiteSpace(belongingListName)) {
 						return;
 					}
 					if(await new ContentDialog() {
-						Title = "Confirmation",
-						Content = $"Are you sure to delete Post ({PostRef.id})",
-						PrimaryButtonText = "Yes",
-						CloseButtonText = "No",
+						Title = "Confirm".Language(),
+						Content = "Are you sure to delete Post".Language() + $" ({PostRef.id})",
+						PrimaryButtonText = "Yes".Language(),
+						CloseButtonText = "No".Language(),
 					}.ShowAsync() == ContentDialogResult.Primary) {
 						FavoritesList foundList = FavoritesList.Table.Find(l => l.Name == belongingListName);
 						if(foundList != null) {
@@ -201,7 +206,7 @@ namespace E621Downloader.Views {
 							parent.Refresh();
 							parent.UpdateFavoritesTable();
 						} else {
-							await MainPage.CreatePopupDialog("Error", $"List ({belongingListName}) not found.");
+							await MainPage.CreatePopupDialog("Error".Language(), "List ({{0}}) not found".Language(belongingListName));
 						}
 					}
 				};
@@ -213,11 +218,11 @@ namespace E621Downloader.Views {
 			get {
 				MenuFlyoutItem item = new() {
 					Icon = new FontIcon() { Glyph = "\uE912" },
-					Text = "Manage Favorites"
+					Text = "Manage Favorites".Language(),
 				};
 				item.Click += async (sender, args) => {
 					var dialog = new ContentDialog() {
-						Title = "Favorites",
+						Title = "Favorites".Language(),
 					};
 					var list = new PersonalFavoritesList(dialog, type, path) {
 						Width = 300,
@@ -236,12 +241,10 @@ namespace E621Downloader.Views {
 			get {
 				MenuFlyoutItem item = new() {
 					Icon = new FontIcon() { Glyph = "\uE12B" },
-					Text = "Open In Browser"
+					Text = "Open In Browser".Language(),
 				};
 				item.Click += async (sender, args) => {
-					if(!await Launcher.LaunchUriAsync(new Uri($"https://{Data.GetHost()}/posts/{PostRef.id}"))) {
-						await MainPage.CreatePopupDialog("Error", "Could not Open Default Browser");
-					}
+					await Methods.OpenBrowser($"https://{Data.GetHost()}/posts/{PostRef.id}");
 				};
 				return item;
 			}
@@ -251,7 +254,7 @@ namespace E621Downloader.Views {
 			get {
 				MenuFlyoutItem item = new() {
 					Icon = new FontIcon() { Glyph = "\uE118" },
-					Text = "Download"
+					Text = "Download".Language(),
 				};
 				item.Click += async (sender, args) => {
 					if(PostRef == null) {

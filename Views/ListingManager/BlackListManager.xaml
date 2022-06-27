@@ -52,13 +52,13 @@
 							</Grid.ColumnDefinitions>
 							<Grid.ContextFlyout>
 								<MenuFlyout>
-									<MenuFlyoutItem x:Name="ListingRenameItem" Icon="Rename" Tag="{x:Bind Listing}" Text="Rename" Click="ListingRenameItem_Click" Loaded="ListingRenameItem_Loaded"/>
-									<MenuFlyoutItem x:Name="ListingSetDefaultItem" Tag="{x:Bind GetSelf()}" Text="Set As Default" Click="ListingSetDefaultItem_Click" Loaded="ListingSetDefaultItem_Loaded">
+									<MenuFlyoutItem x:Uid="RenameText" x:Name="ListingRenameItem" Icon="Rename" Tag="{x:Bind Listing}" Text="Rename" Click="ListingRenameItem_Click" Loaded="ListingRenameItem_Loaded"/>
+									<MenuFlyoutItem x:Uid="SetAsDefaultText" x:Name="ListingSetDefaultItem" Tag="{x:Bind GetSelf()}" Text="Set As Default" Click="ListingSetDefaultItem_Click" Loaded="ListingSetDefaultItem_Loaded">
 										<MenuFlyoutItem.Icon>
 											<FontIcon Glyph="&#xF5ED;"/>
 										</MenuFlyoutItem.Icon>
 									</MenuFlyoutItem>
-									<MenuFlyoutItem x:Name="ListingDeleteItem" Icon="Delete" Tag="{x:Bind Listing}" Text="Delete" Click="ListingDeleteItem_Click" Loaded="ListingDeleteItem_Loaded"/>
+									<MenuFlyoutItem x:Uid="DeleteText" x:Name="ListingDeleteItem" Icon="Delete" Tag="{x:Bind Listing}" Text="Delete" Click="ListingDeleteItem_Click" Loaded="ListingDeleteItem_Loaded"/>
 								</MenuFlyout>
 							</Grid.ContextFlyout>
 							<FontIcon d:Glyph="&#xE123;" Glyph="{x:Bind Icon}" FontSize="20" VerticalAlignment="Center"/>
@@ -75,7 +75,7 @@
 			<StackPanel Grid.Row="2" Margin="5">
 				<Button x:Name="PasteImportButton" HorizontalAlignment="Stretch" Margin="5" Click="PasteImportButton_Click" ToolTipService.Placement="Bottom">
 					<StackPanel Orientation="Horizontal">
-						<TextBlock Text="Paste as New List" VerticalAlignment="Center" FontSize="16" Margin="0,0,10,0"/>
+						<TextBlock x:Uid="PasteAsNewListText" Text="Paste as New List" VerticalAlignment="Center" FontSize="16" Margin="0,0,10,0"/>
 						<FontIcon Glyph="&#xE16D;" FontSize="20" VerticalAlignment="Center" Margin="0,5,0,0"/>
 					</StackPanel>
 				</Button>
@@ -100,14 +100,14 @@
 					<ColumnDefinition Width="auto"/>
 				</Grid.ColumnDefinitions>
 				<CheckBox x:Name="DefaultCheckBox" HorizontalAlignment="Left" Click="DefaultCheckBox_Click" Margin="15,5,5,5">
-					<TextBlock Text="Set Default"/>
+					<TextBlock x:Uid="SetDefaultText" Text="Set Default"/>
 				</CheckBox>
 				<Button x:Name="MoreInfoButton" Grid.Column="1" Height="33" Margin="5" Padding="6">
 					<Button.Flyout>
 						<Flyout Placement="Bottom">
 							<StackPanel Width="250">
 								<TextBlock Text="{x:Bind HostCloud}" FontWeight="Bold" TextAlignment="Center" FontSize="18" Margin="5"/>
-								<TextBlock Text="This is synced with the account settings. Be careful not to override your original black list tags" TextAlignment="Center" Margin="5" TextWrapping="Wrap" FontSize="15"/>
+								<TextBlock x:Uid="BlacklistCloudHintText" Text="This is synced with the account settings. Be careful not to override your original black list tags" TextAlignment="Center" Margin="5" TextWrapping="Wrap" FontSize="15"/>
 							</StackPanel>
 						</Flyout>
 					</Button.Flyout>
@@ -117,32 +117,32 @@
 					<controls:DropDownButton.Content>
 						<StackPanel Orientation="Horizontal">
 							<FontIcon Glyph="&#xE81E;" VerticalAlignment="Center"/>
-							<TextBlock Text="Actions" Margin="10,0,0,0" VerticalAlignment="Center"/>
+							<TextBlock x:Uid="ActionsText" Text="Actions" Margin="10,0,0,0" VerticalAlignment="Center"/>
 						</StackPanel>
 					</controls:DropDownButton.Content>
 					<controls:DropDownButton.Flyout>
 						<MenuFlyout Placement="Bottom">
-							<MenuFlyoutItem x:Name="ExportClipboardItem" Text="Export to Clipboard" Click="ExportClipboardItem_Click">
+							<MenuFlyoutItem x:Uid="ExportClipboardItemText" x:Name="ExportClipboardItem" Text="Export to Clipboard" Click="ExportClipboardItem_Click">
 								<MenuFlyoutItem.Icon>
 									<FontIcon Glyph="&#xE72D;"/>
 								</MenuFlyoutItem.Icon>
 							</MenuFlyoutItem>
-							<MenuFlyoutItem x:Name="ImportClipboardItem" Text="Import from Clipboard (Override)" Click="ImportClipboardItem_Click">
+							<MenuFlyoutItem x:Uid="ImportClipboardItemText" x:Name="ImportClipboardItem" Text="Import from Clipboard (Override)" Click="ImportClipboardItem_Click">
 								<MenuFlyoutItem.Icon>
 									<FontIcon Glyph="&#xF0E3;"/>
 								</MenuFlyoutItem.Icon>
 							</MenuFlyoutItem>
-							<MenuFlyoutItem x:Name="ClearAllTagsItem" Text="Clear All" Click="ClearAllTagsItem_Click">
+							<MenuFlyoutItem x:Uid="ClearAllTagsItemText" x:Name="ClearAllTagsItem" Text="Clear All" Click="ClearAllTagsItem_Click">
 								<MenuFlyoutItem.Icon>
 									<FontIcon Glyph="&#xE75C;"/>
 								</MenuFlyoutItem.Icon>
 							</MenuFlyoutItem>
-							<MenuFlyoutItem x:Name="DownloadCloudItem" Text="Load From Cloud" Click="DownloadCloudItem_Click">
+							<MenuFlyoutItem x:Uid="DownloadCloudItemText" x:Name="DownloadCloudItem" Text="Load From Cloud" Click="DownloadCloudItem_Click">
 								<MenuFlyoutItem.Icon>
 									<FontIcon Glyph="&#xE896;"/>
 								</MenuFlyoutItem.Icon>
 							</MenuFlyoutItem>
-							<MenuFlyoutItem x:Name="UploadCloudItem" Text="Upload To Cloud" Click="UploadCloudItem_Click">
+							<MenuFlyoutItem x:Uid="UploadCloudItemText" x:Name="UploadCloudItem" Text="Upload To Cloud" Click="UploadCloudItem_Click">
 								<MenuFlyoutItem.Icon>
 									<FontIcon Glyph="&#xE11C;"/>
 								</MenuFlyoutItem.Icon>
@@ -157,8 +157,8 @@
 						<Grid>
 							<Grid.ContextFlyout>
 								<MenuFlyout>
-									<MenuFlyoutItem x:Name="TagDeleteItem" Icon="Delete" Text="Delete" Click="TagDeleteItem_Click" Tag="{x:Bind GetSelf()}"/>
-									<MenuFlyoutItem x:Name="TagCopyItem" Icon="Copy" Text="Copy" Click="TagCopyItem_Click" Tag="{x:Bind Tag}"/>
+									<MenuFlyoutItem x:Uid="DeleteText" x:Name="TagDeleteItem" Icon="Delete" Text="Delete" Click="TagDeleteItem_Click" Tag="{x:Bind GetSelf()}"/>
+									<MenuFlyoutItem x:Uid="CopyItem" x:Name="TagCopyItem" Icon="Copy" Text="Copy" Click="TagCopyItem_Click" Tag="{x:Bind Tag}"/>
 								</MenuFlyout>
 							</Grid.ContextFlyout>
 							<Grid.ColumnDefinitions>
@@ -183,13 +183,13 @@
 				</Grid.RenderTransform>
 				<StackPanel x:Name="NormalNoDataPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
 					<FontIcon Glyph="&#xF165;" FontSize="50" Margin="5"/>
-					<TextBlock Text="No Tags" TextAlignment="Center" Margin="5"/>
+					<TextBlock x:Uid="NoTagsText" Text="No Tags" TextAlignment="Center" Margin="5"/>
 				</StackPanel>
 				<StackPanel x:Name="CloudNoDataSyncPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
 					<Button x:Name="CloudSyncButton" Click="CloudSyncButton_Click">
 						<StackPanel Margin="5">
 							<FontIcon Glyph="&#xE117;" FontSize="56" Margin="5"/>
-							<TextBlock Text="Sync" TextAlignment="Center" FontSize="16" Margin="5,5,5,0"/>
+							<TextBlock x:Uid="SyncText" Text="Sync" TextAlignment="Center" FontSize="16" Margin="5,5,5,0"/>
 						</StackPanel>
 					</Button>
 				</StackPanel>
@@ -198,12 +198,12 @@
 				<views:AddButtonInput x:Name="TagAddButtonInput" PlaceholderText="Your Tag"/>
 			</Grid>
 		</Grid>
-		<controls:TeachingTip x:Name="CenteredTeachingTip" Title="Warning" IsLightDismissEnabled="True" PreferredPlacement="Center" CloseButtonContent="OK">
+		<controls:TeachingTip x:Uid="WarningTitle" x:Name="CenteredTeachingTip" Title="Warning" IsLightDismissEnabled="True" PreferredPlacement="Center" CloseButtonContent="OK">
 			<controls:TeachingTip.IconSource>
 				<controls:FontIconSource Glyph="&#xE7BA;"/>
 			</controls:TeachingTip.IconSource>
 		</controls:TeachingTip>
-		<controls:TeachingTip x:Name="DeleteConfirmTeachingTip" Title="Confirm" Subtitle="Are you sure to delete this list?" IsLightDismissEnabled="True" PreferredPlacement="Bottom" ActionButtonContent="Delete" CloseButtonContent="Cancel" ActionButtonClick="DeleteConfirmTeachingTip_ActionButtonClick">
+		<controls:TeachingTip x:Uid="DeleteConfirmTeachingTip" x:Name="DeleteConfirmTeachingTip" Title="Confirm" Subtitle="Are you sure to delete this list?" IsLightDismissEnabled="True" PreferredPlacement="Bottom" ActionButtonContent="Delete" CloseButtonContent="Cancel" ActionButtonClick="DeleteConfirmTeachingTip_ActionButtonClick">
 			<controls:TeachingTip.IconSource>
 				<controls:FontIconSource Glyph="&#xE897;"/>
 			</controls:TeachingTip.IconSource>

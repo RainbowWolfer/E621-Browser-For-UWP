@@ -16,7 +16,7 @@
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
-		<AutoSuggestBox x:Name="MyInputBox" HorizontalAlignment="Stretch" Margin="5" Grid.Row="0" TextChanged="MyInputBox_TextChanged" PlaceholderText="Input Your Tags Here"/>
+		<AutoSuggestBox x:Uid="TagInputPlaceHolder" x:Name="MyInputBox" HorizontalAlignment="Stretch" Margin="5" Grid.Row="0" TextChanged="MyInputBox_TextChanged" PlaceholderText="Input Your Tags Here"/>
 
 		<ListView x:Name="InputList" d:ItemsSource="1 2 3" ItemsSource="{x:Bind input}" Grid.Row="1" Grid.Column="0" SelectionMode="None" IsItemClickEnabled="False">
 			<ListView.ItemTemplate>
@@ -26,7 +26,7 @@
 							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="auto"/>
 						</Grid.ColumnDefinitions>
-						<TextBlock Text="{x:Bind ToString()}" FontSize="16" VerticalAlignment="Center"/>
+						<TextBlock d:Text="Tag" Text="{x:Bind ToString()}" FontSize="16" VerticalAlignment="Center"/>
 						<Button x:Name="CloseButton" Tag="{x:Bind ToString()}" FontSize="12" Grid.Column="1" Background="Transparent" BorderThickness="0" Height="30" Width="30" Tapped="CloseButton_Tapped" Padding="0">
 							<FontIcon Glyph="&#xE106;"/>
 						</Button>
@@ -39,8 +39,8 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<Button x:Name="ConfirmButton" Content="Confirm" HorizontalAlignment="Stretch" FontSize="18" Margin="0,10,5,0" Grid.Column="0" Tapped="ConfirmButton_Tapped"/>
-			<Button x:Name="BackButton" Content="Back" HorizontalAlignment="Stretch" FontSize="18" Margin="5,10,0,0" Grid.Column="1" Tapped="BackButton_Tapped"/>
+			<Button x:Uid="ConfirmContent" x:Name="ConfirmButton" Content="Confirm" HorizontalAlignment="Stretch" FontSize="18" Margin="0,10,5,0" Grid.Column="0" Tapped="ConfirmButton_Tapped"/>
+			<Button x:Uid="BackContent" x:Name="BackButton" Content="Back" HorizontalAlignment="Stretch" FontSize="18" Margin="5,10,0,0" Grid.Column="1" Tapped="BackButton_Tapped"/>
 		</Grid>
 	</Grid>
 </UserControl>

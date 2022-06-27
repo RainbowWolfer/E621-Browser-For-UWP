@@ -11,17 +11,17 @@
     d:RequestedTheme="Dark">
 
 	<StackPanel>
-		<TextBlock x:Name="ID" Text="#210321"/>
-		<TextBlock x:Name="UP" Text=" · Up - 321"/>
-		<TextBlock x:Name="DOWN" Text=" · Down - 21"/>
-		<TextBlock x:Name="TYPE" Text=" · Type - JPG"/>
-		<TextBlock x:Name="PARENT" Text=" · Parent - #321132"/>
-		<TextBlock x:Name="CHILDREN" Text=" · Children - 4"/>
-		<TextBlock x:Name="CREATE" Text=" · Created At - 2021.12.21"/>
-		<TextBlock x:Name="TAGS" Text=" · Tags - 51"/>
-		<TextBlock x:Name="SIZE" Text=" · Size - 212KB"/>
-		<TextBlock x:Name="WIDTH" Text=" · Width - 1080"/>
-		<TextBlock x:Name="HEIGHT" Text=" · Height - 1920"/>
+		<TextBlock x:Name="ID" d:Text="#210321"/>
+		<TextBlock x:Name="UP" d:Text=" · Up - 321"/>
+		<TextBlock x:Name="DOWN" d:Text=" · Down - 21"/>
+		<TextBlock x:Name="TYPE" d:Text=" · Type - JPG"/>
+		<TextBlock x:Name="PARENT" d:Text=" · Parent - #321132"/>
+		<TextBlock x:Name="CHILDREN" d:Text=" · Children - 4"/>
+		<TextBlock x:Name="CREATE" d:Text=" · Created At - 2021.12.21"/>
+		<TextBlock x:Name="TAGS" d:Text=" · Tags - 51"/>
+		<TextBlock x:Name="SIZE" d:Text=" · Size - 212KB"/>
+		<TextBlock x:Name="WIDTH" d:Text=" · Width - 1080"/>
+		<TextBlock x:Name="HEIGHT" d:Text=" · Height - 1920"/>
 		<TextBlock x:Name="RelativeTagsText" Visibility="Collapsed"/>
 	</StackPanel>
 </UserControl>

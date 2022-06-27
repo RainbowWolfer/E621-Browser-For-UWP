@@ -31,7 +31,7 @@
 		</Grid.RowDefinitions>
 		<ToggleButton x:Name="FollowButton" HorizontalAlignment="Stretch" Margin="5" Click="FollowButton_Click">
 			<StackPanel Orientation="Horizontal">
-				<TextBlock x:Name="FollowText" Text="Follow" FontSize="16"/>
+				<TextBlock x:Uid="FollowText" x:Name="FollowText" Text="Follow" FontSize="16"/>
 				<FontIcon Glyph="&#xEB51;" Margin="10,0,0,0"/>
 			</StackPanel>
 		</ToggleButton>
@@ -50,17 +50,16 @@
 					<RowDefinition Height="auto"/>
 					<RowDefinition Height="auto"/>
 				</Grid.RowDefinitions>
-				<TextBlock Text="Create Date" Grid.Row="0" Style="{StaticResource TitleText}"/>
+				<TextBlock x:Uid="CreateDateText" Text="Create Date" Grid.Row="0" Style="{StaticResource TitleText}"/>
 				<TextBlock d:Text="2021-12-21" Text="{x:Bind Pool.created_at}" Grid.Row="0" Style="{StaticResource ContentText}"/>
-				<TextBlock Text="Update Date" Grid.Row="1" Style="{StaticResource TitleText}"/>
+				<TextBlock x:Uid="UpdateDateText" Text="Update Date" Grid.Row="1" Style="{StaticResource TitleText}"/>
 				<TextBlock d:Text="2021-12-21" Text="{x:Bind Pool.updated_at}" Grid.Row="1" Style="{StaticResource ContentText}"/>
-				<TextBlock Text="Category" Grid.Row="2" Style="{StaticResource TitleText}"/>
+				<TextBlock x:Uid="CategoryText" Text="Category" Grid.Row="2" Style="{StaticResource TitleText}"/>
 				<TextBlock d:Text="series" Text="{x:Bind Pool.category}" Grid.Row="2" Style="{StaticResource ContentText}"/>
-				<TextBlock Text="Creator Name" Grid.Row="3" Style="{StaticResource TitleText}"/>
+				<TextBlock x:Uid="CreatorNameText" Text="Creator Name" Grid.Row="3" Style="{StaticResource TitleText}"/>
 				<TextBlock d:Text="Lippon35" Text="{x:Bind Pool.creator_name}" Grid.Row="3" Style="{StaticResource ContentText}"/>
 				<TextBlock Text="Description" Grid.Row="4" Style="{StaticResource TitleText}"/>
 				<TextBlock d:Text="None" Grid.Row="4" Text="{x:Bind Description}" TextWrapping="Wrap" Style="{StaticResource ContentText}"/>
-
 			</Grid>
 		</StackPanel>
 	</Grid>

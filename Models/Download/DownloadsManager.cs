@@ -115,7 +115,7 @@ namespace E621Downloader.Models.Download {
 				groupTitle = DEFAULTTITLE;
 			}
 			StorageFolder folder = await Local.DownloadFolder.CreateFolderAsync(groupTitle, CreationCollisionOption.OpenIfExists);
-			StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.GenerateUniqueName);
+			StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.OpenIfExists);
 			RegisterDownload(post, new Uri(post.file.url), file, groupTitle);
 			return true;
 		}
