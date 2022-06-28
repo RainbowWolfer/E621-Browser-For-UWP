@@ -17,7 +17,7 @@
 			<ColumnDefinition Width="auto"/>
 		</Grid.ColumnDefinitions>
 		<Rectangle Fill="Gray" Opacity="0.1" Grid.ColumnSpan="2"/>
-		<TextBox x:Name="Box" TextChanging="Box_TextChanging" KeyDown="Box_KeyDown" PlaceholderText="{x:Bind PlaceholderText}" CornerRadius="4,0,0,4"/>
+		<TextBox x:Name="Box" TextChanging="Box_TextChanging" KeyDown="Box_KeyDown" PlaceholderText="{x:Bind PlaceholderText, Mode=OneWay}" CornerRadius="4,0,0,4"/>
 		<Button x:Name="BoxAddButton" Grid.Column="1" Height="32" CornerRadius="0,4,4,0" Click="BoxAddButton_Click">
 			<FontIcon Glyph="&#xE109;"/>
 		</Button>

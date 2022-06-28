@@ -68,9 +68,10 @@
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="auto"/>
+					<ColumnDefinition Width="auto"/>
 				</Grid.ColumnDefinitions>
 				<TextBox x:Name="MySuggestBox" SelectionChanged="MySuggestBox_SelectionChanged" TextChanged="MySuggestBox_TextChanged" PreviewKeyDown="MySuggestBox_PreviewKeyDown" FontSize="22" Height="40" CornerRadius="4,0,0,4" Loaded="MySuggestBox_Loaded" TabIndex="0"/>
-				<Button x:Uid="MoreOptionsToolTip" x:Name="MoreButton" Grid.Column="1" Height="40" Width="40" FontSize="24" Padding="0" CornerRadius="0,4,4,0" ToolTipService.ToolTip="More Options">
+				<Button x:Uid="MoreOptionsToolTip" x:Name="MoreButton" Grid.Column="1" Height="40" Width="40" FontSize="24" Padding="0" CornerRadius="0,0,0,0" ToolTipService.ToolTip="More Options">
 					<FontIcon Glyph="&#xE10C;"/>
 					<Button.Flyout>
 						<Flyout x:Name="MoreFlyout" Placement="Bottom">
@@ -79,6 +80,14 @@
 								<CheckBox x:Uid="InPoolContent" x:Name="IsInPoolBox" Content="In Pool" Click="IsInPoolBox_Click"/>
 								<CheckBox x:Uid="DeletedContent" x:Name="IsDeletedBox" Content="Deleted" Click="IsDeletedBOx_Click"/>
 							</StackPanel>
+						</Flyout>
+					</Button.Flyout>
+				</Button>
+				<Button Grid.Column="2" Height="40" Width="40" FontSize="24" Padding="0" CornerRadius="0,4,4,0" >
+					<FontIcon Glyph="&#xE11B;"/>
+					<Button.Flyout>
+						<Flyout Placement="Bottom">
+							<local:TagCategoryColorsPreview/>
 						</Flyout>
 					</Button.Flyout>
 				</Button>

@@ -93,7 +93,7 @@
 						<RowDefinition Height="auto"/>
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
-					<TextBlock x:Uid="GENERALText" Text="GENERAL" Style="{StaticResource SectionTitle}"/>
+					<TextBlock x:Uid="GENERALALLCAPText" Text="GENERAL" Style="{StaticResource SectionTitle}"/>
 					<ScrollViewer HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Grid.Row="1">
 						<StackPanel>
 							<StackPanel HorizontalAlignment="Center">
@@ -114,6 +114,7 @@
 									<Button x:Name="CustomHostButton" Content="E926.net" Margin="10,0,0,0" Tapped="CustomHostButton_Tapped"/>
 								</StackPanel>
 								<ToggleSwitch x:Uid="CycleListToggle" x:Name="CycleListToggle" OffContent="Enable Cycle List" OnContent="Enable Cycle List" Margin="5" Toggled="CycleListToggle_Toggled"/>
+								<ToggleSwitch x:Uid="GifAutoPlayToggle" x:Name="GifAutoPlayToggle" OffContent="Enable Gif AutoPlay" OnContent="Enable Gif AutoPlay" Margin="5" Toggled="GifAutoPlayToggle_Toggled"/>
 								<ToggleSwitch x:Uid="ConcatTagToggle" x:Name="ConcatTagToggle" OffContent="Overlay Tags" OnContent="Concat Tags" Margin="5" Toggled="ConcatTagToggle_Toggled"/>
 								<ToggleSwitch x:Uid="MediaPlayToggle" x:Name="MediaPlayToggle" OffContent="Media Background Play" OnContent="Media Background Play" Margin="5" Toggled="MediaPlayToggle_Toggled"/>
 								<ToggleSwitch x:Uid="MediaAutoPlayToggle" x:Name="MediaAutoPlayToggle" OffContent="Media Auto Play" OnContent="Media Auto Play" Margin="5" Toggled="MediaAutoPlayToggle_Toggled"/>

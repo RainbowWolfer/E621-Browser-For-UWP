@@ -40,6 +40,9 @@ namespace E621Downloader.Views {
 			} else if(ext == "anim") {
 				TypeBorder.Visibility = Visibility.Visible;
 				TypeTextBlock.Text = "ANIM";
+			} else if(ext == "gif") {
+				TypeBorder.Visibility = Visibility.Visible;
+				TypeTextBlock.Text = "GIF";
 			} else {
 				TypeBorder.Visibility = Visibility.Collapsed;
 				TypeTextBlock.Text = "";

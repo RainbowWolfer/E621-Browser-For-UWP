@@ -22,7 +22,7 @@
 		</Button>
 		<StackPanel x:Name="ExpandPanel" Orientation="Vertical" Margin="10,4,10,10">
 			<controls:ProgressBar x:Name="LoadingBar" IsIndeterminate="True" ShowPaused="False" ShowError="False"/>
-			<TextBlock x:Name="ConentText" Text="" TextWrapping="WrapWholeWords"/>
+			<TextBlock x:Name="ConentText" Text="" TextWrapping="WrapWholeWords" IsTextSelectionEnabled="True"/>
 		</StackPanel>
 	</StackPanel>
 </UserControl>

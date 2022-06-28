@@ -25,6 +25,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace E621Downloader.Views {
 	public delegate void OnImageLoadedEventHandler(BitmapImage bitmap);
@@ -83,7 +84,14 @@ namespace E621Downloader.Views {
 			this.path = path;
 			OnImagedLoaded += (b) => this.Image = b;
 			if(LoadUrl != null) {
+				MyImage.ImageOpened += (s, e) => {
+					var source = MyImage.Source as BitmapImage;
+					if(!LocalSettings.Current.enableGifAutoPlay) {
+						source.Stop();
+					}
+				};
 				MyImage.Source = new BitmapImage(new Uri(LoadUrl));
+				Debug.WriteLine(LoadUrl);
 			} else {
 				MyProgressRing.IsActive = false;
 				MyProgressRing.Visibility = Visibility.Collapsed;

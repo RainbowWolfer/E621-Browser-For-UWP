@@ -424,11 +424,11 @@ namespace E621Downloader.Pages {
 			var list = PostRef.tags.GetAllTags();
 			if(list.Contains("sound_warning")) {
 				SoundIcon.Visibility = Visibility.Visible;
-				SoundIcon.Foreground = new SolidColorBrush(Colors.Red);
+				SoundIcon.Foreground = new SolidColorBrush(GetColor(Rating.explict));//represent red
 				ToolTipService.SetToolTip(SoundIcon, "This Video Has 'Sound_Warning' Tag".Language());
 			} else if(list.Contains("sound")) {
 				SoundIcon.Visibility = Visibility.Visible;
-				SoundIcon.Foreground = new SolidColorBrush(Colors.Yellow);
+				SoundIcon.Foreground = new SolidColorBrush(GetColor(Rating.suggestive));//represent yellow
 				ToolTipService.SetToolTip(SoundIcon, "This Video Has 'Sound' Tag".Language());
 			} else {
 				SoundIcon.Visibility = Visibility.Collapsed;
@@ -443,16 +443,16 @@ namespace E621Downloader.Pages {
 			Color color;
 			string tooltip;
 			if(rating == "e") {
-				color = Colors.Red;
+				color = GetColor(Rating.explict);
 				tooltip = "Rating".Language() + ": Explicit";
 			} else if(rating == "q") {
-				color = Colors.Yellow;
+				color = GetColor(Rating.suggestive);
 				tooltip = "Rating".Language() + ": Questionable";
 			} else if(rating == "s") {
-				color = Colors.Green;
+				color = GetColor(Rating.safe);
 				tooltip = "Rating".Language() + ": Safe";
 			} else {
-				color = Colors.White;
+				color = GetColor(null);
 				tooltip = "No Rating".Language();
 			}
 			TitleText.Foreground = new SolidColorBrush(color);
@@ -465,25 +465,16 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			RemoveGroup();
-			if(App.GetApplicationTheme() == ApplicationTheme.Dark) {
-				AddNewGroup("Artist".Language(), tags.artist.ToGroupTag("#F2AC08".ToColor()));
-				AddNewGroup("Copyright".Language(), tags.copyright.ToGroupTag("#D0D".ToColor()));
-				AddNewGroup("Species".Language(), tags.species.ToGroupTag("#ED5D1F".ToColor()));
-				AddNewGroup("Character".Language(), tags.character.ToGroupTag("#0A0".ToColor()));
-				AddNewGroup("General".Language(), tags.general.ToGroupTag("#B4C7D9".ToColor()));
-				AddNewGroup("Meta".Language(), tags.meta.ToGroupTag("#FFF".ToColor()));
-				AddNewGroup("Invalid".Language(), tags.invalid.ToGroupTag("#FF3D3D".ToColor()));
-				AddNewGroup("Lore".Language(), tags.lore.ToGroupTag("#282".ToColor()));
-			} else {
-				AddNewGroup("Artist".Language(), tags.artist.ToGroupTag("#E39B00".ToColor()));
-				AddNewGroup("Copyright".Language(), tags.copyright.ToGroupTag("#D0D".ToColor()));
-				AddNewGroup("Species".Language(), tags.species.ToGroupTag("#ED5D1F".ToColor()));
-				AddNewGroup("Character".Language(), tags.character.ToGroupTag("#0A0".ToColor()));
-				AddNewGroup("General".Language(), tags.general.ToGroupTag("#0B7EE2".ToColor()));
-				AddNewGroup("Meta".Language(), tags.meta.ToGroupTag("#000".ToColor()));
-				AddNewGroup("Invalid".Language(), tags.invalid.ToGroupTag("#FF3D3D".ToColor()));
-				AddNewGroup("Lore".Language(), tags.lore.ToGroupTag("#282".ToColor()));
-			}
+			bool isDark = App.GetApplicationTheme() == ApplicationTheme.Dark;
+
+			AddNewGroup("Artist".Language(), tags.artist.ToGroupTag(E621Tag.GetCatrgoryColor(TagCategory.Artists, isDark)));
+			AddNewGroup("Copyright".Language(), tags.copyright.ToGroupTag(E621Tag.GetCatrgoryColor(TagCategory.Copyrights, isDark)));
+			AddNewGroup("Species".Language(), tags.species.ToGroupTag(E621Tag.GetCatrgoryColor(TagCategory.Species, isDark)));
+			AddNewGroup("Character".Language(), tags.character.ToGroupTag(E621Tag.GetCatrgoryColor(TagCategory.Characters, isDark)));
+			AddNewGroup("General".Language(), tags.general.ToGroupTag(E621Tag.GetCatrgoryColor(TagCategory.General, isDark)));
+			AddNewGroup("Meta".Language(), tags.meta.ToGroupTag(E621Tag.GetCatrgoryColor(TagCategory.Meta, isDark)));
+			AddNewGroup("Invalid".Language(), tags.invalid.ToGroupTag(E621Tag.GetCatrgoryColor(TagCategory.Invalid, isDark)));
+			AddNewGroup("Lore".Language(), tags.lore.ToGroupTag(E621Tag.GetCatrgoryColor(TagCategory.Lore, isDark)));
 
 		}
 
@@ -1352,6 +1343,16 @@ namespace E621Downloader.Pages {
 			} catch(OperationCanceledException) { }
 			HideLoadingDialog();
 			CancelLoading();
+		}
+
+		public static Color GetColor(Rating? rating) {
+			bool isDark = App.GetApplicationTheme() == ApplicationTheme.Dark;
+			return rating switch {
+				Rating.safe => (isDark ? "#008000" : "#36973E").ToColor(),
+				Rating.suggestive => (isDark ? "#FFFF00" : "#EFC50C").ToColor(),
+				Rating.explict => (isDark ? "FF0000" : "#C92A2D").ToColor(),
+				_ => (isDark ? "#FFF" : "#000").ToColor(),
+			};
 		}
 
 		private async void DownloadKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {

@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models.Posts;
+using E621Downloader.Pages;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,23 +42,25 @@ namespace E621Downloader.Views {
 			}
 			ParentCommentText.Text = $"{post.comment_count}";
 			ParentRatingText.Text = $"{post.rating.ToUpper()}";
+			Color color;
 			switch(post.rating) {
 				case "s":
 					RatingIcon.Glyph = "\uF78C";
-					RatingIcon.Foreground = new SolidColorBrush(Colors.Green);
+					color = PicturePage.GetColor(Rating.safe);
 					break;
 				case "q":
 					RatingIcon.Glyph = "\uE897";
-					RatingIcon.Foreground = new SolidColorBrush(Colors.Yellow);
+					color = PicturePage.GetColor(Rating.suggestive);
 					break;
 				case "e":
 					RatingIcon.Glyph = "\uE814";
-					RatingIcon.Foreground = new SolidColorBrush(Colors.Red);
+					color = PicturePage.GetColor(Rating.explict);
 					break;
 				default:
-					RatingIcon.Foreground = new SolidColorBrush(Colors.White);
+					color = PicturePage.GetColor(null);
 					break;
 			}
+			RatingIcon.Foreground = new SolidColorBrush(color);
 		}
 	}
 }

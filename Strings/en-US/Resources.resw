@@ -843,7 +843,7 @@
 	<data name="NoPathSelectedText.Text" xml:space="preserve">
     <value>No Path Selected</value>
   </data>
-	<data name="GENERALText.Text" xml:space="preserve">
+	<data name="GENERALALLCAPText.Text" xml:space="preserve">
     <value>GENERAL</value>
   </data>
 	<data name="HistoryText.Text" xml:space="preserve">
@@ -1751,5 +1751,41 @@
   </data>
 	<data name="FoldersPaneTitle.PaneTitle" xml:space="preserve">
     <value>Folders</value>
+  </data>
+	<data name="GifAutoPlayToggle.OnContent" xml:space="preserve">
+    <value>Enable Gif AutoPlay</value>
+  </data>
+	<data name="GifAutoPlayToggle.OffContent" xml:space="preserve">
+    <value>Enable Gif AutoPlay</value>
+  </data>
+	<data name="NewListPlaceholder.PlaceholderText" xml:space="preserve">
+    <value>New List Name</value>
+  </data>
+	<data name="YourTagPlaceholderText.PlaceholderText" xml:space="preserve">
+    <value>Your Tag</value>
+  </data>
+	<data name="GeneralText.Text" xml:space="preserve">
+    <value>General</value>
+  </data>
+	<data name="ArtistsText.Text" xml:space="preserve">
+    <value>Artists</value>
+  </data>
+	<data name="CopyrightsText.Text" xml:space="preserve">
+    <value>Copyrights</value>
+  </data>
+	<data name="SpeciesText.Text" xml:space="preserve">
+    <value>Species</value>
+  </data>
+	<data name="CharactersText.Text" xml:space="preserve">
+    <value>Characters</value>
+  </data>
+	<data name="MetaText.Text" xml:space="preserve">
+    <value>Meta</value>
+  </data>
+	<data name="InvalidText.Text" xml:space="preserve">
+    <value>Invalid</value>
+  </data>
+	<data name="LoreText.Text" xml:space="preserve">
+    <value>Lore</value>
   </data>
 </root>

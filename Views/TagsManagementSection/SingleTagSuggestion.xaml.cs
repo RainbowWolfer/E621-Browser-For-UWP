@@ -26,6 +26,9 @@ namespace E621Downloader.Views.TagsManagementSection {
 		public string AntecedentName => autoComplete.antecedent_name;
 		public string Count => Methods.NumberToK(autoComplete.post_count);
 
+		public Color MainColor { get; private set; }
+		public SolidColorBrush MainBrush => new(MainColor);
+
 		public bool IsSelected {
 			get => isSelected;
 			set {
@@ -35,7 +38,7 @@ namespace E621Downloader.Views.TagsManagementSection {
 				SelectionStoryboard.Begin();
 
 				if(isSelected) {
-					RootPanel.BorderBrush = new SolidColorBrush(Colors.Red);
+					RootPanel.BorderBrush = MainBrush;
 					RootPanel.BorderThickness = new Thickness(1.5);
 					RootPanel.CornerRadius = new CornerRadius(5);
 					CategoryRectangle.RadiusX = 0;
@@ -57,12 +60,9 @@ namespace E621Downloader.Views.TagsManagementSection {
 				Arrow.Visibility = Visibility.Collapsed;
 				AntecedentText.Visibility = Visibility.Collapsed;
 			}
-			switch(Category) {
-				case 0:
-					break;
-				default:
-					break;
-			}
+			var catrgory = E621Tag.GetTagCategory(Category);
+			bool isDark = App.GetApplicationTheme() == ApplicationTheme.Dark;
+			MainColor = E621Tag.GetCatrgoryColor(catrgory, isDark);
 		}
 
 		public void SetSelected(bool value) {

@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models.Networks;
+using Microsoft.Toolkit.Uwp.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.UI;
 
 namespace E621Downloader.Models.Posts {
 	public class E621Tag {
@@ -70,12 +72,43 @@ namespace E621Downloader.Models.Posts {
 				1 => "Artists",
 				2 => "Not Found",
 				3 => "Copyrights",
-				4 => "Artists",
+				4 => "Characters",
 				5 => "Species",
 				6 => "Invalid",
 				7 => "Meta",
 				8 => "Lore",
 				_ => "UnKnown",
+			};
+		}
+
+		public static TagCategory GetTagCategory(int category) {
+			return category switch {
+				0 => TagCategory.General,
+				1 => TagCategory.Artists,
+				2 => TagCategory.NotFound,
+				3 => TagCategory.Copyrights,
+				4 => TagCategory.Characters,
+				5 => TagCategory.Species,
+				6 => TagCategory.Invalid,
+				7 => TagCategory.Meta,
+				8 => TagCategory.Lore,
+				_ => TagCategory.UnKnown,
+			};
+		}
+
+		public static Color GetCatrgoryColor(TagCategory category, bool isDarkTheme = true) {
+			return category switch {
+				TagCategory.Artists => (isDarkTheme ? "#F2AC08" : "#E39B00").ToColor(),
+				TagCategory.Copyrights => (isDarkTheme ? "#DD00DD" : "#DD00DD").ToColor(),
+				TagCategory.Species => (isDarkTheme ? "#ED5D1F" : "#ED5D1F").ToColor(),
+				TagCategory.Characters => (isDarkTheme ? "#00AA00" : "#00AA00").ToColor(),
+				TagCategory.General => (isDarkTheme ? "#B4C7D9" : "#0B7EE2").ToColor(),
+				TagCategory.Meta => (isDarkTheme ? "#FFFFFF" : "#000000").ToColor(),
+				TagCategory.Invalid => (isDarkTheme ? "#FF3D3D" : "#FF3D3D").ToColor(),
+				TagCategory.Lore => (isDarkTheme ? "#228822" : "#228822").ToColor(),
+				TagCategory.NotFound => (isDarkTheme ? "#B85277" : "#B40249").ToColor(),
+				TagCategory.UnKnown => (isDarkTheme ? "#CCCBF9" : "#050507").ToColor(),
+				_ => (isDarkTheme ? "#FFFFFF" : "#000000").ToColor(),
 			};
 		}
 
@@ -106,5 +139,18 @@ namespace E621Downloader.Models.Posts {
 		public override string ToString() {
 			return $"E621Tags:({id})({name})({related_tags})({post_count})({category})";
 		}
+	}
+
+	public enum TagCategory {
+		General,
+		Artists,
+		NotFound,
+		Characters,
+		Copyrights,
+		Species,
+		Invalid,
+		Meta,
+		Lore,
+		UnKnown,
 	}
 }

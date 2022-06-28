@@ -732,9 +732,6 @@
   <data name="NoPathSelectedText.Text" xml:space="preserve">
     <value>没有选择路径</value>
   </data>
-  <data name="GENERALText.Text" xml:space="preserve">
-    <value>通用</value>
-  </data>
   <data name="HistoryText.Text" xml:space="preserve">
     <value>历史</value>
   </data>
@@ -1652,5 +1649,44 @@
   </data>
   <data name="FoldersPaneTitle.PaneTitle" xml:space="preserve">
     <value>文件夹</value>
+  </data>
+  <data name="GifAutoPlayToggle.OnContent" xml:space="preserve">
+    <value>开启GIF自动播放</value>
+  </data>
+  <data name="GifAutoPlayToggle.OffContent" xml:space="preserve">
+    <value>开启GIF自动播放</value>
+  </data>
+  <data name="NewListPlaceholder.PlaceholderText" xml:space="preserve">
+    <value>新列表名称</value>
+  </data>
+  <data name="YourTagPlaceholderText.PlaceholderText" xml:space="preserve">
+    <value>你的标签</value>
+  </data>
+  <data name="GENERALALLCAPText.Text" xml:space="preserve">
+    <value>通用</value>
+  </data>
+  <data name="GeneralText.Text" xml:space="preserve">
+    <value>通用</value>
+  </data>
+  <data name="ArtistsText.Text" xml:space="preserve">
+    <value>作者</value>
+  </data>
+  <data name="CopyrightsText.Text" xml:space="preserve">
+    <value>版权</value>
+  </data>
+  <data name="SpeciesText.Text" xml:space="preserve">
+    <value>物种</value>
+  </data>
+  <data name="CharactersText.Text" xml:space="preserve">
+    <value>角色</value>
+  </data>
+  <data name="MetaText.Text" xml:space="preserve">
+    <value>元数据</value>
+  </data>
+  <data name="InvalidText.Text" xml:space="preserve">
+    <value>无效</value>
+  </data>
+  <data name="LoreText.Text" xml:space="preserve">
+    <value>理论</value>
   </data>
 </root>

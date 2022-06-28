@@ -968,10 +968,6 @@ Would you like to get it set?</source>
           <source>No Path Selected</source>
           <target state="final">没有选择路径</target>
         </trans-unit>
-        <trans-unit id="GENERALText.Text" translate="yes" xml:space="preserve">
-          <source>GENERAL</source>
-          <target state="final">通用</target>
-        </trans-unit>
         <trans-unit id="HistoryText.Text" translate="yes" xml:space="preserve">
           <source>History</source>
           <target state="final">历史</target>
@@ -2199,6 +2195,58 @@ Warning! This action will override the tags existing in the cloud, do you want t
         <trans-unit id="FoldersPaneTitle.PaneTitle" translate="yes" xml:space="preserve">
           <source>Folders</source>
           <target state="final">文件夹</target>
+        </trans-unit>
+        <trans-unit id="GifAutoPlayToggle.OnContent" translate="yes" xml:space="preserve">
+          <source>Enable Gif AutoPlay</source>
+          <target state="final">开启GIF自动播放</target>
+        </trans-unit>
+        <trans-unit id="GifAutoPlayToggle.OffContent" translate="yes" xml:space="preserve">
+          <source>Enable Gif AutoPlay</source>
+          <target state="final">开启GIF自动播放</target>
+        </trans-unit>
+        <trans-unit id="NewListPlaceholder.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>New List Name</source>
+          <target state="final">新列表名称</target>
+        </trans-unit>
+        <trans-unit id="YourTagPlaceholderText.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Your Tag</source>
+          <target state="final">你的标签</target>
+        </trans-unit>
+        <trans-unit id="GENERALALLCAPText.Text" translate="yes" xml:space="preserve">
+          <source>GENERAL</source>
+          <target state="final">通用</target>
+        </trans-unit>
+        <trans-unit id="GeneralText.Text" translate="yes" xml:space="preserve">
+          <source>General</source>
+          <target state="final">通用</target>
+        </trans-unit>
+        <trans-unit id="ArtistsText.Text" translate="yes" xml:space="preserve">
+          <source>Artists</source>
+          <target state="final">作者</target>
+        </trans-unit>
+        <trans-unit id="CopyrightsText.Text" translate="yes" xml:space="preserve">
+          <source>Copyrights</source>
+          <target state="final">版权</target>
+        </trans-unit>
+        <trans-unit id="SpeciesText.Text" translate="yes" xml:space="preserve">
+          <source>Species</source>
+          <target state="final">物种</target>
+        </trans-unit>
+        <trans-unit id="CharactersText.Text" translate="yes" xml:space="preserve">
+          <source>Characters</source>
+          <target state="final">角色</target>
+        </trans-unit>
+        <trans-unit id="MetaText.Text" translate="yes" xml:space="preserve">
+          <source>Meta</source>
+          <target state="final">元数据</target>
+        </trans-unit>
+        <trans-unit id="InvalidText.Text" translate="yes" xml:space="preserve">
+          <source>Invalid</source>
+          <target state="final">无效</target>
+        </trans-unit>
+        <trans-unit id="LoreText.Text" translate="yes" xml:space="preserve">
+          <source>Lore</source>
+          <target state="final">理论</target>
         </trans-unit>
       </group>
     </body>

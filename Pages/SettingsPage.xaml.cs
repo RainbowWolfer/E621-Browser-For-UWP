@@ -64,6 +64,7 @@ namespace E621Downloader.Pages {
 			MediaPlayToggle.IsOn = LocalSettings.Current.mediaBackgroundPlay;
 			MediaAutoPlayToggle.IsOn = LocalSettings.Current.mediaAutoPlay;
 			HotKeysToggle.IsOn = LocalSettings.Current.enableHotKeys;
+			GifAutoPlayToggle.IsOn = LocalSettings.Current.enableGifAutoPlay;
 
 			RandomTagMaxSlider.Value = LocalSettings.Current.randomTagMaxCount;
 			RandomTagMaxText.Text = Methods.NumberToK(LocalSettings.Current.randomTagMaxCount);
@@ -236,6 +237,14 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			LocalSettings.Current.cycleList = (sender as ToggleSwitch).IsOn;
+			LocalSettings.Save();
+		}
+
+		private void GifAutoPlayToggle_Toggled(object sender, RoutedEventArgs e) {
+			if(internalChanges) {
+				return;
+			}
+			LocalSettings.Current.enableGifAutoPlay = (sender as ToggleSwitch).IsOn;
 			LocalSettings.Save();
 		}
 
@@ -451,5 +460,6 @@ namespace E621Downloader.Pages {
 			}
 			await bar.RequestPinCurrentAppAsync();
 		}
+
 	}
 }

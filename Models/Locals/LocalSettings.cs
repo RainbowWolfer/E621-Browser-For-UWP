@@ -29,6 +29,8 @@ namespace E621Downloader.Models.Locals {
 		public bool mediaBackgroundPlay;
 		public bool mediaAutoPlay;
 		public bool enableHotKeys;
+		public bool enableGifAutoPlay;
+		public int gifLimit;
 
 		public SpotFilterType spot_FilterType;
 		public FileType spot_fileType;
@@ -36,6 +38,7 @@ namespace E621Downloader.Models.Locals {
 		public bool spot_includeQuestoinable;
 		public bool spot_includeExplicit;
 		public int spot_amount;
+
 
 		public ItemsGroupViewType library_viewType;
 
@@ -72,6 +75,8 @@ namespace E621Downloader.Models.Locals {
 				randomTagMaxCount = 10000,
 				tabsOpenLength = 300,
 				library_viewType = ItemsGroupViewType.ListView,
+				enableGifAutoPlay = true,
+				gifLimit = 5,
 			};
 		}
 	}
