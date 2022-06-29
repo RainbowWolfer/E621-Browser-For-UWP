@@ -1,33 +1,15 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Locals;
-using E621Downloader.Models.Posts;
-using E621Downloader.Views;
-using E621Downloader.Views.FoldersSelectionSection;
 using E621Downloader.Views.LibrarySection;
-using E621Downloader.Views.LocalTagsManagementSection;
-using E621Downloader.Views.TagsManagementSection;
-using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
-using Windows.Storage.Search;
 using Windows.System;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -37,9 +19,6 @@ namespace E621Downloader.Pages.LibrarySection {
 		private LibraryPassArgs args;
 
 		private bool isLoading;
-		private readonly List<string> selectedTags;
-
-		private readonly List<Grid> itemGrids;
 
 		public int ItemWidth => libraryPage.Size;
 		public int ItemHeight => libraryPage.Size - 30;
@@ -63,8 +42,6 @@ namespace E621Downloader.Pages.LibrarySection {
 
 		public Explorer() {
 			this.InitializeComponent();
-			selectedTags = new List<string>();
-			itemGrids = new List<Grid>();
 
 			TitleBar.OnExplorerClick += TitleBar_OnExplorerClick;
 			TitleBar.OnRefresh += TitleBar_OnRefresh;

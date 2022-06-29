@@ -162,6 +162,7 @@
     <Compile Include="Models\KeyListener.cs" />
     <Compile Include="Models\Locals\FavoritesList.cs" />
     <Compile Include="Models\Locals\History.cs" />
+    <Compile Include="Models\Locals\LocalLanguage.cs" />
     <Compile Include="Models\Locals\Listing.cs" />
     <Compile Include="Models\Networks\DataResult.cs" />
     <Compile Include="Models\Posts\E621Vote.cs" />
@@ -182,7 +183,6 @@
     <Compile Include="Models\Posts\E621Paginator.cs" />
     <Compile Include="Models\Posts\E621Pool.cs" />
     <Compile Include="Models\Posts\E621Tag.cs" />
-    <Compile Include="Models\HTMLConvertor.cs" />
     <Compile Include="Models\ImageConvertor.cs" />
     <Compile Include="Models\Locals\Local.cs" />
     <Compile Include="Models\Locals\MetaFile.cs" />

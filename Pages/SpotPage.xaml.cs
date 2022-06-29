@@ -8,19 +8,13 @@ using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using SymbolIconSource = Microsoft.UI.Xaml.Controls.SymbolIconSource;
 
@@ -220,16 +214,16 @@ namespace E621Downloader.Pages {
 		}
 
 		private void CloseRatingPanelTeachingTips() {
-			foreach(TeachingTip item in RatingPanel.Children.Where(i => i is TeachingTip)) {
+			foreach(TeachingTip item in RatingPanel.Children.Where(i => i is TeachingTip).Cast<TeachingTip>()) {
 				item.IsOpen = false;
 			}
 		}
 
-		private void CloseTypePanelTeachingTips() {
-			foreach(TeachingTip item in TypePanel.Children.Where(i => i is TeachingTip)) {
-				item.IsOpen = false;
-			}
-		}
+		//private void CloseTypePanelTeachingTips() {
+		//	foreach(TeachingTip item in TypePanel.Children.Where(i => i is TeachingTip).Cast<TeachingTip>()) {
+		//		item.IsOpen = false;
+		//	}
+		//}
 
 		private void IncludeSafeCheckBox_Checked(object sender, RoutedEventArgs e) {
 			if(internalChange) {
@@ -263,16 +257,6 @@ namespace E621Downloader.Pages {
 			ScoreLimitText.Text = "Score Limit".Language() + $": ({start} - {end})";
 		}
 
-		private void SizeButton_Click(object sender, RoutedEventArgs e) {
-
-		}
-
-		private void SizeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
-
-		}
-
-		private const int MIN = -40;
-		private const int MAX = 100;
 		private void FromSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
 			if(60 - (int)FromSlider.Value < (int)ToSlider.Value) {
 				ToSlider.Value = 60 - (int)FromSlider.Value;
@@ -305,7 +289,7 @@ namespace E621Downloader.Pages {
 			if(MainGridView == null) {
 				return;
 			}
-			foreach(ImageHolder item in MainGridView.Items) {
+			foreach(ImageHolder item in MainGridView.Items.Cast<ImageHolder>()) {
 				item.Height = value;
 				item.Width = value;
 			}

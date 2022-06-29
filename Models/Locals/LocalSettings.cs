@@ -1,11 +1,5 @@
 ﻿using E621Downloader.Pages;
 using E621Downloader.Views.LibrarySection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Xaml;
 
 namespace E621Downloader.Models.Locals {
 	public class LocalSettings {

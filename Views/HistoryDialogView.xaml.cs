@@ -3,21 +3,11 @@ using E621Downloader.Models.Locals;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Views {
 	public sealed partial class HistoryDialogView: UserControl {
@@ -252,6 +242,18 @@ namespace E621Downloader.Views {
 				loaded = true;
 				StartLoading();
 			}
+		}
+
+		private void ClearAll_Click(object sender, RoutedEventArgs e) {
+
+		}
+
+		private void ClearBeforeThisMonth_Click(object sender, RoutedEventArgs e) {
+
+		}
+
+		private void ClearBeforeToday_Click(object sender, RoutedEventArgs e) {
+
 		}
 	}
 

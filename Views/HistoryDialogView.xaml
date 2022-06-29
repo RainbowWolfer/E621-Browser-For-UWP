@@ -15,6 +15,10 @@
 	</UserControl.Resources>
 
 	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="auto"/>
+		</Grid.RowDefinitions>
 		<Pivot SelectionChanged="Pivot_SelectionChanged">
 			<PivotItem x:Uid="SearchHistoryHeader" x:Name="SearchItem" Header="Search History">
 				<Grid>
@@ -51,5 +55,33 @@
 				</Grid>
 			</PivotItem>
 		</Pivot>
+		<Grid Grid.Row="1" Margin="5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0.5*"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="0.8*"/>
+				<ColumnDefinition Width="auto"/>
+			</Grid.ColumnDefinitions>
+			<Button x:Name="ClearAll" Grid.Column="0" HorizontalAlignment="Stretch" Margin="5" Click="ClearAll_Click">
+				<TextBlock x:Uid="ClearAllText" Text="Clear All"/>
+			</Button>
+			<Button x:Name="ClearBeforeThisMonth" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5" Click="ClearBeforeThisMonth_Click">
+				<TextBlock x:Uid="ClearBeforeThisMonthText" Text="Clear Before This Month"/>
+			</Button>
+			<Button x:Name="ClearBeforeToday" Grid.Column="2" HorizontalAlignment="Stretch" Margin="5" Click="ClearBeforeToday_Click">
+				<TextBlock x:Uid="ClearBeforeTodayText" Text="Clear Before Today"/>
+			</Button>
+			<Button Grid.Column="3" Margin="5">
+				<FontIcon Glyph="&#xE11B;"/>
+				<Button.Flyout>
+					<Flyout>
+						<StackPanel>
+							<TextBlock TextAlignment="Center" Text="Note" FontWeight="Bold" FontSize="16"/>
+							<TextBlock x:Uid="HistoryClearHintText" TextWrapping="WrapWholeWords" MaxWidth="200" Text="Too much history may cause longer time to open this dialog up. You can clear some earlier history."/>
+						</StackPanel>
+					</Flyout>
+				</Button.Flyout>
+			</Button>
+		</Grid>
 	</Grid>
 </UserControl>

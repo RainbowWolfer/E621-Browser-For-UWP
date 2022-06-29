@@ -25,7 +25,7 @@
 	</UserControl.Resources>
 
 	<StackPanel HorizontalAlignment="Center">
-		<TextBlock Text="Tag Category Color" FontWeight="Bold" FontSize="16" TextAlignment="Center" Margin="2"/>
+		<TextBlock x:Uid="TagCategoryColorText" Text="Tag Category Color" FontWeight="Bold" FontSize="16" TextAlignment="Center" Margin="2"/>
 		<Grid HorizontalAlignment="Center" Margin="5">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>

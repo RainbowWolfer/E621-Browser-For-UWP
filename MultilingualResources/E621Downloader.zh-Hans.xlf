@@ -1344,18 +1344,6 @@ Please go to the settings page and choose your download folder</source>
           <source>Grid View</source>
           <target state="final">图表视图</target>
         </trans-unit>
-        <trans-unit id="RenameDialog.PrimaryButtonText" translate="yes" xml:space="preserve">
-          <source>Rename</source>
-          <target state="final">重命名</target>
-        </trans-unit>
-        <trans-unit id="RenameDialog.CloseButtonText" translate="yes" xml:space="preserve">
-          <source>Back</source>
-          <target state="final">返回</target>
-        </trans-unit>
-        <trans-unit id="RenameDialog.Title" translate="yes" xml:space="preserve">
-          <source>Rename</source>
-          <target state="final">重命名</target>
-        </trans-unit>
         <trans-unit id="Filter" translate="yes" xml:space="preserve">
           <source>Filter</source>
           <target state="final">筛选</target>
@@ -1534,73 +1522,26 @@ Please Refresh to view new Downloaded Files</source>
           <source>Are you sure to delete this list?</source>
           <target state="final">你确定要删除此列表吗？</target>
         </trans-unit>
-        <trans-unit id="DeleteConfirmTeachingTip.ActionButtonContent" translate="yes" xml:space="preserve">
-          <source>Delete</source>
-          <target state="final">删除</target>
-        </trans-unit>
-        <trans-unit id="DeleteConfirmTeachingTip.CloseButtonContent" translate="yes" xml:space="preserve">
-          <source>Cancel</source>
-          <target state="final">取消</target>
-        </trans-unit>
         <trans-unit id="RenameTeachingTip.Title" translate="yes" xml:space="preserve">
           <source>Rename</source>
           <target state="final">重命名</target>
-        </trans-unit>
-        <trans-unit id="RenameTeachingTip.ActionButtonContent" translate="yes" xml:space="preserve">
-          <source>Confirm</source>
-          <target state="final">确认</target>
-        </trans-unit>
-        <trans-unit id="RenameTeachingTip.CloseButtonContent" translate="yes" xml:space="preserve">
-          <source>Cancel</source>
-          <target state="final">取消</target>
         </trans-unit>
         <trans-unit id="CenteredClearAllComfirmTeachingTip.Title" translate="yes" xml:space="preserve">
           <source>Clear All Tags</source>
           <target state="final">清空所有标签</target>
         </trans-unit>
-        <trans-unit id="CenteredClearAllComfirmTeachingTip.ActionButtonContent" translate="yes" xml:space="preserve">
-          <source>Yes</source>
-          <target state="final">是</target>
-        </trans-unit>
-        <trans-unit id="CenteredClearAllComfirmTeachingTip.CloseButtonContent" translate="yes" xml:space="preserve">
-          <source>No</source>
-          <target state="final">否</target>
-        </trans-unit>
         <trans-unit id="CenteredUploadComfirmTeachingTip.Title" translate="yes" xml:space="preserve">
           <source>Upload Warning</source>
           <target state="final">上传警告</target>
-        </trans-unit>
-        <trans-unit id="CenteredUploadComfirmTeachingTip.ActionButtonContent" translate="yes" xml:space="preserve">
-          <source>Yes</source>
-          <target state="final">是</target>
-        </trans-unit>
-        <trans-unit id="CenteredUploadComfirmTeachingTip.CloseButtonContent" translate="yes" xml:space="preserve">
-          <source>No</source>
-          <target state="final">否</target>
         </trans-unit>
         <trans-unit id="CenteredUploadResultTeachingTip.Title" translate="yes" xml:space="preserve">
           <source>Upload Result</source>
           <target state="final">上传结果</target>
         </trans-unit>
-        <trans-unit id="CenteredUploadResultTeachingTip.CloseButtonContent" translate="yes" xml:space="preserve">
-          <source>OK</source>
-          <target state="final">OK</target>
-        </trans-unit>
         <trans-unit id="CenteredTagsOverrideConfirmTeachingTip.Title" translate="yes" xml:space="preserve">
-          <source>Tags Override</source>
-          <target state="final">标签覆盖</target>
-        </trans-unit>
-        <trans-unit id="CenteredTagsOverrideConfirmTeachingTip.ActionButtonContent" translate="yes" xml:space="preserve">
-          <source>Yes</source>
-          <target state="final">是</target>
-        </trans-unit>
-        <trans-unit id="CenteredTagsOverrideConfirmTeachingTip.CloseButtonContent" translate="yes" xml:space="preserve">
-          <source>No</source>
-          <target state="final">否</target>
-        </trans-unit>
-        <trans-unit id="TagInfoTeachingTip.CloseButtonContent" translate="yes" xml:space="preserve">
-          <source>Back</source>
-          <target state="final">返回</target>
+          <source>Override Current Tags</source>
+          <target state="needs-review-translation">覆盖当前标签</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Pause" translate="yes" xml:space="preserve">
           <source>Pause</source>
@@ -2247,6 +2188,157 @@ Warning! This action will override the tags existing in the cloud, do you want t
         <trans-unit id="LoreText.Text" translate="yes" xml:space="preserve">
           <source>Lore</source>
           <target state="final">理论</target>
+        </trans-unit>
+        <trans-unit id="LanguageText.Text" translate="yes" xml:space="preserve">
+          <source>Language</source>
+          <target state="final">语言</target>
+        </trans-unit>
+        <trans-unit id="EnglishText.Text" translate="yes" xml:space="preserve">
+          <source>English</source>
+          <target state="final">英语 (English)</target>
+        </trans-unit>
+        <trans-unit id="ChineseText.Text" translate="yes" xml:space="preserve">
+          <source>Chinese</source>
+          <target state="final">中文 (Chinese)</target>
+        </trans-unit>
+        <trans-unit id="LanguageToolTip.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Language</source>
+          <target state="final">Language</target>
+        </trans-unit>
+        <trans-unit id="V1150L1.Text" translate="yes" xml:space="preserve">
+          <source>- Fixed the bug where the app would crash when entering the settings page while the system language was not English.</source>
+          <target state="final">- 修复一个应用在系统语言不是英文时，进入设置界面会闪退的问题。</target>
+        </trans-unit>
+        <trans-unit id="V1150L2.Text" translate="yes" xml:space="preserve">
+          <source>- New language supported : Chinese</source>
+          <target state="final">- 新语言支持：中文</target>
+        </trans-unit>
+        <trans-unit id="V1150L3.Text" translate="yes" xml:space="preserve">
+          <source>- Library now orders by date correctly</source>
+          <target state="final">- 本地库现在按照正确的时间排序</target>
+        </trans-unit>
+        <trans-unit id="V1150L4.Text" translate="yes" xml:space="preserve">
+          <source>- Some colors adjustment</source>
+          <target state="final">- 一些颜色调整</target>
+        </trans-unit>
+        <trans-unit id="V1150L5.Text" translate="yes" xml:space="preserve">
+          <source>- You can now delete item in library</source>
+          <target state="final">- 现在可以在本地库中直接删除文件</target>
+        </trans-unit>
+        <trans-unit id="V1150L6.Text" translate="yes" xml:space="preserve">
+          <source>- New option: Enable GIF AutoPlay</source>
+          <target state="final">- 新选项：开启GIF自动播放</target>
+        </trans-unit>
+        <trans-unit id="V1150L7.Text" translate="yes" xml:space="preserve">
+          <source>- Some bugs fixes &amp; changes</source>
+          <target state="final">- 一些BUG修复与改动</target>
+        </trans-unit>
+        <trans-unit id="No Download Path Selected" translate="yes" xml:space="preserve">
+          <source>No Download Path Selected</source>
+          <target state="final">未选择下载路径</target>
+        </trans-unit>
+        <trans-unit id="Paste List" translate="yes" xml:space="preserve">
+          <source>Paste List</source>
+          <target state="final">粘贴列表</target>
+        </trans-unit>
+        <trans-unit id="There is something downloading cannot clear download path" translate="yes" xml:space="preserve">
+          <source>There is something downloading.
+cannot clear download path.</source>
+          <target state="final">有东西正在下载，无法清空下载路径</target>
+        </trans-unit>
+        <trans-unit id="Are you sure to clear download path(your downloaded files will not be deleted)" translate="yes" xml:space="preserve">
+          <source>Are you sure to clear download path?
+(your downloaded files will not be deleted)</source>
+          <target state="final">你确定要清楚下载路径吗？
+(已下载文件不会被删除)</target>
+        </trans-unit>
+        <trans-unit id="No Path Selected" translate="yes" xml:space="preserve">
+          <source>No Path Selected</source>
+          <target state="final">未选择路径</target>
+        </trans-unit>
+        <trans-unit id="Hot Keys" translate="yes" xml:space="preserve">
+          <source>Hot Keys</source>
+          <target state="final">热键</target>
+        </trans-unit>
+        <trans-unit id="Custom Host" translate="yes" xml:space="preserve">
+          <source>Custom Host</source>
+          <target state="final">自定义域名</target>
+        </trans-unit>
+        <trans-unit id="Subject Here" translate="yes" xml:space="preserve">
+          <source>Subject Here</source>
+          <target state="final">这里写主题</target>
+        </trans-unit>
+        <trans-unit id="History" translate="yes" xml:space="preserve">
+          <source>History</source>
+          <target state="final">历史</target>
+        </trans-unit>
+        <trans-unit id="Are you sure to delete all your wallpapers cache located in the APP settings folder" translate="yes" xml:space="preserve">
+          <source>Are you sure to delete all your wallpapers cache located in the APP settings folder</source>
+          <target state="final">你确定要删除位于软件设置文件内的壁纸缓存吗？</target>
+        </trans-unit>
+        <trans-unit id="Cleaning" translate="yes" xml:space="preserve">
+          <source>Cleaning</source>
+          <target state="final">清理中</target>
+        </trans-unit>
+        <trans-unit id="LanguageChangeHintText.Text" translate="yes" xml:space="preserve">
+          <source>* This change will be applied after restarting the application</source>
+          <target state="final">* 此项更改只会在重启软件后生效</target>
+        </trans-unit>
+        <trans-unit id="Added to favorite list" translate="yes" xml:space="preserve">
+          <source>Added to favorite list</source>
+          <target state="final">添加到最爱列表</target>
+        </trans-unit>
+        <trans-unit id="Failed adding to favorite list" translate="yes" xml:space="preserve">
+          <source>Failed adding to favorite list</source>
+          <target state="final">添加最爱列表失败</target>
+        </trans-unit>
+        <trans-unit id="TagCategoryColorText.Text" translate="yes" xml:space="preserve">
+          <source>Tag Category Color</source>
+          <target state="final">标签类别颜色</target>
+        </trans-unit>
+        <trans-unit id="AddToFavoriteText.Text" translate="yes" xml:space="preserve">
+          <source>Add To Favorite</source>
+          <target state="final">添加到最爱</target>
+        </trans-unit>
+        <trans-unit id="VoteUpText.Text" translate="yes" xml:space="preserve">
+          <source>Vote Up</source>
+          <target state="final">点赞</target>
+        </trans-unit>
+        <trans-unit id="VoteDownText.Text" translate="yes" xml:space="preserve">
+          <source>Vote Down</source>
+          <target state="final">踩</target>
+        </trans-unit>
+        <trans-unit id="ExitFocusModeText.Text" translate="yes" xml:space="preserve">
+          <source>Exit Focus Mode</source>
+          <target state="final">退出专注模式</target>
+        </trans-unit>
+        <trans-unit id="ConfirmText.Text" translate="yes" xml:space="preserve">
+          <source>Confirm</source>
+          <target state="final">确认</target>
+        </trans-unit>
+        <trans-unit id="YesText.Text" translate="yes" xml:space="preserve">
+          <source>Yes</source>
+          <target state="final">是</target>
+        </trans-unit>
+        <trans-unit id="NoText.Text" translate="yes" xml:space="preserve">
+          <source>No</source>
+          <target state="final">否</target>
+        </trans-unit>
+        <trans-unit id="ClearAllText.Text" translate="yes" xml:space="preserve">
+          <source>Clear All</source>
+          <target state="final">清除所有</target>
+        </trans-unit>
+        <trans-unit id="ClearBeforeThisMonthText.Text" translate="yes" xml:space="preserve">
+          <source>Clear Before This Month</source>
+          <target state="final">清楚一个月前</target>
+        </trans-unit>
+        <trans-unit id="ClearBeforeTodayText.Text" translate="yes" xml:space="preserve">
+          <source>Clear Before Today</source>
+          <target state="final">清楚今天前</target>
+        </trans-unit>
+        <trans-unit id="HistoryClearHintText.Text" translate="yes" xml:space="preserve">
+          <source>太多的历史记录可能会导致打开此对话框的时间更长，你可以清除一些较早的历史记录。</source>
+          <target state="new">过多的额</target>
         </trans-unit>
       </group>
     </body>

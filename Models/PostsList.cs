@@ -1,14 +1,10 @@
 ﻿using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
-using E621Downloader.Pages.LibrarySection;
 using E621Downloader.Views.LibrarySection;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace E621Downloader.Models {
 	public class PostsList {

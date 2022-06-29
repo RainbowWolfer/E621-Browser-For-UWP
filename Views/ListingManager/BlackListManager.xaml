@@ -203,12 +203,24 @@
 				<controls:FontIconSource Glyph="&#xE7BA;"/>
 			</controls:TeachingTip.IconSource>
 		</controls:TeachingTip>
-		<controls:TeachingTip x:Uid="DeleteConfirmTeachingTip" x:Name="DeleteConfirmTeachingTip" Title="Confirm" Subtitle="Are you sure to delete this list?" IsLightDismissEnabled="True" PreferredPlacement="Bottom" ActionButtonContent="Delete" CloseButtonContent="Cancel" ActionButtonClick="DeleteConfirmTeachingTip_ActionButtonClick">
+		<controls:TeachingTip x:Uid="DeleteConfirmTeachingTip" x:Name="DeleteConfirmTeachingTip" Title="Confirm" Subtitle="Are you sure to delete this list?" IsLightDismissEnabled="True" PreferredPlacement="Bottom" ActionButtonClick="DeleteConfirmTeachingTip_ActionButtonClick">
+			<controls:TeachingTip.CloseButtonContent>
+				<TextBlock x:Uid="CancelText" Text="Cancel"/>
+			</controls:TeachingTip.CloseButtonContent>
+			<controls:TeachingTip.ActionButtonContent>
+				<TextBlock x:Uid="DeleteText" Text="Delete"/>
+			</controls:TeachingTip.ActionButtonContent>
 			<controls:TeachingTip.IconSource>
 				<controls:FontIconSource Glyph="&#xE897;"/>
 			</controls:TeachingTip.IconSource>
 		</controls:TeachingTip>
-		<controls:TeachingTip x:Name="RenameTeachingTip" Title="Rename" IsLightDismissEnabled="True" PreferredPlacement="Bottom" ActionButtonContent="Confirm" CloseButtonContent="Cancel" ActionButtonClick="RenameTeachingTip_ActionButtonClick">
+		<controls:TeachingTip x:Uid="RenameTeachingTip" x:Name="RenameTeachingTip" Title="Rename" IsLightDismissEnabled="True" PreferredPlacement="Bottom" ActionButtonClick="RenameTeachingTip_ActionButtonClick">
+			<controls:TeachingTip.CloseButtonContent>
+				<TextBlock x:Uid="CancelText" Text="Cancel"/>
+			</controls:TeachingTip.CloseButtonContent>
+			<controls:TeachingTip.ActionButtonContent>
+				<TextBlock x:Uid="ConfirmText" Text="Confirm"/>
+			</controls:TeachingTip.ActionButtonContent>
 			<controls:TeachingTip.Content>
 				<StackPanel Margin="5,15,5,5">
 					<TextBox x:Name="RenameBox" KeyDown="RenameBox_KeyDown" TextChanging="RenameBox_TextChanging" CornerRadius="4,0,0,4"/>
@@ -219,27 +231,48 @@
 				<controls:FontIconSource Glyph="&#xE8AC;"/>
 			</controls:TeachingTip.IconSource>
 		</controls:TeachingTip>
-		<controls:TeachingTip x:Name="CenteredClearAllComfirmTeachingTip" IsLightDismissEnabled="True" Title="Clear All Tags" PreferredPlacement="Center" ActionButtonContent="Yes" CloseButtonContent="No" ActionButtonClick="CenteredClearAllComfirmTeachingTip_ActionButtonClick">
+		<controls:TeachingTip x:Uid="CenteredClearAllComfirmTeachingTip" x:Name="CenteredClearAllComfirmTeachingTip" IsLightDismissEnabled="True" Title="Clear All Tags" PreferredPlacement="Center" ActionButtonClick="CenteredClearAllComfirmTeachingTip_ActionButtonClick">
+			<controls:TeachingTip.CloseButtonContent>
+				<TextBlock x:Uid="NoText" Text="No"/>
+			</controls:TeachingTip.CloseButtonContent>
+			<controls:TeachingTip.ActionButtonContent>
+				<TextBlock x:Uid="YesText" Text="Yes"/>
+			</controls:TeachingTip.ActionButtonContent>
 			<controls:TeachingTip.IconSource>
 				<controls:FontIconSource Glyph="&#xE897;"/>
 			</controls:TeachingTip.IconSource>
 		</controls:TeachingTip>
-		<controls:TeachingTip x:Name="CenteredUploadComfirmTeachingTip" IsLightDismissEnabled="True" Title="Upload Warning" PreferredPlacement="Center" ActionButtonContent="Yes" CloseButtonContent="No" ActionButtonClick="CenteredUploadComfirmTeachingTip_ActionButtonClick">
+		<controls:TeachingTip x:Uid="CenteredUploadComfirmTeachingTip" x:Name="CenteredUploadComfirmTeachingTip" IsLightDismissEnabled="True" Title="Upload Warning" PreferredPlacement="Center" ActionButtonClick="CenteredUploadComfirmTeachingTip_ActionButtonClick">
+			<controls:TeachingTip.CloseButtonContent>
+				<TextBlock x:Uid="NoText" Text="No"/>
+			</controls:TeachingTip.CloseButtonContent>
+			<controls:TeachingTip.ActionButtonContent>
+				<TextBlock x:Uid="YesText" Text="Yes"/>
+			</controls:TeachingTip.ActionButtonContent>
 			<controls:TeachingTip.IconSource>
 				<controls:FontIconSource Glyph="&#xE8C9;"/>
 			</controls:TeachingTip.IconSource>
 		</controls:TeachingTip>
-		<controls:TeachingTip x:Name="CenteredUploadResultTeachingTip" IsLightDismissEnabled="True" Title="Upload Result" PreferredPlacement="Center" CloseButtonContent="OK">
+		<controls:TeachingTip x:Uid="CenteredUploadResultTeachingTip" x:Name="CenteredUploadResultTeachingTip" IsLightDismissEnabled="True" Title="Upload Result" PreferredPlacement="Center" CloseButtonContent="OK">
 			<controls:TeachingTip.IconSource>
 				<controls:FontIconSource Glyph="&#xE8C9;"/>
 			</controls:TeachingTip.IconSource>
 		</controls:TeachingTip>
-		<controls:TeachingTip x:Name="CenteredTagsOverrideConfirmTeachingTip" IsLightDismissEnabled="True" Title="Tags Override" PreferredPlacement="Center" ActionButtonContent="Yes" CloseButtonContent="No" ActionButtonClick="CenteredTagsOverrideConfirmTeachingTip_ActionButtonClick	 ">
+		<controls:TeachingTip x:Uid="CenteredTagsOverrideConfirmTeachingTip" x:Name="CenteredTagsOverrideConfirmTeachingTip" IsLightDismissEnabled="True" Title="Tags Override" PreferredPlacement="Center" ActionButtonClick="CenteredTagsOverrideConfirmTeachingTip_ActionButtonClick">
+			<controls:TeachingTip.CloseButtonContent>
+				<TextBlock x:Uid="NoText" Text="No"/>
+			</controls:TeachingTip.CloseButtonContent>
+			<controls:TeachingTip.ActionButtonContent>
+				<TextBlock x:Uid="YesText" Text="Yes"/>
+			</controls:TeachingTip.ActionButtonContent>
 			<controls:TeachingTip.IconSource>
 				<controls:FontIconSource Glyph="&#xE897;"/>
 			</controls:TeachingTip.IconSource>
 		</controls:TeachingTip>
-		<controls:TeachingTip x:Name="TagInfoTeachingTip" d:Title="Hello World" IsLightDismissEnabled="True" CloseButtonContent="Back">
+		<controls:TeachingTip x:Name="TagInfoTeachingTip" d:Title="Hello World" IsLightDismissEnabled="True">
+			<controls:TeachingTip.CloseButtonContent>
+				<TextBlock x:Uid="BackText" Text="Back"/>
+			</controls:TeachingTip.CloseButtonContent>
 			<controls:TeachingTip.Content>
 				<Grid Margin="5,15,5,0">
 					<controls:ProgressBar x:Name="TagLoadingBar" IsIndeterminate="True"/>

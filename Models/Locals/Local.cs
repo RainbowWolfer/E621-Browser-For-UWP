@@ -1,24 +1,14 @@
-﻿using E621Downloader.Models.Download;
-using E621Downloader.Models.Locals;
-using E621Downloader.Models.Posts;
-using E621Downloader.Pages;
+﻿using E621Downloader.Models.Posts;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.FileProperties;
-using Windows.Storage.Streams;
-using Windows.UI.Popups;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace E621Downloader.Models.Locals {
@@ -43,6 +33,8 @@ namespace E621Downloader.Models.Locals {
 		public static StorageFile DownloadsInfoFile { get; private set; }
 		public static StorageFile FavoritesListFile { get; private set; }
 		public static StorageFile LocalSettingsFile { get; private set; }
+
+		//public static StorageFile LocalSettingsFile { get; private set; }
 
 		public static StorageFile HistoryFile { get; private set; }
 
@@ -329,7 +321,9 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public static async Task WriteFavoritesLists() {
-			await FileIO.WriteTextAsync(FavoritesListFile, JsonConvert.SerializeObject(FavoritesList.Table, Formatting.Indented));
+			try {
+				await FileIO.WriteTextAsync(FavoritesListFile, JsonConvert.SerializeObject(FavoritesList.Table, Formatting.Indented));
+			} catch(FileLoadException) { }
 		}
 
 		//F:\E621\creepypasta -momo_(creepypasta) rating;e\1820721.png

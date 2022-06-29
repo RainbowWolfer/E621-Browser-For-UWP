@@ -1,12 +1,10 @@
 ﻿using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
-using E621Downloader.Pages.DownloadSection;
 using E621Downloader.Pages.LibrarySection;
 using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.Foundation;
 using Windows.Networking.BackgroundTransfer;
 using Windows.UI.Xaml.Controls;
 

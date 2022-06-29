@@ -1,9 +1,8 @@
 ﻿using E621Downloader.Pages;
+using E621Downloader.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Locals {
 	public class FavoritesList: ICloneable {
@@ -18,6 +17,7 @@ namespace E621Downloader.Models.Locals {
 					//add in this list if not in list
 					if(!list.Items.Any(i => i.Path == path && i.Type == type)) {
 						list.Items.Add(new FavoriteItem(type, path));
+						PersonalFavoritesList.LastAddedList = list.Name;
 					}
 				} else {
 					//remove in this list if in list

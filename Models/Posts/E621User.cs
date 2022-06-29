@@ -1,13 +1,8 @@
 ﻿using E621Downloader.Models.Networks;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace E621Downloader.Models.Posts {
 	public class E621User {
@@ -22,7 +17,7 @@ namespace E621Downloader.Models.Posts {
 		}
 
 		public static async Task<E621User> GetAsync(int id, CancellationToken? token = null) {
-			return await GetAsync($"{id}");
+			return await GetAsync($"{id}", token);
 		}
 
 		public static async Task<string> GetAvatarURLAsync(E621User user, CancellationToken? token = null) {

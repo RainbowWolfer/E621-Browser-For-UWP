@@ -1,25 +1,14 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
-using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
 using E621Downloader.Views;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {

@@ -4,28 +4,14 @@ using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
-using Windows.Storage.Streams;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace E621Downloader.Views {
 	public delegate void OnImageLoadedEventHandler(BitmapImage bitmap);
@@ -126,7 +112,7 @@ namespace E621Downloader.Views {
 					item_select.Click += (sender, arg) => {
 						PostsBrowserPage.SetSelectionMode(true);
 						IsSelected = true;
-						PostsBrowserPage.SetSelectionFeedback(this);
+						PostsBrowserPage.SetSelectionFeedback();
 					};
 					flyout.Items.Add(item_select);
 
@@ -279,7 +265,7 @@ namespace E621Downloader.Views {
 			if(MainPage.Instance.currentTag == PageTag.PostsBrowser) {
 				if(PostsBrowserPage.IsInMultipleSelectionMode()) {
 					IsSelected = !IsSelected;
-					PostsBrowserPage.SetSelectionFeedback(this);
+					PostsBrowserPage.SetSelectionFeedback();
 				} else {
 					App.PostsList.UpdatePostsList(PostsBrowserPage.GetCurrentPosts());
 					App.PostsList.Current = PostRef;

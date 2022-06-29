@@ -4,10 +4,10 @@ using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
-using E621Downloader.Pages.LibrarySection;
 using E621Downloader.Views;
 using E621Downloader.Views.CommentsSection;
 using Microsoft.Toolkit.Uwp.Helpers;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,10 +20,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Media.Playback;
-using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System;
@@ -33,7 +31,6 @@ using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
@@ -1010,14 +1007,21 @@ namespace E621Downloader.Pages {
 
 		private async void FavoriteButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			e.Handled = true;
+			await FavoriteE621();
+		}
+
+		private async Task FavoriteE621() {
+			if(FavoriteButton.IsEnabled == false) {
+				return;
+			}
 			FavoriteButton.IsEnabled = false;
 			FavoriteListButton.IsEnabled = false;
 			FavoriteText.Text = "Pending".Language();
 			FavoriteIcon.Glyph = "\uE10C";
-			if(FavoriteButton.IsChecked.Value) {
-				if(cts == null) {
-					cts = new CancellationTokenSource();
-				}
+			if(cts == null) {
+				cts = new CancellationTokenSource();
+			}
+			if(!this.PostRef.is_favorited) {
 				HttpResult<string> result = await Favorites.PostAsync(this.PostRef.id, cts.Token);
 				if(result.Result == HttpResultType.Success) {
 					FavoriteText.Text = "Favorited".Language();
@@ -1033,9 +1037,6 @@ namespace E621Downloader.Pages {
 					this.PostRef.is_favorited = false;
 				}
 			} else {
-				if(cts == null) {
-					cts = new CancellationTokenSource();
-				}
 				HttpResult<string> result = await Favorites.DeleteAsync(this.PostRef.id, cts.Token);
 				if(result.Result == HttpResultType.Success) {
 					FavoriteText.Text = "Favorite".Language();
@@ -1053,7 +1054,8 @@ namespace E621Downloader.Pages {
 			}
 			FavoriteButton.IsEnabled = true;
 			FavoriteListButton.IsEnabled = true;
-			FavoriteListButton.IsChecked = FavoriteButton.IsChecked;
+			FavoriteButton.IsChecked = this.PostRef.is_favorited;
+			FavoriteListButton.IsChecked = this.PostRef.is_favorited;
 		}
 
 		private void ToggleTagsButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -1160,6 +1162,13 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void UpVoteButton_Click(object sender, RoutedEventArgs e) {
+			await UpVote();
+		}
+
+		private async Task UpVote() {
+			if(DownVoteButton.IsEnabled == false || UpVoteButton.IsEnabled == false) {
+				return;
+			}
 			UpVoteIcon.Glyph = "\uE10C";
 			UpVoteButton.IsEnabled = false;
 			if(cts == null) {
@@ -1178,14 +1187,19 @@ namespace E621Downloader.Pages {
 			VoteType up = UpVoteButton.IsChecked == true ? VoteType.Up : VoteType.None;
 			if(Voted.ContainsKey(PostRef.id)) {
 				Voted[PostRef.id] = up;
-				//Debug.WriteLine($"found and up id {PostRef.id}");
 			} else {
 				Voted.Add(PostRef.id, up);
-				//Debug.WriteLine($"add and up id {PostRef.id}");
 			}
 		}
 
 		private async void DownVoteButton_Click(object sender, RoutedEventArgs e) {
+			await DownVote();
+		}
+
+		private async Task DownVote() {
+			if(DownVoteButton.IsEnabled == false || UpVoteButton.IsEnabled == false) {
+				return;
+			}
 			DownVoteIcon.Glyph = "\uE10C";
 			DownVoteButton.IsEnabled = false;
 			if(cts == null) {
@@ -1204,10 +1218,8 @@ namespace E621Downloader.Pages {
 			VoteType down = DownVoteButton.IsChecked == true ? VoteType.Down : VoteType.None;
 			if(Voted.ContainsKey(PostRef.id)) {
 				Voted[PostRef.id] = down;
-				//Debug.WriteLine($"found and down id {PostRef.id}");
 			} else {
 				Voted.Add(PostRef.id, down);
-				//Debug.WriteLine($"add and down id {PostRef.id}");
 			}
 		}
 
@@ -1350,14 +1362,48 @@ namespace E621Downloader.Pages {
 			return rating switch {
 				Rating.safe => (isDark ? "#008000" : "#36973E").ToColor(),
 				Rating.suggestive => (isDark ? "#FFFF00" : "#EFC50C").ToColor(),
-				Rating.explict => (isDark ? "FF0000" : "#C92A2D").ToColor(),
+				Rating.explict => (isDark ? "#FF0000" : "#C92A2D").ToColor(),
 				_ => (isDark ? "#FFF" : "#000").ToColor(),
 			};
 		}
 
 		private async void DownloadKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
 			await Download();
+			args.Handled = true;
 		}
+
+		private async void FavoriteKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			await FavoriteE621();
+			args.Handled = true;
+		}
+
+		private void LastFavoriteKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			string target = PersonalFavoritesList.LastAddedList;
+			if(string.IsNullOrWhiteSpace(target)) {
+				target = FavoritesList.Table.FirstOrDefault()?.Name;
+			}
+			if(string.IsNullOrWhiteSpace(target)) {
+				return;
+			}
+			/*bool hasChanges = */
+			FavoritesList.Modify(new(), new() { target }, path, PostType);
+
+			MainPage.CreateTip(this, "Success".Language(),
+				true ? $"{"Added to favorite list".Language()} : {target}" :
+					$"{"Failed adding to favorite list".Language()} : {target}",
+				Symbol.Accept, "OK".Language(), false, TeachingTipPlacementMode.TopRight, null, 2000);
+			args.Handled = true;
+		}
+		private async void UpVoteKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			await UpVote();
+			args.Handled = true;
+		}
+
+		private async void DownVoteKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			await DownVote();
+			args.Handled = true;
+		}
+
 
 		void IPage.UpdateNavigationItem() {
 			MainPage.Instance.currentTag = PageTag.Picture;
@@ -1374,6 +1420,7 @@ namespace E621Downloader.Pages {
 			}
 			HeaderDisplayStoryboard.Begin();
 		}
+
 	}
 
 	public class GroupTagListWithColor: ObservableCollection<GroupTag> {

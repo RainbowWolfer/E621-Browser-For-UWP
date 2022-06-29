@@ -58,7 +58,10 @@
 				</Grid>
 			</controls:NavigationView.Content>
 		</controls:NavigationView>
-		<ContentDialog x:Name="RenameDialog" IsPrimaryButtonEnabled="False" PrimaryButtonText="Rename" CloseButtonText="Back" DefaultButton="Close" Title="Rename">
+		<ContentDialog x:Name="RenameDialog" IsPrimaryButtonEnabled="False" DefaultButton="Close">
+			<ContentDialog.Title>
+				<TextBlock x:Uid="RenameText" Text="Rename"/>
+			</ContentDialog.Title>
 			<ContentDialog.KeyboardAccelerators>
 				<KeyboardAccelerator x:Name="DialogEnterKey" Key="Enter" Invoked="DialogEnterKey_Invoked" ScopeOwner="{x:Bind DialogRenameBox}"/>
 			</ContentDialog.KeyboardAccelerators>

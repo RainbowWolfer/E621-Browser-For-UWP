@@ -1012,15 +1012,6 @@
   <data name="GridViewText.Text" xml:space="preserve">
     <value>图表视图</value>
   </data>
-  <data name="RenameDialog.PrimaryButtonText" xml:space="preserve">
-    <value>重命名</value>
-  </data>
-  <data name="RenameDialog.CloseButtonText" xml:space="preserve">
-    <value>返回</value>
-  </data>
-  <data name="RenameDialog.Title" xml:space="preserve">
-    <value>重命名</value>
-  </data>
   <data name="Filter" xml:space="preserve">
     <value>筛选</value>
   </data>
@@ -1154,56 +1145,20 @@
   <data name="DeleteConfirmTeachingTip.Subtitle" xml:space="preserve">
     <value>你确定要删除此列表吗？</value>
   </data>
-  <data name="DeleteConfirmTeachingTip.ActionButtonContent" xml:space="preserve">
-    <value>删除</value>
-  </data>
-  <data name="DeleteConfirmTeachingTip.CloseButtonContent" xml:space="preserve">
-    <value>取消</value>
-  </data>
   <data name="RenameTeachingTip.Title" xml:space="preserve">
     <value>重命名</value>
-  </data>
-  <data name="RenameTeachingTip.ActionButtonContent" xml:space="preserve">
-    <value>确认</value>
-  </data>
-  <data name="RenameTeachingTip.CloseButtonContent" xml:space="preserve">
-    <value>取消</value>
   </data>
   <data name="CenteredClearAllComfirmTeachingTip.Title" xml:space="preserve">
     <value>清空所有标签</value>
   </data>
-  <data name="CenteredClearAllComfirmTeachingTip.ActionButtonContent" xml:space="preserve">
-    <value>是</value>
-  </data>
-  <data name="CenteredClearAllComfirmTeachingTip.CloseButtonContent" xml:space="preserve">
-    <value>否</value>
-  </data>
   <data name="CenteredUploadComfirmTeachingTip.Title" xml:space="preserve">
     <value>上传警告</value>
-  </data>
-  <data name="CenteredUploadComfirmTeachingTip.ActionButtonContent" xml:space="preserve">
-    <value>是</value>
-  </data>
-  <data name="CenteredUploadComfirmTeachingTip.CloseButtonContent" xml:space="preserve">
-    <value>否</value>
   </data>
   <data name="CenteredUploadResultTeachingTip.Title" xml:space="preserve">
     <value>上传结果</value>
   </data>
-  <data name="CenteredUploadResultTeachingTip.CloseButtonContent" xml:space="preserve">
-    <value>OK</value>
-  </data>
   <data name="CenteredTagsOverrideConfirmTeachingTip.Title" xml:space="preserve">
-    <value>标签覆盖</value>
-  </data>
-  <data name="CenteredTagsOverrideConfirmTeachingTip.ActionButtonContent" xml:space="preserve">
-    <value>是</value>
-  </data>
-  <data name="CenteredTagsOverrideConfirmTeachingTip.CloseButtonContent" xml:space="preserve">
-    <value>否</value>
-  </data>
-  <data name="TagInfoTeachingTip.CloseButtonContent" xml:space="preserve">
-    <value>返回</value>
+    <value>覆盖当前标签</value>
   </data>
   <data name="Pause" xml:space="preserve">
     <value>暂停</value>
@@ -1688,5 +1643,105 @@
   </data>
   <data name="LoreText.Text" xml:space="preserve">
     <value>理论</value>
+  </data>
+  <data name="LanguageText.Text" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="EnglishText.Text" xml:space="preserve">
+    <value>英语 (English)</value>
+  </data>
+  <data name="ChineseText.Text" xml:space="preserve">
+    <value>中文 (Chinese)</value>
+  </data>
+  <data name="LanguageToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="V1150L1.Text" xml:space="preserve">
+    <value>- 修复一个应用在系统语言不是英文时，进入设置界面会闪退的问题。</value>
+  </data>
+  <data name="V1150L2.Text" xml:space="preserve">
+    <value>- 新语言支持：中文</value>
+  </data>
+  <data name="V1150L3.Text" xml:space="preserve">
+    <value>- 本地库现在按照正确的时间排序</value>
+  </data>
+  <data name="V1150L4.Text" xml:space="preserve">
+    <value>- 一些颜色调整</value>
+  </data>
+  <data name="V1150L5.Text" xml:space="preserve">
+    <value>- 现在可以在本地库中直接删除文件</value>
+  </data>
+  <data name="V1150L6.Text" xml:space="preserve">
+    <value>- 新选项：开启GIF自动播放</value>
+  </data>
+  <data name="V1150L7.Text" xml:space="preserve">
+    <value>- 一些BUG修复与改动</value>
+  </data>
+  <data name="No Download Path Selected" xml:space="preserve">
+    <value>未选择下载路径</value>
+  </data>
+  <data name="Paste List" xml:space="preserve">
+    <value>粘贴列表</value>
+  </data>
+  <data name="There is something downloading cannot clear download path" xml:space="preserve">
+    <value>有东西正在下载，无法清空下载路径</value>
+  </data>
+  <data name="Are you sure to clear download path(your downloaded files will not be deleted)" xml:space="preserve">
+    <value>你确定要清楚下载路径吗？
+(已下载文件不会被删除)</value>
+  </data>
+  <data name="No Path Selected" xml:space="preserve">
+    <value>未选择路径</value>
+  </data>
+  <data name="Hot Keys" xml:space="preserve">
+    <value>热键</value>
+  </data>
+  <data name="Custom Host" xml:space="preserve">
+    <value>自定义域名</value>
+  </data>
+  <data name="Subject Here" xml:space="preserve">
+    <value>这里写主题</value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>历史</value>
+  </data>
+  <data name="Are you sure to delete all your wallpapers cache located in the APP settings folder" xml:space="preserve">
+    <value>你确定要删除位于软件设置文件内的壁纸缓存吗？</value>
+  </data>
+  <data name="Cleaning" xml:space="preserve">
+    <value>清理中</value>
+  </data>
+  <data name="LanguageChangeHintText.Text" xml:space="preserve">
+    <value>* 此项更改只会在重启软件后生效</value>
+  </data>
+  <data name="Added to favorite list" xml:space="preserve">
+    <value>添加到最爱列表</value>
+  </data>
+  <data name="Failed adding to favorite list" xml:space="preserve">
+    <value>添加最爱列表失败</value>
+  </data>
+  <data name="TagCategoryColorText.Text" xml:space="preserve">
+    <value>标签类别颜色</value>
+  </data>
+  <data name="AddToFavoriteText.Text" xml:space="preserve">
+    <value>添加到最爱</value>
+  </data>
+  <data name="VoteUpText.Text" xml:space="preserve">
+    <value>点赞</value>
+  </data>
+  <data name="VoteDownText.Text" xml:space="preserve">
+    <value>踩</value>
+  </data>
+  <data name="ExitFocusModeText.Text" xml:space="preserve">
+    <value>退出专注模式</value>
+  </data>
+  <data name="ConfirmText.Text" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="YesText.Text" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="NoText.Text" xml:space="preserve">
+    <value>否</value>
   </data>
 </root>

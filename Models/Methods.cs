@@ -1,18 +1,14 @@
 ﻿using E621Downloader.Models.Inerfaces;
-using E621Downloader.Models.Networks;
-using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.System;
 using Windows.UI;
 using Windows.UI.Core;
-using Windows.UI.Xaml.Controls;
 
 namespace E621Downloader.Models {
 	public static class Methods {

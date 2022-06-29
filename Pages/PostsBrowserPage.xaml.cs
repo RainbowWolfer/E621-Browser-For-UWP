@@ -4,25 +4,17 @@ using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Views;
-using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using NavigationView = Microsoft.UI.Xaml.Controls.NavigationView;
 using NavigationViewItem = Microsoft.UI.Xaml.Controls.NavigationViewItem;
@@ -62,8 +54,8 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		public static void SetSelectionFeedback(ImageHolder imageHolder) {
-			Instance?.SelectFeedBack(imageHolder);
+		public static void SetSelectionFeedback() {
+			Instance?.SelectFeedBack();
 		}
 
 		public static PostsBrowserPage Instance { get; private set; }
@@ -257,17 +249,21 @@ namespace E621Downloader.Pages {
 			if(item == null) {
 				return;
 			}
+
+			var current = (NavigationViewItem)TabsNavigationView.SelectedItem;
+			int index = GetAllNavitationViewItems().IndexOf(current);
 			TabsNavigationView.MenuItems.Remove(item);
 
 			List<NavigationViewItem> items = GetAllNavitationViewItems();
-			if(TabsNavigationView.SelectedItem == item) {
-				TabsNavigationView.SelectedItem = items.FirstOrDefault();
-			}
 			if(items.Count == 0) {
 				ToTab(null);
-			} else {
-				ToTab((PostsTab)items.First().Tag);
+				TabsNavigationView.SelectedItem = null;
+			} else if(current == item) {
+				var target = items[index - 1];
+				ToTab((PostsTab)target.Tag);
+				TabsNavigationView.SelectedItem = target;
 			}
+
 		}
 
 		private void CancelLoading() {
@@ -490,7 +486,7 @@ namespace E621Downloader.Pages {
 			//}
 		}
 
-		public void SelectFeedBack(ImageHolder imageHolder) {
+		public void SelectFeedBack() {
 			SelectionCountTextBlock.Text = $"{GetSelectedImages().Count}/{CurrentTab?.Posts.Count ?? 0}";
 		}
 

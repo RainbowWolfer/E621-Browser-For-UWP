@@ -1,33 +1,15 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
-using E621Downloader.Pages;
-using E621Downloader.Pages.LibrarySection;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Resources.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
-using Windows.Storage.Streams;
-using Windows.System;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -47,8 +29,6 @@ namespace E621Downloader {
 		public App() {
 			Instance = this;
 			this.InitializeComponent();
-			//read local stored language preference
-			//ResourceContext.SetGlobalQualifierValue("Language", "en-US");
 			this.Suspending += OnSuspending;
 
 			InitializeTheme();
@@ -61,28 +41,6 @@ namespace E621Downloader {
 					Current.RequestedTheme = ApplicationTheme.Dark;
 					break;
 			}
-
-			//SetJumpList();
-			IReadOnlyList<string> userLanguages = Windows.System.UserProfile.GlobalizationPreferences.Languages;
-			foreach(string language in userLanguages) {
-				Debug.WriteLine(language);
-			}
-
-			Debug.WriteLine("\n");
-
-			IReadOnlyList<string> userLanguages2 = Windows.Globalization.ApplicationLanguages.ManifestLanguages;
-			foreach(string language in userLanguages2) {
-				Debug.WriteLine(language);
-			}
-
-			Debug.WriteLine("\n");
-
-			//string runtimeLanguages = Windows.ApplicationModel.Resources.Core.ResourceContext.GetForCurrentView().QualifierValues["Language"];
-			//Debug.WriteLine(runtimeLanguages);
-
-			//IReadOnlyList<string> runtimeLanguages2 = Windows.ApplicationModel.Resources.Core.ResourceContext.GetForCurrentView().Languages;
-			//runtimeLanguages2 = Windows.Globalization.ApplicationLanguages.Languages;
-			//Debug.WriteLine(runtimeLanguages2);
 
 		}
 
@@ -145,7 +103,17 @@ namespace E621Downloader {
 			return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
 		}
 
-		protected override void OnLaunched(LaunchActivatedEventArgs e) {
+		protected override async void OnLaunched(LaunchActivatedEventArgs e) {
+			//read local stored language preference
+			await LocalLanguage.Initialize();
+			if(LocalLanguage.Current.language != null) {
+				ResourceContext.SetGlobalQualifierValue("Language", LocalLanguage.Current.GetSystemLanguage());
+			}
+			//else {
+			//	var systemLanguage = GlobalizationPreferences.Languages.FirstOrDefault() ?? "en-US";
+			//	ResourceContext.SetGlobalQualifierValue("Language", systemLanguage);
+			//	//ApplicationLanguages.PrimaryLanguageOverride = GlobalizationPreferences.Languages.FirstOrDefault();
+			//}
 			if(Window.Current.Content is not Frame rootFrame) {
 				rootFrame = new Frame();
 

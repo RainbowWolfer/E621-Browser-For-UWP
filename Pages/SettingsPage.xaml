@@ -97,6 +97,25 @@
 					<ScrollViewer HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Grid.Row="1">
 						<StackPanel>
 							<StackPanel HorizontalAlignment="Center">
+								<Grid Width="250" Margin="5">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="auto"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+									<StackPanel x:Uid="LanguageToolTip" x:Name="LanguagePanel" Orientation="Horizontal" ToolTipService.ToolTip="Language" PointerEntered="LanguagePanel_PointerEntered" PointerExited="LanguagePanel_PointerExited">
+										<FontIcon Glyph="&#xF49A;" Margin="5,0,0,0"/>
+										<TextBlock x:Uid="LanguageText" Text="Language" VerticalAlignment="Center" FontSize="17" Margin="5,0,0,0"/>
+									</StackPanel>
+									<ComboBox x:Name="LanguageComboBox" FontSize="15" HorizontalAlignment="Stretch" d:SelectedIndex="1" Margin="10,0,0,0" SelectionChanged="LanguageComboBox_SelectionChanged" Grid.Column="1">
+										<StackPanel Orientation="Horizontal">
+											<TextBlock x:Uid="EnglishText" Text="English"/>
+										</StackPanel>
+										<StackPanel Orientation="Horizontal">
+											<TextBlock x:Uid="ChineseText" Text="Chinese"/>
+										</StackPanel>
+									</ComboBox>
+								</Grid>
+								<TextBlock x:Uid="LanguageChangeHintText" x:Name="LanguageChangeHintText" Text="* This change will be applied after restarting the application" Width="250" Margin="25,0,25,0" TextWrapping="Wrap" Visibility="Collapsed" d:Visibility="Collapsed"/>
 								<Button x:Name="HistoryButton" Margin="5" HorizontalAlignment="Center" Width="250" FontSize="18" Click="HistoryButton_Click">
 									<StackPanel Orientation="Horizontal">
 										<FontIcon Glyph="&#xF739;"/>
@@ -234,7 +253,20 @@
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>
-							<controls:Expander Header="2022-06-03 (v1.1.4.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
+							<controls:Expander Header="2022-06-29 (v1.1.5.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
+								<controls:Expander.Content>
+									<StackPanel>
+										<TextBlock x:Uid="V1150L1" Text="- Fixed the bug where the app would crash when entering the settings page while the system language was not English." FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1150L2" Text="- New language supported : Chinese" FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1150L3" Text="- Library now orders by date correctly" FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1150L4" Text="- Some colors adjustment" FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1150L5" Text="- You can now delete item in library" FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1150L6" Text="- New option: Enable GIF AutoPlay" FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1150L7" Text="- Some bugs fixes &amp; changes" FontSize="22" TextWrapping="WrapWholeWords"/>
+									</StackPanel>
+								</controls:Expander.Content>
+							</controls:Expander>
+							<controls:Expander Header="2022-06-03 (v1.1.4.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="False">
 								<controls:Expander.Content>
 									<StackPanel>
 										<TextBlock x:Uid="V1140L1" Text="- Some new hot-keys" FontSize="24" TextWrapping="WrapWholeWords"/>

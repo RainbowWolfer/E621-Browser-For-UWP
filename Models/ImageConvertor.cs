@@ -19,17 +19,16 @@ namespace E621Downloader {
 					var bi = new BitmapImage();
 					WriteableBitmap wb = null;
 					Stream stream2Write;
-					using(var stream = new InMemoryRandomAccessStream()) {
-						stream2Write = stream.AsStreamForWrite();
-						await stream2Write.WriteAsync(buffer.ToArray(), 0, (int)buffer.Length);
-						await stream2Write.FlushAsync();
-						stream.Seek(0);
-						await bi.SetSourceAsync(stream);
-						wb = new WriteableBitmap(bi.PixelWidth, bi.PixelHeight);
-						stream.Seek(0);
-						await wb.SetSourceAsync(stream);
-						return wb;
-					}
+					using var stream = new InMemoryRandomAccessStream();
+					stream2Write = stream.AsStreamForWrite();
+					await stream2Write.WriteAsync(buffer.ToArray(), 0, (int)buffer.Length);
+					await stream2Write.FlushAsync();
+					stream.Seek(0);
+					await bi.SetSourceAsync(stream);
+					wb = new WriteableBitmap(bi.PixelWidth, bi.PixelHeight);
+					stream.Seek(0);
+					await wb.SetSourceAsync(stream);
+					return wb;
 				} else {
 					return null;
 				}

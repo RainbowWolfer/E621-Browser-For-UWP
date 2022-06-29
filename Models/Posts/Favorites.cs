@@ -1,15 +1,7 @@
 ﻿using E621Downloader.Models.Networks;
-using E621Downloader.Models.Posts;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
 
 namespace E621Downloader.Models.Posts {
 	public static class Favorites {

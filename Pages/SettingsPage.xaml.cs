@@ -5,20 +5,13 @@ using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Views;
 using E621Downloader.Views.ListingManager;
-using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Contacts;
 using Windows.ApplicationModel.Email;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
@@ -30,9 +23,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {
@@ -55,7 +46,7 @@ namespace E621Downloader.Pages {
 			base.OnNavigatedTo(e);
 			LocalStateHyperContentText.Text = Local.LocalFolder.Path;
 
-			DownloadPathTextBlock.Text = Local.DownloadFolder == null ? "No Download Path Selected" : Local.DownloadFolder.Path;
+			DownloadPathTextBlock.Text = Local.DownloadFolder == null ? "No Download Path Selected".Language() : Local.DownloadFolder.Path;
 			CustomHostToggle.IsOn = LocalSettings.Current.customHostEnable;
 			CycleListToggle.IsOn = LocalSettings.Current.cycleList;
 			CustomHostButton.IsEnabled = LocalSettings.Current.customHostEnable;
@@ -68,6 +59,12 @@ namespace E621Downloader.Pages {
 
 			RandomTagMaxSlider.Value = LocalSettings.Current.randomTagMaxCount;
 			RandomTagMaxText.Text = Methods.NumberToK(LocalSettings.Current.randomTagMaxCount);
+
+			LanguageComboBox.SelectedIndex = LocalLanguage.Current.language switch {
+				Models.Locals.Language.English => 0,
+				Models.Locals.Language.Chinese => 1,
+				_ => 0,
+			};
 
 			switch(App.GetStoredTheme()) {
 				case ElementTheme.Default:
@@ -88,13 +85,13 @@ namespace E621Downloader.Pages {
 
 		private async void BlackListButton_Click(object sender, RoutedEventArgs e) {
 			BlackListButton.IsEnabled = false;
-			await PopupListingManager("Black List", Local.Listing.LocalBlackLists);
+			await PopupListingManager("Blacklist".Language(), Local.Listing.LocalBlackLists);
 			BlackListButton.IsEnabled = true;
 		}
 
 		private async void FollowListButton_Click(object sender, RoutedEventArgs e) {
 			FollowListButton.IsEnabled = false;
-			await PopupListingManager("Follow List", Local.Listing.LocalFollowingLists);
+			await PopupListingManager("Follow List".Language(), Local.Listing.LocalFollowingLists);
 			FollowListButton.IsEnabled = true;
 		}
 
@@ -115,7 +112,7 @@ namespace E621Downloader.Pages {
 				int count = listings.Count;
 				string newName;
 				do {
-					newName = $"Paste List - {count++}";
+					newName = "Paste List".Language() + $" - {count++}";
 				} while(listings.Any(i => i.Name == newName));
 				var list = new SingleListing(newName) {
 					Tags = array.ToList(),
@@ -158,7 +155,7 @@ namespace E621Downloader.Pages {
 			};
 			var dialog = new ContentDialog() {
 				Title = title,
-				CloseButtonText = "Back",
+				CloseButtonText = "Back".Language(),
 				Content = content,
 			};
 			dialog.Resources["ContentDialogMaxWidth"] = 650;
@@ -186,14 +183,14 @@ namespace E621Downloader.Pages {
 
 		private async void ClearDownloadPathButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(DownloadsManager.HasDownloading()) {
-				await MainPage.CreatePopupDialog("Warning", "There is something downloading.\ncannot clear download path.");
+				await MainPage.CreatePopupDialog("Warning".Language(), "There is something downloading cannot clear download path".Language());
 				return;
 			}
 			if(await new ContentDialog() {
-				Title = "Confirm",
-				Content = "Are you sure to clear download path?\n(your downloaded files will not be deleted)",
-				PrimaryButtonText = "Yes",
-				CloseButtonText = "No",
+				Title = "Confirm".Language(),
+				Content = "Are you sure to clear download path(your downloaded files will not be deleted)".Language(),
+				PrimaryButtonText = "Yes".Language(),
+				CloseButtonText = "No".Language(),
 				DefaultButton = ContentDialogButton.Close,
 			}.ShowAsync() != ContentDialogResult.Primary) {
 				return;
@@ -202,7 +199,7 @@ namespace E621Downloader.Pages {
 			if(Local.GetToken() == null) {
 				ClearDownloadPathButton.IsEnabled = false;
 			}
-			DownloadPathTextBlock.Text = "No Path Selected";
+			DownloadPathTextBlock.Text = "No Path Selected".Language();
 		}
 
 		private async void CustomHostToggle_Toggled(object sender, RoutedEventArgs e) {
@@ -273,9 +270,9 @@ namespace E621Downloader.Pages {
 
 		private async void HotKeysButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			var dialog = new ContentDialog() {
-				Title = "Hot Keys",
+				Title = "Hot Keys".Language(),
 				Content = new HotKeysManager(),
-				CloseButtonText = "Back",
+				CloseButtonText = "Back".Language(),
 			};
 			dialog.Resources["ContentDialogMaxWidth"] = 1000;
 			await dialog.ShowAsync();
@@ -295,7 +292,7 @@ namespace E621Downloader.Pages {
 
 		private async Task<bool> PopupCustomHostDialog(Action<CustomHostInputDialog> OnClosing = null) {
 			ContentDialog dialog = new() {
-				Title = "Custom Host",
+				Title = "Custom Host".Language(),
 			};
 			var content = new CustomHostInputDialog(dialog, LocalSettings.Current.customHost ?? "");
 			dialog.Closing += (s, e) => OnClosing?.Invoke(content);
@@ -312,23 +309,13 @@ namespace E621Downloader.Pages {
 		}
 
 		private CoreCursor cursorBeforePointerEntered = null;
-		private void TextBlock_PointerEntered(object sender, PointerRoutedEventArgs e) {
-			cursorBeforePointerEntered = Window.Current.CoreWindow.PointerCursor;
-			Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Help, 0);
-		}
-
-		private void TextBlock_PointerExited(object sender, PointerRoutedEventArgs e) {
-			Window.Current.CoreWindow.PointerCursor = cursorBeforePointerEntered;
-		}
 
 		private async void OfficialSiteButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(!await Launcher.LaunchUriAsync(new Uri($"https://{Data.GetHost()}"))) {
-				await MainPage.CreatePopupDialog("Error", "Could not Open Default Browser");
-			}
+			await Methods.OpenBrowser($"https://{Data.GetHost()}");
 		}
 
 		private async void EmailButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			await ComposeEmail("[E621 Browser For UWP] Subject Here", "");
+			await ComposeEmail("[E621 Browser For UWP] " + "Subject Here".Language(), "");
 		}
 
 		private async Task ComposeEmail(string subject, string messageBody) {
@@ -410,8 +397,8 @@ namespace E621Downloader.Pages {
 
 		private async void HistoryButton_Click(object sender, RoutedEventArgs e) {
 			var dialog = new ContentDialog() {
-				Title = "History",
-				CloseButtonText = "Back",
+				Title = "History".Language(),
+				CloseButtonText = "Back".Language(),
 			};
 			var content = new HistoryDialogView(dialog);
 			dialog.Content = content;
@@ -423,13 +410,13 @@ namespace E621Downloader.Pages {
 
 		private async void ClearWallpapersCacheButton_Click(object sender, RoutedEventArgs e) {
 			if(await new ContentDialog() {
-				Title = "Confirmation",
-				Content = "Are you sure to delete all your wallpapers cache located in the APP settings folder",
-				PrimaryButtonText = "Yes",
-				CloseButtonText = "No",
+				Title = "Confirm".Language(),
+				Content = "Are you sure to delete all your wallpapers cache located in the APP settings folder".Language(),
+				PrimaryButtonText = "Yes".Language(),
+				CloseButtonText = "No".Language(),
 				DefaultButton = ContentDialogButton.Close,
 			}.ShowAsync() == ContentDialogResult.Primary) {
-				MainPage.CreateInstantDialog("Please wait", "Cleaning");
+				MainPage.CreateInstantDialog("Please Wait".Language(), "Cleaning".Language());
 				foreach(StorageFile item in await Local.WallpapersFolder.GetFilesAsync()) {
 					await item.DeleteAsync();
 				}
@@ -461,5 +448,27 @@ namespace E621Downloader.Pages {
 			await bar.RequestPinCurrentAppAsync();
 		}
 
+		private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(internalChanges) {
+				return;
+			}
+			if(LanguageComboBox.SelectedIndex == 0) {
+				LocalLanguage.Current.language = Models.Locals.Language.English;
+				LocalLanguage.Save();
+			} else if(LanguageComboBox.SelectedIndex == 1) {
+				LocalLanguage.Current.language = Models.Locals.Language.Chinese;
+				LocalLanguage.Save();
+			}
+			LanguageChangeHintText.Visibility = Visibility.Visible;
+		}
+
+		private void LanguagePanel_PointerEntered(object sender, PointerRoutedEventArgs e) {
+			cursorBeforePointerEntered = Window.Current.CoreWindow.PointerCursor;
+			Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Help, 0);
+		}
+
+		private void LanguagePanel_PointerExited(object sender, PointerRoutedEventArgs e) {
+			Window.Current.CoreWindow.PointerCursor = cursorBeforePointerEntered;
+		}
 	}
 }

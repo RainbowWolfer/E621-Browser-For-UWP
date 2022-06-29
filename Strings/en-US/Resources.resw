@@ -1128,15 +1128,6 @@
 	<data name="GridViewText.Text" xml:space="preserve">
     <value>Grid View</value>
   </data>
-	<data name="RenameDialog.PrimaryButtonText" xml:space="preserve">
-    <value>Rename</value>
-  </data>
-	<data name="RenameDialog.CloseButtonText" xml:space="preserve">
-    <value>Back</value>
-  </data>
-	<data name="RenameDialog.Title" xml:space="preserve">
-    <value>Rename</value>
-  </data>
 	<data name="Filter" xml:space="preserve">
     <value>Filter</value>
   </data>
@@ -1278,56 +1269,20 @@
 	<data name="DeleteConfirmTeachingTip.Subtitle" xml:space="preserve">
     <value>Are you sure to delete this list?</value>
   </data>
-	<data name="DeleteConfirmTeachingTip.ActionButtonContent" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-	<data name="DeleteConfirmTeachingTip.CloseButtonContent" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
 	<data name="RenameTeachingTip.Title" xml:space="preserve">
     <value>Rename</value>
-  </data>
-	<data name="RenameTeachingTip.ActionButtonContent" xml:space="preserve">
-    <value>Confirm</value>
-  </data>
-	<data name="RenameTeachingTip.CloseButtonContent" xml:space="preserve">
-    <value>Cancel</value>
   </data>
 	<data name="CenteredClearAllComfirmTeachingTip.Title" xml:space="preserve">
     <value>Clear All Tags</value>
   </data>
-	<data name="CenteredClearAllComfirmTeachingTip.ActionButtonContent" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-	<data name="CenteredClearAllComfirmTeachingTip.CloseButtonContent" xml:space="preserve">
-    <value>No</value>
-  </data>
 	<data name="CenteredUploadComfirmTeachingTip.Title" xml:space="preserve">
     <value>Upload Warning</value>
-  </data>
-	<data name="CenteredUploadComfirmTeachingTip.ActionButtonContent" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-	<data name="CenteredUploadComfirmTeachingTip.CloseButtonContent" xml:space="preserve">
-    <value>No</value>
   </data>
 	<data name="CenteredUploadResultTeachingTip.Title" xml:space="preserve">
     <value>Upload Result</value>
   </data>
-	<data name="CenteredUploadResultTeachingTip.CloseButtonContent" xml:space="preserve">
-    <value>OK</value>
-  </data>
 	<data name="CenteredTagsOverrideConfirmTeachingTip.Title" xml:space="preserve">
-    <value>Tags Override</value>
-  </data>
-	<data name="CenteredTagsOverrideConfirmTeachingTip.ActionButtonContent" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-	<data name="CenteredTagsOverrideConfirmTeachingTip.CloseButtonContent" xml:space="preserve">
-    <value>No</value>
-  </data>
-	<data name="TagInfoTeachingTip.CloseButtonContent" xml:space="preserve">
-    <value>Back</value>
+    <value>Override Current Tags</value>
   </data>
 	<data name="Paste Text" xml:space="preserve">
     <value>Paste Text</value>
@@ -1787,5 +1742,116 @@
   </data>
 	<data name="LoreText.Text" xml:space="preserve">
     <value>Lore</value>
+  </data>
+	<data name="LanguageText.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
+	<data name="EnglishText.Text" xml:space="preserve">
+    <value>English</value>
+  </data>
+	<data name="ChineseText.Text" xml:space="preserve">
+    <value>Chinese</value>
+  </data>
+	<data name="LanguageToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Language</value>
+  </data>
+	<data name="V1150L1.Text" xml:space="preserve">
+    <value>- Fixed the bug where the app would crash when entering the settings page while the system language was not English.</value>
+  </data>
+	<data name="V1150L2.Text" xml:space="preserve">
+    <value>- New language supported : Chinese</value>
+  </data>
+	<data name="V1150L3.Text" xml:space="preserve">
+    <value>- Library now orders by date correctly</value>
+  </data>
+	<data name="V1150L4.Text" xml:space="preserve">
+    <value>- Some colors adjustment</value>
+  </data>
+	<data name="V1150L5.Text" xml:space="preserve">
+    <value>- You can now delete item in library</value>
+  </data>
+	<data name="V1150L6.Text" xml:space="preserve">
+    <value>- New option: Enable GIF AutoPlay</value>
+  </data>
+	<data name="V1150L7.Text" xml:space="preserve">
+    <value>- Some bugs fixes &amp; changes</value>
+  </data>
+	<data name="No Download Path Selected" xml:space="preserve">
+    <value>No Download Path Selected</value>
+  </data>
+	<data name="Paste List" xml:space="preserve">
+    <value>Paste List</value>
+  </data>
+	<data name="There is something downloading cannot clear download path" xml:space="preserve">
+    <value>There is something downloading.&#10;cannot clear download path.</value>
+  </data>
+	<data name="Are you sure to clear download path(your downloaded files will not be deleted)" xml:space="preserve">
+    <value>Are you sure to clear download path?&#10;(your downloaded files will not be deleted)</value>
+  </data>
+	<data name="No Path Selected" xml:space="preserve">
+    <value>No Path Selected</value>
+  </data>
+	<data name="Hot Keys" xml:space="preserve">
+    <value>Hot Keys</value>
+  </data>
+	<data name="Custom Host" xml:space="preserve">
+    <value>Custom Host</value>
+  </data>
+	<data name="Subject Here" xml:space="preserve">
+    <value>Subject Here</value>
+  </data>
+	<data name="History" xml:space="preserve">
+    <value>History</value>
+  </data>
+	<data name="Are you sure to delete all your wallpapers cache located in the APP settings folder" xml:space="preserve">
+    <value>Are you sure to delete all your wallpapers cache located in the APP settings folder</value>
+  </data>
+	<data name="Cleaning" xml:space="preserve">
+    <value>Cleaning</value>
+  </data>
+	<data name="LanguageChangeHintText.Text" xml:space="preserve">
+    <value>* This change will be applied after restarting the application</value>
+  </data>
+	<data name="Added to favorite list" xml:space="preserve">
+    <value>Added to favorite list</value>
+  </data>
+	<data name="Failed adding to favorite list" xml:space="preserve">
+    <value>Failed adding to favorite list</value>
+  </data>
+	<data name="TagCategoryColorText.Text" xml:space="preserve">
+    <value>Tag Category Color</value>
+  </data>
+	<data name="AddToFavoriteText.Text" xml:space="preserve">
+    <value>Add To Favorite</value>
+  </data>
+	<data name="VoteUpText.Text" xml:space="preserve">
+    <value>Vote Up</value>
+  </data>
+	<data name="VoteDownText.Text" xml:space="preserve">
+    <value>Vote Down</value>
+  </data>
+	<data name="ExitFocusModeText.Text" xml:space="preserve">
+    <value>Exit Focus Mode</value>
+  </data>
+	<data name="ConfirmText.Text" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+	<data name="YesText.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+	<data name="NoText.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+	<data name="ClearAllText.Text" xml:space="preserve">
+    <value>Clear All</value>
+  </data>
+	<data name="ClearBeforeThisMonthText.Text" xml:space="preserve">
+    <value>Clear Before This Month</value>
+  </data>
+	<data name="ClearBeforeTodayText.Text" xml:space="preserve">
+    <value>Clear Before Today</value>
+  </data>
+	<data name="HistoryClearHintText.Text" xml:space="preserve">
+    <value>Too much history may cause longer time to open this dialog up. You can clear some earlier history.</value>
   </data>
 </root>

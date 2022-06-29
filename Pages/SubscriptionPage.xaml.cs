@@ -6,21 +6,11 @@ using E621Downloader.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 
@@ -95,7 +85,7 @@ namespace E621Downloader.Pages {
 			for(int i = 0; i < FavoritesList.Table.Count; i++) {
 				FavoritesList item = FavoritesList.Table[i];
 				items.Add(new FavoriteListViewItem(i, item.Name, item.Items.Count));
-				if(item.Name == CurrentListName){
+				if(item.Name == CurrentListName) {
 					selectedIndex = i;
 				}
 			}
@@ -403,7 +393,7 @@ namespace E621Downloader.Pages {
 			if(MainGridView == null) {
 				return;
 			}
-			foreach(ImageHolderForSubscriptionPage item in MainGridView.Items) {
+			foreach(ImageHolderForSubscriptionPage item in MainGridView.Items.Cast<ImageHolderForSubscriptionPage>()) {
 				item.Height = value;
 				item.Width = value;
 			}

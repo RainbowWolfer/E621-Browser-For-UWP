@@ -2,18 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
-using Windows.UI.Popups;
-using Windows.UI.Xaml.Controls;
 
 namespace E621Downloader.Models.Networks {
 	public static class Data {
