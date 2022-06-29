@@ -543,6 +543,10 @@ namespace E621Downloader {
 		}
 
 		public void UpdateNavigationItem() {
+			if(currentTag == PageTag.Settings) {
+				MyNavigationView.SelectedItem = MyNavigationView.SettingsItem;
+				return;
+			}
 			foreach(NavigationViewItem item in MyNavigationView.MenuItems
 						.Concat(MyNavigationView.FooterMenuItems)
 						.Append(MyNavigationView.SettingsItem)

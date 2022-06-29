@@ -941,8 +941,8 @@ Would you like to get it set?</source>
           <target state="final">设置</target>
         </trans-unit>
         <trans-unit id="LISTINGText.Text" translate="yes" xml:space="preserve">
-          <source>LISTINGText</source>
-          <target state="final">列表</target>
+          <source>LISTING</source>
+          <target state="needs-review-translation">列表</target>
         </trans-unit>
         <trans-unit id="BlacklistText.Text" translate="yes" xml:space="preserve">
           <source>Blacklist</source>
@@ -2249,7 +2249,7 @@ cannot clear download path.</source>
         <trans-unit id="Are you sure to clear download path(your downloaded files will not be deleted)" translate="yes" xml:space="preserve">
           <source>Are you sure to clear download path?
 (your downloaded files will not be deleted)</source>
-          <target state="final">你确定要清楚下载路径吗？
+          <target state="final">你确定要清除下载路径吗？
 (已下载文件不会被删除)</target>
         </trans-unit>
         <trans-unit id="No Path Selected" translate="yes" xml:space="preserve">
@@ -2330,15 +2330,15 @@ cannot clear download path.</source>
         </trans-unit>
         <trans-unit id="ClearBeforeThisMonthText.Text" translate="yes" xml:space="preserve">
           <source>Clear Before This Month</source>
-          <target state="final">清楚一个月前</target>
+          <target state="final">清除一个月前</target>
         </trans-unit>
         <trans-unit id="ClearBeforeTodayText.Text" translate="yes" xml:space="preserve">
           <source>Clear Before Today</source>
-          <target state="final">清楚今天前</target>
+          <target state="final">清除今天前</target>
         </trans-unit>
         <trans-unit id="HistoryClearHintText.Text" translate="yes" xml:space="preserve">
-          <source>太多的历史记录可能会导致打开此对话框的时间更长，你可以清除一些较早的历史记录。</source>
-          <target state="new">过多的额</target>
+          <source>Too much history may cause longer time to open this dialog up. You can clear some earlier history.</source>
+          <target state="final">太多的历史记录可能会导致打开此对话框的时间更长，你可以清除一些较早的历史记录。</target>
         </trans-unit>
       </group>
     </body>

@@ -1,6 +1,8 @@
 ﻿using E621Downloader.Models.Posts;
+using E621Downloader.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -71,6 +73,33 @@ namespace E621Downloader.Models.Locals {
 			if(effect == 0) {
 				return;
 			}
+			await WaitAndSave();
+		}
+
+		public async Task RemoveBeforeDate(RecentType limitType) {
+			int limit = (int)limitType;
+			List<HistoryItem> removeTags = new();
+			for(int i = 0; i < Tags.Count; i++) {
+				int type = (int)HistoryDialogView.CalculateDateTimeType(Tags[i].Time);
+				if(type >= limit) {
+					removeTags.Add(Tags[i]);
+				}
+			}
+			foreach(HistoryItem i in removeTags) {
+				Tags.Remove(i);
+			}
+
+			List<HistoryItem> removeItems = new();
+			for(int i = 0; i < PostIDs.Count; i++) {
+				int type = (int)HistoryDialogView.CalculateDateTimeType(PostIDs[i].Time);
+				if(type >= limit) {
+					removeItems.Add(PostIDs[i]);
+				}
+			}
+			foreach(HistoryItem i in removeItems) {
+				PostIDs.Remove(i);
+			}
+
 			await WaitAndSave();
 		}
 

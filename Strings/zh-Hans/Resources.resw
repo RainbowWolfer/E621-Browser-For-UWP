@@ -1744,4 +1744,16 @@
   <data name="NoText.Text" xml:space="preserve">
     <value>否</value>
   </data>
+  <data name="ClearAllText.Text" xml:space="preserve">
+    <value>清除所有</value>
+  </data>
+  <data name="ClearBeforeThisMonthText.Text" xml:space="preserve">
+    <value>清楚一个月前</value>
+  </data>
+  <data name="ClearBeforeTodayText.Text" xml:space="preserve">
+    <value>清楚今天前</value>
+  </data>
+  <data name="HistoryClearHintText.Text" xml:space="preserve">
+    <value>太多的历史记录可能会导致打开此对话框的时间更长，你可以清除一些较早的历史记录。</value>
+  </data>
 </root>

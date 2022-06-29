@@ -823,7 +823,7 @@
     <value>Settings</value>
   </data>
 	<data name="LISTINGText.Text" xml:space="preserve">
-    <value>LISTINGText</value>
+    <value>LISTING</value>
   </data>
 	<data name="BlacklistText.Text" xml:space="preserve">
     <value>Blacklist</value>

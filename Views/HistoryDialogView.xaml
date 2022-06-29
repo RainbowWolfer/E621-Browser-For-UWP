@@ -7,8 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:models="using:E621Downloader.Models"
 	mc:Ignorable="d"
     d:RequestedTheme="Dark"
-    d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignHeight="400"
+    d:DesignWidth="500">
 
 	<UserControl.Resources>
 
@@ -58,17 +58,17 @@
 		<Grid Grid.Row="1" Margin="5">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="0.5*"/>
-				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="0.8*"/>
+				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="auto"/>
 			</Grid.ColumnDefinitions>
 			<Button x:Name="ClearAll" Grid.Column="0" HorizontalAlignment="Stretch" Margin="5" Click="ClearAll_Click">
 				<TextBlock x:Uid="ClearAllText" Text="Clear All"/>
 			</Button>
-			<Button x:Name="ClearBeforeThisMonth" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5" Click="ClearBeforeThisMonth_Click">
+			<Button x:Name="ClearBeforeThisMonth" Grid.Column="2" HorizontalAlignment="Stretch" Margin="5" Click="ClearBeforeThisMonth_Click">
 				<TextBlock x:Uid="ClearBeforeThisMonthText" Text="Clear Before This Month"/>
 			</Button>
-			<Button x:Name="ClearBeforeToday" Grid.Column="2" HorizontalAlignment="Stretch" Margin="5" Click="ClearBeforeToday_Click">
+			<Button x:Name="ClearBeforeToday" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5" Click="ClearBeforeToday_Click">
 				<TextBlock x:Uid="ClearBeforeTodayText" Text="Clear Before Today"/>
 			</Button>
 			<Button Grid.Column="3" Margin="5">

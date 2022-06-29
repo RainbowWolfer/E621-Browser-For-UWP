@@ -22,7 +22,13 @@ namespace E621Downloader.Views {
 
 		public HistoryDialogView(ContentDialog dialog) {
 			this.InitializeComponent();
+			this.dialog = dialog;
 
+			Load();
+		}
+
+		private void Load() {
+			views.Clear();
 			Dictionary<RecentType, StackPanel> panels_tags = new() {
 				{ RecentType.Today, new StackPanel() },
 				{ RecentType.Yesterday, new StackPanel() },
@@ -123,14 +129,13 @@ namespace E621Downloader.Views {
 			}
 
 			UpdateVisibilities();
-
-			this.dialog = dialog;
 		}
 
 		private async void StartLoading() {
 			CancelLoading();
 			cts = new CancellationTokenSource();
-			foreach(RecentViewView item in views) {
+			for(int i = 0; i < views.Count; i++) {
+				RecentViewView item = views[i];
 				if(cts == null) {
 					break;
 				}
@@ -206,7 +211,7 @@ namespace E621Downloader.Views {
 			}
 		}
 
-		private RecentType CalculateDateTimeType(DateTime dateTime) {
+		public static RecentType CalculateDateTimeType(DateTime dateTime) {
 			DateTime now = DateTime.Now;
 			TimeSpan span = now.Subtract(dateTime);
 			return span.TotalDays switch {
@@ -244,16 +249,19 @@ namespace E621Downloader.Views {
 			}
 		}
 
-		private void ClearAll_Click(object sender, RoutedEventArgs e) {
-
+		private async void ClearAll_Click(object sender, RoutedEventArgs e) {
+			await Local.History.RemoveBeforeDate(RecentType.Today);
+			Load();
 		}
 
-		private void ClearBeforeThisMonth_Click(object sender, RoutedEventArgs e) {
-
+		private async void ClearBeforeThisMonth_Click(object sender, RoutedEventArgs e) {
+			await Local.History.RemoveBeforeDate(RecentType.LastMonth);
+			Load();
 		}
 
-		private void ClearBeforeToday_Click(object sender, RoutedEventArgs e) {
-
+		private async void ClearBeforeToday_Click(object sender, RoutedEventArgs e) {
+			await Local.History.RemoveBeforeDate(RecentType.Yesterday);
+			Load();
 		}
 	}
 
