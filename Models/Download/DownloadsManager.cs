@@ -41,7 +41,7 @@ namespace E621Downloader.Models.Download {
 			if(Local.DownloadFolder == null) {
 				if(await new ContentDialog() {
 					Title = "Error".Language(),
-					Content = "Download Folder Not Found.\nWould you like to get it set?".Language(),
+					Content = "DownloadFolderNotFound".Language(),
 					PrimaryButtonText = "Go To Settings".Language(),
 					SecondaryButtonText = "Back".Language(),
 				}.ShowAsync() == ContentDialogResult.Primary) {

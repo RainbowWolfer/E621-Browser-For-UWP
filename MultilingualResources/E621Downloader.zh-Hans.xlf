@@ -124,7 +124,7 @@
         </trans-unit>
         <trans-unit id="AllInBlackList.Text" translate="yes" xml:space="preserve">
           <source>It seems all of the posts are in blacklist.</source>
-          <target state="final">看起来所有的推文都在黑名单里</target>
+          <target state="final">看起来所有的推图都在黑名单里</target>
         </trans-unit>
         <trans-unit id="CopyItem.Text" translate="yes" xml:space="preserve">
           <source>Copy</source>
@@ -152,7 +152,7 @@
         </trans-unit>
         <trans-unit id="Posts Info.Text" translate="yes" xml:space="preserve">
           <source>Posts Info</source>
-          <target state="final">推文信息</target>
+          <target state="final">推图信息</target>
         </trans-unit>
         <trans-unit id="RefreshButton.Content" translate="yes" xml:space="preserve">
           <source>Refresh</source>
@@ -220,7 +220,7 @@
         </trans-unit>
         <trans-unit id="Do you want to download the selected" translate="yes" xml:space="preserve">
           <source>Do you want to download the selected</source>
-          <target state="final">是否要下载选定的推文</target>
+          <target state="final">是否要下载选定的推图</target>
         </trans-unit>
         <trans-unit id="Yes" translate="yes" xml:space="preserve">
           <source>Yes</source>
@@ -240,7 +240,7 @@
         </trans-unit>
         <trans-unit id="Do you want to download current pool" translate="yes" xml:space="preserve">
           <source>Do you want to download current pool</source>
-          <target state="final">是否要下载当前推文池</target>
+          <target state="final">是否要下载当前推图池</target>
         </trans-unit>
         <trans-unit id="Back" translate="yes" xml:space="preserve">
           <source>Back</source>
@@ -260,7 +260,7 @@
         </trans-unit>
         <trans-unit id="Pool" translate="yes" xml:space="preserve">
           <source>Pool</source>
-          <target state="final">推文池</target>
+          <target state="final">推图池</target>
         </trans-unit>
         <trans-unit id="UserFavorites.Text" translate="yes" xml:space="preserve">
           <source>Favorites</source>
@@ -779,12 +779,6 @@ Go Create your own one</source>
         <trans-unit id="Go To Settings" translate="yes" xml:space="preserve">
           <source>Go To Settings</source>
           <target state="final">前往设置</target>
-        </trans-unit>
-        <trans-unit id="Download Folder Not Found.&#xA;Would you like to get it set?" translate="yes" xml:space="preserve">
-          <source>Download Folder Not Found.
-Would you like to get it set?</source>
-          <target state="final">未找到下载文件夹.
-请前往设置</target>
         </trans-unit>
         <trans-unit id="Getting Folder" translate="yes" xml:space="preserve">
           <source>Getting Folder</source>
@@ -2222,8 +2216,9 @@ Warning! This action will override the tags existing in the cloud, do you want t
           <target state="final">- 一些颜色调整</target>
         </trans-unit>
         <trans-unit id="V1150L5.Text" translate="yes" xml:space="preserve">
-          <source>- You can now delete item in library</source>
-          <target state="final">- 现在可以在本地库中直接删除文件</target>
+          <source>- You can now delete items in library</source>
+          <target state="needs-review-translation">- 现在可以在本地库中直接删除文件</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="V1150L6.Text" translate="yes" xml:space="preserve">
           <source>- New option: Enable GIF AutoPlay</source>
@@ -2339,6 +2334,12 @@ cannot clear download path.</source>
         <trans-unit id="HistoryClearHintText.Text" translate="yes" xml:space="preserve">
           <source>Too much history may cause longer time to open this dialog up. You can clear some earlier history.</source>
           <target state="final">太多的历史记录可能会导致打开此对话框的时间更长，你可以清除一些较早的历史记录。</target>
+        </trans-unit>
+        <trans-unit id="DownloadFolderNotFound" translate="yes" xml:space="preserve">
+          <source>Download Folder Not Found.
+Would you like to get it set?</source>
+          <target state="final">未找到下载文件夹
+请前往设置</target>
         </trans-unit>
       </group>
     </body>

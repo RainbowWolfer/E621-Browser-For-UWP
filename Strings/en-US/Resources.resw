@@ -699,7 +699,7 @@
 	<data name="Select Current Page Text.Text" xml:space="preserve">
     <value>Select Current Page</value>
   </data>
-	<data name="Download Folder Not Found.&#10;Would you like to get it set?" xml:space="preserve">
+	<data name="DownloadFolderNotFound" xml:space="preserve">
     <value>Download Folder Not Found.&#10;Would you like to get it set?</value>
   </data>
 	<data name="Go To Settings" xml:space="preserve">
@@ -1768,7 +1768,7 @@
     <value>- Some colors adjustment</value>
   </data>
 	<data name="V1150L5.Text" xml:space="preserve">
-    <value>- You can now delete item in library</value>
+    <value>- You can now delete items in library</value>
   </data>
 	<data name="V1150L6.Text" xml:space="preserve">
     <value>- New option: Enable GIF AutoPlay</value>

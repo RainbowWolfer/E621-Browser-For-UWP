@@ -100,7 +100,7 @@
     <value>浏览尺寸</value>
   </data>
   <data name="AllInBlackList.Text" xml:space="preserve">
-    <value>看起来所有的推文都在黑名单里</value>
+    <value>看起来所有的推图都在黑名单里</value>
   </data>
   <data name="CopyItem.Text" xml:space="preserve">
     <value>复制</value>
@@ -121,7 +121,7 @@
     <value>这里啥都没有</value>
   </data>
   <data name="Posts Info.Text" xml:space="preserve">
-    <value>推文信息</value>
+    <value>推图信息</value>
   </data>
   <data name="RefreshButton.Content" xml:space="preserve">
     <value>刷新</value>
@@ -172,7 +172,7 @@
     <value>下载区块</value>
   </data>
   <data name="Do you want to download the selected" xml:space="preserve">
-    <value>是否要下载选定的推文</value>
+    <value>是否要下载选定的推图</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>是</value>
@@ -187,7 +187,7 @@
     <value>下载失败</value>
   </data>
   <data name="Do you want to download current pool" xml:space="preserve">
-    <value>是否要下载当前推文池</value>
+    <value>是否要下载当前推图池</value>
   </data>
   <data name="Back" xml:space="preserve">
     <value>返回</value>
@@ -202,7 +202,7 @@
     <value>默认</value>
   </data>
   <data name="Pool" xml:space="preserve">
-    <value>推文池</value>
+    <value>推图池</value>
   </data>
   <data name="UserFavorites.Text" xml:space="preserve">
     <value>用户最爱</value>
@@ -591,10 +591,6 @@
   </data>
   <data name="Go To Settings" xml:space="preserve">
     <value>前往设置</value>
-  </data>
-  <data name="Download Folder Not Found.&#xA;Would you like to get it set?" xml:space="preserve">
-    <value>未找到下载文件夹.
-请前往设置</value>
   </data>
   <data name="Getting Folder" xml:space="preserve">
     <value>正在获得文件夹</value>
@@ -1687,7 +1683,7 @@
     <value>有东西正在下载，无法清空下载路径</value>
   </data>
   <data name="Are you sure to clear download path(your downloaded files will not be deleted)" xml:space="preserve">
-    <value>你确定要清楚下载路径吗？
+    <value>你确定要清除下载路径吗？
 (已下载文件不会被删除)</value>
   </data>
   <data name="No Path Selected" xml:space="preserve">
@@ -1748,12 +1744,16 @@
     <value>清除所有</value>
   </data>
   <data name="ClearBeforeThisMonthText.Text" xml:space="preserve">
-    <value>清楚一个月前</value>
+    <value>清除一个月前</value>
   </data>
   <data name="ClearBeforeTodayText.Text" xml:space="preserve">
-    <value>清楚今天前</value>
+    <value>清除今天前</value>
   </data>
   <data name="HistoryClearHintText.Text" xml:space="preserve">
     <value>太多的历史记录可能会导致打开此对话框的时间更长，你可以清除一些较早的历史记录。</value>
+  </data>
+  <data name="DownloadFolderNotFound" xml:space="preserve">
+    <value>未找到下载文件夹
+请前往设置</value>
   </data>
 </root>
