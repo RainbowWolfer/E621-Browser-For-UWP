@@ -43,7 +43,7 @@ namespace E621Downloader.Pages {
 		}
 
 		public static List<Post> GetCurrentPosts() {
-			return Instance?.GetSelectedTab()?.Posts ?? new List<Post>();
+			return Instance?.GetSelectedTab()?.PostsAfterBlasklist ?? new List<Post>();
 		}
 
 		public static void SetSelectionMode(bool enable) {
@@ -392,7 +392,7 @@ namespace E621Downloader.Pages {
 				}
 			}
 			tab.BlackTags = tab.BlackTags.OrderByDescending(t => t.Value).ToDictionary(x => x.Key, x => x.Value);
-
+			tab.PostsAfterBlasklist = afterBlackListed;
 			tab.AllTags.Clear();
 			foreach(Post item in tab.Posts) {
 				foreach(string tag in item.tags.GetAllTags()) {
@@ -856,6 +856,7 @@ namespace E621Downloader.Pages {
 	public class PostsTab {
 		public string[] Tags { get; set; } = new string[0];
 		public List<Post> Posts { get; set; } = null;
+		public List<Post> PostsAfterBlasklist { get; set; } = new();
 		public E621Pool Pool { get; set; } = null;
 		public int LoadedCount { get; set; } = 0;
 		public List<Post> Unsupported { get; set; } = new();

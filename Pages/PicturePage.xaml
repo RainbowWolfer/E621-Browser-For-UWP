@@ -88,6 +88,14 @@
 			<KeyboardAccelerator Key="E" Modifiers="Control" Invoked="LastFavoriteKey_Invoked"/>
 			<KeyboardAccelerator Key="Number1" Modifiers="Control" Invoked="UpVoteKey_Invoked"/>
 			<KeyboardAccelerator Key="Number2" Modifiers="Control" Invoked="DownVoteKey_Invoked"/>
+			<KeyboardAccelerator Key="W" Invoked="UpKey_Invoked"/>
+			<KeyboardAccelerator Key="A" Invoked="LeftKey_Invoked"/>
+			<KeyboardAccelerator Key="S" Invoked="DownKey_Invoked"/>
+			<KeyboardAccelerator Key="D" Invoked="RightKey_Invoked"/>
+			<KeyboardAccelerator Key="Up" Invoked="UpKey_Invoked"/>
+			<KeyboardAccelerator Key="Left" Invoked="LeftKey_Invoked"/>
+			<KeyboardAccelerator Key="Down" Invoked="DownKey_Invoked"/>
+			<KeyboardAccelerator Key="Right" Invoked="RightKey_Invoked"/>
 		</Grid.KeyboardAccelerators>
 		<Grid x:Name="NoPostGrid" Visibility="Collapsed">
 			<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
