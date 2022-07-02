@@ -64,40 +64,12 @@ namespace E621Downloader.Pages {
 		private static Dictionary<string, VoteType> Voted { get; } = new();
 
 		private bool isLoadingPost = false;
-		private bool isControlInputing = false;
 
 		public PicturePage() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			this.DataContextChanged += (s, c) => Bindings.Update();
 			MyMediaPlayer.MediaPlayer.IsLoopingEnabled = true;
-			//KeyListener.SubmitInstance(new KeyListenerInstance(key => {
-			//	if(MainPage.Instance.currentTag != PageTag.Picture) {
-			//		return;
-			//	}
-			//	if(key == VirtualKey.Control) {
-			//		isControlInputing = true;
-			//	}
-			//	if(TextInputing || isControlInputing) {
-			//		return;
-			//	}
-			//	if(this.PostRef == null) {
-			//		return;
-			//	}
-			//	if(key is VirtualKey.A or VirtualKey.Left) {
-			//		GoLeft();
-			//	} else if(key is VirtualKey.D or VirtualKey.Right) {
-			//		GoRight();
-			//	} else if(key is VirtualKey.W or VirtualKey.Up) {
-			//		ZoomIn();
-			//	} else if(key is VirtualKey.S or VirtualKey.Down) {
-			//		ZoomOut();
-			//	}
-			//}, key => {
-			//	if(key == VirtualKey.Control) {
-			//		isControlInputing = false;
-			//	}
-			//}));
 #if DEBUG
 			DebugItem.Visibility = Visibility.Visible;
 #else

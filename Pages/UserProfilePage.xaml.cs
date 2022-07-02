@@ -38,7 +38,7 @@ namespace E621Downloader.Pages {
 			base.OnNavigatedTo(e);
 			var pair = WelcomeInLanguages.GetRandomWelcomePair();
 			WelcomeText.Text = pair.Value;
-			WelcomeDetailText.Text = $"This is \"Hello\" in {pair.Key}";
+			WelcomeDetailText.Text = "HelloLanguage".Language(pair.Key);
 
 			UpdateUserInfo(E621User.Current);
 
@@ -73,10 +73,10 @@ namespace E621Downloader.Pages {
 
 		private async void LogoutButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(await new ContentDialog() {
-				Title = "Confirm",
-				Content = "Are you sure to log out?",
-				PrimaryButtonText = "Sure",
-				CloseButtonText = "Back",
+				Title = "Confirm".Language(),
+				Content = "Are you sure to log out".Language(),
+				PrimaryButtonText = "Sure".Language(),
+				CloseButtonText = "Back".Language(),
 				DefaultButton = ContentDialogButton.Close,
 			}.ShowAsync() == ContentDialogResult.Primary) {
 				LocalSettings.Current.SetLocalUser("", "");
