@@ -2341,6 +2341,22 @@ Would you like to get it set?</source>
           <target state="final">未找到下载文件夹
 请前往设置</target>
         </trans-unit>
+        <trans-unit id="Are you sure to log out" translate="yes" xml:space="preserve">
+          <source>Are you sure to log out?</source>
+          <target state="final">你确定要登出吗？</target>
+        </trans-unit>
+        <trans-unit id="Sure" translate="yes" xml:space="preserve">
+          <source>Sure</source>
+          <target state="final">确定</target>
+        </trans-unit>
+        <trans-unit id="HelloLanguage" translate="yes" xml:space="preserve">
+          <source>This is "Hello" in {{0}}</source>
+          <target state="final">这是在{{0}}语言中的"你好"</target>
+        </trans-unit>
+        <trans-unit id="V1160L1.Text" translate="yes" xml:space="preserve">
+          <source>- Small fixes</source>
+          <target state="final">- 小修补</target>
+        </trans-unit>
       </group>
     </body>
   </file>

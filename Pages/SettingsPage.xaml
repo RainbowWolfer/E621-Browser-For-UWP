@@ -253,6 +253,13 @@
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>
+							<controls:Expander Header="2022-07-01 (v1.1.6.0) Hotfix" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
+								<controls:Expander.Content>
+									<StackPanel>
+										<TextBlock x:Uid="V1160L1" Text="- Small fixes" FontSize="22" TextWrapping="WrapWholeWords"/>
+									</StackPanel>
+								</controls:Expander.Content>
+							</controls:Expander>
 							<controls:Expander Header="2022-06-29 (v1.1.5.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
 								<controls:Expander.Content>
 									<StackPanel>

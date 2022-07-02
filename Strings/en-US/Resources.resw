@@ -1854,4 +1854,16 @@
 	<data name="HistoryClearHintText.Text" xml:space="preserve">
     <value>Too much history may cause longer time to open this dialog up. You can clear some earlier history.</value>
   </data>
+	<data name="Are you sure to log out" xml:space="preserve">
+    <value>Are you sure to log out?</value>
+  </data>
+	<data name="Sure" xml:space="preserve">
+    <value>Sure</value>
+  </data>
+	<data name="HelloLanguage" xml:space="preserve">
+    <value>This is "Hello" in {{0}}</value>
+  </data>
+	<data name="V1160L1.Text" xml:space="preserve">
+    <value>- Small fixes</value>
+  </data>
 </root>
