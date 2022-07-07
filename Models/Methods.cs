@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models.Inerfaces;
+using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ using Windows.ApplicationModel.Resources;
 using Windows.System;
 using Windows.UI;
 using Windows.UI.Core;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace E621Downloader.Models {
 	public static class Methods {
@@ -132,6 +135,40 @@ namespace E621Downloader.Models {
 		public static async Task OpenBrowser(string uri) {
 			if(!await Launcher.LaunchUriAsync(new Uri(uri))) {
 				await MainPage.CreatePopupDialog("Error".Language(), "Could not Open Default Browser".Language());
+			}
+		}
+
+		public static void ProdedureLoading(Image image, Post post, Action<int, bool> onProgress = null, Action onSuccess = null, Action<string> onError = null) {
+			string preview = post.preview.url;
+			string sample = post.sample.url;
+			bool isFirst = true;
+			void LoadSample() {
+				BitmapImage bitmap = new(new Uri(preview));
+				bitmap.ImageFailed += (s, e) => {
+					onError.Invoke("Error".Language());
+				};
+				bitmap.ImageOpened += (s, e) => {
+					image.Source = bitmap;
+				};
+				bitmap.DownloadProgress += (s, e) => {
+					onProgress?.Invoke(e.Progress, isFirst);
+				};
+			}
+			if(!string.IsNullOrWhiteSpace(preview)) {
+				BitmapImage bitmap = new(new Uri(preview));
+				bitmap.ImageFailed += (s, e) => {
+					onProgress?.Invoke(0, true);
+					LoadSample();
+				};
+				bitmap.ImageOpened += (s, e) => {
+					image.Source = bitmap;
+					isFirst = false;
+					LoadSample();
+
+				};
+				bitmap.DownloadProgress += (s, e) => {
+					onProgress?.Invoke(e.Progress, isFirst);
+				};
 			}
 		}
 	}

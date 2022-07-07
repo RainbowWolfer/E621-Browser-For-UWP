@@ -5,6 +5,7 @@
     xmlns:local="using:E621Downloader.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
 	d:RequestedTheme="Dark"
     d:DesignHeight="200"
@@ -37,10 +38,11 @@
 			</Grid.RowDefinitions>
 			<Grid x:Name="BorderGrid" Tapped="Grid_Tapped" BorderBrush="{ThemeResource SystemAccentColor}" BorderThickness="0">
 				<StackPanel x:Name="LoadingPanel" Margin="20">
-					<ProgressRing x:Name="MyProgressRing" Height="50" Width="50" IsActive="True"/>
+					<controls:ProgressRing x:Name="MyProgressRing" Height="50" Width="50" IsActive="True"/>
 					<TextBlock x:Name="FailureTextBlock" FontSize="32"/>
 				</StackPanel>
-				<Image x:Name="MyImage" ImageOpened="MyImage_ImageOpened" ImageFailed="MyImage_ImageFailed"/>
+				<Image x:Name="PreviewyImage"/>
+				<Image x:Name="SampleImage" Visibility="Collapsed"/>
 				<local:TypeHintForImageHolder PostRef="{x:Bind PostRef}"/>
 			</Grid>
 			<Grid Grid.Row="1" Margin="10,0,10,0">

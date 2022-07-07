@@ -17,7 +17,7 @@
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
-		<TextBox x:Uid="HostNamePlaceholder" x:Name="Input" PlaceholderText="Host Name" Margin="5" TextChanged="Input_TextChanged" FontSize="26"/>
+		<TextBox x:Uid="HostNamePlaceholder" x:Name="Input" PlaceholderText="Host Name" Margin="5" TextChanged="Input_TextChanged" FontSize="26" KeyDown="Input_KeyDown"/>
 		<StackPanel x:Name="HintPanel" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" Visibility="Collapsed" Margin="5">
 			<FontIcon Glyph="&#xE946;"/>
 			<TextBlock x:Name="HintText" d:Text="Hello World" Margin="10,0,0,0"/>

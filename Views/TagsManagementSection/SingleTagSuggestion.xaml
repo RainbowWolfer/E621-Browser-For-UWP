@@ -23,9 +23,9 @@
 
 	<RelativePanel x:Name="RootPanel" BorderBrush="Transparent" BorderThickness="0" CornerRadius="0">
 		<Rectangle x:Name="CategoryRectangle" d:Fill="Red" Fill="{x:Bind MainBrush}" Height="23" Width="4" RadiusX="2" RadiusY="2"/>
-		<TextBlock x:Name="NameText" Text="{x:Bind CompleteName}" RelativePanel.RightOf="CategoryRectangle" d:Text="feet" Margin="10,0,10,0" RelativePanel.AlignVerticalCenterWithPanel="True"/>
-		<FontIcon x:Name="Arrow" Glyph="&#xEA62;" RelativePanel.RightOf="NameText" FontSize="12" RelativePanel.AlignVerticalCenterWithPanel="True"/>
-		<TextBlock x:Name="AntecedentText" Text="{x:Bind AntecedentName}" RelativePanel.RightOf="Arrow" d:Text="feetpaws" Margin="10,0,10,0" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+		<TextBlock x:Name="FromText" RelativePanel.RightOf="CategoryRectangle" d:Text="feet" Margin="10,0,10,0" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+		<FontIcon x:Name="Arrow" Glyph="&#xEA62;" RelativePanel.RightOf="FromText" FontSize="12" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+		<TextBlock x:Name="ToText" RelativePanel.RightOf="Arrow" d:Text="feetpaws" Margin="10,0,10,0" RelativePanel.AlignVerticalCenterWithPanel="True"/>
 		<TextBlock x:Name="CountText" Text="{x:Bind Count}" RelativePanel.AlignRightWithPanel="True" d:Text="30.2K" Margin="10,0,10,0" RelativePanel.AlignVerticalCenterWithPanel="True"/>
 	</RelativePanel>
 </UserControl>

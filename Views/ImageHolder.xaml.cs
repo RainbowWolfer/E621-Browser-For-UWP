@@ -3,6 +3,7 @@ using E621Downloader.Models.Download;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -12,6 +13,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace E621Downloader.Views {
 	public delegate void OnImageLoadedEventHandler(BitmapImage bitmap);
@@ -38,7 +40,8 @@ namespace E621Downloader.Views {
 				VariableSizedWrapGrid.SetRowSpan(this, _spanRow);
 			}
 		}
-		public string LoadUrl => PostRef.sample.url;
+		public string PrevieweUrl => PostRef.preview.url;
+		public string SampleUrl => PostRef.sample.url;
 
 		private bool _isSelected;
 		public bool IsSelected {
@@ -46,6 +49,23 @@ namespace E621Downloader.Views {
 			set {
 				_isSelected = value;
 				BorderGrid.BorderThickness = new Thickness(value ? 4 : 0);
+			}
+		}
+
+		public int? Progress {
+			get => progress;
+			private set {
+				progress = value;
+				if(value == null) {
+					MyProgressRing.Visibility = Visibility.Collapsed;
+				} else if(0 < value && value <= 100) {
+					MyProgressRing.Visibility = Visibility.Visible;
+					MyProgressRing.IsIndeterminate = false;
+					MyProgressRing.Value = (double)value;
+				} else {
+					MyProgressRing.Visibility = Visibility.Visible;
+					MyProgressRing.IsIndeterminate = true;
+				}
 			}
 		}
 
@@ -59,7 +79,8 @@ namespace E621Downloader.Views {
 		private ContentDialog dialog_setAs;
 		private LoadingDialog dialog_setAs_content;
 		private CancellationTokenSource cts_SetAs;
-
+		private int? progress;
+		private readonly LoadPoolItem loader;
 
 		public ImageHolder(Page page, Post post, int index, PathType type, string path) {
 			this.InitializeComponent();
@@ -68,19 +89,87 @@ namespace E621Downloader.Views {
 			this.Index = index;
 			this.type = type;
 			this.path = path;
-			OnImagedLoaded += (b) => this.Image = b;
-			if(LoadUrl != null) {
-				MyImage.ImageOpened += (s, e) => {
-					var source = MyImage.Source as BitmapImage;
-					if(!LocalSettings.Current.enableGifAutoPlay) {
-						source.Stop();
+			this.loader = LoadPool.SetNew(post);
+			PreviewyImage.Source = null;
+			SampleImage.Source = null;
+			if(!string.IsNullOrWhiteSpace(PrevieweUrl) || !string.IsNullOrWhiteSpace(SampleUrl)) {
+				bool previewLoaded = false;
+				if(!string.IsNullOrWhiteSpace(PrevieweUrl)) {
+					LoadPreview();
+				} else {
+					LoadSample();
+				}
+
+				void LoadPreview() {
+					if(string.IsNullOrWhiteSpace(PrevieweUrl)) {
+						return;
 					}
-				};
-				MyImage.Source = new BitmapImage(new Uri(LoadUrl));
-				Debug.WriteLine(LoadUrl);
+					LoadingPanel.Visibility = Visibility.Visible;
+					FailureTextBlock.Text = "";
+					PreviewyImage.ImageFailed += (s, e) => {
+						Progress = 0;
+						LoadSample();
+					};
+					PreviewyImage.ImageOpened += (s, e) => {
+						var bitmap = PreviewyImage.Source as BitmapImage;
+						previewLoaded = true;
+						Progress = null;
+						loader.Preview = bitmap;
+						LoadSample();
+						OnImagedLoaded?.Invoke(bitmap);
+					};
+					if(loader.Preview != null) {
+						PreviewyImage.Source = loader.Preview;
+						previewLoaded = true;
+						Progress = null;
+						LoadSample();
+					} else {
+						PreviewyImage.Source = new BitmapImage(new Uri(PrevieweUrl));
+					}
+					(PreviewyImage.Source as BitmapImage).DownloadProgress += (s, e) => {
+						Progress = e.Progress;
+					};
+				}
+				void LoadSample() {
+					if(string.IsNullOrWhiteSpace(SampleUrl)) {
+						LoadingPanel.Visibility = Visibility.Visible;
+						Progress = null;
+						FailureTextBlock.Text = "Empty URL".Language();
+						return;
+					}
+					if(previewLoaded) {
+						LoadingPanel.Visibility = Visibility.Collapsed;
+					} else {
+						LoadingPanel.Visibility = Visibility.Visible;
+					}
+					if(loader.Sample != null) {
+						SampleImage.Source = loader.Sample;
+						SampleImage.Visibility = Visibility.Visible;
+						PreviewyImage.Visibility = Visibility.Collapsed;
+						LoadingPanel.Visibility = Visibility.Collapsed;
+						Progress = null;
+					} else {
+						SampleImage.Source = new BitmapImage(new Uri(SampleUrl));
+					}
+					SampleImage.ImageFailed += (s, e) => {
+						Progress = null;
+						LoadingPanel.Visibility = Visibility.Visible;
+						FailureTextBlock.Text = "Error".Language();
+					};
+					SampleImage.ImageOpened += (s, e) => {
+						var bitmap = SampleImage.Source as BitmapImage;
+						LoadingPanel.Visibility = Visibility.Collapsed;
+						Progress = null;
+						loader.Sample = bitmap;
+						SampleImage.Visibility = Visibility.Visible;
+						PreviewyImage.Visibility = Visibility.Collapsed;
+					};
+					(SampleImage.Source as BitmapImage).DownloadProgress += (s, e) => {
+						Progress = previewLoaded ? null : e.Progress;
+					};
+				}
 			} else {
-				MyProgressRing.IsActive = false;
-				MyProgressRing.Visibility = Visibility.Collapsed;
+				Progress = null;
 				FailureTextBlock.Text = "Error".Language();
 				this.Visibility = Visibility.Visible;
 				VariableSizedWrapGrid.SetColumnSpan(this, SpanCol);
@@ -259,7 +348,7 @@ namespace E621Downloader.Views {
 		}
 
 		private void Grid_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(LoadUrl == null) {
+			if(SampleUrl == null) {
 				return;
 			}
 			if(MainPage.Instance.currentTag == PageTag.PostsBrowser) {
@@ -278,18 +367,6 @@ namespace E621Downloader.Views {
 
 				MainPage.NavigateToPicturePage(PostRef, new string[] { "Spot", Methods.GetDate() });
 			}
-		}
-
-		private void MyImage_ImageOpened(object sender, RoutedEventArgs e) {
-			LoadingPanel.Visibility = Visibility.Collapsed;
-			//Debug.WriteLine("\n" + (DateTime.Now - startTime) + "\n");
-			OnImagedLoaded?.Invoke((BitmapImage)MyImage.Source);
-		}
-
-		private void MyImage_ImageFailed(object sender, ExceptionRoutedEventArgs e) {
-			MyProgressRing.IsActive = false;
-			//MyLoadingTextBlock.Text = "FAILED";
-			Debug.WriteLine("FAILED");
 		}
 	}
 }

@@ -2,6 +2,8 @@
 using E621Downloader.Models.Networks;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -40,6 +42,25 @@ namespace E621Downloader.Views {
 		}
 
 		private async void Acceptbutton_Tapped(object sender, TappedRoutedEventArgs e) {
+			await CheckAndHide();
+		}
+
+		private void BackButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(cts != null) {
+				cts.Cancel();
+			}
+			Confirm = false;
+			dialog.Hide();
+		}
+
+		private async void Input_KeyDown(object sender, KeyRoutedEventArgs e) {
+			if(e.Key == VirtualKey.Enter) {
+				await CheckAndHide();
+				e.Handled = true;
+			}
+		}
+
+		private async Task CheckAndHide() {
 			if(cts != null) {
 				cts.Cancel();
 			}
@@ -64,14 +85,6 @@ namespace E621Downloader.Views {
 				HintText.Text = "Host Name is not supported".Language();
 				Acceptbutton.IsEnabled = true;
 			}
-		}
-
-		private void BackButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(cts != null) {
-				cts.Cancel();
-			}
-			Confirm = false;
-			dialog.Hide();
 		}
 	}
 }

@@ -47,7 +47,11 @@ namespace E621Downloader.Views.TagsManagementSection {
 			this.autoComplete = autoComplete;
 			if(string.IsNullOrWhiteSpace(AntecedentName)) {
 				Arrow.Visibility = Visibility.Collapsed;
-				AntecedentText.Visibility = Visibility.Collapsed;
+				ToText.Visibility = Visibility.Collapsed;
+				FromText.Text = CompleteName;
+			} else {
+				FromText.Text = AntecedentName;
+				ToText.Text = CompleteName;
 			}
 			var catrgory = E621Tag.GetTagCategory(Category);
 			bool isDark = App.GetApplicationTheme() == ApplicationTheme.Dark;

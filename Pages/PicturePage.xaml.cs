@@ -18,6 +18,7 @@ using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Media.Core;
@@ -27,6 +28,7 @@ using Windows.Storage.Streams;
 using Windows.System;
 using Windows.System.UserProfile;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -61,6 +63,24 @@ namespace E621Downloader.Pages {
 		private DataPackage imageDataPackage;
 		private bool TextInputing { get; set; } = false;
 
+		public int? Progress {
+			get => progress;
+			private set {
+				progress = value;
+				if(value == null) {
+					LoadingBar.Visibility = Visibility.Collapsed;
+				} else if(0 < value && value <= 100) {
+					LoadingBar.Visibility = Visibility.Visible;
+					LoadingBar.IsIndeterminate = false;
+					LoadingBar.Value = (double)value;
+				} else {
+					LoadingBar.Visibility = Visibility.Visible;
+					LoadingBar.IsIndeterminate = true;
+				}
+			}
+		}
+		private LoadPoolItem Loader { get; set; }
+
 		private static Dictionary<string, VoteType> Voted { get; } = new();
 
 		private bool isLoadingPost = false;
@@ -94,6 +114,7 @@ namespace E621Downloader.Pages {
 				App.PostsList.Current = p;
 			}
 			if(p is Post post) {
+				Loader = LoadPool.SetNew(post);
 				if(PostRef == post) {
 					NoPostGrid.Visibility = Visibility.Collapsed;//just in case
 					MainGrid.Visibility = Visibility.Visible;
@@ -105,6 +126,7 @@ namespace E621Downloader.Pages {
 				PostType = PathType.PostID;
 				path = this.PostRef.id;
 			} else if(p is MixPost mix) {
+				Loader = LoadPool.SetNew(mix.PostRef);
 				switch(mix.Type) {
 					case PathType.PostID:
 						if(mix.PostRef == this.PostRef) {
@@ -141,6 +163,7 @@ namespace E621Downloader.Pages {
 						throw new PathTypeException();
 				}
 			} else if(p is ILocalImage local) {
+				Loader = LoadPool.SetNew(local.ImagePost);
 				if(PostRef == local.ImagePost) {
 					return;
 				}
@@ -150,6 +173,7 @@ namespace E621Downloader.Pages {
 				PostType = PathType.Local;
 				path = local.ImageFile.Path;
 			} else if(p is string postID && !string.IsNullOrEmpty(postID)) {
+				Loader = LoadPool.GetLoader(postID);
 				if(this.PostRef?.id == postID) {
 					return;
 				}
@@ -172,12 +196,13 @@ namespace E621Downloader.Pages {
 						}
 					}
 				}
+				Loader = LoadPool.SetNew(this.PostRef);
 				UpdateDownloadButton(false);
 				await LoadFromPost(this.PostRef);
 				PostType = PathType.PostID;
 				path = this.PostRef.id;
 			} else if(this.PostRef == null && p == null) {
-				MyProgressRing.IsActive = false;
+				Progress = null;
 				showNoPostGrid = true;
 				PostType = PathType.PostID;
 			}
@@ -257,7 +282,7 @@ namespace E621Downloader.Pages {
 			if(string.IsNullOrWhiteSpace(post.file.url)) {
 				MyMediaPlayer.Visibility = Visibility.Collapsed;
 				MyScrollViewer.Visibility = Visibility.Collapsed;
-				MyProgressRing.IsActive = false;
+				Progress = null;
 				await MainPage.CreatePopupDialog("Error".Language(), "Post".Language() + $"({post.id}) " + "has no valid file URL".Language());
 				return;
 			}
@@ -265,29 +290,68 @@ namespace E621Downloader.Pages {
 			switch(type) {
 				case FileType.Png:
 				case FileType.Jpg:
-				case FileType.Gif:
-					MyProgressRing.IsActive = true;
+				case FileType.Gif: {
+					Progress = 0;
+					PreviewImage.Source = null;
 					MyMediaPlayer.Visibility = Visibility.Collapsed;
 					MyScrollViewer.Visibility = Visibility.Visible;
-					MainImage.Source = new BitmapImage(new Uri(post.file.url));
+					if(Loader.ImageFile != null) {
+						MainImage.Source = Loader.ImageFile;
+						PreviewImage.Visibility = Visibility.Collapsed;
+					} else {
+						BitmapImage preview = Loader.GetBestPreviewImage();
+						if(preview != null) {
+							PreviewImage.Source = preview;
+						}
+						PreviewImage.Visibility = Visibility.Visible;
+						MainImage.Source = new BitmapImage(new Uri(post.file.url));
+						(MainImage.Source as BitmapImage).DownloadProgress += (s, e) => {
+							Progress = e.Progress;
+						};
+					}
+
 					imageDataPackage = new DataPackage() {
 						RequestedOperation = DataPackageOperation.Copy,
 					};
 					imageDataPackage.SetBitmap(RandomAccessStreamReference.CreateFromUri(new Uri(post.file.url)));
 					MyMediaPlayer.MediaPlayer.Source = null;
-					break;
-				case FileType.Webm:
-					MyProgressRing.IsActive = false;
+				}
+				break;
+				case FileType.Webm: {
+					MyMediaPlayer.MediaPlayer.Source = null;
+					Progress = null;
 					MyMediaPlayer.Visibility = Visibility.Visible;
 					MyScrollViewer.Visibility = Visibility.Collapsed;
 					if(!string.IsNullOrEmpty(post.file.url)) {
+						Progress = 0;
+						BitmapImage preview = Loader.GetBestPreviewImage();
+						if(preview != null) {
+							PreviewImage.Source = preview;
+							PreviewImage.Visibility = Visibility.Visible;
+						}
 						MyMediaPlayer.Source = MediaSource.CreateFromUri(new Uri(post.file.url));
+						(MyMediaPlayer.Source as MediaSource).StateChanged += async (s, e) => {
+							Debug.WriteLine($"From {e.OldState} To {e.NewState}");
+							if(e.NewState == MediaSourceState.Opened) {
+								await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+									PreviewImage.Visibility = Visibility.Collapsed;
+									PreviewImage.Source = null;
+									Progress = null;
+									if(EnableAutoPlay) {
+										MyMediaPlayer.MediaPlayer.Play();
+									}
+								});
+							} else if(e.NewState == MediaSourceState.Failed) {
+
+							}
+						};
 					}
-					break;
+				}
+				break;
 				case FileType.Anim:
 					MyMediaPlayer.Visibility = Visibility.Collapsed;
 					MyScrollViewer.Visibility = Visibility.Collapsed;
-					MyProgressRing.IsActive = false;
+					Progress = null;
 					break;
 				default:
 					await MainPage.CreatePopupDialog("Error".Language(), "Type".Language() + $" ({type}) " + "not supported".Language());
@@ -298,11 +362,13 @@ namespace E621Downloader.Pages {
 		private async Task LoadFromLocal(ILocalImage local) {
 			FileType type = GetFileType(local.ImagePost);
 			HintText.Visibility = Visibility.Collapsed;
+			PreviewImage.Visibility = Visibility.Collapsed;
+			PreviewImage.Source = null;
 			switch(type) {
 				case FileType.Png:
 				case FileType.Jpg:
 				case FileType.Gif:
-					MyProgressRing.IsActive = true;
+					Progress = 0;
 					MyMediaPlayer.Visibility = Visibility.Collapsed;
 					MyScrollViewer.Visibility = Visibility.Visible;
 					try {
@@ -318,10 +384,10 @@ namespace E621Downloader.Pages {
 						await MainPage.CreatePopupDialog("Error".Language(), "Local Post".Language() + $"({local.ImagePost.id}) - {local.ImageFile.Path} " + "Load Failed".Language() + $"\n{e.Message}");
 					}
 					MyMediaPlayer.Source = null;
-					MyProgressRing.IsActive = false;
+					Progress = null;
 					break;
 				case FileType.Webm:
-					MyProgressRing.IsActive = false;
+					Progress = null;
 					MyMediaPlayer.Visibility = Visibility.Visible;
 					MyScrollViewer.Visibility = Visibility.Collapsed;
 					MyMediaPlayer.Source = MediaSource.CreateFromStorageFile(local.ImageFile);
@@ -332,7 +398,7 @@ namespace E621Downloader.Pages {
 					MyScrollViewer.Visibility = Visibility.Collapsed;
 					HintText.Text = $"Type SWF not supported".Language();
 					HintText.Visibility = Visibility.Visible;
-					MyProgressRing.IsActive = false;
+					Progress = null;
 					break;
 				default:
 					HintText.Text = "Type".Language() + $" ({type}) " + "not supported".Language();
@@ -614,7 +680,9 @@ namespace E621Downloader.Pages {
 		}
 
 		private void MainImage_ImageOpened(object sender, RoutedEventArgs e) {
-			MyProgressRing.IsActive = false;
+			Progress = null;
+			PreviewImage.Visibility = Visibility.Collapsed;
+			PreviewImage.Source = null;
 		}
 
 		private void MainImage_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e) {
@@ -1238,23 +1306,23 @@ namespace E621Downloader.Pages {
 			StorageFile file;
 			switch(type) {
 				case PathType.PostID: {
-						token.ThrowIfCancellationRequested();
-						file = await Local.WallpapersFolder.CreateFileAsync($"{post.id}.{post.file.ext}", CreationCollisionOption.GenerateUniqueName);
-						using HttpClient client = new();
-						token.ThrowIfCancellationRequested();
-						byte[] buffer = await client.GetByteArrayAsync(post.file.url);
-						token.ThrowIfCancellationRequested();
-						using Stream stream = await file.OpenStreamForWriteAsync();
-						stream.Write(buffer, 0, buffer.Length);
-					}
-					break;
+					token.ThrowIfCancellationRequested();
+					file = await Local.WallpapersFolder.CreateFileAsync($"{post.id}.{post.file.ext}", CreationCollisionOption.GenerateUniqueName);
+					using HttpClient client = new();
+					token.ThrowIfCancellationRequested();
+					byte[] buffer = await client.GetByteArrayAsync(post.file.url);
+					token.ThrowIfCancellationRequested();
+					using Stream stream = await file.OpenStreamForWriteAsync();
+					stream.Write(buffer, 0, buffer.Length);
+				}
+				break;
 				case PathType.Local: {
-						token.ThrowIfCancellationRequested();
-						file = await StorageFile.GetFileFromPathAsync(pathForLocal);
-						token.ThrowIfCancellationRequested();
-						file = await file.CopyAsync(Local.WallpapersFolder);
-					}
-					break;
+					token.ThrowIfCancellationRequested();
+					file = await StorageFile.GetFileFromPathAsync(pathForLocal);
+					token.ThrowIfCancellationRequested();
+					file = await file.CopyAsync(Local.WallpapersFolder);
+				}
+				break;
 				default:
 					throw new Exception();
 			}
@@ -1264,6 +1332,8 @@ namespace E621Downloader.Pages {
 		private ContentDialog dialog;
 		private LoadingDialog dialog_content;
 		private CancellationTokenSource cts_SetAs = null;
+		private int? progress;
+
 		private async void ShowLoadingDialog(string title, string content, Action onCancel = null) {
 			dialog_content = new LoadingDialog() {
 				DialogContent = content,
