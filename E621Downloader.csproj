@@ -190,6 +190,7 @@
     <Compile Include="Models\Posts\E621User.cs" />
     <Compile Include="Models\Posts\E621Wiki.cs" />
     <Compile Include="Models\Posts\Post.cs" />
+    <Compile Include="Models\ProgressLoader.cs" />
     <Compile Include="Pages\DownloadSection\DownloadDetailsPage.xaml.cs">
       <DependentUpon>DownloadDetailsPage.xaml</DependentUpon>
     </Compile>

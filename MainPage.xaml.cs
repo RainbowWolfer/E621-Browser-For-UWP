@@ -19,6 +19,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.System;
+using Windows.UI.Core.Preview;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -137,6 +138,21 @@ namespace E621Downloader {
 					}
 				}
 			}));
+
+			//SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += async (sender, args) => {
+			//	args.Handled = true;
+			//	var result = await new ContentDialog() {
+			//		PrimaryButtonText = "Yes",
+			//		CloseButtonText = "No",
+			//		DefaultButton = ContentDialogButton.Close,
+			//	}.ShowAsync();
+			//	if(result == ContentDialogResult.Primary) {
+			//		// Save work;
+			//	} else {
+			//		Application.Current.Exit();
+			//	}
+			//};
+
 			Loop();
 		}
 

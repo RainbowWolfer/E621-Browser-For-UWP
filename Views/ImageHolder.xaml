@@ -41,7 +41,7 @@
 					<controls:ProgressRing x:Name="MyProgressRing" Height="50" Width="50" IsActive="True"/>
 					<TextBlock x:Name="FailureTextBlock" FontSize="32"/>
 				</StackPanel>
-				<Image x:Name="PreviewyImage"/>
+				<Image x:Name="PreviewImage"/>
 				<Image x:Name="SampleImage" Visibility="Collapsed"/>
 				<local:TypeHintForImageHolder PostRef="{x:Bind PostRef}"/>
 			</Grid>

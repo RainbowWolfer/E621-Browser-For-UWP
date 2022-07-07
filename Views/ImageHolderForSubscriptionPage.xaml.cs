@@ -4,8 +4,10 @@ using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -23,8 +25,12 @@ namespace E621Downloader.Views {
 		private readonly string belongingListName;
 		private PathType type;
 		private string path;
+
+		private readonly ProgressLoader progress;
+
 		public ImageHolderForSubscriptionPage(SubscriptionPage parent, string belongingListName = "") {
 			this.InitializeComponent();
+			this.progress = new ProgressLoader(LoadingRing);
 			this.parent = parent;
 			this.belongingListName = belongingListName;
 		}
@@ -38,7 +44,12 @@ namespace E621Downloader.Views {
 				LoadingRing.IsActive = false;
 			} else {
 				MyImage.ImageOpened += ImageHolderForSubscriptionPage_ImageOpened;
-				MyImage.Source = new BitmapImage(new Uri(post.sample.url ?? post.preview.url));
+				Methods.ProdedureLoading(PreviewImage, MyImage, post, new LoadPoolItemActions() {
+					OnSampleProgress = p => {
+						progress.Value = p;
+					},
+				});
+				//MyImage.Source = new BitmapImage(new Uri(post.sample.url ?? post.preview.url));
 			}
 			TypeHint.PostRef = post;
 			BottomInfo.PostRef = post;
@@ -81,7 +92,12 @@ namespace E621Downloader.Views {
 				LoadingRing.IsActive = false;
 			} else {
 				MyImage.ImageOpened += ImageHolderForSubscriptionPage_ImageOpened;
-				MyImage.Source = new BitmapImage(new Uri(url));
+				Methods.ProdedureLoading(PreviewImage, MyImage, mix.PostRef, new LoadPoolItemActions() {
+					OnSampleProgress = p => {
+						progress.Value = p;
+					},
+				});
+				//MyImage.Source = new BitmapImage(new Uri(url));
 			}
 			TypeHint.PostRef = this.PostRef;
 			BottomInfo.PostRef = this.PostRef;

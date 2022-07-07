@@ -1545,7 +1545,7 @@
 	<data name="Set As Lock-screen" xml:space="preserve">
     <value>Set As Lock-screen</value>
   </data>
-	<data name="DeletedPostHintText.Text" xml:space="preserve">
+	<data name="Post was Deleted" xml:space="preserve">
     <value>Post was Deleted</value>
   </data>
 	<data name="Loading Siblings" xml:space="preserve">

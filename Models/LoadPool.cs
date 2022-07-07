@@ -30,57 +30,57 @@ namespace E621Downloader.Models {
 		}
 
 
-		public static void SetItemPreview(Post post, BitmapImage preview) {
-			if(Pool.TryGetValue(post.id, out LoadPoolItem value)) {
-				value.Preview = preview;
-			} else {
-				LoadPoolItem item = new(post);
-				if(Pool.TryAdd(post.id, item)) {
-					item.Preview = preview;
-				}
-			}
-		}
+		//public static void SetItemPreview(Post post, BitmapImage preview) {
+		//	if(Pool.TryGetValue(post.id, out LoadPoolItem value)) {
+		//		value.Preview = preview;
+		//	} else {
+		//		LoadPoolItem item = new(post);
+		//		if(Pool.TryAdd(post.id, item)) {
+		//			item.Preview = preview;
+		//		}
+		//	}
+		//}
 
-		public static void SetItemSample(Post post, BitmapImage sample) {
-			if(Pool.TryGetValue(post.id, out LoadPoolItem value)) {
-				value.Sample = sample;
-			} else {
-				LoadPoolItem item = new(post);
-				if(Pool.TryAdd(post.id, item)) {
-					item.Sample = sample;
-				}
-			}
-		}
+		//public static void SetItemSample(Post post, BitmapImage sample) {
+		//	if(Pool.TryGetValue(post.id, out LoadPoolItem value)) {
+		//		value.Sample = sample;
+		//	} else {
+		//		LoadPoolItem item = new(post);
+		//		if(Pool.TryAdd(post.id, item)) {
+		//			item.Sample = sample;
+		//		}
+		//	}
+		//}
 
-		public static void SetItemFile(Post post, BitmapImage image) {
-			FileType type = PicturePage.GetFileType(post);
-			if(type == FileType.Webm || type == FileType.Anim) {
-				return;
-			}
-			if(Pool.TryGetValue(post.id, out LoadPoolItem value)) {
-				value.ImageFile = image;
-			} else {
-				LoadPoolItem item = new(post);
-				if(Pool.TryAdd(post.id, item)) {
-					item.ImageFile = image;
-				}
-			}
-		}
+		//public static void SetItemFile(Post post, BitmapImage image) {
+		//	FileType type = PicturePage.GetFileType(post);
+		//	if(type == FileType.Webm || type == FileType.Anim) {
+		//		return;
+		//	}
+		//	if(Pool.TryGetValue(post.id, out LoadPoolItem value)) {
+		//		value.ImageFile = image;
+		//	} else {
+		//		LoadPoolItem item = new(post);
+		//		if(Pool.TryAdd(post.id, item)) {
+		//			item.ImageFile = image;
+		//		}
+		//	}
+		//}
 
-		public static void SetItemFile(Post post, MediaSource video) {
-			FileType type = PicturePage.GetFileType(post);
-			if(type != FileType.Webm) {
-				return;
-			}
-			if(Pool.TryGetValue(post.id, out LoadPoolItem value)) {
-				value.VideoFile = video;
-			} else {
-				LoadPoolItem item = new(post);
-				if(Pool.TryAdd(post.id, item)) {
-					item.VideoFile = video;
-				}
-			}
-		}
+		//public static void SetItemFile(Post post, MediaSource video) {
+		//	FileType type = PicturePage.GetFileType(post);
+		//	if(type != FileType.Webm) {
+		//		return;
+		//	}
+		//	if(Pool.TryGetValue(post.id, out LoadPoolItem value)) {
+		//		value.VideoFile = video;
+		//	} else {
+		//		LoadPoolItem item = new(post);
+		//		if(Pool.TryAdd(post.id, item)) {
+		//			item.VideoFile = video;
+		//		}
+		//	}
+		//}
 	}
 
 	public class LoadPoolItem {
@@ -145,5 +145,22 @@ namespace E621Downloader.Models {
 				return null;
 			}
 		}
+	}
+
+	public class LoadPoolItemActions {
+		public Action OnUrlsEmpty { get; set; } = null;
+		public Action OnSampleUrlEmpty { get; set; } = null;
+
+		public Action OnPreviewStart { get; set; } = null;
+		public Action OnPreviewFailed { get; set; } = null;
+		public Action<BitmapImage> OnPreviewOpened { get; set; } = null;
+		public Action<int> OnPreviewProgress { get; set; } = null;
+		public Action OnPreviewExists { get; set; } = null;
+
+		public Action<bool> OnSampleStart { get; set; } = null;
+		public Action OnSampleFailed { get; set; } = null;
+		public Action<BitmapImage> OnSampleOpened { get; set; } = null;
+		public Action<int?> OnSampleProgress { get; set; } = null;
+		public Action OnSampleExists { get; set; } = null;
 	}
 }

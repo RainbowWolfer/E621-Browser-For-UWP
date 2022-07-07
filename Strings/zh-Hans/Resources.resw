@@ -1439,9 +1439,6 @@
   <data name="Set As Lock-screen" xml:space="preserve">
     <value>设置为锁屏</value>
   </data>
-  <data name="DeletedPostHintText.Text" xml:space="preserve">
-    <value>推图已被删除</value>
-  </data>
   <data name="Loading Siblings" xml:space="preserve">
     <value>正在加载父子对象</value>
   </data>
@@ -1767,5 +1764,8 @@
   </data>
   <data name="V1160L1.Text" xml:space="preserve">
     <value>- 小修补</value>
+  </data>
+  <data name="Post was Deleted" xml:space="preserve">
+    <value>推图已删除</value>
   </data>
 </root>

@@ -279,6 +279,10 @@ namespace E621Downloader.Pages {
 		}
 
 		private async Task LoadFromPost(Post post) {
+			if(MainImage.Source is BitmapImage source) {
+				source.UriSource = null;
+			}
+			MainImage.Source = null;
 			if(string.IsNullOrWhiteSpace(post.file.url)) {
 				MyMediaPlayer.Visibility = Visibility.Collapsed;
 				MyScrollViewer.Visibility = Visibility.Collapsed;
@@ -683,6 +687,7 @@ namespace E621Downloader.Pages {
 			Progress = null;
 			PreviewImage.Visibility = Visibility.Collapsed;
 			PreviewImage.Source = null;
+			Loader.ImageFile = MainImage.Source as BitmapImage;
 		}
 
 		private void MainImage_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e) {
@@ -1497,6 +1502,10 @@ namespace E621Downloader.Pages {
 			}
 			GoRight();
 			args.Handled = true;
+		}
+
+		private void MainImage_ImageFailed(object sender, ExceptionRoutedEventArgs e) {
+			Progress = 0;
 		}
 	}
 

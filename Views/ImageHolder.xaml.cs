@@ -52,22 +52,7 @@ namespace E621Downloader.Views {
 			}
 		}
 
-		public int? Progress {
-			get => progress;
-			private set {
-				progress = value;
-				if(value == null) {
-					MyProgressRing.Visibility = Visibility.Collapsed;
-				} else if(0 < value && value <= 100) {
-					MyProgressRing.Visibility = Visibility.Visible;
-					MyProgressRing.IsIndeterminate = false;
-					MyProgressRing.Value = (double)value;
-				} else {
-					MyProgressRing.Visibility = Visibility.Visible;
-					MyProgressRing.IsIndeterminate = true;
-				}
-			}
-		}
+		private readonly ProgressLoader progress;
 
 		public BitmapImage Image { get; private set; }
 		private readonly PathType type;
@@ -79,7 +64,6 @@ namespace E621Downloader.Views {
 		private ContentDialog dialog_setAs;
 		private LoadingDialog dialog_setAs_content;
 		private CancellationTokenSource cts_SetAs;
-		private int? progress;
 		private readonly LoadPoolItem loader;
 
 		public ImageHolder(Page page, Post post, int index, PathType type, string path) {
@@ -89,92 +73,65 @@ namespace E621Downloader.Views {
 			this.Index = index;
 			this.type = type;
 			this.path = path;
+			this.progress = new ProgressLoader(MyProgressRing);
 			this.loader = LoadPool.SetNew(post);
-			PreviewyImage.Source = null;
+			PreviewImage.Source = null;
 			SampleImage.Source = null;
-			if(!string.IsNullOrWhiteSpace(PrevieweUrl) || !string.IsNullOrWhiteSpace(SampleUrl)) {
-				bool previewLoaded = false;
-				if(!string.IsNullOrWhiteSpace(PrevieweUrl)) {
-					LoadPreview();
-				} else {
-					LoadSample();
-				}
 
-				void LoadPreview() {
-					if(string.IsNullOrWhiteSpace(PrevieweUrl)) {
-						return;
-					}
+			Methods.ProdedureLoading(PreviewImage, SampleImage, post, new LoadPoolItemActions() {
+				OnUrlsEmpty = () => {
+					progress.Value = null;
+					FailureTextBlock.Text = "Error".Language();
+					this.Visibility = Visibility.Visible;
+					VariableSizedWrapGrid.SetColumnSpan(this, SpanCol);
+					VariableSizedWrapGrid.SetRowSpan(this, SpanRow);
+				},
+				OnSampleUrlEmpty = () => {
+					LoadingPanel.Visibility = Visibility.Visible;
+					progress.Value = null;
+					FailureTextBlock.Text = "Empty URL".Language();
+				},
+				OnPreviewStart = () => {
 					LoadingPanel.Visibility = Visibility.Visible;
 					FailureTextBlock.Text = "";
-					PreviewyImage.ImageFailed += (s, e) => {
-						Progress = 0;
-						LoadSample();
-					};
-					PreviewyImage.ImageOpened += (s, e) => {
-						var bitmap = PreviewyImage.Source as BitmapImage;
-						previewLoaded = true;
-						Progress = null;
-						loader.Preview = bitmap;
-						LoadSample();
-						OnImagedLoaded?.Invoke(bitmap);
-					};
-					if(loader.Preview != null) {
-						PreviewyImage.Source = loader.Preview;
-						previewLoaded = true;
-						Progress = null;
-						LoadSample();
-					} else {
-						PreviewyImage.Source = new BitmapImage(new Uri(PrevieweUrl));
-					}
-					(PreviewyImage.Source as BitmapImage).DownloadProgress += (s, e) => {
-						Progress = e.Progress;
-					};
-				}
-				void LoadSample() {
-					if(string.IsNullOrWhiteSpace(SampleUrl)) {
-						LoadingPanel.Visibility = Visibility.Visible;
-						Progress = null;
-						FailureTextBlock.Text = "Empty URL".Language();
-						return;
-					}
-					if(previewLoaded) {
+				},
+				OnPreviewProgress = p => {
+					progress.Value = p;
+				},
+				OnPreviewExists = () => {
+					progress.Value = null;
+				},
+				OnPreviewOpened = b => {
+					progress.Value = null;
+					OnImagedLoaded?.Invoke(b);
+				},
+				OnPreviewFailed = () => {
+					progress.Value = 0;
+				},
+				OnSampleStart = b => {
+					if(b) {
 						LoadingPanel.Visibility = Visibility.Collapsed;
 					} else {
 						LoadingPanel.Visibility = Visibility.Visible;
 					}
-					if(loader.Sample != null) {
-						SampleImage.Source = loader.Sample;
-						SampleImage.Visibility = Visibility.Visible;
-						PreviewyImage.Visibility = Visibility.Collapsed;
-						LoadingPanel.Visibility = Visibility.Collapsed;
-						Progress = null;
-					} else {
-						SampleImage.Source = new BitmapImage(new Uri(SampleUrl));
-					}
-					SampleImage.ImageFailed += (s, e) => {
-						Progress = null;
-						LoadingPanel.Visibility = Visibility.Visible;
-						FailureTextBlock.Text = "Error".Language();
-					};
-					SampleImage.ImageOpened += (s, e) => {
-						var bitmap = SampleImage.Source as BitmapImage;
-						LoadingPanel.Visibility = Visibility.Collapsed;
-						Progress = null;
-						loader.Sample = bitmap;
-						SampleImage.Visibility = Visibility.Visible;
-						PreviewyImage.Visibility = Visibility.Collapsed;
-					};
-					(SampleImage.Source as BitmapImage).DownloadProgress += (s, e) => {
-						Progress = previewLoaded ? null : e.Progress;
-					};
-				}
-			} else {
-				Progress = null;
-				FailureTextBlock.Text = "Error".Language();
-				this.Visibility = Visibility.Visible;
-				VariableSizedWrapGrid.SetColumnSpan(this, SpanCol);
-				VariableSizedWrapGrid.SetRowSpan(this, SpanRow);
-			}
+				},
+				OnSampleProgress = p => {
+					progress.Value = p;
+				},
+				OnSampleExists = () => {
+					LoadingPanel.Visibility = Visibility.Collapsed;
+					progress.Value = null;
+				},
+				OnSampleOpened = b => {
+					LoadingPanel.Visibility = Visibility.Collapsed;
+					progress.Value = null;
+				},
+				OnSampleFailed = () => {
+					progress.Value = null;
+					LoadingPanel.Visibility = Visibility.Visible;
+					FailureTextBlock.Text = "Error".Language();
+				},
+			});
 			if(post != null) {
 				ToolTipService.SetToolTip(this, new ToolTipContentForPost(post));
 				ToolTipService.SetPlacement(this, PlacementMode.Bottom);

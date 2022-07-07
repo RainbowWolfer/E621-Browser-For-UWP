@@ -936,7 +936,7 @@ Go Create your own one</source>
         </trans-unit>
         <trans-unit id="LISTINGText.Text" translate="yes" xml:space="preserve">
           <source>LISTING</source>
-          <target state="needs-review-translation">列表</target>
+          <target state="final">列表</target>
         </trans-unit>
         <trans-unit id="BlacklistText.Text" translate="yes" xml:space="preserve">
           <source>Blacklist</source>
@@ -1201,8 +1201,7 @@ restarting the application</source>
         </trans-unit>
         <trans-unit id="OpenInFolderText.Text" translate="yes" xml:space="preserve">
           <source>Open in Explorer</source>
-          <target state="needs-review-translation">在资源管理器中打开</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="final">在资源管理器中打开</target>
         </trans-unit>
         <trans-unit id="Downloads" translate="yes" xml:space="preserve">
           <source>Downloads</source>
@@ -1534,8 +1533,7 @@ Please Refresh to view new Downloaded Files</source>
         </trans-unit>
         <trans-unit id="CenteredTagsOverrideConfirmTeachingTip.Title" translate="yes" xml:space="preserve">
           <source>Override Current Tags</source>
-          <target state="needs-review-translation">覆盖当前标签</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="final">覆盖当前标签</target>
         </trans-unit>
         <trans-unit id="Pause" translate="yes" xml:space="preserve">
           <source>Pause</source>
@@ -1915,10 +1913,6 @@ Warning! This action will override the tags existing in the cloud, do you want t
           <source>Set As Lock-screen</source>
           <target state="final">设置为锁屏</target>
         </trans-unit>
-        <trans-unit id="DeletedPostHintText.Text" translate="yes" xml:space="preserve">
-          <source>Post was Deleted</source>
-          <target state="final">推图已被删除</target>
-        </trans-unit>
         <trans-unit id="Loading Siblings" translate="yes" xml:space="preserve">
           <source>Loading Siblings</source>
           <target state="final">正在加载父子对象</target>
@@ -2217,8 +2211,7 @@ Warning! This action will override the tags existing in the cloud, do you want t
         </trans-unit>
         <trans-unit id="V1150L5.Text" translate="yes" xml:space="preserve">
           <source>- You can now delete items in library</source>
-          <target state="needs-review-translation">- 现在可以在本地库中直接删除文件</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="final">- 现在可以在本地库中直接删除文件</target>
         </trans-unit>
         <trans-unit id="V1150L6.Text" translate="yes" xml:space="preserve">
           <source>- New option: Enable GIF AutoPlay</source>
@@ -2356,6 +2349,10 @@ Would you like to get it set?</source>
         <trans-unit id="V1160L1.Text" translate="yes" xml:space="preserve">
           <source>- Small fixes</source>
           <target state="final">- 小修补</target>
+        </trans-unit>
+        <trans-unit id="Post was Deleted" translate="yes" xml:space="preserve">
+          <source>Post was Deleted</source>
+          <target state="final">推图已删除</target>
         </trans-unit>
       </group>
     </body>

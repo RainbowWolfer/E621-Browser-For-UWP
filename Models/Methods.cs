@@ -10,6 +10,7 @@ using Windows.ApplicationModel.Resources;
 using Windows.System;
 using Windows.UI;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -138,37 +139,76 @@ namespace E621Downloader.Models {
 			}
 		}
 
-		public static void ProdedureLoading(Image image, Post post, Action<int, bool> onProgress = null, Action onSuccess = null, Action<string> onError = null) {
-			string preview = post.preview.url;
-			string sample = post.sample.url;
-			bool isFirst = true;
-			void LoadSample() {
-				BitmapImage bitmap = new(new Uri(preview));
-				bitmap.ImageFailed += (s, e) => {
-					onError.Invoke("Error".Language());
-				};
-				bitmap.ImageOpened += (s, e) => {
-					image.Source = bitmap;
-				};
-				bitmap.DownloadProgress += (s, e) => {
-					onProgress?.Invoke(e.Progress, isFirst);
-				};
-			}
-			if(!string.IsNullOrWhiteSpace(preview)) {
-				BitmapImage bitmap = new(new Uri(preview));
-				bitmap.ImageFailed += (s, e) => {
-					onProgress?.Invoke(0, true);
+		public static void ProdedureLoading(Image previewImage, Image sampleImage, Post post, LoadPoolItemActions actions = null) {
+			string previewURL = post.preview.url;
+			string sampleURL = post.sample.url;
+			LoadPoolItem loader = LoadPool.SetNew(post);
+			if(string.IsNullOrWhiteSpace(previewURL) && string.IsNullOrWhiteSpace(sampleURL)) {
+				actions?.OnUrlsEmpty?.Invoke();
+			} else {
+				bool previewLoaded = false;
+				if(!string.IsNullOrWhiteSpace(previewURL)) {
+					LoadPreview();
+				} else {
 					LoadSample();
-				};
-				bitmap.ImageOpened += (s, e) => {
-					image.Source = bitmap;
-					isFirst = false;
-					LoadSample();
+				}
 
-				};
-				bitmap.DownloadProgress += (s, e) => {
-					onProgress?.Invoke(e.Progress, isFirst);
-				};
+				void LoadPreview() {
+					if(string.IsNullOrWhiteSpace(previewURL)) {
+						return;
+					}
+					actions?.OnPreviewStart?.Invoke();
+					previewImage.ImageFailed += (s, e) => {
+						actions?.OnPreviewFailed?.Invoke();
+						LoadSample();
+					};
+					previewImage.ImageOpened += (s, e) => {
+						var bitmap = previewImage.Source as BitmapImage;
+						previewLoaded = true;
+						actions?.OnPreviewOpened?.Invoke(bitmap);
+						loader.Preview = bitmap;
+						LoadSample();
+					};
+					if(loader.Preview != null) {
+						previewImage.Source = loader.Preview;
+						previewLoaded = true;
+						actions?.OnPreviewExists?.Invoke();
+						LoadSample();
+					} else {
+						previewImage.Source = new BitmapImage(new Uri(previewURL));
+					}
+					(previewImage.Source as BitmapImage).DownloadProgress += (s, e) => {
+						actions?.OnPreviewProgress?.Invoke(e.Progress);
+					};
+				}
+				void LoadSample() {
+					if(string.IsNullOrWhiteSpace(sampleURL)) {
+						actions?.OnSampleUrlEmpty?.Invoke();
+						return;
+					}
+					actions?.OnSampleStart?.Invoke(previewLoaded);
+					if(loader.Sample != null) {
+						sampleImage.Source = loader.Sample;
+						sampleImage.Visibility = Visibility.Visible;
+						previewImage.Visibility = Visibility.Collapsed;
+						actions?.OnSampleExists?.Invoke();
+					} else {
+						sampleImage.Source = new BitmapImage(new Uri(sampleURL));
+					}
+					sampleImage.ImageFailed += (s, e) => {
+						actions?.OnSampleFailed?.Invoke();
+					};
+					sampleImage.ImageOpened += (s, e) => {
+						var bitmap = sampleImage.Source as BitmapImage;
+						actions?.OnSampleOpened?.Invoke(bitmap);
+						loader.Sample = bitmap;
+						sampleImage.Visibility = Visibility.Visible;
+						previewImage.Visibility = Visibility.Collapsed;
+					};
+					(sampleImage.Source as BitmapImage).DownloadProgress += (s, e) => {
+						actions?.OnSampleProgress?.Invoke(previewLoaded ? null : e.Progress);
+					};
+				}
 			}
 		}
 	}
