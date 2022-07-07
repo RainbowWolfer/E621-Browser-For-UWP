@@ -1,4 +1,4 @@
-# E621Downloader
+# E621 Browser For UWP
 
 ## Microsoft Store
 [Microsoft Store App URL](https://www.microsoft.com/store/apps/9P3751M5M4WJ)
