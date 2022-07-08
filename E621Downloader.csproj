@@ -157,7 +157,6 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\HistoryItem.cs" />
-    <Compile Include="Models\ImageLoader.cs" />
     <Compile Include="Models\Inerfaces\IPage.cs" />
     <Compile Include="Models\KeyListener.cs" />
     <Compile Include="Models\LoadPool.cs" />
@@ -191,6 +190,7 @@
     <Compile Include="Models\Posts\E621Wiki.cs" />
     <Compile Include="Models\Posts\Post.cs" />
     <Compile Include="Models\ProgressLoader.cs" />
+    <Compile Include="Models\Services\ItemsControlExtensions.cs" />
     <Compile Include="Pages\DownloadSection\DownloadDetailsPage.xaml.cs">
       <DependentUpon>DownloadDetailsPage.xaml</DependentUpon>
     </Compile>
@@ -325,6 +325,12 @@
     <Compile Include="Views\PersonalFavoritesListForMultiple.xaml.cs">
       <DependentUpon>PersonalFavoritesListForMultiple.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PictureSection\PhotosListItem.xaml.cs">
+      <DependentUpon>PhotosListItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PictureSection\PhotosListManager.xaml.cs">
+      <DependentUpon>PhotosListManager.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PostMoreInfoDialog.xaml.cs">
       <DependentUpon>PostMoreInfoDialog.xaml</DependentUpon>
     </Compile>
@@ -383,6 +389,7 @@
     <Compile Include="Views\TypeHintForImageHolder.xaml.cs">
       <DependentUpon>TypeHintForImageHolder.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UniformBorderGrid.cs" />
     <Compile Include="Views\UserInfoLine.xaml.cs">
       <DependentUpon>UserInfoLine.xaml</DependentUpon>
     </Compile>
@@ -660,6 +667,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PersonalFavoritesListForMultiple.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PictureSection\PhotosListItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PictureSection\PhotosListManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

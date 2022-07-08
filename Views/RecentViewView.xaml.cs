@@ -35,11 +35,17 @@ namespace E621Downloader.Views {
 
 		public async Task StartLoading(CancellationToken token) {
 			LoadingBar.Visibility = Visibility.Visible;
-			Post post = await Post.GetPostByIDAsync(token, Value);
+			Post post = await Post.GetPostByIDAsync(Value, token);
 			if(post == null) {
+				LoadingBar.ShowError = true;
 				return;
 			}
-			ImageView.Source = new BitmapImage(new Uri(post.sample.url ?? post.preview.url ?? post.file.url));
+			string url = post.sample.url ?? post.preview.url ?? post.file.url;
+			if(url == null) {
+				LoadingBar.ShowError = true;
+				return;
+			}
+			ImageView.Source = new BitmapImage(new Uri(url));
 			ImageView.ImageOpened += (s, e) => {
 				LoadingBar.Visibility = Visibility.Collapsed;
 				HasLoaded = true;

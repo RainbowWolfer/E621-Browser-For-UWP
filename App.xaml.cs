@@ -22,7 +22,6 @@ namespace E621Downloader {
 
 		public static Dictionary<string, Post> PostsPool { get; } = new();
 
-		public static ImageLoader ImagesPool { get; private set; } = new();
 		public static PostsList PostsList { get; private set; } = new PostsList();
 		public static BitmapImage DefaultAvatar { get; } = new BitmapImage(new Uri("ms-appx:///Assets/esix2.jpg"));
 

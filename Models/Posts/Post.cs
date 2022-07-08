@@ -56,7 +56,7 @@ namespace E621Downloader.Models.Posts {
 			}
 		}
 
-		public static async Task<Post> GetPostByIDAsync(CancellationToken? token, string id) {
+		public static async Task<Post> GetPostByIDAsync(string id, CancellationToken? token = null) {
 			string url = $"https://{Data.GetHost()}/posts/{id}.json";
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
@@ -69,7 +69,7 @@ namespace E621Downloader.Models.Posts {
 		public static async Task<List<Post>> GetPostsByIDsAsync(CancellationToken? token, IEnumerable<string> ids) {
 			List<Post> posts = new();
 			foreach(string id in ids) {
-				posts.Add(await GetPostByIDAsync(token, id));
+				posts.Add(await GetPostByIDAsync(id, token));
 			}
 			return posts;
 		}

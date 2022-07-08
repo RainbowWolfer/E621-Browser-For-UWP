@@ -13,7 +13,7 @@
 	<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 		<TextBlock x:Uid="UserSignIn" Text="SIGN IN" FontSize="64" HorizontalAlignment="Center"/>
 		<TextBlock x:Uid="UserUsername" Text="Username" Margin="0,10,0,5" FontSize="20"/>
-		<TextBox x:Name="UsernameBox" Width="400" Height="35" TextChanged="UsernameBox_TextChanged" Padding="10,6,6,6"/>
+		<TextBox x:Name="UsernameBox" Width="400" Height="35" TextChanged="UsernameBox_TextChanged" Padding="10,6,6,6" Loaded="UsernameBox_Loaded"/>
 		<TextBlock x:Uid="UserAPIKey" Text="API Key" Margin="0,10,0,5" FontSize="20"/>
 		<StackPanel Orientation="Horizontal">
 			<TextBox x:Name="APIBox" Width="365" Height="35" CornerRadius="4,0,0,4" TextChanged="APIBox_TextChanged" Padding="10,6,6,6"/>

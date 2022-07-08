@@ -21,6 +21,8 @@ namespace E621Downloader.Models {
 				return item;
 			}
 		}
+
+
 		public static LoadPoolItem GetLoader(string postID) {
 			if(Pool.TryGetValue(postID, out LoadPoolItem value)) {
 				return value;

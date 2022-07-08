@@ -7,7 +7,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:controls="using:Microsoft.UI.Xaml.Controls" 
 	xmlns:views="using:E621Downloader.Views" 
-	xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
+	xmlns:ui="using:Microsoft.Toolkit.Uwp.UI" xmlns:picturesection="using:E621Downloader.Views.PictureSection"
 	d:RequestedTheme="Dark"
 	mc:Ignorable="d"
 	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -40,6 +40,18 @@
 		</Storyboard>
 		<Storyboard x:Name="HeaderDisplayStoryboard">
 			<DoubleAnimation x:Name="HeaderDisplayAnimatoin" EnableDependentAnimation="True" Storyboard.TargetName="HeaderPanel" Storyboard.TargetProperty="Height">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="20" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+		</Storyboard>
+		<Storyboard x:Name="PhotosListStoryboard">
+			<DoubleAnimation x:Name="MediaControlsTransformAnimation" EnableDependentAnimation="True" Storyboard.TargetName="MediaControlsTransform" Storyboard.TargetProperty="Y">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="20" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+			<DoubleAnimation x:Name="PhotosListManagerAnimation" EnableDependentAnimation="True" Storyboard.TargetName="PhotosListManagerTransform" Storyboard.TargetProperty="Y">
 				<DoubleAnimation.EasingFunction>
 					<ExponentialEase Exponent="20" EasingMode="EaseOut"/>
 				</DoubleAnimation.EasingFunction>
@@ -375,10 +387,32 @@
 					</Grid>
 				</SplitView.Pane>
 				<SplitView.Content>
-					<Grid>
+					<Grid x:Name="ContentGrid" PointerPressed="ContentGrid_PointerPressed">
 						<TextBlock x:Uid="Type SWF not supported Text" x:Name="HintText" Text="Type SWF not supported" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Visibility="Collapsed"/>
 						<Image x:Name="PreviewImage" Stretch="Uniform" Margin="0,15,0,0"/>
-						<MediaPlayerElement x:Name="MyMediaPlayer" AutoPlay="False" AreTransportControlsEnabled="True" Margin="0,0,0,0"/>
+						<MediaPlayerElement x:Name="MyMediaPlayer" AutoPlay="False" AreTransportControlsEnabled="True" Margin="0,0,0,0">
+							<MediaPlayerElement.TransportControls>
+								<MediaTransportControls x:Name="MediaControls" IsCompact="False"
+                                    Margin="0,0,0,10"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Bottom"
+                                    IsSeekBarVisible="True"
+									IsPlaybackRateButtonVisible="True"
+									IsPlaybackRateEnabled="True"
+									IsFastForwardEnabled="True"
+									IsFastRewindEnabled="True"
+									IsFastForwardButtonVisible="True"
+									IsFastRewindButtonVisible="True"
+									IsFullWindowEnabled="False"
+									IsFullWindowButtonVisible="False"
+									IsCompactOverlayButtonVisible="True"
+									IsCompactOverlayEnabled="True">
+									<MediaTransportControls.RenderTransform>
+										<TranslateTransform x:Name="MediaControlsTransform" Y="0"/>
+									</MediaTransportControls.RenderTransform>
+								</MediaTransportControls>
+							</MediaPlayerElement.TransportControls>
+						</MediaPlayerElement>
 						<ScrollViewer x:Name="MyScrollViewer" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
 							<Image x:Name="MainImage" DoubleTapped="MainImage_DoubleTapped" PointerWheelChanged="MainImage_PointerWheelChanged" RenderTransformOrigin="0,0" ManipulationMode="TranslateX,TranslateY,Scale" ManipulationDelta="MainImage_ManipulationDelta" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" ImageOpened="MainImage_ImageOpened" ImageFailed="MainImage_ImageFailed">
 								<Image.RenderTransform>
@@ -387,8 +421,19 @@
 							</Image>
 						</ScrollViewer>
 						<controls:ProgressBar x:Name="LoadingBar" VerticalAlignment="Top" IsIndeterminate="True" Margin="10,5,20,5"/>
+						<picturesection:PhotosListManager x:Name="PhotosListManager" Margin="0,0,0,10">
+							<picturesection:PhotosListManager.RenderTransform>
+								<TranslateTransform x:Name="PhotosListManagerTransform" Y="100"/>
+							</picturesection:PhotosListManager.RenderTransform>
+						</picturesection:PhotosListManager>
 						<!--<controls:ProgressRing x:Name="MyProgressRing" Height="150" Width="150" Margin="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>-->
 						<Button x:Name="LeftButton" Height="100" Opacity="0.2" PointerEntered="LeftButton_PointerEntered" PointerExited="LeftButton_PointerExited" Tapped="LeftButton_Tapped">
+							<Button.Resources>
+								<ResourceDictionary>
+									<!--<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#332c2c2c"/>-->
+									<!--<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#332c2c2c"/>-->
+								</ResourceDictionary>
+							</Button.Resources>
 							<Button.Background>
 								<SolidColorBrush Color="Gray" Opacity="0.4"/>
 							</Button.Background>

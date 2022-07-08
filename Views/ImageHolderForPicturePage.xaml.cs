@@ -41,7 +41,7 @@ namespace E621Downloader.Views {
 				return;
 			}
 			progress.Value = 0;
-			Target = await Post.GetPostByIDAsync(cts.Token, post_id);
+			Target = await Post.GetPostByIDAsync(post_id, cts.Token);
 			TypeHint.PostRef = Target;
 			BottomInfo.PostRef = Target;
 			if(Target == null) {
@@ -122,7 +122,7 @@ namespace E621Downloader.Views {
 				} else {
 					siblings.Add(Origin);
 					foreach(string item in Origin.relationships.children) {
-						Post p = await Post.GetPostByIDAsync(cts.Token, item);
+						Post p = await Post.GetPostByIDAsync(item, cts.Token);
 						if(CheckPostAvailable(p)) {
 							siblings.Add(p);
 						}

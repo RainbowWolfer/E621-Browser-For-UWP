@@ -5,6 +5,7 @@ using E621Downloader.Models.Networks;
 using E621Downloader.Views;
 using Microsoft.UI.Xaml.Controls;
 using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -92,5 +93,10 @@ namespace E621Downloader.Pages {
 		}
 
 		void IPage.FocusMode(bool enabled) { }
+
+		private async void UsernameBox_Loaded(object sender, RoutedEventArgs e) {
+			await Task.Delay(100);
+			UsernameBox.Focus(FocusState.Programmatic);
+		}
 	}
 }

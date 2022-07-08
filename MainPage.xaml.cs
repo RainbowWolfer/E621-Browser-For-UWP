@@ -267,8 +267,8 @@ namespace E621Downloader {
 			UserStartChanging?.Invoke();
 			E621User.Current = await E621User.GetAsync(username);
 			UserChangedInfoComplete?.Invoke();
-			var post = await E621User.GetAvatarPostAsync(E621User.Current);
-			var url = post.preview.url ?? post.sample.url;
+			Post post = await E621User.GetAvatarPostAsync(E621User.Current);
+			string url = post.preview.url ?? post.sample.url;
 			if(string.IsNullOrWhiteSpace(url)) {
 				UserChangedAvatarComplete?.Invoke(UserPicture.ProfilePicture as BitmapImage);
 				return;

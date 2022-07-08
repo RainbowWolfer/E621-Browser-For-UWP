@@ -225,5 +225,23 @@ namespace E621Downloader.Models {
 				}.ShowAsync();
 			}
 		}
+
+		public static bool IsInRange(this double number, double min, double max) {
+			return min <= number && number <= max;
+		}
+
+		public static bool CompareItemsEqual(this IEnumerable<object> a, IEnumerable<object> b) {
+			if(a.Count() != b.Count()) {
+				return false;
+			}
+			var la = a.ToArray();
+			var lb = b.ToArray();
+			for(int i = 0; i < la.Length; i++) {
+				if(la[i]!=lb[i]){
+					return false;
+				}
+			}
+			return true;
+		}
 	}
 }

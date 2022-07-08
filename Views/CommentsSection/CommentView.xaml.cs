@@ -78,36 +78,51 @@ namespace E621Downloader.Views.CommentsSection {
 				return;
 			}
 			string url = "";
+			Post post = null;
+			bool previewOrSample = false;
 			if(User != null && Cts != null) {
 				try {
-					var post = await E621User.GetAvatarPostAsync(User, Cts.Token);
-					url = post.preview.url ?? post.sample.url;
+					post = await E621User.GetAvatarPostAsync(User, Cts.Token);
+					if(post != null) {
+						if(string.IsNullOrWhiteSpace(post.preview.url)) {
+							url = post.sample.url;
+							previewOrSample = false;
+						} else {
+							url = post.preview.url;
+							previewOrSample = true;
+						}
+					}
 				} catch {
 					return;
 				}
 			}
-			BitmapImage bi;
-			if(!string.IsNullOrEmpty(url)) {
+			BitmapImage bit;
+			if(!string.IsNullOrEmpty(url) && post != null) {
 				try {
 					HttpResult<InMemoryRandomAccessStream> result = await Data.ReadImageStreamAsync(url, Cts.Token);
 					if(result.Result == HttpResultType.Success) {
-						bi = new BitmapImage();
-						await bi.SetSourceAsync(result.Content);
+						bit = new BitmapImage();
+						await bit.SetSourceAsync(result.Content);
+						if(previewOrSample) {
+							LoadPool.SetNew(post).Preview = bit;
+						} else {
+							LoadPool.SetNew(post).Sample = bit;
+						}
 						ToolTipService.SetToolTip(Avatar, "Post".Language() + $": {User.avatar_id}");
 						Avatar.Tapped += Avatar_Tapped;
 					} else {
-						bi = App.DefaultAvatar;
+						bit = App.DefaultAvatar;
 						ToolTipService.SetToolTip(Avatar, "Avatar Load Fail".Language() + $"\n{result.Helper}");
 					}
 				} catch {
 					return;
 				}
 			} else {
-				bi = App.DefaultAvatar;
+				bit = App.DefaultAvatar;
 				ToolTipService.SetToolTip(Avatar, "No Avatar".Language());
 			}
 			AvatorLoadingRing.IsActive = false;
-			Avatar.Source = bi;
+			Avatar.Source = bit;
 		}
 
 		public void EnableLoadingRing() {
@@ -119,7 +134,7 @@ namespace E621Downloader.Views.CommentsSection {
 				return;
 			}
 			MainPage.CreateInstantDialog("Please Wait".Language() + "...", "Loading Post".Language() + $": {User.avatar_id}");
-			Post post = await Post.GetPostByIDAsync(Cts.Token, User.avatar_id);
+			Post post = await Post.GetPostByIDAsync(User.avatar_id, Cts.Token);
 			MainPage.HideInstantDialog();
 			MainPage.NavigateToPicturePage(post, Array.Empty<string>());
 		}

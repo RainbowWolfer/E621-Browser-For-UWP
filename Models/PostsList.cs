@@ -2,14 +2,15 @@
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using E621Downloader.Views.LibrarySection;
+using E621Downloader.Views.PictureSection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace E621Downloader.Models {
 	public class PostsList {
-		private readonly List<object> items;//post,filepath
-		public object Current { private get; set; }
+		private readonly List<object> items;//post, file path
+		public object Current { get; set; }
 		public int Count => items.Count;
 
 		public int GetCurrentIndex() => items.IndexOf(Current);
@@ -68,6 +69,17 @@ namespace E621Downloader.Models {
 
 		public PostsList() {
 			items = new List<object>();
+		}
+
+
+		public List<object> GetPhotosList() {
+			List<object> result = new();
+			foreach(var item in items) {
+				if(PhotosListItem.CheckTypeValid(item)) {
+					result.Add(item);
+				}
+			}
+			return result;
 		}
 	}
 

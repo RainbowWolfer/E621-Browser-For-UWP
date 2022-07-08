@@ -80,6 +80,24 @@ namespace E621Downloader.Pages {
 				}
 			}
 		}
+		private bool showListGrid;
+		public bool ShowListGrid {
+			get => showListGrid;
+			private set {
+				showListGrid = value;
+				MediaControlsTransformAnimation.From = MediaControlsTransform.Y;
+				PhotosListManagerAnimation.From = PhotosListManagerTransform.Y;
+				if(value) {
+					MediaControlsTransformAnimation.To = -90;
+					PhotosListManagerAnimation.To = 0;
+				} else {
+					MediaControlsTransformAnimation.To = 0;
+					PhotosListManagerAnimation.To = 100;
+				}
+				PhotosListStoryboard.Begin();
+			}
+		}
+
 		private LoadPoolItem Loader { get; set; }
 
 		private static Dictionary<string, VoteType> Voted { get; } = new();
@@ -138,7 +156,7 @@ namespace E621Downloader.Pages {
 							this.PostRef = mix.PostRef;
 						} else {
 							cts = new CancellationTokenSource();
-							this.PostRef = await Post.GetPostByIDAsync(cts.Token, mix.ID);
+							this.PostRef = await Post.GetPostByIDAsync(mix.ID, cts.Token);
 							mix.PostRef = this.PostRef;
 						}
 						UpdateDownloadButton(false);
@@ -186,7 +204,7 @@ namespace E621Downloader.Pages {
 				} else {
 					cts = new CancellationTokenSource();
 					SetIsLoadingPost(true);
-					this.PostRef = await Post.GetPostByIDAsync(cts.Token, postID);
+					this.PostRef = await Post.GetPostByIDAsync(postID, cts.Token);
 					SetIsLoadingPost(false);
 					if(this.PostRef == null) {
 						return;
@@ -225,6 +243,7 @@ namespace E621Downloader.Pages {
 			UpdateOthers();
 			UpdateSetAs();
 			UpdateOpenInPhotos();
+			UpdatePhotosListManager();
 			ResetImage();
 			if(this.PostRef != null && p != null) {
 				if(MainSplitView.DisplayMode == SplitViewDisplayMode.Overlay) {
@@ -672,6 +691,11 @@ namespace E621Downloader.Pages {
 			bool children = PostRef.relationships.children != null && PostRef.relationships.children.Count > 0;
 			ChildrenHintText.Visibility = !children ? Visibility.Visible : Visibility.Collapsed;
 			ChildrenGridView.Visibility = children ? Visibility.Visible : Visibility.Collapsed;
+		}
+
+		private void UpdatePhotosListManager() {
+			PhotosListManager.SetPhotos(App.PostsList.GetPhotosList(), App.PostsList.Current);
+			//ShowListGrid = false;
 		}
 
 		private void UpdateSetAs() {
@@ -1537,6 +1561,10 @@ namespace E621Downloader.Pages {
 
 		private void MainImage_ImageFailed(object sender, ExceptionRoutedEventArgs e) {
 			Progress = 0;
+		}
+
+		private void ContentGrid_PointerPressed(object sender, PointerRoutedEventArgs e) {
+			ShowListGrid = !ShowListGrid;
 		}
 	}
 

@@ -1,0 +1,29 @@
+﻿<UserControl
+    x:Class="E621Downloader.Views.PictureSection.PhotosListItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Views.PictureSection"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:views="using:E621Downloader.Views"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+	mc:Ignorable="d"
+    d:DesignHeight="70"
+    d:DesignWidth="70">
+
+	<UserControl.Resources>
+		<Storyboard x:Name="SelectedStoryboard">
+			<ColorAnimation x:Name="ColorAnimation" Storyboard.TargetName="MainGrid" Storyboard.TargetProperty="(Grid.BorderBrush).(SolidColorBrush.Color)">
+				<ColorAnimation.EasingFunction>
+					<ExponentialEase Exponent="10" EasingMode="EaseOut"/>
+				</ColorAnimation.EasingFunction>
+			</ColorAnimation>
+		</Storyboard>
+	</UserControl.Resources>
+
+	<Grid x:Name="MainGrid" BorderBrush="Beige" BorderThickness="2" CornerRadius="10" Height="70" Width="70">
+		<controls:ProgressRing x:Name="LoadingRing"/>
+		<Image x:Name="MainImage" d:Source="/Assets/esix2.jpg" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+	</Grid>
+</UserControl>
+
