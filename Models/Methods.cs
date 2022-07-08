@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
+using Windows.Storage;
 using Windows.System;
 using Windows.UI;
 using Windows.UI.Core;
@@ -209,6 +210,19 @@ namespace E621Downloader.Models {
 						actions?.OnSampleProgress?.Invoke(previewLoaded ? null : e.Progress);
 					};
 				}
+			}
+		}
+
+		public static async Task LaunchFile(StorageFile file) {
+			try {
+				await Launcher.LaunchFileAsync(file);
+			} catch(Exception ex) {
+				await new ContentDialog() {
+					Title = "Error".Language(),
+					Content = $"{"An error occurred while opening this file".Language()}\n {"File".Language()}:{file.Path}\n{ex.Message}",
+					CloseButtonText = "Back".Language(),
+					DefaultButton = ContentDialogButton.Close,
+				}.ShowAsync();
 			}
 		}
 	}

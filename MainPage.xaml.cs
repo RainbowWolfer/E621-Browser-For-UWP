@@ -139,19 +139,20 @@ namespace E621Downloader {
 				}
 			}));
 
-			//SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += async (sender, args) => {
-			//	args.Handled = true;
-			//	var result = await new ContentDialog() {
-			//		PrimaryButtonText = "Yes",
-			//		CloseButtonText = "No",
-			//		DefaultButton = ContentDialogButton.Close,
-			//	}.ShowAsync();
-			//	if(result == ContentDialogResult.Primary) {
-			//		// Save work;
-			//	} else {
-			//		Application.Current.Exit();
-			//	}
-			//};
+			SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += async (sender, args) => {
+				if(DownloadsManager.HasDownloading()) {
+					args.Handled = true;
+					if(await new ContentDialog() {
+						Title = "Confirm".Language(),
+						Content = "You have unfinished downloads".Language(),
+						PrimaryButtonText = "Quit".Language(),
+						CloseButtonText = "Back".Language(),
+						DefaultButton = ContentDialogButton.Close,
+					}.ShowAsync() == ContentDialogResult.Primary) {
+						Application.Current.Exit();
+					}
+				}
+			};
 
 			Loop();
 		}
@@ -266,7 +267,8 @@ namespace E621Downloader {
 			UserStartChanging?.Invoke();
 			E621User.Current = await E621User.GetAsync(username);
 			UserChangedInfoComplete?.Invoke();
-			string url = await E621User.GetAvatarURLAsync(E621User.Current);
+			var post = await E621User.GetAvatarPostAsync(E621User.Current);
+			var url = post.preview.url ?? post.sample.url;
 			if(string.IsNullOrWhiteSpace(url)) {
 				UserChangedAvatarComplete?.Invoke(UserPicture.ProfilePicture as BitmapImage);
 				return;

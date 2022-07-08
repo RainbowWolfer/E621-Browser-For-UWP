@@ -80,7 +80,8 @@ namespace E621Downloader.Views.CommentsSection {
 			string url = "";
 			if(User != null && Cts != null) {
 				try {
-					url = await E621User.GetAvatarURLAsync(User, Cts.Token);
+					var post = await E621User.GetAvatarPostAsync(User, Cts.Token);
+					url = post.preview.url ?? post.sample.url;
 				} catch {
 					return;
 				}

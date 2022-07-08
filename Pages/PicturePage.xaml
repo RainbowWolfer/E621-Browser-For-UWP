@@ -201,6 +201,11 @@
 									</MenuFlyoutItem.Icon>
 								</MenuFlyoutItem>
 							</MenuFlyoutSubItem>
+							<MenuFlyoutItem x:Uid="OpenInPhotosText" x:Name="PhotosItem" Text="Open In Photos" Click="PhotosItem_Click">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE155;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
 							<MenuFlyoutItem x:Uid="DebugItemText" x:Name="DebugItem" Text="Debug" Click="DebugItem_Click" Visibility="Collapsed">
 								<MenuFlyoutItem.Icon>
 									<FontIcon Glyph="&#xE8A1;"/>

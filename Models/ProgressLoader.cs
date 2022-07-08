@@ -27,7 +27,7 @@ namespace E621Downloader.Models {
 						bar.Visibility = Visibility.Visible;
 						bar.IsIndeterminate = true;
 					}
-				} else if(this.value != null) {
+				} else if(ring != null) {
 					if(value == null) {
 						ring.Visibility = Visibility.Collapsed;
 					} else if(0 < value && value <= 100) {

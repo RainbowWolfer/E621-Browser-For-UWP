@@ -2354,6 +2354,30 @@ Would you like to get it set?</source>
           <source>Post was Deleted</source>
           <target state="final">推图已删除</target>
         </trans-unit>
+        <trans-unit id="Quit" translate="yes" xml:space="preserve">
+          <source>Quit</source>
+          <target state="final">退出</target>
+        </trans-unit>
+        <trans-unit id="You have unfinished downloads" translate="yes" xml:space="preserve">
+          <source>You have unfinished downloads. Are you sure to quit?</source>
+          <target state="final">你有未完成的下载任务，确定要退出码？</target>
+        </trans-unit>
+        <trans-unit id="An error occurred while opening this file" translate="yes" xml:space="preserve">
+          <source>An error occurred while opening this file.</source>
+          <target state="final">打开文件时发生了一个错误。</target>
+        </trans-unit>
+        <trans-unit id="An error occurred while finding this file" translate="yes" xml:space="preserve">
+          <source>An error occurred while finding this file.</source>
+          <target state="final">寻找文件时发生了一个错误。</target>
+        </trans-unit>
+        <trans-unit id="File Path" translate="yes" xml:space="preserve">
+          <source>File Path</source>
+          <target state="final">文件路径</target>
+        </trans-unit>
+        <trans-unit id="KnownIssueL2" translate="yes" xml:space="preserve">
+          <source>- After exiting fullscreen of the media player in Picture Page, any navigation will exit any further fullscreen forcedly.</source>
+          <target state="final">- 在图片页面中退出媒体播放器的全屏后，任何导航都会强制退出任何进一步的全屏。</target>
+        </trans-unit>
       </group>
     </body>
   </file>

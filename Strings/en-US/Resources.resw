@@ -1866,4 +1866,22 @@
 	<data name="V1160L1.Text" xml:space="preserve">
     <value>- Small fixes</value>
   </data>
+	<data name="Quit" xml:space="preserve">
+    <value>Quit</value>
+  </data>
+	<data name="You have unfinished downloads" xml:space="preserve">
+    <value>You have unfinished downloads. Are you sure to quit?</value>
+  </data>
+	<data name="An error occurred while opening this file" xml:space="preserve">
+    <value>An error occurred while opening this file.</value>
+  </data>
+	<data name="An error occurred while finding this file" xml:space="preserve">
+    <value>An error occurred while finding this file.</value>
+  </data>
+	<data name="File Path" xml:space="preserve">
+    <value>File Path</value>
+  </data>
+	<data name="KnownIssueL2" xml:space="preserve">
+    <value>- After exiting fullscreen of the media player in Picture Page, any navigation will exit any further fullscreen forcedly.</value>
+  </data>
 </root>

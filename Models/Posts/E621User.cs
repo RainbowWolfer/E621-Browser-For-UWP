@@ -20,19 +20,19 @@ namespace E621Downloader.Models.Posts {
 			return await GetAsync($"{id}", token);
 		}
 
-		public static async Task<string> GetAvatarURLAsync(E621User user, CancellationToken? token = null) {
+		public static async Task<Post> GetAvatarPostAsync(E621User user, CancellationToken? token = null) {
 			if(user == null) {
-				return "";
+				return null;
 			}
 			string url = $"https://{Data.GetHost()}/posts/{user.avatar_id}.json";
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
 				Post post = JsonConvert.DeserializeObject<PostRoot>(result.Content).post;
-				return post.preview.url ?? post.sample.url;
+				return post;
 			} else if(result.Result == HttpResultType.Canceled) {
-				return "";
+				return null;
 			} else if(result.Result == HttpResultType.Error) {
-				return "";
+				return null;
 			} else {
 				throw new HttpResultTypeNotFoundException();
 			}

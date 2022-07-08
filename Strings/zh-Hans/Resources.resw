@@ -1768,4 +1768,22 @@
   <data name="Post was Deleted" xml:space="preserve">
     <value>推图已删除</value>
   </data>
+  <data name="Quit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="You have unfinished downloads" xml:space="preserve">
+    <value>你有未完成的下载任务，确定要退出码？</value>
+  </data>
+  <data name="An error occurred while opening this file" xml:space="preserve">
+    <value>打开文件时发生了一个错误。</value>
+  </data>
+  <data name="An error occurred while finding this file" xml:space="preserve">
+    <value>寻找文件时发生了一个错误。</value>
+  </data>
+  <data name="File Path" xml:space="preserve">
+    <value>文件路径</value>
+  </data>
+  <data name="KnownIssueL2" xml:space="preserve">
+    <value>- 在图片页面中退出媒体播放器的全屏后，任何导航都会强制退出任何进一步的全屏。</value>
+  </data>
 </root>

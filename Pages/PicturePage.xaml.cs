@@ -38,6 +38,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using static System.Net.WebRequestMethods;
 
 namespace E621Downloader.Pages {
 	public sealed partial class PicturePage: Page, IPage {
@@ -101,6 +102,7 @@ namespace E621Downloader.Pages {
 		protected override async void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			this.FocusModeUpdate();
+			MyMediaPlayer.IsFullWindow = false;
 			object p = e.Parameter;
 			MainPage.ClearPicturePageParameter();
 			MyMediaPlayer.AutoPlay = EnableAutoPlay;
@@ -222,6 +224,7 @@ namespace E621Downloader.Pages {
 			UpdateDescriptionSection();
 			UpdateOthers();
 			UpdateSetAs();
+			UpdateOpenInPhotos();
 			ResetImage();
 			if(this.PostRef != null && p != null) {
 				if(MainSplitView.DisplayMode == SplitViewDisplayMode.Overlay) {
@@ -299,7 +302,7 @@ namespace E621Downloader.Pages {
 					PreviewImage.Source = null;
 					MyMediaPlayer.Visibility = Visibility.Collapsed;
 					MyScrollViewer.Visibility = Visibility.Visible;
-					if(Loader.ImageFile != null) {
+					if(Loader.ImageFile != null && Loader.ImageFile.UriSource != null) {
 						MainImage.Source = Loader.ImageFile;
 						PreviewImage.Visibility = Visibility.Collapsed;
 					} else {
@@ -678,6 +681,13 @@ namespace E621Downloader.Pages {
 			SetAsItem.IsEnabled = IsAbleToSetAs(PostRef);
 		}
 
+		private void UpdateOpenInPhotos() {
+			if(PostRef == null) {
+				return;
+			}
+			PhotosItem.Visibility = PostType == PathType.Local ? Visibility.Visible : Visibility.Collapsed;
+		}
+
 		public static bool IsAbleToSetAs(Post post) {
 			FileType type = GetFileType(post);
 			return type == FileType.Png || type == FileType.Jpg || type == FileType.Gif;
@@ -981,6 +991,7 @@ namespace E621Downloader.Pages {
 			if(isLoadingPost || cts_SetAs != null || (MainPage.Instance?.IsInSearchPopup ?? false)) {
 				return;
 			}
+			MyMediaPlayer.IsFullWindow = false;
 			MainPage.NavigateToPicturePage(App.PostsList.GoLeft());
 		}
 
@@ -988,6 +999,7 @@ namespace E621Downloader.Pages {
 			if(isLoadingPost || cts_SetAs != null || (MainPage.Instance?.IsInSearchPopup ?? false)) {
 				return;
 			}
+			MyMediaPlayer.IsFullWindow = false;
 			MainPage.NavigateToPicturePage(App.PostsList.GoRight());
 		}
 
@@ -1412,6 +1424,25 @@ namespace E621Downloader.Pages {
 				Rating.explict => (isDark ? "#FF0000" : "#C92A2D").ToColor(),
 				_ => (isDark ? "#FFF" : "#000").ToColor(),
 			};
+		}
+
+		private async void PhotosItem_Click(object sender, RoutedEventArgs e) {
+			if(PostType != PathType.Local || string.IsNullOrWhiteSpace(path)) {
+				return;
+			}
+
+			try {
+				StorageFile file = await StorageFile.GetFileFromPathAsync(path);
+				await Methods.LaunchFile(file);
+			} catch(Exception ex) {
+				await new ContentDialog() {
+					Title = "Error".Language(),
+					Content = $"{"An error occurred while finding this file".Language()}\n {"File Path".Language()}:{path}\n{ex.Message}",
+					CloseButtonText = "Back".Language(),
+					DefaultButton = ContentDialogButton.Close,
+				}.ShowAsync();
+				Debug.WriteLine(ex.Message);
+			}
 		}
 
 		private async void DownloadKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {

@@ -250,6 +250,7 @@
 								<controls:Expander.Content>
 									<StackPanel>
 										<TextBlock x:Uid="KnownIssueL1" Text="- The listviews of UWP display differently in Win11 and Win10, so the app in Win10 will experience row width not matching its parent" FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="KnownIssueL2" Text="- After exiting fullscreen of the media player in Picture Page, any navigation will exit any further fullscreen forcedly." FontSize="22" TextWrapping="WrapWholeWords"/>
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>
