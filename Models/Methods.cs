@@ -237,11 +237,15 @@ namespace E621Downloader.Models {
 			var la = a.ToArray();
 			var lb = b.ToArray();
 			for(int i = 0; i < la.Length; i++) {
-				if(la[i]!=lb[i]){
+				if(la[i] != lb[i]) {
 					return false;
 				}
 			}
 			return true;
+		}
+
+		public static T GetRandomItem<T>(this IEnumerable<T> values) {
+			return values.ElementAtOrDefault(new Random().Next(0, values.Count()));
 		}
 	}
 }

@@ -218,6 +218,11 @@
 									<FontIcon Glyph="&#xE155;"/>
 								</MenuFlyoutItem.Icon>
 							</MenuFlyoutItem>
+							<MenuFlyoutItem x:Uid="SlideShowText" x:Name="SlideshowItem" Text="Slideshow" Click="SlideshowItem_Click">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE173;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
 							<MenuFlyoutItem x:Uid="DebugItemText" x:Name="DebugItem" Text="Debug" Click="DebugItem_Click" Visibility="Collapsed">
 								<MenuFlyoutItem.Icon>
 									<FontIcon Glyph="&#xE8A1;"/>

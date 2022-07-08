@@ -45,7 +45,7 @@ namespace E621Downloader {
 		private const string SETTING_ITEM_TAG = "Settings";
 		public ScreenMode ScreenMode {
 			get => screenMode;
-			private set {
+			set {
 				screenMode = value;
 				ApplicationView view = ApplicationView.GetForCurrentView();
 				switch(screenMode) {

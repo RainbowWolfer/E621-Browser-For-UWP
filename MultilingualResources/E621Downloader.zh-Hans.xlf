@@ -2378,6 +2378,14 @@ Would you like to get it set?</source>
           <source>- After exiting fullscreen of the media player in Picture Page, any navigation will exit any further fullscreen forcedly.</source>
           <target state="final">- 在图片页面中退出媒体播放器的全屏后，任何导航都会强制退出任何进一步的全屏。</target>
         </trans-unit>
+        <trans-unit id="OpenInPhotosText.Text" translate="yes" xml:space="preserve">
+          <source>Open In Photos</source>
+          <target state="new">Open In Photos</target>
+        </trans-unit>
+        <trans-unit id="SlideShowText.Text" translate="yes" xml:space="preserve">
+          <source>Slideshow</source>
+          <target state="new">Slideshow</target>
+        </trans-unit>
       </group>
     </body>
   </file>

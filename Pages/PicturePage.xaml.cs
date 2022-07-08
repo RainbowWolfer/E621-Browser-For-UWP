@@ -100,6 +100,8 @@ namespace E621Downloader.Pages {
 
 		private LoadPoolItem Loader { get; set; }
 
+		private bool IsInSlideshow { get; set; } = false;
+
 		private static Dictionary<string, VoteType> Voted { get; } = new();
 
 		private bool isLoadingPost = false;
@@ -578,7 +580,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void CancelLoadAvatars() {
-			foreach(CommentView item in CommentsListView.Items) {
+			foreach(CommentView item in CommentsListView.Items.Cast<CommentView>()) {
 				try {
 					item.Cts?.Cancel();
 					item.Cts?.Dispose();
@@ -589,10 +591,10 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void LoadAllAvatars() {
-			foreach(CommentView item in CommentsListView.Items) {
+			foreach(CommentView item in CommentsListView.Items.Cast<CommentView>()) {
 				item.EnableLoadingRing();
 			}
-			foreach(CommentView item in CommentsListView.Items) {
+			foreach(CommentView item in CommentsListView.Items.Cast<CommentView>()) {
 				await item.LoadAvatar();
 			}
 		}
@@ -803,8 +805,8 @@ namespace E621Downloader.Pages {
 				newTransY = 0;
 			}
 			if(newScaleX > 10 || newScaleY > 10) {
-				newScaleX = 10;
-				newScaleY = 10;
+				//newScaleX = 10;
+				//newScaleY = 10;
 				return;
 			}
 			ImageTransform.ScaleX = newScaleX;
@@ -1566,6 +1568,30 @@ namespace E621Downloader.Pages {
 		private void ContentGrid_PointerPressed(object sender, PointerRoutedEventArgs e) {
 			ShowListGrid = !ShowListGrid;
 		}
+
+		private async void SlideshowItem_Click(object sender, RoutedEventArgs e) {
+			if(await new ContentDialog() {
+				Title = "Start Slideshow",
+				Content = "",
+				PrimaryButtonText = "Start",
+				CloseButtonText = "Back",
+			}.ShowAsync() == ContentDialogResult.Primary) {
+				MainPage.Instance.ScreenMode = ScreenMode.Focus;
+
+			}
+		}
+
+		public async void StartSlideshow(SlideshowConfiguration configuration) {
+			IsInSlideshow = true;
+			while(IsInSlideshow) {
+				await Task.Delay((int)(configuration.SecondsGap * 1000));
+				if(configuration.IsRandom) {
+					MainPage.NavigateToPicturePage(App.PostsList.GetItems().GetRandomItem());
+				} else {
+					GoRight();
+				}
+			}
+		}
 	}
 
 	public class GroupTagListWithColor: ObservableCollection<GroupTag> {
@@ -1656,6 +1682,15 @@ namespace E621Downloader.Pages {
 			ImageFile = storageFile;
 			MetaFile = metaFile;
 		}
+
+	}
+
+	public class SlideshowConfiguration {
+		public double SecondsGap { get; set; }
+		public bool WaitForVideoEnds { get; set; }
+		public int GifLoopTimes { get; set; }
+		public bool WaitForLoading { get; set; }
+		public bool IsRandom { get; set; }
 
 	}
 }

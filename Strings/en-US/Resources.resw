@@ -1884,4 +1884,10 @@
 	<data name="KnownIssueL2" xml:space="preserve">
     <value>- After exiting fullscreen of the media player in Picture Page, any navigation will exit any further fullscreen forcedly.</value>
   </data>
+	<data name="OpenInPhotosText.Text" xml:space="preserve">
+    <value>Open In Photos</value>
+  </data>
+	<data name="SlideShowText.Text" xml:space="preserve">
+    <value>Slideshow</value>
+  </data>
 </root>
