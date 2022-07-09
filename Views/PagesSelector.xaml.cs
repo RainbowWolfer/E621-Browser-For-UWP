@@ -39,6 +39,9 @@ namespace E621Downloader.Views {
 			}
 		}
 
+		public bool SkipBlacklist => SkipBlacklistBox.IsChecked == true;
+		public bool TodayDate => TodayDateBox.IsChecked == true;
+
 		private int Gap => Maximum - Minimum + 2;
 
 		public PagesSelector() {

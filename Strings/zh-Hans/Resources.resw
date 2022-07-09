@@ -171,9 +171,6 @@
   <data name="Download Selection" xml:space="preserve">
     <value>下载区块</value>
   </data>
-  <data name="Do you want to download the selected" xml:space="preserve">
-    <value>是否要下载选定的推图</value>
-  </data>
   <data name="Yes" xml:space="preserve">
     <value>是</value>
   </data>
@@ -1851,5 +1848,14 @@
   </data>
   <data name="IgnoreText.Text" xml:space="preserve">
     <value>忽略</value>
+  </data>
+  <data name="Do you want to download the selected.Text" xml:space="preserve">
+    <value>是否要下载选定的推图？</value>
+  </data>
+  <data name="TodayDateContent.Content" xml:space="preserve">
+    <value>添加今日日期到下载文件夹名称中</value>
+  </data>
+  <data name="SkipBlacklistContent.Content" xml:space="preserve">
+    <value>跳过黑名单</value>
   </data>
 </root>

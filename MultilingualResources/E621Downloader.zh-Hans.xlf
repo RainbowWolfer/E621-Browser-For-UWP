@@ -218,10 +218,6 @@
           <source>Download Selection</source>
           <target state="final">下载区块</target>
         </trans-unit>
-        <trans-unit id="Do you want to download the selected" translate="yes" xml:space="preserve">
-          <source>Do you want to download the selected</source>
-          <target state="final">是否要下载选定的推图</target>
-        </trans-unit>
         <trans-unit id="Yes" translate="yes" xml:space="preserve">
           <source>Yes</source>
           <target state="final">是</target>
@@ -2465,6 +2461,19 @@ Would you like to get it set?</source>
         <trans-unit id="IgnoreText.Text" translate="yes" xml:space="preserve">
           <source>Ignore</source>
           <target state="final">忽略</target>
+        </trans-unit>
+        <trans-unit id="Do you want to download the selected.Text" translate="yes" xml:space="preserve">
+          <source>Do you want to download the selected</source>
+          <target state="needs-review-translation">是否要下载选定的推图？</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+        </trans-unit>
+        <trans-unit id="TodayDateContent.Content" translate="yes" xml:space="preserve">
+          <source>Add Today's Date to Download Folder's Name</source>
+          <target state="final">添加今日日期到下载文件夹名称中</target>
+        </trans-unit>
+        <trans-unit id="SkipBlacklistContent.Content" translate="yes" xml:space="preserve">
+          <source>Skip Blacklist</source>
+          <target state="final">跳过黑名单</target>
         </trans-unit>
       </group>
     </body>

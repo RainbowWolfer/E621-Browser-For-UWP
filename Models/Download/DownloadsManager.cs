@@ -13,7 +13,7 @@ namespace E621Downloader.Models.Download {
 	public delegate void OnDownloadFinishEventHandler();
 	public static class DownloadsManager {
 		//public static event OnDownloadFinishEventHandler OnDownloadFinish;
-		public const string DEFAULTTITLE = "Default";
+		public const string DEFAULT_TITLE = "Default";
 
 		public static readonly List<DownloadInstance> downloads;
 		public static readonly BackgroundDownloader downloader;
@@ -29,7 +29,9 @@ namespace E621Downloader.Models.Download {
 
 		public static bool HasDownloading() {
 			foreach(DownloadInstance item in downloads) {
-				if(item.Status != BackgroundTransferStatus.Completed) {
+				if(item.Status != BackgroundTransferStatus.Completed &&
+					item.Status != BackgroundTransferStatus.Canceled &&
+					item.Status != BackgroundTransferStatus.Error) {
 					return true;
 				}
 			}
@@ -55,16 +57,19 @@ namespace E621Downloader.Models.Download {
 
 		public static bool CheckDownloadAvailable() => Local.DownloadFolder != null;
 
-		public static async Task<bool?> RegisterDownloads(CancellationToken token, IEnumerable<Post> posts, IEnumerable<string> tags, Action<string> onProgress = null) {
-			return await RegisterDownloads(token, posts, DownloadsGroup.GetGroupTitle(tags), onProgress);
+		public static async Task<bool?> RegisterDownloads(CancellationToken token, IEnumerable<Post> posts, IEnumerable<string> tags, bool todayDate, Action<string> onProgress = null) {
+			return await RegisterDownloads(token, posts, DownloadsGroup.GetGroupTitle(tags), todayDate, onProgress);
 		}
 
-		public static async Task<bool?> RegisterDownloads(CancellationToken token, IEnumerable<Post> posts, string groupTitle, Action<string> onProgress = null) {
+		public static async Task<bool?> RegisterDownloads(CancellationToken token, IEnumerable<Post> posts, string groupTitle, bool todayDate, Action<string> onProgress = null) {
 			if(!CheckDownloadAvailable()) {
 				return false;
 			}
 			if(string.IsNullOrWhiteSpace(groupTitle)) {
-				groupTitle = DEFAULTTITLE;
+				groupTitle = DEFAULT_TITLE;
+			}
+			if(todayDate) {
+				groupTitle = $"{groupTitle} ({Methods.GetTodayDate()})";
 			}
 			onProgress?.Invoke("Handling Downloads".Language() + "\n" + "Getting Folder".Language() + $" - ({groupTitle})");
 			if(token.IsCancellationRequested) {
@@ -82,7 +87,7 @@ namespace E621Downloader.Models.Download {
 				groupTitle = groupTitle.Replace(":", ";");
 				string filename = $"{item.id}.{item.file.ext}";
 				if(string.IsNullOrEmpty(groupTitle)) {
-					groupTitle = DEFAULTTITLE;
+					groupTitle = DEFAULT_TITLE;
 				}
 				onProgress?.Invoke("Handling Downloads".Language() + $"\t{index}/{posts.Count()}\n" + "Creating Download File".Language() + $" - ({filename})");
 				if(token.IsCancellationRequested) {
@@ -99,7 +104,7 @@ namespace E621Downloader.Models.Download {
 			return await RegisterDownload(post, DownloadsGroup.GetGroupTitle(tags));
 		}
 
-		public static async Task<bool> RegisterDownload(Post post, string groupTitle = DEFAULTTITLE) {
+		public static async Task<bool> RegisterDownload(Post post, string groupTitle = DEFAULT_TITLE) {
 			if(string.IsNullOrEmpty(post.file.url)) {
 				return false;
 			}
@@ -109,7 +114,7 @@ namespace E621Downloader.Models.Download {
 			groupTitle = groupTitle.Replace(":", "-");
 			string filename = $"{post.id}.{post.file.ext}";
 			if(string.IsNullOrEmpty(groupTitle)) {
-				groupTitle = DEFAULTTITLE;
+				groupTitle = DEFAULT_TITLE;
 			}
 			StorageFolder folder = await Local.DownloadFolder.CreateFolderAsync(groupTitle, CreationCollisionOption.OpenIfExists);
 			StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.OpenIfExists);
@@ -117,7 +122,7 @@ namespace E621Downloader.Models.Download {
 			return true;
 		}
 
-		private static DownloadInstance RegisterDownload(Post post, Uri uri, StorageFile file, string groupTitle = DEFAULTTITLE) {
+		private static DownloadInstance RegisterDownload(Post post, Uri uri, StorageFile file, string groupTitle = DEFAULT_TITLE) {
 			var instance = new DownloadInstance(post, groupTitle, downloader.CreateDownload(uri, file));
 			DownloadsGroup group = FindGroup(groupTitle);
 			if(group == null) {

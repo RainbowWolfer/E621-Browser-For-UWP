@@ -31,6 +31,8 @@ namespace E621Downloader {
 		//public bool IsWindows11{ get; private set; }
 
 		public App() {
+			AppCenter.Start("{Your App Secret}", typeof(Crashes));
+
 			Instance = this;
 			this.InitializeComponent();
 			this.Suspending += OnSuspending;
@@ -46,9 +48,9 @@ namespace E621Downloader {
 					break;
 			}
 
-			AppCenter.Start("{Your App Secret}", typeof(Crashes));
 			//Crashes.GenerateTestCrash();
 			//IsWindows11 = SystemInformation.Instance.OperatingSystemVersion.Build >= 22000;
+			//SetJumpList();
 		}
 
 		public static void InitializeTheme() {
@@ -177,12 +179,14 @@ namespace E621Downloader {
 
 			jumpList.Items.Clear();
 
-			var item = JumpListItem.CreateWithArguments("Argument", "DisplayName");
-			item.Description = "Description";
-			item.GroupName = "Group Name";
-			item.Logo = new Uri("ms-appx:///Icons/Twitter-icon.png");
+			JumpListItem item_home = JumpListItem.CreateWithArguments("Home", "Home");
+			item_home.GroupName = "Pages";
+			item_home.Logo = new Uri("ms-appx:///Icons/Twitter-icon.png");
+			JumpListItem item_picture = JumpListItem.CreateWithArguments("Picture", "Picture");
+			item_picture.GroupName = "Pages";
 
-			jumpList.Items.Add(item);
+			jumpList.Items.Add(item_home);
+			jumpList.Items.Add(item_picture);
 
 			await jumpList.SaveAsync();
 		}

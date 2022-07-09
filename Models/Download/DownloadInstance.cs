@@ -94,6 +94,7 @@ namespace E621Downloader.Models.Download {
 				if(Cts != null) {
 					Cts.Cancel();
 					Cts.Dispose();
+					Cts = null;
 				}
 			} catch(Exception ex) {
 				Debug.WriteLine("Cancel(): " + ex.Message);

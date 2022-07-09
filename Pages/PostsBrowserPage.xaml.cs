@@ -369,29 +369,36 @@ namespace E621Downloader.Pages {
 			await LoadAsync(selected, true);
 		}
 
-		private async Task UpdateImageHolders(PostsTab tab) {
-			tab.LoadedCount = 0;
-			Paginator.SetLoadCountText(0, tab.Posts.Count);
-
-			List<Post> afterBlackListed = new();
-			tab.BlackTags.Clear();
-			foreach(Post post in tab.Posts) {
+		private List<Post> FilterBlacklist(List<Post> posts, Action<string> onBlacklistTagFound = null) {
+			List<Post> afterBlacklisted = new();
+			foreach(Post post in posts) {
 				bool foundInBlackList = false;
 				foreach(string tag in post.tags.GetAllTags()) {
 					if(Local.Listing.CheckBlackList(tag)) {
 						foundInBlackList = true;
-						if(tab.BlackTags.ContainsKey(tag)) {
-							tab.BlackTags[tag]++;
-						} else {
-							tab.BlackTags.Add(tag, 1);
-						}
+						onBlacklistTagFound?.Invoke(tag);
 						//no break to calculate all tags
 					}
 				}
 				if(!foundInBlackList) {
-					afterBlackListed.Add(post);
+					afterBlacklisted.Add(post);
 				}
 			}
+			return afterBlacklisted;
+		}
+
+		private async Task UpdateImageHolders(PostsTab tab) {
+			tab.LoadedCount = 0;
+			Paginator.SetLoadCountText(0, tab.Posts.Count);
+
+			tab.BlackTags.Clear();
+			List<Post> afterBlackListed = FilterBlacklist(tab.Posts, tag => {
+				if(tab.BlackTags.ContainsKey(tag)) {
+					tab.BlackTags[tag]++;
+				} else {
+					tab.BlackTags.Add(tag, 1);
+				}
+			});
 			tab.BlackTags = tab.BlackTags.OrderByDescending(t => t.Value).ToDictionary(x => x.Key, x => x.Value);
 			tab.PostsAfterBlasklist = afterBlackListed;
 			tab.AllTags.Clear();
@@ -624,9 +631,11 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			if(MultipleSelectionMode) {
+				//TOOD : Add Today's Date to Download Folder (2022-12-22)
+				var selectedDownloadDialog = new SelectedDownloadDialog();
 				if(await new ContentDialog() {
 					Title = "Download Selection".Language(),
-					Content = "Do you want to download the selected".Language(),
+					Content = selectedDownloadDialog,
 					PrimaryButtonText = "Yes".Language(),
 					CloseButtonText = "No".Language(),
 				}.ShowAsync() == ContentDialogResult.Primary) {
@@ -634,7 +643,7 @@ namespace E621Downloader.Pages {
 						CancelDownloads();
 						cts_download = new CancellationTokenSource();
 						CreateDownloadDialog("Please Wait".Language(), "Handling Downloads".Language());
-						bool? result = await DownloadsManager.RegisterDownloads(cts_download.Token, GetSelectedImages().Select(i => i.PostRef), tab.Tags, UpdateContentText);
+						bool? result = await DownloadsManager.RegisterDownloads(cts_download.Token, GetSelectedImages().Select(i => i.PostRef), tab.Tags, selectedDownloadDialog.TodayDate, UpdateContentText);
 						if(result == true) {
 							MainPage.CreateTip_SuccessDownload(this);
 							SelectToggleButton.IsChecked = false;
@@ -661,7 +670,7 @@ namespace E621Downloader.Pages {
 							cts_download = new CancellationTokenSource();
 							CreateDownloadDialog("Please Wait".Language(), "Handling Downloads".Language());
 							await Task.Delay(50);
-							bool? result = await DownloadsManager.RegisterDownloads(cts_download.Token, tab.Posts, tab.Pool.name, UpdateContentText);
+							bool? result = await DownloadsManager.RegisterDownloads(cts_download.Token, tab.Posts, tab.Pool.name, false, UpdateContentText);
 							if(result == true) {
 								downloadResult = true;
 							} else if(result == null) {
@@ -705,7 +714,10 @@ namespace E621Downloader.Pages {
 									all.AddRange(p);
 								}
 							}
-							bool? result = await DownloadsManager.RegisterDownloads(cts_download.Token, all, tab.Tags, UpdateContentText);
+							if(!pagesSelector.SkipBlacklist) {
+								all = FilterBlacklist(all);
+							}
+							bool? result = await DownloadsManager.RegisterDownloads(cts_download.Token, all, tab.Tags, pagesSelector.TodayDate, UpdateContentText);
 							if(result == true) {
 								downloadResult = true;
 							} else if(result == null) {

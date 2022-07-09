@@ -280,5 +280,9 @@ namespace E621Downloader.Models {
 			await EmailManager.ShowComposeNewEmailAsync(emailMessage);
 		}
 
+		public static string GetTodayDate(){
+			DateTime now = DateTime.Now;
+			return $"{now.Year}-{now.Month.ToDuo()}-{now.Day.ToDuo()}";
+		}
 	}
 }

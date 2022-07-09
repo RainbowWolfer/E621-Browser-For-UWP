@@ -139,7 +139,7 @@
 								<ToggleSwitch x:Uid="MediaAutoPlayToggle" x:Name="MediaAutoPlayToggle" OffContent="Media Auto Play" OnContent="Media Auto Play" Margin="5" Toggled="MediaAutoPlayToggle_Toggled"/>
 								<ToggleSwitch x:Uid="MediaAutoMuteToggle" x:Name="MediaAutoMuteToggle" OffContent="Media Auto Mute" OnContent="Media Auto Mute" Margin="5" Toggled="MediaAutoMuteToggle_Toggled"/>
 								<StackPanel Orientation="Horizontal">
-									<ToggleSwitch x:Name="HotKeysToggle" OffContent="Enable Hot Keys" OnContent="Enable Hot Keys" Margin="5" Toggled="HotKeysToggle_Toggled"/>
+									<ToggleSwitch x:Uid="HotKeysToggle" x:Name="HotKeysToggle" OffContent="Enable Hot Keys" OnContent="Enable Hot Keys" Margin="5" Toggled="HotKeysToggle_Toggled"/>
 									<Button x:Name="HotKeysButton" Margin="10,0,0,0" FontSize="18" Tapped="HotKeysButton_Tapped">
 										<StackPanel Orientation="Horizontal">
 											<FontIcon Glyph="&#xE92E;"/>
@@ -251,18 +251,25 @@
 								<controls:Expander.Content>
 									<StackPanel>
 										<TextBlock x:Uid="KnownIssueL1" Text="- The listviews of UWP display differently in Win11 and Win10, so the app in Win10 will experience row width not matching its parent" FontSize="22" TextWrapping="WrapWholeWords"/>
-										<TextBlock x:Uid="KnownIssueL2" Text="- After exiting fullscreen of the media player in Picture Page, any navigation will exit any further fullscreen forcedly." FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="KnownIssueL2" Text="- After exiting fullscreen of the media player in Picture Page, any navigation will exit any further fullscreen forcedly." FontSize="22" TextWrapping="WrapWholeWords" Visibility="Collapsed"/>
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>
-							<controls:Expander Header="2022-07-01 (v1.1.6.0) Hotfix" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
+							<controls:Expander Header="2022-07-10 (v1.2.0.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
+								<controls:Expander.Content>
+									<StackPanel>
+										<TextBlock x:Uid="V1200L1" Text="- " FontSize="22" TextWrapping="WrapWholeWords"/>
+									</StackPanel>
+								</controls:Expander.Content>
+							</controls:Expander>
+							<controls:Expander Header="2022-07-01 (v1.1.6.0) Hotfix" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="False">
 								<controls:Expander.Content>
 									<StackPanel>
 										<TextBlock x:Uid="V1160L1" Text="- Small fixes" FontSize="22" TextWrapping="WrapWholeWords"/>
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>
-							<controls:Expander Header="2022-06-29 (v1.1.5.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
+							<controls:Expander Header="2022-06-29 (v1.1.5.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="False">
 								<controls:Expander.Content>
 									<StackPanel>
 										<TextBlock x:Uid="V1150L1" Text="- Fixed the bug where the app would crash when entering the settings page while the system language was not English." FontSize="22" TextWrapping="WrapWholeWords"/>

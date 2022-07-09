@@ -403,6 +403,10 @@ namespace E621Downloader.Pages {
 		private void LoadFromLocal(ILocalImage local) {
 			FileType type = GetFileType(local.ImagePost);
 			HintText.Visibility = Visibility.Collapsed;
+			if(MainImage.Source is BitmapImage source) {
+				source.UriSource = null;
+			}
+			MainImage.Source = null;
 			PreviewImage.Visibility = Visibility.Collapsed;
 			PreviewImage.Source = null;
 			switch(type) {
