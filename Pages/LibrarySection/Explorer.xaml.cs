@@ -3,6 +3,7 @@ using E621Downloader.Models.Locals;
 using E621Downloader.Views.LibrarySection;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -121,10 +122,12 @@ namespace E621Downloader.Pages.LibrarySection {
 				if(properties.Size == 0) {
 					fileToMeta.Add(file, null);
 					//find corresponding meta
-					StorageFile metaFile = await folder.GetFileAsync($"{file.DisplayName}.meta");
-					if(metaFile != null) {
-						fileToMeta[file] = metaFile;
-					}
+					try {
+						StorageFile metaFile = await folder.GetFileAsync($"{file.DisplayName}.meta");
+						if(metaFile != null) {
+							fileToMeta[file] = metaFile;
+						}
+					} catch(FileNotFoundException) { }
 				}
 			}
 

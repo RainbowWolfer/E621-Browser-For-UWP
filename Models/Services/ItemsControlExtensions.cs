@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml;
-using Windows.Foundation;
-using Microsoft.Toolkit.Uwp.UI;
 
 namespace E621Downloader.Models.Services {
 	public static class ItemsControlExtensions {

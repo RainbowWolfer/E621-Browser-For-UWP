@@ -1,9 +1,7 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Posts;
-using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Windows.UI.Xaml;

@@ -22,12 +22,10 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
-using Windows.Media;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
 using Windows.Storage.Streams;
-using Windows.System;
 using Windows.System.UserProfile;
 using Windows.UI;
 using Windows.UI.Core;
@@ -40,7 +38,6 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-using static System.Net.WebRequestMethods;
 
 namespace E621Downloader.Pages {
 	public sealed partial class PicturePage: Page, IPage {
@@ -416,7 +413,7 @@ namespace E621Downloader.Pages {
 					MyMediaPlayer.Visibility = Visibility.Collapsed;
 					MyScrollViewer.Visibility = Visibility.Visible;
 					try {
-						async void Load(){
+						async void Load() {
 							using IRandomAccessStream randomAccessStream = await local.ImageFile.OpenAsync(FileAccessMode.Read);
 							BitmapImage result = new();
 							await result.SetSourceAsync(randomAccessStream);

@@ -2430,6 +2430,42 @@ Would you like to get it set?</source>
           <source>- After exiting fullscreen of the media player in Picture Page, any navigation will exit any further fullscreen forcedly.</source>
           <target state="final">- 在图片页面中退出媒体播放器的全屏后，任何导航都会强制退出任何进一步的全屏。</target>
         </trans-unit>
+        <trans-unit id="CloseText.Text" translate="yes" xml:space="preserve">
+          <source>Close</source>
+          <target state="final">关闭</target>
+        </trans-unit>
+        <trans-unit id="ErrorReportSaveTip.Title" translate="yes" xml:space="preserve">
+          <source>Notification</source>
+          <target state="final">通知</target>
+        </trans-unit>
+        <trans-unit id="File Saved" translate="yes" xml:space="preserve">
+          <source>File Saved</source>
+          <target state="final">已保存文件</target>
+        </trans-unit>
+        <trans-unit id="File Cannot Be Saved" translate="yes" xml:space="preserve">
+          <source>File Cannot Be Saved</source>
+          <target state="final">文件无法被保存</target>
+        </trans-unit>
+        <trans-unit id="Error Report" translate="yes" xml:space="preserve">
+          <source>Error Report</source>
+          <target state="final">错误报告</target>
+        </trans-unit>
+        <trans-unit id="LastCrashReportText.Text" translate="yes" xml:space="preserve">
+          <source>Last Crash Report</source>
+          <target state="final">上一次错误报告</target>
+        </trans-unit>
+        <trans-unit id="SendReportText.Text" translate="yes" xml:space="preserve">
+          <source>Send Report</source>
+          <target state="final">发送报告</target>
+        </trans-unit>
+        <trans-unit id="SaveReportText.Text" translate="yes" xml:space="preserve">
+          <source>Save Report</source>
+          <target state="final">保存报告</target>
+        </trans-unit>
+        <trans-unit id="IgnoreText.Text" translate="yes" xml:space="preserve">
+          <source>Ignore</source>
+          <target state="final">忽略</target>
+        </trans-unit>
       </group>
     </body>
   </file>

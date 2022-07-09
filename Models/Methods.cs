@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Email;
 using Windows.ApplicationModel.Resources;
 using Windows.Storage;
 using Windows.System;
@@ -269,5 +270,15 @@ namespace E621Downloader.Models {
 				}
 			}
 		}
+
+		public static async Task ComposeEmail(string subject, string messageBody) {
+			var emailMessage = new EmailMessage {
+				Subject = subject,
+				Body = messageBody,
+			};
+			emailMessage.To.Add(new EmailRecipient("RainbowWolfer@Outlook.com", "RainbowWolfer"));
+			await EmailManager.ShowComposeNewEmailAsync(emailMessage);
+		}
+
 	}
 }

@@ -1825,4 +1825,31 @@
   <data name="KnownIssueL2.Text" xml:space="preserve">
     <value>- 在图片页面中退出媒体播放器的全屏后，任何导航都会强制退出任何进一步的全屏。</value>
   </data>
+  <data name="CloseText.Text" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="ErrorReportSaveTip.Title" xml:space="preserve">
+    <value>通知</value>
+  </data>
+  <data name="File Saved" xml:space="preserve">
+    <value>已保存文件</value>
+  </data>
+  <data name="File Cannot Be Saved" xml:space="preserve">
+    <value>文件无法被保存</value>
+  </data>
+  <data name="Error Report" xml:space="preserve">
+    <value>错误报告</value>
+  </data>
+  <data name="LastCrashReportText.Text" xml:space="preserve">
+    <value>上一次错误报告</value>
+  </data>
+  <data name="SendReportText.Text" xml:space="preserve">
+    <value>发送报告</value>
+  </data>
+  <data name="SaveReportText.Text" xml:space="preserve">
+    <value>保存报告</value>
+  </data>
+  <data name="IgnoreText.Text" xml:space="preserve">
+    <value>忽略</value>
+  </data>
 </root>

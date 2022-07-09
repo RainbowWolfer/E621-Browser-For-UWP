@@ -51,20 +51,20 @@ namespace E621Downloader.Views.LibrarySection {
 		public void UpdateSize(int size) {
 			switch(viewType) {
 				case ItemsGroupViewType.ListView: {
-						double height = LibraryListViewItem.BASE_HEIGHT * (size / 100d);
-						foreach(LibraryListViewItem item in MyListView.Items.Cast<LibraryListViewItem>()) {
-							item.Height = height;
-						}
-						break;
+					double height = LibraryListViewItem.BASE_HEIGHT * (size / 100d);
+					foreach(LibraryListViewItem item in MyListView.Items.Cast<LibraryListViewItem>()) {
+						item.Height = height;
 					}
+					break;
+				}
 				case ItemsGroupViewType.GridView: {
-						double height = LibraryGridViewItem.BASE_HEIGHT * (size / 100d);
-						foreach(LibraryGridViewItem item in MyGridView.Items.Cast<LibraryGridViewItem>()) {
-							item.Height = height;
-							item.Width = height + 30;
-						}
-						break;
+					double height = LibraryGridViewItem.BASE_HEIGHT * (size / 100d);
+					foreach(LibraryGridViewItem item in MyGridView.Items.Cast<LibraryGridViewItem>()) {
+						item.Height = height;
+						item.Width = height + 30;
 					}
+					break;
+				}
 				default:
 					throw new Exception($"View Type ({viewType}) Not Found");
 			}

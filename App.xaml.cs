@@ -1,10 +1,11 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
-using Microsoft.Toolkit.Uwp.Helpers;
+using E621Downloader.Pages;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Resources.Core;
@@ -27,7 +28,7 @@ namespace E621Downloader {
 		public static PostsList PostsList { get; private set; } = new PostsList();
 		public static BitmapImage DefaultAvatar { get; } = new BitmapImage(new Uri("ms-appx:///Assets/esix2.jpg"));
 
-		public bool IsWindows11{ get; private set; }
+		//public bool IsWindows11{ get; private set; }
 
 		public App() {
 			Instance = this;
@@ -45,7 +46,9 @@ namespace E621Downloader {
 					break;
 			}
 
-			IsWindows11 = SystemInformation.Instance.OperatingSystemVersion.Build >= 22000;
+			AppCenter.Start("{Your App Secret}", typeof(Crashes));
+			//Crashes.GenerateTestCrash();
+			//IsWindows11 = SystemInformation.Instance.OperatingSystemVersion.Build >= 22000;
 		}
 
 		public static void InitializeTheme() {
@@ -132,7 +135,12 @@ namespace E621Downloader {
 
 			if(e.PrelaunchActivated == false) {
 				if(rootFrame.Content == null) {
-					rootFrame.Navigate(typeof(MainPage), e.Arguments);
+					bool didAppCrash = await Crashes.HasCrashedInLastSessionAsync();
+					if(didAppCrash || true) {
+						rootFrame.Navigate(typeof(DefaultPage), e.Arguments);
+					} else {
+						rootFrame.Navigate(typeof(MainPage), e.Arguments);
+					}
 				}
 				Window.Current.Activate();
 			}

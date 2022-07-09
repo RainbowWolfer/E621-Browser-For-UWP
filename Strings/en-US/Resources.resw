@@ -1923,4 +1923,31 @@
 	<data name="Cleared {{0}} Files" xml:space="preserve">
     <value>Cleared {{0}} Files</value>
   </data>
+	<data name="CloseText.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+	<data name="ErrorReportSaveTip.Title" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+	<data name="File Saved" xml:space="preserve">
+    <value>File Saved</value>
+  </data>
+	<data name="File Cannot Be Saved" xml:space="preserve">
+    <value>File Cannot Be Saved</value>
+  </data>
+	<data name="Error Report" xml:space="preserve">
+    <value>Error Report</value>
+  </data>
+	<data name="LastCrashReportText.Text" xml:space="preserve">
+    <value>Last Crash Report</value>
+  </data>
+	<data name="SendReportText.Text" xml:space="preserve">
+    <value>Send Report</value>
+  </data>
+	<data name="SaveReportText.Text" xml:space="preserve">
+    <value>Save Report</value>
+  </data>
+	<data name="IgnoreText.Text" xml:space="preserve">
+    <value>Ignore</value>
+  </data>
 </root>

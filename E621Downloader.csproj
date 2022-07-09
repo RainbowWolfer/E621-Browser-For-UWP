@@ -191,6 +191,9 @@
     <Compile Include="Models\Posts\Post.cs" />
     <Compile Include="Models\ProgressLoader.cs" />
     <Compile Include="Models\Services\ItemsControlExtensions.cs" />
+    <Compile Include="Pages\DefaultPage.xaml.cs">
+      <DependentUpon>DefaultPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\DownloadSection\DownloadDetailsPage.xaml.cs">
       <DependentUpon>DownloadDetailsPage.xaml</DependentUpon>
     </Compile>
@@ -497,6 +500,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\DefaultPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\DownloadSection\DownloadDetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -769,6 +776,9 @@
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack">
       <Version>1.11.34</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AppCenter.Crashes">
+      <Version>4.5.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>

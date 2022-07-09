@@ -1,0 +1,180 @@
+﻿<Page
+    x:Class="E621Downloader.Pages.DefaultPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+    RequestedTheme="Dark"
+    Background="#012E57"
+    Loaded="Page_Loaded">
+
+	<Page.Resources>
+		<Style x:Name="TitleText" TargetType="TextBlock">
+			<Setter Property="TextAlignment" Value="Right"/>
+			<Setter Property="VerticalAlignment" Value="Center"/>
+			<Setter Property="FontSize" Value="16"/>
+			<Setter Property="Margin" Value="0,0,15,0"/>
+			<Setter Property="Height" Value="22"/>
+		</Style>
+		<Style x:Name="ContentText" TargetType="TextBlock">
+			<Setter Property="VerticalAlignment" Value="Center"/>
+			<Setter Property="FontSize" Value="14"/>
+			<Setter Property="IsTextSelectionEnabled" Value="True"/>
+			<Setter Property="Grid.Column" Value="1"/>
+		</Style>
+		<Storyboard x:Name="DeviceStoryboard">
+			<DoubleAnimation x:Name="DeviceAnimation" EnableDependentAnimation="True" Storyboard.TargetName="DeviceGrid" Storyboard.TargetProperty="Height">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="15" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+		</Storyboard>
+		<Storyboard x:Name="ErrorEntranceStoryboard">
+			<DoubleAnimation EnableDependentAnimation="True" Storyboard.TargetName="MainGrid" Storyboard.TargetProperty="Opacity" From="0" To="1">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="15" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+			<DoubleAnimation EnableDependentAnimation="True" Storyboard.TargetName="MainGridTransform" Storyboard.TargetProperty="Y" From="300" To="0">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="15" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+		</Storyboard>
+	</Page.Resources>
+
+	<Grid x:Name="MainGrid" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="50,100,50,100" Opacity="1">
+		<Grid.RenderTransform>
+			<TranslateTransform x:Name="MainGridTransform" Y="0"/>
+		</Grid.RenderTransform>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<Image Source="/Assets/e612.png" Height="120" Margin="0,0,0,20"/>
+		<Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20,10,20,10" CornerRadius="20">
+			<Grid.Background>
+				<SolidColorBrush Color="{StaticResource SystemColorBackgroundColor}" Opacity="0.4"/>
+			</Grid.Background>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="auto"/>
+			</Grid.RowDefinitions>
+			<StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Margin="5">
+				<!--<FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE15E;" Margin="0,0,10,0"/>-->
+				<TextBlock x:Uid="LastCrashReportText" Text="Last Crash Report" FontSize="24" FontWeight="Bold"/>
+			</StackPanel>
+			<ScrollViewer Grid.Row="1" VerticalAlignment="Top">
+				<Grid HorizontalAlignment="Center">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="2*"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+					</Grid.RowDefinitions>
+					<TextBlock Grid.Row="0" Text="ID" Style="{StaticResource TitleText}"/>
+					<TextBlock Grid.Row="1" Text="App Start Time" Style="{StaticResource TitleText}"/>
+					<TextBlock Grid.Row="2" Text="App Crash Time" Style="{StaticResource TitleText}"/>
+					<StackPanel Grid.Row="3" HorizontalAlignment="Right" Orientation="Horizontal">
+						<Button x:Name="DeviceButton" Padding="2" Margin="10,0,10,0" Background="Transparent" BorderBrush="Transparent" Click="DeviceButton_Click">
+							<FontIcon x:Name="DeviceIcon" Glyph="&#xE011;" FontSize="14"/>
+						</Button>
+						<TextBlock Text="Device" Style="{StaticResource TitleText}"/>
+					</StackPanel>
+					<Grid x:Name="DeviceGrid" Grid.Row="4" Height="0" d:Height="200" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="3*"/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="auto"/>
+						</Grid.RowDefinitions>
+						<TextBlock Grid.Row="0" Text="App Version" Style="{StaticResource TitleText}"/>
+						<TextBlock Grid.Row="1" Text="Locale" Style="{StaticResource TitleText}"/>
+						<TextBlock Grid.Row="2" Text="Model" Style="{StaticResource TitleText}"/>
+						<TextBlock Grid.Row="3" Text="OEM Name" Style="{StaticResource TitleText}"/>
+						<TextBlock Grid.Row="4" Text="OS Build" Style="{StaticResource TitleText}"/>
+						<TextBlock Grid.Row="5" Text="OS Name" Style="{StaticResource TitleText}"/>
+						<TextBlock Grid.Row="6" Text="Screen Size" Style="{StaticResource TitleText}"/>
+						<TextBlock Grid.Row="7" Text="SDK Name" Style="{StaticResource TitleText}"/>
+						<TextBlock Grid.Row="8" Text="SDK Version" Style="{StaticResource TitleText}"/>
+
+						<TextBlock Grid.Row="0" x:Name="AppVersionText" d:Text="1.2.0.0" Style="{StaticResource ContentText}"/>
+						<TextBlock Grid.Row="1" x:Name="LocaleText" d:Text="en-US" Style="{StaticResource ContentText}"/>
+						<TextBlock Grid.Row="2" x:Name="ModelText" d:Text="NDW7X_TF" Style="{StaticResource ContentText}"/>
+						<TextBlock Grid.Row="3" x:Name="OEMNameText" d:Text="Good Compute" Style="{StaticResource ContentText}"/>
+						<TextBlock Grid.Row="4" x:Name="OSBuildText" d:Text="10.0.22622" Style="{StaticResource ContentText}"/>
+						<TextBlock Grid.Row="5" x:Name="OSNameText" d:Text="WINDOWS" Style="{StaticResource ContentText}"/>
+						<TextBlock Grid.Row="6" x:Name="ScreenSizeText" d:Text="1920x1080" Style="{StaticResource ContentText}"/>
+						<TextBlock Grid.Row="7" x:Name="SDKNameText" d:Text="appcenter.uwp" Style="{StaticResource ContentText}"/>
+						<TextBlock Grid.Row="8" x:Name="SDKVersionText" d:Text="4.5.1" Style="{StaticResource ContentText}"/>
+					</Grid>
+					<StackPanel Grid.Row="5" HorizontalAlignment="Right" Orientation="Horizontal" VerticalAlignment="Top">
+						<Button x:Name="StackTraceButton" Padding="2" Margin="10,0,10,0" Background="Transparent" BorderBrush="Transparent" Click="StackTraceButton_Click">
+							<FontIcon x:Name="StackTranceIcon" Glyph="&#xE011;" FontSize="14"/>
+						</Button>
+						<TextBlock Text="Stack Trace" Style="{StaticResource TitleText}"/>
+					</StackPanel>
+
+					<TextBlock Grid.Row="0" x:Name="IDText" d:Text="3u201h21wq-123hewq-12hewqdsc0=12" Style="{StaticResource ContentText}"/>
+					<TextBlock Grid.Row="1" x:Name="StartTimeText" d:Text="2022-22-22 22:22:22" Style="{StaticResource ContentText}"/>
+					<TextBlock Grid.Row="2" x:Name="CrashTimeText" d:Text="2022-22-22 22:22:22" Style="{StaticResource ContentText}"/>
+					<TextBlock Grid.Row="3" x:Name="DeviceText" d:Text="Surface Pro 8" Style="{StaticResource ContentText}"/>
+					<TextBlock Grid.Row="5" x:Name="StackTraceText" TextWrapping="WrapWholeWords" MaxWidth="400" MaxHeight="20" d:Text="Microsoft.AppCenter.Crashes.TestCrashException: Test crash exception generated by SDK
+   at Microsoft.AppCenter.Crashes.Crashes.GenerateTestCrash()
+   at E621Downloader.Pages.DefaultPage.Page_Loaded(Object sender, RoutedEventArgs e)
+   at System.Threading.WinRTSynchronizationContextBase.Invoker.InvokeCore()
+   at Windows.ApplicationModel.Core.UnhandledError.Propagate()
+   at Microsoft.AppCenter.Utils.ApplicationLifecycleHelper.b__17_1(Object sender, UnhandledErrorDetectedEventArgs eventArgs)" Style="{StaticResource ContentText}"/>
+				</Grid>
+			</ScrollViewer>
+			<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,10,10,0">
+				<Button x:Name="EmailButton" Margin="5" Click="EmailButton_Click">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock x:Uid="SendReportText" Text="Send Report" Margin="0,0,10,0" FontSize="16" VerticalAlignment="Center"/>
+						<FontIcon Glyph="&#xE120;" FontSize="18" VerticalAlignment="Center"/>
+					</StackPanel>
+				</Button>
+				<Button x:Name="SaveButton" Margin="5" Click="SaveButton_Click">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock x:Uid="SaveReportText" Text="Save Report" Margin="0,0,10,0" FontSize="16" VerticalAlignment="Center"/>
+						<FontIcon Glyph="&#xE105;" FontSize="18" VerticalAlignment="Center"/>
+					</StackPanel>
+				</Button>
+				<Button x:Name="IgnoreButton" Margin="5" Click="IgnoreButton_Click" Style="{StaticResource AccentButtonStyle}">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock x:Uid="IgnoreText" Text="Ignore" Margin="0,0,10,0" FontSize="16" VerticalAlignment="Center"/>
+						<FontIcon Glyph="&#xE111;" FontSize="18" VerticalAlignment="Center"/>
+					</StackPanel>
+				</Button>
+			</StackPanel>
+		</Grid>
+
+		<controls:TeachingTip x:Uid="ErrorReportSaveTip" x:Name="SaveTip" Target="{x:Bind SaveButton}" Title="Notification" PreferredPlacement="Top" IsLightDismissEnabled="True">
+			<controls:TeachingTip.IconSource>
+				<controls:FontIconSource Glyph="&#xE171;"/>
+			</controls:TeachingTip.IconSource>
+			<controls:TeachingTip.CloseButtonContent>
+				<TextBlock x:Uid="CloseText" Text="Close"/>
+			</controls:TeachingTip.CloseButtonContent>
+		</controls:TeachingTip>
+	</Grid>
+</Page>

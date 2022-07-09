@@ -11,7 +11,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Email;
 using Windows.Foundation.Metadata;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
@@ -324,16 +323,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void EmailButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			await ComposeEmail("[E621 Browser For UWP] " + "Subject Here".Language(), "");
-		}
-
-		private async Task ComposeEmail(string subject, string messageBody) {
-			var emailMessage = new EmailMessage {
-				Subject = subject,
-				Body = messageBody,
-			};
-			emailMessage.To.Add(new EmailRecipient("RainbowWolfer@Outlook.com", "RainbowWolfer"));
-			await EmailManager.ShowComposeNewEmailAsync(emailMessage);
+			await Methods.ComposeEmail("[E621 Browser For UWP] " + "Subject Here".Language(), "");
 		}
 
 		private async void LocalStateHyperButton_Click(object sender, RoutedEventArgs e) {

@@ -1,11 +1,8 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
-using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
-using Microsoft.UI.Xaml.Controls;
 using System;
-using System.Diagnostics;
 using System.Threading;
 using Windows.Storage;
 using Windows.UI.Xaml;
@@ -13,7 +10,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace E621Downloader.Views {
 	public delegate void OnImageLoadedEventHandler(BitmapImage bitmap);
