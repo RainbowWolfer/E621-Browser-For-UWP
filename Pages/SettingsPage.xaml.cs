@@ -33,7 +33,7 @@ namespace E621Downloader.Pages {
 
 		private bool internalChanges = true;
 
-		private ElementTheme initialTheme;
+		private readonly ElementTheme initialTheme;
 
 		public SettingsPage() {
 			this.InitializeComponent();
@@ -56,6 +56,7 @@ namespace E621Downloader.Pages {
 			MediaAutoPlayToggle.IsOn = LocalSettings.Current.mediaAutoPlay;
 			HotKeysToggle.IsOn = LocalSettings.Current.enableHotKeys;
 			GifAutoPlayToggle.IsOn = LocalSettings.Current.enableGifAutoPlay;
+			MediaAutoMuteToggle.IsOn = LocalSettings.Current.mediaAutoMute;
 
 			RandomTagMaxSlider.Value = LocalSettings.Current.randomTagMaxCount;
 			RandomTagMaxText.Text = Methods.NumberToK(LocalSettings.Current.randomTagMaxCount);
@@ -268,6 +269,14 @@ namespace E621Downloader.Pages {
 			LocalSettings.Save();
 		}
 
+		private void MediaAutoMuteToggle_Toggled(object sender, RoutedEventArgs e) {
+			if(internalChanges) {
+				return;
+			}
+			LocalSettings.Current.mediaAutoMute = (sender as ToggleSwitch).IsOn;
+			LocalSettings.Save();
+		}
+
 		private async void HotKeysButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			var dialog = new ContentDialog() {
 				Title = "Hot Keys".Language(),
@@ -470,5 +479,6 @@ namespace E621Downloader.Pages {
 		private void LanguagePanel_PointerExited(object sender, PointerRoutedEventArgs e) {
 			Window.Current.CoreWindow.PointerCursor = cursorBeforePointerEntered;
 		}
+
 	}
 }

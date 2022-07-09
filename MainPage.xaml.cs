@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models;
+﻿using ColorCode.Compilation.Languages;
+using E621Downloader.Models;
 using E621Downloader.Models.Download;
 using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
@@ -18,6 +19,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
+using Windows.Storage.Streams;
 using Windows.System;
 using Windows.UI.Core.Preview;
 using Windows.UI.ViewManagement;
@@ -130,8 +132,10 @@ namespace E621Downloader {
 				}
 				if(key == VirtualKey.Escape || key == VirtualKey.F12 || key == VirtualKey.F11) {
 					try {
+						PicturePage.Instance.ShowListGrid = false;
 						if(ScreenMode == ScreenMode.Focus) {
 							ScreenMode = ScreenMode.Normal;
+							PicturePage.Instance?.ExitSlideshow();
 						}
 					} catch(Exception ex) {
 						Debug.WriteLine(ex);
@@ -629,9 +633,42 @@ namespace E621Downloader {
 				case TagsSelectionView.ResultType.None:
 					break;
 				case TagsSelectionView.ResultType.Search:
-					string[] tags = view.GetTags();
-					NavigateToPostsBrowser(1, tags);
-					Local.History.AddTag(tags);
+					if(view.PostSearchResult == PostSearch.None) {
+						string[] tags = view.GetTags();
+						NavigateToPostsBrowser(1, tags);
+						Local.History.AddTag(tags);
+					} else if(!string.IsNullOrWhiteSpace(view.ResultPostID)) {
+						//dialog wait 
+						CreateInstantDialog("Please Wait".Language(), "Getting Post".Language());
+						//get post
+						if(!App.PostsPool.TryGetValue(view.ResultPostID, out Post loadPost)) {
+							loadPost = await Post.GetPostByIDAsync(view.ResultPostID);
+						}
+						//load preview
+						var loader = LoadPool.SetNew(loadPost);
+						if(loader.Preview == null) {
+							if(!string.IsNullOrWhiteSpace(loadPost.preview.url)) {
+								HttpResult<InMemoryRandomAccessStream> result = await Data.ReadImageStreamAsync(loadPost.preview.url);
+								if(result.Result == HttpResultType.Success) {
+									var bitmap = new BitmapImage();
+									await bitmap.SetSourceAsync(result.Content);
+									loader.Preview = bitmap;
+								}
+							}
+						}
+
+						HideInstantDialog();
+
+						App.PostsList.UpdatePostsList(new List<Post>() { loadPost });
+						App.PostsList.Current = loadPost;
+						NavigateToPicturePage(loadPost, Array.Empty<string>());
+					} else {
+						await new ContentDialog() {
+							Title = "Error".Language(),
+							Content = "Unexpected error occurred in searching".Language(),
+							CloseButtonText = "Back".Language(),
+						}.ShowAsync();
+					}
 					break;
 				case TagsSelectionView.ResultType.Hot:
 					NavigateToPostsBrowser(1, "order:rank");

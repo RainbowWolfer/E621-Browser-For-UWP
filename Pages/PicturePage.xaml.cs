@@ -6,6 +6,7 @@ using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
 using E621Downloader.Views;
 using E621Downloader.Views.CommentsSection;
+using E621Downloader.Views.PictureSection;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using System;
@@ -21,6 +22,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
+using Windows.Media;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
@@ -42,6 +44,7 @@ using static System.Net.WebRequestMethods;
 
 namespace E621Downloader.Pages {
 	public sealed partial class PicturePage: Page, IPage {
+		public static PicturePage Instance { get; private set; }
 		public static string[] CurrentTags { get; set; }
 		public Post PostRef { get; private set; }
 		public PathType PostType { get; private set; }
@@ -56,6 +59,7 @@ namespace E621Downloader.Pages {
 		private string path;
 
 		public bool EnableAutoPlay => LocalSettings.Current?.mediaAutoPlay ?? false;
+		public bool EnableAutoMute => LocalSettings.Current?.mediaAutoMute ?? false;
 		public string Title => PostRef == null ? "# No Post".Language() :
 			$"#{PostRef.id} ({PostRef.rating.ToUpper()})";
 
@@ -83,7 +87,7 @@ namespace E621Downloader.Pages {
 		private bool showListGrid;
 		public bool ShowListGrid {
 			get => showListGrid;
-			private set {
+			set {
 				showListGrid = value;
 				MediaControlsTransformAnimation.From = MediaControlsTransform.Y;
 				PhotosListManagerAnimation.From = PhotosListManagerTransform.Y;
@@ -107,16 +111,18 @@ namespace E621Downloader.Pages {
 		private bool isLoadingPost = false;
 
 		public PicturePage() {
+			Instance = this;
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			this.DataContextChanged += (s, c) => Bindings.Update();
 			MyMediaPlayer.MediaPlayer.IsLoopingEnabled = true;
+			MyMediaPlayer.MediaPlayer.AudioCategory = MediaPlayerAudioCategory.Media;
+			MyMediaPlayer.MediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
 #if DEBUG
 			DebugItem.Visibility = Visibility.Visible;
 #else
 			DebugItem.Visibility = Visibility.Collapsed;
 #endif
-
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e) {
@@ -126,6 +132,9 @@ namespace E621Downloader.Pages {
 			object p = e.Parameter;
 			MainPage.ClearPicturePageParameter();
 			MyMediaPlayer.AutoPlay = EnableAutoPlay;
+			if(EnableAutoMute) {
+				MyMediaPlayer.MediaPlayer.IsMuted = true;
+			}
 			bool showNoPostGrid = false;
 			this.imageDataPackage = null;
 			CancelCTS();
@@ -144,7 +153,7 @@ namespace E621Downloader.Pages {
 				}
 				PostRef = post;
 				UpdateDownloadButton(false);
-				await LoadFromPost(post);
+				LoadFromPost(post);
 				PostType = PathType.PostID;
 				path = this.PostRef.id;
 			} else if(p is MixPost mix) {
@@ -162,7 +171,7 @@ namespace E621Downloader.Pages {
 							mix.PostRef = this.PostRef;
 						}
 						UpdateDownloadButton(false);
-						await LoadFromPost(this.PostRef);
+						LoadFromPost(this.PostRef);
 						PostType = PathType.PostID;
 						path = mix.ID;
 						break;
@@ -177,7 +186,7 @@ namespace E621Downloader.Pages {
 						}
 						this.PostRef = mix.MetaFile.MyPost;
 						UpdateDownloadButton(true);
-						await LoadFromLocal(mix);
+						LoadFromLocal(mix);
 						PostType = PathType.Local;
 						path = mix.LocalPath;
 						break;
@@ -191,7 +200,7 @@ namespace E621Downloader.Pages {
 				}
 				PostRef = local.ImagePost;
 				UpdateDownloadButton(true);
-				await LoadFromLocal(local);
+				LoadFromLocal(local);
 				PostType = PathType.Local;
 				path = local.ImageFile.Path;
 			} else if(p is string postID && !string.IsNullOrEmpty(postID)) {
@@ -220,7 +229,7 @@ namespace E621Downloader.Pages {
 				}
 				Loader = LoadPool.SetNew(this.PostRef);
 				UpdateDownloadButton(false);
-				await LoadFromPost(this.PostRef);
+				LoadFromPost(this.PostRef);
 				PostType = PathType.PostID;
 				path = this.PostRef.id;
 			} else if(this.PostRef == null && p == null) {
@@ -300,9 +309,13 @@ namespace E621Downloader.Pages {
 				MyMediaPlayer.MediaPlayer.Pause();
 				hasExecutedPause = true;
 			}
+			ShowListGrid = false;
 		}
 
-		private async Task LoadFromPost(Post post) {
+		private void LoadFromPost(Post post) {
+			PreviewImage.Visibility = Visibility.Collapsed;
+			PreviewImage.Source = null;
+			HintText.Visibility = Visibility.Collapsed;
 			if(MainImage.Source is BitmapImage source) {
 				source.UriSource = null;
 			}
@@ -311,7 +324,9 @@ namespace E621Downloader.Pages {
 				MyMediaPlayer.Visibility = Visibility.Collapsed;
 				MyScrollViewer.Visibility = Visibility.Collapsed;
 				Progress = null;
-				await MainPage.CreatePopupDialog("Error".Language(), "Post".Language() + $"({post.id}) " + "has no valid file URL".Language());
+				//await MainPage.CreatePopupDialog("Error".Language(), "Post".Language() + $"({post.id}) " + "has no valid file URL".Language());
+				HintText.Text = "Error".Language() + "\n" + "Post".Language() + $"({post.id}) " + "has no valid file URL".Language();
+				HintText.Visibility = Visibility.Visible;
 				return;
 			}
 			FileType type = GetFileType(post);
@@ -320,7 +335,6 @@ namespace E621Downloader.Pages {
 				case FileType.Jpg:
 				case FileType.Gif: {
 					Progress = 0;
-					PreviewImage.Source = null;
 					MyMediaPlayer.Visibility = Visibility.Collapsed;
 					MyScrollViewer.Visibility = Visibility.Visible;
 					if(Loader.ImageFile != null && Loader.ImageFile.UriSource != null) {
@@ -382,12 +396,14 @@ namespace E621Downloader.Pages {
 					Progress = null;
 					break;
 				default:
-					await MainPage.CreatePopupDialog("Error".Language(), "Type".Language() + $" ({type}) " + "not supported".Language());
+					//await MainPage.CreatePopupDialog("Error".Language(), "Type".Language() + $" ({type}) " + "not supported".Language());
+					HintText.Text = "Error".Language() + "Type".Language() + $" ({type}) " + "not supported".Language();
+					HintText.Visibility = Visibility.Visible;
 					break;
 			}
 		}
 
-		private async Task LoadFromLocal(ILocalImage local) {
+		private void LoadFromLocal(ILocalImage local) {
 			FileType type = GetFileType(local.ImagePost);
 			HintText.Visibility = Visibility.Collapsed;
 			PreviewImage.Visibility = Visibility.Collapsed;
@@ -400,16 +416,21 @@ namespace E621Downloader.Pages {
 					MyMediaPlayer.Visibility = Visibility.Collapsed;
 					MyScrollViewer.Visibility = Visibility.Visible;
 					try {
-						using IRandomAccessStream randomAccessStream = await local.ImageFile.OpenAsync(FileAccessMode.Read);
-						BitmapImage result = new();
-						await result.SetSourceAsync(randomAccessStream);
-						MainImage.Source = result;
-						imageDataPackage = new DataPackage() {
-							RequestedOperation = DataPackageOperation.Copy,
-						};
-						imageDataPackage.SetBitmap(RandomAccessStreamReference.CreateFromFile(local.ImageFile));
+						async void Load(){
+							using IRandomAccessStream randomAccessStream = await local.ImageFile.OpenAsync(FileAccessMode.Read);
+							BitmapImage result = new();
+							await result.SetSourceAsync(randomAccessStream);
+							MainImage.Source = result;
+							imageDataPackage = new DataPackage() {
+								RequestedOperation = DataPackageOperation.Copy,
+							};
+							imageDataPackage.SetBitmap(RandomAccessStreamReference.CreateFromFile(local.ImageFile));
+						}
+						Load();
 					} catch(Exception e) {
-						await MainPage.CreatePopupDialog("Error".Language(), "Local Post".Language() + $"({local.ImagePost.id}) - {local.ImageFile.Path} " + "Load Failed".Language() + $"\n{e.Message}");
+						//await MainPage.CreatePopupDialog("Error".Language(), "Local Post".Language() + $"({local.ImagePost.id}) - {local.ImageFile.Path} " + "Load Failed".Language() + $"\n{e.Message}");
+						HintText.Text = "Local Post".Language() + $"({local.ImagePost.id}) - {local.ImageFile.Path} " + "Load Failed".Language() + $"\n{e.Message}";
+						HintText.Visibility = Visibility.Visible;
 					}
 					MyMediaPlayer.Source = null;
 					Progress = null;
@@ -429,9 +450,9 @@ namespace E621Downloader.Pages {
 					Progress = null;
 					break;
 				default:
-					HintText.Text = "Type".Language() + $" ({type}) " + "not supported".Language();
+					HintText.Text = "Error".Language() + "Type".Language() + $" ({type}) " + "not supported".Language();
 					HintText.Visibility = Visibility.Visible;
-					await MainPage.CreatePopupDialog("Error".Language(), "Type".Language() + $" ({type}) " + "not supported".Language());
+					//await MainPage.CreatePopupDialog("Error".Language(), "Type".Language() + $" ({type}) " + "not supported".Language());
 					break;
 			}
 		}
@@ -1566,31 +1587,52 @@ namespace E621Downloader.Pages {
 		}
 
 		private void ContentGrid_PointerPressed(object sender, PointerRoutedEventArgs e) {
-			ShowListGrid = !ShowListGrid;
+			ShowListGrid = false;
 		}
 
 		private async void SlideshowItem_Click(object sender, RoutedEventArgs e) {
-			if(await new ContentDialog() {
-				Title = "Start Slideshow",
-				Content = "",
-				PrimaryButtonText = "Start",
-				CloseButtonText = "Back",
-			}.ShowAsync() == ContentDialogResult.Primary) {
+			var content = new SlideshowConfigurationDialog();
+			var dialog = new ContentDialog() {
+				Title = "Start Slideshow".Language(),
+				Content = content,
+				PrimaryButtonText = "Start".Language(),
+				CloseButtonText = "Back".Language(),
+			};
+			dialog.Closed += async (s, e) => {
+				await Local.WriteLocalSettings();
+			};
+			if(await dialog.ShowAsync() == ContentDialogResult.Primary) {
 				MainPage.Instance.ScreenMode = ScreenMode.Focus;
-
+				StartSlideshow(content.Configuration);
 			}
 		}
 
 		public async void StartSlideshow(SlideshowConfiguration configuration) {
 			IsInSlideshow = true;
-			while(IsInSlideshow) {
-				await Task.Delay((int)(configuration.SecondsGap * 1000));
+			while(IsInSlideshow && MainPage.Instance.ScreenMode == ScreenMode.Focus) {
+				await Task.Delay((int)(configuration.SecondsInterval * 1000));
+				if(!IsInSlideshow || MainPage.Instance.ScreenMode != ScreenMode.Focus) {
+					break;
+				}
 				if(configuration.IsRandom) {
 					MainPage.NavigateToPicturePage(App.PostsList.GetItems().GetRandomItem());
 				} else {
 					GoRight();
 				}
 			}
+		}
+
+		public void ExitSlideshow() {
+			MainPage.Instance.ScreenMode = ScreenMode.Normal;
+			IsInSlideshow = false;
+		}
+
+		private void MediaPlayer_MediaEnded(MediaPlayer sender, object args) {
+
+		}
+
+		private void ContentGrid_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e) {
+			ShowListGrid = true;
 		}
 	}
 
@@ -1682,15 +1724,27 @@ namespace E621Downloader.Pages {
 			ImageFile = storageFile;
 			MetaFile = metaFile;
 		}
-
 	}
 
 	public class SlideshowConfiguration {
-		public double SecondsGap { get; set; }
+		public double SecondsInterval { get; set; }
+		//public int GifLoopTimes { get; set; }
 		public bool WaitForVideoEnds { get; set; }
-		public int GifLoopTimes { get; set; }
 		public bool WaitForLoading { get; set; }
 		public bool IsRandom { get; set; }
 
+		public SlideshowConfiguration() {
+			SecondsInterval = 5;
+			WaitForVideoEnds = false;
+			WaitForLoading = false;
+			IsRandom = false;
+		}
+
+		public SlideshowConfiguration(double secondsInterval, bool waitForVideoEnds, bool waitForLoading, bool isRandom) {
+			SecondsInterval = secondsInterval;
+			WaitForVideoEnds = waitForVideoEnds;
+			WaitForLoading = waitForLoading;
+			IsRandom = isRandom;
+		}
 	}
 }

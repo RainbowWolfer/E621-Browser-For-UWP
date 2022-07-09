@@ -52,6 +52,7 @@ namespace E621Downloader.Pages.LibrarySection {
 			TitleBar.OnSearchSubmit += TitleBar_OnSearchSubmit;
 			TitleBar.OnAsecDesOrderChanged += TitleBar_OnAsecDesOrderChanged;
 			TitleBar.OnOrderTypeChanged += TitleBar_OnOrderTypeChanged;
+			TitleBar.EnableClearEmptyFile = false;
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {

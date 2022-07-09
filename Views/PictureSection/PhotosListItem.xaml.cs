@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -61,6 +62,7 @@ namespace E621Downloader.Views.PictureSection {
 		public PhotosListItem() {
 			this.InitializeComponent();
 			progress = new ProgressLoader(LoadingRing);
+			PlayIcon.Translation += new Vector3(0, 0, 5);
 		}
 
 		public async void LoadAsync() {
@@ -101,6 +103,7 @@ namespace E621Downloader.Views.PictureSection {
 		}
 
 		private async Task LoadPost(Post post) {
+			PlayIcon.Visibility = PicturePage.GetFileType(post) == FileType.Webm ? Visibility.Visible : Visibility.Collapsed;
 			var loader = LoadPool.SetNew(post);
 			if(loader.Sample != null) {
 				MainImage.Source = loader.Sample;
@@ -129,6 +132,7 @@ namespace E621Downloader.Views.PictureSection {
 		}
 
 		private async Task LoadLocal(StorageFile file, Post post) {
+			PlayIcon.Visibility = PicturePage.GetFileType(post) == FileType.Webm ? Visibility.Visible : Visibility.Collapsed;
 			if(file.FileType == ".webm") {
 				using StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.SingleItem);
 				if(thumbnail != null) {

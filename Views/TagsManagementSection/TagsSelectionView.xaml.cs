@@ -1,6 +1,7 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -16,6 +17,9 @@ namespace E621Downloader.Views.TagsManagementSection {
 	public sealed partial class TagsSelectionView: Page {
 		private readonly ContentDialog dialog;
 		public ResultType Result { get; private set; } = ResultType.None;
+		public PostSearch PostSearchResult { get; private set; } = PostSearch.None;
+		public string ResultPostID { get; private set; } = null;
+
 		private readonly Dictionary<string, E621Tag> tags_pool = new();
 		private readonly List<string> currentTags = new();
 
@@ -193,16 +197,38 @@ namespace E621Downloader.Views.TagsManagementSection {
 			if(MySuggestBox.Text.Length == 0) {
 				this.word = null;
 			}
-			this.word = GetCurrentWord();
-			if(word.Length <= 2 || this.word.Contains(":")) {
-				AutoCompletesListView.Items.Clear();
+			PostSearchResult = GetPostSearchResult(MySuggestBox.Text, out string resultPostID);
+			if(PostSearchResult != PostSearch.None && !string.IsNullOrWhiteSpace(resultPostID)) {
+				ResultPostID = resultPostID;
 				CancelLoading();
-			} else {
-				SetLoadingbar(false);
-				DelayLoad(this.word);
-			}
+				AutoCompletesListView.Items.Clear();
+				IsInPoolBox.IsChecked = false;
+				IsDeletedBox.IsChecked = false;
+				Order = QuickOptionsOrder.Default;
+				Type = QuickOptionsType.All;
+				Rating = QuickOptionsRating.All;
 
-			CalculateCurrentTags();
+				AlternativeHintText.Visibility = Visibility.Visible;
+				if(PostSearchResult == PostSearch.PostID) {
+					AlternativeHintText.Text = "Post ID Detected";
+				} else if(PostSearchResult == PostSearch.URL) {
+					AlternativeHintText.Text = "URL Detected";
+				}
+			} else {
+				ResultPostID = null;
+				AlternativeHintText.Visibility = Visibility.Collapsed;
+				AlternativeHintText.Text = "";
+				this.word = GetCurrentWord();
+				if(word.Length <= 2 || this.word.Contains(":")) {
+					AutoCompletesListView.Items.Clear();
+					CancelLoading();
+				} else {
+					SetLoadingbar(false);
+					DelayLoad(this.word);
+				}
+
+				CalculateCurrentTags();
+			}
 
 			if(currentTags.Contains("order:new")) {
 				Order = QuickOptionsOrder.New;
@@ -506,6 +532,36 @@ namespace E621Downloader.Views.TagsManagementSection {
 			Hide();
 		}
 
+		private PostSearch GetPostSearchResult(string text, out string resultPostID) {
+			resultPostID = null;
+			string[] split = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+			foreach(string item in split) {
+				if(item.Length >= 2 && item.OnlyContainDigits()) {
+					resultPostID = item;
+					return PostSearch.PostID;
+				} else if(item.StartsWith("https://e621.net/posts/") ||
+					item.StartsWith("https://e926.net/posts/") ||
+					item.StartsWith("e621.net/posts/") ||
+					item.StartsWith("926.net/posts/")
+				) {
+					string endPostID = "";
+					int startIndex = item.LastIndexOf('/');
+					int endIndex = item.LastIndexOf('?');
+					if(endIndex == -1) {
+						endIndex = item.Length;
+					}
+					for(int i = startIndex + 1; i < endIndex; i++) {
+						endPostID += item[i];
+					}
+					if(endPostID.Length >= 2 && endPostID.OnlyContainDigits()) {
+						resultPostID = endPostID;
+						return PostSearch.URL;
+					}
+				}
+			}
+			return PostSearch.None;
+		}
+
 		private string FindMeta(string root) {//order:score
 			string text = " " + MySuggestBox.Text + " ";
 			string textLowwer = text.ToLower();
@@ -660,6 +716,9 @@ namespace E621Downloader.Views.TagsManagementSection {
 		}
 
 	}
+	public enum PostSearch {
+		None, URL, PostID
+	}
 
 
 	public enum QuickOptionsOrder {
@@ -673,4 +732,5 @@ namespace E621Downloader.Views.TagsManagementSection {
 	public enum QuickOptionsRating {
 		All, Safe, Questionable, Explicit
 	}
+
 }

@@ -292,7 +292,7 @@ namespace E621Downloader.Pages {
 			LoadingText.Text = "Getting Ready".Language();
 
 			CancelLoading();
-			await Task.Delay(100);//must be greater than 10
+			await Task.Delay(100);//must be greater than 10 (Not Tested)
 			cts_loading = new CancellationTokenSource();
 
 			if(tab.Posts != null && !refresh) {
@@ -332,6 +332,7 @@ namespace E621Downloader.Pages {
 			posts.RemoveAll(p => ignoreTypes.Contains(p.file.ext));
 
 			tab.Posts = posts;
+			App.PostsPool.AddToPostsPool(posts);
 
 			if(cts_loading == null || cts_loading.IsCancellationRequested) {
 				IsLoading = true;

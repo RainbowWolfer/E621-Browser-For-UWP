@@ -137,6 +137,7 @@
 								<ToggleSwitch x:Uid="ConcatTagToggle" x:Name="ConcatTagToggle" OffContent="Overlay Tags" OnContent="Concat Tags" Margin="5" Toggled="ConcatTagToggle_Toggled"/>
 								<ToggleSwitch x:Uid="MediaPlayToggle" x:Name="MediaPlayToggle" OffContent="Media Background Play" OnContent="Media Background Play" Margin="5" Toggled="MediaPlayToggle_Toggled"/>
 								<ToggleSwitch x:Uid="MediaAutoPlayToggle" x:Name="MediaAutoPlayToggle" OffContent="Media Auto Play" OnContent="Media Auto Play" Margin="5" Toggled="MediaAutoPlayToggle_Toggled"/>
+								<ToggleSwitch x:Uid="MediaAutoMuteToggle" x:Name="MediaAutoMuteToggle" OffContent="Media Auto Mute" OnContent="Media Auto Mute" Margin="5" Toggled="MediaAutoMuteToggle_Toggled"/>
 								<StackPanel Orientation="Horizontal">
 									<ToggleSwitch x:Name="HotKeysToggle" OffContent="Enable Hot Keys" OnContent="Enable Hot Keys" Margin="5" Toggled="HotKeysToggle_Toggled"/>
 									<Button x:Name="HotKeysButton" Margin="10,0,0,0" FontSize="18" Tapped="HotKeysButton_Tapped">

@@ -2374,17 +2374,61 @@ Would you like to get it set?</source>
           <source>File Path</source>
           <target state="final">文件路径</target>
         </trans-unit>
-        <trans-unit id="KnownIssueL2" translate="yes" xml:space="preserve">
-          <source>- After exiting fullscreen of the media player in Picture Page, any navigation will exit any further fullscreen forcedly.</source>
-          <target state="final">- 在图片页面中退出媒体播放器的全屏后，任何导航都会强制退出任何进一步的全屏。</target>
-        </trans-unit>
         <trans-unit id="OpenInPhotosText.Text" translate="yes" xml:space="preserve">
           <source>Open In Photos</source>
-          <target state="new">Open In Photos</target>
+          <target state="final">在图片中打开</target>
         </trans-unit>
         <trans-unit id="SlideShowText.Text" translate="yes" xml:space="preserve">
           <source>Slideshow</source>
-          <target state="new">Slideshow</target>
+          <target state="final">开启幻灯片</target>
+        </trans-unit>
+        <trans-unit id="MediaAutoMuteToggle.OnContent" translate="yes" xml:space="preserve">
+          <source>Media Auto Mute</source>
+          <target state="final">媒体自动静音</target>
+        </trans-unit>
+        <trans-unit id="MediaAutoMuteToggle.OffContent" translate="yes" xml:space="preserve">
+          <source>Media Auto Mute</source>
+          <target state="final">媒体自动静音</target>
+        </trans-unit>
+        <trans-unit id="SecondsIntervalText.Text" translate="yes" xml:space="preserve">
+          <source>Seconds Interval</source>
+          <target state="final">秒间隔</target>
+        </trans-unit>
+        <trans-unit id="RandomContent.Content" translate="yes" xml:space="preserve">
+          <source>Random</source>
+          <target state="final">随机</target>
+        </trans-unit>
+        <trans-unit id="Start" translate="yes" xml:space="preserve">
+          <source>Start</source>
+          <target state="final">开始</target>
+        </trans-unit>
+        <trans-unit id="Start Slideshow" translate="yes" xml:space="preserve">
+          <source>Start Slideshow</source>
+          <target state="final">开始幻灯片</target>
+        </trans-unit>
+        <trans-unit id="Unexpected error occurred in searching" translate="yes" xml:space="preserve">
+          <source>Unexpected error occurred in searching.</source>
+          <target state="final">在搜索时发生了未预料到的错误。</target>
+        </trans-unit>
+        <trans-unit id="Getting Post" translate="yes" xml:space="preserve">
+          <source>Getting Post</source>
+          <target state="final">正在获得推图</target>
+        </trans-unit>
+        <trans-unit id="ClearEmptyFileText.Text" translate="yes" xml:space="preserve">
+          <source>Clear Empty File</source>
+          <target state="final">清理空文件</target>
+        </trans-unit>
+        <trans-unit id="Clearing in action" translate="yes" xml:space="preserve">
+          <source>Clearing in action.</source>
+          <target state="final">清理进行中。</target>
+        </trans-unit>
+        <trans-unit id="Cleared {{0}} Files" translate="yes" xml:space="preserve">
+          <source>Cleared {{0}} Files</source>
+          <target state="final">已清理 {{0}} 个文件</target>
+        </trans-unit>
+        <trans-unit id="KnownIssueL2.Text" translate="yes" xml:space="preserve">
+          <source>- After exiting fullscreen of the media player in Picture Page, any navigation will exit any further fullscreen forcedly.</source>
+          <target state="final">- 在图片页面中退出媒体播放器的全屏后，任何导航都会强制退出任何进一步的全屏。</target>
         </trans-unit>
       </group>
     </body>

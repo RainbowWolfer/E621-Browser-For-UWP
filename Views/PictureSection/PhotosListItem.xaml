@@ -24,6 +24,11 @@
 	<Grid x:Name="MainGrid" BorderBrush="Beige" BorderThickness="2" CornerRadius="10" Height="70" Width="70">
 		<controls:ProgressRing x:Name="LoadingRing"/>
 		<Image x:Name="MainImage" d:Source="/Assets/esix2.jpg" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+		<FontIcon x:Name="PlayIcon" Glyph="&#xE102;" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="12" Margin="5" Foreground="White" Visibility="Collapsed" FontWeight="Bold">
+			<FontIcon.Shadow>
+				<ThemeShadow/>
+			</FontIcon.Shadow>
+		</FontIcon>
 	</Grid>
 </UserControl>
 

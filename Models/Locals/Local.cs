@@ -114,7 +114,11 @@ namespace E621Downloader.Models.Locals {
 
 		public static async Task WriteHistory() {
 			string json = JsonConvert.SerializeObject(History, Formatting.Indented);
-			await FileIO.WriteTextAsync(HistoryFile, json);
+			try {
+				await FileIO.WriteTextAsync(HistoryFile, json);
+			} catch(FileLoadException ex) {
+				Debug.WriteLine(ex.Message);
+			}
 		}
 
 		public static async Task ReadHistory() {

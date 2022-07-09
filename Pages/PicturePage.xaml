@@ -392,8 +392,8 @@
 					</Grid>
 				</SplitView.Pane>
 				<SplitView.Content>
-					<Grid x:Name="ContentGrid" PointerPressed="ContentGrid_PointerPressed">
-						<TextBlock x:Uid="Type SWF not supported Text" x:Name="HintText" Text="Type SWF not supported" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Visibility="Collapsed"/>
+					<Grid x:Name="ContentGrid" PointerPressed="ContentGrid_PointerPressed" DoubleTapped="ContentGrid_DoubleTapped">
+						<TextBlock x:Uid="Type SWF not supported Text" x:Name="HintText" Text="Type SWF not supported" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Visibility="Collapsed" TextAlignment="Center"/>
 						<Image x:Name="PreviewImage" Stretch="Uniform" Margin="0,15,0,0"/>
 						<MediaPlayerElement x:Name="MyMediaPlayer" AutoPlay="False" AreTransportControlsEnabled="True" Margin="0,0,0,0">
 							<MediaPlayerElement.TransportControls>
@@ -419,7 +419,15 @@
 							</MediaPlayerElement.TransportControls>
 						</MediaPlayerElement>
 						<ScrollViewer x:Name="MyScrollViewer" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
-							<Image x:Name="MainImage" DoubleTapped="MainImage_DoubleTapped" PointerWheelChanged="MainImage_PointerWheelChanged" RenderTransformOrigin="0,0" ManipulationMode="TranslateX,TranslateY,Scale" ManipulationDelta="MainImage_ManipulationDelta" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" ImageOpened="MainImage_ImageOpened" ImageFailed="MainImage_ImageFailed">
+							<Image x:Name="MainImage" 
+								DoubleTapped="MainImage_DoubleTapped" 
+								PointerWheelChanged="MainImage_PointerWheelChanged" 
+								RenderTransformOrigin="0,0" 
+								ManipulationMode="TranslateX,TranslateY,Scale" 
+								ManipulationDelta="MainImage_ManipulationDelta" 
+								Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" 
+								ImageOpened="MainImage_ImageOpened" 
+								ImageFailed="MainImage_ImageFailed">
 								<Image.RenderTransform>
 									<CompositeTransform x:Name="ImageTransform"/>
 								</Image.RenderTransform>

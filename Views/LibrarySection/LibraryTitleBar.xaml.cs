@@ -18,6 +18,7 @@ namespace E621Downloader.Views.LibrarySection {
 		private bool enableRefreshButton = true;
 		private bool isFolderBar = true;
 		private bool enableSortButtons;
+		private bool enableClearEmptyFile;
 
 		public event Action<bool> OnExpandedChanged;
 		public event Action<string> OnSearchSubmit;
@@ -26,6 +27,7 @@ namespace E621Downloader.Views.LibrarySection {
 		public event Action OnRefresh;
 		public event Action OnExplorerClick;
 		public event Action<VirtualKey> OnSearchInput;
+		public event Action OnEmptyFileClear;
 
 		public bool ShowExplorerButton {
 			get => showExplorerButton;
@@ -124,6 +126,14 @@ namespace E621Downloader.Views.LibrarySection {
 			}
 		}
 
+		public bool EnableClearEmptyFile {
+			get => enableClearEmptyFile;
+			set {
+				enableClearEmptyFile = value;
+				ClearEmptyFileItem.IsEnabled = enableClearEmptyFile;
+			}
+		}
+
 		public LibraryTitleBar() {
 			this.InitializeComponent();
 		}
@@ -172,6 +182,10 @@ namespace E621Downloader.Views.LibrarySection {
 
 		private void ExpanderButton_Click(object sender, RoutedEventArgs e) {
 			IsExpanded = !IsExpanded;
+		}
+
+		private void ClearEmptyFileItem_Click(object sender, RoutedEventArgs e) {
+			OnEmptyFileClear?.Invoke();
 		}
 	}
 }

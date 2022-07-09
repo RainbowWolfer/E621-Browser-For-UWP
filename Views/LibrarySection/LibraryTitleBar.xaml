@@ -78,6 +78,17 @@
 			</Button>
 			<TextBlock x:Uid="LocalChangedHintText" x:Name="LocalChangedHintText" Text="Local Changes has been Made &#10;Please Refresh to view new Downloaded Files" Margin="5,0,0,0" Visibility="Collapsed"/>
 		</StackPanel>
+		<controls:DropDownButton RelativePanel.RightOf="RefreshPanel" RelativePanel.AlignVerticalCenterWithPanel="True" Height="35" Padding="0,0,10.7,0" Width="35">
+			<controls:DropDownButton.Flyout>
+				<MenuFlyout Placement="Bottom">
+					<MenuFlyoutItem x:Uid="ClearEmptyFileText" x:Name="ClearEmptyFileItem" Text="Clear Empty File" Click="ClearEmptyFileItem_Click">
+						<MenuFlyoutItem.Icon>
+							<FontIcon Glyph="&#xEA99;"/>
+						</MenuFlyoutItem.Icon>
+					</MenuFlyoutItem>
+				</MenuFlyout>
+			</controls:DropDownButton.Flyout>
+		</controls:DropDownButton>
 		<Button x:Name="AsecDesButton" Height="32" RelativePanel.LeftOf="OrderComboBox" RelativePanel.AlignVerticalCenterWithPanel="True" Padding="2" Margin="10,0,10,0" Click="AsecDesButton_Click">
 			<StackPanel Orientation="Horizontal">
 				<FontIcon x:Name="AsecDesIcon" Glyph="&#xE64F;" FontSize="14" Margin="10,0,10,0"/>

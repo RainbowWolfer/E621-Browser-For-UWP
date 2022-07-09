@@ -1,8 +1,10 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Resources.Core;
@@ -25,6 +27,8 @@ namespace E621Downloader {
 		public static PostsList PostsList { get; private set; } = new PostsList();
 		public static BitmapImage DefaultAvatar { get; } = new BitmapImage(new Uri("ms-appx:///Assets/esix2.jpg"));
 
+		public bool IsWindows11{ get; private set; }
+
 		public App() {
 			Instance = this;
 			this.InitializeComponent();
@@ -41,6 +45,7 @@ namespace E621Downloader {
 					break;
 			}
 
+			IsWindows11 = SystemInformation.Instance.OperatingSystemVersion.Build >= 22000;
 		}
 
 		public static void InitializeTheme() {

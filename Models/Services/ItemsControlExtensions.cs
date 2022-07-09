@@ -15,9 +15,17 @@ namespace E621Downloader.Models.Services {
 		public static async void ScrollToCenterOfView(this ItemsControl itemsControl, object item) {
 			// Scroll immediately if possible
 			if(!itemsControl.TryScrollToCenterOfView(item)) {
+				await Task.Delay(100);
 				// Otherwise wait until everything is loaded, then scroll
 				if(itemsControl is ListViewBase view) {
-					await view.SmoothScrollIntoViewWithItemAsync(item);
+					try {
+						view.ScrollIntoView(item);
+						//await view.SmoothScrollIntoViewWithItemAsync(item);
+					} catch(Exception) {
+						//try {
+						//	await view.SmoothScrollIntoViewWithItemAsync(item);
+						//} catch(Exception) { }
+					}
 				} else if(itemsControl is ListBox box) {
 					box.ScrollIntoView(item);
 				}

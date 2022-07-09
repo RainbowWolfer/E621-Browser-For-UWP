@@ -22,6 +22,7 @@ namespace E621Downloader.Models.Locals {
 		public bool concatTags;
 		public bool mediaBackgroundPlay;
 		public bool mediaAutoPlay;
+		public bool mediaAutoMute;
 		public bool enableHotKeys;
 		public bool enableGifAutoPlay;
 		public int gifLimit;
@@ -33,6 +34,7 @@ namespace E621Downloader.Models.Locals {
 		public bool spot_includeExplicit;
 		public int spot_amount;
 
+		public SlideshowConfiguration slideshowConfiguration;
 
 		public ItemsGroupViewType library_viewType;
 
@@ -60,6 +62,7 @@ namespace E621Downloader.Models.Locals {
 				concatTags = false,
 				mediaBackgroundPlay = false,
 				mediaAutoPlay = true,
+				mediaAutoMute = false,
 				customHost = "",
 				spot_amount = 1,
 				enableHotKeys = true,
@@ -71,6 +74,7 @@ namespace E621Downloader.Models.Locals {
 				library_viewType = ItemsGroupViewType.ListView,
 				enableGifAutoPlay = true,
 				gifLimit = 5,
+				slideshowConfiguration = new(),
 			};
 		}
 	}

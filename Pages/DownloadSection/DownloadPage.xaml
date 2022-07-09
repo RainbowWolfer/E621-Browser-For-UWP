@@ -28,7 +28,7 @@
 				<ColumnDefinition Width="auto"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<ToggleButton x:Uid="DownloadGroupsContent" x:Name="TitleButton" IsChecked="True" Content="Download Groups" Margin="10" Tapped="TitleButton_Tapped" IsHitTestVisible="False"/>
+			<ToggleButton x:Uid="DownloadGroupsContent" x:Name="TitleButton" IsChecked="True" Content="Download Groups" Margin="10" Tapped="TitleButton_Tapped" IsHitTestVisible="False" Height="35" Width="160" FontSize="16"/>
 			<NavigationView x:Name="MyNavigationView" Grid.Column="1" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" VerticalAlignment="Center" ItemInvoked="NavigationView_ItemInvoked">
 
 			</NavigationView>

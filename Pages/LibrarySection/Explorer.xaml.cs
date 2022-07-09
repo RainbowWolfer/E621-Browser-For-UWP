@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.FileProperties;
 using Windows.System;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -30,11 +31,13 @@ namespace E621Downloader.Pages.LibrarySection {
 				if(isLoading) {
 					TitleBar.EnableRefreshButton = false;
 					TitleBar.EnableSortButtons = false;
+					TitleBar.EnableClearEmptyFile = false;
 					LoadingGrid.Visibility = Visibility.Visible;
 					GroupView.ClearNoDataGrid();
 				} else {
 					TitleBar.EnableRefreshButton = true;
 					TitleBar.EnableSortButtons = true;
+					TitleBar.EnableClearEmptyFile = true;
 					LoadingGrid.Visibility = Visibility.Collapsed;
 				}
 			}
@@ -49,6 +52,8 @@ namespace E621Downloader.Pages.LibrarySection {
 			TitleBar.OnSearchSubmit += TitleBar_OnSearchSubmit;
 			TitleBar.OnOrderTypeChanged += TitleBar_OnOrderTypeChanged;
 			TitleBar.OnAsecDesOrderChanged += TitleBar_OnAsecDesOrderChanged;
+			TitleBar.OnEmptyFileClear += TitleBar_OnEmptyFileClear;
+			TitleBar.EnableClearEmptyFile = true;
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e) {
@@ -84,6 +89,52 @@ namespace E621Downloader.Pages.LibrarySection {
 					TitleBar.IsFolderBar = false;
 				}
 			}
+		}
+
+		private async void TitleBar_OnEmptyFileClear() {
+			MainPage.CreateInstantDialog("Please Wait".Language(), "Clearing in action".Language());
+			int affectedCount = -1;
+			if(args is LibraryImagesArgs files) {
+				affectedCount = await ClearEmptyFilesInFolder(files.Belonger);
+			} else if(args is LibraryFoldersArgs folder) {
+				affectedCount = 0;
+				foreach(StorageFolder item in folder.Folders) {
+					affectedCount += await ClearEmptyFilesInFolder(item);
+				}
+			}
+			MainPage.HideInstantDialog();
+			if(affectedCount > 0) {
+				Refresh();
+			}
+			await new ContentDialog() {
+				Title = "Notification".Language(),
+				Content = "Cleared {{0}} Files".Language(affectedCount),
+				CloseButtonText = "Close".Language(),
+			}.ShowAsync();
+		}
+
+		private async Task<int> ClearEmptyFilesInFolder(StorageFolder folder) {
+			int affectedCount = 0;
+			Dictionary<StorageFile, StorageFile> fileToMeta = new();
+			foreach(StorageFile file in await folder.GetFilesAsync()) {
+				BasicProperties properties = await file.GetBasicPropertiesAsync();
+				if(properties.Size == 0) {
+					fileToMeta.Add(file, null);
+					//find corresponding meta
+					StorageFile metaFile = await folder.GetFileAsync($"{file.DisplayName}.meta");
+					if(metaFile != null) {
+						fileToMeta[file] = metaFile;
+					}
+				}
+			}
+
+			foreach(KeyValuePair<StorageFile, StorageFile> item in fileToMeta) {
+				item.Value?.DeleteAsync();
+				item.Key?.DeleteAsync();
+				affectedCount++;
+			}
+
+			return affectedCount;
 		}
 
 		private void TitleBar_OnSearchInput(VirtualKey key) {

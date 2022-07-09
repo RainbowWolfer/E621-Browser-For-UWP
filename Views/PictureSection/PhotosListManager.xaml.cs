@@ -11,6 +11,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -44,7 +45,9 @@ namespace E621Downloader.Views.PictureSection {
 				var item = new PhotosListItem();
 				item.SetPhoto(obj);
 				item.IsSelected = obj == current;
-				c = item;
+				if(item.IsSelected) {
+					c = item;
+				}
 				PhotosListView.Items.Add(new ListViewItem() {
 					Content = item,
 					Margin = new Thickness(0),
@@ -77,10 +80,14 @@ namespace E621Downloader.Views.PictureSection {
 			}
 		}
 
-		private void PutToCenter(PhotosListItem item) {
+		private async void PutToCenter(PhotosListItem item) {
 			var found = PhotosListView.Items.Where(i => i is ListViewItem lvi && lvi.Content is PhotosListItem pli && pli == item).FirstOrDefault();
+			//var found = PhotosListView.Items.Where(i => i is ListViewItem lvi && lvi == item);
 			//await PhotosListView.SmoothScrollIntoViewWithItemAsync(found);
-			PhotosListView.ScrollToCenterOfView(found);
+
+			await Dispatcher.RunAsync(CoreDispatcherPriority.High, () => {
+				PhotosListView.ScrollToCenterOfView(found);
+			});
 		}
 	}
 }

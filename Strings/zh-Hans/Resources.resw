@@ -1783,7 +1783,46 @@
   <data name="File Path" xml:space="preserve">
     <value>文件路径</value>
   </data>
-  <data name="KnownIssueL2" xml:space="preserve">
+  <data name="OpenInPhotosText.Text" xml:space="preserve">
+    <value>在图片中打开</value>
+  </data>
+  <data name="SlideShowText.Text" xml:space="preserve">
+    <value>开启幻灯片</value>
+  </data>
+  <data name="MediaAutoMuteToggle.OnContent" xml:space="preserve">
+    <value>媒体自动静音</value>
+  </data>
+  <data name="MediaAutoMuteToggle.OffContent" xml:space="preserve">
+    <value>媒体自动静音</value>
+  </data>
+  <data name="SecondsIntervalText.Text" xml:space="preserve">
+    <value>秒间隔</value>
+  </data>
+  <data name="RandomContent.Content" xml:space="preserve">
+    <value>随机</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>开始</value>
+  </data>
+  <data name="Start Slideshow" xml:space="preserve">
+    <value>开始幻灯片</value>
+  </data>
+  <data name="Unexpected error occurred in searching" xml:space="preserve">
+    <value>在搜索时发生了未预料到的错误。</value>
+  </data>
+  <data name="Getting Post" xml:space="preserve">
+    <value>正在获得推图</value>
+  </data>
+  <data name="ClearEmptyFileText.Text" xml:space="preserve">
+    <value>清理空文件</value>
+  </data>
+  <data name="Clearing in action" xml:space="preserve">
+    <value>清理进行中。</value>
+  </data>
+  <data name="Cleared {{0}} Files" xml:space="preserve">
+    <value>已清理 {{0}} 个文件</value>
+  </data>
+  <data name="KnownIssueL2.Text" xml:space="preserve">
     <value>- 在图片页面中退出媒体播放器的全屏后，任何导航都会强制退出任何进一步的全屏。</value>
   </data>
 </root>

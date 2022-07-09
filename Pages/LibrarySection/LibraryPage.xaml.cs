@@ -106,11 +106,14 @@ namespace E621Downloader.Pages.LibrarySection {
 		}
 
 		public async void FindNewTab(string folderName) {
-			if(RootFoldersArgs.Folders == null) {
-				StorageFolder[] folders = await Local.GetDownloadsFolders();
-				RootFoldersArgs.Folders = folders.ToList();
-			}
+			//if(RootFoldersArgs.Folders == null) {
+			//}
+			StorageFolder[] folders = await Local.GetDownloadsFolders();
+			RootFoldersArgs.Folders = folders.ToList();
 			StorageFolder folder = RootFoldersArgs.Folders.Find(f => f.Name == folderName);
+			if(folder == null) {
+				return;
+			}
 			ToTab(folder);
 		}
 

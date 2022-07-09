@@ -331,6 +331,9 @@
     <Compile Include="Views\PictureSection\PhotosListManager.xaml.cs">
       <DependentUpon>PhotosListManager.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PictureSection\SlideshowConfigurationDialog.xaml.cs">
+      <DependentUpon>SlideshowConfigurationDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PostMoreInfoDialog.xaml.cs">
       <DependentUpon>PostMoreInfoDialog.xaml</DependentUpon>
     </Compile>
@@ -678,6 +681,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\PictureSection\SlideshowConfigurationDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PostMoreInfoDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -764,7 +771,7 @@
       <Version>1.11.34</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.9</Version>
+      <Version>6.2.14</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>7.1.2</Version>

@@ -882,6 +882,12 @@
 	<data name="MediaAutoPlayToggle.OffContent" xml:space="preserve">
     <value>Media Auto Play</value>
   </data>
+	<data name="MediaAutoMuteToggle.OnContent" xml:space="preserve">
+    <value>Media Auto Mute</value>
+  </data>
+	<data name="MediaAutoMuteToggle.OffContent" xml:space="preserve">
+    <value>Media Auto Mute</value>
+  </data>
 	<data name="HotKeysToggle.OnContent" xml:space="preserve">
     <value>Enable Hot Keys</value>
   </data>
@@ -1881,7 +1887,7 @@
 	<data name="File Path" xml:space="preserve">
     <value>File Path</value>
   </data>
-	<data name="KnownIssueL2" xml:space="preserve">
+	<data name="KnownIssueL2.Text" xml:space="preserve">
     <value>- After exiting fullscreen of the media player in Picture Page, any navigation will exit any further fullscreen forcedly.</value>
   </data>
 	<data name="OpenInPhotosText.Text" xml:space="preserve">
@@ -1889,5 +1895,32 @@
   </data>
 	<data name="SlideShowText.Text" xml:space="preserve">
     <value>Slideshow</value>
+  </data>
+	<data name="SecondsIntervalText.Text" xml:space="preserve">
+    <value>Seconds Interval</value>
+  </data>
+	<data name="RandomContent.Content" xml:space="preserve">
+    <value>Random</value>
+  </data>
+	<data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+	<data name="Start Slideshow" xml:space="preserve">
+    <value>Start Slideshow</value>
+  </data>
+	<data name="Unexpected error occurred in searching" xml:space="preserve">
+    <value>Unexpected error occurred in searching.</value>
+  </data>
+	<data name="Getting Post" xml:space="preserve">
+    <value>Getting Post</value>
+  </data>
+	<data name="ClearEmptyFileText.Text" xml:space="preserve">
+    <value>Clear Empty File</value>
+  </data>
+	<data name="Clearing in action" xml:space="preserve">
+    <value>Clearing in action.</value>
+  </data>
+	<data name="Cleared {{0}} Files" xml:space="preserve">
+    <value>Cleared {{0}} Files</value>
   </data>
 </root>

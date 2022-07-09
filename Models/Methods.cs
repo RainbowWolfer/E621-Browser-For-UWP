@@ -247,5 +247,27 @@ namespace E621Downloader.Models {
 		public static T GetRandomItem<T>(this IEnumerable<T> values) {
 			return values.ElementAtOrDefault(new Random().Next(0, values.Count()));
 		}
+
+		public static bool OnlyContainDigits(this string text) {
+			foreach(char item in text) {
+				if(!char.IsDigit(item)) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		public static void AddToPostsPool(this Dictionary<string, Post> dic, IEnumerable<Post> posts) {
+			if(posts == null || posts.Count() == 0) {
+				return;
+			}
+			foreach(Post item in posts) {
+				if(dic.ContainsKey(item.id)) {
+					dic[item.id] = item;
+				} else {
+					dic.Add(item.id, item);
+				}
+			}
+		}
 	}
 }
