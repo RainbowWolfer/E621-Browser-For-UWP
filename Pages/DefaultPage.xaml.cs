@@ -54,7 +54,7 @@ namespace E621Downloader.Pages {
 		private async void Page_Loaded(object sender, RoutedEventArgs e) {
 			if(!await Crashes.HasCrashedInLastSessionAsync()) {
 				NavigateToMainPage();
-				Crashes.GenerateTestCrash();
+				//Crashes.GenerateTestCrash();
 			} else {
 				ErrorReport report = await Crashes.GetLastSessionCrashReportAsync();
 				if(report == null) {
@@ -107,6 +107,7 @@ namespace E621Downloader.Pages {
 				SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
 			};
 			savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
+			savePicker.FileTypeChoices.Add("Json File", new List<string>() { ".json" });
 			savePicker.SuggestedFileName = "E621 UWP " + "Error Report".Language() + $" {report.AppErrorTime}";
 			StorageFile file = await savePicker.PickSaveFileAsync();
 			if(file != null) {
