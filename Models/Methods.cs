@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Email;
 using Windows.ApplicationModel.Resources;
+using Windows.Foundation;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI;
@@ -292,5 +293,17 @@ namespace E621Downloader.Models {
 				.ToArray();
 		}
 
+		public static double Distance(this Point a, Point b) {
+			var x = Math.Pow(a.X - b.X, 2);
+			var y = Math.Pow(a.Y - b.Y, 2);
+			return Math.Sqrt(x + y);
+		}
+
+		public static Point Add(this Point a, Point b) {
+			return new Point(a.X + b.X, a.Y + b.Y);
+		}
+		public static Point Minus(this Point a, Point b) {
+			return new Point(a.X - b.X, a.Y - b.Y);
+		}
 	}
 }

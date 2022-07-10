@@ -121,6 +121,7 @@ namespace E621Downloader.Pages {
 #else
 			DebugItem.Visibility = Visibility.Collapsed;
 #endif
+			Loop();
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e) {
@@ -750,73 +751,6 @@ namespace E621Downloader.Pages {
 			Loader.ImageFile = MainImage.Source as BitmapImage;
 		}
 
-		private void MainImage_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e) {
-			Debug.WriteLine("!?!");
-			//ImageTransform.ScaleX = ImageTransform.ScaleX < 2 ? 3 : 1;
-			//ImageTransform.ScaleY = ImageTransform.ScaleY < 2 ? 3 : 1;
-		}
-
-		private void MainImage_PointerWheelChanged(object sender, PointerRoutedEventArgs e) {
-			PointerPoint point = e.GetCurrentPoint(MainImage);
-			double posX = point.Position.X;
-			double posY = point.Position.Y;
-			//Debug.WriteLine($"{(int)posX}-{(int)posY} <=> {(int)MainImage.ActualWidth / 2}-{(int)MainImage.ActualHeight / 2}");
-
-			double scroll = point.Properties.MouseWheelDelta > 0 ? 1.2 : 0.8;
-
-			double newScaleX = ImageTransform.ScaleX * scroll;
-			double newScaleY = ImageTransform.ScaleY * scroll;
-
-			double newTransX = scroll > 1 ?
-				(ImageTransform.TranslateX - (posX * 0.2 * ImageTransform.ScaleX)) :
-				(ImageTransform.TranslateX - (posX * -0.2 * ImageTransform.ScaleX));
-			double newTransY = scroll > 1 ?
-				(ImageTransform.TranslateY - (posY * 0.2 * ImageTransform.ScaleY)) :
-				(ImageTransform.TranslateY - (posY * -0.2 * ImageTransform.ScaleY));
-
-			if(newScaleX < 1 || newScaleY < 1) {
-				newScaleX = 1;
-				newScaleY = 1;
-				newTransX = 0;
-				newTransY = 0;
-			}
-			if(newScaleX > 10 || newScaleY > 10) {
-				return;
-			}
-
-			ImageTransform.ScaleX = newScaleX;
-			ImageTransform.ScaleY = newScaleY;
-			ImageTransform.TranslateX = newTransX;
-			ImageTransform.TranslateY = newTransY;
-
-			Limit();
-		}
-
-		private void MainImage_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e) {
-			if(e.PointerDeviceType == PointerDeviceType.Touch) {
-				
-			} else {
-				ImageTransform.TranslateX += e.Delta.Translation.X;
-				ImageTransform.TranslateY += e.Delta.Translation.Y;
-			}
-
-			Limit();
-		}
-
-		private void ZoomIn() {
-			if(MainPage.Instance?.IsInSearchPopup ?? false) {
-				return;
-			}
-			Zoom(1.2);
-		}
-
-		private void ZoomOut() {
-			if(MainPage.Instance?.IsInSearchPopup ?? false) {
-				return;
-			}
-			Zoom(0.8);
-		}
-
 		private void Zoom(double ratio) {
 			double newScaleX = ImageTransform.ScaleX * ratio;
 			double newScaleY = ImageTransform.ScaleY * ratio;
@@ -842,6 +776,156 @@ namespace E621Downloader.Pages {
 			ImageTransform.TranslateX = newTransX;
 			ImageTransform.TranslateY = newTransY;
 			Limit();
+		}
+
+		private void Zoom(double x, double y, double zoom, double scale = 0.2) {
+			double newScaleX = ImageTransform.ScaleX * zoom;
+			double newScaleY = ImageTransform.ScaleY * zoom;
+
+			double newTransX = zoom > 1 ?
+				(ImageTransform.TranslateX - (x * scale * ImageTransform.ScaleX)) :
+				(ImageTransform.TranslateX - (x * -scale * ImageTransform.ScaleX));
+			double newTransY = zoom > 1 ?
+				(ImageTransform.TranslateY - (y * scale * ImageTransform.ScaleY)) :
+				(ImageTransform.TranslateY - (y * -scale * ImageTransform.ScaleY));
+
+			if(newScaleX < 1 || newScaleY < 1) {
+				newScaleX = 1;
+				newScaleY = 1;
+				newTransX = 0;
+				newTransY = 0;
+			}
+			if(newScaleX > 10 || newScaleY > 10) {
+				return;
+			}
+
+			//make animations?
+			ImageTransform.ScaleX = newScaleX;
+			ImageTransform.ScaleY = newScaleY;
+			ImageTransform.TranslateX = newTransX;
+			ImageTransform.TranslateY = newTransY;
+
+			Limit();
+		}
+
+		private void MainImage_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e) {
+			Debug.WriteLine(e.GetPosition(MainImage));
+			if(e.PointerDeviceType == PointerDeviceType.Touch) {
+				Point pos = e.GetPosition(MainImage);
+				if(ImageTransform.ScaleX < 3) {
+					Zoom(pos.X, pos.Y, 1.5, 0.5);
+				} else {
+					Zoom(pos.X, pos.Y, 0.01);
+				}
+			}
+		}
+
+		private bool isInDoubleTap = false;
+
+		private async void Loop() {
+
+		}
+
+		private CancellationTokenSource ctsDoubleTap;
+
+		private void ContentGrid_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e) {
+			if(e.PointerDeviceType == PointerDeviceType.Touch) {
+				async void DelayedAssign() {
+					try {
+						if(ctsDoubleTap != null) {
+							ctsDoubleTap.Cancel();
+							ctsDoubleTap.Dispose();
+							ctsDoubleTap = null;
+						}
+						ctsDoubleTap = new CancellationTokenSource();
+						isInDoubleTap = true;
+						await Task.Delay(500, ctsDoubleTap.Token);
+						if(!ctsDoubleTap.IsCancellationRequested) {
+							isInDoubleTap = false;
+						}
+					} catch(TaskCanceledException) { }
+				}
+				DelayedAssign();
+			} else {
+				ShowListGrid = true;
+			}
+		}
+
+		private CancellationTokenSource ctsDoubleTap2;
+		private Point startPosition;
+		private void ContentGrid_PointerPressed(object sender, PointerRoutedEventArgs e) {
+			startPosition = e.GetCurrentPoint(MainImage).Position;
+			if(e.Pointer.PointerDeviceType != PointerDeviceType.Touch) {
+				ShowListGrid = false;
+			}
+		}
+
+		private void ContentGrid_PointerReleased(object sender, PointerRoutedEventArgs e) {
+			Point endPos = e.GetCurrentPoint(MainImage).Position;
+			if(startPosition.Distance(endPos) >= 20d) {
+				return;
+			}
+			if(e.Pointer.PointerDeviceType == PointerDeviceType.Touch) {
+				async void DelayedAction() {
+					try {
+						if(ctsDoubleTap2 != null) {
+							ctsDoubleTap2.Cancel();
+							ctsDoubleTap2.Dispose();
+							ctsDoubleTap2 = null;
+						}
+						ctsDoubleTap2 = new CancellationTokenSource();
+						await Task.Delay(200, ctsDoubleTap2.Token);
+						if(!isInDoubleTap && !ctsDoubleTap2.IsCancellationRequested) {
+							ShowListGrid = !ShowListGrid;
+						}
+					} catch(TaskCanceledException) {
+						Debug.WriteLine("!");
+					}
+				}
+				DelayedAction();
+			}
+		}
+
+		private void MainImage_PointerWheelChanged(object sender, PointerRoutedEventArgs e) {
+			PointerPoint point = e.GetCurrentPoint(MainImage);
+			double posX = point.Position.X;
+			double posY = point.Position.Y;
+			//Debug.WriteLine($"{(int)posX}-{(int)posY} <=> {(int)MainImage.ActualWidth / 2}-{(int)MainImage.ActualHeight / 2}");
+
+			double scroll = point.Properties.MouseWheelDelta > 0 ? 1.2 : 0.8;
+			Zoom(posX, posY, scroll);
+		}
+
+		private void MainImage_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e) {
+			//if(e.PointerDeviceType == PointerDeviceType.Touch) {
+			//	//Debug.WriteLine(e.Delta.Translation + " _ " + e.Delta.Expansion + " _ " + e.Delta.Scale);
+			//	Debug.WriteLine(e.Cumulative.Translation + " _ " + e.Position);
+
+			//	if(e.Delta.Expansion != 0) {
+			//		var scale = e.Delta.Expansion * 0.02;
+			//		var pos = e.Position.Add(e.Cumulative.Translation).Minus(new Point(ImageTransform.TranslateX, ImageTransform.TranslateY));
+			//		//var pos = e.Position.Minus(e.Cumulative.Translation);
+			//		Zoom(pos.X, pos.Y, 1 + scale, scale);
+			//	}
+			//}
+			ImageTransform.TranslateX += e.Delta.Translation.X;
+			ImageTransform.TranslateY += e.Delta.Translation.Y;
+
+			Limit();
+		}
+
+		private void ZoomIn() {
+			if(MainPage.Instance?.IsInSearchPopup ?? false) {
+				return;
+			}
+			Zoom(1.2);
+		}
+
+		private void ZoomOut() {
+			if(MainPage.Instance?.IsInSearchPopup ?? false) {
+				return;
+			}
+			Zoom(0.8);
 		}
 
 		private bool IsHorScaleAbove() {
@@ -1593,10 +1677,6 @@ namespace E621Downloader.Pages {
 			Progress = 0;
 		}
 
-		private void ContentGrid_PointerPressed(object sender, PointerRoutedEventArgs e) {
-			ShowListGrid = false;
-		}
-
 		private async void SlideshowItem_Click(object sender, RoutedEventArgs e) {
 			var content = new SlideshowConfigurationDialog();
 			var dialog = new ContentDialog() {
@@ -1638,9 +1718,6 @@ namespace E621Downloader.Pages {
 
 		}
 
-		private void ContentGrid_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e) {
-			ShowListGrid = true;
-		}
 	}
 
 	public class GroupTagListWithColor: ObservableCollection<GroupTag> {
