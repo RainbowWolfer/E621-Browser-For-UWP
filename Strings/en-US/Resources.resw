@@ -1780,7 +1780,7 @@
     <value>- New option: Enable GIF AutoPlay</value>
   </data>
 	<data name="V1150L7.Text" xml:space="preserve">
-    <value>- Some bugs fixes &amp; changes</value>
+    <value>- Some bugs fix &amp; changes</value>
   </data>
 	<data name="No Download Path Selected" xml:space="preserve">
     <value>No Download Path Selected</value>
@@ -1955,5 +1955,26 @@
   </data>
 	<data name="SkipBlacklistContent.Content" xml:space="preserve">
     <value>Skip Blacklist</value>
+  </data>
+	<data name="Unable to get this post" xml:space="preserve">
+    <value>Unable to get this post</value>
+  </data>
+	<data name="V1200L1.Text" xml:space="preserve">
+    <value>- New image loading mechanism. Now loadings look faster</value>
+  </data>
+	<data name="V1200L2.Text" xml:space="preserve">
+    <value>- Double click image in Picture Page will show images list</value>
+  </data>
+	<data name="V1200L3.Text" xml:space="preserve">
+    <value>- Now a crash report page will show up after app crashes and relaunches the app. You can send the report to the developer or save it</value>
+  </data>
+	<data name="V1200L4.Text" xml:space="preserve">
+    <value>- Now you can search any e621\e926 URL or post id in the search popup</value>
+  </data>
+	<data name="V1200L5.Text" xml:space="preserve">
+    <value>- The slideshow is now available in Picture Page</value>
+  </data>
+	<data name="V1200L6.Text" xml:space="preserve">
+    <value>- many bugs fix &amp; changes</value>
   </data>
 </root>

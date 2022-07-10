@@ -258,7 +258,12 @@
 							<controls:Expander Header="2022-07-10 (v1.2.0.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
 								<controls:Expander.Content>
 									<StackPanel>
-										<TextBlock x:Uid="V1200L1" Text="- " FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1200L1" Text="- New image loading mechanism. Now loadings look faster." FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1200L2" Text="- Double click image in Picture Page will show images list." FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1200L3" Text="- Now a crash report page will show up after app crashes and relaunches the app. You can send the report to the developer or save it." FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1200L4" Text="- Now you can search any e621\e926 URL or post id in the search popup." FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1200L5" Text="- The slideshow is now available in Picture Page." FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1200L6" Text="- Some bugs fix &amp; changes." FontSize="22" TextWrapping="WrapWholeWords"/>
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>

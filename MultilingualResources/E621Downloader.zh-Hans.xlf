@@ -2214,8 +2214,9 @@ Warning! This action will override the tags existing in the cloud, do you want t
           <target state="final">- 新选项：开启GIF自动播放</target>
         </trans-unit>
         <trans-unit id="V1150L7.Text" translate="yes" xml:space="preserve">
-          <source>- Some bugs fixes &amp; changes</source>
-          <target state="final">- 一些BUG修复与改动</target>
+          <source>- Some bugs fix &amp; changes</source>
+          <target state="needs-review-translation">- 一些BUG修复与改动</target>
+         
         </trans-unit>
         <trans-unit id="No Download Path Selected" translate="yes" xml:space="preserve">
           <source>No Download Path Selected</source>
@@ -2465,7 +2466,7 @@ Would you like to get it set?</source>
         <trans-unit id="Do you want to download the selected.Text" translate="yes" xml:space="preserve">
           <source>Do you want to download the selected</source>
           <target state="needs-review-translation">是否要下载选定的推图？</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+         
         </trans-unit>
         <trans-unit id="TodayDateContent.Content" translate="yes" xml:space="preserve">
           <source>Add Today's Date to Download Folder's Name</source>
@@ -2474,6 +2475,34 @@ Would you like to get it set?</source>
         <trans-unit id="SkipBlacklistContent.Content" translate="yes" xml:space="preserve">
           <source>Skip Blacklist</source>
           <target state="final">跳过黑名单</target>
+        </trans-unit>
+        <trans-unit id="Unable to get this post" translate="yes" xml:space="preserve">
+          <source>Unable to get this post</source>
+          <target state="final">无法获得此推图</target>
+        </trans-unit>
+        <trans-unit id="V1200L1.Text" translate="yes" xml:space="preserve">
+          <source>- New image loading mechanism. Now loadings look faster</source>
+          <target state="needs-review-translation">- 全新图片加载机制，现在加载看起来快多了</target>
+        </trans-unit>
+        <trans-unit id="V1200L2.Text" translate="yes" xml:space="preserve">
+          <source>- Double click image in Picture Page will show images list</source>
+          <target state="needs-review-translation">- 在图片页面双击图片来打开图片列表</target>
+        </trans-unit>
+        <trans-unit id="V1200L3.Text" translate="yes" xml:space="preserve">
+          <source>- Now a crash report page will show up after app crashes and relaunches the app. You can send the report to the developer or save it</source>
+          <target state="needs-review-translation">- 现在在软件崩溃并重启后会显示崩溃报告页面，你可以将报告发送给开发者或者保存</target>
+        </trans-unit>
+        <trans-unit id="V1200L4.Text" translate="yes" xml:space="preserve">
+          <source>- Now you can search any e621\e926 URL or post id in the search popup</source>
+          <target state="needs-review-translation">- 现在你可以直接在搜索弹窗里直接搜索E621\E926的网址或者推图id</target>
+        </trans-unit>
+        <trans-unit id="V1200L5.Text" translate="yes" xml:space="preserve">
+          <source>- The slideshow is now available in Picture Page</source>
+          <target state="needs-review-translation">- 幻灯片现在在图片页面可用</target>
+        </trans-unit>
+        <trans-unit id="V1200L6.Text" translate="yes" xml:space="preserve">
+          <source>- many bugs fix &amp; changes</source>
+          <target state="needs-review-translation">- 许多bug修复与改动</target>
         </trans-unit>
       </group>
     </body>

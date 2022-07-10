@@ -117,6 +117,9 @@ namespace E621Downloader {
 				}
 			};
 
+			var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+			//titleBar.InactiveBackgroundColor = null;
+
 			currentTag = PageTag.Welcome;
 			KeyListener.SubmitInstance(new KeyListenerInstance(async key => {
 				if(IsInputting || isInMaintenance) {
@@ -218,7 +221,7 @@ namespace E621Downloader {
 		private int downloadDelayedTime = 0;
 		private async void Loop() {
 			const int DELAY = 200;
-			const int WAIT_TIME = 3000;
+			const int WAIT_TIME = 1000;
 			while(true) {
 				if(DownloadsManager.HasDownloading()) {
 					ChangeDownloadRingIcon(LoadingType.Loading);
@@ -643,24 +646,33 @@ namespace E621Downloader {
 						if(!App.PostsPool.TryGetValue(view.ResultPostID, out Post loadPost)) {
 							loadPost = await Post.GetPostByIDAsync(view.ResultPostID);
 						}
-						//load preview
-						var loader = LoadPool.SetNew(loadPost);
-						if(loader.Preview == null) {
-							if(!string.IsNullOrWhiteSpace(loadPost.preview.url)) {
-								HttpResult<InMemoryRandomAccessStream> result = await Data.ReadImageStreamAsync(loadPost.preview.url);
-								if(result.Result == HttpResultType.Success) {
-									var bitmap = new BitmapImage();
-									await bitmap.SetSourceAsync(result.Content);
-									loader.Preview = bitmap;
+						if(loadPost == null || loadPost.flags.deleted) {
+							HideInstantDialog();
+							await new ContentDialog() {
+								Title = "Error".Language(),
+								Content = "Unable to get this post".Language(),
+								CloseButtonText = "Back".Language(),
+							}.ShowAsync();
+						} else {
+							//load preview
+							var loader = LoadPool.SetNew(loadPost);
+							if(loader.Preview == null) {
+								if(!string.IsNullOrWhiteSpace(loadPost.preview.url)) {
+									HttpResult<InMemoryRandomAccessStream> result = await Data.ReadImageStreamAsync(loadPost.preview.url);
+									if(result.Result == HttpResultType.Success) {
+										var bitmap = new BitmapImage();
+										await bitmap.SetSourceAsync(result.Content);
+										loader.Preview = bitmap;
+									}
 								}
 							}
+
+							HideInstantDialog();
+
+							App.PostsList.UpdatePostsList(new List<Post>() { loadPost });
+							App.PostsList.Current = loadPost;
+							NavigateToPicturePage(loadPost, Array.Empty<string>());
 						}
-
-						HideInstantDialog();
-
-						App.PostsList.UpdatePostsList(new List<Post>() { loadPost });
-						App.PostsList.Current = loadPost;
-						NavigateToPicturePage(loadPost, Array.Empty<string>());
 					} else {
 						await new ContentDialog() {
 							Title = "Error".Language(),

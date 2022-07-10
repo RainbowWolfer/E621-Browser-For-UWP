@@ -4,7 +4,6 @@ using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using System;
 using System.IO;
-using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -41,11 +40,12 @@ namespace E621Downloader.Views.PictureSection {
 			get => photo;
 			private set {
 				photo = value;
-				LoadAsync();
 			}
 		}
 
 		private ProgressLoader progress;
+		private bool isLoading = false;
+		private bool hasLoaded = false;
 
 		public PhotosListItem() {
 			this.InitializeComponent();
@@ -53,10 +53,11 @@ namespace E621Downloader.Views.PictureSection {
 			PlayIcon.Translation += new Vector3(0, 0, 5);
 		}
 
-		public async void LoadAsync() {
-			if(!CheckTypeValid(Photo) || progress.Value != null) {
+		public async Task LoadAsync() {
+			if(!CheckTypeValid(Photo) || progress.Value != null || isLoading || hasLoaded) {
 				return;
 			}
+			isLoading = true;
 			progress.Value = 0;
 			MainImage.Source = null;
 			if(Photo is Post post) {
@@ -87,6 +88,8 @@ namespace E621Downloader.Views.PictureSection {
 				}
 				await LoadPost(postRef);
 			}
+			hasLoaded = true;
+			isLoading = false;
 			progress.Value = null;
 		}
 
@@ -121,18 +124,11 @@ namespace E621Downloader.Views.PictureSection {
 
 		private async Task LoadLocal(StorageFile file, Post post) {
 			PlayIcon.Visibility = PicturePage.GetFileType(post) == FileType.Webm ? Visibility.Visible : Visibility.Collapsed;
-			if(file.FileType == ".webm") {
-				using StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.SingleItem);
-				if(thumbnail != null) {
-					using Stream stream = thumbnail.AsStreamForRead();
-					BitmapImage bitmap = new();
-					await bitmap.SetSourceAsync(stream.AsRandomAccessStream());
-					MainImage.Source = bitmap;
-				}
-			} else if(new string[] { ".jpg", ".png", ".gif" }.Contains(file.FileType)) {
-				using IRandomAccessStream randomAccessStream = await file.OpenAsync(FileAccessMode.Read);
+			using StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.SingleItem);
+			if(thumbnail != null) {
+				using Stream stream = thumbnail.AsStreamForRead();
 				BitmapImage bitmap = new();
-				await bitmap.SetSourceAsync(randomAccessStream);
+				await bitmap.SetSourceAsync(stream.AsRandomAccessStream());
 				MainImage.Source = bitmap;
 			}
 		}

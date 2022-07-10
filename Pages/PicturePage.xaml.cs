@@ -21,6 +21,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.Media.Core;
 using Windows.Media.Playback;
@@ -306,7 +307,9 @@ namespace E621Downloader.Pages {
 				MyMediaPlayer.MediaPlayer.Pause();
 				hasExecutedPause = true;
 			}
-			ShowListGrid = false;
+			if(e.Content is not PicturePage) {
+				ShowListGrid = false;
+			}
 		}
 
 		private void LoadFromPost(Post post) {
@@ -416,8 +419,8 @@ namespace E621Downloader.Pages {
 					Progress = 0;
 					MyMediaPlayer.Visibility = Visibility.Collapsed;
 					MyScrollViewer.Visibility = Visibility.Visible;
-					try {
-						async void Load() {
+					async void SyncLoad() {
+						try {
 							using IRandomAccessStream randomAccessStream = await local.ImageFile.OpenAsync(FileAccessMode.Read);
 							BitmapImage result = new();
 							await result.SetSourceAsync(randomAccessStream);
@@ -426,13 +429,12 @@ namespace E621Downloader.Pages {
 								RequestedOperation = DataPackageOperation.Copy,
 							};
 							imageDataPackage.SetBitmap(RandomAccessStreamReference.CreateFromFile(local.ImageFile));
+						} catch(Exception e) {
+							HintText.Text = "Local Post".Language() + $"({local.ImagePost.id}) - {local.ImageFile.Path} " + "Load Failed".Language() + $"\n{e.Message}";
+							HintText.Visibility = Visibility.Visible;
 						}
-						Load();
-					} catch(Exception e) {
-						//await MainPage.CreatePopupDialog("Error".Language(), "Local Post".Language() + $"({local.ImagePost.id}) - {local.ImageFile.Path} " + "Load Failed".Language() + $"\n{e.Message}");
-						HintText.Text = "Local Post".Language() + $"({local.ImagePost.id}) - {local.ImageFile.Path} " + "Load Failed".Language() + $"\n{e.Message}";
-						HintText.Visibility = Visibility.Visible;
 					}
+					SyncLoad();
 					MyMediaPlayer.Source = null;
 					Progress = null;
 					break;
@@ -791,8 +793,12 @@ namespace E621Downloader.Pages {
 		}
 
 		private void MainImage_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e) {
-			ImageTransform.TranslateX += e.Delta.Translation.X;
-			ImageTransform.TranslateY += e.Delta.Translation.Y;
+			if(e.PointerDeviceType == PointerDeviceType.Touch) {
+				
+			} else {
+				ImageTransform.TranslateX += e.Delta.Translation.X;
+				ImageTransform.TranslateY += e.Delta.Translation.Y;
+			}
 
 			Limit();
 		}

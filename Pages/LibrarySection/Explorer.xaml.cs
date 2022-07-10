@@ -105,7 +105,7 @@ namespace E621Downloader.Pages.LibrarySection {
 			}
 			MainPage.HideInstantDialog();
 			if(affectedCount > 0) {
-				Refresh();
+				await Refresh();
 			}
 			await new ContentDialog() {
 				Title = "Notification".Language(),

@@ -280,9 +280,17 @@ namespace E621Downloader.Models {
 			await EmailManager.ShowComposeNewEmailAsync(emailMessage);
 		}
 
-		public static string GetTodayDate(){
+		public static string GetTodayDate() {
 			DateTime now = DateTime.Now;
 			return $"{now.Year}-{now.Month.ToDuo()}-{now.Day.ToDuo()}";
 		}
+
+		public static List<T>[] Partition<T>(this List<T> values, int chunkSize) {
+			return values.Select((x, i) => new { Index = i, Value = x })
+				.GroupBy(x => x.Index / chunkSize)
+				.Select(x => x.Select(v => v.Value).ToList())
+				.ToArray();
+		}
+
 	}
 }

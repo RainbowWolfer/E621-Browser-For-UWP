@@ -665,7 +665,9 @@ namespace E621Downloader.Pages {
 						PrimaryButtonText = "Yes".Language(),
 						CloseButtonText = "No".Language(),
 					}.ShowAsync() == ContentDialogResult.Primary) {
-						if(await DownloadsManager.CheckDownloadAvailableWithDialog(() => hasShownFail = true)) {
+						if(await DownloadsManager.CheckDownloadAvailableWithDialog(() => {
+							hasShownFail = true;
+						})) {
 							CancelDownloads();
 							cts_download = new CancellationTokenSource();
 							CreateDownloadDialog("Please Wait".Language(), "Handling Downloads".Language());
@@ -731,7 +733,7 @@ namespace E621Downloader.Pages {
 				}
 				if(downloadResult) {
 					MainPage.CreateTip_SuccessDownload(this);
-				} else if(!hasShownFail) {
+				} else if(hasShownFail) {
 					await MainPage.CreatePopupDialog("Error".Language(), "Downloads Failed".Language());
 				}
 

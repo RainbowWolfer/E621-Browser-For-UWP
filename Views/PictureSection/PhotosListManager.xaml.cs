@@ -3,6 +3,7 @@ using E621Downloader.Models.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -28,12 +29,15 @@ namespace E621Downloader.Views.PictureSection {
 			PhotosListView.Items.Clear();
 			Items.Clear();
 			PhotosListItem c = null;
-			foreach(var obj in objs) {
+			int selectedIndex = -1;
+			for(int i = 0; i < objs.Count; i++) {
+				object obj = objs[i];
 				var item = new PhotosListItem();
 				item.SetPhoto(obj);
 				item.IsSelected = obj == current;
 				if(item.IsSelected) {
 					c = item;
+					selectedIndex = i;
 				}
 				PhotosListView.Items.Add(new ListViewItem() {
 					Content = item,
@@ -42,8 +46,24 @@ namespace E621Downloader.Views.PictureSection {
 				});
 				Items.Add(item);
 			}
+			List<Task> tasks = Items.Select(i => i.LoadAsync()).ToList();
+			Load(tasks, selectedIndex);
 			if(c != null) {
 				PutToCenter(c);
+			}
+		}
+
+		private async void Load(List<Task> tasks, int selectedIndex) {
+			List<Pair<Task, int>> pool = new();
+			tasks.ForEach(t => pool.Add(new Pair<Task, int>(t, -1)));
+			for(int i = 0; i < pool.Count; i++) {
+				pool[i].Value = Math.Abs(selectedIndex - i);
+			}
+			var order = pool.OrderBy(t => t.Value).Select(i => i.Key).ToList();
+
+			List<Task>[] groups = order.Partition(5);
+			foreach(List<Task> item in groups) {
+				await Task.WhenAll(item);
 			}
 		}
 

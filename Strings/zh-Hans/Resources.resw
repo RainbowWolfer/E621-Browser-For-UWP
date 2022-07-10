@@ -1858,4 +1858,25 @@
   <data name="SkipBlacklistContent.Content" xml:space="preserve">
     <value>跳过黑名单</value>
   </data>
+  <data name="Unable to get this post" xml:space="preserve">
+    <value>无法获得此推图</value>
+  </data>
+  <data name="V1200L1.Text" xml:space="preserve">
+    <value>- 全新图片加载机制，现在加载看起来快多了</value>
+  </data>
+  <data name="V1200L2.Text" xml:space="preserve">
+    <value>- 在图片页面双击图片来打开图片列表</value>
+  </data>
+  <data name="V1200L3.Text" xml:space="preserve">
+    <value>- 现在在软件崩溃并重启后会显示崩溃报告页面，你可以将报告发送给开发者或者保存</value>
+  </data>
+  <data name="V1200L4.Text" xml:space="preserve">
+    <value>- 现在你可以直接在搜索弹窗里直接搜索E621\E926的网址或者推图id</value>
+  </data>
+  <data name="V1200L5.Text" xml:space="preserve">
+    <value>- 幻灯片现在在图片页面可用</value>
+  </data>
+  <data name="V1200L6.Text" xml:space="preserve">
+    <value>- 许多bug修复与改动</value>
+  </data>
 </root>
