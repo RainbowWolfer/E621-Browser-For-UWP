@@ -12,6 +12,6 @@
 
     <StackPanel>
 		<TextBlock x:Uid="Do you want to download the selected" Text="Do you want to download the selected" FontSize="16" Margin="5"/>
-		<CheckBox x:Uid="TodayDateContent" x:Name="TodayDateBox" Content="Add Today's Date to Download Folder's Name" Grid.Row="5" Margin="5"/>
+		<CheckBox x:Uid="TodayDateContent" x:Name="TodayDateBox" Content="Add Today's Date to Download Folder's Name" Grid.Row="5" Margin="5,5,5,-5"/>
 	</StackPanel>
 </UserControl>

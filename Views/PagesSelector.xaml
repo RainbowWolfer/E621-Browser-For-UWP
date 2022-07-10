@@ -32,7 +32,7 @@
 				<TextBlock x:Uid="Select Current Page Text" Text="Select Current Page" VerticalAlignment="Center" Margin="10,0,0,0"/>
 			</StackPanel>
 		</Button>
-		<CheckBox x:Uid="SkipBlacklistContent" x:Name="SkipBlacklistBox" Content="Skip Blacklist" Grid.Row="4" Margin="5"/>
-		<CheckBox x:Uid="TodayDateContent" x:Name="TodayDateBox" Content="Add Today's Date to Download Folder's Name" Grid.Row="5" Margin="5"/>
+		<CheckBox x:Uid="SkipBlacklistContent" x:Name="SkipBlacklistBox" Content="Skip Blacklist" Grid.Row="4" Margin="5,15,5,5"/>
+		<CheckBox x:Uid="TodayDateContent" x:Name="TodayDateBox" Content="Add Today's Date to Download Folder's Name" Grid.Row="5" Margin="5,0,0,0"/>
 	</Grid>
 </UserControl>

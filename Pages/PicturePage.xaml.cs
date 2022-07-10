@@ -121,7 +121,6 @@ namespace E621Downloader.Pages {
 #else
 			DebugItem.Visibility = Visibility.Collapsed;
 #endif
-			Loop();
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e) {
@@ -821,11 +820,6 @@ namespace E621Downloader.Pages {
 		}
 
 		private bool isInDoubleTap = false;
-
-		private async void Loop() {
-
-		}
-
 		private CancellationTokenSource ctsDoubleTap;
 
 		private void ContentGrid_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e) {
