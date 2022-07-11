@@ -31,6 +31,7 @@
 			</Setter>
 			<Setter Property="VerticalAlignment" Value="Stretch"/>
 			<Setter Property="Margin" Value="20"/>
+			<Setter Property="Padding" Value="0,0,0,20"/>
 			<Setter Property="Width" Value="400"/>
 			<Setter Property="CornerRadius" Value="20"/>
 		</Style>
@@ -102,7 +103,7 @@
 										<ColumnDefinition Width="auto"/>
 										<ColumnDefinition Width="*"/>
 									</Grid.ColumnDefinitions>
-									<StackPanel x:Uid="LanguageToolTip" x:Name="LanguagePanel" Orientation="Horizontal" ToolTipService.ToolTip="Language" PointerEntered="LanguagePanel_PointerEntered" PointerExited="LanguagePanel_PointerExited">
+									<StackPanel x:Uid="LanguageToolTip" x:Name="LanguagePanel" Orientation="Horizontal" ToolTipService.ToolTip="Language">
 										<FontIcon Glyph="&#xF49A;" Margin="5,0,0,0"/>
 										<TextBlock x:Uid="LanguageText" Text="Language" VerticalAlignment="Center" FontSize="17" Margin="5,0,0,0"/>
 									</StackPanel>
@@ -129,14 +130,14 @@
 									</StackPanel>
 								</Button>
 								<StackPanel Orientation="Horizontal">
-									<ToggleSwitch x:Uid="CustomHostToggle" x:Name="CustomHostToggle" OffContent="Enable Custom Host" OnContent="Enable Custom Host" Margin="5" Toggled="CustomHostToggle_Toggled"/>
-									<Button x:Name="CustomHostButton" Content="E926.net" Margin="10,0,0,0" Tapped="CustomHostButton_Tapped"/>
+									<ToggleSwitch x:Uid="CustomHostToggle" x:Name="CustomHostToggle" OffContent="Enable Custom Host" OnContent="Enable Custom Host" FontWeight="SemiBold" Margin="5" Toggled="CustomHostToggle_Toggled"/>
+									<Button x:Name="CustomHostButton" Content="E926.net" Margin="10,0,0,0" Tapped="CustomHostButton_Tapped" Style="{StaticResource AccentButtonStyle}"/>
 								</StackPanel>
-								<ToggleSwitch x:Uid="CycleListToggle" x:Name="CycleListToggle" OffContent="Enable Cycle List" OnContent="Enable Cycle List" Margin="5" Toggled="CycleListToggle_Toggled"/>
+								<ToggleSwitch x:Uid="CycleListToggle" x:Name="CycleListToggle" OffContent="Enable Cycle List" OnContent="Enable Cycle List" Margin="5" Toggled="CycleListToggle_Toggled" ToolTipService.ToolTip="Enable cycle images list in picture page"/>
 								<ToggleSwitch x:Uid="GifAutoPlayToggle" x:Name="GifAutoPlayToggle" OffContent="Enable Gif AutoPlay" OnContent="Enable Gif AutoPlay" Margin="5" Toggled="GifAutoPlayToggle_Toggled"/>
-								<ToggleSwitch x:Uid="ConcatTagToggle" x:Name="ConcatTagToggle" OffContent="Overlay Tags" OnContent="Concat Tags" Margin="5" Toggled="ConcatTagToggle_Toggled"/>
-								<ToggleSwitch x:Uid="MediaPlayToggle" x:Name="MediaPlayToggle" OffContent="Media Background Play" OnContent="Media Background Play" Margin="5" Toggled="MediaPlayToggle_Toggled"/>
-								<ToggleSwitch x:Uid="MediaAutoPlayToggle" x:Name="MediaAutoPlayToggle" OffContent="Media Auto Play" OnContent="Media Auto Play" Margin="5" Toggled="MediaAutoPlayToggle_Toggled"/>
+								<ToggleSwitch x:Uid="ConcatTagToggle" x:Name="ConcatTagToggle" OffContent="Overlay Tags" OnContent="Concat Tags" Margin="5" Toggled="ConcatTagToggle_Toggled" ToolTipService.ToolTip="Determine searching either clicked tag and the current tags or clicked tag itself in picture page"/>
+								<ToggleSwitch x:Uid="MediaPlayToggle" x:Name="MediaPlayToggle" OffContent="Media Background Play" OnContent="Media Background Play" Margin="5" Toggled="MediaPlayToggle_Toggled" ToolTipService.ToolTip="Enable media to be playing when in other pages"/>
+								<ToggleSwitch x:Uid="MediaAutoPlayToggle" x:Name="MediaAutoPlayToggle" OffContent="Media Auto Play" OnContent="Media Auto Play" Margin="5" Toggled="MediaAutoPlayToggle_Toggled" ToolTipService.ToolTip="Enable media to play automatically when the media is loaded"/>
 								<ToggleSwitch x:Uid="MediaAutoMuteToggle" x:Name="MediaAutoMuteToggle" OffContent="Media Auto Mute" OnContent="Media Auto Mute" Margin="5" Toggled="MediaAutoMuteToggle_Toggled"/>
 								<StackPanel Orientation="Horizontal">
 									<ToggleSwitch x:Uid="HotKeysToggle" x:Name="HotKeysToggle" OffContent="Enable Hot Keys" OnContent="Enable Hot Keys" Margin="5" Toggled="HotKeysToggle_Toggled"/>
@@ -147,7 +148,7 @@
 										</StackPanel>
 									</Button>
 								</StackPanel>
-								<StackPanel Margin="5" ToolTipService.ToolTip="Not Finished">
+								<StackPanel Margin="5" Visibility="Collapsed" ToolTipService.ToolTip="Not Finished">
 									<TextBlock x:Uid="RandomTagMaxCountText" Text="Random Tag Max Count" VerticalAlignment="Center" FontSize="16"/>
 									<StackPanel Orientation="Horizontal">
 										<TextBlock x:Name="RandomTagMaxText" Text="10K" VerticalAlignment="Center" Margin="5" FontSize="18" Width="50" TextAlignment="Center"/>

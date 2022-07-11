@@ -10,6 +10,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Resources.Core;
 using Windows.Storage;
+using Windows.System;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -138,7 +139,7 @@ namespace E621Downloader {
 			if(e.PrelaunchActivated == false) {
 				if(rootFrame.Content == null) {
 					bool didAppCrash = await Crashes.HasCrashedInLastSessionAsync();
-					if(didAppCrash || true) {
+					if(didAppCrash) {
 						rootFrame.Navigate(typeof(DefaultPage), e.Arguments);
 					} else {
 						rootFrame.Navigate(typeof(MainPage), e.Arguments);
@@ -148,16 +149,20 @@ namespace E621Downloader {
 			}
 
 			Window.Current.CoreWindow.KeyDown += (sender, args) => {
-				if(LocalSettings.Current?.enableHotKeys ?? true) {
+				if(ShouldSkipHotkeysDisable(args.VirtualKey) || (LocalSettings.Current?.enableHotKeys ?? true)) {
 					KeyListener.RegisterKeyDown(args.VirtualKey);
 				}
 			};
 
 			Window.Current.CoreWindow.KeyUp += (sender, args) => {
-				if(LocalSettings.Current?.enableHotKeys ?? true) {
+				if(ShouldSkipHotkeysDisable(args.VirtualKey) || (LocalSettings.Current?.enableHotKeys ?? true)) {
 					KeyListener.RegisterKeyUp(args.VirtualKey);
 				}
 			};
+		}
+
+		private bool ShouldSkipHotkeysDisable(VirtualKey key) {
+			return key == VirtualKey.Enter || key == VirtualKey.Escape || key == VirtualKey.F11 || key == VirtualKey.F12;
 		}
 
 		void OnNavigationFailed(object sender, NavigationFailedEventArgs e) {

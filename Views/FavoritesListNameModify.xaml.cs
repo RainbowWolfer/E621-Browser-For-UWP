@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -11,9 +12,11 @@ namespace E621Downloader.Views {
 	public sealed partial class FavoritesListNameModify: UserControl {
 		public bool Confirm { get; private set; }
 		public string Input => InputBox.Text;
+
 		private readonly ContentDialog dialog;
 		private readonly string[] existedNames;
 		private readonly string original;
+
 		public FavoritesListNameModify(bool isAdd, ContentDialog dialog, IEnumerable<string> existedNames, string original = "") {
 			this.InitializeComponent();
 			this.dialog = dialog;
@@ -60,6 +63,13 @@ namespace E621Downloader.Views {
 				HintPanel.Visibility = Visibility.Collapsed;
 			}
 			AddButton.IsEnabled = true;
+		}
+
+		private void InputBox_KeyDown(object sender, KeyRoutedEventArgs e) {
+			if(e.Key == VirtualKey.Enter) {
+				Confirm = true;
+				dialog.Hide();
+			}
 		}
 	}
 }

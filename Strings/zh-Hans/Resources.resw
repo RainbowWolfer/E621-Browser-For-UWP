@@ -22,7 +22,7 @@
     <value>发现</value>
   </data>
   <data name="Subscription.Content" xml:space="preserve">
-    <value>订阅</value>
+    <value>最爱</value>
   </data>
   <data name="SwitchFullScreen.ToolTipService.ToolTip" xml:space="preserve">
     <value>切换全屏</value>
@@ -1878,5 +1878,44 @@
   </data>
   <data name="V1200L6.Text" xml:space="preserve">
     <value>- 许多bug修复与改动</value>
+  </data>
+  <data name="CycleListToggle.ToolTipService.ToolTip" xml:space="preserve">
+    <value>在图片页面中启用循环图像列表</value>
+  </data>
+  <data name="ConcatTagToggle.ToolTipService.ToolTip" xml:space="preserve">
+    <value>决定在图片页面中搜索单击的标签和当前标签或单击的标签本身</value>
+  </data>
+  <data name="MediaPlayToggle.ToolTipService.ToolTip" xml:space="preserve">
+    <value>允许媒体在其他页面中播放</value>
+  </data>
+  <data name="MediaAutoPlayToggle.ToolTipService.ToolTip" xml:space="preserve">
+    <value>启用媒体在加载媒体时自动播放</value>
+  </data>
+  <data name="Open Folder" xml:space="preserve">
+    <value>打开文件夹</value>
+  </data>
+  <data name="NavigateToHomeText.Text" xml:space="preserve">
+    <value>导航到首页</value>
+  </data>
+  <data name="NavigateToPictureText.Text" xml:space="preserve">
+    <value>导航到图片</value>
+  </data>
+  <data name="NavigateToLibraryText.Text" xml:space="preserve">
+    <value>导航到本地库</value>
+  </data>
+  <data name="NavigateToFavoritesText.Text" xml:space="preserve">
+    <value>导航到最爱</value>
+  </data>
+  <data name="NavigateToSpotText.Text" xml:space="preserve">
+    <value>导航到发现</value>
+  </data>
+  <data name="NavigateToDownloadText.Text" xml:space="preserve">
+    <value>导航到下载</value>
+  </data>
+  <data name="NavigateToUserText.Text" xml:space="preserve">
+    <value>导航到用户</value>
+  </data>
+  <data name="NavigateToSettingsText.Text" xml:space="preserve">
+    <value>导航到设置</value>
   </data>
 </root>

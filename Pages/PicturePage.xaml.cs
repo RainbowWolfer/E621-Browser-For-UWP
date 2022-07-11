@@ -102,6 +102,7 @@ namespace E621Downloader.Pages {
 
 		private LoadPoolItem Loader { get; set; }
 
+		private bool IsVideo => PostRef != null && GetFileType(PostRef) == FileType.Webm;
 		private bool IsInSlideshow { get; set; } = false;
 
 		private static Dictionary<string, VoteType> Voted { get; } = new();
@@ -126,6 +127,7 @@ namespace E621Downloader.Pages {
 		protected override async void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			this.FocusModeUpdate();
+			Progress = null;
 			MyMediaPlayer.IsFullWindow = false;
 			object p = e.Parameter;
 			MainPage.ClearPicturePageParameter();
@@ -808,7 +810,6 @@ namespace E621Downloader.Pages {
 		}
 
 		private void MainImage_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e) {
-			Debug.WriteLine(e.GetPosition(MainImage));
 			if(e.PointerDeviceType == PointerDeviceType.Touch) {
 				Point pos = e.GetPosition(MainImage);
 				if(ImageTransform.ScaleX < 3) {
@@ -855,6 +856,11 @@ namespace E621Downloader.Pages {
 		}
 
 		private void ContentGrid_PointerReleased(object sender, PointerRoutedEventArgs e) {
+			//MyMediaPlayer.AreTransportControlsEnabled = !MyMediaPlayer.AreTransportControlsEnabled;
+			MediaControls.Show();
+			//media:
+			//touch -> show controls
+			//double touch -> show photos list
 			Point endPos = e.GetCurrentPoint(MainImage).Position;
 			if(startPosition.Distance(endPos) >= 20d) {
 				return;
@@ -1672,10 +1678,9 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void SlideshowItem_Click(object sender, RoutedEventArgs e) {
-			var content = new SlideshowConfigurationDialog();
 			var dialog = new ContentDialog() {
 				Title = "Start Slideshow".Language(),
-				Content = content,
+				Content = new SlideshowConfigurationDialog(),
 				PrimaryButtonText = "Start".Language(),
 				CloseButtonText = "Back".Language(),
 			};
@@ -1684,18 +1689,23 @@ namespace E621Downloader.Pages {
 			};
 			if(await dialog.ShowAsync() == ContentDialogResult.Primary) {
 				MainPage.Instance.ScreenMode = ScreenMode.Focus;
-				StartSlideshow(content.Configuration);
+				StartSlideshow(LocalSettings.Current.slideshowConfiguration);
 			}
 		}
 
 		public async void StartSlideshow(SlideshowConfiguration configuration) {
+			ShowListGrid = false;
 			IsInSlideshow = true;
 			while(IsInSlideshow && MainPage.Instance.ScreenMode == ScreenMode.Focus) {
-				await Task.Delay((int)(configuration.SecondsInterval * 1000));
+				int mills = (int)(configuration.secondsInterval * 1000);
+				if(mills < 1000) {
+					mills = 1000;
+				}
+				await Task.Delay(mills);
 				if(!IsInSlideshow || MainPage.Instance.ScreenMode != ScreenMode.Focus) {
 					break;
 				}
-				if(configuration.IsRandom) {
+				if(configuration.isRandom) {
 					MainPage.NavigateToPicturePage(App.PostsList.GetItems().GetRandomItem());
 				} else {
 					GoRight();
@@ -1804,25 +1814,24 @@ namespace E621Downloader.Pages {
 		}
 	}
 
-	public class SlideshowConfiguration {
-		public double SecondsInterval { get; set; }
-		//public int GifLoopTimes { get; set; }
-		public bool WaitForVideoEnds { get; set; }
-		public bool WaitForLoading { get; set; }
-		public bool IsRandom { get; set; }
+	public struct SlideshowConfiguration {
+		public double secondsInterval = 5;
+		public bool waitForVideoEnds = false;
+		public bool waitForLoading = false;
+		public bool isRandom = false;
 
 		public SlideshowConfiguration() {
-			SecondsInterval = 5;
-			WaitForVideoEnds = false;
-			WaitForLoading = false;
-			IsRandom = false;
+			secondsInterval = 5;
+			waitForVideoEnds = false;
+			waitForLoading = false;
+			isRandom = false;
 		}
 
 		public SlideshowConfiguration(double secondsInterval, bool waitForVideoEnds, bool waitForLoading, bool isRandom) {
-			SecondsInterval = secondsInterval;
-			WaitForVideoEnds = waitForVideoEnds;
-			WaitForLoading = waitForLoading;
-			IsRandom = isRandom;
+			this.secondsInterval = secondsInterval;
+			this.waitForVideoEnds = waitForVideoEnds;
+			this.waitForLoading = waitForLoading;
+			this.isRandom = isRandom;
 		}
 	}
 }

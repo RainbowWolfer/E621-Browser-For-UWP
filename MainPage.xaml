@@ -12,7 +12,17 @@
 	d:RequestedTheme="Dark"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-	<Grid>
+	<Grid KeyboardAcceleratorPlacementMode="Hidden">
+		<Grid.KeyboardAccelerators>
+			<KeyboardAccelerator x:Name="HomeKey" Modifiers="Control" Key="Number1" ScopeOwner="{x:Bind HomeItem}" Invoked="HomeKey_Invoked"/>
+			<KeyboardAccelerator x:Name="PictureKey" Modifiers="Control" Key="Number2" ScopeOwner="{x:Bind PictureItem}" Invoked="PictureKey_Invoked"/>
+			<KeyboardAccelerator x:Name="LibraryKey" Modifiers="Control" Key="Number3" ScopeOwner="{x:Bind LibraryItem}" Invoked="LibraryKey_Invoked"/>
+			<KeyboardAccelerator x:Name="FavoriteKey" Modifiers="Control" Key="Number4" ScopeOwner="{x:Bind FavoriteItem}" Invoked="FavoriteKey_Invoked"/>
+			<KeyboardAccelerator x:Name="SpotKey" Modifiers="Control" Key="Number5" ScopeOwner="{x:Bind SpotItem}" Invoked="SpotKey_Invoked"/>
+			<KeyboardAccelerator x:Name="DownloadKey" Modifiers="Control" Key="Number6" ScopeOwner="{x:Bind DownloadItem}" Invoked="DownloadKey_Invoked"/>
+			<KeyboardAccelerator x:Name="UserKey" Modifiers="Control" Key="Number7" ScopeOwner="{x:Bind UserIconItem}" Invoked="UserKey_Invoked"/>
+			<KeyboardAccelerator x:Name="SettingsKey" Modifiers="Control" Key="Number8" Invoked="SettingsKey_Invoked"/>
+		</Grid.KeyboardAccelerators>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
@@ -34,16 +44,16 @@
 
 		<controls:NavigationView x:Name="MyNavigationView" PaneDisplayMode="Top" ItemInvoked="MyNavigationView_ItemInvoked" BackRequested="MyNavigationView_BackRequested" Grid.Row="1">
 			<controls:NavigationView.MenuItems>
-				<controls:NavigationViewItem x:Uid="Home" Icon="Home" Content="Home" Tag="0"/>
-				<controls:NavigationViewItem x:Uid="Picture" Icon="Pictures" Content="Picture" Tag="1"/>
-				<controls:NavigationViewItem x:Uid="Library" Icon="Library" Content="Library" Tag="2"/>
-				<controls:NavigationViewItem x:Uid="Subscription" Icon="Link" Content="Subscription" Tag="3"/>
-				<controls:NavigationViewItem x:Uid="Spot" Content="Spot" Tag="4">
+				<controls:NavigationViewItem x:Uid="Home" x:Name="HomeItem" Icon="Home" Content="Home" Tag="0"/>
+				<controls:NavigationViewItem x:Uid="Picture" x:Name="PictureItem" Icon="Pictures" Content="Picture" Tag="1"/>
+				<controls:NavigationViewItem x:Uid="Library" x:Name="LibraryItem" Icon="Library" Content="Library" Tag="2"/>
+				<controls:NavigationViewItem x:Uid="Subscription" x:Name="FavoriteItem" Icon="Favorite" Content="Favorite" Tag="3"/>
+				<controls:NavigationViewItem x:Uid="Spot" x:Name="SpotItem" Content="Spot" Tag="4">
 					<controls:NavigationViewItem.Icon>
 						<FontIcon Glyph="&#xF272;"/>
 					</controls:NavigationViewItem.Icon>
 				</controls:NavigationViewItem>
-				<controls:NavigationViewItem Icon="Download" Tag="5">
+				<controls:NavigationViewItem Icon="Download" x:Name="DownloadItem" Tag="5">
 					<controls:NavigationViewItem.Content>
 						<StackPanel Orientation="Horizontal">
 							<TextBlock x:Uid="DownloadText" Text="Downloads" VerticalAlignment="Center"/>

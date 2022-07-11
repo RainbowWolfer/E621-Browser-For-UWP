@@ -34,11 +34,37 @@ namespace E621Downloader.Pages {
 
 		private readonly ElementTheme initialTheme;
 
+		private CoreCursor cursorBeforePointerEntered = null;
+
 		public SettingsPage() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Required;
 			ClearDownloadPathButton.IsEnabled = Local.DownloadFolder != null;
 			initialTheme = App.GetStoredTheme();
+
+			LanguagePanel.PointerEntered += (_, _) => Help_PointerEntered(true);
+			LanguagePanel.PointerExited += (_, _) => Help_PointerEntered(false);
+
+			CycleListToggle.PointerEntered += (_, _) => Help_PointerEntered(true);
+			CycleListToggle.PointerExited += (_, _) => Help_PointerEntered(false);
+
+			ConcatTagToggle.PointerEntered += (_, _) => Help_PointerEntered(true);
+			ConcatTagToggle.PointerExited += (_, _) => Help_PointerEntered(false);
+
+			MediaPlayToggle.PointerEntered += (_, _) => Help_PointerEntered(true);
+			MediaPlayToggle.PointerExited += (_, _) => Help_PointerEntered(false);
+
+			MediaAutoPlayToggle.PointerEntered += (_, _) => Help_PointerEntered(true);
+			MediaAutoPlayToggle.PointerExited += (_, _) => Help_PointerEntered(false);
+		}
+
+		private void Help_PointerEntered(bool enter) {
+			if(enter) {
+				cursorBeforePointerEntered = Window.Current.CoreWindow.PointerCursor;
+				Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Help, 0);
+			} else {
+				Window.Current.CoreWindow.PointerCursor = cursorBeforePointerEntered;
+			}
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
@@ -316,8 +342,6 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		private CoreCursor cursorBeforePointerEntered = null;
-
 		private async void OfficialSiteButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			await Methods.OpenBrowser($"https://{Data.GetHost()}");
 		}
@@ -408,18 +432,24 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void ClearWallpapersCacheButton_Click(object sender, RoutedEventArgs e) {
-			if(await new ContentDialog() {
+			var result = await new ContentDialog() {
 				Title = "Confirm".Language(),
 				Content = "Are you sure to delete all your wallpapers cache located in the APP settings folder".Language(),
 				PrimaryButtonText = "Yes".Language(),
+				SecondaryButtonText = "Open Folder".Language(),
 				CloseButtonText = "No".Language(),
 				DefaultButton = ContentDialogButton.Close,
-			}.ShowAsync() == ContentDialogResult.Primary) {
+			}.ShowAsync();
+			if(result == ContentDialogResult.Primary) {
 				MainPage.CreateInstantDialog("Please Wait".Language(), "Cleaning".Language());
 				foreach(StorageFile item in await Local.WallpapersFolder.GetFilesAsync()) {
 					await item.DeleteAsync();
 				}
 				MainPage.HideInstantDialog();
+			} else if(result == ContentDialogResult.Secondary) {
+				await Launcher.LaunchFolderAsync(Local.WallpapersFolder, new FolderLauncherOptions() {
+					DesiredRemainingView = ViewSizePreference.UseMore
+				});
 			}
 		}
 
@@ -459,15 +489,6 @@ namespace E621Downloader.Pages {
 				LocalLanguage.Save();
 			}
 			LanguageChangeHintText.Visibility = Visibility.Visible;
-		}
-
-		private void LanguagePanel_PointerEntered(object sender, PointerRoutedEventArgs e) {
-			cursorBeforePointerEntered = Window.Current.CoreWindow.PointerCursor;
-			Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Help, 0);
-		}
-
-		private void LanguagePanel_PointerExited(object sender, PointerRoutedEventArgs e) {
-			Window.Current.CoreWindow.PointerCursor = cursorBeforePointerEntered;
 		}
 
 	}

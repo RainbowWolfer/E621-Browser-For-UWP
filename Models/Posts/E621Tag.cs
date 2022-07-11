@@ -61,6 +61,10 @@ namespace E621Downloader.Models.Posts {
 			if(tags == null) {
 				return "";
 			}
+			tags = tags.Where(t => !string.IsNullOrWhiteSpace(t)).ToArray();
+			for(int i = 0; i < tags.Length; i++) {
+				tags[i] = tags[i].Trim();
+			}
 			return string.Join(", ", tags).Trim().ToLower();
 		}
 

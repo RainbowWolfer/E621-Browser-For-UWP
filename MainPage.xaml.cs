@@ -106,6 +106,9 @@ namespace E621Downloader {
 			} else {
 				ScreenMode = ScreenMode.FullScreen;
 			}
+
+			SettingsKey.ScopeOwner = MyNavigationView.SettingsItem as NavigationViewItem;
+
 			var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
 			coreTitleBar.ExtendViewIntoTitleBar = true;
 			Window.Current.SetTitleBar(AppTitleBar);
@@ -134,7 +137,9 @@ namespace E621Downloader {
 				}
 				if(key == VirtualKey.Escape || key == VirtualKey.F12 || key == VirtualKey.F11) {
 					try {
-						PicturePage.Instance.ShowListGrid = false;
+						if(PicturePage.Instance != null) {
+							PicturePage.Instance.ShowListGrid = false;
+						}
 						if(ScreenMode == ScreenMode.Focus) {
 							ScreenMode = ScreenMode.Normal;
 							PicturePage.Instance?.ExitSlideshow();
@@ -736,6 +741,61 @@ namespace E621Downloader {
 
 		}
 
+		private void HomeKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			if(LocalSettings.Current.enableHotKeys) {
+				NavigateTo(PageTag.PostsBrowser);
+			}
+			args.Handled = true;
+		}
+
+		private void PictureKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			if(LocalSettings.Current.enableHotKeys) {
+				NavigateTo(PageTag.Picture);
+			}
+			args.Handled = true;
+		}
+
+		private void LibraryKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			if(LocalSettings.Current.enableHotKeys) {
+				NavigateTo(PageTag.Library);
+			}
+			args.Handled = true;
+		}
+
+		private void FavoriteKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			if(LocalSettings.Current.enableHotKeys) {
+				NavigateTo(PageTag.Subscription);
+			}
+			args.Handled = true;
+		}
+
+		private void SpotKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			if(LocalSettings.Current.enableHotKeys) {
+				NavigateTo(PageTag.Spot);
+			}
+			args.Handled = true;
+		}
+
+		private void DownloadKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			if(LocalSettings.Current.enableHotKeys) {
+				NavigateTo(PageTag.Download);
+			}
+			args.Handled = true;
+		}
+
+		private void SettingsKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			if(LocalSettings.Current.enableHotKeys) {
+				NavigateTo(PageTag.Settings);
+			}
+			args.Handled = true;
+		}
+
+		private void UserKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			if(LocalSettings.Current.enableHotKeys) {
+				NavigateTo(PageTag.UserProfile);
+			}
+			args.Handled = true;
+		}
 	}
 
 	public enum PageTag {

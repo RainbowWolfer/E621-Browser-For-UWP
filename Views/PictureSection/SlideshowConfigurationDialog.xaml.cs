@@ -1,5 +1,4 @@
 ﻿using E621Downloader.Models.Locals;
-using E621Downloader.Pages;
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -7,32 +6,32 @@ using Windows.UI.Xaml.Controls.Primitives;
 
 namespace E621Downloader.Views.PictureSection {
 	public sealed partial class SlideshowConfigurationDialog: UserControl {
-		public SlideshowConfiguration Configuration { get; private set; }
+		private bool initialized = false;
 		public SlideshowConfigurationDialog() {
 			this.InitializeComponent();
-			Configuration = LocalSettings.Current.slideshowConfiguration;
 			InitializeSetings();
 		}
 
 		private void InitializeSetings() {
-			SecondsSlider.Value = Configuration.SecondsInterval;
-			SecondsText.Text = Configuration.SecondsInterval.ToString();
-			RandomCheckBox.IsChecked = Configuration.IsRandom;
+			SecondsSlider.Value = LocalSettings.Current.slideshowConfiguration.secondsInterval;
+			SecondsText.Text = LocalSettings.Current.slideshowConfiguration.secondsInterval.ToString();
+			RandomCheckBox.IsChecked = LocalSettings.Current.slideshowConfiguration.isRandom;
+			initialized = true;
 		}
 
 		private void SecondsSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
-			if(Configuration == null) {
+			if(!initialized) {
 				return;
 			}
-			Configuration.SecondsInterval = Math.Round(e.NewValue, 1);
-			SecondsText.Text = Configuration.SecondsInterval.ToString();
+			LocalSettings.Current.slideshowConfiguration.secondsInterval = Math.Round(e.NewValue, 1);
+			SecondsText.Text = LocalSettings.Current.slideshowConfiguration.secondsInterval.ToString();
 		}
 
 		private void RandomCheckBox_Click(object sender, RoutedEventArgs e) {
-			if(Configuration == null) {
+			if(!initialized) {
 				return;
 			}
-			Configuration.IsRandom = RandomCheckBox.IsChecked == true;
+			LocalSettings.Current.slideshowConfiguration.isRandom = RandomCheckBox.IsChecked == true;
 		}
 	}
 }

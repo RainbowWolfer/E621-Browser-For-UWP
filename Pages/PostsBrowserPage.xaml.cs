@@ -132,6 +132,7 @@ namespace E621Downloader.Pages {
 			MainPage.ClearPostBrowserParameter();
 
 			LocalSettings.Current.tabsOpenLength = LocalSettings.Current.tabsOpenLength;
+			TabsNavigationView.OpenPaneLength = LocalSettings.Current.tabsOpenLength;
 			PanelWidthText.Text = $"({LocalSettings.Current.tabsOpenLength})";
 		}
 
@@ -159,6 +160,7 @@ namespace E621Downloader.Pages {
 			if(found == null) {
 				found = CreateMenuItem(tab);
 				TabsNavigationView.MenuItems.Add(found);
+				Local.History.AddTag(tab.Tags);
 			}
 			NavigateToItem(found);
 		}
@@ -495,7 +497,7 @@ namespace E621Downloader.Pages {
 		}
 
 		public void SelectFeedBack() {
-			SelectionCountTextBlock.Text = $"{GetSelectedImages().Count}/{CurrentTab?.Posts.Count ?? 0}";
+			SelectionCountTextBlock.Text = $"{GetSelectedImages().Count}/{CurrentTab?.Posts?.Count ?? 0}";
 		}
 
 		public void SetAllItemsSize(bool fixedHeight, double value) {
@@ -631,9 +633,9 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			if(MultipleSelectionMode) {
-				//TOOD : Add Today's Date to Download Folder (2022-12-22)
 				var selectedDownloadDialog = new SelectedDownloadDialog();
-				if(await new ContentDialog() {
+				var selected = GetSelectedImages();
+				if(selected.Count != 0 && await new ContentDialog() {
 					Title = "Download Selection".Language(),
 					Content = selectedDownloadDialog,
 					PrimaryButtonText = "Yes".Language(),
@@ -643,7 +645,7 @@ namespace E621Downloader.Pages {
 						CancelDownloads();
 						cts_download = new CancellationTokenSource();
 						CreateDownloadDialog("Please Wait".Language(), "Handling Downloads".Language());
-						bool? result = await DownloadsManager.RegisterDownloads(cts_download.Token, GetSelectedImages().Select(i => i.PostRef), tab.Tags, selectedDownloadDialog.TodayDate, UpdateContentText);
+						bool? result = await DownloadsManager.RegisterDownloads(cts_download.Token, selected.Select(i => i.PostRef), tab.Tags, selectedDownloadDialog.TodayDate, UpdateContentText);
 						if(result == true) {
 							MainPage.CreateTip_SuccessDownload(this);
 							SelectToggleButton.IsChecked = false;

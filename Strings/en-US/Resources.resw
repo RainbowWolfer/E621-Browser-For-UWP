@@ -229,7 +229,7 @@
     <value>Start in Off-line Mode</value>
   </data>
 	<data name="Subscription.Content" xml:space="preserve">
-    <value>Subscription</value>
+    <value>Favorite</value>
   </data>
 	<data name="Successfully Start Downloading" xml:space="preserve">
     <value>Successfully Start Downloading</value>
@@ -1976,5 +1976,44 @@
   </data>
 	<data name="V1200L6.Text" xml:space="preserve">
     <value>- many bugs fix &amp; changes</value>
+  </data>
+	<data name="CycleListToggle.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Enable cycle images list in picture page</value>
+  </data>
+	<data name="ConcatTagToggle.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Determine searching either clicked tag and the current tags or clicked tag itself in picture page</value>
+  </data>
+	<data name="MediaPlayToggle.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Enable media to be playing when in other pages</value>
+  </data>
+	<data name="MediaAutoPlayToggle.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Enable media to play automatically when the media is loaded</value>
+  </data>
+	<data name="Open Folder" xml:space="preserve">
+    <value>Open Folder</value>
+  </data>
+	<data name="NavigateToHomeText.Text" xml:space="preserve">
+    <value>Navigate To Home</value>
+  </data>
+	<data name="NavigateToPictureText.Text" xml:space="preserve">
+    <value>Navigate To Picture</value>
+  </data>
+	<data name="NavigateToLibraryText.Text" xml:space="preserve">
+    <value>Navigate To Library</value>
+  </data>
+	<data name="NavigateToFavoritesText.Text" xml:space="preserve">
+    <value>Navigate To Favorites</value>
+  </data>
+	<data name="NavigateToSpotText.Text" xml:space="preserve">
+    <value>Navigate To Spot</value>
+  </data>
+	<data name="NavigateToDownloadText.Text" xml:space="preserve">
+    <value>Navigate To Download</value>
+  </data>
+	<data name="NavigateToUserText.Text" xml:space="preserve">
+    <value>Navigate To User</value>
+  </data>
+	<data name="NavigateToSettingsText.Text" xml:space="preserve">
+    <value>Navigate To Settings</value>
   </data>
 </root>

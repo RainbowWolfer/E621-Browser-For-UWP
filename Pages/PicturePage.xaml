@@ -98,8 +98,8 @@
 			<KeyboardAccelerator Key="D" Modifiers="Control" Invoked="DownloadKey_Invoked"/>
 			<KeyboardAccelerator Key="F" Modifiers="Control" Invoked="FavoriteKey_Invoked"/>
 			<KeyboardAccelerator Key="E" Modifiers="Control" Invoked="LastFavoriteKey_Invoked"/>
-			<KeyboardAccelerator Key="Number1" Modifiers="Control" Invoked="UpVoteKey_Invoked"/>
-			<KeyboardAccelerator Key="Number2" Modifiers="Control" Invoked="DownVoteKey_Invoked"/>
+			<KeyboardAccelerator Key="Number1" Modifiers="Menu" Invoked="UpVoteKey_Invoked"/>
+			<KeyboardAccelerator Key="Number2" Modifiers="Menu" Invoked="DownVoteKey_Invoked"/>
 			<KeyboardAccelerator Key="W" Invoked="UpKey_Invoked"/>
 			<KeyboardAccelerator Key="A" Invoked="LeftKey_Invoked"/>
 			<KeyboardAccelerator Key="S" Invoked="DownKey_Invoked"/>

@@ -19,8 +19,8 @@
           <target state="final">发现</target>
         </trans-unit>
         <trans-unit id="Subscription.Content" translate="yes" xml:space="preserve">
-          <source>Subscription</source>
-          <target state="final">订阅</target>
+          <source>Favorite</source>
+          <target state="final">最爱</target>
         </trans-unit>
         <trans-unit id="SwitchFullScreen.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Switch FullScreen</source>
@@ -2215,8 +2215,7 @@ Warning! This action will override the tags existing in the cloud, do you want t
         </trans-unit>
         <trans-unit id="V1150L7.Text" translate="yes" xml:space="preserve">
           <source>- Some bugs fix &amp; changes</source>
-          <target state="needs-review-translation">- 一些BUG修复与改动</target>
-         
+          <target state="final">- 一些BUG修复与改动</target>
         </trans-unit>
         <trans-unit id="No Download Path Selected" translate="yes" xml:space="preserve">
           <source>No Download Path Selected</source>
@@ -2465,8 +2464,7 @@ Would you like to get it set?</source>
         </trans-unit>
         <trans-unit id="Do you want to download the selected.Text" translate="yes" xml:space="preserve">
           <source>Do you want to download the selected</source>
-          <target state="needs-review-translation">是否要下载选定的推图？</target>
-         
+          <target state="final">是否要下载选定的推图？</target>
         </trans-unit>
         <trans-unit id="TodayDateContent.Content" translate="yes" xml:space="preserve">
           <source>Add Today's Date to Download Folder's Name</source>
@@ -2482,27 +2480,79 @@ Would you like to get it set?</source>
         </trans-unit>
         <trans-unit id="V1200L1.Text" translate="yes" xml:space="preserve">
           <source>- New image loading mechanism. Now loadings look faster</source>
-          <target state="needs-review-translation">- 全新图片加载机制，现在加载看起来快多了</target>
+          <target state="final">- 全新图片加载机制，现在加载看起来快多了</target>
         </trans-unit>
         <trans-unit id="V1200L2.Text" translate="yes" xml:space="preserve">
           <source>- Double click image in Picture Page will show images list</source>
-          <target state="needs-review-translation">- 在图片页面双击图片来打开图片列表</target>
+          <target state="final">- 在图片页面双击图片来打开图片列表</target>
         </trans-unit>
         <trans-unit id="V1200L3.Text" translate="yes" xml:space="preserve">
           <source>- Now a crash report page will show up after app crashes and relaunches the app. You can send the report to the developer or save it</source>
-          <target state="needs-review-translation">- 现在在软件崩溃并重启后会显示崩溃报告页面，你可以将报告发送给开发者或者保存</target>
+          <target state="final">- 现在在软件崩溃并重启后会显示崩溃报告页面，你可以将报告发送给开发者或者保存</target>
         </trans-unit>
         <trans-unit id="V1200L4.Text" translate="yes" xml:space="preserve">
           <source>- Now you can search any e621\e926 URL or post id in the search popup</source>
-          <target state="needs-review-translation">- 现在你可以直接在搜索弹窗里直接搜索E621\E926的网址或者推图id</target>
+          <target state="final">- 现在你可以直接在搜索弹窗里直接搜索E621\E926的网址或者推图id</target>
         </trans-unit>
         <trans-unit id="V1200L5.Text" translate="yes" xml:space="preserve">
           <source>- The slideshow is now available in Picture Page</source>
-          <target state="needs-review-translation">- 幻灯片现在在图片页面可用</target>
+          <target state="final">- 幻灯片现在在图片页面可用</target>
         </trans-unit>
         <trans-unit id="V1200L6.Text" translate="yes" xml:space="preserve">
           <source>- many bugs fix &amp; changes</source>
-          <target state="needs-review-translation">- 许多bug修复与改动</target>
+          <target state="final">- 许多bug修复与改动</target>
+        </trans-unit>
+        <trans-unit id="CycleListToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Enable cycle images list in picture page</source>
+          <target state="final">在图片页面中启用循环图像列表</target>
+        </trans-unit>
+        <trans-unit id="ConcatTagToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Determine searching either clicked tag and the current tags or clicked tag itself in picture page</source>
+          <target state="final">决定在图片页面中搜索单击的标签和当前标签或单击的标签本身</target>
+        </trans-unit>
+        <trans-unit id="MediaPlayToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Enable media to be playing when in other pages</source>
+          <target state="final">允许媒体在其他页面中播放</target>
+        </trans-unit>
+        <trans-unit id="MediaAutoPlayToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Enable media to play automatically when the media is loaded</source>
+          <target state="final">启用媒体在加载媒体时自动播放</target>
+        </trans-unit>
+        <trans-unit id="Open Folder" translate="yes" xml:space="preserve">
+          <source>Open Folder</source>
+          <target state="final">打开文件夹</target>
+        </trans-unit>
+        <trans-unit id="NavigateToHomeText.Text" translate="yes" xml:space="preserve">
+          <source>Navigate To Home</source>
+          <target state="final">导航到首页</target>
+        </trans-unit>
+        <trans-unit id="NavigateToPictureText.Text" translate="yes" xml:space="preserve">
+          <source>Navigate To Picture</source>
+          <target state="final">导航到图片</target>
+        </trans-unit>
+        <trans-unit id="NavigateToLibraryText.Text" translate="yes" xml:space="preserve">
+          <source>Navigate To Library</source>
+          <target state="final">导航到本地库</target>
+        </trans-unit>
+        <trans-unit id="NavigateToFavoritesText.Text" translate="yes" xml:space="preserve">
+          <source>Navigate To Favorites</source>
+          <target state="final">导航到最爱</target>
+        </trans-unit>
+        <trans-unit id="NavigateToSpotText.Text" translate="yes" xml:space="preserve">
+          <source>Navigate To Spot</source>
+          <target state="final">导航到发现</target>
+        </trans-unit>
+        <trans-unit id="NavigateToDownloadText.Text" translate="yes" xml:space="preserve">
+          <source>Navigate To Download</source>
+          <target state="final">导航到下载</target>
+        </trans-unit>
+        <trans-unit id="NavigateToUserText.Text" translate="yes" xml:space="preserve">
+          <source>Navigate To User</source>
+          <target state="final">导航到用户</target>
+        </trans-unit>
+        <trans-unit id="NavigateToSettingsText.Text" translate="yes" xml:space="preserve">
+          <source>Navigate To Settings</source>
+          <target state="final">导航到设置</target>
         </trans-unit>
       </group>
     </body>
