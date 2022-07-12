@@ -47,7 +47,7 @@ namespace E621Downloader.Pages.LibrarySection {
 
 		public Explorer() {
 			this.InitializeComponent();
-
+			//this.NavigationCacheMode = NavigationCacheMode.Required;
 			TitleBar.OnExplorerClick += TitleBar_OnExplorerClick;
 			TitleBar.OnRefresh += TitleBar_OnRefresh;
 			TitleBar.OnSearchInput += TitleBar_OnSearchInput;
@@ -70,6 +70,8 @@ namespace E621Downloader.Pages.LibrarySection {
 
 				GroupView.Library = libraryPage;
 				GroupView.ViewType = libraryPage.ViewType;
+
+				TitleBar.SetOrderItem(args.Order, args.OrderType);
 
 				if(args is LibraryImagesArgs imagesArgs) {
 					if(imagesArgs.Files == null) {
@@ -171,12 +173,12 @@ namespace E621Downloader.Pages.LibrarySection {
 		}
 
 		private async void TitleBar_OnAsecDesOrderChanged(OrderEnum orderEnum) {
-			libraryPage.Order = orderEnum;
+			Args.Order = orderEnum;
 			await Refresh(false);
 		}
 
 		private async void TitleBar_OnOrderTypeChanged(OrderType orderType) {
-			libraryPage.OrderType = orderType;
+			Args.OrderType = orderType;
 			await Refresh(false);
 		}
 
@@ -249,7 +251,7 @@ namespace E621Downloader.Pages.LibrarySection {
 			if(!string.IsNullOrWhiteSpace(matchedName)) {
 				files = files.Where(f => f.file.Name.Contains(matchedName)).ToList();
 			}
-			files = (await OrderImagesAsync(this, files, libraryPage.OrderType, libraryPage.Order, () => {
+			files = (await OrderImagesAsync(this, files, Args.OrderType, Args.Order, () => {
 				IsLoading = true;
 				LoadingText.Text = "Sorting".Language();
 			}, () => {
@@ -266,7 +268,7 @@ namespace E621Downloader.Pages.LibrarySection {
 			if(!string.IsNullOrWhiteSpace(matchedName)) {
 				folders = folders.Where(f => f.Name.Contains(matchedName)).ToList();
 			}
-			folders = (await OrderFolders(this, folders, libraryPage.OrderType, libraryPage.Order, () => {
+			folders = (await OrderFolders(this, folders, Args.OrderType, Args.Order, () => {
 				IsLoading = true;
 				LoadingText.Text = "Sorting".Language();
 			}, () => {
@@ -299,7 +301,7 @@ namespace E621Downloader.Pages.LibrarySection {
 					break;
 				case OrderType.Size:
 				case OrderType.Type:
-				case OrderType.NumberOsFiles:
+				case OrderType.NumberOfFiles:
 				case OrderType.Score:
 				default:
 					finishSorting?.Invoke();
@@ -355,7 +357,7 @@ namespace E621Downloader.Pages.LibrarySection {
 				case OrderType.Score:
 					keySelector = s => s.meta.MyPost.score.total;
 					break;
-				case OrderType.NumberOsFiles:
+				case OrderType.NumberOfFiles:
 				default:
 					finishSorting?.Invoke();
 					return images;

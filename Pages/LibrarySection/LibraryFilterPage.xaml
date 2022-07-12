@@ -14,7 +14,7 @@
 		<Storyboard x:Name="ExpanderStoryBoard">
 			<DoubleAnimation x:Name="ExpanderHeightAnimation" Storyboard.TargetName="FilterGrid" Storyboard.TargetProperty="Height" EnableDependentAnimation="True">
 				<DoubleAnimation.EasingFunction>
-					<ExponentialEase Exponent="7" EasingMode="EaseOut"/>
+					<ExponentialEase Exponent="15" EasingMode="EaseOut"/>
 				</DoubleAnimation.EasingFunction>
 			</DoubleAnimation>
 		</Storyboard>

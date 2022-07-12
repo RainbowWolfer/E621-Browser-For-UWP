@@ -2556,15 +2556,15 @@ Would you like to get it set?</source>
         </trans-unit>
         <trans-unit id="ScoreContent.Content" translate="yes" xml:space="preserve">
           <source>Score</source>
-          <target state="new">Score</target>
+          <target state="final">评分</target>
         </trans-unit>
         <trans-unit id="Checking File ({{0}}) {{1}}/{{2}}" translate="yes" xml:space="preserve">
           <source>Checking File ({{0}}) {{1}}/{{2}}</source>
-          <target state="new">Checking File ({{0}}) {{1}}/{{2}}</target>
+          <target state="final">正在检查文件 ({{0}}) {{1}}/{{2}}</target>
         </trans-unit>
         <trans-unit id="Canceled" translate="yes" xml:space="preserve">
           <source>Canceled</source>
-          <target state="new">Canceled</target>
+          <target state="final">已取消</target>
         </trans-unit>
       </group>
     </body>

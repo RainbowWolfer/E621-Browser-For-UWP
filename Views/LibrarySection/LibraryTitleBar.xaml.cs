@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Pages.LibrarySection;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using Windows.System;
@@ -86,7 +87,7 @@ namespace E621Downloader.Views.LibrarySection {
 			get => orderType;
 			set {
 				orderType = value;
-				OnOrderTypeChanged?.Invoke(orderType);
+				OnOrderTypeChanged?.Invoke(value);
 			}
 		}
 
@@ -143,8 +144,22 @@ namespace E621Downloader.Views.LibrarySection {
 		}
 
 		public void SetOrderItem(OrderEnum order, OrderType orderType) {
-			AsecDesOrder = order;
-			OrderType = orderType;
+			this.asecDesOrder = order;
+			if(order == OrderEnum.Desc) {
+				AsecDesIcon.Glyph = "\uE64F";
+			} else {
+				AsecDesIcon.Glyph = "\uE650";
+			}
+			this.orderType = orderType;
+			OrderComboBox.SelectedItem = orderType switch {
+				OrderType.Name => NameComboItem,
+				OrderType.Date => DateComboItem,
+				OrderType.Size => SizeComboItem,
+				OrderType.Type => TypeComboItem,
+				OrderType.NumberOfFiles => new NotImplementedException(),
+				OrderType.Score => ScoreComboItem,
+				_ => throw new Exception($"Type not found {OrderType}"),
+			};
 		}
 
 		private void AsecDesButton_Click(object sender, RoutedEventArgs e) {

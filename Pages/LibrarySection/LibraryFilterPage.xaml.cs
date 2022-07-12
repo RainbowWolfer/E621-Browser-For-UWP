@@ -20,7 +20,7 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Pages.LibrarySection {
 	public sealed partial class LibraryFilterPage: Page, ILibraryGridPage {
 		private LibraryPage libraryPage;
-		private LibraryFilterArgs args;
+		public LibraryFilterArgs Args { get; private set; }
 
 		private bool initializing = true;
 		private bool isLoading = false;
@@ -58,7 +58,7 @@ namespace E621Downloader.Pages.LibrarySection {
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			if(e.Parameter is LibraryFilterArgs args) {
-				this.args = args;
+				this.Args = args;
 				libraryPage = args.Parent;
 				TitleBar.Title = args.Title;
 
@@ -120,18 +120,19 @@ namespace E621Downloader.Pages.LibrarySection {
 		}
 
 		private void TitleBar_OnExpandedChanged(bool b) {
-			this.args.IsExpanded = b;
+			this.Args.IsExpanded = b;
 			ExpanderHeightAnimation.From = FilterGrid.Height;
 			ExpanderHeightAnimation.To = b ? 250 : 0;
 			ExpanderStoryBoard.Begin();
+			FilterGrid.Margin = b ? new Thickness(10) : new Thickness(10, 0, 10, 0);
 		}
 		private void TitleBar_OnOrderTypeChanged(OrderType orderType) {
-			libraryPage.OrderType = orderType;
+			Args.OrderType = orderType;
 			UpdateImages();
 		}
 
 		private void TitleBar_OnAsecDesOrderChanged(OrderEnum orderEnum) {
-			libraryPage.Order = orderEnum;
+			Args.Order = orderEnum;
 			UpdateImages();
 		}
 
@@ -153,18 +154,18 @@ namespace E621Downloader.Pages.LibrarySection {
 			if(libraryPage.RootFoldersArgs.Folders == null || libraryPage.RootFoldersArgs.Folders.Count == 0) {
 				return;
 			}
-			var foldersView = new FoldersSelectionView(libraryPage.RootFoldersArgs.Folders, args.SelectedFolders);
+			var foldersView = new FoldersSelectionView(libraryPage.RootFoldersArgs.Folders, Args.SelectedFolders);
 			if(await new ContentDialog() {
 				Title = "Manage Your Search Tags".Language(),
 				Content = foldersView,
 				PrimaryButtonText = "Confirm".Language(),
 				CloseButtonText = "Back".Language(),
 			}.ShowAsync() == ContentDialogResult.Primary) {
-				args.SelectedFolders.Clear();
+				Args.SelectedFolders.Clear();
 				string tooltip = "";
 				int count = 0;
 				foreach(StorageFolder item in foldersView.GetSelected()) {
-					args.SelectedFolders.Add(item);
+					Args.SelectedFolders.Add(item);
 					tooltip += item.DisplayName + "\n";
 					count++;
 				}
@@ -177,15 +178,15 @@ namespace E621Downloader.Pages.LibrarySection {
 			var dialog = new ContentDialog() {
 				Title = "Manage Your Search Tags".Language(),
 			};
-			var content = new LocalTagsManagementView(dialog, args.SelectedTags.ToArray());
+			var content = new LocalTagsManagementView(dialog, Args.SelectedTags.ToArray());
 			dialog.Content = content;
 			await dialog.ShowAsync();
 
 			if(content.HandleConfirm) {
-				args.SelectedTags.Clear();
+				Args.SelectedTags.Clear();
 				string tooltip = "";
 				foreach(string item in content.GetResult()) {
-					args.SelectedTags.Add(item);
+					Args.SelectedTags.Add(item);
 					tooltip += item + "\n";
 				}
 				ToolTipService.SetToolTip(sender as Button, tooltip.Trim());
@@ -194,8 +195,8 @@ namespace E621Downloader.Pages.LibrarySection {
 		}
 
 		private void UpdateSelectedCount() {
-			SelectedTagsCount.Text = $"{args.SelectedTags.Count()}";
-			SelectedFoldersCount.Text = $"{args.SelectedFolders.Count()}";
+			SelectedTagsCount.Text = $"{Args.SelectedTags.Count()}";
+			SelectedFoldersCount.Text = $"{Args.SelectedFolders.Count()}";
 		}
 
 		public void UpdateSize(int size) {
@@ -206,26 +207,26 @@ namespace E621Downloader.Pages.LibrarySection {
 
 		private async void SearchButton_Click(object sender, RoutedEventArgs e) {
 			bool result = await Load();
-			if(result && args.Files.Count >= 10) {
+			if(result && Args.Files.Count >= 10) {
 				await Task.Delay(100);
 				TitleBar.IsExpanded = false;
 			}
 		}
 
 		private async Task<bool> Load() {
-			if(!args.SafeCheck && !args.QuestionableCheck && !args.ExplicitCheck) {
+			if(!Args.SafeCheck && !Args.QuestionableCheck && !Args.ExplicitCheck) {
 				InsufficientRequirements.PreferredPlacement = TeachingTipPlacementMode.Bottom;
 				InsufficientRequirements.Target = RatingIcon;
 				InsufficientRequirements.Subtitle = "Please Select Least One CheckBox".Language();
 				InsufficientRequirements.IsOpen = true;
 				return false;
-			} else if(!args.ImageCheck && !args.GifCheck && !args.WebmCheck) {
+			} else if(!Args.ImageCheck && !Args.GifCheck && !Args.WebmCheck) {
 				InsufficientRequirements.PreferredPlacement = TeachingTipPlacementMode.Bottom;
 				InsufficientRequirements.Target = TypeIcon;
 				InsufficientRequirements.Subtitle = "Please Select Least One CheckBox".Language();
 				InsufficientRequirements.IsOpen = true;
 				return false;
-			} else if(args.SelectedFolders.Count == 0) {
+			} else if(Args.SelectedFolders.Count == 0) {
 				InsufficientRequirements.PreferredPlacement = TeachingTipPlacementMode.Right;
 				InsufficientRequirements.Target = FoldersButton;
 				InsufficientRequirements.Subtitle = "Please Select Least One Folder".Language();
@@ -235,10 +236,10 @@ namespace E621Downloader.Pages.LibrarySection {
 			IsLoading = true;
 			GroupView.ClearItems();
 			LoadingText.Text = "Loading".Language();
-			int foldersCount = args.SelectedFolders.Count;
+			int foldersCount = Args.SelectedFolders.Count;
 			var result = new List<(MetaFile meta, BitmapImage image, StorageFile file)>();
-			for(int i = 0; i < args.SelectedFolders.Count; i++) {
-				StorageFolder folder = args.SelectedFolders[i];
+			for(int i = 0; i < Args.SelectedFolders.Count; i++) {
+				StorageFolder folder = Args.SelectedFolders[i];
 				IReadOnlyList<StorageFile> files = await folder.GetFilesAsync();
 				var list = await Local.GetMetaFiles(folder, (next, index, length) => {
 					LoadingText.Text = "Loading".Language() +
@@ -249,23 +250,23 @@ namespace E621Downloader.Pages.LibrarySection {
 			}
 			result = result.Where(l => {
 				string rating = l.meta.MyPost.rating.ToLower();
-				if(!args.SafeCheck && rating == "s") {
+				if(!Args.SafeCheck && rating == "s") {
 					return false;
 				}
-				if(!args.QuestionableCheck && rating == "q") {
+				if(!Args.QuestionableCheck && rating == "q") {
 					return false;
 				}
-				if(!args.ExplicitCheck && rating == "e") {
+				if(!Args.ExplicitCheck && rating == "e") {
 					return false;
 				}
 				string fileType = l.file.FileType.ToLower();
-				if(!args.ImageCheck && (fileType.ToLower() == ".png" || fileType.ToLower() == ".jpg")) {
+				if(!Args.ImageCheck && (fileType.ToLower() == ".png" || fileType.ToLower() == ".jpg")) {
 					return false;
 				}
-				if(!args.GifCheck && fileType.ToLower() == ".gif") {
+				if(!Args.GifCheck && fileType.ToLower() == ".gif") {
 					return false;
 				}
-				if(!args.WebmCheck && fileType.ToLower() == "webm") {
+				if(!Args.WebmCheck && fileType.ToLower() == "webm") {
 					return false;
 				}
 				int score = l.meta.MyPost.score.total;
@@ -273,9 +274,9 @@ namespace E621Downloader.Pages.LibrarySection {
 				if(score < min || score > max) {
 					return false;
 				}
-				if(args.SelectedTags.Count != 0) {
+				if(Args.SelectedTags.Count != 0) {
 					var tags = new List<Pair<string, bool>>(
-						args.SelectedTags.Select(t => new Pair<string, bool>(t, false))
+						Args.SelectedTags.Select(t => new Pair<string, bool>(t, false))
 					);
 					foreach(string tag in l.meta.MyPost.tags.GetAllTags()) {
 						foreach(Pair<string, bool> pair in tags) {
@@ -285,7 +286,7 @@ namespace E621Downloader.Pages.LibrarySection {
 							}
 						}
 					}
-					if(args.IsAnd) {
+					if(Args.IsAnd) {
 						return tags.All(t => t.Value);
 					} else {
 						return tags.Any(t => t.Value);
@@ -293,7 +294,7 @@ namespace E621Downloader.Pages.LibrarySection {
 				}
 				return true;
 			}).ToList();
-			args.Files = result;
+			Args.Files = result;
 			UpdateImages();
 			UpdateTotalCountText();
 			IsLoading = false;
@@ -301,11 +302,11 @@ namespace E621Downloader.Pages.LibrarySection {
 		}
 
 		private async void UpdateImages(string matchedName = null) {
-			List<(MetaFile meta, BitmapImage bitmap, StorageFile file)> files = args.Files;
+			List<(MetaFile meta, BitmapImage bitmap, StorageFile file)> files = Args.Files;
 			if(!string.IsNullOrWhiteSpace(matchedName)) {
 				files = files.Where(f => f.file.Name.Contains(matchedName)).ToList();
 			}
-			files = (await Explorer.OrderImagesAsync(this, files, libraryPage.OrderType, libraryPage.Order)).ToList();
+			files = (await Explorer.OrderImagesAsync(this, files, Args.OrderType, Args.Order)).ToList();
 			GroupView.SetImages(files);
 		}
 
@@ -320,8 +321,8 @@ namespace E621Downloader.Pages.LibrarySection {
 			if(60 - (int)FromSlider.Value < (int)ToSlider.Value) {
 				ToSlider.Value = 60 - (int)FromSlider.Value;
 			}
-			args.MinimumScore = (int)FromSlider.Value;
-			args.MaximumScore = (int)ToSlider.Value;
+			Args.MinimumScore = (int)FromSlider.Value;
+			Args.MaximumScore = (int)ToSlider.Value;
 			UpdateScoreLimit();
 		}
 
@@ -332,8 +333,8 @@ namespace E621Downloader.Pages.LibrarySection {
 			if((int)FromSlider.Value > 60 - (int)ToSlider.Value) {
 				FromSlider.Value = 60 - (int)ToSlider.Value;
 			}
-			args.MinimumScore = (int)FromSlider.Value;
-			args.MaximumScore = (int)ToSlider.Value;
+			Args.MinimumScore = (int)FromSlider.Value;
+			Args.MaximumScore = (int)ToSlider.Value;
 			UpdateScoreLimit();
 		}
 
@@ -353,7 +354,7 @@ namespace E621Downloader.Pages.LibrarySection {
 				return;
 			}
 			bool isChecked = ((CheckBox)sender).IsChecked.Value;
-			args.SafeCheck = isChecked;
+			Args.SafeCheck = isChecked;
 		}
 
 		private void QCheckBox_Checked(object sender, RoutedEventArgs e) {
@@ -361,7 +362,7 @@ namespace E621Downloader.Pages.LibrarySection {
 				return;
 			}
 			bool isChecked = ((CheckBox)sender).IsChecked.Value;
-			args.QuestionableCheck = isChecked;
+			Args.QuestionableCheck = isChecked;
 		}
 
 		private void ECheckBox_Checked(object sender, RoutedEventArgs e) {
@@ -369,7 +370,7 @@ namespace E621Downloader.Pages.LibrarySection {
 				return;
 			}
 			bool isChecked = ((CheckBox)sender).IsChecked.Value;
-			args.ExplicitCheck = isChecked;
+			Args.ExplicitCheck = isChecked;
 		}
 
 		private void ImageCheckBox_Checked(object sender, RoutedEventArgs e) {
@@ -377,7 +378,7 @@ namespace E621Downloader.Pages.LibrarySection {
 				return;
 			}
 			bool isChecked = ((CheckBox)sender).IsChecked.Value;
-			args.ImageCheck = isChecked;
+			Args.ImageCheck = isChecked;
 		}
 
 		private void GifCheckBox_Checked(object sender, RoutedEventArgs e) {
@@ -385,7 +386,7 @@ namespace E621Downloader.Pages.LibrarySection {
 				return;
 			}
 			bool isChecked = ((CheckBox)sender).IsChecked.Value;
-			args.GifCheck = isChecked;
+			Args.GifCheck = isChecked;
 		}
 
 		private void WebmCheckBox_Checked(object sender, RoutedEventArgs e) {
@@ -393,16 +394,16 @@ namespace E621Downloader.Pages.LibrarySection {
 				return;
 			}
 			bool isChecked = ((CheckBox)sender).IsChecked.Value;
-			args.WebmCheck = isChecked;
+			Args.WebmCheck = isChecked;
 		}
 
 		private void AndOrButton_Click(object sender, RoutedEventArgs e) {
-			args.IsAnd = !args.IsAnd;
+			Args.IsAnd = !Args.IsAnd;
 			UpdateAndOrText();
 		}
 
 		private void UpdateAndOrText() {
-			if(args.IsAnd) {
+			if(Args.IsAnd) {
 				AndOrText.Text = "AND".Language();
 			} else {
 				AndOrText.Text = "OR".Language();
@@ -410,10 +411,10 @@ namespace E621Downloader.Pages.LibrarySection {
 		}
 
 		private void UpdateTotalCountText() {
-			if(args.TotalCount == -1) {
+			if(Args.TotalCount == -1) {
 				TotalFoundText.Text = "";
 			} else {
-				TotalFoundText.Text = "Total Found" + $": {args.TotalCount}";
+				TotalFoundText.Text = "Total Found" + $": {Args.TotalCount}";
 			}
 		}
 

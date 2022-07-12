@@ -34,8 +34,6 @@ namespace E621Downloader.Pages.LibrarySection {
 		public ILibraryGridPage Current { get; private set; }
 
 		private ItemsGroupViewType viewType = ItemsGroupViewType.ListView;
-		private OrderEnum order = OrderEnum.Desc;
-		private OrderType orderType = OrderType.Date;
 
 		public ItemsGroupViewType ViewType {
 			get => viewType;
@@ -43,7 +41,6 @@ namespace E621Downloader.Pages.LibrarySection {
 				viewType = value;
 				if(Current != null) {
 					Current.GetGroupView().ViewType = viewType;
-					Current.GetGroupView().Update();
 					//if(IsCurrentFoldersTab()) {
 					//	LocalSettings.Current.library_viewType_folders = viewType;
 					//} else {
@@ -53,18 +50,7 @@ namespace E621Downloader.Pages.LibrarySection {
 				}
 			}
 		}
-		public OrderEnum Order {
-			get => order;
-			set {
-				order = value;
-			}
-		}
-		public OrderType OrderType {
-			get => orderType;
-			set {
-				orderType = value;
-			}
-		}
+
 		public LibraryFilterArgs FilterArgs { get; private set; }
 		public LibraryFoldersArgs RootFoldersArgs { get; private set; }
 		public Dictionary<StorageFolder, LibraryImagesArgs> ImagesArgs { get; } = new Dictionary<StorageFolder, LibraryImagesArgs>();
@@ -82,7 +68,6 @@ namespace E621Downloader.Pages.LibrarySection {
 				Title = "Root".Language(),
 				RootFolder = Local.DownloadFolder,
 			};
-			InitializeGroupViewType();
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
@@ -108,24 +93,6 @@ namespace E621Downloader.Pages.LibrarySection {
 				}
 			}
 			MainPage.ClearLibraryPageParameter();
-		}
-
-		private void InitializeGroupViewType() {
-			ViewType = LocalSettings.Current.library_viewType_folders;
-			switch(ViewType) {
-				case ItemsGroupViewType.ListView:
-					ViewTypeMinorIcon.Glyph = "\uE14C";
-					ListViewTypeToggle.IsChecked = true;
-					GridViewTypeToggle.IsChecked = false;
-					break;
-				case ItemsGroupViewType.GridView:
-					ViewTypeMinorIcon.Glyph = "\uE154";
-					ListViewTypeToggle.IsChecked = false;
-					GridViewTypeToggle.IsChecked = true;
-					break;
-				default:
-					throw new Exception();
-			}
 		}
 
 		public async void FindNewTab(string folderName) {
@@ -213,6 +180,7 @@ namespace E621Downloader.Pages.LibrarySection {
 			if(folder == null || GetCurrent() == item) {
 				return;
 			}
+			UpdateToolBar(false);
 			MainNavigationView.SelectedItem = item;
 			LibraryImagesArgs args;
 			if(ImagesArgs.ContainsKey(folder)) {
@@ -229,19 +197,18 @@ namespace E621Downloader.Pages.LibrarySection {
 
 			MainFrame.Navigate(typeof(Explorer), args, new EntranceNavigationTransitionInfo());
 			Current = MainFrame.Content as ILibraryGridPage;
-			UpdateResizeBar(false);
 		}
 
-		private void UpdateResizeBar(bool isFolder) {
+		private void UpdateToolBar(bool isFolder) {
 			if(isFolder) {
 				MyResizeBar.SetSize(LocalSettings.Current.librarSizeView_folders, false);
-				//ViewType = LocalSettings.Current.library_viewType_folders;
+				ViewType = LocalSettings.Current.library_viewType_folders;
 			} else {
 				MyResizeBar.SetSize(LocalSettings.Current.librarSizeView_images, false);
-				//ViewType = LocalSettings.Current.library_viewType_images;
+				ViewType = LocalSettings.Current.library_viewType_images;
 			}
 			MyResizeBar.UpdateValue();
-			//UpdateViewType();
+			UpdateViewType();
 		}
 
 		private bool IsCurrentFoldersTab() {
@@ -292,24 +259,24 @@ namespace E621Downloader.Pages.LibrarySection {
 			if(GetCurrent() == RootItem) {
 				return;
 			}
+			UpdateToolBar(true);
 			MainFrame.Navigate(typeof(Explorer), RootFoldersArgs, new EntranceNavigationTransitionInfo());
 			if(updateListMenuItem) {
 				MainNavigationView.SelectedItem = RootItem;
 			}
 			Current = MainFrame.Content as ILibraryGridPage;
-			UpdateResizeBar(true);
 		}
 
 		public void NavigateToFilter(bool updateListMenuItem = true) {
 			if(GetCurrent() == FilterItem) {
 				return;
 			}
+			UpdateToolBar(true);
 			MainFrame.Navigate(typeof(LibraryFilterPage), FilterArgs, new EntranceNavigationTransitionInfo());
 			if(updateListMenuItem) {
 				MainNavigationView.SelectedItem = FilterItem;
 			}
 			Current = MainFrame.Content as ILibraryGridPage;
-			UpdateResizeBar(true);
 		}
 
 		private void ViewTypeMinorButton_Click(object sender, RoutedEventArgs e) {
@@ -329,10 +296,25 @@ namespace E621Downloader.Pages.LibrarySection {
 				default:
 					throw new Exception();
 			}
+			Current.GetGroupView().Update();
+			SaveViewType();
 		}
 
 		private void UpdateViewType() {
-
+			switch(ViewType) {
+				case ItemsGroupViewType.ListView:
+					ViewTypeMinorIcon.Glyph = "\uE14C";
+					ListViewTypeToggle.IsChecked = true;
+					GridViewTypeToggle.IsChecked = false;
+					break;
+				case ItemsGroupViewType.GridView:
+					ViewTypeMinorIcon.Glyph = "\uE154";
+					ListViewTypeToggle.IsChecked = false;
+					GridViewTypeToggle.IsChecked = true;
+					break;
+				default:
+					throw new Exception();
+			}
 		}
 
 		private void ListViewTypeToggle_Click(object sender, RoutedEventArgs e) {
@@ -340,6 +322,8 @@ namespace E621Downloader.Pages.LibrarySection {
 			ListViewTypeToggle.IsChecked = true;
 			GridViewTypeToggle.IsChecked = false;
 			ViewType = ItemsGroupViewType.ListView;
+			SaveViewType();
+			Current.GetGroupView().Update();
 		}
 
 		private void GridViewTypeToggle_Click(object sender, RoutedEventArgs e) {
@@ -347,6 +331,17 @@ namespace E621Downloader.Pages.LibrarySection {
 			ListViewTypeToggle.IsChecked = false;
 			GridViewTypeToggle.IsChecked = true;
 			ViewType = ItemsGroupViewType.GridView;
+			SaveViewType();
+			Current.GetGroupView().Update();
+		}
+
+		private void SaveViewType() {
+			if(IsCurrentFoldersTab()) {
+				LocalSettings.Current.library_viewType_folders = viewType;
+			} else {
+				LocalSettings.Current.library_viewType_images = viewType;
+			}
+			LocalSettings.Save();
 		}
 
 		public async Task ShowRenameDialog(string originName, Action<string> onRename) {
@@ -405,7 +400,7 @@ namespace E621Downloader.Pages.LibrarySection {
 	}
 
 	public enum OrderType {
-		Name, Date, Size, Type, NumberOsFiles, Score
+		Name, Date, Size, Type, NumberOfFiles, Score
 	}
 
 	public enum OrderEnum {
@@ -420,6 +415,10 @@ namespace E621Downloader.Pages.LibrarySection {
 		public LibraryPage Parent { get; set; } = null;
 		public string Title { get; set; } = "Title Not Set".Language();
 		public bool NeedRefresh { get; set; }
+
+		public OrderEnum Order { get; set; } = OrderEnum.Desc;
+		public OrderType OrderType { get; set; } = OrderType.Date;
+
 	}
 
 	public class LibraryFoldersArgs: LibraryPassArgs {

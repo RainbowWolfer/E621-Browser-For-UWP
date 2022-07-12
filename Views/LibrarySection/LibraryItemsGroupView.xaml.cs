@@ -73,6 +73,7 @@ namespace E621Downloader.Views.LibrarySection {
 		private void UpdateGridView() {
 			MyGridView.Items.Clear();
 			if(LibraryItems.Count != 0) {
+				GridViewNoDataPanel.Visibility = Visibility.Collapsed;
 				ListViewNoDataPanel.Visibility = Visibility.Collapsed;
 				foreach(LibraryItem item in LibraryItems) {
 					var viewItem = new LibraryGridViewItem() {
@@ -91,7 +92,7 @@ namespace E621Downloader.Views.LibrarySection {
 					//await Task.Delay(5);
 				}
 			} else {
-				ListViewNoDataPanel.Visibility = Visibility.Visible;
+				GridViewNoDataPanel.Visibility = Visibility.Visible;
 			}
 			UpdateSize(Library.Size);
 		}
@@ -99,7 +100,9 @@ namespace E621Downloader.Views.LibrarySection {
 		private void UpdateListView() {
 			MyListView.Items.Clear();
 			if(LibraryItems.Count != 0) {
+				GridViewGrid.Visibility = Visibility.Collapsed;
 				ListViewNoDataPanel.Visibility = Visibility.Collapsed;
+				Debug.WriteLine("List load");
 				foreach(LibraryItem item in LibraryItems) {
 					var viewItem = new LibraryListViewItem() {
 						Item = item,
@@ -118,6 +121,7 @@ namespace E621Downloader.Views.LibrarySection {
 				}
 			} else {
 				ListViewNoDataPanel.Visibility = Visibility.Visible;
+				Debug.WriteLine("list empty");
 			}
 			UpdateSize(Library.Size);
 		}
