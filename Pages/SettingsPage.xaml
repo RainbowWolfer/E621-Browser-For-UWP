@@ -256,7 +256,7 @@
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>
-							<controls:Expander Header="2022-07-10 (v1.2.0.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
+							<controls:Expander Header="2022-07-13 (v1.2.0.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
 								<controls:Expander.Content>
 									<StackPanel>
 										<TextBlock x:Uid="V1200L1" Text="- New image loading mechanism. Now loadings look faster." FontSize="22" TextWrapping="WrapWholeWords"/>

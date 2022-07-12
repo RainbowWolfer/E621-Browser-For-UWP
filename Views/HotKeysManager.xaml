@@ -142,7 +142,18 @@
 						</Border>
 						<TextBlock x:Uid="ExitFocusModeText" Text="Exit Focus Mode" VerticalAlignment="Center" Margin="10,0,0,0"/>
 					</StackPanel>
-
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="F1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="ToggleFullscreenText" Text="Toggle Fullscreen" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="F2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="ToggleFocusModeText" Text="Toggle Focus Mode" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
 					<StackPanel Orientation="Horizontal">
 						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
 							<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>

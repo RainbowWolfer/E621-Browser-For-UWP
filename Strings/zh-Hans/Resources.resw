@@ -744,10 +744,10 @@
     <value>开启循环浏览</value>
   </data>
   <data name="ConcatTagToggle.OnContent" xml:space="preserve">
-    <value>附加标签</value>
+    <value>链接标签搜索</value>
   </data>
   <data name="ConcatTagToggle.OffContent" xml:space="preserve">
-    <value>覆盖标签</value>
+    <value>链接标签搜索</value>
   </data>
   <data name="MediaPlayToggle.OnContent" xml:space="preserve">
     <value>视频后台播放</value>
@@ -1926,5 +1926,14 @@
   </data>
   <data name="Canceled" xml:space="preserve">
     <value>已取消</value>
+  </data>
+  <data name="GifAutoPlayToggle.ToolTipService.ToolTip" xml:space="preserve">
+    <value>启用此功能可防止系统因在主页上同时播放过多gif而变慢</value>
+  </data>
+  <data name="ToggleFullscreenText.Text" xml:space="preserve">
+    <value>切换全屏</value>
+  </data>
+  <data name="ToggleFocusModeText.Text" xml:space="preserve">
+    <value>切换专注模式</value>
   </data>
 </root>

@@ -983,12 +983,12 @@ Go Create your own one</source>
           <target state="final">开启循环浏览</target>
         </trans-unit>
         <trans-unit id="ConcatTagToggle.OnContent" translate="yes" xml:space="preserve">
-          <source>Concat Tags</source>
-          <target state="final">附加标签</target>
+          <source>Link Tags Search</source>
+          <target state="needs-review-translation">链接标签搜索</target>
         </trans-unit>
         <trans-unit id="ConcatTagToggle.OffContent" translate="yes" xml:space="preserve">
-          <source>Overlay Tags</source>
-          <target state="final">覆盖标签</target>
+          <source>Link Tags Search</source>
+          <target state="needs-review-translation">链接标签搜索</target>
         </trans-unit>
         <trans-unit id="MediaPlayToggle.OnContent" translate="yes" xml:space="preserve">
           <source>Media Background Play</source>
@@ -2568,7 +2568,15 @@ Would you like to get it set?</source>
         </trans-unit>
         <trans-unit id="GifAutoPlayToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Enable this to prevent from system slowing down for playing too many gifs at the same time in home page</source>
-          <target state="new">Enable this to prevent from system slowing down for playing too many gifs at the same time in home page</target>
+          <target state="final">启用此功能可防止系统因在主页上同时播放过多gif而变慢</target>
+        </trans-unit>
+        <trans-unit id="ToggleFullscreenText.Text" translate="yes" xml:space="preserve">
+          <source>Toggle Fullscreen</source>
+          <target state="final">切换全屏</target>
+        </trans-unit>
+        <trans-unit id="ToggleFocusModeText.Text" translate="yes" xml:space="preserve">
+          <source>Toggle Focus Mode</source>
+          <target state="final">切换专注模式</target>
         </trans-unit>
       </group>
     </body>

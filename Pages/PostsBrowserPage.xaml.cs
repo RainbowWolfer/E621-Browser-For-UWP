@@ -105,6 +105,8 @@ namespace E621Downloader.Pages {
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			ClearTabs();
 			ResizePanelWidthButton.Visibility = TabsNavigationView.IsPaneOpen ? Visibility.Visible : Visibility.Collapsed;
+
+			IsAdaptive = LocalSettings.Current.adaptiveGrid;
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
