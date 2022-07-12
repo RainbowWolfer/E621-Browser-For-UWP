@@ -15,6 +15,7 @@ using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace E621Downloader.Models {
@@ -304,6 +305,24 @@ namespace E621Downloader.Models {
 		}
 		public static Point Minus(this Point a, Point b) {
 			return new Point(a.X - b.X, a.Y - b.Y);
+		}
+
+
+
+		public static DependencyObject MyFindListViewChildByName(DependencyObject parant, string ControlName) {
+			int count = VisualTreeHelper.GetChildrenCount(parant);
+
+			for(int i = 0; i < count; i++) {
+				var MyChild = VisualTreeHelper.GetChild(parant, i);
+				if(MyChild is FrameworkElement && ((FrameworkElement)MyChild).Name == ControlName)
+					return MyChild;
+
+				var FindResult = MyFindListViewChildByName(MyChild, ControlName);
+				if(FindResult != null)
+					return FindResult;
+			}
+
+			return null;
 		}
 	}
 }

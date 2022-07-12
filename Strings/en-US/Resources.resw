@@ -1981,7 +1981,7 @@
     <value>Enable cycle images list in picture page</value>
   </data>
 	<data name="ConcatTagToggle.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Determine searching either clicked tag and the current tags or clicked tag itself in picture page</value>
+    <value>Determine searching either clicked tag with the current tags or clicked tag itself in picture page</value>
   </data>
 	<data name="MediaPlayToggle.ToolTipService.ToolTip" xml:space="preserve">
     <value>Enable media to be playing when in other pages</value>
@@ -2024,5 +2024,8 @@
   </data>
 	<data name="Canceled" xml:space="preserve">
     <value>Canceled</value>
+  </data>
+	<data name="GifAutoPlayToggle.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Enable this to prevent from system slowing down for playing too many gifs at the same time in home page</value>
   </data>
 </root>

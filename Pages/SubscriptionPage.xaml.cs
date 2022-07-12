@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -391,8 +392,6 @@ namespace E621Downloader.Pages {
 
 		private void ResizeBar_OnSizeChanged(int value, bool save) {
 			Size = value;
-			LocalSettings.Current.subscriptionSizeView = value;
-			LocalSettings.Save();
 			if(MainGridView == null) {
 				return;
 			}
@@ -400,6 +399,24 @@ namespace E621Downloader.Pages {
 				item.Height = value;
 				item.Width = value;
 			}
+			if(!save) {
+				return;
+			}
+			LocalSettings.Current.subscriptionSizeView = value;
+			DelayedSave();
+		}
+
+		private CancellationTokenSource saveCTS;
+		private async void DelayedSave() {
+			try {
+				if(saveCTS != null) {
+					saveCTS.Cancel();
+					saveCTS.Dispose();
+				}
+				saveCTS = new CancellationTokenSource();
+				await Task.Delay(500, saveCTS.Token);
+				await Local.WriteLocalSettings();
+			} catch(OperationCanceledException) { }
 		}
 
 		void IPage.UpdateNavigationItem() {

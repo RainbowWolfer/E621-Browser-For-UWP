@@ -1918,4 +1918,13 @@
   <data name="NavigateToSettingsText.Text" xml:space="preserve">
     <value>导航到设置</value>
   </data>
+  <data name="ScoreContent.Content" xml:space="preserve">
+    <value>评分</value>
+  </data>
+  <data name="Checking File ({{0}}) {{1}}/{{2}}" xml:space="preserve">
+    <value>正在检查文件 ({{0}}) {{1}}/{{2}}</value>
+  </data>
+  <data name="Canceled" xml:space="preserve">
+    <value>已取消</value>
+  </data>
 </root>

@@ -8,40 +8,40 @@ namespace E621Downloader.Models.Locals {
 			await Local.WriteLocalSettings();
 		}
 
-		public int randomTagMaxCount;
+		public int randomTagMaxCount = 10000;
 
-		public int tabsOpenLength;
-		public int subscriptionSizeView;
+		public int tabsOpenLength = 300;
+		public int subscriptionSizeView = 200;
 
-		public bool adaptiveGrid;
-		public double fixedHeight;
-		public double adaptiveSizeMultiplier;
+		public bool adaptiveGrid = true;
+		public double fixedHeight = 280;
+		public double adaptiveSizeMultiplier = 1;
 
-		public string customHost;
-		public bool customHostEnable;
-		public bool cycleList;
-		public bool concatTags;
-		public bool mediaBackgroundPlay;
-		public bool mediaAutoPlay;
-		public bool mediaAutoMute;
-		public bool enableHotKeys;
-		public bool enableGifAutoPlay;
-		public int gifLimit;
+		public string customHost = "";
+		public bool customHostEnable = false;
+		public bool cycleList = true;
+		public bool concatTags = false;
+		public bool mediaBackgroundPlay = false;
+		public bool mediaAutoPlay = true;
+		public bool mediaAutoMute = false;
+		public bool enableHotKeys = true;
+		public bool enableGifAutoPlay = true;
+		public int gifLimit = 5;
 
-		public SpotFilterType spot_FilterType;
-		public FileType spot_fileType;
-		public bool spot_includeSafe;
-		public bool spot_includeQuestoinable;
-		public bool spot_includeExplicit;
-		public int spot_amount;
+		public SpotFilterType spot_FilterType = SpotFilterType.All;
+		public FileType spot_fileType = FileType.Jpg;
+		public bool spot_includeSafe = false;
+		public bool spot_includeQuestoinable = false;
+		public bool spot_includeExplicit = true;
+		public int spot_amount = 1;
 
-		public SlideshowConfiguration slideshowConfiguration;
+		public SlideshowConfiguration slideshowConfiguration = new();
 
-		public ItemsGroupViewType library_viewType_images;
-		public ItemsGroupViewType library_viewType_folders;
+		public ItemsGroupViewType library_viewType_images = ItemsGroupViewType.ListView;
+		public ItemsGroupViewType library_viewType_folders = ItemsGroupViewType.ListView;
 
-		public int librarSizeView_images;
-		public int librarSizeView_folders;
+		public int librarSizeView_images = 100;
+		public int librarSizeView_folders = 100;
 
 		public string user_username = "";
 		public string user_api = "";

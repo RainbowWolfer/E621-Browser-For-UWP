@@ -4,10 +4,12 @@ using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
+using E621Downloader.Models.Services;
 using E621Downloader.Views;
 using E621Downloader.Views.CommentsSection;
 using E621Downloader.Views.PictureSection;
 using Microsoft.Toolkit.Uwp.Helpers;
+using Microsoft.Toolkit.Uwp.UI.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
@@ -33,6 +35,7 @@ using Windows.UI.Core;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
@@ -109,6 +112,8 @@ namespace E621Downloader.Pages {
 
 		private bool isLoadingPost = false;
 
+		private bool isShowingMediaControls = false;
+
 		public PicturePage() {
 			Instance = this;
 			this.InitializeComponent();
@@ -122,7 +127,21 @@ namespace E621Downloader.Pages {
 #else
 			DebugItem.Visibility = Visibility.Collapsed;
 #endif
+
+			//var PanelGrid = Methods.MyFindListViewChildByName(MediaControls, "ControlPanelGrid") as Grid;
+			//var render = PanelGrid.RenderTransform;
+			//var watcher = new MyDependencyPropertyWatcher<string>(render, "Y");
+			//watcher.PropertyChanged += Watcher_PropertyChanged;
 		}
+
+		//private void Watcher_PropertyChanged(object sender, DependencyPropertyChangedEventArgs e) {
+		//	if((double)e.NewValue == 50) {
+		//		Trace.WriteLine("hide");
+		//	} else if((double)e.NewValue == 0.5) {
+		//		Trace.WriteLine("show");
+		//	}
+
+		//}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
@@ -824,26 +843,25 @@ namespace E621Downloader.Pages {
 		private CancellationTokenSource ctsDoubleTap;
 
 		private void ContentGrid_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e) {
-			if(e.PointerDeviceType == PointerDeviceType.Touch) {
-				async void DelayedAssign() {
-					try {
-						if(ctsDoubleTap != null) {
-							ctsDoubleTap.Cancel();
-							ctsDoubleTap.Dispose();
-							ctsDoubleTap = null;
-						}
-						ctsDoubleTap = new CancellationTokenSource();
-						isInDoubleTap = true;
-						await Task.Delay(500, ctsDoubleTap.Token);
-						if(!ctsDoubleTap.IsCancellationRequested) {
-							isInDoubleTap = false;
-						}
-					} catch(TaskCanceledException) { }
-				}
-				DelayedAssign();
-			} else {
+			if(e.PointerDeviceType != PointerDeviceType.Touch) {
 				ShowListGrid = true;
 			}
+			async void DelayedAssign() {
+				try {
+					if(ctsDoubleTap != null) {
+						ctsDoubleTap.Cancel();
+						ctsDoubleTap.Dispose();
+						ctsDoubleTap = null;
+					}
+					ctsDoubleTap = new CancellationTokenSource();
+					isInDoubleTap = true;
+					await Task.Delay(500, ctsDoubleTap.Token);
+					if(!ctsDoubleTap.IsCancellationRequested) {
+						isInDoubleTap = false;
+					}
+				} catch(TaskCanceledException) { }
+			}
+			DelayedAssign();
 		}
 
 		private CancellationTokenSource ctsDoubleTap2;
@@ -856,8 +874,6 @@ namespace E621Downloader.Pages {
 		}
 
 		private void ContentGrid_PointerReleased(object sender, PointerRoutedEventArgs e) {
-			//MyMediaPlayer.AreTransportControlsEnabled = !MyMediaPlayer.AreTransportControlsEnabled;
-			MediaControls.Show();
 			//media:
 			//touch -> show controls
 			//double touch -> show photos list
@@ -865,25 +881,35 @@ namespace E621Downloader.Pages {
 			if(startPosition.Distance(endPos) >= 20d) {
 				return;
 			}
-			if(e.Pointer.PointerDeviceType == PointerDeviceType.Touch) {
-				async void DelayedAction() {
-					try {
-						if(ctsDoubleTap2 != null) {
-							ctsDoubleTap2.Cancel();
-							ctsDoubleTap2.Dispose();
-							ctsDoubleTap2 = null;
-						}
-						ctsDoubleTap2 = new CancellationTokenSource();
-						await Task.Delay(200, ctsDoubleTap2.Token);
+			async void DelayedAction() {
+				try {
+					if(ctsDoubleTap2 != null) {
+						ctsDoubleTap2.Cancel();
+						ctsDoubleTap2.Dispose();
+						ctsDoubleTap2 = null;
+					}
+					ctsDoubleTap2 = new CancellationTokenSource();
+					await Task.Delay(200, ctsDoubleTap2.Token);
+					if(e.Pointer.PointerDeviceType == PointerDeviceType.Touch) {
 						if(!isInDoubleTap && !ctsDoubleTap2.IsCancellationRequested) {
 							ShowListGrid = !ShowListGrid;
 						}
-					} catch(TaskCanceledException) {
-						Debug.WriteLine("!");
+					} else {
+						if(isShowingMediaControls && !isInDoubleTap) {
+							MediaControls.Hide();
+							isShowingMediaControls = false;
+							mediaControlsShowCTS?.Cancel();
+							mediaControlsShowCTS?.Dispose();
+							mediaControlsShowCTS = null;
+						} else {
+							MediaControls.Show();
+							isShowingMediaControls = true;
+							DelayedAssignShowingMediaControlsToFalse();
+						}
 					}
-				}
-				DelayedAction();
+				} catch(TaskCanceledException) { }
 			}
+			DelayedAction();
 		}
 
 		private void MainImage_PointerWheelChanged(object sender, PointerRoutedEventArgs e) {
@@ -897,6 +923,8 @@ namespace E621Downloader.Pages {
 		}
 
 		private void MainImage_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e) {
+			///really have no idea how to implement 'pane to zoom'
+
 			//if(e.PointerDeviceType == PointerDeviceType.Touch) {
 			//	//Debug.WriteLine(e.Delta.Translation + " _ " + e.Delta.Expansion + " _ " + e.Delta.Scale);
 			//	Debug.WriteLine(e.Cumulative.Translation + " _ " + e.Position);
@@ -1720,6 +1748,20 @@ namespace E621Downloader.Pages {
 
 		private void MediaPlayer_MediaEnded(MediaPlayer sender, object args) {
 
+		}
+
+		private CancellationTokenSource mediaControlsShowCTS;
+		private async void DelayedAssignShowingMediaControlsToFalse() {
+			try {
+				if(mediaControlsShowCTS != null) {
+					mediaControlsShowCTS.Cancel();
+					mediaControlsShowCTS.Dispose();
+					mediaControlsShowCTS = null;
+				}
+				mediaControlsShowCTS = new CancellationTokenSource();
+				await Task.Delay(3000, mediaControlsShowCTS.Token);
+				isShowingMediaControls = false;
+			} catch(OperationCanceledException) { }
 		}
 
 	}

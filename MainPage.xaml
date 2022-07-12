@@ -49,7 +49,11 @@
 				<controls:NavigationViewItem x:Uid="Home" x:Name="HomeItem" Icon="Home" Content="Home" Tag="0"/>
 				<controls:NavigationViewItem x:Uid="Picture" x:Name="PictureItem" Icon="Pictures" Content="Picture" Tag="1"/>
 				<controls:NavigationViewItem x:Uid="Library" x:Name="LibraryItem" Icon="Library" Content="Library" Tag="2"/>
-				<controls:NavigationViewItem x:Uid="Subscription" x:Name="FavoriteItem" Icon="Favorite" Content="Favorite" Tag="3"/>
+				<controls:NavigationViewItem x:Uid="Subscription" x:Name="FavoriteItem" Content="Favorite" Tag="3">
+					<controls:NavigationViewItem.Icon>
+						<FontIcon Glyph="&#xE1CE;"/>
+					</controls:NavigationViewItem.Icon>
+				</controls:NavigationViewItem>
 				<controls:NavigationViewItem x:Uid="Spot" x:Name="SpotItem" Content="Spot" Tag="4">
 					<controls:NavigationViewItem.Icon>
 						<FontIcon Glyph="&#xF272;"/>

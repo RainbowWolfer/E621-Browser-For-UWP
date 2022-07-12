@@ -293,6 +293,10 @@ namespace E621Downloader.Pages {
 				item.Height = value;
 				item.Width = value;
 			}
+			if(!save) {
+				return;
+			}
+
 		}
 
 		private void TypeSwitchButton_Click(object sender, RoutedEventArgs e) {
