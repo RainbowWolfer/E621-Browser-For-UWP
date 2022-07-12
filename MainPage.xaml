@@ -22,6 +22,8 @@
 			<KeyboardAccelerator x:Name="DownloadKey" Modifiers="Control" Key="Number6" ScopeOwner="{x:Bind DownloadItem}" Invoked="DownloadKey_Invoked"/>
 			<KeyboardAccelerator x:Name="UserKey" Modifiers="Control" Key="Number7" ScopeOwner="{x:Bind UserIconItem}" Invoked="UserKey_Invoked"/>
 			<KeyboardAccelerator x:Name="SettingsKey" Modifiers="Control" Key="Number8" Invoked="SettingsKey_Invoked"/>
+			<KeyboardAccelerator x:Name="FullscreenKey" Key="F1" Invoked="FullscreenKey_Invoked"/>
+			<KeyboardAccelerator x:Name="FocusKey" Key="F2" Invoked="FocusKey_Invoked"/>
 		</Grid.KeyboardAccelerators>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>

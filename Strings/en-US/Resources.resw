@@ -2016,4 +2016,13 @@
 	<data name="NavigateToSettingsText.Text" xml:space="preserve">
     <value>Navigate To Settings</value>
   </data>
+	<data name="ScoreContent.Content" xml:space="preserve">
+    <value>Score</value>
+  </data>
+	<data name="Checking File ({{0}}) {{1}}/{{2}}" xml:space="preserve">
+    <value>Checking File ({{0}}) {{1}}/{{2}}</value>
+  </data>
+	<data name="Canceled" xml:space="preserve">
+    <value>Canceled</value>
+  </data>
 </root>

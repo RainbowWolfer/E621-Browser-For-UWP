@@ -15,9 +15,9 @@
 			<ColumnDefinition Width="auto"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		<RepeatButton x:Name="SizeButton" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" Background="Transparent" BorderThickness="0" Click="SizeButton_Click" ToolTipService.ToolTip="Current Size : 200" Grid.Column="0" Padding="0">
+		<RepeatButton x:Name="SizeButton" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" Background="Transparent" BorderThickness="0" Click="SizeButton_Click" ToolTipService.ToolTip="Current Size : 200" Grid.Column="0" Padding="0" IsRightTapEnabled="True" RightTapped="SizeButton_RightTapped">
 			<FontIcon Glyph="&#xE2B2;"/>
 		</RepeatButton>
-		<Slider x:Name="SizeSlider" Minimum="200" Maximum="500" Value="{x:Bind Size, Mode=OneTime}" Height="40" StepFrequency="20" ValueChanged="SizeSlider_ValueChanged" HorizontalAlignment="Stretch" Grid.Column="1" Margin="10,0,5,-6"/>
+		<Slider x:Name="SizeSlider" Minimum="200" Maximum="500" Value="{x:Bind size, Mode=OneTime}" Height="40" StepFrequency="20" ValueChanged="SizeSlider_ValueChanged" HorizontalAlignment="Stretch" Grid.Column="1" Margin="10,0,5,-6"/>
 	</Grid>
 </UserControl>

@@ -79,21 +79,29 @@ namespace E621Downloader.Views.LibrarySection {
 				if(item is LibraryImage image) {
 					BottomInfo.PostRef = image.Meta.MyPost;
 				} else if(item is LibraryFolder folder) {
-					CalculateFolderChildren(folder.Folder);
+					CalculateFolderChildren(folder, count => {
+						FolderChildrenCountText.Text = $"( {count} )";
+					});
 				}
 			}
 		}
 
-		private async void CalculateFolderChildren(StorageFolder folder) {
+		public static async void CalculateFolderChildren(LibraryFolder folder, Action<int> onFinish = null) {
+			if(folder.ChildrenCount != null) {
+				onFinish?.Invoke(folder.ChildrenCount.Value);
+				return;
+			}
 			//normally the .meta file and the image file are shown in pairs.
-			List<StorageFile> files = (await folder.GetFilesAsync()).ToList();
+			List<StorageFile> files = (await folder.Folder.GetFilesAsync()).ToList();
 			//replaced it with Supported File Types
 			files = files.Where(f => {
 				return new string[] {
 					".meta", ".png", ".webm", ".jpg", ".gif"
 				}.Contains(f.FileType.ToLower());
 			}).ToList();
-			FolderChildrenCountText.Text = $"( {files.Count / 2} )";
+			int count = files.Count / 2;
+			folder.ChildrenCount = count;
+			onFinish?.Invoke(count);
 		}
 
 		public LibraryListViewItem() {

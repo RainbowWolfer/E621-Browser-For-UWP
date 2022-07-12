@@ -337,5 +337,6 @@ namespace E621Downloader.Views.LibrarySection {
 
 	public class LibraryFolder: LibraryItem {
 		public StorageFolder Folder { get; set; }
+		public int? ChildrenCount { get; set; } = null;
 	}
 }

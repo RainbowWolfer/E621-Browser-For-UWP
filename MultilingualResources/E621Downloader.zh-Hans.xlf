@@ -36,7 +36,7 @@
         </trans-unit>
         <trans-unit id="Please Wait" translate="yes" xml:space="preserve">
           <source>Please Wait</source>
-          <target state="final">请稍后</target>
+          <target state="final">请稍等</target>
         </trans-unit>
         <trans-unit id="Checking Connection to" translate="yes" xml:space="preserve">
           <source>Checking Connection to</source>
@@ -2553,6 +2553,18 @@ Would you like to get it set?</source>
         <trans-unit id="NavigateToSettingsText.Text" translate="yes" xml:space="preserve">
           <source>Navigate To Settings</source>
           <target state="final">导航到设置</target>
+        </trans-unit>
+        <trans-unit id="ScoreContent.Content" translate="yes" xml:space="preserve">
+          <source>Score</source>
+          <target state="new">Score</target>
+        </trans-unit>
+        <trans-unit id="Checking File ({{0}}) {{1}}/{{2}}" translate="yes" xml:space="preserve">
+          <source>Checking File ({{0}}) {{1}}/{{2}}</source>
+          <target state="new">Checking File ({{0}}) {{1}}/{{2}}</target>
+        </trans-unit>
+        <trans-unit id="Canceled" translate="yes" xml:space="preserve">
+          <source>Canceled</source>
+          <target state="new">Canceled</target>
         </trans-unit>
       </group>
     </body>

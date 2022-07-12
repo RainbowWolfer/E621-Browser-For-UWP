@@ -107,12 +107,16 @@ namespace E621Downloader.Views.LibrarySection {
 				if(isFolderBar) {
 					SizeComboItem.Visibility = Visibility.Collapsed;
 					TypeComboItem.Visibility = Visibility.Collapsed;
-					if(OrderComboBox.SelectedItem == SizeComboItem || OrderComboBox.SelectedItem == TypeComboItem) {
+					ScoreComboItem.Visibility = Visibility.Collapsed;
+					if(OrderComboBox.SelectedItem == SizeComboItem ||
+						OrderComboBox.SelectedItem == TypeComboItem ||
+						OrderComboBox.SelectedItem == ScoreComboItem) {
 						OrderComboBox.SelectedItem = DateComboItem;
 					}
 				} else {
 					SizeComboItem.Visibility = Visibility.Visible;
 					TypeComboItem.Visibility = Visibility.Visible;
+					ScoreComboItem.Visibility = Visibility.Visible;
 				}
 			}
 		}
@@ -138,6 +142,11 @@ namespace E621Downloader.Views.LibrarySection {
 			this.InitializeComponent();
 		}
 
+		public void SetOrderItem(OrderEnum order, OrderType orderType) {
+			AsecDesOrder = order;
+			OrderType = orderType;
+		}
+
 		private void AsecDesButton_Click(object sender, RoutedEventArgs e) {
 			if(AsecDesOrder == OrderEnum.Desc) {
 				AsecDesOrder = OrderEnum.Asc;
@@ -159,6 +168,8 @@ namespace E621Downloader.Views.LibrarySection {
 				OrderType = OrderType.Size;
 			} else if(first == TypeComboItem) {
 				OrderType = OrderType.Type;
+			} else if(first == ScoreComboItem) {
+				OrderType = OrderType.Score;
 			} else {
 				return;
 			}

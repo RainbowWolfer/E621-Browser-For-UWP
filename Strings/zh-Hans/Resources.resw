@@ -34,7 +34,7 @@
     <value>进入专注模式</value>
   </data>
   <data name="Please Wait" xml:space="preserve">
-    <value>请稍后</value>
+    <value>请稍等</value>
   </data>
   <data name="Checking Connection to" xml:space="preserve">
     <value>正在检查连接</value>

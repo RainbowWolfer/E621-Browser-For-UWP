@@ -19,6 +19,16 @@
 		</Grid.RowDefinitions>
 		<FontIcon x:Name="ItemIcon" Glyph="&#xED25;" Foreground="Yellow" FontSize="120"/>
 		<Image x:Name="ItemImage"/>
+		<Border x:Name="CountTextBorder" HorizontalAlignment="Left" VerticalAlignment="Top" CornerRadius="5">
+			<Border.Background>
+				<SolidColorBrush Color="Gray" Opacity="0.2"/>
+			</Border.Background>
+			<Border.Shadow>
+				<ThemeShadow/>
+			</Border.Shadow>
+			<TextBlock x:Name="FolderChildrenCountText" Text="..." Margin="5,0,5,2" FontWeight="SemiBold">
+			</TextBlock>
+		</Border>
 		<view:BottomInformationForImageHolder x:Name="BottomInfo" Grid.Row="1"/>
 		<TextBlock x:Name="ItemNameText" Grid.Row="2" d:Text="Name Goes Here" VerticalAlignment="Center" FontSize="18" TextWrapping="NoWrap" TextAlignment="Center"/>
 		<Border x:Name="TypeBorder" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="2" Background="#99444444">

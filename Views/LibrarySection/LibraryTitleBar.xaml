@@ -99,6 +99,7 @@
 			<ComboBoxItem x:Uid="NameContent" x:Name="NameComboItem" Content="Name"/>
 			<ComboBoxItem x:Uid="SizeContent" x:Name="SizeComboItem" Content="Size"/>
 			<ComboBoxItem x:Uid="TypeContent" x:Name="TypeComboItem" Content="Type"/>
+			<ComboBoxItem x:Uid="ScoreContent" x:Name="ScoreComboItem" Content="Score"/>
 		</ComboBox>
 		<AutoSuggestBox x:Name="MySearchBox" MinWidth="250" QueryIcon="Find" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,0,10,0" QuerySubmitted="MySearchBox_QuerySubmitted" PreviewKeyDown="MySearchBox_PreviewKeyDown"/>
 	</RelativePanel>

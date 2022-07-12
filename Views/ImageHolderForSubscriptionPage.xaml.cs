@@ -43,8 +43,45 @@ namespace E621Downloader.Views {
 			} else {
 				MyImage.ImageOpened += ImageHolderForSubscriptionPage_ImageOpened;
 				Methods.ProdedureLoading(PreviewImage, MyImage, post, new LoadPoolItemActions() {
+					OnUrlsEmpty = () => {
+						progress.Value = null;
+						HintText.Text = "Error".Language();
+						this.Visibility = Visibility.Visible;
+					},
+					OnSampleUrlEmpty = () => {
+						progress.Value = null;
+						HintText.Text = "Empty URL".Language();
+					},
+					OnPreviewStart = () => {
+						HintText.Text = "";
+					},
+					OnPreviewProgress = p => {
+						progress.Value = p;
+					},
+					OnPreviewExists = () => {
+						progress.Value = null;
+					},
+					OnPreviewOpened = b => {
+						progress.Value = null;
+					},
+					OnPreviewFailed = () => {
+						progress.Value = 0;
+					},
+					OnSampleStart = b => {
+
+					},
 					OnSampleProgress = p => {
 						progress.Value = p;
+					},
+					OnSampleExists = () => {
+						progress.Value = null;
+					},
+					OnSampleOpened = b => {
+						progress.Value = null;
+					},
+					OnSampleFailed = () => {
+						progress.Value = null;
+						HintText.Text = "Error".Language();
 					},
 				});
 				//MyImage.Source = new BitmapImage(new Uri(post.sample.url ?? post.preview.url));

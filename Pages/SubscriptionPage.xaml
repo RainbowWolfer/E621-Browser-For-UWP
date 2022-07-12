@@ -75,12 +75,13 @@
 					<ListView x:Name="FavoritesListView" Grid.Row="4" ItemsSource="{x:Bind items}" d:ItemsSource="1 2 3" Margin="0,5,0,0" SelectionMode="Single" SelectionChanged="FavoritesListView_SelectionChanged" Padding="5">
 						<ListView.ItemTemplate>
 							<DataTemplate x:DataType="local:FavoriteListViewItem">
-								<Grid>
+								<Grid ToolTipService.ToolTip="{x:Bind Title}">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="auto"/>
 										<ColumnDefinition Width="*"/>
 										<ColumnDefinition Width="auto"/>
 									</Grid.ColumnDefinitions>
+									<Rectangle Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 									<FontIcon Tag="{x:Bind Index}" Glyph="&#xE923;" FontSize="12" ToolTipService.ToolTip="{x:Bind Title}" Loaded="FontIcon_Loaded" Width="12"/>
 									<TextBlock Text="{x:Bind Title}" d:Text="This is Title" Grid.Column="1" VerticalAlignment="Center" FontSize="18" Margin="25,0,0,0"/>
 									<TextBlock Text="{x:Bind Count}" d:Text="20" Grid.Column="2" VerticalAlignment="Center" Margin="10,0,10,0"/>
@@ -88,7 +89,7 @@
 							</DataTemplate>
 						</ListView.ItemTemplate>
 					</ListView>
-					<views:ResizeBar Grid.Row="5" OnSizeChanged="ResizeBar_OnSizeChanged" Margin="5"/>
+					<views:ResizeBar x:Name="MyResizeBar" Grid.Row="5" VerticalAlignment="Bottom" Minimum="50" Maximum="400" Step="10" OnSizeChanged="ResizeBar_OnSizeChanged" Margin="5,0,5,0"/>
 				</Grid>
 			</SplitView.Pane>
 			<SplitView.Content>

@@ -11,6 +11,7 @@ namespace E621Downloader.Models.Locals {
 		public int randomTagMaxCount;
 
 		public int tabsOpenLength;
+		public int subscriptionSizeView;
 
 		public bool adaptiveGrid;
 		public double fixedHeight;
@@ -36,7 +37,11 @@ namespace E621Downloader.Models.Locals {
 
 		public SlideshowConfiguration slideshowConfiguration;
 
-		public ItemsGroupViewType library_viewType;
+		public ItemsGroupViewType library_viewType_images;
+		public ItemsGroupViewType library_viewType_folders;
+
+		public int librarSizeView_images;
+		public int librarSizeView_folders;
 
 		public string user_username = "";
 		public string user_api = "";
@@ -71,10 +76,14 @@ namespace E621Downloader.Models.Locals {
 				fixedHeight = 280,
 				randomTagMaxCount = 10000,
 				tabsOpenLength = 300,
-				library_viewType = ItemsGroupViewType.ListView,
+				library_viewType_images = ItemsGroupViewType.ListView,
 				enableGifAutoPlay = true,
 				gifLimit = 5,
 				slideshowConfiguration = new(),
+				subscriptionSizeView = 200,
+				librarSizeView_folders = 100,
+				librarSizeView_images = 100,
+				library_viewType_folders = ItemsGroupViewType.ListView,
 			};
 		}
 	}

@@ -313,7 +313,7 @@ namespace E621Downloader {
 		public static ContentDialog InstanceDialog { get; private set; }
 		public static bool IsShowingInstanceDialog { get; private set; }
 
-		public static async void CreateInstantDialog(string title, object content) {
+		public static async void CreateInstantDialog(string title, object content, string cancelText = null, Action onCancel = null) {
 			if(InstanceDialog != null) {
 				return;
 			}
@@ -322,7 +322,13 @@ namespace E621Downloader {
 				Title = title,
 				Content = content,
 			};
-			_ = await InstanceDialog.ShowAsync();
+			if(cancelText != null) {
+				InstanceDialog.SecondaryButtonText = cancelText;
+			}
+			var result = await InstanceDialog.ShowAsync();
+			if(result == ContentDialogResult.Secondary && onCancel != null) {
+				onCancel.Invoke();
+			}
 			IsShowingInstanceDialog = true;
 		}
 
@@ -793,6 +799,28 @@ namespace E621Downloader {
 		private void UserKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
 			if(LocalSettings.Current.enableHotKeys) {
 				NavigateTo(PageTag.UserProfile);
+			}
+			args.Handled = true;
+		}
+
+		private void FullscreenKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			if(LocalSettings.Current.enableHotKeys) {
+				if(ScreenMode != ScreenMode.FullScreen) {
+					ScreenMode = ScreenMode.FullScreen;
+				} else {
+					ScreenMode = ScreenMode.Normal;
+				}
+			}
+			args.Handled = true;
+		}
+
+		private void FocusKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			if(LocalSettings.Current.enableHotKeys) {
+				if(ScreenMode != ScreenMode.Focus) {
+					ScreenMode = ScreenMode.Focus;
+				} else {
+					ScreenMode = ScreenMode.Normal;
+				}
 			}
 			args.Handled = true;
 		}

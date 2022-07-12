@@ -71,6 +71,7 @@ namespace E621Downloader.Pages {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Enabled;
 			LoadFollowing(1);
+			MyResizeBar.SetSize(LocalSettings.Current.subscriptionSizeView);
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
@@ -388,8 +389,10 @@ namespace E621Downloader.Pages {
 			PageText.Text = $"{CurrentFollowingPage}";
 		}
 
-		private void ResizeBar_OnSizeChanged(int value) {
+		private void ResizeBar_OnSizeChanged(int value, bool save) {
 			Size = value;
+			LocalSettings.Current.subscriptionSizeView = value;
+			LocalSettings.Save();
 			if(MainGridView == null) {
 				return;
 			}

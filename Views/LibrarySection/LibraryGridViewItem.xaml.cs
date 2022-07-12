@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using System.Numerics;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace E621Downloader.Views.LibrarySection {
@@ -23,12 +24,14 @@ namespace E621Downloader.Views.LibrarySection {
 				itemType = value;
 				switch(itemType) {
 					case ItemType.Folder:
+						FolderChildrenCountText.Visibility = Visibility.Visible;
 						BottomInfo.Visibility = Visibility.Collapsed;
 						TypeBorder.Visibility = Visibility.Collapsed;
 						ItemIcon.Visibility = Visibility.Visible;
 						ItemImage.Visibility = Visibility.Collapsed;
 						break;
 					case ItemType.Image:
+						FolderChildrenCountText.Visibility = Visibility.Collapsed;
 						BottomInfo.Visibility = Visibility.Visible;
 						TypeBorder.Visibility = Visibility.Collapsed;
 						ItemIcon.Visibility = Visibility.Collapsed;
@@ -36,6 +39,7 @@ namespace E621Downloader.Views.LibrarySection {
 						SetImageSource();
 						break;
 					case ItemType.Gif:
+						FolderChildrenCountText.Visibility = Visibility.Collapsed;
 						BottomInfo.Visibility = Visibility.Visible;
 						TypeBorder.Visibility = Visibility.Visible;
 						TypeTextBlock.Text = "GIF";
@@ -44,6 +48,7 @@ namespace E621Downloader.Views.LibrarySection {
 						SetImageSource();
 						break;
 					case ItemType.Webm:
+						FolderChildrenCountText.Visibility = Visibility.Collapsed;
 						BottomInfo.Visibility = Visibility.Visible;
 						TypeBorder.Visibility = Visibility.Visible;
 						TypeTextBlock.Text = "WEBM";
@@ -53,6 +58,7 @@ namespace E621Downloader.Views.LibrarySection {
 						break;
 					case ItemType.None:
 					default:
+						FolderChildrenCountText.Visibility = Visibility.Collapsed;
 						BottomInfo.Visibility = Visibility.Visible;
 						TypeBorder.Visibility = Visibility.Visible;
 						TypeTextBlock.Text = "UNKNOWN";
@@ -70,12 +76,17 @@ namespace E621Downloader.Views.LibrarySection {
 				item = value;
 				if(item is LibraryImage image) {
 					BottomInfo.PostRef = image.Meta.MyPost;
+				} else if(item is LibraryFolder folder) {
+					LibraryListViewItem.CalculateFolderChildren(folder, count => {
+						FolderChildrenCountText.Text = $"( {count} )";
+					});
 				}
 			}
 		}
 
 		public LibraryGridViewItem() {
 			this.InitializeComponent();
+			CountTextBorder.Translation += new Vector3(0, 0, 8);
 		}
 
 		public void SetImageSource() {

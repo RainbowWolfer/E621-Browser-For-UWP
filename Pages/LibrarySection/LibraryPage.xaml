@@ -43,7 +43,7 @@
 							</StackPanel>
 						</views:LockableToggleButton>
 					</Grid>
-					<views:ResizeBar VerticalAlignment="Bottom" Minimum="50" Maximum="400" Step="10" Size="100" OnSizeChanged="ResizeBar_OnSizeChanged" Margin="5,0,5,0"/>
+					<views:ResizeBar x:Name="MyResizeBar" VerticalAlignment="Bottom" Minimum="50" Maximum="400" Step="10" OnSizeChanged="ResizeBar_OnSizeChanged" Margin="5,0,5,0"/>
 				</StackPanel>
 			</controls:NavigationView.PaneFooter>
 			<controls:NavigationView.Content>

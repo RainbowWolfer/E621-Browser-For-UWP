@@ -305,7 +305,7 @@ namespace E621Downloader.Pages.LibrarySection {
 			if(!string.IsNullOrWhiteSpace(matchedName)) {
 				files = files.Where(f => f.file.Name.Contains(matchedName)).ToList();
 			}
-			files = (await Explorer.OrderImagesAsync(files, libraryPage.OrderType, libraryPage.Order)).ToList();
+			files = (await Explorer.OrderImagesAsync(this, files, libraryPage.OrderType, libraryPage.Order)).ToList();
 			GroupView.SetImages(files);
 		}
 

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
@@ -18,7 +19,7 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Pages.LibrarySection {
 	public sealed partial class Explorer: Page, ILibraryGridPage {
 		private LibraryPage libraryPage;
-		private LibraryPassArgs args;
+		public LibraryPassArgs Args { get; private set; }
 
 		private bool isLoading;
 
@@ -60,8 +61,8 @@ namespace E621Downloader.Pages.LibrarySection {
 		protected override async void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			if(e.Parameter is LibraryPassArgs args) {
-				this.args = args;
-				if(this.args.NeedRefresh) {
+				this.Args = args;
+				if(this.Args.NeedRefresh) {
 					TitleBar.ShowLocalChangedHintText = true;
 				}
 				libraryPage = args.Parent;
@@ -74,33 +75,48 @@ namespace E621Downloader.Pages.LibrarySection {
 					if(imagesArgs.Files == null) {
 						await LoadImages(imagesArgs);
 					}
-					UpdateImagesAsync(imagesArgs);
 					TitleBar.IsFolderBar = false;
+					await UpdateImagesAsync(imagesArgs);
 				} else if(args is LibraryFoldersArgs folderArgs) {
 					if(folderArgs.Folders == null) {
 						await Task.Delay(200);// just have this time for animation to play (or not)
 						await LoadDownloadFolders(folderArgs);
 					}
-					UpdateFolders(folderArgs);
 					TitleBar.IsFolderBar = true;
+					await UpdateFoldersAsync(folderArgs);
 				} else if(args is LibraryFilterArgs filterArgs) {
-					if(filterArgs.Files != null) {
-						UpdateImagesAsync(filterArgs);
-					}
 					TitleBar.IsFolderBar = false;
+					if(filterArgs.Files != null) {
+						await UpdateImagesAsync(filterArgs);
+					}
 				}
 			}
 		}
 
+		private CancellationTokenSource clearEmptyCTS;
 		private async void TitleBar_OnEmptyFileClear() {
-			MainPage.CreateInstantDialog("Please Wait".Language(), "Clearing in action".Language());
+			MainPage.CreateInstantDialog("Please Wait".Language(), "Clearing in action".Language(), "Cancel".Language(), () => {
+				if(clearEmptyCTS != null) {
+					clearEmptyCTS.Cancel();
+					clearEmptyCTS.Dispose();
+					clearEmptyCTS = null;
+				}
+			});
 			int affectedCount = -1;
-			if(args is LibraryImagesArgs files) {
-				affectedCount = await ClearEmptyFilesInFolder(files.Belonger);
-			} else if(args is LibraryFoldersArgs folder) {
+			bool canceled = false;
+			clearEmptyCTS = new CancellationTokenSource();
+			if(Args is LibraryImagesArgs files) {
+				affectedCount = await ClearEmptyFilesInFolder(files.Belonger, clearEmptyCTS.Token);
+				canceled = affectedCount == -2;
+			} else if(Args is LibraryFoldersArgs folder) {
 				affectedCount = 0;
 				foreach(StorageFolder item in folder.Folders) {
-					affectedCount += await ClearEmptyFilesInFolder(item);
+					int count = await ClearEmptyFilesInFolder(item, clearEmptyCTS.Token);
+					if(count == -2) {
+						canceled = true;
+						break;
+					}
+					affectedCount += count;
 				}
 			}
 			MainPage.HideInstantDialog();
@@ -109,15 +125,19 @@ namespace E621Downloader.Pages.LibrarySection {
 			}
 			await new ContentDialog() {
 				Title = "Notification".Language(),
-				Content = "Cleared {{0}} Files".Language(affectedCount),
+				Content = canceled ? "Canceled".Language() : "Cleared {{0}} Files".Language(affectedCount),
 				CloseButtonText = "Close".Language(),
 			}.ShowAsync();
 		}
 
-		private async Task<int> ClearEmptyFilesInFolder(StorageFolder folder) {
+		private async Task<int> ClearEmptyFilesInFolder(StorageFolder folder, CancellationToken token = default) {
 			int affectedCount = 0;
 			Dictionary<StorageFile, StorageFile> fileToMeta = new();
-			foreach(StorageFile file in await folder.GetFilesAsync()) {
+			IReadOnlyList<StorageFile> files = await folder.GetFilesAsync();
+			int max = files.Count;
+			for(int i = 0; i < max; i++) {
+				StorageFile file = files[i];
+				MainPage.UpdateInstanceDialogContent("Clearing in action".Language() + "\n" + "Folder".Language() + $" : {folder.Name}\n" + "Checking File ({{0}}) {{1}}/{{2}}".Language(file.Name, i, max));
 				BasicProperties properties = await file.GetBasicPropertiesAsync();
 				if(properties.Size == 0) {
 					fileToMeta.Add(file, null);
@@ -128,6 +148,10 @@ namespace E621Downloader.Pages.LibrarySection {
 							fileToMeta[file] = metaFile;
 						}
 					} catch(FileNotFoundException) { }
+				}
+
+				if(token.IsCancellationRequested) {
+					return -2;
 				}
 			}
 
@@ -166,9 +190,9 @@ namespace E621Downloader.Pages.LibrarySection {
 
 		private async void TitleBar_OnExplorerClick() {
 			StorageFolder folder = null;
-			if(args is LibraryFoldersArgs foldersArgs) {
+			if(Args is LibraryFoldersArgs foldersArgs) {
 				folder = foldersArgs.RootFolder;
-			} else if(args is LibraryImagesArgs imagesArgs) {
+			} else if(Args is LibraryImagesArgs imagesArgs) {
 				folder = imagesArgs.Belonger;
 			}
 			if(folder == null) {
@@ -182,16 +206,16 @@ namespace E621Downloader.Pages.LibrarySection {
 		private async Task Refresh(bool load = true, string matchedName = null) {
 			TitleBar.ShowLocalChangedHintText = false;
 			GroupView.ClearItems();
-			if(args is LibraryImagesArgs imagesArgs) {
+			if(Args is LibraryImagesArgs imagesArgs) {
 				if(load) {
 					await LoadImages(imagesArgs);
 				}
-				UpdateImagesAsync(imagesArgs, matchedName);
-			} else if(args is LibraryFoldersArgs folderArgs) {
+				await UpdateImagesAsync(imagesArgs, matchedName);
+			} else if(Args is LibraryFoldersArgs folderArgs) {
 				if(load) {
 					await LoadDownloadFolders(folderArgs);
 				}
-				UpdateFolders(folderArgs, matchedName);
+				await UpdateFoldersAsync(folderArgs, matchedName);
 			}
 		}
 
@@ -217,12 +241,15 @@ namespace E621Downloader.Pages.LibrarySection {
 			IsLoading = false;
 		}
 
-		private async void UpdateImagesAsync(ILibraryImagesArgs args, string matchedName = null) {
+		private async ValueTask UpdateImagesAsync(ILibraryImagesArgs args, string matchedName = null) {
+			if(IsLoading) {
+				return;
+			}
 			List<(MetaFile meta, BitmapImage bitmap, StorageFile file)> files = args.Files;
 			if(!string.IsNullOrWhiteSpace(matchedName)) {
 				files = files.Where(f => f.file.Name.Contains(matchedName)).ToList();
 			}
-			files = (await OrderImagesAsync(files, libraryPage.OrderType, libraryPage.Order, () => {
+			files = (await OrderImagesAsync(this, files, libraryPage.OrderType, libraryPage.Order, () => {
 				IsLoading = true;
 				LoadingText.Text = "Sorting".Language();
 			}, () => {
@@ -231,12 +258,15 @@ namespace E621Downloader.Pages.LibrarySection {
 			GroupView.SetImages(files);
 		}
 
-		private async void UpdateFolders(LibraryFoldersArgs args, string matchedName = null) {
+		private async ValueTask UpdateFoldersAsync(LibraryFoldersArgs args, string matchedName = null) {
+			if(IsLoading) {
+				return;
+			}
 			List<StorageFolder> folders = args.Folders;
 			if(!string.IsNullOrWhiteSpace(matchedName)) {
 				folders = folders.Where(f => f.Name.Contains(matchedName)).ToList();
 			}
-			folders = (await OrderFolders(folders, libraryPage.OrderType, libraryPage.Order, () => {
+			folders = (await OrderFolders(this, folders, libraryPage.OrderType, libraryPage.Order, () => {
 				IsLoading = true;
 				LoadingText.Text = "Sorting".Language();
 			}, () => {
@@ -245,7 +275,10 @@ namespace E621Downloader.Pages.LibrarySection {
 			GroupView.SetFolders(folders);
 		}
 
-		public static async ValueTask<IEnumerable<StorageFolder>> OrderFolders(IEnumerable<StorageFolder> folders, OrderType type, OrderEnum order, Action startSorting = null, Action finishSorting = null) {
+		public static async ValueTask<IEnumerable<StorageFolder>> OrderFolders(ILibraryGridPage page, IEnumerable<StorageFolder> folders, OrderType type, OrderEnum order, Action startSorting = null, Action finishSorting = null) {
+			if(page.IsLoading) {
+				return folders;
+			}
 			startSorting?.Invoke();
 			Func<StorageFolder, object> keySelector;
 			switch(type) {
@@ -255,13 +288,21 @@ namespace E621Downloader.Pages.LibrarySection {
 				case OrderType.Date:
 					Dictionary<StorageFolder, DateTimeOffset> modifiedTime = new();
 					foreach(StorageFolder item in folders) {
-						modifiedTime.Add(item, (await item.GetBasicPropertiesAsync()).DateModified);
+						try {
+							modifiedTime.Add(item, (await item.GetBasicPropertiesAsync()).DateModified);
+						} catch(Exception) {
+							finishSorting?.Invoke();
+							return folders;
+						}
 					}
 					keySelector = s => modifiedTime[s];
 					break;
 				case OrderType.Size:
 				case OrderType.Type:
+				case OrderType.NumberOsFiles:
+				case OrderType.Score:
 				default:
+					finishSorting?.Invoke();
 					return folders;
 			}
 
@@ -275,6 +316,7 @@ namespace E621Downloader.Pages.LibrarySection {
 					list = list.OrderByDescending(keySelector).ToList();
 					break;
 				default:
+					finishSorting?.Invoke();
 					return folders;
 			}
 
@@ -282,8 +324,8 @@ namespace E621Downloader.Pages.LibrarySection {
 			return list;
 		}
 
-		public static async ValueTask<IEnumerable<(MetaFile meta, BitmapImage bitmap, StorageFile file)>> OrderImagesAsync(IEnumerable<(MetaFile meta, BitmapImage bitmap, StorageFile file)> images, OrderType type, OrderEnum order, Action startSorting = null, Action finishSorting = null) {
-			if(images == null) {
+		public static async ValueTask<IEnumerable<(MetaFile meta, BitmapImage bitmap, StorageFile file)>> OrderImagesAsync(ILibraryGridPage page, IEnumerable<(MetaFile meta, BitmapImage bitmap, StorageFile file)> images, OrderType type, OrderEnum order, Action startSorting = null, Action finishSorting = null) {
+			if(images == null || page.IsLoading) {
 				return images;
 			}
 			startSorting?.Invoke();
@@ -295,7 +337,12 @@ namespace E621Downloader.Pages.LibrarySection {
 				case OrderType.Date:
 					Dictionary<StorageFile, DateTimeOffset> modifiedTime = new();
 					foreach(StorageFile item in images.Select(i => i.file)) {
-						modifiedTime.Add(item, (await item.GetBasicPropertiesAsync()).DateModified);
+						try {
+							modifiedTime.Add(item, (await item.GetBasicPropertiesAsync()).DateModified);
+						} catch(Exception) {
+							finishSorting?.Invoke();
+							return images;
+						}
 					}
 					keySelector = s => modifiedTime[s.file];
 					break;
@@ -305,7 +352,12 @@ namespace E621Downloader.Pages.LibrarySection {
 				case OrderType.Type:
 					keySelector = s => s.file.FileType;
 					break;
+				case OrderType.Score:
+					keySelector = s => s.meta.MyPost.score.total;
+					break;
+				case OrderType.NumberOsFiles:
 				default:
+					finishSorting?.Invoke();
 					return images;
 			}
 
@@ -319,6 +371,7 @@ namespace E621Downloader.Pages.LibrarySection {
 					list = list.OrderByDescending(keySelector).ToList();
 					break;
 				default:
+					finishSorting?.Invoke();
 					return images;
 			}
 
@@ -331,7 +384,7 @@ namespace E621Downloader.Pages.LibrarySection {
 		}
 
 		public void RefreshRequest() {
-			args.NeedRefresh = true;
+			Args.NeedRefresh = true;
 			TitleBar.ShowLocalChangedHintText = true;
 		}
 

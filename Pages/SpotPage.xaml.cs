@@ -285,7 +285,7 @@ namespace E621Downloader.Pages {
 			MainGridView.Items.Clear();
 		}
 
-		private void ResizeBar_OnSizeChanged(int value) {
+		private void ResizeBar_OnSizeChanged(int value, bool save) {
 			if(MainGridView == null) {
 				return;
 			}
