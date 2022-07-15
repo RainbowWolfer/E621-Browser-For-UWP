@@ -2034,4 +2034,19 @@
 	<data name="ToggleFocusModeText.Text" xml:space="preserve">
     <value>Toggle Focus Mode</value>
   </data>
+	<data name="SetAsAvatarText.Text" xml:space="preserve">
+    <value>Set As Avatar</value>
+  </data>
+	<data name="Setting avatar to user : {{0}}" xml:space="preserve">
+    <value>Setting avatar to user : {{0}}</value>
+  </data>
+	<data name="Set avatar error" xml:space="preserve">
+    <value>Set avatar error</value>
+  </data>
+	<data name="Successfully set new avatar" xml:space="preserve">
+    <value>Successfully set new avatar</value>
+  </data>
+	<data name="V1201L1.Text" xml:space="preserve">
+    <value>- Small fixes</value>
+  </data>
 </root>

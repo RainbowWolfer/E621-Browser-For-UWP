@@ -122,9 +122,12 @@ namespace E621Downloader.Pages.LibrarySection {
 				}
 			}
 			MainPage.HideInstantDialog();
-			if(affectedCount > 0) {
-				await Refresh();
+			async void InlineRefresh() {
+				if(affectedCount > 0) {
+					await Refresh();
+				}
 			}
+			InlineRefresh();
 			await new ContentDialog() {
 				Title = "Notification".Language(),
 				Content = canceled ? "Canceled".Language() : "Cleared {{0}} Files".Language(affectedCount),
@@ -207,6 +210,7 @@ namespace E621Downloader.Pages.LibrarySection {
 
 		private async Task Refresh(bool load = true, string matchedName = null) {
 			TitleBar.ShowLocalChangedHintText = false;
+			Args.NeedRefresh = false;
 			GroupView.ClearItems();
 			if(Args is LibraryImagesArgs imagesArgs) {
 				if(load) {
@@ -231,6 +235,8 @@ namespace E621Downloader.Pages.LibrarySection {
 			});
 			imagesArgs.Files = list;
 			IsLoading = false;
+			Args.NeedRefresh = false;
+			TitleBar.ShowLocalChangedHintText = false;
 		}
 
 		private async Task LoadDownloadFolders(LibraryFoldersArgs folderArgs) {
@@ -241,6 +247,8 @@ namespace E621Downloader.Pages.LibrarySection {
 				folderArgs.Folders = folders.ToList();
 			}
 			IsLoading = false;
+			Args.NeedRefresh = false;
+			TitleBar.ShowLocalChangedHintText = false;
 		}
 
 		private async ValueTask UpdateImagesAsync(ILibraryImagesArgs args, string matchedName = null) {

@@ -8,10 +8,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
+using Windows.System;
 
 namespace E621Downloader.Models.Networks {
 	public static class Data {
-		public const string USERAGENT = "RainbowWolferE621TestApp";
+		public const string USERAGENT = "E621BrowserForUWP_RainbowWolfer";
 
 		public static string GetHost() {
 			if((LocalSettings.Current?.customHostEnable ?? false) && !string.IsNullOrWhiteSpace(LocalSettings.Current.customHost)) {
@@ -28,6 +29,44 @@ namespace E621Downloader.Models.Networks {
 				hostName = hostName.Substring(0, index);
 			}
 			return hostName;
+		}
+
+		public static async Task<HttpResult<string>> PatchAsync(string url, string
+		 stringContent, CancellationToken token = default, string username = "", string api = "") {
+			Debug.WriteLine("Reading: " + url);
+			Stopwatch stopwatch = new();
+			stopwatch.Start();
+			var client = new HttpClient();
+			AddDefaultRequestHeaders(client, username, api);
+			HttpResponseMessage message = null;
+			HttpResultType result;
+			HttpStatusCode code;
+			string content = null;
+			string helper = "";
+			try {
+				HttpRequestMessage request = new(new HttpMethod("PATCH"), url) {
+					Content = new StringContent(/*"user[avatar_id]:{imageID}"*/stringContent),
+				};
+				message = await client.SendAsync(request, token);
+				message.EnsureSuccessStatusCode();
+				code = message.StatusCode;
+				content = await message.Content.ReadAsStringAsync();
+				result = HttpResultType.Success;
+			} catch(OperationCanceledException) {
+				code = message?.StatusCode ?? HttpStatusCode.NotFound;
+				content = null;
+				result = HttpResultType.Canceled;
+			} catch(HttpRequestException e) {
+				code = message?.StatusCode ?? HttpStatusCode.NotFound;
+				content = e.Message;
+				helper = e.Message;
+				result = HttpResultType.Error;
+			} finally {
+				client.Dispose();
+				message?.Dispose();
+			}
+			stopwatch.Stop();
+			return new HttpResult<string>(result, code, content, stopwatch.ElapsedMilliseconds, helper);
 		}
 
 		public static async Task<HttpResult<string>> ReadURLAsync(string url, CancellationToken? token = null, string username = "", string api = "") {

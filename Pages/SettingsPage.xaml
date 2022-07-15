@@ -83,7 +83,7 @@
 							<StackPanel>
 								<Button x:Uid="SelectDownloadPathContent" x:Name="DownloadPathButton" Content="Select Download Path" FontSize="20" Tapped="DownloadPathButton_Tapped" Margin="20,10,0,10" HorizontalAlignment="Center"/>
 								<Button x:Uid="ClearDownloadPathContent" x:Name="ClearDownloadPathButton" Content="Clear Download Path" FontSize="20" Tapped="ClearDownloadPathButton_Tapped" Margin="20,0,0,10" HorizontalAlignment="Center"/>
-								<TextBlock x:Uid="NoPathSelectedText" x:Name="DownloadPathTextBlock" Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,10" FontSize="20" HorizontalAlignment="Center"/>
+								<TextBlock x:Uid="NoPathSelectedText" x:Name="DownloadPathTextBlock" Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,10" FontSize="20" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"/>
 							</StackPanel>
 						</ScrollViewer>
 					</Grid>
@@ -135,7 +135,7 @@
 								</StackPanel>
 								<ToggleSwitch x:Uid="CycleListToggle" x:Name="CycleListToggle" OffContent="Enable Cycle List" OnContent="Enable Cycle List" Margin="5" Toggled="CycleListToggle_Toggled" ToolTipService.ToolTip="Enable cycle images list in picture page"/>
 								<ToggleSwitch x:Uid="GifAutoPlayToggle" x:Name="GifAutoPlayToggle" OffContent="Enable Gif AutoPlay" OnContent="Enable Gif AutoPlay" Margin="5" Toggled="GifAutoPlayToggle_Toggled" ToolTipService.ToolTip="Enable this to prevent from system slowing down for playing too many gifs at the same time in home page"/>
-								<ToggleSwitch x:Uid="ConcatTagToggle" x:Name="ConcatTagToggle" OffContent="Overlay Tags" OnContent="Concat Tags" Margin="5" Toggled="ConcatTagToggle_Toggled" ToolTipService.ToolTip="Determine searching either clicked tag and the current tags or clicked tag itself in picture page"/>
+								<ToggleSwitch x:Uid="ConcatTagToggle" x:Name="ConcatTagToggle" OffContent="Link Tags Search" OnContent="Link Tags Search" Margin="5" Toggled="ConcatTagToggle_Toggled" ToolTipService.ToolTip="Determine searching either clicked tag and the current tags or clicked tag itself in picture page"/>
 								<ToggleSwitch x:Uid="MediaPlayToggle" x:Name="MediaPlayToggle" OffContent="Media Background Play" OnContent="Media Background Play" Margin="5" Toggled="MediaPlayToggle_Toggled" ToolTipService.ToolTip="Enable media to be playing when in other pages"/>
 								<ToggleSwitch x:Uid="MediaAutoPlayToggle" x:Name="MediaAutoPlayToggle" OffContent="Media Auto Play" OnContent="Media Auto Play" Margin="5" Toggled="MediaAutoPlayToggle_Toggled" ToolTipService.ToolTip="Enable media to play automatically when the media is loaded"/>
 								<ToggleSwitch x:Uid="MediaAutoMuteToggle" x:Name="MediaAutoMuteToggle" OffContent="Media Auto Mute" OnContent="Media Auto Mute" Margin="5" Toggled="MediaAutoMuteToggle_Toggled"/>
@@ -253,6 +253,13 @@
 									<StackPanel>
 										<TextBlock x:Uid="KnownIssueL1" Text="- The listviews of UWP display differently in Win11 and Win10, so the app in Win10 will experience row width not matching its parent" FontSize="22" TextWrapping="WrapWholeWords"/>
 										<TextBlock x:Uid="KnownIssueL2" Text="- After exiting fullscreen of the media player in Picture Page, any navigation will exit any further fullscreen forcedly." FontSize="22" TextWrapping="WrapWholeWords" Visibility="Collapsed"/>
+									</StackPanel>
+								</controls:Expander.Content>
+							</controls:Expander>
+							<controls:Expander Header="2022-07-17 (v1.2.1.0) Hotfix" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
+								<controls:Expander.Content>
+									<StackPanel>
+										<TextBlock x:Uid="V1201L1" Text="- Small fixes" FontSize="22" TextWrapping="WrapWholeWords"/>
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>

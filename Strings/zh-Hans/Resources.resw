@@ -1936,4 +1936,19 @@
   <data name="ToggleFocusModeText.Text" xml:space="preserve">
     <value>切换专注模式</value>
   </data>
+  <data name="SetAsAvatarText.Text" xml:space="preserve">
+    <value>设置为头像</value>
+  </data>
+  <data name="Setting avatar to user : {{0}}" xml:space="preserve">
+    <value>正在设置用户头像 : {{0}}</value>
+  </data>
+  <data name="Set avatar error" xml:space="preserve">
+    <value>设置头像错误</value>
+  </data>
+  <data name="Successfully set new avatar" xml:space="preserve">
+    <value>成功设置头像</value>
+  </data>
+  <data name="V1201L1.Text" xml:space="preserve">
+    <value>- 小修补</value>
+  </data>
 </root>

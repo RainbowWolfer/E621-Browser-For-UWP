@@ -21,7 +21,7 @@ namespace E621Downloader.Models.Posts {
 		}
 
 		public static async Task<Post> GetAvatarPostAsync(E621User user, CancellationToken? token = null) {
-			if(user == null) {
+			if(user == null || string.IsNullOrWhiteSpace(user.avatar_id)) {
 				return null;
 			}
 			string url = $"https://{Data.GetHost()}/posts/{user.avatar_id}.json";

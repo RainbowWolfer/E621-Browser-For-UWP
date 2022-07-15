@@ -298,8 +298,11 @@ namespace E621Downloader.Pages {
 					};
 					ChildrenGridView.Items.Add(i);
 				}
+				ParentImageHolder.Clear();
 				ParentImageHolder.Post_ID = this.PostRef.relationships.parent_id;
 				ParentImageHolder.Origin = this.PostRef;
+
+				PoolsListView.ItemsSource = PostRef.pools;
 
 				Local.History.AddPostID(this.PostRef.id);
 			}
@@ -1214,6 +1217,30 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			Clipboard.SetContent(imageDataPackage);
+		}
+
+		private async void SetAsAvatarItem_Click(object sender, RoutedEventArgs e) {
+			if(PostRef == null || !LocalSettings.Current.CheckLocalUser() || E621User.Current == null) {
+				return;
+			}
+			MainPage.CreateInstantDialog("Please Wait".Language(), "Setting avatar to user : {{0}}".Language(LocalSettings.Current?.user_username));
+
+			HttpResult<string> result = await Data.PatchAsync($"https://{Data.GetHost()}/users/{E621User.Current.id}.json", $"user[avatar_id]:{PostRef.id}");
+			MainPage.HideInstantDialog();
+
+			switch(result.Result) {
+				case HttpResultType.Success:
+					MainPage.CreateTip(this, "Success".Language(),
+					"Successfully set new avatar".Language(),
+					Symbol.Accept, "OK".Language(), false, TeachingTipPlacementMode.TopRight, null, 2000);
+					break;
+				case HttpResultType.Error:
+					await MainPage.CreatePopupDialog("Error".Language(), "Set avatar error".Language());
+					break;
+				case HttpResultType.Canceled:
+				default:
+					break;
+			}
 		}
 
 		private async void DebugItem_Click(object sender, RoutedEventArgs e) {

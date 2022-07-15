@@ -984,11 +984,11 @@ Go Create your own one</source>
         </trans-unit>
         <trans-unit id="ConcatTagToggle.OnContent" translate="yes" xml:space="preserve">
           <source>Link Tags Search</source>
-          <target state="needs-review-translation">链接标签搜索</target>
+          <target state="final">链接标签搜索</target>
         </trans-unit>
         <trans-unit id="ConcatTagToggle.OffContent" translate="yes" xml:space="preserve">
           <source>Link Tags Search</source>
-          <target state="needs-review-translation">链接标签搜索</target>
+          <target state="final">链接标签搜索</target>
         </trans-unit>
         <trans-unit id="MediaPlayToggle.OnContent" translate="yes" xml:space="preserve">
           <source>Media Background Play</source>
@@ -2577,6 +2577,26 @@ Would you like to get it set?</source>
         <trans-unit id="ToggleFocusModeText.Text" translate="yes" xml:space="preserve">
           <source>Toggle Focus Mode</source>
           <target state="final">切换专注模式</target>
+        </trans-unit>
+        <trans-unit id="SetAsAvatarText.Text" translate="yes" xml:space="preserve">
+          <source>Set As Avatar</source>
+          <target state="final">设置为头像</target>
+        </trans-unit>
+        <trans-unit id="Setting avatar to user : {{0}}" translate="yes" xml:space="preserve">
+          <source>Setting avatar to user : {{0}}</source>
+          <target state="final">正在设置用户头像 : {{0}}</target>
+        </trans-unit>
+        <trans-unit id="Set avatar error" translate="yes" xml:space="preserve">
+          <source>Set avatar error</source>
+          <target state="final">设置头像错误</target>
+        </trans-unit>
+        <trans-unit id="Successfully set new avatar" translate="yes" xml:space="preserve">
+          <source>Successfully set new avatar</source>
+          <target state="final">成功设置头像</target>
+        </trans-unit>
+        <trans-unit id="V1201L1.Text" translate="yes" xml:space="preserve">
+          <source>- Small fixes</source>
+          <target state="final">- 小修补</target>
         </trans-unit>
       </group>
     </body>

@@ -46,6 +46,7 @@ namespace E621Downloader.Models.Download {
 					Content = "DownloadFolderNotFound".Language(),
 					PrimaryButtonText = "Go To Settings".Language(),
 					SecondaryButtonText = "Back".Language(),
+					DefaultButton = ContentDialogButton.Primary,
 				}.ShowAsync() == ContentDialogResult.Primary) {
 					MainPage.NavigateTo(PageTag.Settings);
 				}

@@ -146,7 +146,7 @@ namespace E621Downloader.Models.Locals {
 			return meta;
 		}
 
-		private static async void WriteMetaFile(MetaFile meta, StorageFile file) {
+		public static async void WriteMetaFile(MetaFile meta, StorageFile file) {
 			try {
 				StorageFolder folder = await file.GetParentAsync();
 				//An exception of type 'System.IO.FileLoadException' occurred in System.Private.CoreLib.dll but was not handled in user code
@@ -157,6 +157,17 @@ namespace E621Downloader.Models.Locals {
 				Debug.WriteLine(e.Message);
 			}
 		}
+
+		public static async Task WriteMetaFileAsync(MetaFile meta, StorageFile file) {
+			try {
+				StorageFolder folder = await file.GetParentAsync();
+				StorageFile target = await folder.CreateFileAsync($"{file.DisplayName}.meta", CreationCollisionOption.ReplaceExisting);
+				await FileIO.WriteTextAsync(target, meta.ConvertJson());
+			} catch(Exception e) {
+				Debug.WriteLine(e.Message);
+			}
+		}
+
 		public static async void WriteMetaFile(MetaFile meta, Post post, string groupName) {
 			//System.IO.FileLoadException: 'The process cannot access the file because it is being used by another process. (Exception from HRESULT: 0x80070020)'
 			try {
@@ -225,33 +236,35 @@ namespace E621Downloader.Models.Locals {
 			var pairs = new List<Pair>();
 			IReadOnlyList<StorageFile> files = await folder.GetFilesAsync();
 			for(int i = 0; i < files.Count; i++) {
-				StorageFile file = files[i];
-				onNextFileLoad?.Invoke(file, i + 1, files.Count);
-				if(file.FileType == ".meta") {
-					MetaFile meta;
-					using(Stream stream = await file.OpenStreamForReadAsync()) {
+				try {
+					StorageFile file = files[i];
+					onNextFileLoad?.Invoke(file, i + 1, files.Count);
+					if(file.FileType == ".meta") {
+						using Stream stream = await file.OpenStreamForReadAsync();
 						using StreamReader reader = new(stream);
-						meta = JsonConvert.DeserializeObject<MetaFile>(await reader.ReadToEndAsync());
-					}
-					if(meta != null) {
-						Pair.Add(pairs, meta);
-					}
-				} else {
-					BitmapImage bitmap = new();
-					ThumbnailMode mode = ThumbnailMode.SingleItem;
-					if(new string[] { ".webm" }.Contains(file.FileType)) {
-						mode = ThumbnailMode.SingleItem;
-					} else if(new string[] { ".jpg", ".png" }.Contains(file.FileType)) {
-						mode = ThumbnailMode.PicturesView;
-					}
-					//Debug.WriteLine(mode);
-					using(StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(mode)) {
+						MetaFile meta = JsonConvert.DeserializeObject<MetaFile>(await reader.ReadToEndAsync());
+
+						if(meta != null) {
+							Pair.Add(pairs, meta);
+						}
+					} else {
+						BitmapImage bitmap = new();
+						ThumbnailMode mode = ThumbnailMode.SingleItem;
+						if(new string[] { ".webm" }.Contains(file.FileType)) {
+							mode = ThumbnailMode.SingleItem;
+						} else if(new string[] { ".jpg", ".png" }.Contains(file.FileType)) {
+							mode = ThumbnailMode.PicturesView;
+						}
+
+						using StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(mode);
 						if(thumbnail != null) {
 							using Stream stream = thumbnail.AsStreamForRead();
 							await bitmap.SetSourceAsync(stream.AsRandomAccessStream());
 						}
+						Pair.Add(pairs, bitmap, file);
 					}
-					Pair.Add(pairs, bitmap, file);
+				} catch(Exception) {
+					continue;
 				}
 			}
 			return Pair.Convert(pairs, p => p.IsValid);
@@ -263,6 +276,20 @@ namespace E621Downloader.Models.Locals {
 			using Stream stream = await file.OpenStreamForReadAsync();
 			using StreamReader reader = new(stream);
 			return (JsonConvert.DeserializeObject<MetaFile>(await reader.ReadToEndAsync()), file);
+		}
+
+		public static async Task<MetaFile> ReadMetaFile(StorageFile file) {
+			if(file.FileType != ".meta") {
+				return null;
+			}
+			using Stream stream = await file.OpenStreamForReadAsync();
+			using StreamReader reader = new(stream);
+			string content = await reader.ReadToEndAsync();
+			MetaFile meta = JsonConvert.DeserializeObject<MetaFile>(content);
+			if(meta == null) {
+				return null;
+			}
+			return meta;
 		}
 
 		public static async Task<List<MetaFile>> GetAllMetaFiles() {

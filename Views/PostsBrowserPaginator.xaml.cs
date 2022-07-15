@@ -213,7 +213,8 @@ namespace E621Downloader.Views {
 				btns.Add(CreateButton("..."));
 			} else {
 				for(int i = currentPage + 1; i < maxPage; i++) {
-					btns.Add(CreateButton(i, b => NavigatePage(i)));
+					int index = i;
+					btns.Add(CreateButton(i, b => NavigatePage(index)));
 				}
 			}
 			if(currentPage != maxPage) {

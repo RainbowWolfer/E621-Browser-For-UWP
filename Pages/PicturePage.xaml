@@ -223,6 +223,13 @@
 									<FontIcon Glyph="&#xE173;"/>
 								</MenuFlyoutItem.Icon>
 							</MenuFlyoutItem>
+							<!--Dont forget here. Patch request not finished-->
+							<MenuFlyoutItem x:Uid="SetAsAvatarText" x:Name="SetAsAvatarItem" Text="Set As Avatar" Click="SetAsAvatarItem_Click" Visibility="Collapsed">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE156;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
+							<!---->
 							<MenuFlyoutItem x:Uid="DebugItemText" x:Name="DebugItem" Text="Debug" Click="DebugItem_Click" Visibility="Collapsed">
 								<MenuFlyoutItem.Icon>
 									<FontIcon Glyph="&#xE8A1;"/>

@@ -33,6 +33,7 @@ namespace E621Downloader.Views {
 		private CancellationTokenSource cts = new();
 
 		private async void Load(string post_id) {
+			Clear();
 			if(string.IsNullOrWhiteSpace(post_id)) {
 				progress.Value = null;
 				MyImage.Source = null;
@@ -101,6 +102,17 @@ namespace E621Downloader.Views {
 			}
 			ToolTipService.SetToolTip(this, new ToolTipContentForPost(Target));
 			ToolTipService.SetPlacement(this, PlacementMode.Bottom);
+		}
+
+		public void Clear() {
+			if(PreviewImage.Source is BitmapImage pi) {
+				pi.UriSource = null;
+			}
+			if(MyImage.Source is BitmapImage mi) {
+				mi.UriSource = null;
+			}
+			PreviewImage.Source = null;
+			MyImage.Source = null;
 		}
 
 		public ImageHolderForPicturePage() {

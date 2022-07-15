@@ -234,6 +234,19 @@ namespace E621Downloader.Views.LibrarySection {
 					if(item is LibraryFolder folder) {
 						await folder.Folder.RenameAsync(newName);
 					} else if(item is LibraryImage image) {
+						//await image.Meta.FilePath.
+						string filePath = image.Meta.FilePath;
+						string metaFilePath = filePath.Substring(0, filePath.LastIndexOf('.')) + ".meta";
+						try {
+							StorageFile metaFile = await StorageFile.GetFileFromPathAsync(metaFilePath);
+							await metaFile.RenameAsync(newName.Substring(0, newName.LastIndexOf('.')) + ".meta");
+							MetaFile meta = await Local.ReadMetaFile(metaFile);
+							meta.FilePath = filePath.Substring(0, filePath.LastIndexOf('\\')) + "\\" + newName;
+							await Local.WriteMetaFileAsync(meta, metaFile);
+							///TODO: Problem Here
+						} catch(Exception ex) {
+							Debug.WriteLine(ex.Message);
+						}
 						await image.File.RenameAsync(newName);
 					}
 				} catch(Exception ex) {
