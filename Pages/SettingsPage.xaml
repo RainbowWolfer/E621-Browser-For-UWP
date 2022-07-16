@@ -133,8 +133,8 @@
 									<ToggleSwitch x:Uid="CustomHostToggle" x:Name="CustomHostToggle" OffContent="Enable Custom Host" OnContent="Enable Custom Host" FontWeight="SemiBold" Margin="5" Toggled="CustomHostToggle_Toggled"/>
 									<Button x:Name="CustomHostButton" Content="E926.net" Margin="10,0,0,0" Tapped="CustomHostButton_Tapped" Style="{StaticResource AccentButtonStyle}"/>
 								</StackPanel>
-								<ToggleSwitch x:Uid="CycleListToggle" x:Name="CycleListToggle" OffContent="Enable Cycle List" OnContent="Enable Cycle List" Margin="5" Toggled="CycleListToggle_Toggled" ToolTipService.ToolTip="Enable cycle images list in picture page"/>
-								<ToggleSwitch x:Uid="GifAutoPlayToggle" x:Name="GifAutoPlayToggle" OffContent="Enable Gif AutoPlay" OnContent="Enable Gif AutoPlay" Margin="5" Toggled="GifAutoPlayToggle_Toggled" ToolTipService.ToolTip="Enable this to prevent from system slowing down for playing too many gifs at the same time in home page"/>
+								<ToggleSwitch x:Uid="CycleListToggle" x:Name="CycleListToggle" OffContent="Enable Cycle List" OnContent="Enable Cycle List" Margin="5" Toggled="CycleListToggle_Toggled" ToolTipService.ToolTip="Enable you to start from the first picture when you reach the last picture or from the last to the first in picture page"/>
+								<ToggleSwitch x:Uid="GifAutoPlayToggle" x:Name="GifAutoPlayToggle" OffContent="Enable Gif Autoplay" OnContent="Enable Gif Autoplay" Margin="5" Toggled="GifAutoPlayToggle_Toggled" ToolTipService.ToolTip="Enable this to prevent from system slowing down for playing too many gifs at the same time in home page"/>
 								<ToggleSwitch x:Uid="ConcatTagToggle" x:Name="ConcatTagToggle" OffContent="Link Tags Search" OnContent="Link Tags Search" Margin="5" Toggled="ConcatTagToggle_Toggled" ToolTipService.ToolTip="Determine searching either clicked tag and the current tags or clicked tag itself in picture page"/>
 								<ToggleSwitch x:Uid="MediaPlayToggle" x:Name="MediaPlayToggle" OffContent="Media Background Play" OnContent="Media Background Play" Margin="5" Toggled="MediaPlayToggle_Toggled" ToolTipService.ToolTip="Enable media to be playing when in other pages"/>
 								<ToggleSwitch x:Uid="MediaAutoPlayToggle" x:Name="MediaAutoPlayToggle" OffContent="Media Auto Play" OnContent="Media Auto Play" Margin="5" Toggled="MediaAutoPlayToggle_Toggled" ToolTipService.ToolTip="Enable media to play automatically when the media is loaded"/>
@@ -256,14 +256,22 @@
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>
-							<controls:Expander Header="2022-07-17 (v1.2.1.0) Hotfix" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
+							<controls:Expander Header="2022-07-19 (v1.2.2.0) Hotfix" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
+								<controls:Expander.Content>
+									<StackPanel>
+										<TextBlock x:Uid="V1202L1" Text="- Fix some bugs related to user profile" FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1202L2" Text="- Some bugs fix &amp; changes" FontSize="22" TextWrapping="WrapWholeWords"/>
+									</StackPanel>
+								</controls:Expander.Content>
+							</controls:Expander>
+							<controls:Expander Header="2022-07-17 (v1.2.1.0) Hotfix" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="False">
 								<controls:Expander.Content>
 									<StackPanel>
 										<TextBlock x:Uid="V1201L1" Text="- Small fixes" FontSize="22" TextWrapping="WrapWholeWords"/>
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>
-							<controls:Expander Header="2022-07-13 (v1.2.0.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
+							<controls:Expander Header="2022-07-13 (v1.2.0.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="False">
 								<controls:Expander.Content>
 									<StackPanel>
 										<TextBlock x:Uid="V1200L1" Text="- New image loading mechanism. Now loadings look faster." FontSize="22" TextWrapping="WrapWholeWords"/>

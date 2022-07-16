@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
@@ -95,7 +96,7 @@ namespace E621Downloader.Views.PictureSection {
 
 		private async Task LoadPost(Post post) {
 			PlayIcon.Visibility = PicturePage.GetFileType(post) == FileType.Webm ? Visibility.Visible : Visibility.Collapsed;
-			var loader = LoadPool.SetNew(post);
+			LoadPoolItem loader = LoadPool.SetNew(post);
 			if(loader.Sample != null) {
 				MainImage.Source = loader.Sample;
 			} else if(loader.Preview != null) {
@@ -120,6 +121,7 @@ namespace E621Downloader.Views.PictureSection {
 					}
 				}
 			}
+			CheckGifPlay(post);
 		}
 
 		private async Task LoadLocal(StorageFile file, Post post) {
@@ -130,6 +132,17 @@ namespace E621Downloader.Views.PictureSection {
 				BitmapImage bitmap = new();
 				await bitmap.SetSourceAsync(stream.AsRandomAccessStream());
 				MainImage.Source = bitmap;
+			}
+			CheckGifPlay(post);
+		}
+
+		private bool IsGif(Post post) => PicturePage.GetFileType(post) == FileType.Gif;
+
+		private void CheckGifPlay(Post post) {
+			if(IsGif(post)) {
+				if(MainImage.Source is BitmapImage bi) {
+					bi.Stop();
+				}
 			}
 		}
 

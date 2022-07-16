@@ -37,11 +37,11 @@
 				<RowDefinition Height="auto"/>
 			</Grid.RowDefinitions>
 			<Grid x:Name="BorderGrid" Tapped="Grid_Tapped" BorderBrush="{ThemeResource SystemAccentColor}" BorderThickness="0">
-				<StackPanel x:Name="LoadingPanel" Margin="20">
+				<Image x:Name="PreviewImage"/>
+				<StackPanel x:Name="LoadingPanel" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
 					<controls:ProgressRing x:Name="MyProgressRing" Height="50" Width="50" IsActive="True"/>
 					<TextBlock x:Name="FailureTextBlock" FontSize="32"/>
 				</StackPanel>
-				<Image x:Name="PreviewImage"/>
 				<Image x:Name="SampleImage" Visibility="Collapsed"/>
 				<local:TypeHintForImageHolder PostRef="{x:Bind PostRef}"/>
 			</Grid>

@@ -71,7 +71,6 @@ namespace E621Downloader.Models {
 			items = new List<object>();
 		}
 
-
 		public List<object> GetPhotosList() {
 			List<object> result = new();
 			foreach(var item in items) {

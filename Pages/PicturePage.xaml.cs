@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Ports;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -90,14 +91,18 @@ namespace E621Downloader.Pages {
 			get => showListGrid;
 			set {
 				showListGrid = value;
+				if(PhotosListManager.IsLocked) {
+					showListGrid = true;
+				}
+				BottomButtonIcon.Glyph = showListGrid ? "\uE099" : "\uE098";
 				MediaControlsTransformAnimation.From = MediaControlsTransform.Y;
 				PhotosListManagerAnimation.From = PhotosListManagerTransform.Y;
-				if(value) {
+				if(showListGrid) {
 					MediaControlsTransformAnimation.To = -90;
 					PhotosListManagerAnimation.To = 0;
 				} else {
 					MediaControlsTransformAnimation.To = 0;
-					PhotosListManagerAnimation.To = 100;
+					PhotosListManagerAnimation.To = 130;
 				}
 				PhotosListStoryboard.Begin();
 			}
@@ -1791,6 +1796,52 @@ namespace E621Downloader.Pages {
 			} catch(OperationCanceledException) { }
 		}
 
+		private void ContentGrid_PointerMoved(object sender, PointerRoutedEventArgs e) {
+			var grid = sender as Grid;
+			var pointer = e.GetCurrentPoint(grid);
+			if(pointer.PointerDevice.PointerDeviceType == PointerDeviceType.Mouse) {
+				var positon = pointer.Position;
+
+				const double GO_THRESHOLD_ENTER = 250;
+				const double GO_THRESHOLD_LIMIT = 150;
+				const double K = 1 / (GO_THRESHOLD_LIMIT - GO_THRESHOLD_ENTER);
+				const double A = GO_THRESHOLD_ENTER / (GO_THRESHOLD_ENTER - GO_THRESHOLD_LIMIT);
+				if(positon.X < GO_THRESHOLD_ENTER) {
+					double opacity = K * positon.X + A;
+					opacity = Math.Clamp(opacity, 0, 1);
+					RightButtonGrid.Opacity = opacity;
+					LeftButtonGrid.Opacity = opacity;
+					BottomButtonGrid.Opacity = opacity;
+				} else if(positon.X > grid.ActualWidth - GO_THRESHOLD_ENTER) {
+					double opacity = K * (grid.ActualWidth - positon.X) + A;
+					opacity = Math.Clamp(opacity, 0, 1);
+					RightButtonGrid.Opacity = opacity;
+					LeftButtonGrid.Opacity = opacity;
+					BottomButtonGrid.Opacity = opacity;
+				} else {
+					RightButtonGrid.Opacity = 0;
+					LeftButtonGrid.Opacity = 0;
+					BottomButtonGrid.Opacity = 0;
+				}
+			} else {
+				RightButtonGrid.Opacity = 1;
+				LeftButtonGrid.Opacity = 1;
+				BottomButtonGrid.Opacity = 1;
+			}
+		}
+
+		private void SpaceKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			if(MyMediaPlayer.MediaPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Playing) {
+				MyMediaPlayer.MediaPlayer.Pause();
+			} else {
+				MyMediaPlayer.MediaPlayer.Play();
+			}
+			args.Handled = true;
+		}
+
+		private void BottomButton_Click(object sender, RoutedEventArgs e) {
+			ShowListGrid = !ShowListGrid;
+		}
 	}
 
 	public class GroupTagListWithColor: ObservableCollection<GroupTag> {

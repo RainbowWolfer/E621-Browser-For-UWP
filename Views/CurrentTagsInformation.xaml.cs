@@ -61,9 +61,7 @@ namespace E621Downloader.Views {
 						}
 					}
 				};
-				FollowingToggle.OnToggled += () => {
-					BlackToggle.UncheckDefault();
-				};
+				FollowingToggle.OnToggled += BlackToggle.UncheckDefault;
 
 				var black_list = Local.Listing.LocalBlackLists.ToList();
 				BlackToggle.Initialize(tag, black_list);
@@ -87,10 +85,7 @@ namespace E621Downloader.Views {
 						}
 					}
 				};
-				BlackToggle.OnToggled += () => {
-					FollowingToggle.UncheckDefault();
-				};
-
+				BlackToggle.OnToggled += FollowingToggle.UncheckDefault;
 			}
 		}
 

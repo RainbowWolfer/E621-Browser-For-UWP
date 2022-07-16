@@ -1,8 +1,10 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Posts;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 
 namespace E621Downloader.Views {
 	public sealed partial class TagExpander: UserControl {
@@ -30,9 +32,17 @@ namespace E621Downloader.Views {
 
 		private async void Load(string tag) {
 			TagText.Text = $"{tag} (...)";
+			CategoryRect.Visibility = Visibility.Collapsed;
 			LoadingBar.Visibility = Visibility.Visible;
 			ConentText.Visibility = Visibility.Collapsed;
 			this.tag = await E621Tag.GetFirstAsync(tag);
+			CategoryRect.Visibility = Visibility.Visible;
+			if(this.tag != null) {
+				TagCategory categoory = E621Tag.GetTagCategory(this.tag.category);
+				Color color = E621Tag.GetCatrgoryColor(categoory, App.GetApplicationTheme() == ApplicationTheme.Dark);
+				CategoryRect.Fill = new SolidColorBrush(color);
+				ToolTipService.SetToolTip(CategoryRect, $"{E621Tag.GetCategory(this.tag.category)} - {this.tag.post_count}");
+			}
 			TagText.Text = $"{tag ?? "Not Found".Language()} ({this.tag?.post_count ?? 0})";
 			if(this.tag != null && !this.tag.IsWikiLoaded) {
 				await this.tag.LoadWikiAsync();

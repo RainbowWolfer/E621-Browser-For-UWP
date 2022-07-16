@@ -45,18 +45,20 @@ namespace E621Downloader.Pages {
 			if(result.Result == HttpResultType.Success) {
 				LocalSettings.Current.SetLocalUser(username, apiKey);
 				LocalSettings.Save();
-				MainPage.NavigateTo(PageTag.UserProfile);
 				MainPage.Instance.ChangeUser(username);
+				MainPage.NavigateTo(PageTag.UserProfile);
 			} else {
 				await MainPage.CreatePopupDialog("Sign In Failed".Language(), "Please Check that your username and your api_key copied from the website are correct".Language());
 			}
 		}
 
 		private async void PasteButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			string clip = await Clipboard.GetContent().GetTextAsync();
-			if(!string.IsNullOrWhiteSpace(clip)) {
-				APIBox.Text = clip;
-			}
+			try {
+				string clip = await Clipboard.GetContent().GetTextAsync();
+				if(!string.IsNullOrWhiteSpace(clip)) {
+					APIBox.Text = clip;
+				}
+			} catch(Exception) { }
 		}
 
 		private void UsernameBox_TextChanged(object sender, TextChangedEventArgs e) {

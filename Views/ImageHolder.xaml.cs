@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
+using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using System;
@@ -73,7 +74,7 @@ namespace E621Downloader.Views {
 			this.loader = LoadPool.SetNew(post);
 			PreviewImage.Source = null;
 			SampleImage.Source = null;
-
+			FailureTextBlock.Text = "";
 			Methods.ProdedureLoading(PreviewImage, SampleImage, post, new LoadPoolItemActions() {
 				OnUrlsEmpty = () => {
 					progress.Value = null;
@@ -105,7 +106,7 @@ namespace E621Downloader.Views {
 					progress.Value = 0;
 				},
 				OnSampleStart = b => {
-					if(b) {
+					if(b && !IsGif()) {
 						LoadingPanel.Visibility = Visibility.Collapsed;
 					} else {
 						LoadingPanel.Visibility = Visibility.Visible;
@@ -117,10 +118,12 @@ namespace E621Downloader.Views {
 				OnSampleExists = () => {
 					LoadingPanel.Visibility = Visibility.Collapsed;
 					progress.Value = null;
+					CheckGifPlay();
 				},
 				OnSampleOpened = b => {
 					LoadingPanel.Visibility = Visibility.Collapsed;
 					progress.Value = null;
+					CheckGifPlay();
 				},
 				OnSampleFailed = () => {
 					progress.Value = null;
@@ -133,6 +136,16 @@ namespace E621Downloader.Views {
 				ToolTipService.SetPlacement(this, PlacementMode.Bottom);
 			}
 			SetRightClick();
+		}
+
+		private bool IsGif() => PicturePage.GetFileType(PostRef) == FileType.Gif;
+
+		private void CheckGifPlay() {
+			if(IsGif() && !LocalSettings.Current.enableGifAutoPlay) {
+				if(SampleImage.Source is BitmapImage bi) {
+					bi.Stop();
+				}
+			}
 		}
 
 		public void BeginEntranceAnimation() {
@@ -165,7 +178,7 @@ namespace E621Downloader.Views {
 					item_hide.Click += (sender, arg) => {
 
 					};
-					flyout.Items.Add(item_hide);
+					//flyout.Items.Add(item_hide);
 				}
 
 				MenuFlyoutItem item_download = new() {

@@ -2122,12 +2122,14 @@ Warning! This action will override the tags existing in the cloud, do you want t
           <target state="final">文件夹</target>
         </trans-unit>
         <trans-unit id="GifAutoPlayToggle.OnContent" translate="yes" xml:space="preserve">
-          <source>Enable Gif AutoPlay</source>
-          <target state="final">开启GIF自动播放</target>
+          <source>Enable Gif Autoplay</source>
+          <target state="needs-review-translation">开启GIF自动播放</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="GifAutoPlayToggle.OffContent" translate="yes" xml:space="preserve">
-          <source>Enable Gif AutoPlay</source>
-          <target state="final">开启GIF自动播放</target>
+          <source>Enable Gif Autoplay</source>
+          <target state="needs-review-translation">开启GIF自动播放</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="NewListPlaceholder.PlaceholderText" translate="yes" xml:space="preserve">
           <source>New List Name</source>
@@ -2503,8 +2505,8 @@ Would you like to get it set?</source>
           <target state="final">- 许多bug修复与改动</target>
         </trans-unit>
         <trans-unit id="CycleListToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
-          <source>Enable cycle images list in picture page</source>
-          <target state="final">在图片页面中启用循环图像列表</target>
+          <source>Enable you to start from the first picture when you reach the last picture or from the last to the first in picture page</source>
+          <target state="final">使您可以在到达最后一张图片时从第一张图片开始或从图片页面的最后一张到第一张</target>
         </trans-unit>
         <trans-unit id="ConcatTagToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Determine searching either clicked tag with the current tags or clicked tag itself in picture page</source>

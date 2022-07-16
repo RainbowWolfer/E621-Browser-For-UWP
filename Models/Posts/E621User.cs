@@ -1,16 +1,18 @@
 ﻿using E621Downloader.Models.Networks;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
 	public class E621User {
 		public static async Task<E621User> GetAsync(string username, CancellationToken? token = null) {
-			string url = $"https://{Data.GetHost()}/users/{username}.json";
+			//https://e621.net/users.json?search[name_matches]=912243749
+			string url = $"https://{Data.GetHost()}/users.json?search[name_matches]={username}";
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
 			if(result.Result == HttpResultType.Success) {
-				return JsonConvert.DeserializeObject<E621User>(result.Content);
+				return JsonConvert.DeserializeObject<E621User[]>(result.Content).FirstOrDefault();
 			} else {
 				return null;
 			}
@@ -40,17 +42,17 @@ namespace E621Downloader.Models.Posts {
 
 		public static E621User Current { get; set; }
 
-		public int wiki_page_version_count;
-		public int artist_version_count;
-		public int pool_version_count;
-		public int forum_post_count;
-		public int comment_count;
-		public int appeal_count;
-		public int flag_count;
-		public int positive_feedback_count;
-		public int neutral_feedback_count;
-		public int negative_feedback_count;
-		public int upload_limit;
+		//public int wiki_page_version_count;
+		//public int artist_version_count;
+		//public int pool_version_count;
+		//public int forum_post_count;
+		//public int comment_count;
+		//public int appeal_count;
+		//public int flag_count;
+		//public int positive_feedback_count;
+		//public int neutral_feedback_count;
+		//public int negative_feedback_count;
+		//public int upload_limit;
 		public int id;
 		public DateTime created_at;
 		public string name;

@@ -1714,10 +1714,10 @@
     <value>Folders</value>
   </data>
 	<data name="GifAutoPlayToggle.OnContent" xml:space="preserve">
-    <value>Enable Gif AutoPlay</value>
+    <value>Enable Gif Autoplay</value>
   </data>
 	<data name="GifAutoPlayToggle.OffContent" xml:space="preserve">
-    <value>Enable Gif AutoPlay</value>
+    <value>Enable Gif Autoplay</value>
   </data>
 	<data name="NewListPlaceholder.PlaceholderText" xml:space="preserve">
     <value>New List Name</value>
@@ -1978,7 +1978,7 @@
     <value>- many bugs fix &amp; changes</value>
   </data>
 	<data name="CycleListToggle.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Enable cycle images list in picture page</value>
+    <value>Enable you to start from the first picture when you reach the last picture or from the last to the first in picture page</value>
   </data>
 	<data name="ConcatTagToggle.ToolTipService.ToolTip" xml:space="preserve">
     <value>Determine searching either clicked tag with the current tags or clicked tag itself in picture page</value>

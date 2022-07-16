@@ -6,17 +6,44 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="80"
+	d:RequestedTheme="Dark"
+    d:DesignHeight="120"
     d:DesignWidth="1000">
 
-	<Grid x:Name="PhotosListGrid" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="80" MaxWidth="800" CornerRadius="10">
+	<UserControl.Resources>
+		<Storyboard x:Name="GridExpandStoryboard">
+			<DoubleAnimation x:Name="GridExpandAnimation" EnableDependentAnimation="True" Storyboard.TargetName="TopGrid" Storyboard.TargetProperty="Height">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="15" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+		</Storyboard>
+	</UserControl.Resources>
+
+	<Grid x:Name="PhotosListGrid" VerticalAlignment="Bottom" HorizontalAlignment="Center" MaxWidth="800" CornerRadius="10" PointerEntered="PhotosListGrid_PointerEntered" PointerExited="PhotosListGrid_PointerExited" RenderTransformOrigin="0.5,1">
 		<Grid.Background>
 			<SolidColorBrush Color="#2c2c2c" Opacity="0.9"/>
 		</Grid.Background>
 		<Grid.RenderTransform>
 			<TranslateTransform x:Name="PhotosListGridTransform" Y="0"/>
 		</Grid.RenderTransform>
-		<ListView x:Name="PhotosListView" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled" SelectionMode="None" IsItemClickEnabled="True" HorizontalAlignment="Center" d:ItemsSource="1 2 3 4 5 67" ItemClick="PhotosListView_ItemClick">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="85"/>
+			<RowDefinition Height="auto"/>
+		</Grid.RowDefinitions>
+		<Grid x:Name="TopGrid" Height="0" d:Height="34" Grid.Row="1">
+			<StackPanel Orientation="Horizontal" Margin="10,0,0,3">
+				<FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE18F;"/>
+				<TextBlock x:Name="CountText" Text="2/75" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="16"/>
+			</StackPanel>
+			<ToggleButton x:Name="LockButton" HorizontalAlignment="Right" Padding="6,3,6,3" Margin="0,0,5,3" VerticalAlignment="Center" Click="LockButton_Click">
+				<StackPanel Orientation="Horizontal">
+					<FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE72E;" />
+					<TextBlock Margin="10,0,0,0" Text="Lock Photos List"/>
+				</StackPanel>
+			</ToggleButton>
+		</Grid>
+		<ListView x:Name="PhotosListView" Margin="0,5,0,5" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled" SelectionMode="None" IsItemClickEnabled="True" HorizontalAlignment="Center" d:ItemsSource="1 2 3 4 5 67" ItemClick="PhotosListView_ItemClick" Grid.Row="0">
 			<ListView.ItemsPanel>
 				<ItemsPanelTemplate>
 					<StackPanel Background="Transparent" Orientation="Horizontal"/>

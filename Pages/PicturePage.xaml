@@ -108,6 +108,7 @@
 			<KeyboardAccelerator Key="Left" Invoked="LeftKey_Invoked"/>
 			<KeyboardAccelerator Key="Down" Invoked="DownKey_Invoked"/>
 			<KeyboardAccelerator Key="Right" Invoked="RightKey_Invoked"/>
+			<KeyboardAccelerator Key="Space" Invoked="SpaceKey_Invoked"/>
 		</Grid.KeyboardAccelerators>
 		<Grid x:Name="NoPostGrid" Visibility="Collapsed">
 			<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -399,7 +400,7 @@
 					</Grid>
 				</SplitView.Pane>
 				<SplitView.Content>
-					<Grid x:Name="ContentGrid" PointerPressed="ContentGrid_PointerPressed" PointerReleased="ContentGrid_PointerReleased" DoubleTapped="ContentGrid_DoubleTapped">
+					<Grid x:Name="ContentGrid" PointerPressed="ContentGrid_PointerPressed" PointerReleased="ContentGrid_PointerReleased" DoubleTapped="ContentGrid_DoubleTapped" PointerMoved="ContentGrid_PointerMoved">
 						<TextBlock x:Uid="Type SWF not supported Text" x:Name="HintText" Text="Type SWF not supported" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Visibility="Collapsed" TextAlignment="Center"/>
 						<Image x:Name="PreviewImage" Stretch="Uniform" Margin="0,15,0,0"/>
 						<MediaPlayerElement x:Name="MyMediaPlayer" AutoPlay="False" AreTransportControlsEnabled="True" Margin="0,0,0,0">
@@ -441,30 +442,39 @@
 							</Image>
 						</ScrollViewer>
 						<controls:ProgressBar x:Name="LoadingBar" VerticalAlignment="Top" IsIndeterminate="True" Margin="10,5,20,5"/>
-						<picturesection:PhotosListManager x:Name="PhotosListManager" Margin="0,0,0,10">
+						<picturesection:PhotosListManager x:Name="PhotosListManager" Margin="0,0,0,10" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,1">
 							<picturesection:PhotosListManager.RenderTransform>
-								<TranslateTransform x:Name="PhotosListManagerTransform" Y="100"/>
+								<TranslateTransform x:Name="PhotosListManagerTransform" Y="130"/>
 							</picturesection:PhotosListManager.RenderTransform>
 						</picturesection:PhotosListManager>
 						<!--<controls:ProgressRing x:Name="MyProgressRing" Height="150" Width="150" Margin="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsActive="True"/>-->
-						<Button x:Name="LeftButton" Height="100" Opacity="0.2" PointerEntered="LeftButton_PointerEntered" PointerExited="LeftButton_PointerExited" Tapped="LeftButton_Tapped">
-							<Button.Resources>
-								<ResourceDictionary>
-									<!--<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#332c2c2c"/>-->
-									<!--<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#332c2c2c"/>-->
-								</ResourceDictionary>
-							</Button.Resources>
-							<Button.Background>
-								<SolidColorBrush Color="Gray" Opacity="0.4"/>
-							</Button.Background>
-							<FontIcon Glyph="&#xE26C;"/>
-						</Button>
-						<Button x:Name="RightButton" Height="100" Opacity="0.2" HorizontalAlignment="Right" PointerEntered="RightButton_PointerEntered" PointerExited="RightButton_PointerExited" Tapped="RightButton_Tapped">
-							<Button.Background>
-								<SolidColorBrush Color="Gray" Opacity="0.4"/>
-							</Button.Background>
-							<FontIcon Glyph="&#xE26B;"/>
-						</Button>
+						<Grid x:Name="LeftButtonGrid" VerticalAlignment="Center" HorizontalAlignment="Left" Opacity="0">
+							<Button x:Name="LeftButton" Height="100" Opacity="0.2" PointerEntered="LeftButton_PointerEntered" PointerExited="LeftButton_PointerExited" Tapped="LeftButton_Tapped">
+								<Button.Resources>
+									<ResourceDictionary>
+										<!--<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#332c2c2c"/>-->
+										<!--<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#332c2c2c"/>-->
+									</ResourceDictionary>
+								</Button.Resources>
+								<Button.Background>
+									<SolidColorBrush Color="Gray" Opacity="0.4"/>
+								</Button.Background>
+								<FontIcon Glyph="&#xE26C;"/>
+							</Button>
+						</Grid>
+						<Grid x:Name="RightButtonGrid" HorizontalAlignment="Right" VerticalAlignment="Center" Opacity="0">
+							<Button x:Name="RightButton" Height="100" Opacity="0.2" PointerEntered="RightButton_PointerEntered" PointerExited="RightButton_PointerExited" Tapped="RightButton_Tapped">
+								<Button.Background>
+									<SolidColorBrush Color="Gray" Opacity="0.4"/>
+								</Button.Background>
+								<FontIcon Glyph="&#xE26B;"/>
+							</Button>
+						</Grid>
+						<Grid x:Name="BottomButtonGrid" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+							<Button x:Name="BottomButton" Padding="5" Opacity="0.5" FontWeight="Bold" CornerRadius="10,0,0,0" Click="BottomButton_Click">
+								<FontIcon x:Name="BottomButtonIcon" Glyph="&#xE098;" />
+							</Button>
+						</Grid>
 					</Grid>
 				</SplitView.Content>
 			</SplitView>

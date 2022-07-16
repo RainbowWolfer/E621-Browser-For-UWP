@@ -1880,7 +1880,7 @@
     <value>- 许多bug修复与改动</value>
   </data>
   <data name="CycleListToggle.ToolTipService.ToolTip" xml:space="preserve">
-    <value>在图片页面中启用循环图像列表</value>
+    <value>使您可以在到达最后一张图片时从第一张图片开始或从图片页面的最后一张到第一张</value>
   </data>
   <data name="ConcatTagToggle.ToolTipService.ToolTip" xml:space="preserve">
     <value>决定在图片页面中搜索单击的标签和当前标签或单击的标签本身</value>

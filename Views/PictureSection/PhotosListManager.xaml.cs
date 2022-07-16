@@ -7,10 +7,31 @@ using System.Threading.Tasks;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 
 namespace E621Downloader.Views.PictureSection {
 	public sealed partial class PhotosListManager: UserControl {
+		private bool expandGrid = false;
+
 		private List<PhotosListItem> Items { get; } = new();
+
+		public bool ExpandGrid {
+			get => expandGrid;
+			private set {
+				expandGrid = value;
+				GridExpandAnimation.From = TopGrid.Height;
+				if(expandGrid) {
+					//GridExpandAnimation.From = 0;
+					GridExpandAnimation.To = 34;
+				} else {
+					//GridExpandAnimation.From = 34;
+					GridExpandAnimation.To = 0;
+				}
+				GridExpandStoryboard.Begin();
+			}
+		}
+
+		public bool IsLocked { get; set; }
 
 		public PhotosListManager() {
 			this.InitializeComponent();
@@ -18,12 +39,16 @@ namespace E621Downloader.Views.PictureSection {
 
 		public void SetPhotos(List<object> objs, object current) {
 			if(GetCurrentList().CompareItemsEqual(objs)) {
-				foreach(PhotosListItem item in Items) {
+				int currentIndex = 0;
+				for(int i = 0; i < Items.Count; i++) {
+					PhotosListItem item = Items[i];
 					item.IsSelected = item.Photo == current;
 					if(item.IsSelected) {
 						PutToCenter(item);
+						currentIndex = i;
 					}
 				};
+				CountText.Text = $"{currentIndex + 1}/{Items.Count}";
 				return;
 			}
 			PhotosListView.Items.Clear();
@@ -46,6 +71,7 @@ namespace E621Downloader.Views.PictureSection {
 				});
 				Items.Add(item);
 			}
+			CountText.Text = $"{selectedIndex + 1}/{Items.Count}";
 			List<Task> tasks = Items.Select(i => i.LoadAsync()).ToList();
 			Load(tasks, selectedIndex);
 			if(c != null) {
@@ -82,6 +108,9 @@ namespace E621Downloader.Views.PictureSection {
 				MainPage.NavigateToPicturePage(item.Photo);
 				foreach(PhotosListItem i in Items) {
 					i.IsSelected = i == item;
+					if(i.IsSelected) {
+						App.PostsList.Current = item.Photo;
+					}
 				};
 				PutToCenter(item);
 			}
@@ -95,6 +124,18 @@ namespace E621Downloader.Views.PictureSection {
 			await Dispatcher.RunAsync(CoreDispatcherPriority.High, () => {
 				PhotosListView.ScrollToCenterOfView(found);
 			});
+		}
+
+		private void PhotosListGrid_PointerEntered(object sender, PointerRoutedEventArgs e) {
+			ExpandGrid = true;
+		}
+
+		private void PhotosListGrid_PointerExited(object sender, PointerRoutedEventArgs e) {
+			ExpandGrid = false;
+		}
+
+		private void LockButton_Click(object sender, RoutedEventArgs e) {
+			IsLocked = LockButton.IsChecked == true;
 		}
 	}
 }

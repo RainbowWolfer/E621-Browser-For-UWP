@@ -12,10 +12,11 @@
 	d:RequestedTheme="Dark">
 
 	<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" BorderThickness="2" BorderBrush="Gray" CornerRadius="10">
-		<Button x:Name="ExpandButton" Background="Transparent" BorderThickness="0" Tapped="Button_Tapped" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+		<Button x:Name="ExpandButton" Background="Transparent" BorderThickness="0" Tapped="Button_Tapped" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" CornerRadius="10,10,0,0">
 			<Button.Content>
 				<RelativePanel>
-					<TextBlock x:Name="TagText" FontFamily="Cascadia Mono" d:Text="Tag Goes Here" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" FontSize="26"/>
+					<Rectangle x:Name="CategoryRect" Height="20" Width="20" d:Fill="Red" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RadiusX="5" RadiusY="5"/>
+					<TextBlock x:Name="TagText" FontFamily="Cascadia Mono" d:Text="Tag Goes Here" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.RightOf="CategoryRect" FontSize="26" Margin="10,0,0,0"/>
 					<FontIcon x:Name="TitleIcon" Glyph="&#xE0E4;" FontSize="20" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,0,10,0"/>
 				</RelativePanel>
 			</Button.Content>

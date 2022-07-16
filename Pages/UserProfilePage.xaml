@@ -48,7 +48,7 @@
 				<TextBlock x:Name="WelcomeText" Text="привет" HorizontalAlignment="Center" FontSize="32" Margin="5,10,5,0" Foreground="#FFD700"/>
 				<TextBlock x:Name="WelcomeDetailText" Foreground="#FFD700" Text="This is 'Hello' in Russian" TextAlignment="Center" Margin="5" Height="0" Opacity="0" FontSize="15"/>
 			</StackPanel>
-			<TextBlock x:Name="UsernameText" Text="RainbowWolfer" HorizontalAlignment="Center" Margin="10" FontSize="24"/>
+			<TextBlock x:Name="UsernameText" d:Text="RainbowWolfer" HorizontalAlignment="Center" Margin="10" FontSize="24"/>
 		</StackPanel>
 		<StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,40">
 			<Button x:Name="FavoritesButton" FontSize="20" HorizontalAlignment="Center" Tapped="FavoritesButton_Tapped" Margin="10">

@@ -165,6 +165,7 @@ namespace E621Downloader.Models {
 					previewImage.ImageFailed += (s, e) => {
 						actions?.OnPreviewFailed?.Invoke();
 						LoadSample();
+						Debug.WriteLine(e.ErrorMessage);
 					};
 					previewImage.ImageOpened += (s, e) => {
 						var bitmap = previewImage.Source as BitmapImage;
@@ -190,6 +191,7 @@ namespace E621Downloader.Models {
 						actions?.OnSampleUrlEmpty?.Invoke();
 						return;
 					}
+					previewImage.Visibility = Visibility.Visible;
 					actions?.OnSampleStart?.Invoke(previewLoaded);
 					if(loader.Sample != null) {
 						sampleImage.Source = loader.Sample;
@@ -201,6 +203,7 @@ namespace E621Downloader.Models {
 					}
 					sampleImage.ImageFailed += (s, e) => {
 						actions?.OnSampleFailed?.Invoke();
+						Debug.WriteLine(e.ErrorMessage);
 					};
 					sampleImage.ImageOpened += (s, e) => {
 						var bitmap = sampleImage.Source as BitmapImage;
@@ -210,7 +213,11 @@ namespace E621Downloader.Models {
 						previewImage.Visibility = Visibility.Collapsed;
 					};
 					(sampleImage.Source as BitmapImage).DownloadProgress += (s, e) => {
-						actions?.OnSampleProgress?.Invoke(previewLoaded ? null : e.Progress);
+						if(PicturePage.GetFileType(post) == FileType.Gif) {
+							actions?.OnSampleProgress?.Invoke(e.Progress);
+						} else {
+							actions?.OnSampleProgress?.Invoke(previewLoaded ? null : e.Progress);
+						}
 					};
 				}
 			}

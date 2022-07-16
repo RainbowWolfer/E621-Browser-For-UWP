@@ -3,12 +3,14 @@ using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Views;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Reflection;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Pages {
@@ -32,6 +34,10 @@ namespace E621Downloader.Pages {
 				AvatarLoadingRing.IsActive = false;
 				AvatarImage.ImageSource = image;
 			};
+
+			string yellow = App.GetApplicationTheme() == ApplicationTheme.Dark ? "#FFD700" : "#F7B000";
+			WelcomeText.Foreground = new SolidColorBrush(yellow.ToColor());
+			WelcomeDetailText.Foreground = new SolidColorBrush(yellow.ToColor());
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
@@ -47,11 +53,12 @@ namespace E621Downloader.Pages {
 			AvatarImage.ImageSource = MainPage.GetUserIcon();
 		}
 
-		private const int MAX_ITEM_IN_PANEL = 35;
+		private const int MAX_ITEM_IN_PANEL = 26;
 		private void UpdateUserInfo(E621User user) {
 			PanelLeft.Children.Clear();
 			PanelRight.Children.Clear();
 			if(user != null) {
+				UsernameText.Text = user.name;
 				Panel targetPanel = PanelLeft;
 				FieldInfo[] array = user.GetType().GetFields();
 				for(int i = 0; i < array.Length; i++) {
@@ -83,6 +90,7 @@ namespace E621Downloader.Pages {
 				LocalSettings.Save();
 				MainPage.NavigateTo(PageTag.UserProfile);
 				MainPage.Instance.ChangeUser(null);
+				UsernameText.Text = "";
 			}
 		}
 
