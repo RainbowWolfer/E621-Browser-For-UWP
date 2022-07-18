@@ -2123,13 +2123,11 @@ Warning! This action will override the tags existing in the cloud, do you want t
         </trans-unit>
         <trans-unit id="GifAutoPlayToggle.OnContent" translate="yes" xml:space="preserve">
           <source>Enable Gif Autoplay</source>
-          <target state="needs-review-translation">开启GIF自动播放</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="final">开启GIF自动播放</target>
         </trans-unit>
         <trans-unit id="GifAutoPlayToggle.OffContent" translate="yes" xml:space="preserve">
           <source>Enable Gif Autoplay</source>
-          <target state="needs-review-translation">开启GIF自动播放</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="final">开启GIF自动播放</target>
         </trans-unit>
         <trans-unit id="NewListPlaceholder.PlaceholderText" translate="yes" xml:space="preserve">
           <source>New List Name</source>
