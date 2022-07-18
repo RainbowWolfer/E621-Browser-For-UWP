@@ -50,6 +50,9 @@ namespace E621Downloader.Pages {
 			WelcomeDetailText.Text = "HelloLanguage".Language(pair.Key);
 
 			UpdateUserInfo(E621User.Current);
+			if(E621User.Current != null) {
+				ToolTipService.SetToolTip(AvatarBorder, $"{"Post".Language()} - {E621User.Current.avatar_id}");
+			}
 
 			AvatarLoadingRing.IsActive = false;
 			InfoLoadingRing.IsActive = false;
