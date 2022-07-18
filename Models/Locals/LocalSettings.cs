@@ -35,6 +35,8 @@ namespace E621Downloader.Models.Locals {
 		public bool spot_includeExplicit = true;
 		public int spot_amount = 1;
 
+		public bool enableDebugPanel = false;
+
 		public SlideshowConfiguration slideshowConfiguration = new();
 
 		public ItemsGroupViewType library_viewType_images = ItemsGroupViewType.ListView;
@@ -84,6 +86,7 @@ namespace E621Downloader.Models.Locals {
 				librarSizeView_folders = 100,
 				librarSizeView_images = 100,
 				library_viewType_folders = ItemsGroupViewType.ListView,
+				enableDebugPanel = false,
 			};
 		}
 	}

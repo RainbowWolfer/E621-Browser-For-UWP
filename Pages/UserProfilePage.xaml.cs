@@ -95,7 +95,10 @@ namespace E621Downloader.Pages {
 		}
 
 		private void FavoritesButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			MainPage.NavigateToPostsBrowser(1, $"fav:{LocalSettings.Current.user_username}");
+			if(E621User.Current == null) {
+				return;
+			}
+			MainPage.NavigateToPostsBrowser(1, $"fav:{E621User.Current.name}");
 		}
 
 		private void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {

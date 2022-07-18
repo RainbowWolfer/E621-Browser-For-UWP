@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Debugging;
 using System;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
@@ -59,7 +60,9 @@ namespace E621Downloader.Views {
 		private async void Button_Tapped(object sender, TappedRoutedEventArgs e) {
 			try {
 				await Methods.OpenBrowser(url);
-			} catch { }
+			} catch(Exception ex) {
+				ErrorHistories.Add(ex);
+			}
 		}
 
 		private void CopyFlyoutItem_Click(object sender, RoutedEventArgs e) {

@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Debugging;
 using E621Downloader.Models.Locals;
 using E621Downloader.Views.LibrarySection;
 using System;
@@ -300,7 +301,8 @@ namespace E621Downloader.Pages.LibrarySection {
 					foreach(StorageFolder item in folders) {
 						try {
 							modifiedTime.Add(item, (await item.GetBasicPropertiesAsync()).DateModified);
-						} catch(Exception) {
+						} catch(Exception ex) {
+							ErrorHistories.Add(ex);
 							finishSorting?.Invoke();
 							return folders;
 						}
@@ -349,7 +351,8 @@ namespace E621Downloader.Pages.LibrarySection {
 					foreach(StorageFile item in images.Select(i => i.file)) {
 						try {
 							modifiedTime.Add(item, (await item.GetBasicPropertiesAsync()).DateModified);
-						} catch(Exception) {
+						} catch(Exception ex) {
+							ErrorHistories.Add(ex);
 							finishSorting?.Invoke();
 							return images;
 						}

@@ -1,0 +1,108 @@
+﻿<UserControl
+    x:Class="E621Downloader.Views.SettingsSection.HttpRequestHistoriesView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Views.SettingsSection"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+	d:RequestedTheme="Dark"
+	MinHeight="300"
+	MaxHeight="500"
+	MinWidth="600"
+    d:DesignHeight="400"
+    d:DesignWidth="600">
+
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="auto" MinWidth="200"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<controls:ProgressRing x:Name="LoadingRing" Height="100" Width="100" Margin="40" d:Visibility="Collapsed"/>
+
+		<ListView x:Name="MainListView" SelectionMode="Single" ItemsSource="{x:Bind Items, Mode=OneWay}" d:ItemsSource="1 2 3" SelectionChanged="MainListView_SelectionChanged">
+			<ListView.ItemTemplate>
+				<DataTemplate x:DataType="local:HttpRequestHistoriesViewItem">
+					<StackPanel Orientation="Horizontal">
+						<!--&#xE143; - Put-->
+						<!--&#xE140; - Post-->
+						<!--&#xE13F; - Get-->
+						<!--&#xE107; - Delete-->
+						<!--&#xE1CA; - Patch-->
+						<FontIcon Glyph="{x:Bind ResultIconGlyph}" Margin="0,0,10,0" Foreground="{x:Bind ResultIconBrush}" FontWeight="Bold"/>
+						<FontIcon Glyph="{x:Bind IconGlyph}" Margin="0,0,10,0"/>
+						<TextBlock Text="{x:Bind Date}" MinWidth="60"/>
+						<TextBlock Text="{x:Bind ConsumeTime}" Margin="5,0,0,0"/>
+					</StackPanel>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
+
+		<Grid Grid.Column="1" CornerRadius="20" Margin="20,0,5,0" Padding="10">
+			<Grid.Background>
+				<SolidColorBrush Color="Gray" Opacity="0.2"/>
+			</Grid.Background>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+				<TextBlock x:Name="TitleText" d:Text="GET SUCCESS" FontSize="24"/>
+			</StackPanel>
+			<ScrollViewer Grid.Row="1" HorizontalScrollMode="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto">
+				<Grid>
+					<Grid.Resources>
+						<Style x:Key="TitleText" TargetType="TextBlock">
+							<Setter Property="TextAlignment" Value="Right"/>
+							<Setter Property="FontSize" Value="18"/>
+							<Setter Property="VerticalAlignment" Value="Top"/>
+						</Style>
+						<Style x:Key="ContentText" TargetType="TextBlock">
+							<Setter Property="FontSize" Value="18"/>
+							<Setter Property="VerticalAlignment" Value="Center"/>
+							<Setter Property="TextWrapping" Value="Wrap"/>
+							<Setter Property="Margin" Value="20,0,0,0"/>
+							<Setter Property="Grid.Column" Value="1"/>
+							<Setter Property="IsTextSelectionEnabled" Value="True"/>
+						</Style>
+					</Grid.Resources>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="90"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+					</Grid.RowDefinitions>
+					<TextBlock Text="URL" Style="{StaticResource TitleText}"/>
+					<TextBlock x:Name="URLText" Text="https://e621.net/" Style="{StaticResource ContentText}"/>
+					<TextBlock Text="Start" Style="{StaticResource TitleText}" Grid.Row="1"/>
+					<TextBlock x:Name="StartText" Text="2022-22-22 22:22:22" Style="{StaticResource ContentText}" Grid.Row="1"/>
+					<TextBlock Text="Method" Style="{StaticResource TitleText}" Grid.Row="2"/>
+					<TextBlock x:Name="MethodText" Text="GET" Style="{StaticResource ContentText}" Grid.Row="2"/>
+					<TextBlock Text="Result" Style="{StaticResource TitleText}" Grid.Row="3"/>
+					<TextBlock x:Name="ResultText" Text="Success" Style="{StaticResource ContentText}" Grid.Row="3"/>
+					<TextBlock Text="Code" Style="{StaticResource TitleText}" Grid.Row="4"/>
+					<TextBlock x:Name="CodeText" Text="400" Style="{StaticResource ContentText}" Grid.Row="4"/>
+					<TextBlock Text="Time" Style="{StaticResource TitleText}" Grid.Row="5"/>
+					<TextBlock x:Name="TimeText" Text="12221" Style="{StaticResource ContentText}" Grid.Row="5"/>
+					<TextBlock Text="Type" Style="{StaticResource TitleText}" Grid.Row="6"/>
+					<TextBlock x:Name="TypeText" Text="Text" Style="{StaticResource ContentText}" Grid.Row="6"/>
+					<TextBlock Text="Size" Style="{StaticResource TitleText}" Grid.Row="7"/>
+					<TextBlock x:Name="SizeText" Text="292" Style="{StaticResource ContentText}" Grid.Row="7"/>
+					<TextBlock Text="Hint" Style="{StaticResource TitleText}" Grid.Row="8"/>
+					<TextBlock x:Name="HintText" Text="None" Style="{StaticResource ContentText}" Grid.Row="8"/>
+				</Grid>
+			</ScrollViewer>
+		</Grid>
+	</Grid>
+</UserControl>

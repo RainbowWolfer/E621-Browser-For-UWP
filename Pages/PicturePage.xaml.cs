@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Debugging;
 using E621Downloader.Models.Download;
 using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
@@ -458,9 +459,10 @@ namespace E621Downloader.Pages {
 								RequestedOperation = DataPackageOperation.Copy,
 							};
 							imageDataPackage.SetBitmap(RandomAccessStreamReference.CreateFromFile(local.ImageFile));
-						} catch(Exception e) {
-							HintText.Text = "Local Post".Language() + $"({local.ImagePost.id}) - {local.ImageFile.Path} " + "Load Failed".Language() + $"\n{e.Message}";
+						} catch(Exception ex) {
+							HintText.Text = "Local Post".Language() + $"({local.ImagePost.id}) - {local.ImageFile.Path} " + "Load Failed".Language() + $"\n{ex.Message}";
 							HintText.Visibility = Visibility.Visible;
+							ErrorHistories.Add(ex);
 						}
 					}
 					SyncLoad();
@@ -1639,7 +1641,7 @@ namespace E621Downloader.Pages {
 					CloseButtonText = "Back".Language(),
 					DefaultButton = ContentDialogButton.Close,
 				}.ShowAsync();
-				Debug.WriteLine(ex.Message);
+				ErrorHistories.Add(ex);
 			}
 		}
 

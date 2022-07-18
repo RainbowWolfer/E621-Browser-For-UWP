@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Debugging;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
@@ -201,6 +202,7 @@ namespace E621Downloader.Views.LibrarySection {
 						await image.File.DeleteAsync();
 					}
 				} catch(Exception ex) {
+					ErrorHistories.Add(ex);
 					Debug.WriteLine(ex.Message);
 				}
 
@@ -245,11 +247,13 @@ namespace E621Downloader.Views.LibrarySection {
 							await Local.WriteMetaFileAsync(meta, metaFile);
 							///TODO: Problem Here
 						} catch(Exception ex) {
+							ErrorHistories.Add(ex);
 							Debug.WriteLine(ex.Message);
 						}
 						await image.File.RenameAsync(newName);
 					}
 				} catch(Exception ex) {
+					ErrorHistories.Add(ex);
 					Debug.WriteLine(ex.Message);
 				}
 

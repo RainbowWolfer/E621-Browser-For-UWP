@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Posts;
+﻿using E621Downloader.Models.Debugging;
+using E621Downloader.Models.Posts;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -85,10 +86,12 @@ namespace E621Downloader.Models.Locals {
 			}
 			try {
 				DownloadFolder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync(token);
-			} catch(ArgumentException e) {
-				Debug.WriteLine(e);
-			} catch(FileNotFoundException e) {
-				Debug.WriteLine(e);
+			} catch(ArgumentException ex) {
+				Debug.WriteLine(ex);
+				ErrorHistories.Add(ex);
+			} catch(FileNotFoundException ex) {
+				Debug.WriteLine(ex);
+				ErrorHistories.Add(ex);
 			}
 		}
 
@@ -118,6 +121,7 @@ namespace E621Downloader.Models.Locals {
 				await FileIO.WriteTextAsync(HistoryFile, json);
 			} catch(FileLoadException ex) {
 				Debug.WriteLine(ex.Message);
+				ErrorHistories.Add(ex);
 			}
 		}
 
@@ -153,8 +157,9 @@ namespace E621Downloader.Models.Locals {
 				//The process cannot access the file because it is being used by another process. (Exception from HRESULT: 0x80070020)
 				StorageFile target = await folder.CreateFileAsync($"{file.DisplayName}.meta", CreationCollisionOption.ReplaceExisting);
 				await FileIO.WriteTextAsync(target, meta.ConvertJson());
-			} catch(Exception e) {
-				Debug.WriteLine(e.Message);
+			} catch(Exception ex) {
+				Debug.WriteLine(ex.Message);
+				ErrorHistories.Add(ex);
 			}
 		}
 
@@ -163,8 +168,9 @@ namespace E621Downloader.Models.Locals {
 				StorageFolder folder = await file.GetParentAsync();
 				StorageFile target = await folder.CreateFileAsync($"{file.DisplayName}.meta", CreationCollisionOption.ReplaceExisting);
 				await FileIO.WriteTextAsync(target, meta.ConvertJson());
-			} catch(Exception e) {
-				Debug.WriteLine(e.Message);
+			} catch(Exception ex) {
+				Debug.WriteLine(ex.Message);
+				ErrorHistories.Add(ex);
 			}
 		}
 
@@ -173,8 +179,9 @@ namespace E621Downloader.Models.Locals {
 			try {
 				(MetaFile _, StorageFile file) = await GetMetaFile(post.id.ToString(), groupName);
 				WriteMetaFile(meta, file);
-			} catch(Exception e) {
-				Debug.WriteLine(e.Message);
+			} catch(Exception ex) {
+				Debug.WriteLine(ex.Message);
+				ErrorHistories.Add(ex);
 			}
 		}
 
@@ -263,7 +270,8 @@ namespace E621Downloader.Models.Locals {
 						}
 						Pair.Add(pairs, bitmap, file);
 					}
-				} catch(Exception) {
+				} catch(Exception ex) {
+					ErrorHistories.Add(ex);
 					continue;
 				}
 			}
@@ -362,7 +370,8 @@ namespace E621Downloader.Models.Locals {
 			StorageFile file;
 			try {
 				file = await StorageFile.GetFileFromPathAsync(path);
-			} catch(Exception) {
+			} catch(Exception ex) {
+				ErrorHistories.Add(ex);
 				return (null, null);
 			}
 			MetaFile meta;
@@ -375,7 +384,8 @@ namespace E621Downloader.Models.Locals {
 				using Stream stream = await metaFile.OpenStreamForReadAsync();
 				using StreamReader reader = new(stream);
 				meta = JsonConvert.DeserializeObject<MetaFile>(await reader.ReadToEndAsync());
-			} catch(FileNotFoundException) {
+			} catch(FileNotFoundException ex) {
+				ErrorHistories.Add(ex);
 				return (file, null);
 			}
 			return (file, meta);

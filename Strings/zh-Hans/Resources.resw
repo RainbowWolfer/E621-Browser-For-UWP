@@ -1951,4 +1951,10 @@
   <data name="V1201L1.Text" xml:space="preserve">
     <value>- 小修补</value>
   </data>
+  <data name="Http Request Histories" xml:space="preserve">
+    <value>Http请求历史</value>
+  </data>
+  <data name="Handled Exceptions" xml:space="preserve">
+    <value>已处理的异常</value>
+  </data>
 </root>

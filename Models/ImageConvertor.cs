@@ -1,4 +1,5 @@
-﻿using System;
+﻿using E621Downloader.Models.Debugging;
+using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -32,7 +33,8 @@ namespace E621Downloader {
 				} else {
 					return null;
 				}
-			} catch {
+			} catch(Exception ex) {
+				ErrorHistories.Add(ex);
 				return null;
 			}
 		}

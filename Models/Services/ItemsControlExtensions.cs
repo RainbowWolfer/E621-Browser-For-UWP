@@ -1,4 +1,5 @@
-﻿using System;
+﻿using E621Downloader.Models.Debugging;
+using System;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Core;
@@ -17,7 +18,8 @@ namespace E621Downloader.Models.Services {
 					try {
 						view.ScrollIntoView(item);
 						//await view.SmoothScrollIntoViewWithItemAsync(item);
-					} catch(Exception) {
+					} catch(Exception ex) {
+						ErrorHistories.Add(ex);
 						//try {
 						//	await view.SmoothScrollIntoViewWithItemAsync(item);
 						//} catch(Exception) { }

@@ -1,7 +1,9 @@
-﻿using E621Downloader.Models.Locals;
+﻿using E621Downloader.Models.Debugging;
+using E621Downloader.Models.Locals;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -34,6 +36,7 @@ namespace E621Downloader.Models.Networks {
 		public static async Task<HttpResult<string>> PatchAsync(string url, string
 		 stringContent, CancellationToken token = default, string username = "", string api = "") {
 			Debug.WriteLine("Reading: " + url);
+			DateTime startDateTime = DateTime.Now;
 			Stopwatch stopwatch = new();
 			stopwatch.Start();
 			var client = new HttpClient();
@@ -66,11 +69,14 @@ namespace E621Downloader.Models.Networks {
 				message?.Dispose();
 			}
 			stopwatch.Stop();
-			return new HttpResult<string>(result, code, content, stopwatch.ElapsedMilliseconds, helper);
+			HttpResult<string> hr = new(result, code, content, stopwatch.ElapsedMilliseconds, helper);
+			HttpRequestHistories.AddNewItem(startDateTime, url, hr, "Patch");
+			return hr;
 		}
 
 		public static async Task<HttpResult<string>> ReadURLAsync(string url, CancellationToken? token = null, string username = "", string api = "") {
 			Debug.WriteLine("Reading: " + url);
+			DateTime startDateTime = DateTime.Now;
 			Stopwatch stopwatch = new();
 			stopwatch.Start();
 			var client = new HttpClient();
@@ -104,10 +110,14 @@ namespace E621Downloader.Models.Networks {
 				message?.Dispose();
 			}
 			stopwatch.Stop();
-			return new HttpResult<string>(result, code, content, stopwatch.ElapsedMilliseconds, helper);
+
+			HttpResult<string> hr = new(result, code, content, stopwatch.ElapsedMilliseconds, helper);
+			HttpRequestHistories.AddNewItem(startDateTime, url, hr, "Get");
+			return hr;
 		}
 
 		public static async Task<HttpResult<InMemoryRandomAccessStream>> ReadImageStreamAsync(string url, CancellationToken? token = null, string username = "", string api = "") {
+			DateTime startDateTime = DateTime.Now;
 			Stopwatch stopwatch = new();
 			stopwatch.Start();
 			HttpClient client = new();
@@ -144,10 +154,14 @@ namespace E621Downloader.Models.Networks {
 				message?.Dispose();
 			}
 			stopwatch.Stop();
-			return new HttpResult<InMemoryRandomAccessStream>(result, code, stream, stopwatch.ElapsedMilliseconds, helper);
+
+			HttpResult<InMemoryRandomAccessStream> hr = new(result, code, stream, stopwatch.ElapsedMilliseconds, helper);
+			HttpRequestHistories.AddNewItem(startDateTime, url, hr, "Get");
+			return hr;
 		}
 
 		public static async Task<HttpResult<string>> PostRequestAsync(string url, List<KeyValuePair<string, string>> pairs, CancellationToken? token = null, string username = "", string api = "") {
+			DateTime startDateTime = DateTime.Now;
 			Stopwatch stopwatch = new();
 			stopwatch.Start();
 			HttpClient client = new();
@@ -179,12 +193,15 @@ namespace E621Downloader.Models.Networks {
 				client.Dispose();
 				message?.Dispose();
 			}
-
 			stopwatch.Stop();
-			return new HttpResult<string>(result, code, content, stopwatch.ElapsedMilliseconds, helper);
+
+			HttpResult<string> hr = new(result, code, content, stopwatch.ElapsedMilliseconds, helper);
+			HttpRequestHistories.AddNewItem(startDateTime, url, hr, "Post");
+			return hr;
 		}
 
 		public static async Task<HttpResult<string>> DeleteRequestAsync(string url, CancellationToken? token = null, string username = "", string api = "") {
+			DateTime startDateTime = DateTime.Now;
 			Stopwatch stopwatch = new();
 			stopwatch.Start();
 			var client = new HttpClient();
@@ -218,10 +235,14 @@ namespace E621Downloader.Models.Networks {
 				message?.Dispose();
 			}
 			stopwatch.Stop();
-			return new HttpResult<string>(result, code, content, stopwatch.ElapsedMilliseconds, helper);
+
+			HttpResult<string> hr = new(result, code, content, stopwatch.ElapsedMilliseconds, helper);
+			HttpRequestHistories.AddNewItem(startDateTime, url, hr, "Delete");
+			return hr;
 		}
 
 		public static async Task<HttpResult<string>> PutRequestAsync(string url, KeyValuePair<string, string> pair, CancellationToken? token = null, string username = "", string api = "") {
+			DateTime startDateTime = DateTime.Now;
 			Stopwatch stopwatch = new();
 			stopwatch.Start();
 			var client = new HttpClient();
@@ -257,7 +278,9 @@ namespace E621Downloader.Models.Networks {
 				message?.Dispose();
 			}
 			stopwatch.Stop();
-			return new HttpResult<string>(result, code, content, stopwatch.ElapsedMilliseconds, helper);
+			HttpResult<string> hr = new(result, code, content, stopwatch.ElapsedMilliseconds, helper);
+			HttpRequestHistories.AddNewItem(startDateTime, url, hr, "Put");
+			return hr;
 		}
 
 		private static void AddDefaultRequestHeaders(HttpClient client, string username, string api) {

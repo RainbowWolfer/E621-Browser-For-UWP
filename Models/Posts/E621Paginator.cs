@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Networks;
+﻿using E621Downloader.Models.Debugging;
+using E621Downloader.Models.Networks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -69,8 +70,9 @@ namespace E621Downloader.Models.Posts {
 					currentPage = currentPage,
 					pages = pages.ToArray(),
 				});
-			} catch(Exception e) {
-				Debug.WriteLine(e);
+			} catch(Exception ex) {
+				ErrorHistories.Add(ex);
+				Debug.WriteLine(ex);
 				//return 0 length paginator
 				return new DataResult<E621Paginator>(HttpResultType.Success, new E621Paginator() {
 					currentPage = 1,

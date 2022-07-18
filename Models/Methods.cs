@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Inerfaces;
+﻿using E621Downloader.Models.Debugging;
+using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using System;
@@ -86,7 +87,7 @@ namespace E621Downloader.Models {
 		}
 
 		public static string GetDate(DateTime dateTime) {
-			return $"{dateTime.Year}:{dateTime.Month.ToDuo()}:{dateTime.Day.ToDuo()}";
+			return $"{dateTime.Year}-{dateTime.Month.ToDuo()}-{dateTime.Day.ToDuo()}";
 		}
 		public static string GetDate() => GetDate(DateTime.Now);
 
@@ -129,6 +130,7 @@ namespace E621Downloader.Models {
 					} catch { }
 					return result;
 				} catch(Exception ex) {
+					ErrorHistories.Add(ex);
 					Debug.WriteLine(ex.Message);
 					return "String Not Found";
 				}
@@ -227,6 +229,7 @@ namespace E621Downloader.Models {
 			try {
 				await Launcher.LaunchFileAsync(file);
 			} catch(Exception ex) {
+				ErrorHistories.Add(ex);
 				await new ContentDialog() {
 					Title = "Error".Language(),
 					Content = $"{"An error occurred while opening this file".Language()}\n {"File".Language()}:{file.Path}\n{ex.Message}",
@@ -313,8 +316,6 @@ namespace E621Downloader.Models {
 		public static Point Minus(this Point a, Point b) {
 			return new Point(a.X - b.X, a.Y - b.Y);
 		}
-
-
 
 		public static DependencyObject MyFindListViewChildByName(DependencyObject parant, string ControlName) {
 			int count = VisualTreeHelper.GetChildrenCount(parant);

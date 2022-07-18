@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Debugging;
 using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
 using System;
@@ -74,7 +75,8 @@ namespace E621Downloader.Views.CommentsSection {
 			AvatorLoadingRing.IsActive = true;
 			try {
 				User = await E621User.GetAsync(Comment.creator_id, Cts.Token);
-			} catch {
+			} catch(Exception ex) {
+				ErrorHistories.Add(ex);
 				return;
 			}
 			string url = "";
@@ -92,7 +94,8 @@ namespace E621Downloader.Views.CommentsSection {
 							previewOrSample = true;
 						}
 					}
-				} catch {
+				} catch (Exception ex) {
+					ErrorHistories.Add(ex);
 					return;
 				}
 			}
@@ -114,7 +117,8 @@ namespace E621Downloader.Views.CommentsSection {
 						bit = App.DefaultAvatar;
 						ToolTipService.SetToolTip(Avatar, "Avatar Load Fail".Language() + $"\n{result.Helper}");
 					}
-				} catch {
+				} catch (Exception ex) {
+					ErrorHistories.Add(ex);
 					return;
 				}
 			} else {

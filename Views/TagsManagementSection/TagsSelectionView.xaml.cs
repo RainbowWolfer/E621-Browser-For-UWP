@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Debugging;
 using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
 using System;
@@ -342,7 +343,9 @@ namespace E621Downloader.Views.TagsManagementSection {
 					cts.Cancel();
 					cts.Dispose();
 				}
-			} catch { }
+			} catch(Exception ex) {
+				ErrorHistories.Add(ex);
+			}
 			cts = new CancellationTokenSource();
 			SetLoadingbar(true);
 			AutoCompletesListView.Items.Clear();

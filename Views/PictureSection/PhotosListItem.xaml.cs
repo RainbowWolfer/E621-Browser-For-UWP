@@ -95,7 +95,7 @@ namespace E621Downloader.Views.PictureSection {
 		}
 
 		private async Task LoadPost(Post post) {
-			PlayIcon.Visibility = PicturePage.GetFileType(post) == FileType.Webm ? Visibility.Visible : Visibility.Collapsed;
+			UpdateIcon(post);
 			LoadPoolItem loader = LoadPool.SetNew(post);
 			if(loader.Sample != null) {
 				MainImage.Source = loader.Sample;
@@ -125,7 +125,7 @@ namespace E621Downloader.Views.PictureSection {
 		}
 
 		private async Task LoadLocal(StorageFile file, Post post) {
-			PlayIcon.Visibility = PicturePage.GetFileType(post) == FileType.Webm ? Visibility.Visible : Visibility.Collapsed;
+			UpdateIcon(post);
 			using StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.SingleItem);
 			if(thumbnail != null) {
 				using Stream stream = thumbnail.AsStreamForRead();
@@ -134,6 +134,19 @@ namespace E621Downloader.Views.PictureSection {
 				MainImage.Source = bitmap;
 			}
 			CheckGifPlay(post);
+		}
+
+		private void UpdateIcon(Post post) {
+			FileType type = PicturePage.GetFileType(post);
+			if(type == FileType.Gif) {
+				PlayIcon.Visibility = Visibility.Visible;
+				PlayIcon.Glyph = "\uF4A9";
+			} else if(type == FileType.Webm) {
+				PlayIcon.Visibility = Visibility.Visible;
+				PlayIcon.Glyph = "\uE102";
+			} else {
+				PlayIcon.Visibility = Visibility.Collapsed;
+			}
 		}
 
 		private bool IsGif(Post post) => PicturePage.GetFileType(post) == FileType.Gif;

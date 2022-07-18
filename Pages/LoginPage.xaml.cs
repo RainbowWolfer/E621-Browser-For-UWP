@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Debugging;
 using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
@@ -36,7 +37,7 @@ namespace E621Downloader.Pages {
 				hasEmpty = true;
 			}
 			if(hasEmpty) {
-				MainPage.CreateTip(this, "Warning".Language(), "You Need to enter your username and api key".Language(), Symbol.Important, "Back", true, TeachingTipPlacementMode.Top);
+				MainPage.CreateTip(this, "Warning".Language(), "You Need to enter your username and api key".Language(), Symbol.Important, "Back".Language(), true, TeachingTipPlacementMode.Top);
 				return;
 			}
 			MainPage.CreateInstantDialog("Please Wait".Language(), "Checking Sign In Parameters".Language());
@@ -58,7 +59,9 @@ namespace E621Downloader.Pages {
 				if(!string.IsNullOrWhiteSpace(clip)) {
 					APIBox.Text = clip;
 				}
-			} catch(Exception) { }
+			} catch(Exception ex) {
+				ErrorHistories.Add(ex);
+			}
 		}
 
 		private void UsernameBox_TextChanged(object sender, TextChangedEventArgs e) {

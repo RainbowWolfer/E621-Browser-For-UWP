@@ -1,0 +1,84 @@
+﻿<UserControl
+    x:Class="E621Downloader.Views.SettingsSection.HandledExceptionsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Views.SettingsSection"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+	MinHeight="300"
+	MaxHeight="500"
+	MinWidth="600"
+	d:RequestedTheme="Dark"
+    d:DesignHeight="400"
+    d:DesignWidth="600">
+
+
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="auto" MinWidth="200"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<controls:ProgressRing x:Name="LoadingRing" Height="100" Width="100" Margin="40" d:Visibility="Collapsed"/>
+
+		<Grid x:Name="EmptyGrid" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+			<TextBlock x:Uid="NothingHereText" Text="Nothing Here" FontSize="24"/>
+		</Grid>
+
+		<ListView x:Name="MainListView" SelectionMode="Single" ItemsSource="{x:Bind Items, Mode=OneWay}" d:ItemsSource="1 2 3" SelectionChanged="MainListView_SelectionChanged">
+			<ListView.ItemTemplate>
+				<DataTemplate x:DataType="local:HandledExceptionItem">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{x:Bind Item.ExceptionType}" Margin="5,0,0,0"/>
+					</StackPanel>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
+
+		<Grid x:Name="ContentGrid" Grid.Column="1" CornerRadius="20" Margin="20,0,5,0" Padding="10">
+			<Grid.Background>
+				<SolidColorBrush Color="Gray" Opacity="0.2"/>
+			</Grid.Background>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+				<TextBlock x:Name="TitleText" d:Text="FileNotFoundException" FontSize="24"/>
+			</StackPanel>
+			<ScrollViewer Grid.Row="1" HorizontalScrollMode="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto">
+				<Grid>
+					<Grid.Resources>
+						<Style x:Key="TitleText" TargetType="TextBlock">
+							<Setter Property="TextAlignment" Value="Right"/>
+							<Setter Property="FontSize" Value="18"/>
+							<Setter Property="VerticalAlignment" Value="Top"/>
+						</Style>
+						<Style x:Key="ContentText" TargetType="TextBlock">
+							<Setter Property="FontSize" Value="18"/>
+							<Setter Property="VerticalAlignment" Value="Center"/>
+							<Setter Property="TextWrapping" Value="Wrap"/>
+							<Setter Property="Margin" Value="20,0,0,0"/>
+							<Setter Property="Grid.Column" Value="1"/>
+							<Setter Property="IsTextSelectionEnabled" Value="True"/>
+						</Style>
+					</Grid.Resources>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="90"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+					</Grid.RowDefinitions>
+					<TextBlock Text="Message" Style="{StaticResource TitleText}"/>
+					<TextBlock x:Name="MessageText" d:Text="https://e621.net/" Style="{StaticResource ContentText}"/>
+					<TextBlock Text="StackTrace" Style="{StaticResource TitleText}" Grid.Row="1"/>
+					<TextBlock x:Name="StackTraceText" d:Text="https://e621.net/" Style="{StaticResource ContentText}" Grid.Row="1"/>
+				</Grid>
+			</ScrollViewer>
+		</Grid>
+	</Grid>
+</UserControl>

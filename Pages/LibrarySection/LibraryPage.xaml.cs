@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Debugging;
 using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Views.LibrarySection;
@@ -382,7 +383,9 @@ namespace E621Downloader.Pages.LibrarySection {
 		void IPage.FocusMode(bool enabled) {
 			try {//leave it be, it throws parameters error.
 				MainNavigationView.IsPaneVisible = !enabled;
-			} catch { }
+			} catch(Exception ex) {
+				ErrorHistories.Add(ex);
+			}
 			Current.DisplayHeader(!enabled);
 		}
 

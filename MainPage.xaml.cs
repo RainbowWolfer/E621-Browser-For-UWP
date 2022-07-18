@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Debugging;
 using E621Downloader.Models.Download;
 using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
@@ -145,7 +146,7 @@ namespace E621Downloader {
 							PicturePage.Instance?.ExitSlideshow();
 						}
 					} catch(Exception ex) {
-						Debug.WriteLine(ex);
+						ErrorHistories.Add(ex);
 					}
 				}
 			}));
@@ -422,7 +423,10 @@ namespace E621Downloader {
 			}
 		}
 
-		public static async Task<ContentDialog> CreatePopupDialog(string title, object content, bool enableButton = true, string backButtonContent = "Back") {
+		public static async Task<ContentDialog> CreatePopupDialog(string title, object content, bool enableButton = true, string backButtonContent = null) {
+			if(string.IsNullOrWhiteSpace(backButtonContent)) {
+				backButtonContent = "Back".Language();
+			}
 			ContentDialog dialog = new() {
 				Title = title,
 				Content = content,
@@ -431,7 +435,9 @@ namespace E621Downloader {
 			};
 			try {
 				await dialog.ShowAsync();
-			} catch { }
+			} catch(Exception ex) {
+				ErrorHistories.Add(ex);
+			}
 			return dialog;
 		}
 

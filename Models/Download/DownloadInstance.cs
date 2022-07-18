@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Locals;
+﻿using E621Downloader.Models.Debugging;
+using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages.LibrarySection;
 using System;
@@ -65,8 +66,9 @@ namespace E621Downloader.Models.Download {
 				}));
 			} catch(TaskCanceledException) {
 				return;
-			} catch(Exception e) {
-				MainPage.CreateTip(MainPage.Instance, $"(#{metaFile.MyPost.id}) Download Fail", $"Error Message: {e.Message}", Symbol.Important);
+			} catch(Exception ex) {
+				MainPage.CreateTip(MainPage.Instance, $"(#{metaFile.MyPost.id}) Download Fail", $"Error Message: {ex.Message}", Symbol.Important);
+				ErrorHistories.Add(ex);
 			}
 		}
 
@@ -75,6 +77,7 @@ namespace E621Downloader.Models.Download {
 				Operation.Pause();
 			} catch(InvalidOperationException ex) {
 				Debug.WriteLine("Pause(): " + ex.Message);
+				ErrorHistories.Add(ex);
 			}
 		}
 
@@ -86,6 +89,7 @@ namespace E621Downloader.Models.Download {
 				Operation.Resume();
 			} catch(InvalidOperationException ex) {
 				Debug.WriteLine("Resume(): " + ex.Message);
+				ErrorHistories.Add(ex);
 			}
 		}
 
@@ -98,6 +102,7 @@ namespace E621Downloader.Models.Download {
 				}
 			} catch(Exception ex) {
 				Debug.WriteLine("Cancel(): " + ex.Message);
+				ErrorHistories.Add(ex);
 			}
 		}
 	}

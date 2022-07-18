@@ -2600,6 +2600,14 @@ Would you like to get it set?</source>
           <source>- Small fixes</source>
           <target state="final">- 小修补</target>
         </trans-unit>
+        <trans-unit id="Http Request Histories" translate="yes" xml:space="preserve">
+          <source>Http Request Histories</source>
+          <target state="final">Http请求历史</target>
+        </trans-unit>
+        <trans-unit id="Handled Exceptions" translate="yes" xml:space="preserve">
+          <source>Handled Exceptions</source>
+          <target state="final">已处理的异常</target>
+        </trans-unit>
       </group>
     </body>
   </file>

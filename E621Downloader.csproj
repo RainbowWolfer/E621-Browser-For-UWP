@@ -156,6 +156,8 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Debugging\ErrorHistories.cs" />
+    <Compile Include="Models\Debugging\HttpRequestHistories.cs" />
     <Compile Include="Models\HistoryItem.cs" />
     <Compile Include="Models\Inerfaces\IPage.cs" />
     <Compile Include="Models\KeyListener.cs" />
@@ -355,6 +357,12 @@
     </Compile>
     <Compile Include="Views\SelectedDownloadDialog.xaml.cs">
       <DependentUpon>SelectedDownloadDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsSection\HandledExceptionsView.xaml.cs">
+      <DependentUpon>HandledExceptionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsSection\HttpRequestHistoriesView.xaml.cs">
+      <DependentUpon>HttpRequestHistoriesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TagCategoryColorsPreview.xaml.cs">
       <DependentUpon>TagCategoryColorsPreview.xaml</DependentUpon>
@@ -717,6 +725,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SelectedDownloadDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsSection\HandledExceptionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsSection\HttpRequestHistoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

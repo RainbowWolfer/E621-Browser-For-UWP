@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Debugging;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
@@ -81,7 +82,9 @@ namespace E621Downloader.Views.ListingManager {
 					tagLoading_cts.Cancel();
 					tagLoading_cts.Dispose();
 				}
-			} catch(ObjectDisposedException) {
+				tagLoading_cts = null;
+			} catch(ObjectDisposedException ex) {
+				ErrorHistories.Add(ex);
 			} finally {
 				tagLoading_cts = null;
 			}
@@ -118,7 +121,9 @@ namespace E621Downloader.Views.ListingManager {
 				} else {
 					ToolTipService.SetToolTip(ImportClipboardItem, "");
 				}
-			} catch {
+			} catch(Exception ex) {
+				ErrorHistories.Add(ex);
+
 				ToolTipService.SetToolTip(PasteImportButton, "");
 				PasteImportButton.IsEnabled = false;
 

@@ -5,6 +5,7 @@ using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Views;
 using E621Downloader.Views.ListingManager;
+using E621Downloader.Views.SettingsSection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,20 +43,17 @@ namespace E621Downloader.Pages {
 			ClearDownloadPathButton.IsEnabled = Local.DownloadFolder != null;
 			initialTheme = App.GetStoredTheme();
 
-			LanguagePanel.PointerEntered += (_, _) => Help_PointerEntered(true);
-			LanguagePanel.PointerExited += (_, _) => Help_PointerEntered(false);
+			AddPointerHelpEvent(LanguagePanel);
+			AddPointerHelpEvent(CycleListToggle);
+			AddPointerHelpEvent(ConcatTagToggle);
+			AddPointerHelpEvent(MediaPlayToggle);
+			AddPointerHelpEvent(MediaAutoPlayToggle);
+			AddPointerHelpEvent(GifAutoPlayToggle);
+		}
 
-			CycleListToggle.PointerEntered += (_, _) => Help_PointerEntered(true);
-			CycleListToggle.PointerExited += (_, _) => Help_PointerEntered(false);
-
-			ConcatTagToggle.PointerEntered += (_, _) => Help_PointerEntered(true);
-			ConcatTagToggle.PointerExited += (_, _) => Help_PointerEntered(false);
-
-			MediaPlayToggle.PointerEntered += (_, _) => Help_PointerEntered(true);
-			MediaPlayToggle.PointerExited += (_, _) => Help_PointerEntered(false);
-
-			MediaAutoPlayToggle.PointerEntered += (_, _) => Help_PointerEntered(true);
-			MediaAutoPlayToggle.PointerExited += (_, _) => Help_PointerEntered(false);
+		private void AddPointerHelpEvent(UIElement ui) {
+			ui.PointerEntered += (_, _) => Help_PointerEntered(true);
+			ui.PointerExited += (_, _) => Help_PointerEntered(false);
 		}
 
 		private void Help_PointerEntered(bool enter) {
@@ -82,6 +80,8 @@ namespace E621Downloader.Pages {
 			HotKeysToggle.IsOn = LocalSettings.Current.enableHotKeys;
 			GifAutoPlayToggle.IsOn = LocalSettings.Current.enableGifAutoPlay;
 			MediaAutoMuteToggle.IsOn = LocalSettings.Current.mediaAutoMute;
+			DebugToggle.IsOn = LocalSettings.Current.enableDebugPanel;
+			EnableDebugPanel = DebugToggle.IsOn;
 
 			RandomTagMaxSlider.Value = LocalSettings.Current.randomTagMaxCount;
 			RandomTagMaxText.Text = Methods.NumberToK(LocalSettings.Current.randomTagMaxCount);
@@ -491,5 +491,50 @@ namespace E621Downloader.Pages {
 			LanguageChangeHintText.Visibility = Visibility.Visible;
 		}
 
+
+		public bool EnableDebugPanel {
+			get => LocalSettings.Current.enableDebugPanel;
+			set {
+				DebugPanel.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+				if(internalChanges) {
+					return;
+				}
+				LocalSettings.Current.enableDebugPanel = value;
+				LocalSettings.Save();
+			}
+		}
+		private void DebugToggle_Toggled(object sender, RoutedEventArgs e) {
+			if(internalChanges) {
+				return;
+			}
+			EnableDebugPanel = DebugToggle.IsOn;
+		}
+
+		private async void HttpRequestHistoriesButton_Click(object sender, RoutedEventArgs e) {
+			if(!LocalSettings.Current?.enableDebugPanel ?? true) {
+				return;
+			}
+
+			ContentDialog dialog = new() {
+				Title = "Http Request Histories".Language(),
+				Content = new HttpRequestHistoriesView(),
+				CloseButtonText = "Close".Language(),
+			};
+			dialog.Resources["ContentDialogMaxWidth"] = 650;
+			await dialog.ShowAsync();
+		}
+
+		private async void HandledExceptionsButton_Click(object sender, RoutedEventArgs e) {
+			if(!LocalSettings.Current?.enableDebugPanel ?? true) {
+				return;
+			}
+			ContentDialog dialog = new() {
+				Title = "Handled Exceptions".Language(),
+				Content = new HandledExceptionsView(),
+				CloseButtonText = "Close".Language(),
+			};
+			dialog.Resources["ContentDialogMaxWidth"] = 650;
+			await dialog.ShowAsync();
+		}
 	}
 }
