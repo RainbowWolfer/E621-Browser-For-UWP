@@ -2055,4 +2055,13 @@
 	<data name="Handled Exceptions" xml:space="preserve">
     <value>Handled Exceptions</value>
   </data>
+	<data name="V1202L1.Text" xml:space="preserve">
+    <value>- New Debug Panel is optional in the settings page</value>
+  </data>
+	<data name="V1202L2.Text" xml:space="preserve">
+    <value>- Fix some bugs related to user profile</value>
+  </data>
+	<data name="V1202L3.Text" xml:space="preserve">
+    <value>- Some bugs fix &amp; changes</value>
+  </data>
 </root>

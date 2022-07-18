@@ -38,6 +38,16 @@ namespace E621Downloader.Views.PictureSection {
 		}
 
 		public void SetPhotos(List<object> objs, object current) {
+			if(objs.Count == 2) {
+				LockListText.Visibility = Visibility.Collapsed;
+				CountText.Visibility = Visibility.Visible;
+			} else if(objs.Count <= 1) {
+				LockListText.Visibility = Visibility.Collapsed;
+				CountText.Visibility = Visibility.Collapsed;
+			} else {
+				LockListText.Visibility = Visibility.Visible;
+				CountText.Visibility = Visibility.Visible;
+			}
 			if(GetCurrentList().CompareItemsEqual(objs)) {
 				int currentIndex = 0;
 				for(int i = 0; i < Items.Count; i++) {

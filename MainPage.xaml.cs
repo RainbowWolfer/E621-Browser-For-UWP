@@ -262,7 +262,7 @@ namespace E621Downloader {
 		}
 
 		private bool updatingUser = false;
-		public async void ChangeUser(string username) {
+		public async void ChangeUser(string username, Action loadFinish = null) {
 			if(updatingUser) {
 				return;
 			}
@@ -295,6 +295,7 @@ namespace E621Downloader {
 				updatingUser = false;
 			};
 			UserPicture.ProfilePicture = image;
+			loadFinish?.Invoke();
 		}
 
 		public static BitmapImage GetUserIcon() {

@@ -38,9 +38,9 @@
 		<StackPanel Margin="20">
 			<Grid Width="200" Height="200">
 				<ProgressRing x:Name="AvatarLoadingRing" IsActive="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="20"/>
-				<Border CornerRadius="10">
+				<Border x:Name="AvatarBorder" CornerRadius="10" Tapped="AvatarBorder_Tapped">
 					<Border.Background>
-						<ImageBrush x:Name="AvatarImage" ImageSource="/Assets/e612.png"/>
+						<ImageBrush x:Name="AvatarImage" ImageSource="/Assets/e612.png" Stretch="UniformToFill"/>
 					</Border.Background>
 				</Border>
 			</Grid>

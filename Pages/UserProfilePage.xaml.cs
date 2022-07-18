@@ -5,6 +5,8 @@ using E621Downloader.Models.Posts;
 using E621Downloader.Views;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -16,6 +18,7 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Pages {
 	public sealed partial class UserProfilePage: Page, IPage {
 		private CoreCursor cursorBeforePointerEntered = null;
+		private bool isRefreshing = false;
 
 		public UserProfilePage() {
 			this.InitializeComponent();
@@ -102,7 +105,16 @@ namespace E621Downloader.Pages {
 		}
 
 		private void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			MainPage.Instance.ChangeUser(LocalSettings.Current.user_username);
+			if(isRefreshing) {
+				return;
+			}
+			isRefreshing = true;
+			MainPage.Instance.ChangeUser(LocalSettings.Current.user_username, () => {
+				isRefreshing = false;
+				if(E621User.Current != null) {
+					ToolTipService.SetToolTip(AvatarBorder, $"{"Post".Language()} - {E621User.Current.avatar_id}");
+				}
+			});
 		}
 
 		private void VotedButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -128,6 +140,16 @@ namespace E621Downloader.Pages {
 			WelcomeTextOpacityAnimation.From = WelcomeDetailText.Opacity;
 			WelcomeTextOpacityAnimation.To = 0;
 			WelcomeTextStoryboard.Begin();
+		}
+
+		private void AvatarBorder_Tapped(object sender, TappedRoutedEventArgs e) {
+			if(E621User.Current == null) {
+				return;
+			}
+			var id = E621User.Current.avatar_id;
+			App.PostsList.UpdatePostsList(new List<object>() { id });
+			App.PostsList.Current = id;
+			MainPage.NavigateToPicturePage(id, Array.Empty<string>());
 		}
 
 		void IPage.UpdateNavigationItem() {

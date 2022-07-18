@@ -381,9 +381,6 @@
   <data name="ChildrenText.Text" xml:space="preserve">
     <value>子集</value>
   </data>
-  <data name="# No Post" xml:space="preserve">
-    <value># 无推图</value>
-  </data>
   <data name="Post" xml:space="preserve">
     <value>推图</value>
   </data>
@@ -1956,5 +1953,14 @@
   </data>
   <data name="Handled Exceptions" xml:space="preserve">
     <value>已处理的异常</value>
+  </data>
+  <data name="V1202L1.Text" xml:space="preserve">
+    <value>- 新调试面板可在设置页中开启</value>
+  </data>
+  <data name="V1202L2.Text" xml:space="preserve">
+    <value>- 修复了一些用户相关的错误</value>
+  </data>
+  <data name="V1202L3.Text" xml:space="preserve">
+    <value>- 一些Bug修复与改动</value>
   </data>
 </root>

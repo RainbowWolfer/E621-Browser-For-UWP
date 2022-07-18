@@ -63,7 +63,7 @@ namespace E621Downloader.Pages {
 
 		public bool EnableAutoPlay => LocalSettings.Current?.mediaAutoPlay ?? false;
 		public bool EnableAutoMute => LocalSettings.Current?.mediaAutoMute ?? false;
-		public string Title => PostRef == null ? "# No Post".Language() :
+		public string Title => PostRef == null ? "No Post".Language() :
 			$"#{PostRef.id} ({PostRef.rating.ToUpper()})";
 
 		private CancellationTokenSource cts;

@@ -498,10 +498,6 @@
           <source>Children</source>
           <target state="final">子集</target>
         </trans-unit>
-        <trans-unit id="# No Post" translate="yes" xml:space="preserve">
-          <source># No Post</source>
-          <target state="final"># 无推图</target>
-        </trans-unit>
         <trans-unit id="Post" translate="yes" xml:space="preserve">
           <source>Post</source>
           <target state="final">推图</target>
@@ -2605,6 +2601,22 @@ Would you like to get it set?</source>
         <trans-unit id="Handled Exceptions" translate="yes" xml:space="preserve">
           <source>Handled Exceptions</source>
           <target state="final">已处理的异常</target>
+        </trans-unit>
+        <trans-unit id="V1202L1.Text" translate="yes" xml:space="preserve">
+          <source>- New Debug Panel is optional in the settings page</source>
+          <target state="final">- 新调试面板可在设置页中开启</target>
+        </trans-unit>
+        <trans-unit id="V1202L2.Text" translate="yes" xml:space="preserve">
+          <source>- Fix some bugs related to user profile</source>
+          <target state="final">- 修复了一些用户相关的错误</target>
+        </trans-unit>
+        <trans-unit id="V1202L3.Text" translate="yes" xml:space="preserve">
+          <source>- Some bugs fix &amp; changes</source>
+          <target state="final">- 一些Bug修复与改动</target>
+        </trans-unit>
+        <trans-unit id="# No Post" translate="yes" xml:space="preserve">
+          <source># No Post</source>
+          <target state="new"># No Post</target>
         </trans-unit>
       </group>
     </body>
