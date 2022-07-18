@@ -2590,7 +2590,7 @@ Would you like to get it set?</source>
           <source>Successfully set new avatar</source>
           <target state="final">成功设置头像</target>
         </trans-unit>
-        <trans-unit id="V1201L1.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="V1210L1.Text" translate="yes" xml:space="preserve">
           <source>- Small fixes</source>
           <target state="final">- 小修补</target>
         </trans-unit>
@@ -2602,15 +2602,15 @@ Would you like to get it set?</source>
           <source>Handled Exceptions</source>
           <target state="final">已处理的异常</target>
         </trans-unit>
-        <trans-unit id="V1202L1.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="V1220L1.Text" translate="yes" xml:space="preserve">
           <source>- New Debug Panel is optional in the settings page</source>
           <target state="final">- 新调试面板可在设置页中开启</target>
         </trans-unit>
-        <trans-unit id="V1202L2.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="V1220L2.Text" translate="yes" xml:space="preserve">
           <source>- Fix some bugs related to user profile</source>
           <target state="final">- 修复了一些用户相关的错误</target>
         </trans-unit>
-        <trans-unit id="V1202L3.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="V1220L3.Text" translate="yes" xml:space="preserve">
           <source>- Some bugs fix &amp; changes</source>
           <target state="final">- 一些Bug修复与改动</target>
         </trans-unit>

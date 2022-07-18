@@ -289,16 +289,16 @@
 							<controls:Expander Header="2022-07-19 (v1.2.2.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
 								<controls:Expander.Content>
 									<StackPanel>
-										<TextBlock x:Uid="V1202L1" Text="- New Debug Panel is optional in the settings page" FontSize="22" TextWrapping="WrapWholeWords"/>
-										<TextBlock x:Uid="V1202L2" Text="- Fix some bugs related to user profile" FontSize="22" TextWrapping="WrapWholeWords"/>
-										<TextBlock x:Uid="V1202L3" Text="- Some bugs fix &amp; changes" FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1220L1" Text="- New Debug Panel is optional in the settings page" FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1220L2" Text="- Fix some bugs related to user profile" FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1220L3" Text="- Some bugs fix &amp; changes" FontSize="22" TextWrapping="WrapWholeWords"/>
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>
 							<controls:Expander Header="2022-07-17 (v1.2.1.0) Hotfix" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="False">
 								<controls:Expander.Content>
 									<StackPanel>
-										<TextBlock x:Uid="V1201L1" Text="- Small fixes" FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1210L1" Text="- Small fixes" FontSize="22" TextWrapping="WrapWholeWords"/>
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>

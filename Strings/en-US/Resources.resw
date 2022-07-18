@@ -2046,7 +2046,7 @@
 	<data name="Successfully set new avatar" xml:space="preserve">
     <value>Successfully set new avatar</value>
   </data>
-	<data name="V1201L1.Text" xml:space="preserve">
+	<data name="V1210L1.Text" xml:space="preserve">
     <value>- Small fixes</value>
   </data>
 	<data name="Http Request Histories" xml:space="preserve">
@@ -2055,13 +2055,13 @@
 	<data name="Handled Exceptions" xml:space="preserve">
     <value>Handled Exceptions</value>
   </data>
-	<data name="V1202L1.Text" xml:space="preserve">
+	<data name="V1220L1.Text" xml:space="preserve">
     <value>- New Debug Panel is optional in the settings page</value>
   </data>
-	<data name="V1202L2.Text" xml:space="preserve">
+	<data name="V1220L2.Text" xml:space="preserve">
     <value>- Fix some bugs related to user profile</value>
   </data>
-	<data name="V1202L3.Text" xml:space="preserve">
+	<data name="V1220L3.Text" xml:space="preserve">
     <value>- Some bugs fix &amp; changes</value>
   </data>
 </root>
