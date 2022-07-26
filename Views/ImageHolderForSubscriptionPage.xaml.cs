@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
@@ -32,6 +33,7 @@ namespace E621Downloader.Views {
 			this.progress = new ProgressLoader(LoadingRing);
 			this.parent = parent;
 			this.belongingListName = belongingListName;
+			LocalBorder.Translation += new Vector3(0, 0, 8);
 		}
 
 		//can only be used in following layout
@@ -134,6 +136,7 @@ namespace E621Downloader.Views {
 
 		//used in favorite layout
 		public async void LoadFromLocal(MixPost mix, CancellationToken? token = null) {
+			LocalBorder.Visibility = Visibility.Visible;
 			(StorageFile file, MetaFile meta) = await Local.GetDownloadFile(mix.LocalPath);
 			if(file == null || meta == null) {
 				LoadingRing.IsActive = false;
@@ -243,8 +246,8 @@ namespace E621Downloader.Views {
 		private void ImageHolderForSubscriptionPage_RightTappedForPostID(object sender, RightTappedRoutedEventArgs e) {
 			MenuFlyout flyout = new();
 			flyout.Items.Add(Item_ManageFavorites);
-			flyout.Items.Add(Item_OpenInBrowser);
 			flyout.Items.Add(Item_Download);
+			flyout.Items.Add(Item_OpenInBrowser);
 			flyout.Items.Add(Item_RemoveFromThis);
 			flyout.ShowAt(sender as UIElement, e.GetPosition(this));
 		}
@@ -252,8 +255,8 @@ namespace E621Downloader.Views {
 		private void ImageHolderForSubscriptionPage_RightTappedForFollowing(object sender, RightTappedRoutedEventArgs e) {
 			MenuFlyout flyout = new();
 			flyout.Items.Add(Item_ManageFavorites);
-			flyout.Items.Add(Item_OpenInBrowser);
 			flyout.Items.Add(Item_Download);
+			flyout.Items.Add(Item_OpenInBrowser);
 			flyout.ShowAt(sender as UIElement, e.GetPosition(this));
 		}
 

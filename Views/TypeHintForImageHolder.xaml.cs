@@ -1,4 +1,5 @@
 ﻿using E621Downloader.Models.Posts;
+using System.Numerics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -15,6 +16,7 @@ namespace E621Downloader.Views {
 
 		public TypeHintForImageHolder() {
 			this.InitializeComponent();
+			TypeBorder.Translation += new Vector3(0, 0, 8);
 		}
 
 		private void Load(Post post) {

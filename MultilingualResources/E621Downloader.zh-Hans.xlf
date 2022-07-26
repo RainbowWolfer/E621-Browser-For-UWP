@@ -2616,7 +2616,27 @@ Would you like to get it set?</source>
         </trans-unit>
         <trans-unit id="# No Post" translate="yes" xml:space="preserve">
           <source># No Post</source>
-          <target state="new"># No Post</target>
+          <target state="final">#无推图</target>
+        </trans-unit>
+        <trans-unit id="ShowInfoDialogText.Text" translate="yes" xml:space="preserve">
+          <source>Show Info Dialog</source>
+          <target state="final">显示信息弹窗</target>
+        </trans-unit>
+        <trans-unit id="ToggleMoreInfoText.Text" translate="yes" xml:space="preserve">
+          <source>Toggle More Info</source>
+          <target state="final">开关更多信息</target>
+        </trans-unit>
+        <trans-unit id="ShowSlideshowDialogText.Text" translate="yes" xml:space="preserve">
+          <source>Show Slideshow Dialog</source>
+          <target state="final">显示幻灯片弹窗</target>
+        </trans-unit>
+        <trans-unit id="V1230L2.Text" translate="yes" xml:space="preserve">
+          <source>- Some bugs fix &amp; changes</source>
+          <target state="final">- 一些Bug修复与改动</target>
+        </trans-unit>
+        <trans-unit id="V1230L1.Text" translate="yes" xml:space="preserve">
+          <source>- Fix some bugs in Favorite Page</source>
+          <target state="final">- 修复了一些在最爱页面的Bug</target>
         </trans-unit>
       </group>
     </body>

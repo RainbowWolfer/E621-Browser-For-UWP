@@ -14,13 +14,13 @@
 
 	<Grid KeyboardAcceleratorPlacementMode="Hidden">
 		<Grid.KeyboardAccelerators>
-			<KeyboardAccelerator x:Name="HomeKey" Modifiers="Control" Key="Number1" ScopeOwner="{x:Bind HomeItem}" Invoked="HomeKey_Invoked"/>
-			<KeyboardAccelerator x:Name="PictureKey" Modifiers="Control" Key="Number2" ScopeOwner="{x:Bind PictureItem}" Invoked="PictureKey_Invoked"/>
-			<KeyboardAccelerator x:Name="LibraryKey" Modifiers="Control" Key="Number3" ScopeOwner="{x:Bind LibraryItem}" Invoked="LibraryKey_Invoked"/>
-			<KeyboardAccelerator x:Name="FavoriteKey" Modifiers="Control" Key="Number4" ScopeOwner="{x:Bind FavoriteItem}" Invoked="FavoriteKey_Invoked"/>
-			<KeyboardAccelerator x:Name="SpotKey" Modifiers="Control" Key="Number5" ScopeOwner="{x:Bind SpotItem}" Invoked="SpotKey_Invoked"/>
-			<KeyboardAccelerator x:Name="DownloadKey" Modifiers="Control" Key="Number6" ScopeOwner="{x:Bind DownloadItem}" Invoked="DownloadKey_Invoked"/>
-			<KeyboardAccelerator x:Name="UserKey" Modifiers="Control" Key="Number7" ScopeOwner="{x:Bind UserIconItem}" Invoked="UserKey_Invoked"/>
+			<KeyboardAccelerator x:Name="HomeKey" Modifiers="Control" Key="Number1" Invoked="HomeKey_Invoked"/>
+			<KeyboardAccelerator x:Name="PictureKey" Modifiers="Control" Key="Number2" Invoked="PictureKey_Invoked"/>
+			<KeyboardAccelerator x:Name="LibraryKey" Modifiers="Control" Key="Number3" Invoked="LibraryKey_Invoked"/>
+			<KeyboardAccelerator x:Name="FavoriteKey" Modifiers="Control" Key="Number4" Invoked="FavoriteKey_Invoked"/>
+			<KeyboardAccelerator x:Name="SpotKey" Modifiers="Control" Key="Number5" Invoked="SpotKey_Invoked"/>
+			<KeyboardAccelerator x:Name="DownloadKey" Modifiers="Control" Key="Number6" Invoked="DownloadKey_Invoked"/>
+			<KeyboardAccelerator x:Name="UserKey" Modifiers="Control" Key="Number7" Invoked="UserKey_Invoked"/>
 			<KeyboardAccelerator x:Name="SettingsKey" Modifiers="Control" Key="Number8" Invoked="SettingsKey_Invoked"/>
 			<KeyboardAccelerator x:Name="FullscreenKey" Key="F1" Invoked="FullscreenKey_Invoked"/>
 			<KeyboardAccelerator x:Name="FocusKey" Key="F2" Invoked="FocusKey_Invoked"/>

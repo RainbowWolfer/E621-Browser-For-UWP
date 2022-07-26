@@ -6,12 +6,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="400"
+    d:DesignHeight="800"
     d:DesignWidth="1000"
     d:RequestedTheme="Dark"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-	<Grid MaxHeight="400">
+	<Grid MaxHeight="400" d:MaxHeight="800">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="*"/>
@@ -114,6 +114,24 @@
 							<TextBlock Text="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 						</Border>
 						<TextBlock x:Uid="VoteDownText" Text="Vote Down" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="I" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="ShowInfoDialogText" Text="Show Info Dialog" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="O" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="ToggleMoreInfoText" Text="Toggle More Info" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="F5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="ShowSlideshowDialogText" Text="Show Slideshow Dialog" VerticalAlignment="Center" Margin="10,0,0,0"/>
 					</StackPanel>
 				</StackPanel>
 			</ScrollViewer>

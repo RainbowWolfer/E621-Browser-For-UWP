@@ -109,6 +109,9 @@
 			<KeyboardAccelerator Key="Down" Invoked="DownKey_Invoked"/>
 			<KeyboardAccelerator Key="Right" Invoked="RightKey_Invoked"/>
 			<KeyboardAccelerator Key="Space" Invoked="SpaceKey_Invoked"/>
+			<KeyboardAccelerator Key="I" Invoked="InfoKey_Invoked"/>
+			<KeyboardAccelerator Key="O" Invoked="MoreInfoKey_Invoked"/>
+			<KeyboardAccelerator Key="F5" Invoked="SlideshowKey_Invoked"/>
 		</Grid.KeyboardAccelerators>
 		<Grid x:Name="NoPostGrid" Visibility="Collapsed">
 			<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">

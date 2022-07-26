@@ -78,12 +78,12 @@ namespace E621Downloader.Pages {
 		protected override void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			this.FocusModeUpdate();
-			UpdateFavoritesTable();
+			UpdateFavoritesTable(false);
 		}
 
-		public void UpdateFavoritesTable() {
+		public void UpdateFavoritesTable(bool updateSelection = true) {
 			items.Clear();
-			int selectedIndex = -1;
+			int selectedIndex = FavoritesListView.SelectedIndex;
 			for(int i = 0; i < FavoritesList.Table.Count; i++) {
 				FavoritesList item = FavoritesList.Table[i];
 				items.Add(new FavoriteListViewItem(i, item.Name, item.Items.Count));
@@ -91,7 +91,9 @@ namespace E621Downloader.Pages {
 					selectedIndex = i;
 				}
 			}
-			FavoritesListView.SelectedIndex = selectedIndex;
+			if(updateSelection || CurrentLayout == LayoutType.Favorites) {
+				FavoritesListView.SelectedIndex = selectedIndex;
+			}
 			FavoritesTableHintText.Visibility = items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 		}
 
@@ -257,6 +259,7 @@ namespace E621Downloader.Pages {
 				Content = "Are you sure to delete".Language() + $" {Selected.Count} " + "favorites list(s)".Language() + "?",
 				PrimaryButtonText = "Yes".Language(),
 				CloseButtonText = "No".Language(),
+				DefaultButton = ContentDialogButton.Close,
 			}.ShowAsync() == ContentDialogResult.Primary) {
 				FavoritesList.Table.RemoveAll(l => Selected.Select(s => s.Title).Contains(l.Name));
 				FavoritesList.Save();
@@ -339,10 +342,11 @@ namespace E621Downloader.Pages {
 
 		private async void DeleteContentButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			if(await new ContentDialog() {
-				Title = "Confirmation".Language(),
+				Title = "Confirm".Language(),
 				Content = "Are you sure to delete list".Language() + $" ({CurrentListName})",
 				PrimaryButtonText = "Yes".Language(),
 				CloseButtonText = "No".Language(),
+				DefaultButton = ContentDialogButton.Close,
 			}.ShowAsync() == ContentDialogResult.Primary) {
 				FavoritesList.Table.RemoveAll(l => CurrentListName == l.Name);
 				FavoritesList.Save();

@@ -5,7 +5,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace E621Downloader.Views {
 	public sealed partial class PostDebugView: UserControl {
-		private const int FONTSIZE = 24;
+		private const int FONTSIZE = 18;
 		public Post post;
 		public PostDebugView(Post post) {
 			this.post = post;

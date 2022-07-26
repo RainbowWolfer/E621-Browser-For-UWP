@@ -10,13 +10,13 @@ namespace E621Downloader.Models.Locals {
 
 		public static void Modify(List<string> newLists, List<string> containLists, string path, PathType type) {
 			foreach(string item in newLists) {
-				Table.Add(new FavoritesList(item));
+				Table.Insert(0, new FavoritesList(item));
 			}
 			foreach(FavoritesList list in Table) {
 				if(containLists.Contains(list.Name)) {
 					//add in this list if not in list
 					if(!list.Items.Any(i => i.Path == path && i.Type == type)) {
-						list.Items.Add(new FavoriteItem(type, path));
+						list.Items.Insert(0, new FavoriteItem(type, path));
 						PersonalFavoritesList.LastAddedList = list.Name;
 					}
 				} else {

@@ -2064,4 +2064,19 @@
 	<data name="V1220L3.Text" xml:space="preserve">
     <value>- Some bugs fix &amp; changes</value>
   </data>
+	<data name="V1230L1.Text" xml:space="preserve">
+    <value>- Fix some bugs in Favorite Page</value>
+  </data>
+	<data name="V1230L2.Text" xml:space="preserve">
+    <value>- Some bugs fix &amp; changes</value>
+  </data>
+	<data name="ShowInfoDialogText.Text" xml:space="preserve">
+    <value>Show Info Dialog</value>
+  </data>
+	<data name="ToggleMoreInfoText.Text" xml:space="preserve">
+    <value>Toggle More Info</value>
+  </data>
+	<data name="ShowSlideshowDialogText.Text" xml:space="preserve">
+    <value>Show Slideshow Dialog</value>
+  </data>
 </root>

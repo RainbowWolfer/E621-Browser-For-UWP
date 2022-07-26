@@ -1963,4 +1963,22 @@
   <data name="V1220L3.Text" xml:space="preserve">
     <value>- 一些Bug修复与改动</value>
   </data>
+  <data name="# No Post" xml:space="preserve">
+    <value>#无推图</value>
+  </data>
+  <data name="ShowInfoDialogText.Text" xml:space="preserve">
+    <value>显示信息弹窗</value>
+  </data>
+  <data name="ToggleMoreInfoText.Text" xml:space="preserve">
+    <value>开关更多信息</value>
+  </data>
+  <data name="ShowSlideshowDialogText.Text" xml:space="preserve">
+    <value>显示幻灯片弹窗</value>
+  </data>
+  <data name="V1230L2.Text" xml:space="preserve">
+    <value>- 一些Bug修复与改动</value>
+  </data>
+  <data name="V1230L1.Text" xml:space="preserve">
+    <value>- 修复了一些在最爱页面的Bug</value>
+  </data>
 </root>

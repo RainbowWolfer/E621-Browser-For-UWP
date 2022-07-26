@@ -291,7 +291,15 @@
 									</StackPanel>
 								</controls:Expander.Content>
 							</controls:Expander>
-							<controls:Expander Header="2022-07-19 (v1.2.2.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
+							<controls:Expander Header="2022-07-28 (v1.2.3.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
+								<controls:Expander.Content>
+									<StackPanel>
+										<TextBlock x:Uid="V1230L1" Text="- Fix some bugs in Favorite Page" FontSize="22" TextWrapping="WrapWholeWords"/>
+										<TextBlock x:Uid="V1230L2" Text="- Some bugs fix &amp; changes" FontSize="22" TextWrapping="WrapWholeWords"/>
+									</StackPanel>
+								</controls:Expander.Content>
+							</controls:Expander>
+							<controls:Expander Header="2022-07-19 (v1.2.2.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="False">
 								<controls:Expander.Content>
 									<StackPanel>
 										<TextBlock x:Uid="V1220L1" Text="- New Debug Panel is optional in the settings page" FontSize="22" TextWrapping="WrapWholeWords"/>

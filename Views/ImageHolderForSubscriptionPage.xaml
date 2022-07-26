@@ -11,7 +11,7 @@
     d:DesignWidth="400"
     d:RequestedTheme="Dark">
 
-    <Grid>
+	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="auto"/>
@@ -22,7 +22,18 @@
 		<Image x:Name="PreviewImage" Stretch="Uniform"/>
 		<controls:ProgressRing x:Name="LoadingRing" Margin="50" MinHeight="50" MinWidth="50"/>
 		<Image x:Name="MyImage" Stretch="Uniform" Visibility="Collapsed"/>
-		<local:TypeHintForImageHolder x:Name="TypeHint" Visibility="Collapsed"/>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+			<Border x:Name="LocalBorder" VerticalAlignment="Center" Visibility="Collapsed" Margin="10" CornerRadius="5" Padding="2,1,2,1">
+				<Border.Shadow>
+					<ThemeShadow/>
+				</Border.Shadow>
+				<Border.Background>
+					<SolidColorBrush Color="Gray" Opacity="0.5"/>
+				</Border.Background>
+				<TextBlock Text="LOCAL" Margin="4,2,4,2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			</Border>
+			<local:TypeHintForImageHolder x:Name="TypeHint" Visibility="Collapsed"/>
+		</StackPanel>
 		<Grid Grid.Row="1" Margin="5,0,5,0">
 			<local:BottomInformationForImageHolder x:Name="BottomInfo"/>
 		</Grid>

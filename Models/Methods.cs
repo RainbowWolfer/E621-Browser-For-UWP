@@ -122,12 +122,14 @@ namespace E621Downloader.Models {
 			}
 			if(CoreWindow.GetForCurrentThread() != null) {
 				try {
-					var result = ResourceLoader.GetForCurrentView().GetString(str);
+					string result = ResourceLoader.GetForCurrentView().GetString(str);
 					try {
 						for(int i = 0; i < args.Length; i++) {
 							result = result.Replace("{{" + i + "}}", args[i].ToString());
 						}
-					} catch { }
+					} catch(Exception ex) {
+						ErrorHistories.Add(ex);
+					}
 					return result;
 				} catch(Exception ex) {
 					ErrorHistories.Add(ex);

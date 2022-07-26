@@ -128,11 +128,6 @@ namespace E621Downloader.Pages {
 			MyMediaPlayer.MediaPlayer.IsLoopingEnabled = true;
 			MyMediaPlayer.MediaPlayer.AudioCategory = MediaPlayerAudioCategory.Media;
 			MyMediaPlayer.MediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
-#if DEBUG
-			DebugItem.Visibility = Visibility.Visible;
-#else
-			DebugItem.Visibility = Visibility.Collapsed;
-#endif
 
 			//var PanelGrid = Methods.MyFindListViewChildByName(MediaControls, "ControlPanelGrid") as Grid;
 			//var render = PanelGrid.RenderTransform;
@@ -151,6 +146,11 @@ namespace E621Downloader.Pages {
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
+			if(LocalSettings.Current?.enableDebugPanel ?? false) {
+				DebugItem.Visibility = Visibility.Visible;
+			} else {
+				DebugItem.Visibility = Visibility.Collapsed;
+			}
 			this.FocusModeUpdate();
 			Progress = null;
 			MyMediaPlayer.IsFullWindow = false;
@@ -1113,6 +1113,10 @@ namespace E621Downloader.Pages {
 		}
 
 		private void MoreInfoButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			ToggleMoreInfoPanel();
+		}
+
+		private void ToggleMoreInfoPanel() {
 			MainSplitView.IsPaneOpen = !MainSplitView.IsPaneOpen;
 			if(MainSplitView.IsPaneOpen && InformationPivot.SelectedIndex == 1 && commentsPostID != PostRef.id) {
 				LoadCommentsAsync();
@@ -1160,6 +1164,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void RightButton_Tapped(object sender, TappedRoutedEventArgs e) {
+			tempSkip = true;
 			GoRight();
 		}
 
@@ -1190,6 +1195,10 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void MoreInfoItem_Click(object sender, RoutedEventArgs e) {
+			await ShowImageInfo();
+		}
+
+		private async Task ShowImageInfo() {
 			if(PostRef == null) {
 				return;
 			}
@@ -1198,7 +1207,9 @@ namespace E621Downloader.Pages {
 				Content = new PostMoreInfoDialog(PostRef),
 				PrimaryButtonText = "Back".Language(),
 			};
-			await dialog.ShowAsync();
+			try {
+				await dialog.ShowAsync();
+			} catch { }
 		}
 
 		private async void BrowserItem_Click(object sender, RoutedEventArgs e) {
@@ -1731,6 +1742,7 @@ namespace E621Downloader.Pages {
 			if(!KeyCondition()) {
 				return;
 			}
+			tempSkip = true;
 			GoRight();
 			args.Handled = true;
 		}
@@ -1740,6 +1752,10 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void SlideshowItem_Click(object sender, RoutedEventArgs e) {
+			await PopupSlideshowDialog();
+		}
+
+		private async Task PopupSlideshowDialog() {
 			var dialog = new ContentDialog() {
 				Title = "Start Slideshow".Language(),
 				Content = new SlideshowConfigurationDialog(),
@@ -1749,12 +1765,15 @@ namespace E621Downloader.Pages {
 			dialog.Closed += async (s, e) => {
 				await Local.WriteLocalSettings();
 			};
-			if(await dialog.ShowAsync() == ContentDialogResult.Primary) {
-				MainPage.Instance.ScreenMode = ScreenMode.Focus;
-				StartSlideshow(LocalSettings.Current.slideshowConfiguration);
-			}
+			try {
+				if(await dialog.ShowAsync() == ContentDialogResult.Primary) {
+					MainPage.Instance.ScreenMode = ScreenMode.Focus;
+					StartSlideshow(LocalSettings.Current.slideshowConfiguration);
+				}
+			} catch { }
 		}
 
+		private bool tempSkip;
 		public async void StartSlideshow(SlideshowConfiguration configuration) {
 			ShowListGrid = false;
 			IsInSlideshow = true;
@@ -1764,6 +1783,10 @@ namespace E621Downloader.Pages {
 					mills = 1000;
 				}
 				await Task.Delay(mills);
+				//if(tempSkip) {
+				//	tempSkip = false;
+				//	continue;
+				//}
 				if(!IsInSlideshow || MainPage.Instance.ScreenMode != ScreenMode.Focus) {
 					break;
 				}
@@ -1843,6 +1866,21 @@ namespace E621Downloader.Pages {
 
 		private void BottomButton_Click(object sender, RoutedEventArgs e) {
 			ShowListGrid = !ShowListGrid;
+		}
+
+		private async void InfoKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			args.Handled = true;
+			await ShowImageInfo();
+		}
+
+		private void MoreInfoKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			args.Handled = true;
+			ToggleMoreInfoPanel();
+		}
+
+		private async void SlideshowKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			args.Handled = true;
+			await PopupSlideshowDialog();
 		}
 	}
 
