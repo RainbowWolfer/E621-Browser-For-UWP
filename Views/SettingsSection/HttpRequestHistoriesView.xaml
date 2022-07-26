@@ -22,23 +22,35 @@
 
 		<controls:ProgressRing x:Name="LoadingRing" Height="100" Width="100" Margin="40" d:Visibility="Collapsed"/>
 
-		<ListView x:Name="MainListView" SelectionMode="Single" ItemsSource="{x:Bind Items, Mode=OneWay}" d:ItemsSource="1 2 3" SelectionChanged="MainListView_SelectionChanged">
-			<ListView.ItemTemplate>
-				<DataTemplate x:DataType="local:HttpRequestHistoriesViewItem">
-					<StackPanel Orientation="Horizontal">
-						<!--&#xE143; - Put-->
-						<!--&#xE140; - Post-->
-						<!--&#xE13F; - Get-->
-						<!--&#xE107; - Delete-->
-						<!--&#xE1CA; - Patch-->
-						<FontIcon Glyph="{x:Bind ResultIconGlyph}" Margin="0,0,10,0" Foreground="{x:Bind ResultIconBrush}" FontWeight="Bold"/>
-						<FontIcon Glyph="{x:Bind IconGlyph}" Margin="0,0,10,0"/>
-						<TextBlock Text="{x:Bind Date}" MinWidth="60"/>
-						<TextBlock Text="{x:Bind ConsumeTime}" Margin="5,0,0,0"/>
-					</StackPanel>
-				</DataTemplate>
-			</ListView.ItemTemplate>
-		</ListView>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="auto"/>
+			</Grid.RowDefinitions>
+			<ListView x:Name="MainListView" SelectionMode="Single" ItemsSource="{x:Bind Items, Mode=OneWay}" d:ItemsSource="1 2 3" SelectionChanged="MainListView_SelectionChanged">
+				<ListView.ItemTemplate>
+					<DataTemplate x:DataType="local:HttpRequestHistoriesViewItem">
+						<StackPanel Orientation="Horizontal">
+							<!--&#xE143; - Put-->
+							<!--&#xE140; - Post-->
+							<!--&#xE13F; - Get-->
+							<!--&#xE107; - Delete-->
+							<!--&#xE1CA; - Patch-->
+							<FontIcon Glyph="{x:Bind ResultIconGlyph}" Margin="0,0,10,0" Foreground="{x:Bind ResultIconBrush}" FontWeight="Bold"/>
+							<FontIcon Glyph="{x:Bind IconGlyph}" Margin="0,0,10,0"/>
+							<TextBlock Text="{x:Bind Date}" MinWidth="60"/>
+							<TextBlock Text="{x:Bind ConsumeTime}" Margin="5,0,0,0"/>
+						</StackPanel>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+			<Button x:Name="ClearButton" Grid.Row="1" HorizontalAlignment="Stretch" Margin="0,10,0,0" Click="ClearButton_Click">
+				<StackPanel Orientation="Horizontal">
+					<FontIcon Glyph="&#xE106;" Margin="0,0,10,0"/>
+					<TextBlock x:Uid="ClearText" Text="Clear"/>
+				</StackPanel>
+			</Button>
+		</Grid>
 
 		<Grid Grid.Column="1" CornerRadius="20" Margin="20,0,5,0" Padding="10">
 			<Grid.Background>

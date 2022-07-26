@@ -26,6 +26,7 @@ namespace E621Downloader.Views.SettingsSection {
 		public ObservableCollection<HttpRequestHistoriesViewItem> Items { get; } = new();
 		public HttpRequestHistoriesView() {
 			this.InitializeComponent();
+			UpdateInfo(null);
 			Items.Clear();
 			HttpRequestHistories.Items.ForEach(i => {
 				Items.Add(new HttpRequestHistoriesViewItem(i));
@@ -64,6 +65,12 @@ namespace E621Downloader.Views.SettingsSection {
 				SizeText.Text = item.ContentSize + " byte(s)";
 				HintText.Text = string.IsNullOrWhiteSpace(item.HintText) ? "None" : item.HintText;
 			}
+		}
+
+		private void ClearButton_Click(object sender, RoutedEventArgs e) {
+			Items.Clear();
+			HttpRequestHistories.Items.Clear();
+			UpdateInfo(null);
 		}
 	}
 

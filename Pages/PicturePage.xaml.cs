@@ -181,7 +181,7 @@ namespace E621Downloader.Pages {
 				LoadFromPost(post);
 				PostType = PathType.PostID;
 				path = this.PostRef.id;
-			} else if(p is MixPost mix) {
+			} else if(p is MixPost mix && mix.PostRef != null) {
 				Loader = LoadPool.SetNew(mix.PostRef);
 				switch(mix.Type) {
 					case PathType.PostID:

@@ -6,6 +6,7 @@ using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -33,60 +34,27 @@ namespace E621Downloader.Views {
 			this.belongingListName = belongingListName;
 		}
 
+		//can only be used in following layout
 		public void LoadFromPost(Post post, string[] followTags = null) {
 			this.PostRef = post;
 			LoadingRing.IsActive = true;
+			if(App.PostsPool.ContainsKey(post.id)) {
+				App.PostsPool[post.id] = post;
+			} else {
+				App.PostsPool.Add(post.id, post);
+			}
+
 			string url = post.sample.url ?? post.preview.url;
 			if(string.IsNullOrWhiteSpace(url)) {
 				HintText.Visibility = Visibility.Visible;
 				LoadingRing.IsActive = false;
 			} else {
 				MyImage.ImageOpened += ImageHolderForSubscriptionPage_ImageOpened;
-				Methods.ProdedureLoading(PreviewImage, MyImage, post, new LoadPoolItemActions() {
-					OnUrlsEmpty = () => {
-						progress.Value = null;
-						HintText.Text = "Error".Language();
-						this.Visibility = Visibility.Visible;
-					},
-					OnSampleUrlEmpty = () => {
-						progress.Value = null;
-						HintText.Text = "Empty URL".Language();
-					},
-					OnPreviewStart = () => {
-						HintText.Text = "";
-					},
-					OnPreviewProgress = p => {
-						progress.Value = p;
-					},
-					OnPreviewExists = () => {
-						progress.Value = null;
-					},
-					OnPreviewOpened = b => {
-						progress.Value = null;
-					},
-					OnPreviewFailed = () => {
-						progress.Value = 0;
-					},
-					OnSampleStart = b => {
-
-					},
-					OnSampleProgress = p => {
-						progress.Value = p;
-					},
-					OnSampleExists = () => {
-						progress.Value = null;
-					},
-					OnSampleOpened = b => {
-						progress.Value = null;
-					},
-					OnSampleFailed = () => {
-						progress.Value = null;
-						HintText.Text = "Error".Language();
-					},
-				});
+				ProcedureLoading(post);
 				//MyImage.Source = new BitmapImage(new Uri(post.sample.url ?? post.preview.url));
 			}
 			TypeHint.PostRef = post;
+			TypeHint.Visibility = Visibility.Visible;
 			BottomInfo.PostRef = post;
 			type = PathType.PostID;
 			path = post.id;
@@ -109,16 +77,30 @@ namespace E621Downloader.Views {
 				}
 				App.PostsList.UpdatePostsList(parent.PostsList);
 				App.PostsList.Current = post;
-				MainPage.NavigateToPicturePage(this.PostRef, new string[] { SubscriptionPage.CurrentTag });
+				MainPage.NavigateToPicturePage(
+					this.PostRef,
+					new string[] { SubscriptionPage.CurrentTag }
+				);
 			};
 			this.RightTapped += ImageHolderForSubscriptionPage_RightTappedForFollowing;
 		}
 
+		//used in favorite layout
 		public async void LoadFromPostID(MixPost mix, CancellationToken? token = null) {
 			LoadingRing.IsActive = true;
-			this.PostRef = await Post.GetPostByIDAsync(mix.ID, token);
+			if(App.PostsPool.TryGetValue(mix.ID, out Post post)) {
+				this.PostRef = post;
+			}
+			if(this.PostRef == null) {
+				this.PostRef = await Post.GetPostByIDAsync(mix.ID, token);
+				if(this.PostRef != null) {
+					App.PostsPool[mix.ID] = this.PostRef;
+				}
+			}
+
 			mix.PostRef = this.PostRef;
 			if(this.PostRef == null) {
+				progress.Value = null;
 				return;
 			}
 			string url = this.PostRef.sample.url ?? this.PostRef.preview.url;
@@ -127,14 +109,11 @@ namespace E621Downloader.Views {
 				LoadingRing.IsActive = false;
 			} else {
 				MyImage.ImageOpened += ImageHolderForSubscriptionPage_ImageOpened;
-				Methods.ProdedureLoading(PreviewImage, MyImage, mix.PostRef, new LoadPoolItemActions() {
-					OnSampleProgress = p => {
-						progress.Value = p;
-					},
-				});
+				ProcedureLoading(mix.PostRef);
 				//MyImage.Source = new BitmapImage(new Uri(url));
 			}
 			TypeHint.PostRef = this.PostRef;
+			TypeHint.Visibility = Visibility.Visible;
 			BottomInfo.PostRef = this.PostRef;
 			type = PathType.PostID;
 			path = mix.ID;
@@ -145,11 +124,15 @@ namespace E621Downloader.Views {
 				}
 				App.PostsList.UpdatePostsList(parent.PostsList);
 				App.PostsList.Current = mix;
-				MainPage.NavigateToPicturePage(this.PostRef, new string[] { SubscriptionPage.CurrentTag });
+				MainPage.NavigateToPicturePage(
+					this.PostRef,
+					new string[] { SubscriptionPage.CurrentTag }
+				);
 			};
 			this.RightTapped += ImageHolderForSubscriptionPage_RightTappedForPostID;
 		}
 
+		//used in favorite layout
 		public async void LoadFromLocal(MixPost mix, CancellationToken? token = null) {
 			(StorageFile file, MetaFile meta) = await Local.GetDownloadFile(mix.LocalPath);
 			if(file == null || meta == null) {
@@ -169,15 +152,18 @@ namespace E621Downloader.Views {
 				mode = ThumbnailMode.PicturesView;
 			}
 			bitmap.ImageOpened += ImageHolderForSubscriptionPage_ImageOpened;
-			using(StorageItemThumbnail thumbnail = await file?.GetThumbnailAsync(mode)) {
-				if(thumbnail != null) {
-					using Stream stream = thumbnail.AsStreamForRead();
-					bitmap.SetSource(stream.AsRandomAccessStream());
-				}
+
+			using StorageItemThumbnail thumbnail = await file?.GetThumbnailAsync(mode);
+			if(thumbnail != null) {
+				using Stream stream = thumbnail.AsStreamForRead();
+				bitmap.SetSource(stream.AsRandomAccessStream());
 			}
+
+			MyImage.Visibility = Visibility.Visible;
 			MyImage.Source = bitmap;
 			this.PostRef = meta?.MyPost;
 			TypeHint.PostRef = this.PostRef;
+			TypeHint.Visibility = Visibility.Visible;
 			BottomInfo.PostRef = this.PostRef;
 			type = PathType.Local;
 			path = file?.Path;
@@ -194,6 +180,51 @@ namespace E621Downloader.Views {
 				);
 			};
 			this.RightTapped += ImageHolderForSubscriptionPage_RightTappedForLocal;
+		}
+
+		private void ProcedureLoading(Post post) {
+			Methods.ProdedureLoading(PreviewImage, MyImage, post, new LoadPoolItemActions() {
+				OnUrlsEmpty = () => {
+					progress.Value = null;
+					HintText.Text = "Error".Language();
+					this.Visibility = Visibility.Visible;
+				},
+				OnSampleUrlEmpty = () => {
+					progress.Value = null;
+					HintText.Text = "Empty URL".Language();
+				},
+				OnPreviewStart = () => {
+					HintText.Text = "";
+				},
+				OnPreviewProgress = p => {
+					progress.Value = p;
+				},
+				OnPreviewExists = () => {
+					progress.Value = null;
+				},
+				OnPreviewOpened = b => {
+					progress.Value = null;
+				},
+				OnPreviewFailed = () => {
+					progress.Value = 0;
+				},
+				OnSampleStart = b => {
+
+				},
+				OnSampleProgress = p => {
+					progress.Value = p;
+				},
+				OnSampleExists = () => {
+					progress.Value = null;
+				},
+				OnSampleOpened = b => {
+					progress.Value = null;
+				},
+				OnSampleFailed = () => {
+					progress.Value = null;
+					HintText.Text = "Error".Language();
+				},
+			});
 		}
 
 		private void ImageHolderForSubscriptionPage_ImageOpened(object sender, RoutedEventArgs e) {
@@ -315,8 +346,8 @@ namespace E621Downloader.Views {
 	}
 
 	public class SubscriptionImageParameter: ILocalImage {
-		private Post imagePost;
-		private StorageFile imageFile;
+		private readonly Post imagePost;
+		private readonly StorageFile imageFile;
 		public Post ImagePost => imagePost;
 		public StorageFile ImageFile => imageFile;
 		public SubscriptionImageParameter(Post imagePost, StorageFile imageFile) {

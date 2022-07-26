@@ -70,6 +70,7 @@ namespace E621Downloader.Pages {
 			LocalStateHyperContentText.Text = Local.LocalFolder.Path;
 
 			DownloadPathTextBlock.Text = Local.DownloadFolder == null ? "No Download Path Selected".Language() : Local.DownloadFolder.Path;
+			UpdateDownloadPathButtonStyle();
 			CustomHostToggle.IsOn = LocalSettings.Current.customHostEnable;
 			CycleListToggle.IsOn = LocalSettings.Current.cycleList;
 			CustomHostButton.IsEnabled = LocalSettings.Current.customHostEnable;
@@ -205,6 +206,7 @@ namespace E621Downloader.Pages {
 				ClearDownloadPathButton.IsEnabled = true;
 				isDownloadPathChangingHandled = false;
 			}
+			UpdateDownloadPathButtonStyle();
 		}
 
 		private async void ClearDownloadPathButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -226,6 +228,15 @@ namespace E621Downloader.Pages {
 				ClearDownloadPathButton.IsEnabled = false;
 			}
 			DownloadPathTextBlock.Text = "No Path Selected".Language();
+			UpdateDownloadPathButtonStyle();
+		}
+
+		private void UpdateDownloadPathButtonStyle() {
+			if(Local.DownloadFolder == null) {
+				DownloadPathButton.BorderThickness = new Thickness(2);
+			} else {
+				DownloadPathButton.BorderThickness = new Thickness(0);
+			}
 		}
 
 		private async void CustomHostToggle_Toggled(object sender, RoutedEventArgs e) {

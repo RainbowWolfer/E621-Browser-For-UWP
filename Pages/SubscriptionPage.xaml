@@ -148,7 +148,7 @@
 							</StackPanel>
 						</Button>
 					</RelativePanel>
-					<controls:ProgressRing x:Name="LoadingRing" Grid.Row="1" MinHeight="200" MinWidth="200" Margin="50"/>
+					<controls:ProgressRing x:Name="LoadingRing" Grid.Row="1" MinHeight="150" MinWidth="150" Margin="50"/>
 					<Grid x:Name="FavoritesListHintText" Grid.Row="1">
 						<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 							<FontIcon Glyph="&#xF133;" FontSize="68" Margin="5"/>

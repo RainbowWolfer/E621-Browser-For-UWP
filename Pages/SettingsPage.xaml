@@ -81,8 +81,13 @@
 						<TextBlock x:Uid="LOCALText" Text="LOCAL" Style="{StaticResource SectionTitle}"/>
 						<ScrollViewer HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Grid.Row="1">
 							<StackPanel>
-								<Button x:Uid="SelectDownloadPathContent" x:Name="DownloadPathButton" Content="Select Download Path" FontSize="20" Tapped="DownloadPathButton_Tapped" Margin="20,10,0,10" HorizontalAlignment="Center"/>
-								<Button x:Uid="ClearDownloadPathContent" x:Name="ClearDownloadPathButton" Content="Clear Download Path" FontSize="20" Tapped="ClearDownloadPathButton_Tapped" Margin="20,0,0,10" HorizontalAlignment="Center"/>
+								<Button x:Uid="SelectDownloadPathContent" x:Name="DownloadPathButton" Content="Select Download Path" FontSize="20" Tapped="DownloadPathButton_Tapped" Margin="20,10,0,10" HorizontalAlignment="Center" BorderBrush="{StaticResource SystemAccentColor}" BorderThickness="2" Height="42" VerticalContentAlignment="Center">
+									<Button.Resources>
+										<SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{StaticResource SystemAccentColorLight1}"/>
+										<SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{StaticResource SystemAccentColorDark1}"/>
+									</Button.Resources>
+								</Button>
+								<Button x:Uid="ClearDownloadPathContent" x:Name="ClearDownloadPathButton" Content="Clear Download Path" FontSize="20" Tapped="ClearDownloadPathButton_Tapped" Margin="20,0,0,10" HorizontalAlignment="Center" BorderThickness="0" Height="40"/>
 								<TextBlock x:Uid="NoPathSelectedText" x:Name="DownloadPathTextBlock" Text="No Path Selected" VerticalAlignment="Center" Margin="20,0,0,10" FontSize="20" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"/>
 							</StackPanel>
 						</ScrollViewer>

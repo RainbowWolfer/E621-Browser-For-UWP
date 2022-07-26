@@ -24,7 +24,7 @@ namespace E621Downloader.Views {
 			if(post == null) {
 				return;
 			}
-			ParentUpvoteText.Text = $"{post.score.up}";
+			ParentUpvoteText.Text = $"{post.score.total}";
 			ParentFavoriteText.Text = $"{post.fav_count}";
 			if(post.is_favorited) {
 				FavoriteIcon.Foreground = new SolidColorBrush((Color)Application.Current.Resources["SystemAccentColor"]);

@@ -29,7 +29,7 @@ namespace E621Downloader.Pages {
 
 		private int currentFollowingPage = 1;
 
-		private LayoutType CurrentLayout { get; set; }
+		public LayoutType CurrentLayout { get; private set; }
 		public string CurrentListName { get; private set; }
 
 		public bool IsSelecting {
@@ -65,7 +65,7 @@ namespace E621Downloader.Pages {
 
 		public int Size { get; private set; } = 300;
 
-		public List<object> PostsList { get; private set; }
+		public List<object> PostsList { get; } = new List<object>();
 
 		public SubscriptionPage() {
 			Instance = this;
@@ -121,9 +121,9 @@ namespace E621Downloader.Pages {
 				if(posts == null) {
 					return;
 				}
-				PostsList = new List<object>();
-				PostsList.AddRange(posts);
-				if(posts != null && cts != null) {
+				if(posts != null && cts != null && CurrentLayout == LayoutType.Following) {
+					PostsList.Clear();
+					PostsList.AddRange(posts);
 					foreach(Post post in posts) {
 						var image = new ImageHolderForSubscriptionPage(this) {
 							Height = Size,
@@ -156,8 +156,8 @@ namespace E621Downloader.Pages {
 			cts = new CancellationTokenSource();
 			LoadingRing.IsActive = true;
 			FavoritesList list = FavoritesList.Table.Find(l => l.Name == listName);
-			PostsList = new List<object>();
-			if(list != null && cts != null) {
+			PostsList.Clear();
+			if(list != null && cts != null && CurrentLayout == LayoutType.Favorites) {
 				MainGridView.Items.Clear();
 				foreach(FavoriteItem item in list.Items) {
 					var image = new ImageHolderForSubscriptionPage(this, listName) {
@@ -430,7 +430,7 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		private enum LayoutType {
+		public enum LayoutType {
 			Following, Favorites
 		}
 

@@ -61,7 +61,7 @@ namespace E621Downloader.Views {
 		private ContentDialog dialog_setAs;
 		private LoadingDialog dialog_setAs_content;
 		private CancellationTokenSource cts_SetAs;
-		private readonly LoadPoolItem loader;
+		//private readonly LoadPoolItem loader;
 
 		public ImageHolder(Page page, Post post, int index, PathType type, string path) {
 			this.InitializeComponent();
@@ -71,7 +71,7 @@ namespace E621Downloader.Views {
 			this.type = type;
 			this.path = path;
 			this.progress = new ProgressLoader(MyProgressRing);
-			this.loader = LoadPool.SetNew(post);
+			//this.loader = LoadPool.SetNew(post);
 			PreviewImage.Source = null;
 			SampleImage.Source = null;
 			FailureTextBlock.Text = "";
