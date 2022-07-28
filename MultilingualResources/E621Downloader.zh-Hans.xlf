@@ -2638,6 +2638,14 @@ Would you like to get it set?</source>
           <source>- Fix some bugs in Favorite Page</source>
           <target state="final">- 修复了一些在最爱页面的Bug</target>
         </trans-unit>
+        <trans-unit id="Do you want to download current page.Text" translate="yes" xml:space="preserve">
+          <source>Do you want to download current page</source>
+          <target state="final">你确定要下载当前页吗</target>
+        </trans-unit>
+        <trans-unit id="({{0}} local posts will not be downloaded)" translate="yes" xml:space="preserve">
+          <source>({{0}} local posts will not be downloaded)</source>
+          <target state="final">({{0}} 个本地推图不会被下载)</target>
+        </trans-unit>
       </group>
     </body>
   </file>

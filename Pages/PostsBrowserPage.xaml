@@ -48,7 +48,6 @@
 				</DoubleAnimation.EasingFunction>
 			</DoubleAnimation>
 		</Storyboard>
-		<CollectionViewSource x:Name="ContactsCVS2" Source="{x:Bind poststInfolists}" IsSourceGrouped="True"/>
 	</Page.Resources>
 
 	<Grid KeyboardAcceleratorPlacementMode="Hidden">
@@ -124,39 +123,7 @@
 					<SplitView x:Name="MainSplitView" Grid.Row="1" FlowDirection="RightToLeft" CornerRadius="0,15,15,0">
 						<SplitView.Pane>
 							<Grid Padding="5">
-								<ListView x:Name="PostsInfoListView" SelectionMode="Single" ShowsScrollingPlaceholders="True" ItemsSource="{Binding Source={StaticResource ContactsCVS2}}" FlowDirection="LeftToRight" IsItemClickEnabled="True" ItemClick="PostsInfoListView_ItemClick">
-									<ListView.ItemsPanel>
-										<ItemsPanelTemplate>
-											<ItemsStackPanel AreStickyGroupHeadersEnabled="True"/>
-										</ItemsPanelTemplate>
-									</ListView.ItemsPanel>
-									<ListView.ItemTemplate>
-										<DataTemplate x:DataType="local:PostInfoLine">
-											<Grid Margin="15,0,20,0">
-												<Grid.ColumnDefinitions>
-													<ColumnDefinition Width="*"/>
-													<ColumnDefinition Width="auto"/>
-												</Grid.ColumnDefinitions>
-												<Grid.ContextFlyout>
-													<MenuFlyout>
-														<MenuFlyoutItem x:Uid="CopyItem" x:Name="CopyItem" Icon="Copy" Text="Copy" Tag="{x:Bind Name}" Click="CopyItem_Click"/>
-													</MenuFlyout>
-												</Grid.ContextFlyout>
-												<TextBlock Text="{x:Bind Name}"/>
-												<TextBlock Text="{x:Bind Detail}" Grid.Column="1"/>
-											</Grid>
-										</DataTemplate>
-									</ListView.ItemTemplate>
-									<ListView.GroupStyle>
-										<GroupStyle>
-											<GroupStyle.HeaderTemplate>
-												<DataTemplate>
-													<TextBlock Text="{Binding Key}" Margin="10,0" FontWeight="Bold"/>
-												</DataTemplate>
-											</GroupStyle.HeaderTemplate>
-										</GroupStyle>
-									</ListView.GroupStyle>
-								</ListView>
+								<localviews:PostsInfoListView x:Name="MyPostsInfoListView"/>
 							</Grid>
 						</SplitView.Pane>
 						<SplitView.Content>

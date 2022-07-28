@@ -76,21 +76,33 @@ namespace E621Downloader.Pages.DownloadSection {
 					Icon = new FontIcon {
 						Glyph = "\uE9F9",
 					},
-					Content = stackPanel
+					Content = stackPanel,
+					Tag = title,
 				};
 
 				closeButton.Tapped += (s, e) => {
-					MyNavigationView.MenuItems.Remove(found);
-					if(MyNavigationView.MenuItems.Count >= 1) {
-						MyNavigationView.SelectedItem = MyNavigationView.MenuItems[0];
-					} else {
-						MainFrame.Navigate(typeof(DownloadOverview), null, new EntranceNavigationTransitionInfo());
-					}
+					RemoveTab(found);
 				};
 
 				MyNavigationView.MenuItems.Add(found);
 			}
 			MyNavigationView.SelectedItem = found;
+		}
+
+		public void RemoveTab(NavigationViewItem item) {
+			MyNavigationView.MenuItems.Remove(item);
+			if(MyNavigationView.MenuItems.Count >= 1) {
+				MyNavigationView.SelectedItem = MyNavigationView.MenuItems[0];
+			} else {
+				MainFrame.Navigate(typeof(DownloadOverview), null, new EntranceNavigationTransitionInfo());
+			}
+		}
+
+		public void RemoveTab(string title) {
+			NavigationViewItem found = MyNavigationView.MenuItems.Cast<NavigationViewItem>().Where(c => c.Tag as string == title).FirstOrDefault();
+			if(found != null) {
+				RemoveTab(found);
+			}
 		}
 
 		private void TitleButton_Tapped(object sender, TappedRoutedEventArgs e) {

@@ -1,16 +1,20 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.Download;
 using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Views;
+using E621Downloader.Views.SubscriptionSection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
@@ -18,6 +22,7 @@ using Windows.UI.Xaml.Navigation;
 namespace E621Downloader.Pages {
 	public sealed partial class SubscriptionPage: Page, IPage {
 		public static SubscriptionPage Instance { get; private set; }
+		public static string DefaultDownloadGroupName => "Following".Language();
 		public static string CurrentTag { get; private set; }
 
 		private CancellationTokenSource cts;
@@ -50,6 +55,21 @@ namespace E621Downloader.Pages {
 					icons.ForEach(i => i.Width = 12);
 					DeleteButton.Visibility = Visibility.Collapsed;
 					previousIndex = -1;
+				}
+			}
+		}
+
+		public bool ImagesSelecting {
+			get => imagesSelecting;
+			set {
+				imagesSelecting = value;
+
+				SelectionButton.IsChecked = imagesSelecting;
+				SelectionCountText.Visibility = imagesSelecting ? Visibility.Visible : Visibility.Collapsed;
+				SelectionCountText.Text = $"0/{PostsList.Count}";
+
+				foreach(var item in MainGridView.Items.Cast<ImageHolderForSubscriptionPage>()) {
+					item.IsSelected = false;
 				}
 			}
 		}
@@ -98,6 +118,8 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void LoadFollowing(int page) {
+			DownloadButton.IsEnabled = false;
+			ImagesSelecting = false;
 			if(page is <= 0 or >= 100) {
 				return;
 			}
@@ -139,9 +161,12 @@ namespace E621Downloader.Pages {
 				}
 				RefreshContentButton.IsEnabled = true;
 			}
+			DownloadButton.IsEnabled = PostsList.Count > 0;
 		}
 
 		private void LoadFavorites(string listName) {
+			DownloadButton.IsEnabled = false;
+			ImagesSelecting = false;
 			if(string.IsNullOrWhiteSpace(listName)) {
 				return;
 			}
@@ -177,12 +202,11 @@ namespace E621Downloader.Pages {
 					PostsList.Add(mix);
 					MainGridView.Items.Add(image);
 				}
-			} else {
-				throw new Exception("HOW_2?");
 			}
 			LoadingRing.IsActive = false;
 			FavoritesListHintText.Visibility = list.Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 			RefreshContentButton.IsEnabled = true;
+			DownloadButton.IsEnabled = PostsList.Count > 0;
 		}
 
 		public void Refresh() {
@@ -291,6 +315,7 @@ namespace E621Downloader.Pages {
 
 		private void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			IsSelecting = false;
+			ImagesSelecting = false;
 			SelectionToggleButton.IsChecked = false;
 			UpdateFavoritesTable();
 		}
@@ -411,6 +436,8 @@ namespace E621Downloader.Pages {
 		}
 
 		private CancellationTokenSource saveCTS;
+		private bool imagesSelecting;
+
 		private async void DelayedSave() {
 			try {
 				if(saveCTS != null) {
@@ -438,6 +465,125 @@ namespace E621Downloader.Pages {
 			Following, Favorites
 		}
 
+		private void SelectionButton_Click(object sender, RoutedEventArgs e) {
+			ImagesSelecting = !ImagesSelecting;
+		}
+
+		public void UpdateSelectedCountText() {
+			int selected = MainGridView.Items.Cast<ImageHolderForSubscriptionPage>().Count(i => i.IsSelected);
+			int all = MainGridView.Items.Count;
+			SelectionCountText.Text = $"{selected}/{all}";
+		}
+
+		private CancellationTokenSource downloadCts;
+		private async void DownloadButton_Click(object sender, RoutedEventArgs e) {
+			if(PostsList.Count == 0) {
+				return;
+			}
+			if(!await DownloadsManager.CheckDownloadAvailableWithDialog()) {
+				return;
+			}
+			IEnumerable<ImageHolderForSubscriptionPage> all;
+			if(ImagesSelecting) {
+				all = MainGridView.Items.Cast<ImageHolderForSubscriptionPage>().Where(i => i.IsSelected);
+			} else {
+				all = MainGridView.Items.Cast<ImageHolderForSubscriptionPage>();
+			}
+			var local = all.Where(a => a.IsLocal);
+			var selectedDownloadDialog = new SubscriptionDownloadDialog() {
+				IsSelectedDownload = ImagesSelecting,
+				Numbers = (all.Count(), local.Count()),
+			};
+			if(ImagesSelecting && all.Count() <= 0) {
+				return;
+			}
+			if(await new ContentDialog() {
+				Title = "Download Selection".Language(),
+				Content = selectedDownloadDialog,
+				PrimaryButtonText = "Yes".Language(),
+				CloseButtonText = "No".Language(),
+			}.ShowAsync() == ContentDialogResult.Primary) {
+				CancelDownload();
+				downloadCts = new CancellationTokenSource();
+				CreateDownloadDialog("Please Wait".Language(), "Handling Downloads".Language());
+
+				IEnumerable<Post> posts;
+				if(ImagesSelecting) {
+					posts = all.Where(a => !a.IsLocal && a.IsSelected).Select(a => a.PostRef);
+				} else {
+					posts = all.Where(a => !a.IsLocal).Select(a => a.PostRef);
+				}
+
+				string title;
+				if(CurrentLayout == LayoutType.Favorites) {
+					title = $"Favorite - {CurrentListName}";
+				} else if(CurrentLayout == LayoutType.Following) {
+					title = DefaultDownloadGroupName;
+				} else {
+					throw new Exception($"Current Layout unknown ({CurrentLayout})");
+				}
+
+				bool? result = await DownloadsManager.RegisterDownloads(downloadCts.Token, posts, title, selectedDownloadDialog.TodayDate, UpdateContentText);
+
+				if(result == true) {
+					MainPage.CreateTip_SuccessDownload(this);
+				} else if(result == null) {
+					return;
+				} else {
+					await MainPage.CreatePopupDialog("Error".Language(), "Downloads Failed".Language());
+				}
+				HideDownloadDialog();
+			}
+		}
+
+		private ContentDialog downloadDialog;
+		private DownloadCancellableDialog dialogContent;
+
+		private async void CreateDownloadDialog(string title, string text) {
+			if(downloadDialog != null) {
+				return;
+			}
+			downloadDialog = new ContentDialog() {
+				Title = title,
+			};
+			dialogContent = new DownloadCancellableDialog() {
+				Text = text,
+				OnCancel = () => {
+					CancelDownload();
+					HideDownloadDialog();
+				},
+			};
+			downloadDialog.Content = dialogContent;
+			await downloadDialog.ShowAsync();
+		}
+
+		private void UpdateContentText(string text) {
+			if(dialogContent == null) {
+				return;
+			}
+			dialogContent.Text = text;
+		}
+
+		private void HideDownloadDialog() {
+			if(downloadDialog == null) {
+				return;
+			}
+			downloadDialog.Hide();
+			downloadDialog = null;
+			dialogContent = null;
+		}
+
+		private void CancelDownload() {
+			if(downloadCts != null) {
+				downloadCts.Cancel();
+				downloadCts.Dispose();
+			}
+			downloadCts = null;
+		}
+
+		private void PostsInfoButton_Click(object sender, RoutedEventArgs e) {
+			SideSplitView.IsPaneOpen = true;
+		}
 	}
 
 	public class FavoriteListViewItem {
@@ -448,6 +594,20 @@ namespace E621Downloader.Pages {
 			Index = index;
 			Title = title;
 			Count = count;
+		}
+	}
+
+	public class SubscriptionsPostsTab {
+		public SubscriptionPage.LayoutType Layout { get; set; }
+		public List<Post> Posts { get; set; }
+		public List<Post> PostsAfterBlasklist { get; set; } = new();
+		public int LoadedCount { get; set; } = 0;
+		public List<Post> Unsupported { get; set; } = new();
+		public Dictionary<string, long> BlackTags { get; set; } = new();
+		public Dictionary<string, long> AllTags { get; set; } = new();
+		public Dictionary<string, long> HotTags { get; set; } = new();
+		public SubscriptionsPostsTab() {
+
 		}
 	}
 }

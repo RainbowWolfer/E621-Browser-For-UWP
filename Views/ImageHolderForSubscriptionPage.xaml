@@ -11,7 +11,7 @@
     d:DesignWidth="400"
     d:RequestedTheme="Dark">
 
-	<Grid>
+	<Grid x:Name="MainGrid" BorderBrush="{StaticResource SystemAccentColor}" BorderThickness="0" CornerRadius="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="auto"/>

@@ -39,6 +39,7 @@ namespace E621Downloader.Pages.DownloadSection {
 			if(MainGridView.Items.Contains(block)) {
 				MainGridView.Items.Remove(block);
 			}
+			DownloadPage.Instance.RemoveTab(block.Group.Title);
 		}
 
 		private void MainGridView_ItemClick(object sender, ItemClickEventArgs e) {

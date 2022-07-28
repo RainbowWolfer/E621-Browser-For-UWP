@@ -60,7 +60,6 @@ namespace E621Downloader.Pages {
 
 		public static PostsBrowserPage Instance { get; private set; }
 		public int ItemSize { get => 50; }
-		public readonly ObservableCollection<PostsInfoList> poststInfolists = new();
 
 		public bool MultipleSelectionMode { get; private set; }
 		private bool IsAdaptive { get; set; }
@@ -418,7 +417,7 @@ namespace E621Downloader.Pages {
 
 			tab.HotTags = tab.AllTags.OrderByDescending(o => o.Value).ToDictionary(x => x.Key, x => x.Value);
 
-			UpdatePostsInfo(tab);
+			MyPostsInfoListView.UpdatePostsInfo(tab);
 			DownloadButton.Tag = true;
 
 			MyWrapGrid.Children.Clear();
@@ -460,42 +459,6 @@ namespace E621Downloader.Pages {
 				};
 				holder.BeginEntranceAnimation();
 			}
-		}
-
-		public void UpdatePostsInfo(PostsTab tab) {
-			List<PostInfoLine> deletes = new();
-			foreach(Post item in tab.Unsupported) {
-				deletes.Add(new PostInfoLine(item.id, "File type".Language() + $": {item.file.ext}"));
-			}
-
-			List<PostInfoLine> hots = new();
-			int count = 0;
-			foreach(KeyValuePair<string, long> item in tab.HotTags) {
-				hots.Add(new PostInfoLine(item.Key, $"{item.Value}"));
-				if(count++ > 20) {
-					break;
-				}
-			}
-
-			List<PostInfoLine> blacks = new();
-			foreach(KeyValuePair<string, long> item in tab.BlackTags) {
-				blacks.Add(new PostInfoLine(item.Key, $"{item.Value}"));
-			}
-
-			poststInfolists.Clear();
-			poststInfolists.Add(new PostsInfoList("Deleted Posts".Language(), deletes));
-			poststInfolists.Add(new PostsInfoList("Blacklist".Language(), blacks));
-			poststInfolists.Add(new PostsInfoList("Hot Tags (Top 20)".Language(), hots));
-
-			PostsInfoListView.SelectedIndex = 0;
-
-			//foreach(PostInfoLine line in poststInfolists.SelectMany(i => i)) {
-			//	var v = PostsInfoListView.ContainerFromItem(line);
-			//	if(v is ListViewItem item) {
-			//		item.Margin = new Thickness(20, 0, 0, 0);
-			//		Debug.WriteLine(line);
-			//	}
-			//}
 		}
 
 		public void SelectFeedBack() {
@@ -803,21 +766,6 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		private void PostsInfoListView_ItemClick(object sender, ItemClickEventArgs e) {
-			if(PostsInfoListView.ContainerFromItem(e.ClickedItem) is ListViewItem item) {
-				item.IsSelected = true;
-			}
-		}
-
-		private void CopyItem_Click(object sender, RoutedEventArgs e) {
-			string name = (string)((MenuFlyoutItem)sender).Tag;
-			DataPackage dataPackage = new() {
-				RequestedOperation = DataPackageOperation.Copy
-			};
-			dataPackage.SetText($"{name}");
-			Clipboard.SetContent(dataPackage);
-		}
-
 		private async void NoTabSearchButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			await MainPage.Instance.PopupSearch();
 		}
@@ -889,30 +837,6 @@ namespace E621Downloader.Pages {
 		public PostsTab() { }
 
 	}
-
-	public class PostsInfoList: ObservableCollection<PostInfoLine> {
-		public string Key { get; set; }
-		public PostsInfoList(string key) : base() {
-			this.Key = key;
-		}
-		public PostsInfoList(string key, List<PostInfoLine> content) : base() {
-			this.Key = key;
-			content.ForEach(s => this.Add(s));
-		}
-	}
-
-	public struct PostInfoLine {
-		public string Name { get; set; }
-		public string Detail { get; set; }
-		public PostInfoLine(string name, string detail) {
-			Name = name;
-			Detail = detail;
-		}
-		public override string ToString() {
-			return $"Name ({Name}) - Detail ({Detail})";
-		}
-	}
-
 
 	public class PostBrowserParameter: ICloneable {
 		public int Page { get; private set; }

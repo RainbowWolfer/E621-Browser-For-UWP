@@ -2079,4 +2079,10 @@
 	<data name="ShowSlideshowDialogText.Text" xml:space="preserve">
     <value>Show Slideshow Dialog</value>
   </data>
+	<data name="({{0}} local posts will not be downloaded)" xml:space="preserve">
+    <value>({{0}} local posts will not be downloaded)</value>
+  </data>
+	<data name="Do you want to download current page.Text" xml:space="preserve">
+    <value>Do you want to download current page</value>
+  </data>
 </root>

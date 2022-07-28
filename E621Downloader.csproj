@@ -346,6 +346,9 @@
     <Compile Include="Views\PostsBrowserPaginator.xaml.cs">
       <DependentUpon>PostsBrowserPaginator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PostsInfoListView.xaml.cs">
+      <DependentUpon>PostsInfoListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RecentTagView.xaml.cs">
       <DependentUpon>RecentTagView.xaml</DependentUpon>
     </Compile>
@@ -363,6 +366,9 @@
     </Compile>
     <Compile Include="Views\SettingsSection\HttpRequestHistoriesView.xaml.cs">
       <DependentUpon>HttpRequestHistoriesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SubscriptionSection\SubscriptionDownloadDialog.xaml.cs">
+      <DependentUpon>SubscriptionDownloadDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TagCategoryColorsPreview.xaml.cs">
       <DependentUpon>TagCategoryColorsPreview.xaml</DependentUpon>
@@ -712,6 +718,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\PostsInfoListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\RecentTagView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -733,6 +743,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsSection\HttpRequestHistoriesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SubscriptionSection\SubscriptionDownloadDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

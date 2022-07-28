@@ -101,7 +101,13 @@
 					</Grid.RowDefinitions>
 					<RelativePanel x:Name="HeaderPanel">
 						<TextBlock x:Name="TitleText" Text="Hello World" FontSize="22" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,0,0,0"/>
-						<Button x:Name="RefreshContentButton" FontSize="16" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="RefreshContentButton_Tapped" Margin="5,0,5,0">
+						<Button x:Name="PostsInfoButton" FontSize="16" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="5,0,5,0" Click="PostsInfoButton_Click">
+							<StackPanel Orientation="Horizontal">
+								<FontIcon Glyph="&#xEA40;" FontSize="16"/>
+								<TextBlock x:Uid="RefreshText" Text="Posts Info" Margin="10,0,0,0"/>
+							</StackPanel>
+						</Button>
+						<Button x:Name="RefreshContentButton" FontSize="16" RelativePanel.LeftOf="PostsInfoButton" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="RefreshContentButton_Tapped" Margin="5,0,5,0">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE149;" FontSize="16"/>
 								<TextBlock x:Uid="RefreshText" Text="Refresh" Margin="10,0,0,0"/>
@@ -147,7 +153,32 @@
 								<TextBlock x:Uid="ManageText" Text="Manage" Margin="10,0,0,0"/>
 							</StackPanel>
 						</Button>
+						<views:LockableToggleButton x:Name="SelectionButton" FontSize="16" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.LeftOf="ManageButton" Margin="5,0,5,0" Click="SelectionButton_Click" LockToggle="True" CornerRadius="4" BorderBrush="Transparent" BorderThickness="0" Height="35">
+							<StackPanel Orientation="Horizontal">
+								<FontIcon Glyph="&#xE14E;" FontSize="16"/>
+								<TextBlock Text="Select" Margin="10,0,0,0"/>
+								<TextBlock x:Name="SelectionCountText" Text="0/75" Margin="10,0,0,0" Visibility="Collapsed"/>
+							</StackPanel>
+						</views:LockableToggleButton>
+						<Button x:Name="DownloadButton" FontSize="16" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.LeftOf="SelectionButton" Margin="5,0,5,0" Click="DownloadButton_Click" IsEnabled="False">
+							<StackPanel Orientation="Horizontal">
+								<FontIcon Glyph="&#xE118;" FontSize="16"/>
+								<TextBlock Text="Download" Margin="10,0,0,0"/>
+							</StackPanel>
+						</Button>
 					</RelativePanel>
+					<SplitView x:Name="SideSplitView" FlowDirection="RightToLeft" CornerRadius="0,15,15,0" Grid.Row="1">
+						<SplitView.Pane>
+							<Grid>
+								<views:PostsInfoListView x:Name="MyPostsInfoListView"/>
+							</Grid>
+						</SplitView.Pane>
+						<SplitView.Content>
+							<Grid>
+							
+							</Grid>
+						</SplitView.Content>
+					</SplitView>
 					<controls:ProgressRing x:Name="LoadingRing" Grid.Row="1" MinHeight="150" MinWidth="150" Margin="50"/>
 					<Grid x:Name="FavoritesListHintText" Grid.Row="1">
 						<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">

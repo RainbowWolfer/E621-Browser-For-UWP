@@ -25,8 +25,20 @@ namespace E621Downloader.Views {
 		private readonly string belongingListName;
 		private PathType type;
 		private string path;
+		private bool isSelected;
 
 		private readonly ProgressLoader progress;
+
+		public bool IsLocal => type == PathType.Local;
+
+		public bool IsSelected {
+			get => isSelected;
+			set {
+				isSelected = value;
+				MainGrid.BorderThickness = new Thickness(IsSelected ? 1.5d : 0);
+				parent.UpdateSelectedCountText();
+			}
+		}
 
 		public ImageHolderForSubscriptionPage(SubscriptionPage parent, string belongingListName = "") {
 			this.InitializeComponent();
@@ -77,12 +89,16 @@ namespace E621Downloader.Views {
 				if(PostRef == null) {
 					return;
 				}
-				App.PostsList.UpdatePostsList(parent.PostsList);
-				App.PostsList.Current = post;
-				MainPage.NavigateToPicturePage(
-					this.PostRef,
-					new string[] { SubscriptionPage.CurrentTag }
-				);
+				if(parent.ImagesSelecting) {
+					IsSelected = !IsSelected;
+				} else {
+					App.PostsList.UpdatePostsList(parent.PostsList);
+					App.PostsList.Current = post;
+					MainPage.NavigateToPicturePage(
+						this.PostRef,
+						new string[] { SubscriptionPage.CurrentTag }
+					);
+				}
 			};
 			this.RightTapped += ImageHolderForSubscriptionPage_RightTappedForFollowing;
 		}
@@ -124,12 +140,16 @@ namespace E621Downloader.Views {
 				if(PostRef == null) {
 					return;
 				}
-				App.PostsList.UpdatePostsList(parent.PostsList);
-				App.PostsList.Current = mix;
-				MainPage.NavigateToPicturePage(
-					this.PostRef,
-					new string[] { SubscriptionPage.CurrentTag }
-				);
+				if(parent.ImagesSelecting) {
+					IsSelected = !IsSelected;
+				} else {
+					App.PostsList.UpdatePostsList(parent.PostsList);
+					App.PostsList.Current = mix;
+					MainPage.NavigateToPicturePage(
+						this.PostRef,
+						new string[] { SubscriptionPage.CurrentTag }
+					);
+				}
 			};
 			this.RightTapped += ImageHolderForSubscriptionPage_RightTappedForPostID;
 		}
@@ -175,12 +195,16 @@ namespace E621Downloader.Views {
 				if(PostRef == null) {
 					return;
 				}
-				App.PostsList.UpdatePostsList(parent.PostsList);
-				App.PostsList.Current = mix;
-				MainPage.NavigateToPicturePage(
-					new SubscriptionImageParameter(this.PostRef, file),
-					new string[] { SubscriptionPage.CurrentTag }
-				);
+				if(parent.ImagesSelecting) {
+					IsSelected = !IsSelected;
+				} else {
+					App.PostsList.UpdatePostsList(parent.PostsList);
+					App.PostsList.Current = mix;
+					MainPage.NavigateToPicturePage(
+						new SubscriptionImageParameter(this.PostRef, file),
+						new string[] { SubscriptionPage.CurrentTag }
+					);
+				}
 			};
 			this.RightTapped += ImageHolderForSubscriptionPage_RightTappedForLocal;
 		}
@@ -338,7 +362,7 @@ namespace E621Downloader.Views {
 						return;
 					}
 					if(await DownloadsManager.CheckDownloadAvailableWithDialog()) {
-						await DownloadsManager.RegisterDownload(PostRef);
+						await DownloadsManager.RegisterDownload(PostRef, SubscriptionPage.DefaultDownloadGroupName);
 						MainPage.CreateTip_SuccessDownload(parent);
 					}
 				};

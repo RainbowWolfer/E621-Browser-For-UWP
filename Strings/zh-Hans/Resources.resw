@@ -1981,4 +1981,10 @@
   <data name="V1230L1.Text" xml:space="preserve">
     <value>- 修复了一些在最爱页面的Bug</value>
   </data>
+  <data name="Do you want to download current page.Text" xml:space="preserve">
+    <value>你确定要下载当前页吗</value>
+  </data>
+  <data name="({{0}} local posts will not be downloaded)" xml:space="preserve">
+    <value>({{0}} 个本地推图不会被下载)</value>
+  </data>
 </root>
