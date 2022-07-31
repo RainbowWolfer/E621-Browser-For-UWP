@@ -68,6 +68,10 @@ namespace E621Downloader.Pages {
 				foreach(var item in MainGridView.Items.Cast<ImageHolderForSubscriptionPage>()) {
 					item.IsSelected = false;
 				}
+
+				SelectionActionsDropDown.Visibility = imagesSelecting ? Visibility.Visible : Visibility.Collapsed;
+				FindCommonTagsItem.IsEnabled = false;
+				AddSelectedToFavoritesItem.IsEnabled = false;
 			}
 		}
 
@@ -425,6 +429,7 @@ namespace E621Downloader.Pages {
 				FavoritesList found = FavoritesList.Table.Find(l => l.Name == CurrentListName);
 				if(found != null) {
 					found.Name = content.Input;
+					CurrentListName = found.Name;
 					FavoritesList.Save();
 					UpdateFavoritesTable();
 					UpdateTitleAndSetTag(content.Input);
@@ -521,6 +526,9 @@ namespace E621Downloader.Pages {
 			int selected = MainGridView.Items.Cast<ImageHolderForSubscriptionPage>().Count(i => i.IsSelected);
 			int all = MainGridView.Items.Count;
 			SelectionCountText.Text = $"{selected}/{all}";
+
+			FindCommonTagsItem.IsEnabled = selected >= 2;
+			AddSelectedToFavoritesItem.IsEnabled = selected > 0;
 		}
 
 		private CancellationTokenSource downloadCts;
@@ -574,7 +582,7 @@ namespace E621Downloader.Pages {
 				bool? result = await DownloadsManager.RegisterDownloads(downloadCts.Token, posts, title, selectedDownloadDialog.TodayDate, UpdateContentText);
 
 				if(result == true) {
-					ImagesSelecting = false;
+					//ImagesSelecting = false;
 					MainPage.CreateTip_SuccessDownload(this);
 				} else if(result == null) {
 					return;
@@ -666,6 +674,27 @@ namespace E621Downloader.Pages {
 
 		private void BackFirstButton_Click(object sender, RoutedEventArgs e) {
 			LoadFollowing(1);
+		}
+
+		private async void AddSelectedToFavoritesItem_Click(object sender, RoutedEventArgs e) {
+			var dialog = new ContentDialog() {
+				Title = "Local Favorite Lists".Language(),
+			};
+			var selected = MainGridView.Items.Cast<ImageHolderForSubscriptionPage>().Where(i => i.IsSelected);
+			var list = new PersonalFavoritesListForMultiple(dialog, PathType.PostID, selected.Select(i => i.PostRef));
+			dialog.Content = list;
+			await dialog.ShowAsync();
+			UpdateFavoritesTable();
+		}
+
+		private async void FindCommonTagsItem_Click(object sender, RoutedEventArgs e) {
+			var selected = MainGridView.Items.Cast<ImageHolderForSubscriptionPage>().Where(i => i.IsSelected);
+			IEnumerable<Post> posts = selected.Select(p => p.PostRef);
+			await new ContentDialog() {
+				Title = "Posts Common Tags".Language(),
+				Content = new PostsCommonTagsDialog(posts),
+				CloseButtonText = "Close".Language(),
+			}.ShowAsync();
 		}
 	}
 

@@ -8,6 +8,8 @@ namespace E621Downloader.Models.Locals {
 			await Local.WriteLocalSettings();
 		}
 
+		public int postsPerPage = 75;
+
 		public int randomTagMaxCount = 10000;
 
 		public int tabsOpenLength = 300;
@@ -87,6 +89,7 @@ namespace E621Downloader.Models.Locals {
 				librarSizeView_images = 100,
 				library_viewType_folders = ItemsGroupViewType.ListView,
 				enableDebugPanel = false,
+				postsPerPage = 75,
 			};
 		}
 	}

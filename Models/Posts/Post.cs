@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Networks;
+﻿using E621Downloader.Models.Locals;
+using E621Downloader.Models.Networks;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,13 @@ using System.Threading.Tasks;
 
 namespace E621Downloader.Models.Posts {
 	public class Post {
+		public static int GetPostsPerPage() => LocalSettings.Current?.postsPerPage ?? 75;
+
 		public static async Task<List<Post>> GetPostsByTagsAsync(CancellationToken? token, int page, params string[] tags) {
 			if(page <= 0) {
 				page = 1;
 			}
-			string url = $"https://{Data.GetHost()}/posts.json?page={page}&tags=";
+			string url = $"https://{Data.GetHost()}/posts.json?limit={GetPostsPerPage()}&page={page}&tags=";
 			tags.ToList().ForEach((t) => url += t + "+");
 			//CheckSafe(ref url);
 
@@ -31,7 +34,7 @@ namespace E621Downloader.Models.Posts {
 			if(page <= 0) {
 				throw new Exception("Page not valid");
 			}
-			string url = $"https://{Data.GetHost()}/posts.json?page={page}&tags=";
+			string url = $"https://{Data.GetHost()}/posts.json?limit={GetPostsPerPage()}&page={page}&tags=";
 			tags.ToList().ForEach(t => url += $"{(combine ? "~" : "")}{t}+");
 			//CheckSafe(ref url);
 

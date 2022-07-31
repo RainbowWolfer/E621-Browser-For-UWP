@@ -216,9 +216,6 @@
 	<data name="Search Tags" xml:space="preserve">
     <value>Search Tags</value>
   </data>
-	<data name="SelectToggleButton.Content" xml:space="preserve">
-    <value>Select</value>
-  </data>
 	<data name="Serving.Text" xml:space="preserve">
     <value>Serving</value>
   </data>
@@ -2070,6 +2067,12 @@
 	<data name="V1230L2.Text" xml:space="preserve">
     <value>- Some bugs fix &amp; changes</value>
   </data>
+	<data name="V1230L3.Text" xml:space="preserve">
+    <value>- You can now add multiple selections to favorites list and find common tags among posts while in selection mode in Home Page and Favorite Page</value>
+  </data>
+	<data name="V1230L4.Text" xml:space="preserve">
+    <value>- You can now define Posts Per Page in Settings Page</value>
+  </data>
 	<data name="ShowInfoDialogText.Text" xml:space="preserve">
     <value>Show Info Dialog</value>
   </data>
@@ -2090,5 +2093,35 @@
   </data>
 	<data name="SelectText.Text" xml:space="preserve">
     <value>Select</value>
+  </data>
+	<data name="AddSelectedToFavoritesText.Text" xml:space="preserve">
+    <value>Add Selected To Favorites</value>
+  </data>
+	<data name="FindCommonTagsText.Text" xml:space="preserve">
+    <value>Find Common Tags</value>
+  </data>
+	<data name="Posts Common Tags" xml:space="preserve">
+    <value>Posts Common Tags</value>
+  </data>
+	<data name="Local Favorite Lists" xml:space="preserve">
+    <value>Local Favorite Lists</value>
+  </data>
+	<data name="PostsPerPageText.Text" xml:space="preserve">
+    <value>Posts Per Page</value>
+  </data>
+	<data name="DebugToggle.OffContent" xml:space="preserve">
+    <value>Enable Debug Panel</value>
+  </data>
+	<data name="DebugToggle.OnContent" xml:space="preserve">
+    <value>Enable Debug Panel</value>
+  </data>
+	<data name="DEBUGText.Text" xml:space="preserve">
+    <value>DEBUG</value>
+  </data>
+	<data name="HTTPRequestHistoriesText.Text" xml:space="preserve">
+    <value>HTTP Request Histories</value>
+  </data>
+	<data name="HandledExceptionsText.Text" xml:space="preserve">
+    <value>Handled Exceptions</value>
   </data>
 </root>

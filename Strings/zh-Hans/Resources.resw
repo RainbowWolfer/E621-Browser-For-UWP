@@ -126,9 +126,6 @@
   <data name="RefreshButton.Content" xml:space="preserve">
     <value>刷新</value>
   </data>
-  <data name="SelectToggleButton.Content" xml:space="preserve">
-    <value>多选</value>
-  </data>
   <data name="AddFavoritesButton.Content" xml:space="preserve">
     <value>收藏</value>
   </data>
@@ -1185,7 +1182,7 @@
     <value>成功</value>
   </data>
   <data name="Are you sure to override current tags?" xml:space="preserve">
-    <value>您确定要覆盖当前标签吗？</value>
+    <value>你确定要覆盖当前标签吗？</value>
   </data>
   <data name="Post Count" xml:space="preserve">
     <value>推图数量</value>
@@ -1877,7 +1874,7 @@
     <value>- 许多bug修复与改动</value>
   </data>
   <data name="CycleListToggle.ToolTipService.ToolTip" xml:space="preserve">
-    <value>使您可以在到达最后一张图片时从第一张图片开始或从图片页面的最后一张到第一张</value>
+    <value>使你可以在到达最后一张图片时从第一张图片开始或从图片页面的最后一张到第一张</value>
   </data>
   <data name="ConcatTagToggle.ToolTipService.ToolTip" xml:space="preserve">
     <value>决定在图片页面中搜索单击的标签和当前标签或单击的标签本身</value>
@@ -1992,5 +1989,41 @@
   </data>
   <data name="SelectText.Text" xml:space="preserve">
     <value>多选</value>
+  </data>
+  <data name="AddSelectedToFavoritesText.Text" xml:space="preserve">
+    <value>添加选中至最爱</value>
+  </data>
+  <data name="FindCommonTagsText.Text" xml:space="preserve">
+    <value>寻找共同标签</value>
+  </data>
+  <data name="Posts Common Tags" xml:space="preserve">
+    <value>推图共同标签</value>
+  </data>
+  <data name="Local Favorite Lists" xml:space="preserve">
+    <value>本地最爱列表</value>
+  </data>
+  <data name="V1230L3.Text" xml:space="preserve">
+    <value>- 你现在可以在主页和收藏页面的选择模式下将多个选择添加到收藏夹列表以及在帖子中查找共同标签</value>
+  </data>
+  <data name="PostsPerPageText.Text" xml:space="preserve">
+    <value>每页推图数</value>
+  </data>
+  <data name="V1230L4.Text" xml:space="preserve">
+    <value>- 你现在可以在设置页面中定义每页推图数</value>
+  </data>
+  <data name="DebugToggle.OffContent" xml:space="preserve">
+    <value>开启调试面板</value>
+  </data>
+  <data name="DebugToggle.OnContent" xml:space="preserve">
+    <value>开启调试面板</value>
+  </data>
+  <data name="DEBUGText.Text" xml:space="preserve">
+    <value>调试</value>
+  </data>
+  <data name="HTTPRequestHistoriesText.Text" xml:space="preserve">
+    <value>HTTP 请求历史</value>
+  </data>
+  <data name="HandledExceptionsText.Text" xml:space="preserve">
+    <value>已处理的异常</value>
   </data>
 </root>

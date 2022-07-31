@@ -169,7 +169,7 @@ namespace E621Downloader.Models {
 					previewImage.ImageFailed += (s, e) => {
 						actions?.OnPreviewFailed?.Invoke();
 						LoadSample();
-						Debug.WriteLine(e.ErrorMessage);
+						ErrorHistories.Add(new Exception(e.ErrorMessage));
 					};
 					previewImage.ImageOpened += (s, e) => {
 						var bitmap = previewImage.Source as BitmapImage;
@@ -207,7 +207,7 @@ namespace E621Downloader.Models {
 					}
 					sampleImage.ImageFailed += (s, e) => {
 						actions?.OnSampleFailed?.Invoke();
-						Debug.WriteLine(e.ErrorMessage);
+						ErrorHistories.Add(new Exception(e.ErrorMessage));
 					};
 					sampleImage.ImageOpened += (s, e) => {
 						var bitmap = sampleImage.Source as BitmapImage;

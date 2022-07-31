@@ -4,6 +4,7 @@ using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
 using Windows.ApplicationModel;
@@ -29,7 +30,8 @@ namespace E621Downloader {
 		public static PostsList PostsList { get; private set; } = new PostsList();
 		public static BitmapImage DefaultAvatar { get; } = new BitmapImage(new Uri("ms-appx:///Assets/esix2.jpg"));
 
-		//public bool IsWindows11{ get; private set; }
+		public static ushort WindowsVersion => SystemInformation.Instance.OperatingSystemVersion.Build;
+		public static bool IsWindows11 => WindowsVersion > 22000;
 
 		public App() {
 			AppCenter.Start("{Your App Secret}", typeof(Crashes));
@@ -50,7 +52,6 @@ namespace E621Downloader {
 			}
 
 			//Crashes.GenerateTestCrash();
-			//IsWindows11 = SystemInformation.Instance.OperatingSystemVersion.Build >= 22000;
 			//SetJumpList();
 		}
 

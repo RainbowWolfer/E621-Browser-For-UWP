@@ -9,6 +9,9 @@ namespace E621Downloader.Models.Locals {
 		public static List<FavoritesList> Table { get; set; } = new List<FavoritesList>();
 
 		public static void Modify(List<string> newLists, List<string> containLists, string path, PathType type) {
+			if(string.IsNullOrWhiteSpace(path)) {
+				return;
+			}
 			foreach(string item in newLists) {
 				Table.Insert(0, new FavoritesList(item));
 			}

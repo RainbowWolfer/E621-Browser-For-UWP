@@ -18,7 +18,7 @@
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
 
-		<TextBlock d:Text="Title" Text="{x:Bind Group.Title}" HorizontalAlignment="Center" FontSize="24"/>
+		<TextBlock d:Text="Title" Text="{x:Bind Group.Title}" HorizontalAlignment="Center" FontSize="24" ToolTipService.ToolTip="{x:Bind Group.Title}"/>
 		<StackPanel Grid.Row="1" Margin="5">
 			<local:SimpleDownloadProgressBar x:Name="Bar1" Height="30" Width="300"/>
 			<local:SimpleDownloadProgressBar x:Name="Bar2" Height="30" Width="300"/>

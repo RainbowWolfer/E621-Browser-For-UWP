@@ -346,6 +346,9 @@
     <Compile Include="Views\PostsBrowserPaginator.xaml.cs">
       <DependentUpon>PostsBrowserPaginator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PostsCommonTagsDialog.xaml.cs">
+      <DependentUpon>PostsCommonTagsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PostsInfoListView.xaml.cs">
       <DependentUpon>PostsInfoListView.xaml</DependentUpon>
     </Compile>
@@ -715,6 +718,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PostsBrowserPaginator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PostsCommonTagsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

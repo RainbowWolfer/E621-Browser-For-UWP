@@ -26,6 +26,7 @@ namespace E621Downloader.Views.DownloadSection {
 
 			Bars.ForEach(b => b.SetParent(this));
 			foreach(DownloadInstance item in Group.downloads) {
+				//fail updating the final one
 				item.DedicatedDownloadingAction = (p) => {
 					UpdateCount();
 					if(IsAllCompleted()) {

@@ -461,7 +461,10 @@ namespace E621Downloader.Pages {
 		}
 
 		public void SelectFeedBack() {
-			SelectionCountTextBlock.Text = $"{GetSelectedImages().Count}/{CurrentTab?.Posts?.Count ?? 0}";
+			List<ImageHolder> selected = GetSelectedImages();
+			SelectionCountTextBlock.Text = $"{selected.Count}/{CurrentTab?.Posts?.Count ?? 0}";
+			FindCommonTagsItem.IsEnabled = selected.Count >= 2;
+			AddSelectedToFavoritesItem.IsEnabled = selected.Count > 0;
 		}
 
 		public void SetAllItemsSize(bool fixedHeight, double value) {
@@ -518,7 +521,9 @@ namespace E621Downloader.Pages {
 			if(!SelectToggleButton.IsChecked.Value) {
 				SelectToggleButton.IsChecked = true;
 			}
-			AddFavoritesButton.Visibility = Visibility.Collapsed;
+			FindCommonTagsItem.IsEnabled = false;
+			AddSelectedToFavoritesItem.IsEnabled = false;
+			SelectionActionsDropDown.Visibility = Visibility.Visible;
 		}
 
 		public void LeaveSelectionMode() {
@@ -539,7 +544,9 @@ namespace E621Downloader.Pages {
 			if(SelectToggleButton.IsChecked.Value) {
 				SelectToggleButton.IsChecked = false;
 			}
-			AddFavoritesButton.Visibility = Visibility.Collapsed;
+			FindCommonTagsItem.IsEnabled = false;
+			AddSelectedToFavoritesItem.IsEnabled = false;
+			SelectionActionsDropDown.Visibility = Visibility.Collapsed;
 		}
 
 		private async void RefreshButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -612,7 +619,7 @@ namespace E621Downloader.Pages {
 						bool? result = await DownloadsManager.RegisterDownloads(cts_download.Token, selected.Select(i => i.PostRef), tab.Tags, selectedDownloadDialog.TodayDate, UpdateContentText);
 						if(result == true) {
 							MainPage.CreateTip_SuccessDownload(this);
-							SelectToggleButton.IsChecked = false;
+							//SelectToggleButton.IsChecked = false;
 						} else if(result == null) {
 							return;
 						} else {
@@ -727,15 +734,6 @@ namespace E621Downloader.Pages {
 			LeaveSelectionMode();
 		}
 
-		private async void AddFavoritesButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			var dialog = new ContentDialog() {
-				Title = "Favorites".Language(),
-			};
-			var list = new PersonalFavoritesListForMultiple(dialog, PathType.PostID, GetSelectedImages().Select(i => i.PostRef));
-			dialog.Content = list;
-			await dialog.ShowAsync();
-		}
-
 		private void MySplitViewButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			MainSplitView.IsPaneOpen = !MainSplitView.IsPaneOpen;
 		}
@@ -817,6 +815,23 @@ namespace E621Downloader.Pages {
 			}
 		}
 
+		private async void AddSelectedToFavoritesItem_Click(object sender, RoutedEventArgs e) {
+			var dialog = new ContentDialog() {
+				Title = "Local Favorite Lists".Language(),
+			};
+			var list = new PersonalFavoritesListForMultiple(dialog, PathType.PostID, GetSelectedImages().Select(i => i.PostRef));
+			dialog.Content = list;
+			await dialog.ShowAsync();
+		}
+
+		private async void FindCommonTagsItem_Click(object sender, RoutedEventArgs e) {
+			IEnumerable<Post> posts = GetSelectedImages().Select(p => p.PostRef);
+			await new ContentDialog() {
+				Title = "Posts Common Tags".Language(),
+				Content = new PostsCommonTagsDialog(posts),
+				CloseButtonText = "Close".Language(),
+			}.ShowAsync();
+		}
 	}
 
 	public class PostsTab {

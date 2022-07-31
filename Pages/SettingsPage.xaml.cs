@@ -37,6 +37,8 @@ namespace E621Downloader.Pages {
 
 		private CoreCursor cursorBeforePointerEntered = null;
 
+		private bool hasInitialized = false;
+
 		public SettingsPage() {
 			this.InitializeComponent();
 			this.NavigationCacheMode = NavigationCacheMode.Required;
@@ -49,6 +51,10 @@ namespace E621Downloader.Pages {
 			AddPointerHelpEvent(MediaPlayToggle);
 			AddPointerHelpEvent(MediaAutoPlayToggle);
 			AddPointerHelpEvent(GifAutoPlayToggle);
+
+			WindowsVersionText.Text = $"{(App.IsWindows11 ? "Windows 11" : "Windows 10")} ({App.WindowsVersion})";
+
+			hasInitialized = true;
 		}
 
 		private void AddPointerHelpEvent(UIElement ui) {
@@ -547,5 +553,15 @@ namespace E621Downloader.Pages {
 			dialog.Resources["ContentDialogMaxWidth"] = 650;
 			await dialog.ShowAsync();
 		}
+
+		private void PostsPerPageSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
+			if(!hasInitialized) {
+				return;
+			}
+			PostsPerPageValueText.Text = $"{e.NewValue}";
+			LocalSettings.Current.postsPerPage = (int)e.NewValue;
+			DelayedSaveSetting();
+		}
+
 	}
 }

@@ -1,8 +1,9 @@
-﻿using E621Downloader.Models;
+﻿using E621Downloader.Models.Locals;
 using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 
@@ -10,14 +11,23 @@ namespace E621Downloader.Views {
 	public sealed partial class PersonalFavoritesListForMultiple: UserControl {
 		private ContentDialog dialog;
 		private readonly PathType type;
-		public ObservableCollection<CheckBoxClass> Paths = new();
+		private readonly IEnumerable<Post> posts;
+
+		private readonly ObservableCollection<FavoriteListCheckBoxClass> FavoriteLists = new();
+
 		public PersonalFavoritesListForMultiple(ContentDialog dialog, PathType type, IEnumerable<Post> posts) {
 			this.InitializeComponent();
 			this.dialog = dialog;
 			this.type = type;
-			foreach(Post post in posts) {
-				Paths.Add(new CheckBoxClass(post.id));
+			this.posts = posts;
+
+			foreach(FavoritesList item in FavoritesList.Table) {
+				FavoriteLists.Add(new FavoriteListCheckBoxClass(item));
 			}
+		}
+
+		private List<string> GetSelectedList() {
+			return FavoriteLists.Where(i => i.IsChecked).Select(i => i.Name).ToList();
 		}
 
 		private void BackButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -25,48 +35,31 @@ namespace E621Downloader.Views {
 		}
 
 		private void AcceptButton_Tapped(object sender, TappedRoutedEventArgs e) {
-
+			List<string> selected = GetSelectedList();
+			foreach(Post post in posts) {
+				FavoritesList.Modify(new(), selected, post.id, PathType.PostID);
+			}
 			dialog.Hide();
 		}
 
-		private void E621FavoriteButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			e.Handled = true;
-			E621FavoriteButton.IsEnabled = false;
-			FavoriteText.Text = "Pending".Language();
-			FavoriteIcon.Glyph = "\uE10C";
-
-			//if(E621FavoriteButton.IsChecked.Value) {
-			//	HttpResult<string> result = await Favorites.PostAsync(path);
-			//	if(result.Result == HttpResultType.Success) {
-			//		FavoriteText.Text = "E621 Favorited";
-			//		FavoriteIcon.Glyph = "\uEB52";
-			//	} else {
-			//		FavoriteText.Text = "E621 Favorite";
-			//		FavoriteIcon.Glyph = "\uEB51";
-			//		MainPage.CreateTip(MainGrid, result.StatusCode.ToString(), result.Helper, Symbol.Important, "OK");
-			//		E621FavoriteButton.IsChecked = false;
-			//	}
-			//} else {
-			//	HttpResult<string> result = await Favorites.DeleteAsync(path);
-			//	if(result.Result == HttpResultType.Success) {
-			//		FavoriteText.Text = "E621 Favorite";
-			//		FavoriteIcon.Glyph = "\uEB51";
-			//	} else {
-			//		FavoriteText.Text = "E621 Favorited";
-			//		FavoriteIcon.Glyph = "\uEB52";
-			//		MainPage.CreateTip(MainGrid, result.StatusCode.ToString(), result.Helper, Symbol.Important, "OK");
-			//		E621FavoriteButton.IsChecked = true;
-			//	}
+		private void ListView_ItemClick(object sender, ItemClickEventArgs e) {
+			///two way is not working
+			//if(e.ClickedItem is FavoriteListCheckBoxClass cc) {
+			//	cc.IsChecked = !cc.IsChecked;
 			//}
-			E621FavoriteButton.IsEnabled = true;
 		}
 	}
-	public class CheckBoxClass {
-		public string Content { get; set; }
-		public bool IsChecked { get; set; } = false;
 
-		public CheckBoxClass(string content) {
-			Content = content;
+	public class FavoriteListCheckBoxClass {
+		public bool IsChecked { get; set; } = false;
+		public string Name { get; set; }
+		public int Count { get; set; }
+
+		public string Text => $"{Name} - {Count}";
+
+		public FavoriteListCheckBoxClass(FavoritesList list) {
+			Name = list.Name;
+			Count = list.Items.Count;
 		}
 	}
 }

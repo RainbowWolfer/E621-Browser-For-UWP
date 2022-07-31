@@ -44,7 +44,7 @@
 								<TextBlock x:Uid="SelectionText" Text="Selection" Margin="10,0,0,0"/>
 							</StackPanel>
 						</ToggleButton>
-						<Button x:Name="DeleteButton" Grid.Column="1" Width="115" Visibility="Collapsed" Tapped="DeleteButton_Tapped" Margin="10,0,0,0">
+						<Button x:Name="DeleteButton" Grid.Column="1" Width="112" Visibility="Collapsed" Tapped="DeleteButton_Tapped" Margin="10,0,0,0">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE107;"/>
 								<TextBlock x:Uid="DeleteText" Text="Delete" Margin="10,0,0,0"/>
@@ -153,7 +153,7 @@
 								<TextBlock x:Uid="ManageText" Text="Manage" Margin="10,0,0,0"/>
 							</StackPanel>
 						</Button>
-						<views:LockableToggleButton x:Name="SelectionButton" FontSize="16" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.LeftOf="ManageButton" Margin="5,0,5,0" Click="SelectionButton_Click" LockToggle="True" CornerRadius="4" BorderBrush="Transparent" BorderThickness="0" Height="35">
+						<views:LockableToggleButton x:Name="SelectionButton" FontSize="16" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.LeftOf="SelectionActionsDropDown" Margin="5,0,5,0" Click="SelectionButton_Click" LockToggle="True" CornerRadius="4" BorderBrush="Transparent" BorderThickness="0" Height="35">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE14E;" FontSize="16"/>
 								<TextBlock x:Uid="SelectText" Text="Select" Margin="10,0,0,0"/>
@@ -166,6 +166,15 @@
 								<TextBlock x:Uid="DownloadText" Text="Download" Margin="10,0,0,0"/>
 							</StackPanel>
 						</Button>
+						<controls:DropDownButton x:Name="SelectionActionsDropDown" Margin="5,0,5,0" Visibility="Collapsed" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.LeftOf="ManageButton">
+							<FontIcon Glyph="&#xF156;"/>
+							<controls:DropDownButton.Flyout>
+								<MenuFlyout Placement="Bottom">
+									<MenuFlyoutItem x:Uid="AddSelectedToFavoritesText" x:Name="AddSelectedToFavoritesItem" Text="Add Selected To Favorites" Click="AddSelectedToFavoritesItem_Click"/>
+									<MenuFlyoutItem x:Uid="FindCommonTagsText" x:Name="FindCommonTagsItem" Text="Find Common Tags" Click="FindCommonTagsItem_Click"/>
+								</MenuFlyout>
+							</controls:DropDownButton.Flyout>
+						</controls:DropDownButton>
 					</RelativePanel>
 					<SplitView x:Name="SideSplitView" FlowDirection="RightToLeft" CornerRadius="0,15,15,0" Grid.Row="1">
 						<SplitView.Pane>

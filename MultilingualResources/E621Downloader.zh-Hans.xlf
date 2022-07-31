@@ -158,10 +158,6 @@
           <source>Refresh</source>
           <target state="final">刷新</target>
         </trans-unit>
-        <trans-unit id="SelectToggleButton.Content" translate="yes" xml:space="preserve">
-          <source>Select</source>
-          <target state="final">多选</target>
-        </trans-unit>
         <trans-unit id="AddFavoritesButton.Content" translate="yes" xml:space="preserve">
           <source>Favorites</source>
           <target state="final">收藏</target>
@@ -1575,7 +1571,7 @@ Warning! This action will override the tags existing in the cloud, do you want t
         </trans-unit>
         <trans-unit id="Are you sure to override current tags?" translate="yes" xml:space="preserve">
           <source>Are you sure to override current tags?</source>
-          <target state="final">您确定要覆盖当前标签吗？</target>
+          <target state="final">你确定要覆盖当前标签吗？</target>
         </trans-unit>
         <trans-unit id="Post Count" translate="yes" xml:space="preserve">
           <source>Post Count</source>
@@ -2500,7 +2496,7 @@ Would you like to get it set?</source>
         </trans-unit>
         <trans-unit id="CycleListToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Enable you to start from the first picture when you reach the last picture or from the last to the first in picture page</source>
-          <target state="final">使您可以在到达最后一张图片时从第一张图片开始或从图片页面的最后一张到第一张</target>
+          <target state="final">使你可以在到达最后一张图片时从第一张图片开始或从图片页面的最后一张到第一张</target>
         </trans-unit>
         <trans-unit id="ConcatTagToggle.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>Determine searching either clicked tag with the current tags or clicked tag itself in picture page</source>
@@ -2653,6 +2649,54 @@ Would you like to get it set?</source>
         <trans-unit id="SelectText.Text" translate="yes" xml:space="preserve">
           <source>Select</source>
           <target state="final">多选</target>
+        </trans-unit>
+        <trans-unit id="AddSelectedToFavoritesText.Text" translate="yes" xml:space="preserve">
+          <source>Add Selected To Favorites</source>
+          <target state="final">添加选中至最爱</target>
+        </trans-unit>
+        <trans-unit id="FindCommonTagsText.Text" translate="yes" xml:space="preserve">
+          <source>Find Common Tags</source>
+          <target state="final">寻找共同标签</target>
+        </trans-unit>
+        <trans-unit id="Posts Common Tags" translate="yes" xml:space="preserve">
+          <source>Posts Common Tags</source>
+          <target state="final">推图共同标签</target>
+        </trans-unit>
+        <trans-unit id="Local Favorite Lists" translate="yes" xml:space="preserve">
+          <source>Local Favorite Lists</source>
+          <target state="final">本地最爱列表</target>
+        </trans-unit>
+        <trans-unit id="V1230L3.Text" translate="yes" xml:space="preserve">
+          <source>- You can now add multiple selections to favorites list and find common tags among posts while in selection mode in Home Page and Favorite Page</source>
+          <target state="final">- 你现在可以在主页和收藏页面的选择模式下将多个选择添加到收藏夹列表以及在帖子中查找共同标签</target>
+        </trans-unit>
+        <trans-unit id="PostsPerPageText.Text" translate="yes" xml:space="preserve">
+          <source>Posts Per Page</source>
+          <target state="final">每页推图数</target>
+        </trans-unit>
+        <trans-unit id="V1230L4.Text" translate="yes" xml:space="preserve">
+          <source>- You can now define Posts Per Page in Settings Page</source>
+          <target state="final">- 你现在可以在设置页面中定义每页推图数</target>
+        </trans-unit>
+        <trans-unit id="DebugToggle.OffContent" translate="yes" xml:space="preserve">
+          <source>Enable Debug Panel</source>
+          <target state="final">开启调试面板</target>
+        </trans-unit>
+        <trans-unit id="DebugToggle.OnContent" translate="yes" xml:space="preserve">
+          <source>Enable Debug Panel</source>
+          <target state="final">开启调试面板</target>
+        </trans-unit>
+        <trans-unit id="DEBUGText.Text" translate="yes" xml:space="preserve">
+          <source>DEBUG</source>
+          <target state="final">调试</target>
+        </trans-unit>
+        <trans-unit id="HTTPRequestHistoriesText.Text" translate="yes" xml:space="preserve">
+          <source>HTTP Request Histories</source>
+          <target state="final">HTTP 请求历史</target>
+        </trans-unit>
+        <trans-unit id="HandledExceptionsText.Text" translate="yes" xml:space="preserve">
+          <source>Handled Exceptions</source>
+          <target state="final">已处理的异常</target>
         </trans-unit>
       </group>
     </body>

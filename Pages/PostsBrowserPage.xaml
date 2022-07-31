@@ -108,9 +108,22 @@
 					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
 						<Button x:Uid="RefreshButton" x:Name="RefreshButton" Content="Refresh" Margin="5" Tapped="RefreshButton_Tapped"/>
 						<Button x:Uid="DownloadButton" x:Name="DownloadButton" Content="Download" Margin="5" Tapped="DownloadButton_Tapped"/>
-						<ToggleButton x:Uid="SelectToggleButton" x:Name="SelectToggleButton" Content="Select" Checked="SelectToggleButton_Checked" Unchecked="SelectToggleButton_Unchecked" Margin="5"/>
-						<TextBlock x:Name="SelectionCountTextBlock" Text="2/75" VerticalAlignment="Center" Margin="5" FontSize="18" Visibility="Collapsed"/>
-						<Button x:Uid="AddFavoritesButton" x:Name="AddFavoritesButton" Content="Favorites" Margin="5" Tapped="AddFavoritesButton_Tapped" Visibility="Collapsed"/>
+						<ToggleButton x:Name="SelectToggleButton" Checked="SelectToggleButton_Checked" Unchecked="SelectToggleButton_Unchecked" Margin="5">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock x:Uid="SelectText" Text="Select"/>
+								<TextBlock x:Name="SelectionCountTextBlock" Text="0/75" VerticalAlignment="Center" Visibility="Collapsed" Margin="10,0,0,0"/>
+							</StackPanel>
+						</ToggleButton>
+						<controls:DropDownButton x:Name="SelectionActionsDropDown" Margin="10,0,0,0" Visibility="Collapsed">
+							<FontIcon Glyph="&#xF156;"/>
+							<controls:DropDownButton.Flyout>
+								<MenuFlyout Placement="Bottom">
+									<MenuFlyoutItem x:Uid="AddSelectedToFavoritesText" x:Name="AddSelectedToFavoritesItem" Text="Add Selected To Favorites" Click="AddSelectedToFavoritesItem_Click"/>
+									<MenuFlyoutItem x:Uid="FindCommonTagsText" x:Name="FindCommonTagsItem" Text="Find Common Tags" Click="FindCommonTagsItem_Click"/>
+								</MenuFlyout>
+							</controls:DropDownButton.Flyout>
+						</controls:DropDownButton>
+						<!--<Button x:Uid="AddFavoritesButton" x:Name="AddFavoritesButton" Content="Favorites" Margin="5" Tapped="AddFavoritesButton_Tapped" Visibility="Visible"/>-->
 					</StackPanel>
 					<Button x:Name="InfoButton" Tapped="InfoButton_Tapped" HorizontalAlignment="Left" Height="40" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" Margin="5">
 						<Button.Content>
