@@ -285,10 +285,6 @@ namespace E621Downloader.Models {
 			}
 		}
 
-		public static void AddToPoolsPool(this Dictionary<string, E621Pool> dic, params E621Pool[] pool) {
-			
-		}
-
 		public static async Task ComposeEmail(string subject, string messageBody) {
 			var emailMessage = new EmailMessage {
 				Subject = subject,
@@ -337,6 +333,19 @@ namespace E621Downloader.Models {
 			}
 
 			return null;
+		}
+
+		public static bool ContainMeta(this IEnumerable<string> array, string meta, out string value) {
+			value = null;
+			meta = meta.Trim().ToLower();
+			foreach(string item in array) {
+				string str = item.Trim().ToLower();
+				if(str.StartsWith(meta)) {
+					value = str.Substring(meta.Length);
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }

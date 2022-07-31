@@ -84,7 +84,7 @@ namespace E621Downloader.Views.ListingManager {
 			cts = null;
 		}
 
-		private async Task LoadImage() {
+		private async ValueTask LoadImage() {
 			Post post = await GetFirstPost(pool);
 			if(post == null || string.IsNullOrWhiteSpace(post.sample.url)) {
 				PreviewImage.Source = App.DefaultAvatar;
@@ -98,14 +98,17 @@ namespace E621Downloader.Views.ListingManager {
 			PreviewImage.Source = null;
 			CancelLoading();
 			cts = new CancellationTokenSource();
-			BitmapImage bit;
-			HttpResult<InMemoryRandomAccessStream> result = await Data.ReadImageStreamAsync(post.sample.url, cts.Token);
-			if(result.Result == HttpResultType.Success) {
-				bit = new BitmapImage();
-				await bit.SetSourceAsync(result.Content);
-				LoadPool.SetNew(post).Sample = bit;
-			} else {
-				bit = App.DefaultAvatar;
+			LoadPoolItem loader = LoadPool.SetNew(post);
+			BitmapImage bit = loader.Sample;
+			if(bit == null) {
+				HttpResult<InMemoryRandomAccessStream> result = await Data.ReadImageStreamAsync(post.sample.url, cts.Token);
+				if(result.Result == HttpResultType.Success) {
+					bit = new BitmapImage();
+					await bit.SetSourceAsync(result.Content);
+					loader.Sample = bit;
+				} else {
+					bit = App.DefaultAvatar;
+				}
 			}
 			PreviewImage.Source = bit;
 			LoadingBar.Visibility = Visibility.Collapsed;
@@ -152,7 +155,7 @@ namespace E621Downloader.Views.ListingManager {
 			Open();
 		}
 
-		private void Open(){
+		private void Open() {
 			if(Pool == null) {
 				return;
 			}

@@ -12,6 +12,11 @@ namespace E621Downloader.Views {
 		public event Action<bool, double> UpdateImagesLayout;
 		public ImagesSizeDialog() {
 			this.InitializeComponent();
+			Initialize();
+		}
+
+		public void Initialize(){
+			_loaded = false;
 			if(LocalSettings.Current.adaptiveGrid) {
 				AdaptiveHeightRadioButton.IsChecked = true;
 				AdaptiveHeightSlider.IsEnabled = true;

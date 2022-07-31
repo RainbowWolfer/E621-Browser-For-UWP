@@ -311,6 +311,7 @@
 							<controls:Expander Header="2022-07-31 (v1.2.3.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="5" IsExpanded="True">
 								<controls:Expander.Content>
 									<StackPanel>
+										<TextBlock x:Uid="V1230L5" Text="- Improve user experience Posts Pools" FontSize="22" TextWrapping="WrapWholeWords"/>
 										<TextBlock x:Uid="V1230L4" Text="- You can now define Posts Per Page in Settings Page" FontSize="22" TextWrapping="WrapWholeWords"/>
 										<TextBlock x:Uid="V1230L3" Text="- You can now add multiple selections to favorites list and find common tags among posts while in selection mode in Home Page and Favorite Page" FontSize="22" TextWrapping="WrapWholeWords"/>
 										<TextBlock x:Uid="V1230L1" Text="- Improve Favorite Page" FontSize="22" TextWrapping="WrapWholeWords"/>

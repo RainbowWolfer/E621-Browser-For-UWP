@@ -84,7 +84,7 @@
 							<TextBlock x:Uid="View Size 1" Text="View Size" Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center" FontSize="16"/>
 						</Grid>
 						<Button.Flyout>
-							<Flyout Placement="Right">
+							<Flyout x:Name="ImagesSizeDialogFlyout" Placement="Right" Opening="ImagesSizeDialogFlyout_Opening">
 								<localviews:ImagesSizeDialog x:Name="ImagesSizeDialog" UpdateImagesLayout="ImagesSizeDialog_UpdateImagesLayout"/>
 							</Flyout>
 						</Button.Flyout>

@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 namespace E621Downloader.Views {
 	public sealed partial class CurrentPoolInformation: UserControl {
 		public E621Pool Pool { get; private set; }
-		public string ID => $"#{Pool.id}";
+		public string ID => $"# {Pool.id}";
 		public string Description => string.IsNullOrWhiteSpace(Pool.description) ? "None".Language() : Pool.description;
 		private bool initializing = true;
 		public CurrentPoolInformation(E621Pool pool) {

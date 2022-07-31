@@ -107,16 +107,34 @@ namespace E621Downloader.Pages {
 			IsAdaptive = LocalSettings.Current.adaptiveGrid;
 		}
 
-		protected override void OnNavigatedTo(NavigationEventArgs e) {
+		protected override async void OnNavigatedTo(NavigationEventArgs e) {
 			base.OnNavigatedTo(e);
 			this.FocusModeUpdate();
 			if(e.Parameter is PostBrowserParameter parameter) {
-				this.parameter = (PostBrowserParameter)parameter.Clone();
-				ToTab(new PostsTab() {
-					Tags = parameter.Tags,
-					CurrentPage = parameter.Page,
-				});
-				//this.pool = null;
+				if(parameter.Tags.ContainMeta("pool:", out string value)) {
+					MainPage.CreateInstantDialog("Please Wait".Language(), "Loading Pool".Language());
+					E621Pool pool = await E621Pool.GetAsync(value);
+					MainPage.HideInstantDialog();
+					if(pool != null) {
+						this.parameter = new PostBrowserParameter(1, pool.Tag);
+						ToTab(new PostsTab() {
+							Pool = pool,
+						});
+					} else {
+						this.parameter = (PostBrowserParameter)parameter.Clone();
+						ToTab(new PostsTab() {
+							Tags = parameter.Tags,
+							CurrentPage = parameter.Page,
+						});
+					}
+				} else {
+					this.parameter = (PostBrowserParameter)parameter.Clone();
+					ToTab(new PostsTab() {
+						Tags = parameter.Tags,
+						CurrentPage = parameter.Page,
+					});
+					//this.pool = null;
+				}
 			} else if(e.Parameter is E621Pool pool) {
 				this.parameter = new PostBrowserParameter(1, pool.Tag);
 				ToTab(new PostsTab() {
@@ -160,6 +178,10 @@ namespace E621Downloader.Pages {
 			if(found == null) {
 				found = CreateMenuItem(tab);
 				TabsNavigationView.MenuItems.Add(found);
+			}
+			if(tab.Pool != null) {
+				Local.History.AddTag(tab.Pool.Tag);
+			} else {
 				Local.History.AddTag(tab.Tags);
 			}
 			NavigateToItem(found);
@@ -310,7 +332,11 @@ namespace E621Downloader.Pages {
 			string[] tags = tab.Pool == null ? tab.Tags : new string[1] { tab.Pool.Tag };
 			tags = tags.Where(t => !string.IsNullOrWhiteSpace(t)).ToArray();
 			UpdateInfoButton(tags);
-			MainPage.ChangeCurrentTags(tab.Tags);
+			if(tab.Pool != null) {
+				MainPage.ChangeCurrentTags(tab.Pool.Tag);
+			} else {
+				MainPage.ChangeCurrentTags(tab.Tags);
+			}
 
 			if(tags == null || tags.Length == 0) {
 				LoadingText.Text = "Loading Posts".Language();
@@ -831,6 +857,10 @@ namespace E621Downloader.Pages {
 				Content = new PostsCommonTagsDialog(posts),
 				CloseButtonText = "Close".Language(),
 			}.ShowAsync();
+		}
+
+		private void ImagesSizeDialogFlyout_Opening(object sender, object e) {
+			ImagesSizeDialog.Initialize();
 		}
 	}
 

@@ -2026,4 +2026,25 @@
   <data name="HandledExceptionsText.Text" xml:space="preserve">
     <value>已处理的异常</value>
   </data>
+  <data name="FollowPoolsText.Text" xml:space="preserve">
+    <value>关注推图池</value>
+  </data>
+  <data name="Following Pools" xml:space="preserve">
+    <value>已关注的推图池</value>
+  </data>
+  <data name="V1230L5.Text" xml:space="preserve">
+    <value>- 改进了推图池的使用体验</value>
+  </data>
+  <data name="PostsCountText.Text" xml:space="preserve">
+    <value>推图数量</value>
+  </data>
+  <data name="CreatedAtText.Text" xml:space="preserve">
+    <value>创建于</value>
+  </data>
+  <data name="UpdatedAtText.Text" xml:space="preserve">
+    <value>上传于</value>
+  </data>
+  <data name="CreatorText.Text" xml:space="preserve">
+    <value>创作者</value>
+  </data>
 </root>

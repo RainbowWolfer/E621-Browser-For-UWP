@@ -2700,11 +2700,31 @@ Would you like to get it set?</source>
         </trans-unit>
         <trans-unit id="FollowPoolsText.Text" translate="yes" xml:space="preserve">
           <source>Follow Pools</source>
-          <target state="new">Follow Pools</target>
+          <target state="final">关注推图池</target>
         </trans-unit>
         <trans-unit id="Following Pools" translate="yes" xml:space="preserve">
           <source>Following Pools</source>
-          <target state="new">Following Pools</target>
+          <target state="final">已关注的推图池</target>
+        </trans-unit>
+        <trans-unit id="V1230L5.Text" translate="yes" xml:space="preserve">
+          <source>- Improve user experience with Posts Pools</source>
+          <target state="final">- 改进了推图池的使用体验</target>
+        </trans-unit>
+        <trans-unit id="PostsCountText.Text" translate="yes" xml:space="preserve">
+          <source>Posts Count</source>
+          <target state="final">推图数量</target>
+        </trans-unit>
+        <trans-unit id="CreatedAtText.Text" translate="yes" xml:space="preserve">
+          <source>Created At</source>
+          <target state="final">创建于</target>
+        </trans-unit>
+        <trans-unit id="UpdatedAtText.Text" translate="yes" xml:space="preserve">
+          <source>Updated At</source>
+          <target state="final">上传于</target>
+        </trans-unit>
+        <trans-unit id="CreatorText.Text" translate="yes" xml:space="preserve">
+          <source>Creator</source>
+          <target state="final">创作者</target>
         </trans-unit>
       </group>
     </body>

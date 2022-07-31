@@ -287,6 +287,9 @@ namespace E621Downloader.Views {
 		}
 
 		private void ImageHolderForSubscriptionPage_RightTappedForFollowing(object sender, RightTappedRoutedEventArgs e) {
+			if(parent.ImagesSelecting) {
+				return;
+			}
 			MenuFlyout flyout = new();
 			flyout.Items.Add(Item_ManageFavorites);
 			flyout.Items.Add(Item_Download);

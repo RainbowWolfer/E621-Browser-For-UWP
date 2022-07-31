@@ -35,8 +35,8 @@
 			<FontIcon Glyph="&#xE10C;"/>
 			<Button.Flyout>
 				<MenuFlyout Placement="Bottom">
-					<MenuFlyoutItem x:Name="OpenItem" Text="Open" Icon="Forward" Click="OpenItem_Click" IsEnabled="False"/>
-					<MenuFlyoutItem x:Name="DeleteItem" Text="Delete" Icon="Delete" Click="DeleteItem_Click"/>
+					<MenuFlyoutItem x:Uid="OpenText" x:Name="OpenItem" Text="Open" Icon="Forward" Click="OpenItem_Click" IsEnabled="False"/>
+					<MenuFlyoutItem x:Uid="DeleteText" x:Name="DeleteItem" Text="Delete" Icon="Delete" Click="DeleteItem_Click"/>
 				</MenuFlyout>
 			</Button.Flyout>
 		</Button>
@@ -52,6 +52,7 @@
 					<Style x:Key="ContentText" TargetType="TextBlock">
 						<Setter Property="FontSize" Value="16"/>
 						<Setter Property="Grid.Column" Value="1"/>
+						<Setter Property="IsTextSelectionEnabled" Value="True"/>
 					</Style>
 				</Grid.Resources>
 				<Grid.ColumnDefinitions>
@@ -66,12 +67,12 @@
 					<RowDefinition Height="auto"/>
 					<RowDefinition Height="auto"/>
 				</Grid.RowDefinitions>
-				<TextBlock Text="Name" Style="{StaticResource TitleText}" Grid.Row="0"/>
-				<TextBlock Text="Created At" Style="{StaticResource TitleText}" Grid.Row="1"/>
-				<TextBlock Text="Updated At" Style="{StaticResource TitleText}" Grid.Row="2"/>
-				<TextBlock Text="Creator" Style="{StaticResource TitleText}" Grid.Row="3"/>
-				<TextBlock Text="Category" Style="{StaticResource TitleText}" Grid.Row="4"/>
-				<TextBlock Text="Description" Style="{StaticResource TitleText}" Grid.Row="5"/>
+				<TextBlock x:Uid="NameText" Text="Name" Style="{StaticResource TitleText}" Grid.Row="0"/>
+				<TextBlock x:Uid="CreatedAtText" Text="Created At" Style="{StaticResource TitleText}" Grid.Row="1"/>
+				<TextBlock x:Uid="UpdatedAtText" Text="Updated At" Style="{StaticResource TitleText}" Grid.Row="2"/>
+				<TextBlock x:Uid="CreatorText" Text="Creator" Style="{StaticResource TitleText}" Grid.Row="3"/>
+				<TextBlock x:Uid="CategoryText" Text="Category" Style="{StaticResource TitleText}" Grid.Row="4"/>
+				<TextBlock x:Uid="DescriptionText" Text="Description" Style="{StaticResource TitleText}" Grid.Row="5"/>
 
 				<TextBlock x:Name="NameText" Style="{StaticResource ContentText}" Grid.Row="0" TextWrapping="Wrap"/>
 				<TextBlock x:Name="CreatedText" Style="{StaticResource ContentText}" Grid.Row="1"/>

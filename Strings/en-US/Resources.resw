@@ -2073,6 +2073,9 @@
 	<data name="V1230L4.Text" xml:space="preserve">
     <value>- You can now define Posts Per Page in Settings Page</value>
   </data>
+	<data name="V1230L5.Text" xml:space="preserve">
+    <value>- Improve user experience with Posts Pools</value>
+  </data>
 	<data name="ShowInfoDialogText.Text" xml:space="preserve">
     <value>Show Info Dialog</value>
   </data>
@@ -2129,5 +2132,17 @@
   </data>
 	<data name="Following Pools" xml:space="preserve">
     <value>Following Pools</value>
+  </data>
+	<data name="PostsCountText.Text" xml:space="preserve">
+    <value>Posts Count</value>
+  </data>
+	<data name="CreatedAtText.Text" xml:space="preserve">
+    <value>Created At</value>
+  </data>
+	<data name="UpdatedAtText.Text" xml:space="preserve">
+    <value>Updated At</value>
+  </data>
+	<data name="CreatorText.Text" xml:space="preserve">
+    <value>Creator</value>
   </data>
 </root>
