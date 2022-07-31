@@ -2698,6 +2698,14 @@ Would you like to get it set?</source>
           <source>Handled Exceptions</source>
           <target state="final">已处理的异常</target>
         </trans-unit>
+        <trans-unit id="FollowPoolsText.Text" translate="yes" xml:space="preserve">
+          <source>Follow Pools</source>
+          <target state="new">Follow Pools</target>
+        </trans-unit>
+        <trans-unit id="Following Pools" translate="yes" xml:space="preserve">
+          <source>Following Pools</source>
+          <target state="new">Following Pools</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -14,10 +14,16 @@ namespace E621Downloader.Views {
 		public CurrentPoolInformation(E621Pool pool) {
 			this.InitializeComponent();
 			Pool = pool;
-			if(Local.Listing.CheckFollowingList(pool.Tag)) {
+			if(Local.Listing.CheckFollowPool(pool.id)) {
 				FollowButton.IsChecked = true;
+				UpdateFollowButton(true);
 			}
 			initializing = false;
+		}
+
+		private void UpdateFollowButton(bool on){
+			FollowText.Text = on ? "Following".Language() : "Follow".Language();
+			FollowIcon.Glyph = on ? "\uEB52" : "\uEB51";
 		}
 
 		private async void FollowButton_Click(object sender, RoutedEventArgs e) {
@@ -25,17 +31,14 @@ namespace E621Downloader.Views {
 				return;
 			}
 			bool isOn = (sender as ToggleButton).IsChecked.Value;
-			FollowText.Text = isOn ? "Following".Language() : "Follow".Language();
+			UpdateFollowButton(isOn);
 			if(isOn) {
-				if(!Local.Listing.CheckFollowingList(Pool.Tag)) {
-					await Local.Listing.AddFollowingList(Pool.Tag);
-				}
-				if(Local.Listing.CheckBlackList(Pool.Tag)) {
-					await Local.Listing.RemoveBlackList(Pool.Tag);
+				if(!Local.Listing.CheckFollowPool(Pool.id)) {
+					await Local.Listing.AddFollowPool(Pool.id);
 				}
 			} else {
-				if(Local.Listing.CheckFollowingList(Pool.Tag)) {
-					await Local.Listing.RemoveFollowingList(Pool.Tag);
+				if(Local.Listing.CheckFollowPool(Pool.id)) {
+					await Local.Listing.AddFollowPool(Pool.id);
 				}
 			}
 		}

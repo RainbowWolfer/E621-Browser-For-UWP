@@ -304,6 +304,12 @@
     <Compile Include="Views\LibrarySection\LibraryTitleBar.xaml.cs">
       <DependentUpon>LibraryTitleBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ListingManager\FollowingPoolsListItem.xaml.cs">
+      <DependentUpon>FollowingPoolsListItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ListingManager\FollowingPoolsManager.xaml.cs">
+      <DependentUpon>FollowingPoolsManager.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ListingToggleSplitButton.xaml.cs">
       <DependentUpon>ListingToggleSplitButton.xaml</DependentUpon>
     </Compile>
@@ -662,6 +668,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LibrarySection\LibraryTitleBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ListingManager\FollowingPoolsListItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ListingManager\FollowingPoolsManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

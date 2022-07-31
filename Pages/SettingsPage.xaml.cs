@@ -550,7 +550,8 @@ namespace E621Downloader.Pages {
 				Content = new HandledExceptionsView(),
 				CloseButtonText = "Close".Language(),
 			};
-			dialog.Resources["ContentDialogMaxWidth"] = 650;
+			dialog.Resources["ContentDialogMaxWidth"] = 1250;
+			dialog.Width = 1250;
 			await dialog.ShowAsync();
 		}
 
@@ -563,5 +564,15 @@ namespace E621Downloader.Pages {
 			DelayedSaveSetting();
 		}
 
+		private async void PoolButton_Click(object sender, RoutedEventArgs e) {
+			PoolButton.IsEnabled = false;
+			var dialog = new ContentDialog() {
+				Title = "Following Pools".Language(),
+				CloseButtonText = "Close".Language(),
+			};
+			dialog.Content = new FollowingPoolsManager(dialog);
+			await dialog.ShowAsync();
+			PoolButton.IsEnabled = true;
+		}
 	}
 }

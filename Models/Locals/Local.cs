@@ -339,7 +339,11 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public static async Task WriteLocalSettings() {
-			await FileIO.WriteTextAsync(LocalSettingsFile, JsonConvert.SerializeObject(LocalSettings.Current, Formatting.Indented));
+			try {
+				await FileIO.WriteTextAsync(LocalSettingsFile, JsonConvert.SerializeObject(LocalSettings.Current, Formatting.Indented));
+			} catch(Exception ex) {
+				ErrorHistories.Add(ex);
+			}
 		}
 
 		public static async Task ReadLocalSettings() {

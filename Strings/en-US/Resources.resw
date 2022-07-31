@@ -2124,4 +2124,10 @@
 	<data name="HandledExceptionsText.Text" xml:space="preserve">
     <value>Handled Exceptions</value>
   </data>
+	<data name="FollowPoolsText.Text" xml:space="preserve">
+    <value>Follow Pools</value>
+  </data>
+	<data name="Following Pools" xml:space="preserve">
+    <value>Following Pools</value>
+  </data>
 </root>

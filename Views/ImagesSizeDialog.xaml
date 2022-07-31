@@ -21,7 +21,7 @@
 		</Grid.ColumnDefinitions>
 		<RadioButton x:Uid="FixedHeightContent" x:Name="FixedHeightRadioButton" Grid.Row="0" Grid.Column="0" Content="Fixed Height" Checked="FixedHeightRadioButton_Checked" Unchecked="FixedHeightRadioButton_Checked" IsChecked="True"/>
 		<RadioButton x:Uid="AdaptiveHeightContent" x:Name="AdaptiveHeightRadioButton" Grid.Row="1" Grid.Column="0" Content="Adaptive Height" Checked="AdaptiveHeightRadioButton_Checked" Unchecked="AdaptiveHeightRadioButton_Checked"/>
-		<Slider x:Name="FixedHeightSlider" Grid.Row="0" Grid.Column="1" Margin="20,0,10,0" ValueChanged="FixedHeightSlider_ValueChanged" VerticalAlignment="Center" Minimum="200" Maximum="800" StepFrequency="40" Width="200"/>
-		<Slider x:Name="AdaptiveHeightSlider" Grid.Row="1" Grid.Column="1" Margin="20,0,10,0" ValueChanged="AdaptiveHeightSlider_ValueChanged" VerticalAlignment="Center" Minimum="0.2" Maximum="2" StepFrequency="0.1" Width="200"/>
+		<Slider x:Name="FixedHeightSlider" Grid.Row="0" Grid.Column="1" Margin="20,0,10,0" ValueChanged="FixedHeightSlider_ValueChanged" VerticalAlignment="Center" Minimum="200" Maximum="800" SmallChange="40" StepFrequency="40" Width="200"/>
+		<Slider x:Name="AdaptiveHeightSlider" Grid.Row="1" Grid.Column="1" Margin="20,0,10,0" ValueChanged="AdaptiveHeightSlider_ValueChanged" VerticalAlignment="Center" Minimum="0.2" Maximum="2" SmallChange="0.1" StepFrequency="0.1" Width="200"/>
 	</Grid>
 </UserControl>

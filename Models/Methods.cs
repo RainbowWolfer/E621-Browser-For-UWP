@@ -285,6 +285,10 @@ namespace E621Downloader.Models {
 			}
 		}
 
+		public static void AddToPoolsPool(this Dictionary<string, E621Pool> dic, params E621Pool[] pool) {
+			
+		}
+
 		public static async Task ComposeEmail(string subject, string messageBody) {
 			var emailMessage = new EmailMessage {
 				Subject = subject,

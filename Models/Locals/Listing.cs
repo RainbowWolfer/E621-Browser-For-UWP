@@ -11,8 +11,29 @@ namespace E621Downloader.Models.Locals {
 		public List<SingleListing> LocalFollowingLists { get; set; } = new List<SingleListing>();
 		public List<SingleListing> LocalBlackLists { get; set; } = new List<SingleListing>();
 
+		public List<int> FollowPoolsList { get; set; } = new List<int>();
+
 		public Listing() {
 
+		}
+
+		public bool CheckFollowPool(int poolID) {
+			return FollowPoolsList.Contains(poolID);
+		}
+
+		public async Task AddFollowPool(int poolID) {
+			if(FollowPoolsList.Contains(poolID)) {
+				FollowPoolsList.Remove(poolID);
+			}
+			FollowPoolsList.Insert(0, poolID);
+			await Local.WriteListing();
+		}
+
+		public async Task RemoveFollowPool(int poolID){
+			if(FollowPoolsList.Contains(poolID)) {
+				FollowPoolsList.Remove(poolID);
+			}
+			await Local.WriteListing();
 		}
 
 		public SingleListing GetGetDefaultFollowList() {

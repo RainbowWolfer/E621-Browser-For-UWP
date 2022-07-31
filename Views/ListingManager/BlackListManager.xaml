@@ -64,7 +64,7 @@
 							<FontIcon d:Glyph="&#xE123;" Glyph="{x:Bind Icon}" FontSize="20" VerticalAlignment="Center"/>
 							<TextBlock d:Text="Hello" Text="{x:Bind Name, Mode=OneWay}" Margin="10,0,20,0" FontSize="18" Grid.Column="1" VerticalAlignment="Center"/>
 							<TextBox Grid.Column="1" Margin="10,0,20,0" FontSize="18" VerticalAlignment="Center" Visibility="Collapsed" Tag="{x:Bind GetSelf()}"/>
-							<FontIcon Glyph="&#xECCC;" Grid.Column="2" Visibility="{x:Bind AccepctIconVisibility, Mode=OneWay}"/>
+							<FontIcon Glyph="&#xECCC;" Grid.Column="2" Visibility="{x:Bind AccepctIconVisibility, Mode=OneWay}" Foreground="{StaticResource SystemAccentColorLight1}"/>
 							<Grid Grid.ColumnSpan="3" Margin="0,10,0,-5" VerticalAlignment="Bottom" Visibility="{x:Bind CloudLoadingGridVisibility, Mode=OneWay}">
 								<controls:ProgressBar IsIndeterminate="True" Visibility="Collapsed" Loaded="ProgressBar_Loaded" Tag="{x:Bind Listing}"/>
 							</Grid>

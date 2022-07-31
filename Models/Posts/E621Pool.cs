@@ -15,6 +15,9 @@ namespace E621Downloader.Models.Posts {
 				return null;
 			}
 		}
+		public static async Task<E621Pool> GetAsync(int id, CancellationToken? token = null) {
+			return await GetAsync(id.ToString(), token);
+		}
 
 		public int id;
 		public string name;
@@ -29,7 +32,9 @@ namespace E621Downloader.Models.Posts {
 		public string creator_name;
 		public int post_count;
 
+		[JsonIgnore]
 		public string Tag => $"pool:{id}";
+		[JsonIgnore]
 		public string TagName => $"pool:{name}";
 	}
 }

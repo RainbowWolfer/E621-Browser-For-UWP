@@ -47,8 +47,8 @@
 			<StackPanel Orientation="Horizontal" Padding="10">
 				<Grid>
 					<Grid.RowDefinitions>
-						<RowDefinition Height="*"/>
-						<RowDefinition Height="1.2*"/>
+						<RowDefinition Height="1.1*"/>
+						<RowDefinition Height="1*"/>
 					</Grid.RowDefinitions>
 					<Grid Style="{StaticResource BorderGrid}">
 						<Grid.RowDefinitions>
@@ -68,6 +68,12 @@
 									<StackPanel Orientation="Horizontal">
 										<FontIcon Glyph="&#xE00A;"/>
 										<TextBlock x:Uid="FollowListText" Text="Follow List" FontSize="20" VerticalAlignment="Center" Margin="20,0,0,0"/>
+									</StackPanel>
+								</Button>
+								<Button x:Name="PoolButton" HorizontalAlignment="Center" Width="300" Margin="10" Click="PoolButton_Click">
+									<StackPanel Orientation="Horizontal">
+										<FontIcon Glyph="&#xE299;"/>
+										<TextBlock x:Uid="FollowPoolsText" Text="Follow Pools" FontSize="20" VerticalAlignment="Center" Margin="20,0,0,0"/>
 									</StackPanel>
 								</Button>
 							</StackPanel>
