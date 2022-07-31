@@ -5,19 +5,16 @@ using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
 using E621Downloader.Models.Posts;
-using E621Downloader.Models.Services;
 using E621Downloader.Views;
 using E621Downloader.Views.CommentsSection;
 using E621Downloader.Views.PictureSection;
 using Microsoft.Toolkit.Uwp.Helpers;
-using Microsoft.Toolkit.Uwp.UI.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Ports;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -37,7 +34,6 @@ using Windows.UI.Core;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
@@ -91,6 +87,9 @@ namespace E621Downloader.Pages {
 		public bool ShowListGrid {
 			get => showListGrid;
 			set {
+				if(isInControlsButtons) {
+					return;
+				}
 				showListGrid = value;
 				if(PhotosListManager.IsLocked) {
 					showListGrid = true;
@@ -218,7 +217,7 @@ namespace E621Downloader.Pages {
 					default:
 						throw new PathTypeException();
 				}
-			} else if(p is ILocalImage local) {
+			} else if(p is ILocalImage local && local.ImagePost != null) {
 				Loader = LoadPool.SetNew(local.ImagePost);
 				if(PostRef == local.ImagePost) {
 					return;
@@ -1143,12 +1142,15 @@ namespace E621Downloader.Pages {
 			MainSplitView.DisplayMode = SplitViewModeSwitch.IsOn ? SplitViewDisplayMode.Overlay : SplitViewDisplayMode.Inline;
 		}
 
+		private bool isInControlsButtons = false;
 		private void LeftButton_PointerEntered(object sender, PointerRoutedEventArgs e) {
 			(sender as Button).Opacity = 1;
+			isInControlsButtons = true;
 		}
 
 		private void LeftButton_PointerExited(object sender, PointerRoutedEventArgs e) {
 			(sender as Button).Opacity = 0.2;
+			isInControlsButtons = false;
 		}
 
 		private void LeftButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -1157,10 +1159,12 @@ namespace E621Downloader.Pages {
 
 		private void RightButton_PointerEntered(object sender, PointerRoutedEventArgs e) {
 			(sender as Button).Opacity = 1;
+			isInControlsButtons = true;
 		}
 
 		private void RightButton_PointerExited(object sender, PointerRoutedEventArgs e) {
 			(sender as Button).Opacity = 0.2;
+			isInControlsButtons = false;
 		}
 
 		private void RightButton_Tapped(object sender, TappedRoutedEventArgs e) {

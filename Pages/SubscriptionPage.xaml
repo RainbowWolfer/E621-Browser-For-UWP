@@ -27,12 +27,12 @@
 						<FontIcon Glyph="&#xE700;"/>
 					</Button>
 					<ToggleSwitch x:Uid="SplitViewModeSwitch" x:Name="SplitViewDisplayModeSwitch" HorizontalAlignment="Right" FlowDirection="RightToLeft" Margin="10,0,15,0" IsOn="False" OnContent="Overlay" OffContent="Inline" Toggled="SplitViewDisplayModeSwitch_Toggled"/>
-					<ToggleButton x:Name="FollowingButton" Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Height="40" IsChecked="True" FontSize="18" Tapped="FollowingButton_Tapped" Background="Transparent" BorderThickness="0" Margin="5">
+					<views:LockableToggleButton x:Name="FollowingButton" Grid.Row="1" HorizontalAlignment="Left" HorizontalContentAlignment="Left" Height="40" IsChecked="True" FontSize="18" Tapped="FollowingButton_Tapped" Background="Transparent" BorderThickness="0" Margin="5" LockToggle="True" CornerRadius="4" Width="285">
 						<StackPanel Orientation="Horizontal">
 							<FontIcon Glyph="&#xE1CF;"/>
 							<TextBlock x:Uid="Your Following" Text="Your Following" Margin="15,0,0,0"/>
 						</StackPanel>
-					</ToggleButton>
+					</views:LockableToggleButton>
 					<Grid Grid.Row="2" Height="40" Margin="55,5,10,0">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="*"/>
@@ -97,14 +97,14 @@
 					<Grid.RowDefinitions>
 						<RowDefinition Height="40"/>
 						<RowDefinition Height="*"/>
-						<RowDefinition Height="auto"/>
 					</Grid.RowDefinitions>
 					<RelativePanel x:Name="HeaderPanel">
 						<TextBlock x:Name="TitleText" Text="Hello World" FontSize="22" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,0,0,0"/>
+						<TextBlock x:Name="LoadCountText" Text="(2/17)" Margin="10,0,0,0" FontSize="20" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.RightOf="TitleText"/>
 						<Button x:Name="PostsInfoButton" FontSize="16" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="5,0,5,0" Click="PostsInfoButton_Click">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xEA40;" FontSize="16"/>
-								<TextBlock x:Uid="RefreshText" Text="Posts Info" Margin="10,0,0,0"/>
+								<TextBlock x:Uid="Posts Info" Text="Posts Info" Margin="10,0,0,0"/>
 							</StackPanel>
 						</Button>
 						<Button x:Name="RefreshContentButton" FontSize="16" RelativePanel.LeftOf="PostsInfoButton" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="RefreshContentButton_Tapped" Margin="5,0,5,0">
@@ -156,14 +156,14 @@
 						<views:LockableToggleButton x:Name="SelectionButton" FontSize="16" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.LeftOf="ManageButton" Margin="5,0,5,0" Click="SelectionButton_Click" LockToggle="True" CornerRadius="4" BorderBrush="Transparent" BorderThickness="0" Height="35">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE14E;" FontSize="16"/>
-								<TextBlock Text="Select" Margin="10,0,0,0"/>
+								<TextBlock x:Uid="SelectText" Text="Select" Margin="10,0,0,0"/>
 								<TextBlock x:Name="SelectionCountText" Text="0/75" Margin="10,0,0,0" Visibility="Collapsed"/>
 							</StackPanel>
 						</views:LockableToggleButton>
 						<Button x:Name="DownloadButton" FontSize="16" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.LeftOf="SelectionButton" Margin="5,0,5,0" Click="DownloadButton_Click" IsEnabled="False">
 							<StackPanel Orientation="Horizontal">
 								<FontIcon Glyph="&#xE118;" FontSize="16"/>
-								<TextBlock Text="Download" Margin="10,0,0,0"/>
+								<TextBlock x:Uid="DownloadText" Text="Download" Margin="10,0,0,0"/>
 							</StackPanel>
 						</Button>
 					</RelativePanel>
@@ -174,28 +174,38 @@
 							</Grid>
 						</SplitView.Pane>
 						<SplitView.Content>
-							<Grid>
-							
+							<Grid FlowDirection="LeftToRight">
+								<Grid.RowDefinitions>
+									<RowDefinition Height="*"/>
+									<RowDefinition Height="auto"/>
+								</Grid.RowDefinitions>
+								<controls:ProgressRing x:Name="LoadingRing" Grid.Row="0" MinHeight="150" MinWidth="150" Margin="50"/>
+								<Grid x:Name="FavoritesListHintText" Grid.Row="0">
+									<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+										<FontIcon Glyph="&#xF133;" FontSize="68" Margin="5"/>
+										<TextBlock x:Uid="Nothing is in this list Text" Text="Nothing is in this list" FontSize="20" Margin="5"/>
+									</StackPanel>
+								</Grid>
+								<GridView x:Name="MainGridView" Grid.Row="0" SelectionMode="None" IsItemClickEnabled="True" Padding="10"/>
+								<StackPanel x:Name="Paginator" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+									<Button x:Uid="BackToFirstToolTip" x:Name="BackFirstButton" Height="30" Margin="0,0,15,0" Width="50" ToolTipService.ToolTip="Back To First Page" Click="BackFirstButton_Click">
+										<FontIcon Glyph="&#xEA52;"/>
+									</Button>
+									<Button x:Name="LeftButton" Height="30" Width="50" Padding="0" Tapped="LeftButton_Tapped">
+										<FontIcon Glyph="&#xE09A;"/>
+									</Button>
+									<TextBlock x:Name="PageText" Text="1" VerticalAlignment="Center" Margin="20,0,20,0" FontSize="20"/>
+									<Button x:Name="RightButton" Height="30" Width="50" Tapped="RightButton_Tapped">
+										<FontIcon Glyph="&#xE09B;"/>
+									</Button>
+									<TextBox x:Uid="JumpToPagePlaceholder" x:Name="PageInputText" Margin="10,0,0,0" Width="150" PlaceholderText="Jump to page" KeyDown="PageInputText_KeyDown" CornerRadius="4,0,0,4" Height="30"/>
+									<Button x:Name="ForwardButton" Height="30" CornerRadius="0,4,4,0" Click="ForwardButton_Click">
+										<FontIcon Glyph="&#xE0AB;" FontSize="14"/>
+									</Button>
+								</StackPanel>
 							</Grid>
 						</SplitView.Content>
 					</SplitView>
-					<controls:ProgressRing x:Name="LoadingRing" Grid.Row="1" MinHeight="150" MinWidth="150" Margin="50"/>
-					<Grid x:Name="FavoritesListHintText" Grid.Row="1">
-						<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-							<FontIcon Glyph="&#xF133;" FontSize="68" Margin="5"/>
-							<TextBlock x:Uid="Nothing is in this list Text" Text="Nothing is in this list" FontSize="20" Margin="5"/>
-						</StackPanel>
-					</Grid>
-					<GridView x:Name="MainGridView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" Padding="10"/>
-					<StackPanel x:Name="Paginator" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-						<Button x:Name="LeftButton" Height="30" Width="50" Padding="0" Tapped="LeftButton_Tapped">
-							<FontIcon Glyph="&#xE09A;"/>
-						</Button>
-						<TextBlock x:Name="PageText" Text="1" VerticalAlignment="Center" Margin="20,0,20,0" FontSize="20"/>
-						<Button x:Name="RightButton" Height="30" Width="50" Tapped="RightButton_Tapped">
-							<FontIcon Glyph="&#xE09B;"/>
-						</Button>
-					</StackPanel>
 				</Grid>
 			</SplitView.Content>
 		</SplitView>

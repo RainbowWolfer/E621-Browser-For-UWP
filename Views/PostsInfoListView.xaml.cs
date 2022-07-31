@@ -1,22 +1,12 @@
-﻿using E621Downloader.Models.Posts;
-using E621Downloader.Models;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Windows.ApplicationModel.DataTransfer;
 
 namespace E621Downloader.Views {
 	public sealed partial class PostsInfoListView: UserControl {
@@ -31,8 +21,60 @@ namespace E621Downloader.Views {
 			poststInfolists.Clear();
 		}
 
-		public void UpdatePostsInfo() {
-			
+		public void SetEmpty() {
+			poststInfolists.Clear();
+			poststInfolists.Add(new PostsInfoList("Hot Tags (Top 20)".Language(), new List<PostInfoLine>()));
+		}
+
+		public void UpdatePostsInfo(IEnumerable<Post> posts) {
+			var allTags = new Dictionary<string, long>();
+			foreach(Post item in posts) {
+				foreach(string tag in item.tags.GetAllTags()) {
+					if(allTags.ContainsKey(tag)) {
+						allTags[tag]++;
+					} else {
+						allTags.Add(tag, 1);
+					}
+				}
+			}
+			var hotTags = allTags.OrderByDescending(o => o.Value).ToDictionary(x => x.Key, x => x.Value);
+			List<PostInfoLine> hots = new();
+			int count = 0;
+			foreach(KeyValuePair<string, long> item in hotTags) {
+				hots.Add(new PostInfoLine(item.Key, $"{item.Value}"));
+				if(count++ > 20) {
+					break;
+				}
+			}
+			poststInfolists.Add(new PostsInfoList("Hot Tags (Top 20)".Language(), hots));
+		}
+
+		public void UpdatePostsInfo(SubscriptionsPostsTab tab) {
+			List<PostInfoLine> deletes = new();
+			foreach(Post item in tab.Unsupported) {
+				deletes.Add(new PostInfoLine(item.id, "File type".Language() + $": {item.file.ext}"));
+			}
+
+			List<PostInfoLine> hots = new();
+			int count = 0;
+			foreach(KeyValuePair<string, long> item in tab.HotTags) {
+				hots.Add(new PostInfoLine(item.Key, $"{item.Value}"));
+				if(count++ > 20) {
+					break;
+				}
+			}
+
+			List<PostInfoLine> blacks = new();
+			foreach(KeyValuePair<string, long> item in tab.BlackTags) {
+				blacks.Add(new PostInfoLine(item.Key, $"{item.Value}"));
+			}
+
+			poststInfolists.Clear();
+			poststInfolists.Add(new PostsInfoList("Deleted Posts".Language(), deletes));
+			poststInfolists.Add(new PostsInfoList("Blacklist".Language(), blacks));
+			poststInfolists.Add(new PostsInfoList("Hot Tags (Top 20)".Language(), hots));
+
+			MyPostsInfoListView.SelectedIndex = 0;
 		}
 
 		public void UpdatePostsInfo(PostsTab tab) {

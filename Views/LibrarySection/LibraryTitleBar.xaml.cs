@@ -1,5 +1,4 @@
 ﻿using E621Downloader.Pages.LibrarySection;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using Windows.System;

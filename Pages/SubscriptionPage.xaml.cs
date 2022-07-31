@@ -8,13 +8,12 @@ using E621Downloader.Views.SubscriptionSection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
@@ -31,8 +30,6 @@ namespace E621Downloader.Pages {
 		private int previousIndex = -1;
 
 		private readonly ObservableCollection<FavoriteListViewItem> items = new();
-
-		private int currentFollowingPage = 1;
 
 		public LayoutType CurrentLayout { get; private set; }
 		public string CurrentListName { get; private set; }
@@ -76,16 +73,12 @@ namespace E621Downloader.Pages {
 
 		public List<FavoriteListViewItem> Selected => FavoritesListView.SelectedItems.Cast<FavoriteListViewItem>().ToList();
 
-		public int CurrentFollowingPage {
-			get => currentFollowingPage;
-			set {
-				currentFollowingPage = Math.Clamp(value, 1, 100);
-			}
-		}
-
 		public int Size { get; private set; } = 300;
 
 		public List<object> PostsList { get; } = new List<object>();
+
+		public SubscriptionsPostsTab FollowingTab { get; private set; } = null;
+		//public List<SubscriptionsPostsTab> FavoriteTabs { get; } = new();
 
 		public SubscriptionPage() {
 			Instance = this;
@@ -117,17 +110,23 @@ namespace E621Downloader.Pages {
 			FavoritesTableHintText.Visibility = items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 		}
 
-		private async void LoadFollowing(int page) {
+		private async void LoadFollowing(int page, bool refresh = false) {
+			if(CurrentLayout == LayoutType.Following && FollowingTab != null && !refresh && FollowingTab?.Page == page) {
+				return;
+			}
+			UpdateLoadCountText(true);
 			DownloadButton.IsEnabled = false;
 			ImagesSelecting = false;
+			MyPostsInfoListView.Clear();
 			if(page is <= 0 or >= 100) {
 				return;
 			}
 			UpdateTitleAndSetTag("Following".Language());
-			UpdatePage();
+			UpdatePage(page);
 			RefreshContentButton.IsEnabled = false;
 			SwitchLayout(LayoutType.Following);
 			FollowingButton.IsChecked = true;
+
 			if(cts != null) {
 				cts.Cancel();
 				cts.Dispose();
@@ -140,18 +139,31 @@ namespace E621Downloader.Pages {
 				LoadingRing.IsActive = false;
 				RefreshContentButton.IsEnabled = true;
 				FavoritesListHintText.Visibility = Visibility.Visible;
+				MyPostsInfoListView.SetEmpty();
 			} else {
-				List<Post> posts = await Post.GetPostsByTagsAsync(cts.Token, true, page, Local.Listing.GetGetDefaultFollowList().Tags.ToArray());
+				List<Post> posts;
+				if(FollowingTab != null && FollowingTab.Page == page && !refresh) {
+					posts = FollowingTab.Posts;
+				} else {
+					posts = await Post.GetPostsByTagsAsync(cts.Token, true, page, Local.Listing.GetGetDefaultFollowList().Tags.ToArray());
+					FollowingTab = new SubscriptionsPostsTab() {
+						Page = page,
+					};
+				}
 				if(posts == null) {
 					return;
 				}
+				FollowingTab.Posts = posts;
+				posts = FollowingTab.PostsAfterBlasklist;
+				MyPostsInfoListView.UpdatePostsInfo(FollowingTab);
 				if(posts != null && cts != null && CurrentLayout == LayoutType.Following) {
 					PostsList.Clear();
 					PostsList.AddRange(posts);
 					foreach(Post post in posts) {
-						var image = new ImageHolderForSubscriptionPage(this) {
+						ImageHolderForSubscriptionPage image = new(this) {
 							Height = Size,
 							Width = Size,
+							OnLoaded = () => UpdateLoadCountText(),
 						};
 						image.LoadFromPost(post, Local.Listing.GetGetDefaultFollowList().Tags.ToArray());
 						MainGridView.Items.Add(image);
@@ -165,8 +177,10 @@ namespace E621Downloader.Pages {
 		}
 
 		private void LoadFavorites(string listName) {
+			UpdateLoadCountText(true);
 			DownloadButton.IsEnabled = false;
 			ImagesSelecting = false;
+			MyPostsInfoListView.Clear();
 			if(string.IsNullOrWhiteSpace(listName)) {
 				return;
 			}
@@ -184,24 +198,30 @@ namespace E621Downloader.Pages {
 			LoadingRing.IsActive = true;
 			FavoritesList list = FavoritesList.Table.Find(l => l.Name == listName);
 			PostsList.Clear();
+			MyPostsInfoListView.Clear();
+			if(list == null || list.Items.Count == 0) {
+				MyPostsInfoListView.SetEmpty();
+			}
 			if(list != null && cts != null && CurrentLayout == LayoutType.Favorites) {
 				MainGridView.Items.Clear();
 				foreach(FavoriteItem item in list.Items) {
-					var image = new ImageHolderForSubscriptionPage(this, listName) {
+					ImageHolderForSubscriptionPage image = new(this, listName) {
 						Height = Size,
 						Width = Size,
 					};
 					var mix = new MixPost(item.Type, item.Path);
 					if(item.Type == PathType.Local) {
-						image.LoadFromLocal(mix, cts.Token);
+						image.LoadFromLocal(mix, cts.Token, UpdatePostsInfoInFavorites);
 					} else if(item.Type == PathType.PostID) {
-						image.LoadFromPostID(mix, cts.Token);
+						image.LoadFromPostID(mix, cts.Token, UpdatePostsInfoInFavorites);
 					} else {
 						throw new PathTypeException();
 					}
 					PostsList.Add(mix);
 					MainGridView.Items.Add(image);
 				}
+				UpdateLoadCountText(PostsList.Count);
+				//MyPostsInfoListView.UpdateLayout(list.Items.Select(i=>i.));
 			}
 			LoadingRing.IsActive = false;
 			FavoritesListHintText.Visibility = list.Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -209,10 +229,16 @@ namespace E621Downloader.Pages {
 			DownloadButton.IsEnabled = PostsList.Count > 0;
 		}
 
+		private void UpdatePostsInfoInFavorites(Post post) {
+			IEnumerable<Post> posts = PostsList.Where(p => p is MixPost mix).Cast<MixPost>().Select(x => x.PostRef).Where(x => x != null);
+			posts = posts.Append(post);
+			MyPostsInfoListView.UpdatePostsInfo(posts);
+		}
+
 		public void Refresh() {
 			switch(CurrentLayout) {
 				case LayoutType.Following:
-					LoadFollowing(1);
+					LoadFollowing(1, true);
 					break;
 				case LayoutType.Favorites:
 					LoadFavorites(CurrentListName);
@@ -232,6 +258,7 @@ namespace E621Downloader.Pages {
 			CurrentLayout = type;
 			switch(type) {
 				case LayoutType.Following:
+					FollowingButton.IsChecked = true;
 					FavoritesListHintText.Visibility = Visibility.Collapsed;
 					ManageButton.Visibility = Visibility.Visible;
 					SortDropDown.Visibility = Visibility.Collapsed;
@@ -240,6 +267,7 @@ namespace E621Downloader.Pages {
 					Paginator.Visibility = Visibility.Visible;
 					break;
 				case LayoutType.Favorites:
+					FollowingButton.IsChecked = false;
 					ManageButton.Visibility = Visibility.Collapsed;
 					SortDropDown.Visibility = Visibility.Collapsed;//work on this later
 					RenameButton.Visibility = Visibility.Visible;
@@ -264,7 +292,7 @@ namespace E621Downloader.Pages {
 			e.Handled = true;
 			FavoritesListView.SelectedIndex = -1;
 			FollowingButton.IsChecked = true;
-			LoadFollowing(CurrentFollowingPage);
+			LoadFollowing(FollowingTab?.Page ?? 1);
 		}
 
 		private void SelectionToggleButton_Click(object sender, RoutedEventArgs e) {
@@ -317,7 +345,7 @@ namespace E621Downloader.Pages {
 			IsSelecting = false;
 			ImagesSelecting = false;
 			SelectionToggleButton.IsChecked = false;
-			UpdateFavoritesTable();
+			UpdateFavoritesTable(false);
 		}
 
 		private void FavoritesListView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -349,6 +377,7 @@ namespace E621Downloader.Pages {
 				item.Width = 45;
 				item.MinWidth = 0;
 			}
+			FollowingButton.Width = 40;
 		}
 
 		private void MainSplitView_PaneOpening(SplitView sender, object args) {
@@ -359,6 +388,7 @@ namespace E621Downloader.Pages {
 				ListViewItem item = (ListViewItem)FavoritesListView.ContainerFromIndex(i);
 				item.Width = 290;
 			}
+			FollowingButton.Width = 285;
 		}
 
 		private void RefreshContentButton_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -408,15 +438,19 @@ namespace E621Downloader.Pages {
 		}
 
 		private void LeftButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			LoadFollowing(--CurrentFollowingPage);
+			if(FollowingTab != null) {
+				LoadFollowing(FollowingTab.Page - 1);
+			}
 		}
 
 		private void RightButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			LoadFollowing(++CurrentFollowingPage);
+			if(FollowingTab != null) {
+				LoadFollowing(FollowingTab.Page + 1);
+			}
 		}
 
-		private void UpdatePage() {
-			PageText.Text = $"{CurrentFollowingPage}";
+		private void UpdatePage(int page) {
+			PageText.Text = $"{page}";
 		}
 
 		private void ResizeBar_OnSizeChanged(int value, bool save) {
@@ -448,6 +482,20 @@ namespace E621Downloader.Pages {
 				await Task.Delay(500, saveCTS.Token);
 				await Local.WriteLocalSettings();
 			} catch(OperationCanceledException) { }
+		}
+
+		private void UpdateLoadCountText(bool start = false) {
+			if(start) {
+				LoadCountText.Text = $"(0/{PostsList.Count})";
+			} else {
+				int loaded = MainGridView.Items.Cast<ImageHolderForSubscriptionPage>().Count(i => i.IsImageLoaded);
+				int all = PostsList.Count;
+				LoadCountText.Text = $"({loaded}/{all})";
+			}
+		}
+
+		private void UpdateLoadCountText(int count) {
+			LoadCountText.Text = $"({count})";
 		}
 
 		void IPage.UpdateNavigationItem() {
@@ -526,6 +574,7 @@ namespace E621Downloader.Pages {
 				bool? result = await DownloadsManager.RegisterDownloads(downloadCts.Token, posts, title, selectedDownloadDialog.TodayDate, UpdateContentText);
 
 				if(result == true) {
+					ImagesSelecting = false;
 					MainPage.CreateTip_SuccessDownload(this);
 				} else if(result == null) {
 					return;
@@ -584,6 +633,40 @@ namespace E621Downloader.Pages {
 		private void PostsInfoButton_Click(object sender, RoutedEventArgs e) {
 			SideSplitView.IsPaneOpen = true;
 		}
+
+		private async void PageInputText_KeyDown(object sender, KeyRoutedEventArgs e) {
+			if(e.Key == MainPage.SEARCH_KEY) {
+				MainPage.Instance.DelayInputKeyListener();
+			}
+			if(e.Key == VirtualKey.Enter) {
+				await Forward(PageInputText.Text);
+				PageInputText.Text = "";
+			} else if(e.Key == VirtualKey.Escape) {
+				PageInputText.Text = "";
+			}
+		}
+
+		private async Task Forward(string text) {
+			const int MAX_PAGE = 75;
+			if(int.TryParse(text, out int page)) {
+				if(page < 1 || page > MAX_PAGE) {
+					await MainPage.CreatePopupDialog("Error".Language(), "({{0}}) can only be in 1-{{1}}".Language(page, MAX_PAGE));
+				} else {
+					LoadFollowing(page);
+				}
+			} else {
+				await MainPage.CreatePopupDialog("Error".Language(), "({{0}}) is not a valid number".Language(text));
+			}
+		}
+
+		private async void ForwardButton_Click(object sender, RoutedEventArgs e) {
+			await Forward(PageInputText.Text);
+			PageInputText.Text = "";
+		}
+
+		private void BackFirstButton_Click(object sender, RoutedEventArgs e) {
+			LoadFollowing(1);
+		}
 	}
 
 	public class FavoriteListViewItem {
@@ -598,14 +681,54 @@ namespace E621Downloader.Pages {
 	}
 
 	public class SubscriptionsPostsTab {
-		public SubscriptionPage.LayoutType Layout { get; set; }
-		public List<Post> Posts { get; set; }
-		public List<Post> PostsAfterBlasklist { get; set; } = new();
-		public int LoadedCount { get; set; } = 0;
-		public List<Post> Unsupported { get; set; } = new();
-		public Dictionary<string, long> BlackTags { get; set; } = new();
-		public Dictionary<string, long> AllTags { get; set; } = new();
-		public Dictionary<string, long> HotTags { get; set; } = new();
+		private List<Post> posts;
+
+		//public SubscriptionPage.LayoutType Layout { get; set; }
+		public List<Post> Posts {
+			get => posts;
+			set {
+				posts = value;
+				AllTags.Clear();
+				Unsupported.Clear();
+				BlackTags.Clear();
+				HotTags.Clear();
+				foreach(Post item in posts) {
+					if(PostsBrowserPage.IgnoreTypes.Contains(item.file.ext)) {
+						Unsupported.Add(item);
+					}
+				}
+				posts.RemoveAll(p => PostsBrowserPage.IgnoreTypes.Contains(p.file.ext));
+				App.PostsPool.AddToPostsPool(posts);
+				PostsAfterBlasklist = PostsBrowserPage.FilterBlacklist(posts, tag => {
+					if(BlackTags.ContainsKey(tag)) {
+						BlackTags[tag]++;
+					} else {
+						BlackTags.Add(tag, 1);
+					}
+				});
+
+				BlackTags = BlackTags.OrderByDescending(t => t.Value).ToDictionary(x => x.Key, x => x.Value);
+				foreach(Post item in posts) {
+					foreach(string tag in item.tags.GetAllTags()) {
+						if(AllTags.ContainsKey(tag)) {
+							AllTags[tag]++;
+						} else {
+							AllTags.Add(tag, 1);
+						}
+					}
+				}
+				HotTags = AllTags.OrderByDescending(o => o.Value).ToDictionary(x => x.Key, x => x.Value);
+			}
+		}
+
+		public List<Post> PostsAfterBlasklist { get; private set; } = new();
+		public List<Post> Unsupported { get; private set; } = new();
+		public Dictionary<string, long> BlackTags { get; private set; } = new();
+		public Dictionary<string, long> AllTags { get; private set; } = new();
+		public Dictionary<string, long> HotTags { get; private set; } = new();
+
+		public int Page { get; set; }
+
 		public SubscriptionsPostsTab() {
 
 		}

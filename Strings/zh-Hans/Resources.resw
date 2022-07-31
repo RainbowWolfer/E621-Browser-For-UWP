@@ -1979,12 +1979,18 @@
     <value>- 一些Bug修复与改动</value>
   </data>
   <data name="V1230L1.Text" xml:space="preserve">
-    <value>- 修复了一些在最爱页面的Bug</value>
+    <value>- 改进最爱页面</value>
   </data>
   <data name="Do you want to download current page.Text" xml:space="preserve">
     <value>你确定要下载当前页吗</value>
   </data>
   <data name="({{0}} local posts will not be downloaded)" xml:space="preserve">
     <value>({{0}} 个本地推图不会被下载)</value>
+  </data>
+  <data name="BackToFirstToolTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>返回第一页</value>
+  </data>
+  <data name="SelectText.Text" xml:space="preserve">
+    <value>多选</value>
   </data>
 </root>

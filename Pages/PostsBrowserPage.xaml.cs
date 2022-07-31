@@ -6,7 +6,6 @@ using E621Downloader.Models.Posts;
 using E621Downloader.Views;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
@@ -64,7 +63,7 @@ namespace E621Downloader.Pages {
 		public bool MultipleSelectionMode { get; private set; }
 		private bool IsAdaptive { get; set; }
 
-		private readonly string[] ignoreTypes = { "swf", };
+		public static string[] IgnoreTypes => new string[] { "swf", };
 
 		private PostBrowserParameter parameter;
 
@@ -328,11 +327,11 @@ namespace E621Downloader.Pages {
 
 			tab.Unsupported = new List<Post>();
 			foreach(Post item in posts) {
-				if(ignoreTypes.Contains(item.file.ext)) {
+				if(IgnoreTypes.Contains(item.file.ext)) {
 					tab.Unsupported.Add(item);
 				}
 			}
-			posts.RemoveAll(p => ignoreTypes.Contains(p.file.ext));
+			posts.RemoveAll(p => IgnoreTypes.Contains(p.file.ext));
 
 			tab.Posts = posts;
 			App.PostsPool.AddToPostsPool(posts);
@@ -372,7 +371,7 @@ namespace E621Downloader.Pages {
 			await LoadAsync(selected, true);
 		}
 
-		private List<Post> FilterBlacklist(List<Post> posts, Action<string> onBlacklistTagFound = null) {
+		public static List<Post> FilterBlacklist(List<Post> posts, Action<string> onBlacklistTagFound = null) {
 			List<Post> afterBlacklisted = new();
 			foreach(Post post in posts) {
 				bool foundInBlackList = false;

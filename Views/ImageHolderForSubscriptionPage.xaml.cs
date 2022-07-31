@@ -6,7 +6,6 @@ using E621Downloader.Models.Posts;
 using E621Downloader.Pages;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -29,13 +28,16 @@ namespace E621Downloader.Views {
 
 		private readonly ProgressLoader progress;
 
+		public Action OnLoaded { get; set; }
+		public bool IsImageLoaded { get; private set; } = false;//preview on cloud load & thumbnail on local load
+
 		public bool IsLocal => type == PathType.Local;
 
 		public bool IsSelected {
 			get => isSelected;
 			set {
 				isSelected = value;
-				MainGrid.BorderThickness = new Thickness(IsSelected ? 1.5d : 0);
+				MainGrid.BorderThickness = new Thickness(IsSelected ? 3d : 0);
 				parent.UpdateSelectedCountText();
 			}
 		}
@@ -104,7 +106,7 @@ namespace E621Downloader.Views {
 		}
 
 		//used in favorite layout
-		public async void LoadFromPostID(MixPost mix, CancellationToken? token = null) {
+		public async void LoadFromPostID(MixPost mix, CancellationToken? token = null, Action<Post> onPostLoaded = null) {
 			LoadingRing.IsActive = true;
 			if(App.PostsPool.TryGetValue(mix.ID, out Post post)) {
 				this.PostRef = post;
@@ -121,6 +123,7 @@ namespace E621Downloader.Views {
 				progress.Value = null;
 				return;
 			}
+			onPostLoaded?.Invoke(this.PostRef);
 			string url = this.PostRef.sample.url ?? this.PostRef.preview.url;
 			if(string.IsNullOrWhiteSpace(url)) {
 				HintText.Visibility = Visibility.Visible;
@@ -155,7 +158,7 @@ namespace E621Downloader.Views {
 		}
 
 		//used in favorite layout
-		public async void LoadFromLocal(MixPost mix, CancellationToken? token = null) {
+		public async void LoadFromLocal(MixPost mix, CancellationToken? token = null, Action<Post> onPostLoaded = null) {
 			LocalBorder.Visibility = Visibility.Visible;
 			(StorageFile file, MetaFile meta) = await Local.GetDownloadFile(mix.LocalPath);
 			if(file == null || meta == null) {
@@ -167,6 +170,7 @@ namespace E621Downloader.Views {
 			}
 			mix.ImageFile = file;
 			mix.MetaFile = meta;
+			onPostLoaded?.Invoke(meta.MyPost);
 			BitmapImage bitmap = new();
 			ThumbnailMode mode = ThumbnailMode.SingleItem;
 			if(new string[] { ".webm" }.Contains(file?.FileType)) {
@@ -179,7 +183,9 @@ namespace E621Downloader.Views {
 			using StorageItemThumbnail thumbnail = await file?.GetThumbnailAsync(mode);
 			if(thumbnail != null) {
 				using Stream stream = thumbnail.AsStreamForRead();
-				bitmap.SetSource(stream.AsRandomAccessStream());
+				await bitmap.SetSourceAsync(stream.AsRandomAccessStream());
+				IsImageLoaded = true;
+				OnLoaded?.Invoke();
 			}
 
 			MyImage.Visibility = Visibility.Visible;
@@ -228,9 +234,13 @@ namespace E621Downloader.Views {
 				},
 				OnPreviewExists = () => {
 					progress.Value = null;
+					IsImageLoaded = true;
+					OnLoaded?.Invoke();
 				},
 				OnPreviewOpened = b => {
 					progress.Value = null;
+					IsImageLoaded = true;
+					OnLoaded?.Invoke();
 				},
 				OnPreviewFailed = () => {
 					progress.Value = 0;

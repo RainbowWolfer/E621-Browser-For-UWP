@@ -2635,8 +2635,8 @@ Would you like to get it set?</source>
           <target state="final">- 一些Bug修复与改动</target>
         </trans-unit>
         <trans-unit id="V1230L1.Text" translate="yes" xml:space="preserve">
-          <source>- Fix some bugs in Favorite Page</source>
-          <target state="final">- 修复了一些在最爱页面的Bug</target>
+          <source>- Improve Favorite Page</source>
+          <target state="final">- 改进最爱页面</target>
         </trans-unit>
         <trans-unit id="Do you want to download current page.Text" translate="yes" xml:space="preserve">
           <source>Do you want to download current page</source>
@@ -2645,6 +2645,14 @@ Would you like to get it set?</source>
         <trans-unit id="({{0}} local posts will not be downloaded)" translate="yes" xml:space="preserve">
           <source>({{0}} local posts will not be downloaded)</source>
           <target state="final">({{0}} 个本地推图不会被下载)</target>
+        </trans-unit>
+        <trans-unit id="BackToFirstToolTip.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Back To First Page</source>
+          <target state="final">返回第一页</target>
+        </trans-unit>
+        <trans-unit id="SelectText.Text" translate="yes" xml:space="preserve">
+          <source>Select</source>
+          <target state="final">多选</target>
         </trans-unit>
       </group>
     </body>

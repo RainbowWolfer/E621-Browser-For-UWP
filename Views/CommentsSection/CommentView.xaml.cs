@@ -94,7 +94,7 @@ namespace E621Downloader.Views.CommentsSection {
 							previewOrSample = true;
 						}
 					}
-				} catch (Exception ex) {
+				} catch(Exception ex) {
 					ErrorHistories.Add(ex);
 					return;
 				}
@@ -117,7 +117,7 @@ namespace E621Downloader.Views.CommentsSection {
 						bit = App.DefaultAvatar;
 						ToolTipService.SetToolTip(Avatar, "Avatar Load Fail".Language() + $"\n{result.Helper}");
 					}
-				} catch (Exception ex) {
+				} catch(Exception ex) {
 					ErrorHistories.Add(ex);
 					return;
 				}

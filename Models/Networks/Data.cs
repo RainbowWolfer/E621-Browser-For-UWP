@@ -3,14 +3,12 @@ using E621Downloader.Models.Locals;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
-using Windows.System;
 
 namespace E621Downloader.Models.Networks {
 	public static class Data {
