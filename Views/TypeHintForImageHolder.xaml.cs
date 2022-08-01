@@ -1,12 +1,12 @@
-﻿using E621Downloader.Models.Posts;
+﻿using E621Downloader.Models.E621;
 using System.Numerics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace E621Downloader.Views {
 	public sealed partial class TypeHintForImageHolder: UserControl {
-		private Post post;
-		public Post PostRef {
+		private E621Post post;
+		public E621Post PostRef {
 			get => post;
 			set {
 				post = value;
@@ -19,7 +19,7 @@ namespace E621Downloader.Views {
 			TypeBorder.Translation += new Vector3(0, 0, 8);
 		}
 
-		private void Load(Post post) {
+		private void Load(E621Post post) {
 			if(post == null) {
 				return;
 			}

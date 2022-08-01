@@ -1,11 +1,11 @@
-﻿using E621Downloader.Models;
-using E621Downloader.Models.Download;
+﻿using E621Downloader.Models.Download;
 using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
-using E621Downloader.Views;
+using E621Downloader.Models.Utilities;
 using E621Downloader.Views.ListingManager;
 using E621Downloader.Views.SettingsSection;
+using E621Downloader.Views.SettingsSection.HistoryView;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

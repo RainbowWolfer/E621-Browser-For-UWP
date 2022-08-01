@@ -1,7 +1,8 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
+using E621Downloader.Models.E621;
 using E621Downloader.Models.Locals;
-using E621Downloader.Models.Posts;
+using E621Downloader.Models.Utilities;
 using E621Downloader.Pages;
 using System;
 using System.Threading;
@@ -16,7 +17,7 @@ namespace E621Downloader.Views {
 	public delegate void OnImageLoadedEventHandler(BitmapImage bitmap);
 	public sealed partial class ImageHolder: UserControl {
 		public string[] BelongedTags { get; set; }
-		public Post PostRef { get; private set; }
+		public E621Post PostRef { get; private set; }
 		public int Index { get; private set; }
 
 		public event OnImageLoadedEventHandler OnImagedLoaded;
@@ -63,7 +64,7 @@ namespace E621Downloader.Views {
 		private CancellationTokenSource cts_SetAs;
 		//private readonly LoadPoolItem loader;
 
-		public ImageHolder(Page page, Post post, int index, PathType type, string path) {
+		public ImageHolder(Page page, E621Post post, int index, PathType type, string path) {
 			this.InitializeComponent();
 			this.page = page;
 			this.PostRef = post;

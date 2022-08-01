@@ -1,5 +1,5 @@
-﻿using E621Downloader.Models;
-using E621Downloader.Models.Download;
+﻿using E621Downloader.Models.Download;
+using E621Downloader.Models.Utilities;
 using E621Downloader.Pages.DownloadSection;
 using System.Collections.Generic;
 using System.Linq;

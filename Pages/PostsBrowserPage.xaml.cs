@@ -1,9 +1,10 @@
-﻿using E621Downloader.Models;
-using E621Downloader.Models.Download;
+﻿using E621Downloader.Models.Download;
+using E621Downloader.Models.E621;
 using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
-using E621Downloader.Models.Posts;
+using E621Downloader.Models.Utilities;
 using E621Downloader.Views;
+using E621Downloader.Views.PostsBrowserSection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,8 +42,8 @@ namespace E621Downloader.Pages {
 			return tab.Posts != null && tab.Posts.Count > 0;
 		}
 
-		public static List<Post> GetCurrentPosts() {
-			return Instance?.GetSelectedTab()?.PostsAfterBlasklist ?? new List<Post>();
+		public static List<E621Post> GetCurrentPosts() {
+			return Instance?.GetSelectedTab()?.PostsAfterBlasklist ?? new List<E621Post>();
 		}
 
 		public static void SetSelectionMode(bool enable) {
@@ -344,15 +345,15 @@ namespace E621Downloader.Pages {
 				LoadingText.Text = "Loading Tags".Language() + $": ({string.Join(' ', tags)})";
 			}
 
-			List<Post> posts = await Post.GetPostsByTagsAsync(cts_loading.Token, tab.CurrentPage, tags);
+			List<E621Post> posts = await E621Post.GetPostsByTagsAsync(cts_loading.Token, tab.CurrentPage, tags);
 
 			if(posts == null) {//canceled
 				IsLoading = true;
 				return;
 			}
 
-			tab.Unsupported = new List<Post>();
-			foreach(Post item in posts) {
+			tab.Unsupported = new List<E621Post>();
+			foreach(E621Post item in posts) {
 				if(IgnoreTypes.Contains(item.file.ext)) {
 					tab.Unsupported.Add(item);
 				}
@@ -397,9 +398,9 @@ namespace E621Downloader.Pages {
 			await LoadAsync(selected, true);
 		}
 
-		public static List<Post> FilterBlacklist(List<Post> posts, Action<string> onBlacklistTagFound = null) {
-			List<Post> afterBlacklisted = new();
-			foreach(Post post in posts) {
+		public static List<E621Post> FilterBlacklist(List<E621Post> posts, Action<string> onBlacklistTagFound = null) {
+			List<E621Post> afterBlacklisted = new();
+			foreach(E621Post post in posts) {
 				bool foundInBlackList = false;
 				foreach(string tag in post.tags.GetAllTags()) {
 					if(Local.Listing.CheckBlackList(tag)) {
@@ -420,7 +421,7 @@ namespace E621Downloader.Pages {
 			Paginator.SetLoadCountText(0, tab.Posts.Count);
 
 			tab.BlackTags.Clear();
-			List<Post> afterBlackListed = FilterBlacklist(tab.Posts, tag => {
+			List<E621Post> afterBlackListed = FilterBlacklist(tab.Posts, tag => {
 				if(tab.BlackTags.ContainsKey(tag)) {
 					tab.BlackTags[tag]++;
 				} else {
@@ -430,7 +431,7 @@ namespace E621Downloader.Pages {
 			tab.BlackTags = tab.BlackTags.OrderByDescending(t => t.Value).ToDictionary(x => x.Key, x => x.Value);
 			tab.PostsAfterBlasklist = afterBlackListed;
 			tab.AllTags.Clear();
-			foreach(Post item in tab.Posts) {
+			foreach(E621Post item in tab.Posts) {
 				foreach(string tag in item.tags.GetAllTags()) {
 					if(tab.AllTags.ContainsKey(tag)) {
 						tab.AllTags[tag]++;
@@ -469,7 +470,7 @@ namespace E621Downloader.Pages {
 				} catch(TaskCanceledException) {
 					return;
 				}
-				Post item = afterBlackListed[i];
+				E621Post item = afterBlackListed[i];
 				ImageHolder holder = new(this, item, i, PathType.PostID, item.id) {
 					BelongedTags = tab.Tags,
 				};
@@ -697,7 +698,7 @@ namespace E621Downloader.Pages {
 							cts_download = new CancellationTokenSource();
 							CreateDownloadDialog("Please Wait".Language(), "Handling Downloads".Language());
 							await Task.Delay(50);
-							var all = new List<Post>();
+							var all = new List<E621Post>();
 							(int from, int to) = pagesSelector.GetRange();
 							if(from == to) {
 								all.AddRange(tab.Posts);
@@ -708,7 +709,7 @@ namespace E621Downloader.Pages {
 										HideDownloadDialog();
 										return;
 									}
-									List<Post> p = await Post.GetPostsByTagsAsync(cts_download.Token, i, tab.Tags);
+									List<E621Post> p = await E621Post.GetPostsByTagsAsync(cts_download.Token, i, tab.Tags);
 									if(p == null) {
 										return;
 									}
@@ -851,7 +852,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void FindCommonTagsItem_Click(object sender, RoutedEventArgs e) {
-			IEnumerable<Post> posts = GetSelectedImages().Select(p => p.PostRef);
+			IEnumerable<E621Post> posts = GetSelectedImages().Select(p => p.PostRef);
 			await new ContentDialog() {
 				Title = "Posts Common Tags".Language(),
 				Content = new PostsCommonTagsDialog(posts),
@@ -866,11 +867,11 @@ namespace E621Downloader.Pages {
 
 	public class PostsTab {
 		public string[] Tags { get; set; } = new string[0];
-		public List<Post> Posts { get; set; } = null;
-		public List<Post> PostsAfterBlasklist { get; set; } = new();
+		public List<E621Post> Posts { get; set; } = null;
+		public List<E621Post> PostsAfterBlasklist { get; set; } = new();
 		public E621Pool Pool { get; set; } = null;
 		public int LoadedCount { get; set; } = 0;
-		public List<Post> Unsupported { get; set; } = new();
+		public List<E621Post> Unsupported { get; set; } = new();
 		public Dictionary<string, long> BlackTags { get; set; } = new();
 		public Dictionary<string, long> AllTags { get; set; } = new();
 		public Dictionary<string, long> HotTags { get; set; } = new();

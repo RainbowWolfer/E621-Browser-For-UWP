@@ -1,6 +1,6 @@
-﻿using E621Downloader.Models;
-using E621Downloader.Models.Debugging;
+﻿using E621Downloader.Models.Debugging;
 using E621Downloader.Models.Locals;
+using E621Downloader.Models.Utilities;
 using E621Downloader.Views.LibrarySection;
 using System;
 using System.Collections.Generic;

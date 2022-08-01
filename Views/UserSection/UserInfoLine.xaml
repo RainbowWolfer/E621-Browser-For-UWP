@@ -1,0 +1,21 @@
+﻿<UserControl
+    x:Class="E621Downloader.Views.UserSection.UserInfoLine"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="50"
+    d:DesignWidth="400"
+    d:RequestedTheme="Dark">
+ 
+	<Grid Margin="60,0,0,0">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<TextBlock x:Name="TitleTextBlock" Text="Wiki Page Version Count" TextAlignment="Right" FontSize="15.5"/>
+		<TextBlock x:Name="ContentTextBlock" Text="2" TextAlignment="Left" Grid.Column="1" Margin="10,0,0,0" FontSize="15.5"/>
+	</Grid>
+</UserControl>

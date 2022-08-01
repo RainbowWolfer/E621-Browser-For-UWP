@@ -1,5 +1,5 @@
-﻿using E621Downloader.Models.Networks;
-using E621Downloader.Models.Posts;
+﻿using E621Downloader.Models.E621;
+using E621Downloader.Models.Networks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +29,7 @@ namespace E621Downloader.Models.Locals {
 			await Local.WriteListing();
 		}
 
-		public async Task RemoveFollowPool(int poolID){
+		public async Task RemoveFollowPool(int poolID) {
 			if(FollowPoolsList.Contains(poolID)) {
 				FollowPoolsList.Remove(poolID);
 			}

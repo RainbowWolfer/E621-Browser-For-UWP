@@ -1,6 +1,6 @@
-﻿using E621Downloader.Models;
-using E621Downloader.Models.Download;
+﻿using E621Downloader.Models.Download;
 using E621Downloader.Models.Inerfaces;
+using E621Downloader.Models.Utilities;
 using System;
 using System.Diagnostics;
 using System.Linq;

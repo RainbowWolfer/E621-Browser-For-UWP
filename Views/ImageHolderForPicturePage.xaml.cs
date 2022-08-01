@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models;
-using E621Downloader.Models.Posts;
+using E621Downloader.Models.E621;
+using E621Downloader.Models.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,8 +28,8 @@ namespace E621Downloader.Views {
 
 		private readonly ProgressLoader progress;
 
-		public Post Origin { get; set; }
-		public Post Target { get; private set; }
+		public E621Post Origin { get; set; }
+		public E621Post Target { get; private set; }
 
 		private CancellationTokenSource cts = new();
 
@@ -40,7 +41,7 @@ namespace E621Downloader.Views {
 				return;
 			}
 			progress.Value = 0;
-			Target = await Post.GetPostByIDAsync(post_id, cts.Token);
+			Target = await E621Post.GetPostByIDAsync(post_id, cts.Token);
 			TypeHint.PostRef = Target;
 			BottomInfo.PostRef = Target;
 			if(Target == null) {
@@ -122,17 +123,17 @@ namespace E621Downloader.Views {
 				if(Target == null || Target.flags.deleted) {
 					return;
 				}
-				List<Post> siblings = new();
+				List<E621Post> siblings = new();
 				MainPage.CreateInstantDialog("Please Wait".Language(), "Loading Siblings".Language());
 				if(!string.IsNullOrWhiteSpace(Origin.relationships.parent_id)) {
 					siblings.Add(Target);
-					List<Post> result = (await Post.GetPostsByTagsAsync(cts.Token, 1, $"parent:{Origin.relationships.parent_id}")).Where(p => CheckPostAvailable(p)).ToList();
+					List<E621Post> result = (await E621Post.GetPostsByTagsAsync(cts.Token, 1, $"parent:{Origin.relationships.parent_id}")).Where(p => CheckPostAvailable(p)).ToList();
 					siblings.AddRange(result);
 					App.PostsList.Current = Target;
 				} else {
 					siblings.Add(Origin);
 					foreach(string item in Origin.relationships.children) {
-						Post p = await Post.GetPostByIDAsync(item, cts.Token);
+						E621Post p = await E621Post.GetPostByIDAsync(item, cts.Token);
 						if(CheckPostAvailable(p)) {
 							siblings.Add(p);
 						}
@@ -145,7 +146,7 @@ namespace E621Downloader.Views {
 			};
 		}
 
-		private bool CheckPostAvailable(Post p) {
+		private bool CheckPostAvailable(E621Post p) {
 			return !p.flags.deleted;
 		}
 	}

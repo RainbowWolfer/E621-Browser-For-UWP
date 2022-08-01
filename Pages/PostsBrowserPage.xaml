@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls" 
 	xmlns:localviews="using:E621Downloader.Views"
+	xmlns:posts="using:E621Downloader.Views.PostsBrowserSection"
 	d:RequestedTheme="Dark"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -180,7 +181,7 @@
 									</Button>
 								</StackPanel>
 								<Grid Grid.Row="1">
-									<localviews:PostsBrowserPaginator x:Name="Paginator"/>
+									<posts:PostsBrowserPaginator x:Name="Paginator"/>
 								</Grid>
 							</Grid>
 						</SplitView.Content>

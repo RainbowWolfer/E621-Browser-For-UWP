@@ -1,6 +1,6 @@
-﻿using E621Downloader.Models;
+﻿using E621Downloader.Models.E621;
 using E621Downloader.Models.Locals;
-using E621Downloader.Models.Posts;
+using E621Downloader.Models.Utilities;
 using E621Downloader.Pages;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
@@ -25,7 +25,7 @@ namespace E621Downloader {
 
 		public const string IS_LIGHT_THEME = "IsLightTheme";
 
-		public static Dictionary<string, Post> PostsPool { get; } = new();
+		public static Dictionary<string, E621Post> PostsPool { get; } = new();
 		public static Dictionary<int, E621Pool> PoolsPool { get; } = new();
 
 		public static PostsList PostsList { get; private set; } = new PostsList();
@@ -164,7 +164,7 @@ namespace E621Downloader {
 		}
 
 		private bool ShouldSkipHotkeysDisable(VirtualKey key) {
-			return key == VirtualKey.Enter || key == VirtualKey.Escape || key == VirtualKey.F11 || key == VirtualKey.F12;
+			return key is VirtualKey.Enter or VirtualKey.Escape or VirtualKey.F11 or VirtualKey.F12;
 		}
 
 		void OnNavigationFailed(object sender, NavigationFailedEventArgs e) {

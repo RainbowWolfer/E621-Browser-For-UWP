@@ -1,5 +1,6 @@
-﻿using E621Downloader.Models.Locals;
-using E621Downloader.Models.Posts;
+﻿using E621Downloader.Models.E621;
+using E621Downloader.Models.Locals;
+using E621Downloader.Models.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,9 +30,9 @@ namespace E621Downloader.Models.Download {
 
 		public static bool HasDownloading() {
 			foreach(DownloadInstance item in downloads) {
-				if(item.Status != BackgroundTransferStatus.Completed &&
-					item.Status != BackgroundTransferStatus.Canceled &&
-					item.Status != BackgroundTransferStatus.Error) {
+				if(item.Status is not BackgroundTransferStatus.Completed and
+					not BackgroundTransferStatus.Canceled and
+					not BackgroundTransferStatus.Error) {
 					return true;
 				}
 			}
@@ -58,11 +59,11 @@ namespace E621Downloader.Models.Download {
 
 		public static bool CheckDownloadAvailable() => Local.DownloadFolder != null;
 
-		public static async Task<bool?> RegisterDownloads(CancellationToken token, IEnumerable<Post> posts, IEnumerable<string> tags, bool todayDate, Action<string> onProgress = null) {
+		public static async Task<bool?> RegisterDownloads(CancellationToken token, IEnumerable<E621Post> posts, IEnumerable<string> tags, bool todayDate, Action<string> onProgress = null) {
 			return await RegisterDownloads(token, posts, DownloadsGroup.GetGroupTitle(tags), todayDate, onProgress);
 		}
 
-		public static async Task<bool?> RegisterDownloads(CancellationToken token, IEnumerable<Post> posts, string groupTitle, bool todayDate, Action<string> onProgress = null) {
+		public static async Task<bool?> RegisterDownloads(CancellationToken token, IEnumerable<E621Post> posts, string groupTitle, bool todayDate, Action<string> onProgress = null) {
 			if(!CheckDownloadAvailable()) {
 				return false;
 			}
@@ -81,7 +82,7 @@ namespace E621Downloader.Models.Download {
 				return false;
 			}
 			int index = 1;
-			foreach(Post item in posts) {
+			foreach(E621Post item in posts) {
 				if(string.IsNullOrEmpty(item.file.url)) {
 					continue;
 				}
@@ -101,11 +102,11 @@ namespace E621Downloader.Models.Download {
 			return true;
 		}
 
-		public static async Task<bool> RegisterDownload(Post post, IEnumerable<string> tags) {
+		public static async Task<bool> RegisterDownload(E621Post post, IEnumerable<string> tags) {
 			return await RegisterDownload(post, DownloadsGroup.GetGroupTitle(tags));
 		}
 
-		public static async Task<bool> RegisterDownload(Post post, string groupTitle = DEFAULT_TITLE) {
+		public static async Task<bool> RegisterDownload(E621Post post, string groupTitle = DEFAULT_TITLE) {
 			if(string.IsNullOrEmpty(post.file.url)) {
 				return false;
 			}
@@ -123,7 +124,7 @@ namespace E621Downloader.Models.Download {
 			return true;
 		}
 
-		private static DownloadInstance RegisterDownload(Post post, Uri uri, StorageFile file, string groupTitle = DEFAULT_TITLE) {
+		private static DownloadInstance RegisterDownload(E621Post post, Uri uri, StorageFile file, string groupTitle = DEFAULT_TITLE) {
 			var instance = new DownloadInstance(post, groupTitle, downloader.CreateDownload(uri, file));
 			DownloadsGroup group = FindGroup(groupTitle);
 			if(group == null) {

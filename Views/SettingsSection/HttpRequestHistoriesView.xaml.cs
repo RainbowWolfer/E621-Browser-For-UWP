@@ -1,7 +1,7 @@
-﻿using E621Downloader.Models;
-using E621Downloader.Models.Debugging;
+﻿using E621Downloader.Models.Debugging;
+using E621Downloader.Models.E621;
 using E621Downloader.Models.Networks;
-using E621Downloader.Models.Posts;
+using E621Downloader.Models.Utilities;
 using E621Downloader.Pages;
 using System;
 using System.Collections.ObjectModel;

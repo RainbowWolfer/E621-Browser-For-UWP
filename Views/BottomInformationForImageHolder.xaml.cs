@@ -1,4 +1,4 @@
-﻿using E621Downloader.Models.Posts;
+﻿using E621Downloader.Models.E621;
 using E621Downloader.Pages;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -7,12 +7,12 @@ using Windows.UI.Xaml.Media;
 
 namespace E621Downloader.Views {
 	public sealed partial class BottomInformationForImageHolder: UserControl {
-		private Post post;
+		private E621Post post;
 		public BottomInformationForImageHolder() {
 			this.InitializeComponent();
 		}
 
-		public Post PostRef {
+		public E621Post PostRef {
 			get => post;
 			set {
 				post = value;
@@ -20,7 +20,7 @@ namespace E621Downloader.Views {
 			}
 		}
 
-		private void UpdateInfo(Post post) {
+		private void UpdateInfo(E621Post post) {
 			if(post == null) {
 				return;
 			}

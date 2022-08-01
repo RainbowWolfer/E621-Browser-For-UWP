@@ -1,6 +1,6 @@
 ﻿using E621Downloader.Models.Debugging;
+using E621Downloader.Models.E621;
 using E621Downloader.Models.Locals;
-using E621Downloader.Models.Posts;
 using E621Downloader.Pages.LibrarySection;
 using System;
 using System.Diagnostics;
@@ -11,7 +11,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace E621Downloader.Models.Download {
 	public class DownloadInstance {
-		public Post PostRef { get; private set; }
+		public E621Post PostRef { get; private set; }
 		public string GroupName { get; set; }
 
 		public MetaFile metaFile;
@@ -36,7 +36,7 @@ namespace E621Downloader.Models.Download {
 		public Action DownloadCompleteAction { get; set; }
 		public CancellationTokenSource Cts { get; private set; }
 
-		public DownloadInstance(Post post, string groupName, DownloadOperation operation) {
+		public DownloadInstance(E621Post post, string groupName, DownloadOperation operation) {
 			PostRef = post;
 			GroupName = groupName;
 			Operation = operation;

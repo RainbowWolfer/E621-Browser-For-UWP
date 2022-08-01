@@ -1,7 +1,7 @@
-﻿using E621Downloader.Models;
-using E621Downloader.Models.Debugging;
+﻿using E621Downloader.Models.Debugging;
+using E621Downloader.Models.E621;
 using E621Downloader.Models.Networks;
-using E621Downloader.Models.Posts;
+using E621Downloader.Models.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -80,7 +80,7 @@ namespace E621Downloader.Views.CommentsSection {
 				return;
 			}
 			string url = "";
-			Post post = null;
+			E621Post post = null;
 			bool previewOrSample = false;
 			if(User != null && Cts != null) {
 				try {
@@ -138,7 +138,7 @@ namespace E621Downloader.Views.CommentsSection {
 				return;
 			}
 			MainPage.CreateInstantDialog("Please Wait".Language() + "...", "Loading Post".Language() + $": {User.avatar_id}");
-			Post post = await Post.GetPostByIDAsync(User.avatar_id, Cts.Token);
+			E621Post post = await E621Post.GetPostByIDAsync(User.avatar_id, Cts.Token);
 			MainPage.HideInstantDialog();
 			MainPage.NavigateToPicturePage(post, Array.Empty<string>());
 		}

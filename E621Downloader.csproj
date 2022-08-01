@@ -158,40 +158,36 @@
     </Compile>
     <Compile Include="Models\Debugging\ErrorHistories.cs" />
     <Compile Include="Models\Debugging\HttpRequestHistories.cs" />
-    <Compile Include="Models\HistoryItem.cs" />
     <Compile Include="Models\Inerfaces\IPage.cs" />
-    <Compile Include="Models\KeyListener.cs" />
-    <Compile Include="Models\LoadPool.cs" />
+    <Compile Include="Models\Utilities\KeyListener.cs" />
+    <Compile Include="Models\Utilities\LoadPool.cs" />
     <Compile Include="Models\Locals\FavoritesList.cs" />
     <Compile Include="Models\Locals\History.cs" />
     <Compile Include="Models\Locals\LocalLanguage.cs" />
     <Compile Include="Models\Locals\Listing.cs" />
     <Compile Include="Models\Networks\DataResult.cs" />
-    <Compile Include="Models\Posts\E621Vote.cs" />
-    <Compile Include="Models\Posts\Favorites.cs" />
+    <Compile Include="Models\E621\E621Vote.cs" />
+    <Compile Include="Models\E621\E621Favorite.cs" />
     <Compile Include="Models\Locals\LocalSettings.cs" />
     <Compile Include="Models\Locals\WelcomeInLanguages.cs" />
-    <Compile Include="Models\Methods.cs" />
-    <Compile Include="Models\MyEnumerable.cs" />
+    <Compile Include="Models\Utilities\Methods.cs" />
     <Compile Include="Models\Networks\Data.cs" />
     <Compile Include="Models\Download\DownloadInstance.cs" />
     <Compile Include="Models\Download\DownloadsGroup.cs" />
     <Compile Include="Models\Download\DownloadsManager.cs" />
-    <Compile Include="Models\E621Article.cs" />
     <Compile Include="Models\Pair.cs" />
-    <Compile Include="Models\PostsList.cs" />
-    <Compile Include="Models\Posts\E621AutoComplete.cs" />
-    <Compile Include="Models\Posts\E621Comment.cs" />
-    <Compile Include="Models\Posts\E621Paginator.cs" />
-    <Compile Include="Models\Posts\E621Pool.cs" />
-    <Compile Include="Models\Posts\E621Tag.cs" />
-    <Compile Include="Models\ImageConvertor.cs" />
+    <Compile Include="Models\Utilities\PostsList.cs" />
+    <Compile Include="Models\E621\E621AutoComplete.cs" />
+    <Compile Include="Models\E621\E621Comment.cs" />
+    <Compile Include="Models\E621\E621Paginator.cs" />
+    <Compile Include="Models\E621\E621Pool.cs" />
+    <Compile Include="Models\E621\E621Tag.cs" />
     <Compile Include="Models\Locals\Local.cs" />
     <Compile Include="Models\Locals\MetaFile.cs" />
-    <Compile Include="Models\Posts\E621User.cs" />
-    <Compile Include="Models\Posts\E621Wiki.cs" />
-    <Compile Include="Models\Posts\Post.cs" />
-    <Compile Include="Models\ProgressLoader.cs" />
+    <Compile Include="Models\E621\E621User.cs" />
+    <Compile Include="Models\E621\E621Wiki.cs" />
+    <Compile Include="Models\E621\E621Post.cs" />
+    <Compile Include="Models\Utilities\ProgressLoader.cs" />
     <Compile Include="Models\Services\MyDependencyPropertyWatcher.cs" />
     <Compile Include="Models\Services\ItemsControlExtensions.cs" />
     <Compile Include="Pages\DefaultPage.xaml.cs">
@@ -243,13 +239,13 @@
     <Compile Include="Views\AddButtonInput.xaml.cs">
       <DependentUpon>AddButtonInput.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CustomHostInputDialog.xaml.cs">
+    <Compile Include="Views\SettingsSection\CustomHostInputDialog.xaml.cs">
       <DependentUpon>CustomHostInputDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DownloadCancellableDialog.xaml.cs">
       <DependentUpon>DownloadCancellableDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FavoritesListNameModify.xaml.cs">
+    <Compile Include="Views\SubscriptionSection\FavoritesListNameModify.xaml.cs">
       <DependentUpon>FavoritesListNameModify.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\BottomInformationForImageHolder.xaml.cs">
@@ -258,10 +254,10 @@
     <Compile Include="Views\CommentsSection\CommentView.xaml.cs">
       <DependentUpon>CommentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CurrentPoolInformation.xaml.cs">
+    <Compile Include="Views\PostsBrowserSection\CurrentPoolInformation.xaml.cs">
       <DependentUpon>CurrentPoolInformation.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CurrentTagsInformation.xaml.cs">
+    <Compile Include="Views\PostsBrowserSection\CurrentTagsInformation.xaml.cs">
       <DependentUpon>CurrentTagsInformation.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DownloadSection\DownloadProgressBar.xaml.cs">
@@ -273,10 +269,10 @@
     <Compile Include="Views\DownloadSection\SimpleDownloadProgressBar.xaml.cs">
       <DependentUpon>SimpleDownloadProgressBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\HistoryDialogView.xaml.cs">
+    <Compile Include="Views\SettingsSection\HistoryView\HistoryDialogView.xaml.cs">
       <DependentUpon>HistoryDialogView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\HotKeysManager.xaml.cs">
+    <Compile Include="Views\SettingsSection\HotKeysManager.xaml.cs">
       <DependentUpon>HotKeysManager.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ImageHolderForPicturePage.xaml.cs">
@@ -310,7 +306,7 @@
     <Compile Include="Views\ListingManager\FollowingPoolsManager.xaml.cs">
       <DependentUpon>FollowingPoolsManager.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ListingToggleSplitButton.xaml.cs">
+    <Compile Include="Views\PostsBrowserSection\ListingToggleSplitButton.xaml.cs">
       <DependentUpon>ListingToggleSplitButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ListingManager\BlackListManager.xaml.cs">
@@ -319,10 +315,10 @@
     <Compile Include="Views\LoadingDialog.xaml.cs">
       <DependentUpon>LoadingDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoadingRingIcon.xaml.cs">
+    <Compile Include="Views\MainSection\LoadingRingIcon.xaml.cs">
       <DependentUpon>LoadingRingIcon.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoginHelpSection.xaml.cs">
+    <Compile Include="Views\UserSection\LoginHelpSection.xaml.cs">
       <DependentUpon>LoginHelpSection.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MyHyperLinkButton.xaml.cs">
@@ -346,10 +342,10 @@
     <Compile Include="Views\PictureSection\SlideshowConfigurationDialog.xaml.cs">
       <DependentUpon>SlideshowConfigurationDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PostMoreInfoDialog.xaml.cs">
+    <Compile Include="Views\PictureSection\PostMoreInfoDialog.xaml.cs">
       <DependentUpon>PostMoreInfoDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PostsBrowserPaginator.xaml.cs">
+    <Compile Include="Views\PostsBrowserSection\PostsBrowserPaginator.xaml.cs">
       <DependentUpon>PostsBrowserPaginator.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PostsCommonTagsDialog.xaml.cs">
@@ -358,10 +354,10 @@
     <Compile Include="Views\PostsInfoListView.xaml.cs">
       <DependentUpon>PostsInfoListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RecentTagView.xaml.cs">
+    <Compile Include="Views\SettingsSection\HistoryView\RecentTagView.xaml.cs">
       <DependentUpon>RecentTagView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RecentViewView.xaml.cs">
+    <Compile Include="Views\SettingsSection\HistoryView\RecentViewView.xaml.cs">
       <DependentUpon>RecentViewView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ResizeBar.xaml.cs">
@@ -379,22 +375,22 @@
     <Compile Include="Views\SubscriptionSection\SubscriptionDownloadDialog.xaml.cs">
       <DependentUpon>SubscriptionDownloadDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TagCategoryColorsPreview.xaml.cs">
+    <Compile Include="Views\TagsSearch\TagCategoryColorsPreview.xaml.cs">
       <DependentUpon>TagCategoryColorsPreview.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TagExpander.xaml.cs">
+    <Compile Include="Views\PostsBrowserSection\TagExpander.xaml.cs">
       <DependentUpon>TagExpander.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FoldersSelectionSection\FoldersSelectionView.xaml.cs">
       <DependentUpon>FoldersSelectionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SpotTagsSelection.xaml.cs">
+    <Compile Include="Views\SpotSection\SpotTagsSelection.xaml.cs">
       <DependentUpon>SpotTagsSelection.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LocalTagsManagementSection\LocalTagsManagementView.xaml.cs">
       <DependentUpon>LocalTagsManagementView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PostDebugView.xaml.cs">
+    <Compile Include="Views\PictureSection\PostDebugView.xaml.cs">
       <DependentUpon>PostDebugView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SettingsPage.xaml.cs">
@@ -410,10 +406,10 @@
     <Compile Include="Views\TagInformationDisplay.xaml.cs">
       <DependentUpon>TagInformationDisplay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TagsManagementSection\SingleTagSuggestion.xaml.cs">
+    <Compile Include="Views\TagsSearch\SingleTagSuggestion.xaml.cs">
       <DependentUpon>SingleTagSuggestion.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TagsManagementSection\TagsSelectionView.xaml.cs">
+    <Compile Include="Views\TagsSearch\TagsSelectionView.xaml.cs">
       <DependentUpon>TagsSelectionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ToolTipContentForPost.xaml.cs">
@@ -422,8 +418,7 @@
     <Compile Include="Views\TypeHintForImageHolder.xaml.cs">
       <DependentUpon>TypeHintForImageHolder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UniformBorderGrid.cs" />
-    <Compile Include="Views\UserInfoLine.xaml.cs">
+    <Compile Include="Views\UserSection\UserInfoLine.xaml.cs">
       <DependentUpon>UserInfoLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LockableToggleButton .cs" />
@@ -591,7 +586,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CustomHostInputDialog.xaml">
+    <Page Include="Views\SettingsSection\CustomHostInputDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -599,7 +594,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FavoritesListNameModify.xaml">
+    <Page Include="Views\SubscriptionSection\FavoritesListNameModify.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -611,11 +606,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CurrentPoolInformation.xaml">
+    <Page Include="Views\PostsBrowserSection\CurrentPoolInformation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CurrentTagsInformation.xaml">
+    <Page Include="Views\PostsBrowserSection\CurrentTagsInformation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -631,11 +626,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\HistoryDialogView.xaml">
+    <Page Include="Views\SettingsSection\HistoryView\HistoryDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\HotKeysManager.xaml">
+    <Page Include="Views\SettingsSection\HotKeysManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -679,7 +674,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ListingToggleSplitButton.xaml">
+    <Page Include="Views\PostsBrowserSection\ListingToggleSplitButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -691,11 +686,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LoadingRingIcon.xaml">
+    <Page Include="Views\MainSection\LoadingRingIcon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LoginHelpSection.xaml">
+    <Page Include="Views\UserSection\LoginHelpSection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -727,11 +722,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PostMoreInfoDialog.xaml">
+    <Page Include="Views\PictureSection\PostMoreInfoDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PostsBrowserPaginator.xaml">
+    <Page Include="Views\PostsBrowserSection\PostsBrowserPaginator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -743,11 +738,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RecentTagView.xaml">
+    <Page Include="Views\SettingsSection\HistoryView\RecentTagView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RecentViewView.xaml">
+    <Page Include="Views\SettingsSection\HistoryView\RecentViewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -771,11 +766,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TagCategoryColorsPreview.xaml">
+    <Page Include="Views\TagsSearch\TagCategoryColorsPreview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TagExpander.xaml">
+    <Page Include="Views\PostsBrowserSection\TagExpander.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -783,7 +778,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SpotTagsSelection.xaml">
+    <Page Include="Views\SpotSection\SpotTagsSelection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -791,7 +786,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PostDebugView.xaml">
+    <Page Include="Views\PictureSection\PostDebugView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -811,11 +806,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TagsManagementSection\SingleTagSuggestion.xaml">
+    <Page Include="Views\TagsSearch\SingleTagSuggestion.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TagsManagementSection\TagsSelectionView.xaml">
+    <Page Include="Views\TagsSearch\TagsSelectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -827,7 +822,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UserInfoLine.xaml">
+    <Page Include="Views\UserSection\UserInfoLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

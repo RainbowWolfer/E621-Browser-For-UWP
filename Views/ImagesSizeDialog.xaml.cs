@@ -15,7 +15,7 @@ namespace E621Downloader.Views {
 			Initialize();
 		}
 
-		public void Initialize(){
+		public void Initialize() {
 			_loaded = false;
 			if(LocalSettings.Current.adaptiveGrid) {
 				AdaptiveHeightRadioButton.IsChecked = true;

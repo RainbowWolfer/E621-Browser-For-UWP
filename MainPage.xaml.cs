@@ -1,15 +1,16 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Debugging;
 using E621Downloader.Models.Download;
+using E621Downloader.Models.E621;
 using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
-using E621Downloader.Models.Posts;
+using E621Downloader.Models.Utilities;
 using E621Downloader.Pages;
 using E621Downloader.Pages.DownloadSection;
 using E621Downloader.Pages.LibrarySection;
-using E621Downloader.Views;
-using E621Downloader.Views.TagsManagementSection;
+using E621Downloader.Views.MainSection;
+using E621Downloader.Views.TagsSearch;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
@@ -135,7 +136,7 @@ namespace E621Downloader {
 						IsInSearchPopup = false;
 					}
 				}
-				if(key == VirtualKey.Escape || key == VirtualKey.F12 || key == VirtualKey.F11) {
+				if(key is VirtualKey.Escape or VirtualKey.F12 or VirtualKey.F11) {
 					try {
 						if(PicturePage.Instance != null) {
 							PicturePage.Instance.ShowListGrid = false;
@@ -226,7 +227,7 @@ namespace E621Downloader {
 		private int downloadDelayedTime = 0;
 		private async void Loop() {
 			const int DELAY = 200;
-			const int WAIT_TIME = 1000;
+			const int WAIT_TIME = 2000;
 			while(true) {
 				if(DownloadsManager.HasDownloading()) {
 					ChangeDownloadRingIcon(LoadingType.Loading);
@@ -278,7 +279,7 @@ namespace E621Downloader {
 			UserStartChanging?.Invoke();
 			E621User.Current = await E621User.GetAsync(username);
 			UserChangedInfoComplete?.Invoke();
-			Post post = await E621User.GetAvatarPostAsync(E621User.Current);
+			E621Post post = await E621User.GetAvatarPostAsync(E621User.Current);
 			if(post == null) {
 				UserChangedAvatarComplete?.Invoke(UserPicture.ProfilePicture as BitmapImage);
 				return;
@@ -664,8 +665,8 @@ namespace E621Downloader {
 						//dialog wait 
 						CreateInstantDialog("Please Wait".Language(), "Getting Post".Language());
 						//get post
-						if(!App.PostsPool.TryGetValue(view.ResultPostID, out Post loadPost)) {
-							loadPost = await Post.GetPostByIDAsync(view.ResultPostID);
+						if(!App.PostsPool.TryGetValue(view.ResultPostID, out E621Post loadPost)) {
+							loadPost = await E621Post.GetPostByIDAsync(view.ResultPostID);
 						}
 						if(loadPost == null || loadPost.flags.deleted) {
 							HideInstantDialog();
@@ -690,7 +691,7 @@ namespace E621Downloader {
 
 							HideInstantDialog();
 
-							App.PostsList.UpdatePostsList(new List<Post>() { loadPost });
+							App.PostsList.UpdatePostsList(new List<E621Post>() { loadPost });
 							App.PostsList.Current = loadPost;
 							NavigateToPicturePage(loadPost, Array.Empty<string>());
 						}
@@ -724,7 +725,7 @@ namespace E621Downloader {
 					//	index++;
 					//} while(tag == null || index > MAX_LOOP);
 
-					Post post = (await Post.GetPostsByTagsAsync(cts.Token, 1, "limit:1", "order:random"))?.FirstOrDefault();
+					E621Post post = (await E621Post.GetPostsByTagsAsync(cts.Token, 1, "limit:1", "order:random"))?.FirstOrDefault();
 					HideInstantDialog();
 					if(post != null) {
 						List<string> all = post.tags.GetAllTags();

@@ -1,6 +1,7 @@
 ﻿using E621Downloader.Models;
+using E621Downloader.Models.E621;
 using E621Downloader.Models.Networks;
-using E621Downloader.Models.Posts;
+using E621Downloader.Models.Utilities;
 using E621Downloader.Pages;
 using System;
 using System.IO;
@@ -43,7 +44,7 @@ namespace E621Downloader.Views.PictureSection {
 			}
 		}
 
-		private ProgressLoader progress;
+		private readonly ProgressLoader progress;
 		private bool isLoading = false;
 		private bool hasLoaded = false;
 
@@ -60,7 +61,7 @@ namespace E621Downloader.Views.PictureSection {
 			isLoading = true;
 			progress.Value = 0;
 			MainImage.Source = null;
-			if(Photo is Post post) {
+			if(Photo is E621Post post) {
 				await LoadPost(post);
 			} else if(Photo is MixPost mix) {
 				if(mix.Type == PathType.PostID && mix.PostRef != null) {
@@ -71,11 +72,11 @@ namespace E621Downloader.Views.PictureSection {
 			} else if(Photo is ILocalImage local) {
 				await LoadLocal(local.ImageFile, local.ImagePost);
 			} else if(Photo is string postID) {
-				Post postRef;
+				E621Post postRef;
 				if(App.PostsPool.ContainsKey(postID)) {
 					postRef = App.PostsPool[postID];
 				} else {
-					postRef = await Post.GetPostByIDAsync(postID);
+					postRef = await E621Post.GetPostByIDAsync(postID);
 					if(postRef == null) {
 						return;
 					} else {
@@ -93,7 +94,7 @@ namespace E621Downloader.Views.PictureSection {
 			progress.Value = null;
 		}
 
-		private async Task LoadPost(Post post) {
+		private async Task LoadPost(E621Post post) {
 			UpdateIcon(post);
 			LoadPoolItem loader = LoadPool.SetNew(post);
 			if(loader.Sample != null) {
@@ -123,7 +124,7 @@ namespace E621Downloader.Views.PictureSection {
 			CheckGifPlay(post);
 		}
 
-		private async Task LoadLocal(StorageFile file, Post post) {
+		private async Task LoadLocal(StorageFile file, E621Post post) {
 			UpdateIcon(post);
 			using StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.SingleItem);
 			if(thumbnail != null) {
@@ -135,7 +136,7 @@ namespace E621Downloader.Views.PictureSection {
 			CheckGifPlay(post);
 		}
 
-		private void UpdateIcon(Post post) {
+		private void UpdateIcon(E621Post post) {
 			FileType type = PicturePage.GetFileType(post);
 			if(type == FileType.Gif) {
 				PlayIcon.Visibility = Visibility.Visible;
@@ -148,9 +149,9 @@ namespace E621Downloader.Views.PictureSection {
 			}
 		}
 
-		private bool IsGif(Post post) => PicturePage.GetFileType(post) == FileType.Gif;
+		private bool IsGif(E621Post post) => PicturePage.GetFileType(post) == FileType.Gif;
 
-		private void CheckGifPlay(Post post) {
+		private void CheckGifPlay(E621Post post) {
 			if(IsGif(post)) {
 				if(MainImage.Source is BitmapImage bi) {
 					bi.Stop();
@@ -159,7 +160,7 @@ namespace E621Downloader.Views.PictureSection {
 		}
 
 		public static bool CheckTypeValid(object obj) {
-			return obj is Post || obj is MixPost || obj is ILocalImage || (obj is string id && long.TryParse(id, out long _));
+			return obj is E621Post || obj is MixPost || obj is ILocalImage || (obj is string id && long.TryParse(id, out long _));
 		}
 
 		public void SetPhoto(object obj) {
@@ -168,7 +169,7 @@ namespace E621Downloader.Views.PictureSection {
 			}
 		}
 
-		public void SetPhoto(Post post) {
+		public void SetPhoto(E621Post post) {
 			Photo = post;
 		}
 		public void SetPhoto(MixPost mix) {

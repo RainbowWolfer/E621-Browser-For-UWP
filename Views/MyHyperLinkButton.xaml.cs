@@ -1,5 +1,5 @@
-﻿using E621Downloader.Models;
-using E621Downloader.Models.Debugging;
+﻿using E621Downloader.Models.Debugging;
+using E621Downloader.Models.Utilities;
 using System;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;

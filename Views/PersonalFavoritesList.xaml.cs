@@ -1,7 +1,7 @@
-﻿using E621Downloader.Models;
+﻿using E621Downloader.Models.E621;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
-using E621Downloader.Models.Posts;
+using E621Downloader.Models.Utilities;
 using E621Downloader.Pages;
 using System;
 using System.Collections.Generic;
@@ -221,7 +221,7 @@ namespace E621Downloader.Views {
 			FavoriteIcon.Glyph = "\uE10C";
 
 			if(E621FavoriteButton.IsChecked.Value) {
-				HttpResult<string> result = await Favorites.PostAsync(path);
+				HttpResult<string> result = await E621Favorite.PostAsync(path);
 				if(result.Result == HttpResultType.Success) {
 					FavoriteText.Text = "E621 Favorited".Language();
 					FavoriteIcon.Glyph = "\uEB52";
@@ -232,7 +232,7 @@ namespace E621Downloader.Views {
 					E621FavoriteButton.IsChecked = false;
 				}
 			} else {
-				HttpResult<string> result = await Favorites.DeleteAsync(path);
+				HttpResult<string> result = await E621Favorite.DeleteAsync(path);
 				if(result.Result == HttpResultType.Success) {
 					FavoriteText.Text = "E621 Favorite".Language();
 					FavoriteIcon.Glyph = "\uEB51";

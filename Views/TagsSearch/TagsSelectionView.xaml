@@ -1,0 +1,135 @@
+﻿<Page
+    x:Class="E621Downloader.Views.TagsSearch.TagsSelectionView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Views.TagsSearch"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+	d:RequestedTheme="Dark"
+    d:DesignHeight="180"
+    Width="450">
+
+	<Grid x:Name="MainRoot" KeyboardAcceleratorPlacementMode="Hidden">
+		<Grid.KeyboardAccelerators>
+			<KeyboardAccelerator Key="Escape" Invoked="EscapeKey_Invoked"/>
+			<KeyboardAccelerator Key="Enter" Invoked="EnterKey_Invoked"/>
+			<KeyboardAccelerator Key="Up" Invoked="UpKey_Invoked"/>
+			<KeyboardAccelerator Key="Down" Invoked="DownKey_Invoked"/>
+		</Grid.KeyboardAccelerators>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="auto" MinHeight="10"/>
+				<RowDefinition Height="auto"/>
+			</Grid.RowDefinitions>
+			<controls:DropDownButton x:Uid="DefaultOrderButtonContent" x:Name="OrderDropDownButton" Content="Order" HorizontalAlignment="Stretch" Margin="5">
+				<controls:DropDownButton.Flyout>
+					<MenuFlyout Placement="Bottom">
+						<MenuFlyoutItem x:Uid="DefaultText" x:Name="ItemOrderDefault" Text="Default" Click="ItemOrderDefault_Click"/>
+						<MenuFlyoutItem x:Uid="NewText" x:Name="ItemOrderNew" Text="New" Click="ItemOrderNew_Click"/>
+						<MenuFlyoutItem x:Uid="ScoreText" x:Name="ItemOrderScore" Text="Score" Click="ItemOrderScore_Click"/>
+						<MenuFlyoutItem x:Uid="FavoriteText" x:Name="ItemOrderFavorite" Text="Favorite" Click="ItemOrderFavorite_Click"/>
+						<MenuFlyoutItem x:Uid="RankText" x:Name="ItemOrderRank" Text="Rank" Click="ItemOrderRank_Click"/>
+						<MenuFlyoutItem x:Uid="RandomText" x:Name="ItemOrderRandom" Text="Random" Click="ItemOrderRandom_Click"/>
+					</MenuFlyout>
+				</controls:DropDownButton.Flyout>
+			</controls:DropDownButton>
+			<controls:DropDownButton x:Uid="DefaultTypeButtonContent" x:Name="TypeDropDownButton" Content="Type" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1">
+				<controls:DropDownButton.Flyout>
+					<MenuFlyout Placement="Bottom">
+						<MenuFlyoutItem x:Uid="AllText" x:Name="ItemTypeAll" Text="All" Click="ItemTypeAll_Click"/>
+						<MenuFlyoutItem x:Uid="JPGText" x:Name="ItemTypeJPG" Text="JPG" Click="ItemTypeJPG_Click"/>
+						<MenuFlyoutItem x:Uid="PNGText" x:Name="ItemTypePNG" Text="PNG" Click="ItemTypePNG_Click"/>
+						<MenuFlyoutItem x:Uid="GIFText" x:Name="ItemTypeGIF" Text="GIF" Click="ItemTypeGIF_Click"/>
+						<MenuFlyoutItem x:Uid="WEBMText" x:Name="ItemTypeWEBM" Text="WEBM" Click="ItemTypeWEBM_Click"/>
+						<MenuFlyoutItem x:Uid="ANIMText" x:Name="ItemTypeANIM" Text="ANIM" IsEnabled="False" Click="ItemTypeANIM_Click"/>
+					</MenuFlyout>
+				</controls:DropDownButton.Flyout>
+			</controls:DropDownButton>
+			<controls:DropDownButton x:Uid="DefaultRatingButtonContent" x:Name="RatingDropDownButton" Content="Rating" HorizontalAlignment="Stretch" Margin="5" Grid.Column="2">
+				<controls:DropDownButton.Flyout>
+					<MenuFlyout Placement="Bottom">
+						<MenuFlyoutItem x:Uid="AllText" x:Name="ItemRatingAll" Text="All" Click="ItemRatingAll_Click"/>
+						<MenuFlyoutItem x:Uid="SafeText" x:Name="ItemRatingSafe" Text="Safe" Click="ItemRatingSafe_Click"/>
+						<MenuFlyoutItem x:Uid="QuestionableText" x:Name="ItemRatingQuestionable" Text="Questionable" Click="ItemRatingQuestionable_Click"/>
+						<MenuFlyoutItem x:Uid="ExplicitText" x:Name="ItemRatingExplicit" Text="Explicit" Click="ItemRatingExplicit_Click"/>
+					</MenuFlyout>
+				</controls:DropDownButton.Flyout>
+			</controls:DropDownButton>
+			<Grid Grid.ColumnSpan="3" Margin="5" Grid.Row="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="auto"/>
+					<ColumnDefinition Width="auto"/>
+				</Grid.ColumnDefinitions>
+				<TextBox x:Name="MySuggestBox" SelectionChanged="MySuggestBox_SelectionChanged" TextChanged="MySuggestBox_TextChanged" PreviewKeyDown="MySuggestBox_PreviewKeyDown" FontSize="22" Height="40" CornerRadius="4,0,0,4" Loaded="MySuggestBox_Loaded" TabIndex="0"/>
+				<Button x:Uid="MoreOptionsToolTip" x:Name="MoreButton" Grid.Column="1" Height="40" Width="40" FontSize="24" Padding="0" CornerRadius="0,0,0,0" ToolTipService.ToolTip="More Options">
+					<FontIcon Glyph="&#xE10C;"/>
+					<Button.Flyout>
+						<Flyout x:Name="MoreFlyout" Placement="Bottom">
+							<StackPanel>
+								<TextBlock Text="More Options" Margin="5"/>
+								<CheckBox x:Uid="InPoolContent" x:Name="IsInPoolBox" Content="In Pool" Click="IsInPoolBox_Click"/>
+								<CheckBox x:Uid="DeletedContent" x:Name="IsDeletedBox" Content="Deleted" Click="IsDeletedBOx_Click"/>
+							</StackPanel>
+						</Flyout>
+					</Button.Flyout>
+				</Button>
+				<Button Grid.Column="2" Height="40" Width="40" FontSize="24" Padding="0" CornerRadius="0,4,4,0" >
+					<FontIcon Glyph="&#xE11B;"/>
+					<Button.Flyout>
+						<Flyout Placement="Bottom">
+							<local:TagCategoryColorsPreview/>
+						</Flyout>
+					</Button.Flyout>
+				</Button>
+			</Grid>
+			<TextBlock x:Name="AlternativeHintText" d:Text="URL Detected" Grid.Row="2" TextAlignment="Center" FontSize="16" Grid.ColumnSpan="3" Margin="10,0,10,0" Visibility="Collapsed" d:Visibility="Visible"/>
+			<controls:ProgressBar x:Name="LoadingBar" IsIndeterminate="False" Grid.Row="2" Grid.ColumnSpan="3" Visibility="Collapsed" Margin="5" VerticalAlignment="Top"/>
+			<ListView x:Name="AutoCompletesListView" SelectionMode="None" IsItemClickEnabled="True" MaxHeight="500" Grid.Row="2" Grid.ColumnSpan="3" Margin="5" ItemClick="AutoCompletesListView_ItemClick"/>
+			<Button x:Name="SearchButton" HorizontalAlignment="Stretch" Margin="5,10,5,0" Tapped="SearchButton_Tapped" Grid.Column="0" Grid.Row="3">
+				<Button.Content>
+					<StackPanel Orientation="Horizontal">
+						<FontIcon Glyph="&#xE721;" FontSize="16" Margin="0,0,10,0"/>
+						<TextBlock x:Uid="SearchText" Text="Search" FontSize="16"/>
+					</StackPanel>
+				</Button.Content>
+			</Button>
+			<controls:DropDownButton x:Name="QuickOptionsDropDownButton" HorizontalAlignment="Stretch" Margin="5,10,5,0" Grid.Column="1" Grid.Row="3">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock x:Uid="MoreText" Text="More" FontSize="16"/>
+				</StackPanel>
+				<controls:DropDownButton.Flyout>
+					<MenuFlyout Placement="Bottom">
+						<MenuFlyoutItem x:Uid="HotText" x:Name="HotItem" Text="Hot" Click="HotItem_Click">
+							<MenuFlyoutItem.Icon>
+								<FontIcon Glyph="&#x1F525;" FontFamily="Segoe UI Symbol"/>
+							</MenuFlyoutItem.Icon>
+						</MenuFlyoutItem>
+						<MenuFlyoutItem x:Uid="RandomText" x:Name="RandomItem" Text="Random" Click="RandomItem_Click">
+							<MenuFlyoutItem.Icon>
+								<FontIcon Glyph="&#x1F3B2;" FontFamily="Segoe UI Symbol"/>
+							</MenuFlyoutItem.Icon>
+						</MenuFlyoutItem>
+					</MenuFlyout>
+				</controls:DropDownButton.Flyout>
+			</controls:DropDownButton>
+			<Button x:Name="DialogBackButton" HorizontalAlignment="Stretch" Grid.Column="2" Margin="5,10,5,0" Tapped="DialogBackButton_Tapped" Grid.Row="3">
+				<Button.Content>
+					<StackPanel Orientation="Horizontal">
+						<FontIcon Glyph="&#xE72B;" FontSize="16" Margin="0,0,10,0"/>
+						<TextBlock x:Uid="BackText" Text="Back" FontSize="16"/>
+					</StackPanel>
+				</Button.Content>
+			</Button>
+		</Grid>
+	</Grid>
+</Page>

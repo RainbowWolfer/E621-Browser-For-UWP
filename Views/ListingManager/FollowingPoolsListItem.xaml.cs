@@ -1,27 +1,15 @@
-﻿using ColorCode.Compilation.Languages;
-using E621Downloader.Models;
+﻿using E621Downloader.Models;
+using E621Downloader.Models.E621;
 using E621Downloader.Models.Networks;
-using E621Downloader.Models.Posts;
+using E621Downloader.Models.Utilities;
 using Microsoft.UI.Xaml.Controls;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage.Streams;
-using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 namespace E621Downloader.Views.ListingManager {
 	public sealed partial class FollowingPoolsListItem: UserControl {
@@ -85,7 +73,7 @@ namespace E621Downloader.Views.ListingManager {
 		}
 
 		private async ValueTask LoadImage() {
-			Post post = await GetFirstPost(pool);
+			E621Post post = await GetFirstPost(pool);
 			if(post == null || string.IsNullOrWhiteSpace(post.sample.url)) {
 				PreviewImage.Source = App.DefaultAvatar;
 				LoadingBar.Visibility = Visibility.Collapsed;
@@ -115,18 +103,18 @@ namespace E621Downloader.Views.ListingManager {
 		}
 
 		//get first that have sample url
-		private async ValueTask<Post> GetFirstPost(E621Pool pool, int maxTryCount = 10) {
-			Post found = null;
+		private async ValueTask<E621Post> GetFirstPost(E621Pool pool, int maxTryCount = 10) {
+			E621Post found = null;
 			for(int i = 0; i < Math.Min(pool.post_ids.Count, maxTryCount); i++) {
 				var id = pool.post_ids[i];
 				if(string.IsNullOrWhiteSpace(id)) {
 					continue;
 				}
-				Post tmp;
-				if(App.PostsPool.TryGetValue(id, out Post post)) {
+				E621Post tmp;
+				if(App.PostsPool.TryGetValue(id, out E621Post post)) {
 					tmp = post;
 				} else {
-					tmp = await Post.GetPostByIDAsync(id);
+					tmp = await E621Post.GetPostByIDAsync(id);
 					if(tmp != null) {
 						App.PostsPool.Add(id, tmp);
 					}

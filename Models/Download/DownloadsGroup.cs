@@ -1,4 +1,4 @@
-﻿using E621Downloader.Models.Posts;
+﻿using E621Downloader.Models.E621;
 using System.Collections.Generic;
 
 namespace E621Downloader.Models.Download {
@@ -24,7 +24,7 @@ namespace E621Downloader.Models.Download {
 			}
 		}
 
-		public DownloadInstance FindByPost(Post post) {
+		public DownloadInstance FindByPost(E621Post post) {
 			foreach(DownloadInstance item in downloads) {
 				if(post == item.PostRef) {
 					return item;

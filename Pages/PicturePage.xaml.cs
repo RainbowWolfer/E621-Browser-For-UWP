@@ -1,10 +1,11 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Debugging;
 using E621Downloader.Models.Download;
+using E621Downloader.Models.E621;
 using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
-using E621Downloader.Models.Posts;
+using E621Downloader.Models.Utilities;
 using E621Downloader.Views;
 using E621Downloader.Views.CommentsSection;
 using E621Downloader.Views.PictureSection;
@@ -45,7 +46,7 @@ namespace E621Downloader.Pages {
 	public sealed partial class PicturePage: Page, IPage {
 		public static PicturePage Instance { get; private set; }
 		public static string[] CurrentTags { get; set; }
-		public Post PostRef { get; private set; }
+		public E621Post PostRef { get; private set; }
 		public PathType PostType { get; private set; }
 		public readonly ObservableCollection<GroupTagListWithColor> tags = new();
 		private readonly Dictionary<string, E621Tag> tags_pool = new();//should i refresh on every entry?
@@ -73,7 +74,7 @@ namespace E621Downloader.Pages {
 				progress = value;
 				if(value == null) {
 					LoadingBar.Visibility = Visibility.Collapsed;
-				} else if(0 < value && value <= 100) {
+				} else if(value is > 0 and <= 100) {
 					LoadingBar.Visibility = Visibility.Visible;
 					LoadingBar.IsIndeterminate = false;
 					LoadingBar.Value = (double)value;
@@ -163,12 +164,12 @@ namespace E621Downloader.Pages {
 			this.imageDataPackage = null;
 			CancelCTS();
 			if(p == null && PostRef == null && PostsBrowserPage.HasLoaded()) {
-				List<Post> posts = PostsBrowserPage.GetCurrentPosts();
+				List<E621Post> posts = PostsBrowserPage.GetCurrentPosts();
 				App.PostsList.UpdatePostsList(posts);
 				p = posts.FirstOrDefault();
 				App.PostsList.Current = p;
 			}
-			if(p is Post post) {
+			if(p is E621Post post) {
 				Loader = LoadPool.SetNew(post);
 				if(PostRef == post) {
 					NoPostGrid.Visibility = Visibility.Collapsed;//just in case
@@ -191,7 +192,7 @@ namespace E621Downloader.Pages {
 							this.PostRef = mix.PostRef;
 						} else {
 							cts = new CancellationTokenSource();
-							this.PostRef = await Post.GetPostByIDAsync(mix.ID, cts.Token);
+							this.PostRef = await E621Post.GetPostByIDAsync(mix.ID, cts.Token);
 							mix.PostRef = this.PostRef;
 						}
 						UpdateDownloadButton(false);
@@ -239,7 +240,7 @@ namespace E621Downloader.Pages {
 				} else {
 					cts = new CancellationTokenSource();
 					SetIsLoadingPost(true);
-					this.PostRef = await Post.GetPostByIDAsync(postID, cts.Token);
+					this.PostRef = await E621Post.GetPostByIDAsync(postID, cts.Token);
 					SetIsLoadingPost(false);
 					if(this.PostRef == null) {
 						return;
@@ -341,7 +342,7 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		private void LoadFromPost(Post post) {
+		private void LoadFromPost(E621Post post) {
 			PreviewImage.Visibility = Visibility.Collapsed;
 			PreviewImage.Source = null;
 			HintText.Visibility = Visibility.Collapsed;
@@ -490,7 +491,7 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		public static FileType GetFileType(Post post) {
+		public static FileType GetFileType(E621Post post) {
 			return post.file.ext.ToLower().Trim() switch {
 				"jpg" => FileType.Jpg,
 				"png" => FileType.Png,
@@ -768,9 +769,9 @@ namespace E621Downloader.Pages {
 			PhotosItem.Visibility = PostType == PathType.Local ? Visibility.Visible : Visibility.Collapsed;
 		}
 
-		public static bool IsAbleToSetAs(Post post) {
+		public static bool IsAbleToSetAs(E621Post post) {
 			FileType type = GetFileType(post);
-			return type == FileType.Png || type == FileType.Jpg || type == FileType.Gif;
+			return type is FileType.Png or FileType.Jpg or FileType.Gif;
 		}
 
 		private void MainImage_ImageOpened(object sender, RoutedEventArgs e) {
@@ -1168,7 +1169,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void RightButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			tempSkip = true;
+			//tempSkip = true;
 			GoRight();
 		}
 
@@ -1294,7 +1295,7 @@ namespace E621Downloader.Pages {
 				cts = new CancellationTokenSource();
 			}
 			if(!this.PostRef.is_favorited) {
-				HttpResult<string> result = await Favorites.PostAsync(this.PostRef.id, cts.Token);
+				HttpResult<string> result = await E621Favorite.PostAsync(this.PostRef.id, cts.Token);
 				if(result.Result == HttpResultType.Success) {
 					FavoriteText.Text = "Favorited".Language();
 					FavoriteIcon.Glyph = "\uEB52";
@@ -1309,7 +1310,7 @@ namespace E621Downloader.Pages {
 					this.PostRef.is_favorited = false;
 				}
 			} else {
-				HttpResult<string> result = await Favorites.DeleteAsync(this.PostRef.id, cts.Token);
+				HttpResult<string> result = await E621Favorite.DeleteAsync(this.PostRef.id, cts.Token);
 				if(result.Result == HttpResultType.Success) {
 					FavoriteText.Text = "Favorite".Language();
 					FavoriteIcon.Glyph = "\uEB51";
@@ -1534,7 +1535,7 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		public static async Task<StorageFile> GetImageFile(PathType type, string pathForLocal, Post post, CancellationToken token) {
+		public static async Task<StorageFile> GetImageFile(PathType type, string pathForLocal, E621Post post, CancellationToken token) {
 			StorageFile file;
 			switch(type) {
 				case PathType.PostID: {
@@ -1746,7 +1747,7 @@ namespace E621Downloader.Pages {
 			if(!KeyCondition()) {
 				return;
 			}
-			tempSkip = true;
+			//tempSkip = true;
 			GoRight();
 			args.Handled = true;
 		}
@@ -1777,7 +1778,7 @@ namespace E621Downloader.Pages {
 			} catch { }
 		}
 
-		private bool tempSkip;
+		//private bool tempSkip;
 		public async void StartSlideshow(SlideshowConfiguration configuration) {
 			ShowListGrid = false;
 			IsInSlideshow = true;
@@ -1930,7 +1931,7 @@ namespace E621Downloader.Pages {
 
 
 	public interface ILocalImage {
-		Post ImagePost { get; }
+		E621Post ImagePost { get; }
 		StorageFile ImageFile { get; }
 	}
 
@@ -1939,13 +1940,13 @@ namespace E621Downloader.Pages {
 		public string ID { get; set; }
 		public string LocalPath { get; set; }
 		// -------------------------
-		public Post PostRef { get; set; }
+		public E621Post PostRef { get; set; }
 		// -------------------------
 		public StorageFile ImageFile { get; set; }
 		public MetaFile MetaFile { get; set; }
 		// -------------------------
 		public bool HasLocalLoaded => ImageFile != null && MetaFile != null;
-		Post ILocalImage.ImagePost => MetaFile.MyPost;
+		E621Post ILocalImage.ImagePost => MetaFile.MyPost;
 		StorageFile ILocalImage.ImageFile => ImageFile;
 
 		public MixPost(PathType pathType, string path) {
@@ -1962,7 +1963,7 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		public void Finish(Post post) {
+		public void Finish(E621Post post) {
 			if(Type != PathType.PostID) {
 				throw new Exception();
 			}

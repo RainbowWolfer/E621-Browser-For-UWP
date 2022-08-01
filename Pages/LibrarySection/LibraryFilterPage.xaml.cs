@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Locals;
+using E621Downloader.Models.Utilities;
 using E621Downloader.Views.FoldersSelectionSection;
 using E621Downloader.Views.LibrarySection;
 using E621Downloader.Views.LocalTagsManagementSection;

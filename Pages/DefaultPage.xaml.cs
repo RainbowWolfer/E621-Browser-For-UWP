@@ -1,4 +1,4 @@
-﻿using E621Downloader.Models;
+﻿using E621Downloader.Models.Utilities;
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
 using System;

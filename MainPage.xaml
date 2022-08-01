@@ -8,6 +8,7 @@
 	xmlns:data="using:E621Downloader.Models" 
 	xmlns:controls="using:Microsoft.UI.Xaml.Controls" 
 	xmlns:views="using:E621Downloader.Views"
+	xmlns:main="using:E621Downloader.Views.MainSection"
 	mc:Ignorable="d"
 	d:RequestedTheme="Dark"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -63,7 +64,7 @@
 					<controls:NavigationViewItem.Content>
 						<StackPanel Orientation="Horizontal">
 							<TextBlock x:Uid="DownloadText" Text="Downloads" VerticalAlignment="Center"/>
-							<views:LoadingRingIcon x:Name="DownloadRingIcon" Margin="10,0,0,0"/>
+							<main:LoadingRingIcon x:Name="DownloadRingIcon" Margin="10,0,0,0"/>
 						</StackPanel>
 					</controls:NavigationViewItem.Content>
 				</controls:NavigationViewItem>

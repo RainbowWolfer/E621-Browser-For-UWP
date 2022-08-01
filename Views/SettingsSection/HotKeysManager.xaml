@@ -1,0 +1,287 @@
+﻿<UserControl
+    x:Class="E621Downloader.Views.SettingsSection.HotKeysManager"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="800"
+    d:DesignWidth="1000"
+    d:RequestedTheme="Dark"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<Grid MaxHeight="400" d:MaxHeight="800">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Grid Grid.Column="1" BorderThickness="2" BorderBrush="Gray" Margin="5" Padding="5,5,5,5" CornerRadius="10">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<TextBlock x:Uid="PicturePageText" Text="Picture Page" Margin="10" FontSize="24"/>
+			<ScrollViewer HorizontalScrollMode="Disabled" VerticalScrollMode="Enabled" Grid.Row="1" Padding="0,0,10,0">
+				<StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="A" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<Rectangle Width="2" Fill="Gray" Height="20" RadiusX="10" RadiusY="2"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<FontIcon FontFamily="Segoe UI Symbol" Glyph="&#x2190;" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="PreviousPictureText" Text="Previous Picture" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<Rectangle Width="2" Fill="Gray" Height="20" RadiusX="10" RadiusY="2"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<FontIcon FontFamily="Segoe UI Symbol" Glyph="&#x2192;" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="NextPictureText" Text="Next Picture" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="W" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<Rectangle Width="2" Fill="Gray" Height="20" RadiusX="10" RadiusY="2"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<FontIcon FontFamily="Segoe UI Symbol" Glyph="&#x2191;" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="ZoomInText" Text="Zoom In" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="S" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<Rectangle Width="2" Fill="Gray" Height="20" RadiusX="10" RadiusY="2"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<FontIcon FontFamily="Segoe UI Symbol" Glyph="&#x2193;" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="ZoomOutText" Text="Zoom Out" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="DownloadText" Text="Download" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="E" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="AddToFavoriteText" Text="Add to Favorite" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="F" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="E621FavoriteText" Text="E621 Favorite" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="Alt" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="VoteUpText" Text="Vote Up" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="Alt" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="VoteDownText" Text="Vote Down" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="I" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="ShowInfoDialogText" Text="Show Info Dialog" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="O" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="ToggleMoreInfoText" Text="Toggle More Info" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="F5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="ShowSlideshowDialogText" Text="Show Slideshow Dialog" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+				</StackPanel>
+			</ScrollViewer>
+		</Grid>
+		<Grid Grid.Column="0" BorderThickness="2" BorderBrush="Gray" Margin="5" Padding="5,5,5,5" CornerRadius="10">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<TextBlock x:Uid="GlobalText" Text="Global" Margin="10" FontSize="24"/>
+			<ScrollViewer HorizontalScrollMode="Disabled" VerticalScrollMode="Enabled" Grid.Row="1" Padding="0,0,10,0">
+				<StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="Q" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="SearchPopupText" Text="Search Popup" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="ESC" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<Rectangle Width="2" Fill="Gray" Height="20" RadiusX="10" RadiusY="2"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="F11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="ExitFocusModeText" Text="Exit Focus Mode" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="F1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="ToggleFullscreenText" Text="Toggle Fullscreen" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="F2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="ToggleFocusModeText" Text="Toggle Focus Mode" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="NavigateToHomeText" Text="Navigate To Home" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="NavigateToPictureText" Text="Navigate To Picture" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="NavigateToLibraryText" Text="Navigate To Library" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="NavigateToFavoritesText" Text="Navigate To Favorites" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="NavigateToSpotText" Text="Navigate To Spot" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="NavigateToDownloadText" Text="Navigate To Download" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="7" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="NavigateToUserText" Text="Navigate To User" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal">
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+						<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+							<TextBlock Text="8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock x:Uid="NavigateToSettingsText" Text="Navigate To Settings" VerticalAlignment="Center" Margin="10,0,0,0"/>
+					</StackPanel>
+				</StackPanel>
+			</ScrollViewer>
+		</Grid>
+		<StackPanel Grid.Column="2" BorderThickness="2" BorderBrush="Gray" Margin="5" Padding="5,5,15,5" CornerRadius="10">
+			<TextBlock x:Uid="HomePageText" Text="Home Page" Margin="10" FontSize="24"/>
+			<StackPanel Orientation="Horizontal">
+				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+					<TextBlock Text="F5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<Rectangle Width="2" Fill="Gray" Height="20" RadiusX="10" RadiusY="2"/>
+				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+					<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+					<TextBlock Text="R" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<TextBlock x:Uid="RefreshText" Text="Refresh" VerticalAlignment="Center" Margin="10,0,0,0"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+					<TextBlock Text="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<FontIcon Glyph="&#xE109;" FontSize="10" FontWeight="Bold"/>
+				<Border Width="35" Height="35" BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+					<TextBlock Text="W" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<TextBlock x:Uid="CloseTabText" Text="Close Tab" VerticalAlignment="Center" Margin="10,0,0,0"/>
+			</StackPanel>
+		</StackPanel>
+	</Grid>
+</UserControl>

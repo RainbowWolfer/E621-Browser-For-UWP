@@ -1,0 +1,44 @@
+﻿<UserControl
+    x:Class="E621Downloader.Views.SettingsSection.HistoryView.RecentViewView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E621Downloader.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+	d:RequestedTheme="Dark"
+	d:Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
+    d:DesignHeight="150"
+    d:DesignWidth="400">
+
+
+	<Button Background="Transparent" BorderBrush="Transparent" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Height="150" Margin="5" CornerRadius="10" Padding="0" Click="Button_Click">
+		<Grid>
+			<Grid.ContextFlyout>
+				<MenuFlyout>
+					<MenuFlyoutItem x:Name="MenuItemCopy" Text="Copy" Icon="Copy" Click="MenuItemCopy_Click"/>
+					<MenuFlyoutItem x:Name="MenuItemDelete" Text="Delete" Icon="Delete" Click="MenuItemDelete_Click"/>
+				</MenuFlyout>
+			</Grid.ContextFlyout>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Image x:Name="ImageView" Source="/Assets/RowBanner.png" Stretch="UniformToFill" HorizontalAlignment="Center"/>
+			<Border x:Name="TextBorder" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="10,5,10,5" Margin="10,5,0,0">
+				<Border.Shadow>
+					<ThemeShadow/>
+				</Border.Shadow>
+				<Grid>
+					<TextBlock x:Name="PostIDTextShadow" Text="#817463" FontSize="18" Foreground="Black">
+						<TextBlock.RenderTransform>
+							<TranslateTransform X="1.5" Y="2"/>
+						</TextBlock.RenderTransform>
+					</TextBlock>
+					<TextBlock x:Name="PostIDText" Text="#817463" FontSize="18" Foreground="White"/>
+				</Grid>
+			</Border>
+			<controls:ProgressBar x:Name="LoadingBar" IsIndeterminate="True" VerticalAlignment="Bottom" Margin="10"/>
+		</Grid>
+	</Button>
+</UserControl>

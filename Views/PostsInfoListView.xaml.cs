@@ -1,5 +1,5 @@
-﻿using E621Downloader.Models;
-using E621Downloader.Models.Posts;
+﻿using E621Downloader.Models.E621;
+using E621Downloader.Models.Utilities;
 using E621Downloader.Pages;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -26,9 +26,9 @@ namespace E621Downloader.Views {
 			poststInfolists.Add(new PostsInfoList("Hot Tags (Top 20)".Language(), new List<PostInfoLine>()));
 		}
 
-		public void UpdatePostsInfo(IEnumerable<Post> posts) {
+		public void UpdatePostsInfo(IEnumerable<E621Post> posts) {
 			var allTags = new Dictionary<string, long>();
-			foreach(Post item in posts) {
+			foreach(E621Post item in posts) {
 				foreach(string tag in item.tags.GetAllTags()) {
 					if(allTags.ContainsKey(tag)) {
 						allTags[tag]++;
@@ -51,7 +51,7 @@ namespace E621Downloader.Views {
 
 		public void UpdatePostsInfo(SubscriptionsPostsTab tab) {
 			List<PostInfoLine> deletes = new();
-			foreach(Post item in tab.Unsupported) {
+			foreach(E621Post item in tab.Unsupported) {
 				deletes.Add(new PostInfoLine(item.id, "File type".Language() + $": {item.file.ext}"));
 			}
 
@@ -79,7 +79,7 @@ namespace E621Downloader.Views {
 
 		public void UpdatePostsInfo(PostsTab tab) {
 			List<PostInfoLine> deletes = new();
-			foreach(Post item in tab.Unsupported) {
+			foreach(E621Post item in tab.Unsupported) {
 				deletes.Add(new PostInfoLine(item.id, "File type".Language() + $": {item.file.ext}"));
 			}
 

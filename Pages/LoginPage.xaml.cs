@@ -1,9 +1,9 @@
-﻿using E621Downloader.Models;
-using E621Downloader.Models.Debugging;
+﻿using E621Downloader.Models.Debugging;
 using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
-using E621Downloader.Views;
+using E621Downloader.Models.Utilities;
+using E621Downloader.Views.UserSection;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Threading.Tasks;

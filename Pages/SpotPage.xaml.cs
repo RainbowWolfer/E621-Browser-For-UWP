@@ -1,8 +1,9 @@
-﻿using E621Downloader.Models;
+﻿using E621Downloader.Models.E621;
 using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
-using E621Downloader.Models.Posts;
+using E621Downloader.Models.Utilities;
 using E621Downloader.Views;
+using E621Downloader.Views.SpotSection;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Microsoft.UI.Xaml.Controls;
 using System;
@@ -26,7 +27,7 @@ namespace E621Downloader.Pages {
 		private string[] inputTags = new string[0];
 		private bool internalChange = true;
 		private bool onTask;
-		public List<Post> Posts { get; private set; } = new List<Post>();
+		public List<E621Post> Posts { get; private set; } = new List<E621Post>();
 		private CancellationTokenSource cts = new();
 
 		public SpotPage() {
@@ -193,7 +194,7 @@ namespace E621Downloader.Pages {
 				cts = null;
 			}
 			cts = new CancellationTokenSource();
-			List<Post> posts = await Post.GetPostsByRandomAsync(cts.Token, CurrentAmount, tags.ToArray());
+			List<E621Post> posts = await E621Post.GetPostsByRandomAsync(cts.Token, CurrentAmount, tags.ToArray());
 			if(posts == null) {
 				LoadingRing.IsActive = false;
 				return;

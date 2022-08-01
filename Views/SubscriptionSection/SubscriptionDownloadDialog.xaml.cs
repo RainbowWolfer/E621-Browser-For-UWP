@@ -1,4 +1,4 @@
-﻿using E621Downloader.Models;
+﻿using E621Downloader.Models.Utilities;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 

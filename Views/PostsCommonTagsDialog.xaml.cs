@@ -1,15 +1,15 @@
-﻿using E621Downloader.Models;
-using E621Downloader.Models.Posts;
+﻿using E621Downloader.Models.E621;
+using E621Downloader.Models.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.UI.Xaml.Controls;
 
 namespace E621Downloader.Views {
 	public sealed partial class PostsCommonTagsDialog: UserControl {
-		private readonly IEnumerable<Post> posts;
+		private readonly IEnumerable<E621Post> posts;
 
 		private readonly Dictionary<string, int> all = new();
-		public PostsCommonTagsDialog(IEnumerable<Post> posts) {
+		public PostsCommonTagsDialog(IEnumerable<E621Post> posts) {
 			this.InitializeComponent();
 			this.posts = posts;
 			TitleText.Text = $"{posts.Count()} {"Posts".Language()}";

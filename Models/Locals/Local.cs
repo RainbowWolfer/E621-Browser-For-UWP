@@ -1,5 +1,5 @@
 ﻿using E621Downloader.Models.Debugging;
-using E621Downloader.Models.Posts;
+using E621Downloader.Models.E621;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -144,7 +144,7 @@ namespace E621Downloader.Models.Locals {
 			}
 		}
 
-		public static MetaFile CreateMetaFile(StorageFile file, Post post, string groupName) {
+		public static MetaFile CreateMetaFile(StorageFile file, E621Post post, string groupName) {
 			MetaFile meta = new(file.Path, groupName, post);
 			WriteMetaFile(meta, file);
 			return meta;
@@ -174,7 +174,7 @@ namespace E621Downloader.Models.Locals {
 			}
 		}
 
-		public static async void WriteMetaFile(MetaFile meta, Post post, string groupName) {
+		public static async void WriteMetaFile(MetaFile meta, E621Post post, string groupName) {
 			//System.IO.FileLoadException: 'The process cannot access the file because it is being used by another process. (Exception from HRESULT: 0x80070020)'
 			try {
 				(MetaFile _, StorageFile file) = await GetMetaFile(post.id.ToString(), groupName);

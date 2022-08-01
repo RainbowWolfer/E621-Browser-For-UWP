@@ -1,5 +1,5 @@
-﻿using E621Downloader.Models.Locals;
-using E621Downloader.Models.Posts;
+﻿using E621Downloader.Models.E621;
+using E621Downloader.Models.Locals;
 using E621Downloader.Pages;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,13 +9,13 @@ using Windows.UI.Xaml.Input;
 
 namespace E621Downloader.Views {
 	public sealed partial class PersonalFavoritesListForMultiple: UserControl {
-		private ContentDialog dialog;
+		private readonly ContentDialog dialog;
 		private readonly PathType type;
-		private readonly IEnumerable<Post> posts;
+		private readonly IEnumerable<E621Post> posts;
 
 		private readonly ObservableCollection<FavoriteListCheckBoxClass> FavoriteLists = new();
 
-		public PersonalFavoritesListForMultiple(ContentDialog dialog, PathType type, IEnumerable<Post> posts) {
+		public PersonalFavoritesListForMultiple(ContentDialog dialog, PathType type, IEnumerable<E621Post> posts) {
 			this.InitializeComponent();
 			this.dialog = dialog;
 			this.type = type;
@@ -36,7 +36,7 @@ namespace E621Downloader.Views {
 
 		private void AcceptButton_Tapped(object sender, TappedRoutedEventArgs e) {
 			List<string> selected = GetSelectedList();
-			foreach(Post post in posts) {
+			foreach(E621Post post in posts) {
 				FavoritesList.Modify(new(), selected, post.id, PathType.PostID);
 			}
 			dialog.Hide();

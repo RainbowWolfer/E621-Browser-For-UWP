@@ -1,8 +1,9 @@
 ﻿using E621Downloader.Models;
 using E621Downloader.Models.Download;
+using E621Downloader.Models.E621;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
-using E621Downloader.Models.Posts;
+using E621Downloader.Models.Utilities;
 using E621Downloader.Pages;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace E621Downloader.Views {
 	public sealed partial class ImageHolderForSubscriptionPage: UserControl {
-		public Post PostRef { get; private set; }
+		public E621Post PostRef { get; private set; }
 		private readonly SubscriptionPage parent;
 		private readonly string belongingListName;
 		private PathType type;
@@ -51,7 +52,7 @@ namespace E621Downloader.Views {
 		}
 
 		//can only be used in following layout
-		public void LoadFromPost(Post post, string[] followTags = null) {
+		public void LoadFromPost(E621Post post, string[] followTags = null) {
 			this.PostRef = post;
 			LoadingRing.IsActive = true;
 			if(App.PostsPool.ContainsKey(post.id)) {
@@ -106,13 +107,13 @@ namespace E621Downloader.Views {
 		}
 
 		//used in favorite layout
-		public async void LoadFromPostID(MixPost mix, CancellationToken? token = null, Action<Post> onPostLoaded = null) {
+		public async void LoadFromPostID(MixPost mix, CancellationToken? token = null, Action<E621Post> onPostLoaded = null) {
 			LoadingRing.IsActive = true;
-			if(App.PostsPool.TryGetValue(mix.ID, out Post post)) {
+			if(App.PostsPool.TryGetValue(mix.ID, out E621Post post)) {
 				this.PostRef = post;
 			}
 			if(this.PostRef == null) {
-				this.PostRef = await Post.GetPostByIDAsync(mix.ID, token);
+				this.PostRef = await E621Post.GetPostByIDAsync(mix.ID, token);
 				if(this.PostRef != null) {
 					App.PostsPool[mix.ID] = this.PostRef;
 				}
@@ -158,7 +159,7 @@ namespace E621Downloader.Views {
 		}
 
 		//used in favorite layout
-		public async void LoadFromLocal(MixPost mix, CancellationToken? token = null, Action<Post> onPostLoaded = null) {
+		public async void LoadFromLocal(MixPost mix, CancellationToken? token = null, Action<E621Post> onPostLoaded = null) {
 			LocalBorder.Visibility = Visibility.Visible;
 			(StorageFile file, MetaFile meta) = await Local.GetDownloadFile(mix.LocalPath);
 			if(file == null || meta == null) {
@@ -215,7 +216,7 @@ namespace E621Downloader.Views {
 			this.RightTapped += ImageHolderForSubscriptionPage_RightTappedForLocal;
 		}
 
-		private void ProcedureLoading(Post post) {
+		private void ProcedureLoading(E621Post post) {
 			Methods.ProdedureLoading(PreviewImage, MyImage, post, new LoadPoolItemActions() {
 				OnUrlsEmpty = () => {
 					progress.Value = null;
@@ -386,11 +387,11 @@ namespace E621Downloader.Views {
 	}
 
 	public class SubscriptionImageParameter: ILocalImage {
-		private readonly Post imagePost;
+		private readonly E621Post imagePost;
 		private readonly StorageFile imageFile;
-		public Post ImagePost => imagePost;
+		public E621Post ImagePost => imagePost;
 		public StorageFile ImageFile => imageFile;
-		public SubscriptionImageParameter(Post imagePost, StorageFile imageFile) {
+		public SubscriptionImageParameter(E621Post imagePost, StorageFile imageFile) {
 			this.imagePost = imagePost;
 			this.imageFile = imageFile;
 		}

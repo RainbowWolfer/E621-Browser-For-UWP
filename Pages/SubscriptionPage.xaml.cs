@@ -1,8 +1,8 @@
-﻿using E621Downloader.Models;
-using E621Downloader.Models.Download;
+﻿using E621Downloader.Models.Download;
+using E621Downloader.Models.E621;
 using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
-using E621Downloader.Models.Posts;
+using E621Downloader.Models.Utilities;
 using E621Downloader.Views;
 using E621Downloader.Views.SubscriptionSection;
 using System;
@@ -145,11 +145,11 @@ namespace E621Downloader.Pages {
 				FavoritesListHintText.Visibility = Visibility.Visible;
 				MyPostsInfoListView.SetEmpty();
 			} else {
-				List<Post> posts;
+				List<E621Post> posts;
 				if(FollowingTab != null && FollowingTab.Page == page && !refresh) {
 					posts = FollowingTab.Posts;
 				} else {
-					posts = await Post.GetPostsByTagsAsync(cts.Token, true, page, Local.Listing.GetGetDefaultFollowList().Tags.ToArray());
+					posts = await E621Post.GetPostsByTagsAsync(cts.Token, true, page, Local.Listing.GetGetDefaultFollowList().Tags.ToArray());
 					FollowingTab = new SubscriptionsPostsTab() {
 						Page = page,
 					};
@@ -163,7 +163,7 @@ namespace E621Downloader.Pages {
 				if(posts != null && cts != null && CurrentLayout == LayoutType.Following) {
 					PostsList.Clear();
 					PostsList.AddRange(posts);
-					foreach(Post post in posts) {
+					foreach(E621Post post in posts) {
 						ImageHolderForSubscriptionPage image = new(this) {
 							Height = Size,
 							Width = Size,
@@ -233,8 +233,8 @@ namespace E621Downloader.Pages {
 			DownloadButton.IsEnabled = PostsList.Count > 0;
 		}
 
-		private void UpdatePostsInfoInFavorites(Post post) {
-			IEnumerable<Post> posts = PostsList.Where(p => p is MixPost mix).Cast<MixPost>().Select(x => x.PostRef).Where(x => x != null);
+		private void UpdatePostsInfoInFavorites(E621Post post) {
+			IEnumerable<E621Post> posts = PostsList.Where(p => p is MixPost mix).Cast<MixPost>().Select(x => x.PostRef).Where(x => x != null);
 			posts = posts.Append(post);
 			MyPostsInfoListView.UpdatePostsInfo(posts);
 		}
@@ -563,7 +563,7 @@ namespace E621Downloader.Pages {
 				downloadCts = new CancellationTokenSource();
 				CreateDownloadDialog("Please Wait".Language(), "Handling Downloads".Language());
 
-				IEnumerable<Post> posts;
+				IEnumerable<E621Post> posts;
 				if(ImagesSelecting) {
 					posts = all.Where(a => !a.IsLocal && a.IsSelected).Select(a => a.PostRef);
 				} else {
@@ -657,7 +657,7 @@ namespace E621Downloader.Pages {
 		private async Task Forward(string text) {
 			const int MAX_PAGE = 75;
 			if(int.TryParse(text, out int page)) {
-				if(page < 1 || page > MAX_PAGE) {
+				if(page is < 1 or > MAX_PAGE) {
 					await MainPage.CreatePopupDialog("Error".Language(), "({{0}}) can only be in 1-{{1}}".Language(page, MAX_PAGE));
 				} else {
 					LoadFollowing(page);
@@ -689,7 +689,7 @@ namespace E621Downloader.Pages {
 
 		private async void FindCommonTagsItem_Click(object sender, RoutedEventArgs e) {
 			var selected = MainGridView.Items.Cast<ImageHolderForSubscriptionPage>().Where(i => i.IsSelected);
-			IEnumerable<Post> posts = selected.Select(p => p.PostRef);
+			IEnumerable<E621Post> posts = selected.Select(p => p.PostRef);
 			await new ContentDialog() {
 				Title = "Posts Common Tags".Language(),
 				Content = new PostsCommonTagsDialog(posts),
@@ -710,10 +710,10 @@ namespace E621Downloader.Pages {
 	}
 
 	public class SubscriptionsPostsTab {
-		private List<Post> posts;
+		private List<E621Post> posts;
 
 		//public SubscriptionPage.LayoutType Layout { get; set; }
-		public List<Post> Posts {
+		public List<E621Post> Posts {
 			get => posts;
 			set {
 				posts = value;
@@ -721,7 +721,7 @@ namespace E621Downloader.Pages {
 				Unsupported.Clear();
 				BlackTags.Clear();
 				HotTags.Clear();
-				foreach(Post item in posts) {
+				foreach(E621Post item in posts) {
 					if(PostsBrowserPage.IgnoreTypes.Contains(item.file.ext)) {
 						Unsupported.Add(item);
 					}
@@ -737,7 +737,7 @@ namespace E621Downloader.Pages {
 				});
 
 				BlackTags = BlackTags.OrderByDescending(t => t.Value).ToDictionary(x => x.Key, x => x.Value);
-				foreach(Post item in posts) {
+				foreach(E621Post item in posts) {
 					foreach(string tag in item.tags.GetAllTags()) {
 						if(AllTags.ContainsKey(tag)) {
 							AllTags[tag]++;
@@ -750,8 +750,8 @@ namespace E621Downloader.Pages {
 			}
 		}
 
-		public List<Post> PostsAfterBlasklist { get; private set; } = new();
-		public List<Post> Unsupported { get; private set; } = new();
+		public List<E621Post> PostsAfterBlasklist { get; private set; } = new();
+		public List<E621Post> Unsupported { get; private set; } = new();
 		public Dictionary<string, long> BlackTags { get; private set; } = new();
 		public Dictionary<string, long> AllTags { get; private set; } = new();
 		public Dictionary<string, long> HotTags { get; private set; } = new();

@@ -1,5 +1,5 @@
-﻿using E621Downloader.Models;
-using E621Downloader.Models.Posts;
+﻿using E621Downloader.Models.E621;
+using E621Downloader.Models.Utilities;
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -21,7 +21,7 @@ namespace E621Downloader.Views {
 			}
 		}
 
-		public ToolTipContentForPost(Post post, bool local = false) {
+		public ToolTipContentForPost(E621Post post, bool local = false) {
 			this.InitializeComponent();
 			ID.Text = $"#{post.id}" + (local ? " - " + "Local".Language() : "");
 			UP.Text = $" · " + "Up".Language() + $" - {Math.Abs(post.score.up)}";
