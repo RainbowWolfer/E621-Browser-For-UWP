@@ -1,0 +1,88 @@
+<Page
+    x:Class="YiffBrowser.Views.Pages.E621.E621HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YiffBrowser.Views.Pages.E621"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:controls="using:YiffBrowser.Views.Controls" 
+	xmlns:converters="using:YiffBrowser.Converters"
+	xmlns:i="using:Microsoft.Xaml.Interactivity"
+	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+	mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+	NavigationCacheMode="Required"
+	Loaded="Page_Loaded">
+
+	<Page.DataContext>
+		<local:E621HomePageViewModel x:Name="ViewModel"/>
+	</Page.DataContext>
+
+	<Page.Resources>
+		<converters:BoolToStringConverter x:Key="BoolToValue" TrueValue="&#xE132;" FalseValue="&#xE130;"/>
+	</Page.Resources>
+
+	<Grid>
+		<!-- SelectedItem="{Binding SelectedItem,Mode=TwoWay}"-->
+		<muxc:TabView x:Name="MainTabView" TabItemsSource="{Binding Items}" SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}"
+			IsAddTabButtonVisible="False" 
+			TabWidthMode="SizeToContent"
+			CloseButtonOverlayMode="OnPointerOver" 
+			TabCloseRequested="TabView_TabCloseRequested"
+			SelectionChanged="TabView_SelectionChanged">
+
+			<muxc:TabView.TabStripHeader>
+				<StackPanel Orientation="Horizontal" Margin="5">
+					<Button Style="{StaticResource AccentButtonStyle}" Command="{Binding SearchCommand}" ToolTipService.ToolTip="Open Search Popup">
+						<SymbolIcon Symbol="Find"/>
+					</Button>
+				</StackPanel>
+			</muxc:TabView.TabStripHeader>
+
+			<muxc:TabView.TabItemTemplate>
+				<DataTemplate x:DataType="local:HomeTabViewItem">
+					<muxc:TabViewItem IsSelected="{Binding IsSelected,Mode=TwoWay}">
+
+						<muxc:TabViewItem.Header>
+							<StackPanel Orientation="Horizontal">
+								<FontIcon Glyph="{Binding IsSelected,Converter={StaticResource BoolToValue}}" FontSize="16"/>
+								<TextBlock Text="{Binding Title}" Margin="5,0,0,0"/>
+							</StackPanel>
+						</muxc:TabViewItem.Header>
+
+						<!--<TabViewItem.IconSource>
+							<FontIconSource Glyph="{Binding IsSelected,Converter={StaticResource BoolToValue}}"/>
+						</TabViewItem.IconSource>-->
+
+						<ToolTipService.ToolTip>
+							<Grid>
+								<Grid Visibility="{Binding PreviewURLs,Converter={StaticResource ArrayNotEmptyToVisibility}}">
+									<controls:ImagesSlideShowView ImageURLs="{Binding PreviewURLs}" Height="300" Width="300"/>
+								</Grid>
+								<Grid Visibility="{Binding PreviewURLs,Converter={StaticResource ArrayEmptyToVisibility}}">
+									<TextBlock Text="No Previews"/>
+								</Grid>
+							</Grid>
+						</ToolTipService.ToolTip>
+
+						<muxc:TabViewItem.ContextFlyout>
+							<MenuFlyout>
+								<MenuFlyoutItem Text="Copy" Icon="Copy" Command="{Binding CopyCommand}"/>
+								<MenuFlyoutSeparator/>
+								<MenuFlyoutItem/>
+							</MenuFlyout>
+						</muxc:TabViewItem.ContextFlyout>
+
+						<muxc:TabViewItem.Content>
+							<Grid>
+								<Grid Height="100000"/><!--To fill up the space when needed. in case for example, some splitviews are unable to open-->
+								<controls:PostsViewer x:Name="PostsViewer" Parameters="{Binding Parameters}" OnPreviewsUpdatedCommand="{Binding OnPreviewsUpdateCommand}"/>
+							</Grid>
+						</muxc:TabViewItem.Content>
+					</muxc:TabViewItem>
+				</DataTemplate>
+			</muxc:TabView.TabItemTemplate>
+		</muxc:TabView>
+	</Grid>
+</Page>

@@ -10,9 +10,11 @@ using Windows.Storage.Provider;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using YiffBrowser;
+using YiffBrowser.Helpers;
 
 namespace E621Downloader.Pages {
-	public sealed partial class DefaultPage: Page {
+	public sealed partial class DefaultPage : Page {
 		private object args;
 		private bool expandStackTrace = false;
 		private bool expandDevice = false;
@@ -52,36 +54,37 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void Page_Loaded(object sender, RoutedEventArgs e) {
-			if(!await Crashes.HasCrashedInLastSessionAsync()) {
+			if (!await Crashes.HasCrashedInLastSessionAsync()) {
 				NavigateToMainPage();
 				//Crashes.GenerateTestCrash();
 			} else {
 				ErrorReport report = await Crashes.GetLastSessionCrashReportAsync();
-				if(report == null) {
+				if (report == null) {
 					NavigateToMainPage();
 				} else {
 					IDText.Text = report.Id;
 					StartTimeText.Text = report.AppStartTime.ToString();
 					CrashTimeText.Text = report.AppErrorTime.ToString();
-					DeviceText.Text = report.Device.Model;
-					AppVersionText.Text = report.Device.AppVersion;
-					LocaleText.Text = report.Device.Locale;
-					ModelText.Text = report.Device.Model;
-					OEMNameText.Text = report.Device.OemName;
-					OSBuildText.Text = report.Device.OsBuild;
-					OSNameText.Text = report.Device.OsName;
-					ScreenSizeText.Text = report.Device.ScreenSize;
-					SDKNameText.Text = report.Device.SdkName;
-					SDKVersionText.Text = report.Device.SdkVersion;
-					StackTraceText.Text = report.StackTrace;
+					DeviceText.Text = report.Device.Model.NotBlankCheck() ?? "";
+					AppVersionText.Text = report.Device.AppVersion.NotBlankCheck() ?? "";
+					LocaleText.Text = report.Device.Locale.NotBlankCheck() ?? "";
+					ModelText.Text = report.Device.Model.NotBlankCheck() ?? "";
+					OEMNameText.Text = report.Device.OemName.NotBlankCheck() ?? "";
+					OSBuildText.Text = report.Device.OsBuild.NotBlankCheck() ?? "";
+					OSNameText.Text = report.Device.OsName.NotBlankCheck() ?? "";
+					ScreenSizeText.Text = report.Device.ScreenSize.NotBlankCheck() ?? "";
+					SDKNameText.Text = report.Device.SdkName.NotBlankCheck() ?? "";
+					SDKVersionText.Text = report.Device.SdkVersion.NotBlankCheck() ?? "";
+					StackTraceText.Text = report.StackTrace.NotBlankCheck() ?? "";
 					this.report = report;
 				}
 			}
 		}
 
 		private void NavigateToMainPage() {
-			if(Window.Current.Content is Frame rootFrame) {
-				rootFrame.Navigate(typeof(MainPage), args);
+			if (Window.Current.Content is Frame rootFrame) {
+				//rootFrame.Navigate(typeof(MainPage), args);
+				rootFrame.Navigate(typeof(YiffHomePage), args);
 			}
 		}
 
@@ -110,11 +113,11 @@ namespace E621Downloader.Pages {
 			savePicker.FileTypeChoices.Add("Json File", new List<string>() { ".json" });
 			savePicker.SuggestedFileName = "E621 UWP " + "Error Report".Language() + $" {report.AppErrorTime}";
 			StorageFile file = await savePicker.PickSaveFileAsync();
-			if(file != null) {
+			if (file != null) {
 				CachedFileManager.DeferUpdates(file);
 				await FileIO.WriteTextAsync(file, ReportToJson(report));
 				FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
-				if(status == FileUpdateStatus.Complete) {
+				if (status == FileUpdateStatus.Complete) {
 					SaveTip.Content = "File Saved".Language();
 				} else {
 					SaveTip.Content = "File Cannot Be Saved".Language();

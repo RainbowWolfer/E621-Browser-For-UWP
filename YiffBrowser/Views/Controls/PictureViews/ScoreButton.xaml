@@ -1,0 +1,19 @@
+<UserControl
+    x:Class="YiffBrowser.Views.Controls.PictureViews.ScoreButton"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YiffBrowser.Views.Controls.PictureViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+	<ToggleButton IsChecked="{x:Bind IsChecked,Mode=TwoWay}" IsEnabled="{x:Bind IsLoading,Converter={StaticResource BoolToBoolRe}}" Command="{x:Bind Command,Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0" Background="Transparent" BorderThickness="0">
+		<Grid>
+			<FontIcon Glyph="&#xE10C;" Visibility="{x:Bind IsLoading,Mode=OneWay,Converter={StaticResource BoolToVisibility}}"/>
+			<Grid Visibility="{x:Bind IsLoading,Mode=OneWay,Converter={StaticResource BoolToVisibilityRe}}">
+				<FontIcon Glyph="&#xE96D;" Visibility="{x:Bind UpOrDown,Mode=OneWay,Converter={StaticResource BoolToVisibility}}"/>
+				<FontIcon Glyph="&#xE96E;" Visibility="{x:Bind UpOrDown,Mode=OneWay,Converter={StaticResource BoolToVisibilityRe}}"/>
+			</Grid>
+		</Grid>
+	</ToggleButton>
+</UserControl>

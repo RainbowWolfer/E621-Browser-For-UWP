@@ -358,7 +358,7 @@ namespace E621Downloader.Views.TagsSearch {
 			foreach(E621AutoComplete item in acs) {
 				AutoCompletesListView.Items.Add(new SingleTagSuggestion(item));
 			}
-			var last = GetItems().LastOrDefault();
+			SingleTagSuggestion last = GetItems().LastOrDefault();
 			if(last != null) {
 				last.Loaded += (s, e) => {
 					SetLoadingbar(false);

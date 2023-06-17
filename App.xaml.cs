@@ -17,6 +17,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using YiffBrowser;
 
 namespace E621Downloader {
 	public sealed partial class App: Application {
@@ -144,9 +145,11 @@ namespace E621Downloader {
 					if(didAppCrash) {
 						rootFrame.Navigate(typeof(DefaultPage), e.Arguments);
 					} else {
-						rootFrame.Navigate(typeof(MainPage), e.Arguments);
+						//rootFrame.Navigate(typeof(MainPage), e.Arguments);
+						rootFrame.Navigate(typeof(YiffHomePage), e.Arguments);
 					}
 				}
+				
 				Window.Current.Activate();
 			}
 

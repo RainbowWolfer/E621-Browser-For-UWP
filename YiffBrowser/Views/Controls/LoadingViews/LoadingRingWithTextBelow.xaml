@@ -1,0 +1,17 @@
+<UserControl
+    x:Class="YiffBrowser.Views.Controls.LoadingViews.LoadingRingWithTextBelow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YiffBrowser.Views.Controls.LoadingViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d">
+
+    <Grid>
+		<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+			<muxc:ProgressRing Height="80" Width="80" Value="{x:Bind Progress,Mode=OneWay}" IsActive="True" IsIndeterminate="{x:Bind IsIndeterminate,Mode=OneWay}" Margin="5"/>
+			<TextBlock Text="{x:Bind Text,Mode=OneWay}" TextAlignment="Center" FontSize="18" Margin="5" Visibility="{x:Bind Text,Mode=OneWay,Converter={StaticResource ArrayNotEmptyToVisibility}}"/>
+		</StackPanel>
+    </Grid>
+</UserControl>

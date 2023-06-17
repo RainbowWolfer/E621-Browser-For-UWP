@@ -284,7 +284,7 @@ namespace E621Downloader {
 				UserChangedAvatarComplete?.Invoke(UserPicture.ProfilePicture as BitmapImage);
 				return;
 			}
-			string url = post.preview.url ?? post.sample.url;
+			string url = post.preview?.url ?? post.sample?.url;
 			if(string.IsNullOrWhiteSpace(url)) {
 				UserChangedAvatarComplete?.Invoke(UserPicture.ProfilePicture as BitmapImage);
 				return;

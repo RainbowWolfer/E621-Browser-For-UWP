@@ -1,0 +1,111 @@
+<UserControl
+    x:Class="YiffBrowser.Views.Controls.PictureViews.ImagesListManager"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YiffBrowser.Views.Controls.PictureViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:i="using:Microsoft.Xaml.Interactivity"
+	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    mc:Ignorable="d">
+
+	<UserControl.Resources>
+		<Storyboard x:Name="GridExpandStoryboard">
+			<DoubleAnimation x:Name="GridExpandAnimation" EnableDependentAnimation="True" Storyboard.TargetName="TopGrid" Storyboard.TargetProperty="Height">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="15" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+		</Storyboard>
+	</UserControl.Resources>
+
+	<Grid x:Name="PhotosListGrid" HorizontalAlignment="Center" CornerRadius="10" PointerEntered="PhotosListGrid_PointerEntered" PointerExited="PhotosListGrid_PointerExited" RenderTransformOrigin="0.5,1">
+
+		<Grid.Background>
+			<SolidColorBrush Color="#2c2c2c" Opacity="0.9"/>
+		</Grid.Background>
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+		</Grid.RowDefinitions>
+
+		<ScrollViewer x:Name="ListScroll" Grid.Row="0" VerticalScrollMode="Disabled" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Visible" Padding="4,0,4,8">
+
+			<ItemsControl x:Name="ListControl" ItemsSource="{x:Bind Items}" Margin="3">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Background="Transparent" Orientation="Horizontal"/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+
+				<ItemsControl.ItemTemplate>
+					<DataTemplate x:DataType="local:ImagesListManagerItem">
+						<Button Padding="0" BorderBrush="{Binding BorderBrush}" BorderThickness="1.5" CornerRadius="10" Margin="3" Command="{Binding ClickCommand}" ToolTipService.ToolTip="{Binding Post}">
+							
+							<Grid>
+
+								<i:Interaction.Behaviors>
+									<core:EventTriggerBehavior EventName="PointerEntered">
+										<core:InvokeCommandAction Command="{Binding PointerEnteredCommand}"/>
+									</core:EventTriggerBehavior>
+									<core:EventTriggerBehavior EventName="PointerExited">
+										<core:InvokeCommandAction Command="{Binding PointerExitedCommand}"/>
+									</core:EventTriggerBehavior>
+								</i:Interaction.Behaviors>
+
+								<ProgressRing IsActive="True" Visibility="{Binding ShowLoading,Converter={StaticResource BoolToVisibility}}"/>
+
+								<Border VerticalAlignment="Center" HorizontalAlignment="Center" Height="80" Width="80" CornerRadius="10">
+
+									<Border.Background>
+										<ImageBrush ImageSource="{Binding ImageURL}" Stretch="UniformToFill" ImageOpened="ImageBrush_ImageOpened">
+
+											<i:Interaction.Behaviors>
+												<core:EventTriggerBehavior EventName="ImageOpened">
+													<core:InvokeCommandAction Command="{Binding ImageOpenedCommand}"/>
+												</core:EventTriggerBehavior>
+												<core:EventTriggerBehavior EventName="ImageFailed">
+													<core:InvokeCommandAction Command="{Binding ImageFailedCommand}"/>
+												</core:EventTriggerBehavior>
+											</i:Interaction.Behaviors>
+
+										</ImageBrush>
+									</Border.Background>
+
+									<Border BorderBrush="{Binding BorderBrush}" BorderThickness="2" CornerRadius="10" Visibility="{Binding IsMouseOn,Converter={StaticResource BoolToVisibility}}"/>
+
+								</Border>
+
+								<FontIcon Glyph="{Binding TypeIcon}" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="15" Margin="5" Foreground="White" FontWeight="Bold" Visibility="{Binding TypeIcon,Converter={StaticResource ArrayNotEmptyToVisibility}}">
+									<FontIcon.Shadow>
+										<ThemeShadow/>
+									</FontIcon.Shadow>
+								</FontIcon>
+							</Grid>
+						</Button>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+
+		</ScrollViewer>
+
+		<Grid x:Name="TopGrid" Height="0" Grid.Row="1">
+			<StackPanel Orientation="Horizontal" Margin="10,0,0,3">
+				<FontIcon Glyph="&#xE158;"/>
+				<TextBlock x:Name="CountText" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="16">
+					<Run x:Name="CurrentCountText" Text="0"/>
+					<Run Text="/"/>
+					<Run x:Name="WholeCountText" Text="0"/>
+				</TextBlock>
+			</StackPanel>
+			<ToggleButton IsChecked="{x:Bind IsLocked,Mode=TwoWay}" HorizontalAlignment="Right" Padding="6,3,6,3" Margin="0,0,5,3" VerticalAlignment="Center" ToolTipService.ToolTip="Lock Display">
+				<StackPanel Orientation="Horizontal">
+					<FontIcon Glyph="&#xE72E;"/>
+					<!--<TextBlock Margin="10,0,0,0" Text="Lock Photos List"/>-->
+				</StackPanel>
+			</ToggleButton>
+		</Grid>
+
+	</Grid>
+</UserControl>

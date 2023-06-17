@@ -1,0 +1,174 @@
+<UserControl
+    x:Class="YiffBrowser.Views.Controls.Users.UserInfoView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YiffBrowser.Views.Controls.Users"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:i="using:Microsoft.Xaml.Interactivity"
+	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    mc:Ignorable="d">
+
+	<UserControl.Resources>
+
+		<Storyboard x:Name="HelloTextStoryboard">
+
+			<DoubleAnimation x:Name="Hello1TextOpacityAnimation" Storyboard.TargetName="Hello1Text" Storyboard.TargetProperty="Opacity" EnableDependentAnimation="True">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="10" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+
+			<DoubleAnimation x:Name="Hello2TextOpacityAnimation" Storyboard.TargetName="Hello2Text" Storyboard.TargetProperty="Opacity" EnableDependentAnimation="True">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="10" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+
+			<DoubleAnimation x:Name="Hello1TransformAnimation" Storyboard.TargetName="Hello1Transform" Storyboard.TargetProperty="Y" EnableDependentAnimation="True">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="10" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+
+			<DoubleAnimation x:Name="Hello2TransformAnimation" Storyboard.TargetName="Hello2Transform" Storyboard.TargetProperty="Y" EnableDependentAnimation="True">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="10" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+
+		</Storyboard>
+
+	</UserControl.Resources>
+
+	<Grid>
+
+		<Grid.DataContext>
+			<local:UserInfoViewModel x:Name="ViewModel"/>
+		</Grid.DataContext>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<StackPanel Margin="5">
+
+			<Grid x:Name="HelloGrid" Margin="5" Background="Transparent" PointerEntered="HelloGrid_PointerEntered" PointerExited="HelloGrid_PointerExited">
+				<TextBlock x:Name="Hello1Text" Text="{Binding HelloText1}" Foreground="#FFD700" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="1" FontSize="32">
+					<TextBlock.RenderTransform>
+						<TranslateTransform x:Name="Hello1Transform" Y="0"/>
+					</TextBlock.RenderTransform>
+				</TextBlock>
+				<TextBlock x:Name="Hello2Text" Text="{Binding HelloText2}" Foreground="#FFD700" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0" FontSize="15">
+					<TextBlock.RenderTransform>
+						<TranslateTransform x:Name="Hello2Transform" Y="20"/>
+					</TextBlock.RenderTransform>
+				</TextBlock>
+			</Grid>
+
+			<Grid Width="205" Height="205">
+				<ProgressRing IsActive="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="20" Visibility="{Binding IsAvatarLoading,Converter={StaticResource BoolToVisibility}}"/>
+				<Border CornerRadius="10">
+					<Border.Background>
+						<ImageBrush ImageSource="{Binding AvatarURL}" Stretch="UniformToFill">
+							<i:Interaction.Behaviors>
+								<core:EventTriggerBehavior EventName="ImageOpened">
+									<core:InvokeCommandAction Command="{Binding ImageOpenedCommand}"/>
+								</core:EventTriggerBehavior>
+								<core:EventTriggerBehavior EventName="ImageFailed">
+									<core:InvokeCommandAction Command="{Binding ImageFailedCommand}"/>
+								</core:EventTriggerBehavior>
+							</i:Interaction.Behaviors>
+						</ImageBrush>
+					</Border.Background>
+
+					<Border.ContextFlyout>
+						<MenuFlyout>
+							<MenuFlyoutItem Icon="Copy" Text="Copy Post URL" Command="{Binding CopyCommand}"/>
+							<MenuFlyoutItem Icon="OpenFile" Text="Open in new tab" Command="{Binding OpenInNewTabCommand}"/>
+						</MenuFlyout>
+					</Border.ContextFlyout>
+
+				</Border>
+			</Grid>
+
+		</StackPanel>
+
+		<StackPanel Grid.Column="1" Margin="5">
+
+			<StackPanel Orientation="Horizontal" Margin="5">
+				<StackPanel Orientation="Horizontal" Padding="10,5,10,5" CornerRadius="5" Background="{StaticResource CardBackgroundFillColorDefaultBrush}">
+					<FontIcon Glyph="&#xE723;" Margin="0,0,10,0" VerticalAlignment="Center"/>
+					<TextBlock Text="User ID" VerticalAlignment="Center"/>
+				</StackPanel>
+				<TextBlock Text="{Binding UserID}" Margin="15,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="18"/>
+			</StackPanel>
+
+			<StackPanel Orientation="Horizontal" Margin="5">
+				<StackPanel Orientation="Horizontal" Padding="10,5,10,5" CornerRadius="5" Background="{StaticResource CardBackgroundFillColorDefaultBrush}">
+					<FontIcon Glyph="&#xE77B;" Margin="0,0,10,0" VerticalAlignment="Center"/>
+					<TextBlock Text="{Binding LevelString}" VerticalAlignment="Center"/>
+				</StackPanel>
+				<TextBlock Text="{Binding Username}" Margin="15,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="18"/>
+			</StackPanel>
+
+			<StackPanel Orientation="Horizontal" Margin="5">
+				<StackPanel Orientation="Horizontal" Padding="10,5,10,5" CornerRadius="5" Background="{StaticResource CardBackgroundFillColorDefaultBrush}">
+					<FontIcon Glyph="&#xE715;" Margin="0,0,10,0" VerticalAlignment="Center"/>
+					<TextBlock Text="Email" VerticalAlignment="Center"/>
+				</StackPanel>
+				<TextBlock Text="{Binding Email}" Margin="15,0,0,0" VerticalAlignment="Center" FontSize="16"/>
+			</StackPanel>
+
+			<StackPanel Orientation="Horizontal" Margin="5">
+				<StackPanel Orientation="Horizontal" Padding="10,5,10,5" CornerRadius="5" Background="{StaticResource CardBackgroundFillColorDefaultBrush}">
+					<FontIcon Glyph="&#xE163;" Margin="0,0,10,0" VerticalAlignment="Center"/>
+					<TextBlock Text="Created at" VerticalAlignment="Center"/>
+				</StackPanel>
+				<TextBlock Text="{Binding CreatedAt}" Margin="15,0,0,0" VerticalAlignment="Center" FontSize="16"/>
+			</StackPanel>
+
+			<StackPanel Orientation="Horizontal">
+				<Button FontSize="20" HorizontalAlignment="Center" Margin="5" Width="150" Command="{Binding FavoritesCommand}" IsEnabled="{Binding IsRefreshing,Converter={StaticResource BoolToBoolRe}}">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Favorites"/>
+						<FontIcon Glyph="&#xE113;" Margin="10,0,0,0"/>
+					</StackPanel>
+				</Button>
+
+				<Button FontSize="20" HorizontalAlignment="Center" Margin="5" Width="150" Command="{Binding VotedUpCommand}" IsEnabled="{Binding IsRefreshing,Converter={StaticResource BoolToBoolRe}}">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Voted Up"/>
+						<FontIcon Glyph="&#xE74A;" Margin="10,0,0,0"/>
+					</StackPanel>
+				</Button>
+			</StackPanel>
+
+			<!--<Rectangle Fill="Gray" Width="100" Height="3" Margin="5" RadiusX="2" RadiusY="10"/>-->
+
+			<StackPanel Orientation="Horizontal">
+				<Button FontSize="20" HorizontalAlignment="Center" Margin="5" Height="40" Width="150" Command="{Binding RefreshCommand}" IsEnabled="{Binding IsRefreshing,Converter={StaticResource BoolToBoolRe}}">
+					<Grid>
+						<StackPanel Orientation="Horizontal" Visibility="{Binding IsRefreshing,Converter={StaticResource BoolToVisibilityRe}}">
+							<TextBlock Text="Refresh"/>
+							<FontIcon Glyph="&#xE72C;" Margin="10,0,0,0"/>
+						</StackPanel>
+
+						<ProgressBar Width="100" IsIndeterminate="True" Visibility="{Binding IsRefreshing,Converter={StaticResource BoolToVisibility}}"/>
+					</Grid>
+				</Button>
+
+				<Button FontSize="20" HorizontalAlignment="Center" Margin="5" Width="150" Command="{Binding LogoutCommand}" IsEnabled="{Binding IsRefreshing,Converter={StaticResource BoolToBoolRe}}">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Logout"/>
+						<FontIcon Glyph="&#xF3B1;" Margin="10,0,0,0"/>
+					</StackPanel>
+				</Button>
+			</StackPanel>
+
+		</StackPanel>
+
+	</Grid>
+
+</UserControl>

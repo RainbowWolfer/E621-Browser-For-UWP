@@ -1,0 +1,297 @@
+<UserControl
+    x:Class="YiffBrowser.Views.Controls.PictureViews.PostImageSideView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YiffBrowser.Views.Controls.PictureViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:customcontrols="using:YiffBrowser.Views.Controls.CustomControls" 
+	xmlns:controls="using:YiffBrowser.Views.Controls" 
+	xmlns:e621="using:YiffBrowser.Models.E621"
+	xmlns:helpers="using:YiffBrowser.Helpers"
+	xmlns:i="using:Microsoft.Xaml.Interactivity"
+	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+	mc:Ignorable="d">
+
+	<UserControl.Resources>
+		<Style x:Key="ScoreButton" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="Height" Value="30"/>
+			<Setter Property="FontSize" Value="15"/>
+			<Setter Property="HorizontalContentAlignment" Value="Center"/>
+			<Setter Property="Padding" Value="0"/>
+			<Setter Property="HorizontalAlignment" Value="Stretch"/>
+			<Setter Property="Margin" Value="3"/>
+		</Style>
+	</UserControl.Resources>
+
+	<Grid x:Name="Root">
+		<Grid.DataContext>
+			<local:PostImageSideViewModel x:Name="ViewModel" E621Post="{x:Bind E621Post,Mode=OneWay}"/>
+		</Grid.DataContext>
+
+		<Pivot>
+
+			<PivotItem Header="Description">
+				<Grid>
+
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="auto"/>
+					</Grid.RowDefinitions>
+
+					<ScrollViewer Padding="15">
+						<TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontSize="18" IsTextSelectionEnabled="True" VerticalAlignment="Top"/>
+					</ScrollViewer>
+
+					<StackPanel Grid.Row="1" Padding="15">
+						<TextBlock Text="{Binding SourceTitle}" FontSize="24"/>
+						<ListView ItemsSource="{Binding SourceURLs}" SelectionMode="None" IsItemClickEnabled="False" MaxHeight="200">
+							<ListView.ItemTemplate>
+								<DataTemplate x:DataType="x:String">
+									<local:SourceHyperLinkButton URL="{Binding}"/>
+								</DataTemplate>
+							</ListView.ItemTemplate>
+						</ListView>
+					</StackPanel>
+
+				</Grid>
+			</PivotItem>
+
+			<PivotItem>
+				<PivotItem.Header>
+					<TextBlock>
+						<Run Text="Comments"/>
+						<Run Text="{Binding E621Post.CommentCount}"/>
+					</TextBlock>
+				</PivotItem.Header>
+
+				<Grid>
+
+					<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsLoadingComments,Converter={StaticResource BoolToVisibility}}">
+						<TextBlock Text="Loading Comments" FontSize="22" Margin="5"/>
+						<ProgressBar IsIndeterminate="True" Margin="5"/>
+					</StackPanel>
+
+					<Grid Visibility="{Binding IsLoadingComments,Converter={StaticResource BoolToVisibilityRe}}">
+
+						<Grid Visibility="{Binding CommentItems,Converter={StaticResource ArrayEmptyToVisibility}}">
+							<TextBlock Text="No Comments Yet" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Grid>
+
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="auto"/>
+								<RowDefinition Height="*"/>
+							</Grid.RowDefinitions>
+
+							<Grid HorizontalAlignment="Right" Margin="0,0,8,0">
+								<ToggleSwitch FlowDirection="RightToLeft" IsOn="{Binding CommentOrderCheck,Mode=TwoWay}">
+
+									<ToggleSwitch.OnContent>
+										<StackPanel Orientation="Horizontal">
+											<TextBlock Text="Time Descending"/>
+											<FontIcon Glyph="&#xE70D;" Margin="10,0,0,0"/>
+										</StackPanel>
+									</ToggleSwitch.OnContent>
+
+									<ToggleSwitch.OffContent>
+										<StackPanel Orientation="Horizontal">
+											<TextBlock Text="Time Ascending"/>
+											<FontIcon Glyph="&#xE70E;" Margin="10,0,0,0"/>
+										</StackPanel>
+									</ToggleSwitch.OffContent>
+
+								</ToggleSwitch>
+							</Grid>
+
+							<ListView Grid.Row="1" ItemsSource="{Binding CommentItems}" SelectionMode="None" IsItemClickEnabled="False" Padding="0,0,10,0" Visibility="{Binding CommentItems,Converter={StaticResource ArrayNotEmptyToVisibility}}">
+
+								<ListView.ItemTemplate>
+									<DataTemplate x:DataType="local:CommentItem">
+										<Grid Background="{StaticResource CardBackgroundFillColorDefaultBrush}" Margin="0,0,0,10" CornerRadius="10">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="140"/>
+												<ColumnDefinition Width="*"/>
+											</Grid.ColumnDefinitions>
+
+											<StackPanel Background="#1b0056ff">
+
+												<TextBlock FontSize="16" Text="{Binding Username}" TextAlignment="Left" Margin="15,5,5,0" FontWeight="SemiBold" TextWrapping="Wrap"/>
+												<TextBlock FontSize="14" Text="{Binding LevelString}" TextAlignment="Left" Margin="15,0,0,0" Visibility="{Binding LevelString,Converter={StaticResource ArrayNotEmptyToVisibility}}"/>
+
+												<Border Height="120" Width="120" CornerRadius="10" Visibility="{Binding UserAvatarURL,Converter={StaticResource ArrayNotEmptyToVisibility}}" Margin="0,5,0,0">
+													<Border.Background>
+														<ImageBrush ImageSource="{Binding UserAvatarURL}" Stretch="UniformToFill"/>
+													</Border.Background>
+													<Border.ContextFlyout>
+														<MenuFlyout>
+															<MenuFlyoutItem Text="Copy post ID" Icon="Copy" Command="{Binding CopyCommand}"/>
+															<MenuFlyoutItem Text="Open in new tab" Icon="OpenFile" IsEnabled="{Binding AvatarPost,Converter={StaticResource NotNullToBool}}" Command="{Binding OpenInNewTabCommand}"/>
+														</MenuFlyout>
+													</Border.ContextFlyout>
+												</Border>
+
+												<ProgressBar Width="80" IsIndeterminate="True" Visibility="{Binding IsLoadingAvatar,Converter={StaticResource BoolToVisibility}}" Margin="5"/>
+
+												<Grid Margin="5">
+													<Grid.ColumnDefinitions>
+														<ColumnDefinition Width="*"/>
+														<ColumnDefinition Width="*"/>
+														<ColumnDefinition Width="*"/>
+													</Grid.ColumnDefinitions>
+
+													<local:ScoreButton UpOrDown="True" Height="25" Width="25"/>
+
+													<TextBlock Text="{Binding Score}" Grid.Column="1" FontSize="16" HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center" MinWidth="30"/>
+
+													<local:ScoreButton UpOrDown="False" Height="25" Width="25" Grid.Column="2"/>
+												</Grid>
+
+											</StackPanel>
+
+											<StackPanel Grid.Column="1" Grid.RowSpan="4" Margin="8">
+												<TextBlock Text="{Binding CreatedDateTime}" Margin="0,0,0,5"/>
+
+												<TextBlock Text="{Binding TextContent}" TextWrapping="Wrap"/>
+											</StackPanel>
+
+										</Grid>
+									</DataTemplate>
+								</ListView.ItemTemplate>
+							</ListView>
+						</Grid>
+					</Grid>
+
+				</Grid>
+			</PivotItem>
+
+			<PivotItem Header="Relations">
+
+				<ScrollViewer Margin="0,10,0,0">
+					<StackPanel>
+
+						<muxc:Expander HorizontalAlignment="Stretch" IsExpanded="True" Margin="0,0,0,10" HorizontalContentAlignment="Stretch">
+							<muxc:Expander.Header>
+								<StackPanel Orientation="Horizontal">
+									<FontIcon Glyph="&#xE292;" FontSize="22"/>
+									<TextBlock Margin="15,0,0,0" FontSize="22">
+										<Run Text="Pools"/>
+										<!--<Run Text="{Binding E621Post.Pools.Count,FallbackValue=0}"/>-->
+									</TextBlock>
+								</StackPanel>
+							</muxc:Expander.Header>
+
+							<Grid>
+								<TextBlock Text="Not Found" HorizontalAlignment="Center" Visibility="{Binding PoolItems,Converter={StaticResource ArrayEmptyToVisibility}}"/>
+								<ListView SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{Binding PoolItems}" Visibility="{Binding PoolItems,Converter={StaticResource ArrayNotEmptyToVisibility}}" MaxHeight="300">
+
+									<i:Interaction.Behaviors>
+										<core:EventTriggerBehavior EventName="ItemClick">
+											<core:InvokeCommandAction Command="{Binding ItemClickCommand}"/>
+										</core:EventTriggerBehavior>
+									</i:Interaction.Behaviors>
+
+									<ListView.ItemTemplate>
+										<DataTemplate x:DataType="local:PostPoolItem">
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="auto"/>
+													<ColumnDefinition Width="*"/>
+													<ColumnDefinition Width="auto"/>
+												</Grid.ColumnDefinitions>
+
+												<Grid.ContextFlyout>
+													<MenuFlyout>
+														<MenuFlyoutItem Text="Info" Command="{Binding InfoCommand}">
+															<MenuFlyoutItem.Icon>
+																<FontIcon Glyph="&#xE946;"/>
+															</MenuFlyoutItem.Icon>
+														</MenuFlyoutItem>
+														<MenuFlyoutItem Text="Copy Pool URL" Icon="Copy" Command="{Binding CopyCommand}"/>
+													</MenuFlyout>
+												</Grid.ContextFlyout>
+
+												<FontIcon Glyph="&#xE158;"/>
+
+												<ProgressBar IsIndeterminate="True" Grid.Column="1" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}" Margin="30,0,30,0"/>
+
+												<TextBlock FontSize="18" Margin="10,0,0,0" Grid.Column="1" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityRe}}">
+													<Run Text="{Binding PoolName}"/>
+													<Run Text=""/>
+													<Run Text=""/>
+													<Run Text="("/>
+													<Run Text="#"/>
+													<Run Text="{Binding PoolID}"/>
+													<Run Text=")"/>
+												</TextBlock>
+
+												<FontIcon Glyph="&#xE0E3;" Grid.Column="2" HorizontalAlignment="Right" FontSize="18"/>
+											</Grid>
+										</DataTemplate>
+									</ListView.ItemTemplate>
+								</ListView>
+							</Grid>
+
+						</muxc:Expander>
+
+						<muxc:Expander HorizontalAlignment="Stretch" IsExpanded="True" Margin="0,0,0,10">
+							<muxc:Expander.Header>
+								<StackPanel Orientation="Horizontal">
+									<FontIcon Glyph="&#xE8CF;" FontSize="22"/>
+									<TextBlock Text="Parent" Margin="15,0,0,0" FontSize="22"/>
+									<ProgressRing IsActive="True" Margin="15,0,0,0" Height="20" Width="20" Visibility="{Binding IsLoadingParent,Converter={StaticResource BoolToVisibility}}"/>
+								</StackPanel>
+							</muxc:Expander.Header>
+
+							<Grid>
+								<TextBlock Text="Not Found" HorizontalAlignment="Center" Visibility="{Binding ParentPost,Converter={StaticResource NullToVisibility}}"/>
+
+								<StackPanel Orientation="Horizontal" Visibility="{Binding ParentPost,Converter={StaticResource NotNullToVisibility}}">
+									<controls:ImageViewItem Post="{Binding ParentPost}" Height="230" Width="230" Margin="5" Command="{Binding RelationsCommand}"/>
+								</StackPanel>
+
+							</Grid>
+
+						</muxc:Expander>
+
+						<muxc:Expander HorizontalAlignment="Stretch" IsExpanded="True" Margin="0,0,0,10">
+							<muxc:Expander.Header>
+								<StackPanel Orientation="Horizontal">
+									<FontIcon Glyph="&#xE902;" FontSize="22"/>
+									<TextBlock Text="Children" Margin="15,0,0,0" FontSize="22"/>
+									<ProgressRing IsActive="True" Margin="15,0,0,0" Height="20" Width="20" Visibility="{Binding IsLoadingChildren,Converter={StaticResource BoolToVisibility}}"/>
+								</StackPanel>
+							</muxc:Expander.Header>
+							<Grid>
+								<TextBlock Text="Not Found" HorizontalAlignment="Center" Visibility="{Binding ChildrenPost,Converter={StaticResource ArrayEmptyToVisibility}}"/>
+
+								<GridView x:Name="ChildrenRelationsView" ItemsSource="{Binding ChildrenPost}" IsItemClickEnabled="False" SelectionMode="None" Visibility="{Binding ChildrenPost,Converter={StaticResource ArrayNotEmptyToVisibility}}">
+									<GridView.ItemTemplate>
+										<DataTemplate x:DataType="e621:E621Post">
+											<Grid>
+												<TextBlock x:Name="proxy" helpers:AncestorSource.AncestorType="GridView" />
+												<controls:ImageViewItem Post="{Binding}" Height="230" Width="230" Margin="5" ImageClick="ImageViewItem_ImageClick"/>
+											</Grid>
+										</DataTemplate>
+									</GridView.ItemTemplate>
+								</GridView>
+
+							</Grid>
+
+						</muxc:Expander>
+
+					</StackPanel>
+				</ScrollViewer>
+
+			</PivotItem>
+
+		</Pivot>
+
+
+		<ToggleSwitch IsOn="{x:Bind IsOverlayCheck,Mode=TwoWay}" Height="38" OnContent="Overlay" OffContent="Inline" FlowDirection="RightToLeft" Margin="0,5,20,0" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+
+	</Grid>
+</UserControl>

@@ -11,7 +11,7 @@ namespace E621Downloader.Models.E621 {
 			//https://e621.net/users.json?search[name_matches]=912243749
 			string url = $"https://{Data.GetHost()}/users.json?search[name_matches]={username}";
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
-			if(result.Result == HttpResultType.Success) {
+			if (result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<E621User[]>(result.Content).FirstOrDefault();
 			} else {
 				return null;
@@ -23,20 +23,16 @@ namespace E621Downloader.Models.E621 {
 		}
 
 		public static async Task<E621Post> GetAvatarPostAsync(E621User user, CancellationToken? token = null) {
-			if(user == null || string.IsNullOrWhiteSpace(user.avatar_id)) {
+			if (user == null || string.IsNullOrWhiteSpace(user.avatar_id)) {
 				return null;
 			}
 			string url = $"https://{Data.GetHost()}/posts/{user.avatar_id}.json";
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
-			if(result.Result == HttpResultType.Success) {
-				E621Post post = JsonConvert.DeserializeObject<PostRoot>(result.Content).post;
+			if (result.Result == HttpResultType.Success) {
+				E621Post post = JsonConvert.DeserializeObject<E621Post>(result.Content);
 				return post;
-			} else if(result.Result == HttpResultType.Canceled) {
-				return null;
-			} else if(result.Result == HttpResultType.Error) {
-				return null;
 			} else {
-				throw new HttpResultTypeNotFoundException();
+				return null;
 			}
 		}
 

@@ -1,0 +1,172 @@
+<UserControl
+    x:Class="YiffBrowser.Views.Controls.PostsViewer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YiffBrowser.Views.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:numberformatting="using:Windows.Globalization.NumberFormatting" 
+	xmlns:converters="using:YiffBrowser.Converters"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+	mc:Ignorable="d"
+	Loaded="UserControl_Loaded">
+
+	<UserControl.Resources>
+		<Style x:Key="BorderSeparator" TargetType="Border">
+			<Setter Property="CornerRadius" Value="2"/>
+			<Setter Property="Margin" Value="10,0,10,0"/>
+			<Setter Property="Height" Value="20"/>
+			<Setter Property="Width" Value="4"/>
+			<Setter Property="Background">
+				<Setter.Value>
+					<SolidColorBrush Color="Gray" Opacity="0.5"/>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</UserControl.Resources>
+
+	<Grid x:Name="Root">
+		<Grid.DataContext>
+			<local:PostsViewerViewModel/>
+		</Grid.DataContext>
+
+		<SplitView IsPaneOpen="{Binding IsPostsInfoPaneOpen,Mode=TwoWay}" DisplayMode="Overlay" PanePlacement="Right">
+
+			<SplitView.Pane>
+				<Grid>
+					<local:PostsInfoListView Parameters="{Binding PostsInfoViewParameters}"/>
+				</Grid>
+			</SplitView.Pane>
+
+			<SplitView.Content>
+
+				<Grid>
+
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+
+					<Grid Grid.Row="0">
+						<Border Background="{StaticResource SystemColorBackgroundBrush}" CornerRadius="10" Margin="5" Padding="5">
+							<Grid>
+
+								<Grid.Resources>
+									<converters:BoolToStringConverter x:Key="IsPoolToolTip" TrueValue="Pool Info" FalseValue="Tags Info"/>
+								</Grid.Resources>
+
+								<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="{Binding InputByPosts,Converter={StaticResource BoolToVisibilityRe}}">
+									<Button Height="36" Background="Transparent" BorderBrush="Transparent" ToolTipService.ToolTip="{Binding IsPool,Converter={StaticResource IsPoolToolTip}}" Command="{Binding TagsInfoButtonCommand}">
+										<StackPanel Orientation="Horizontal">
+											<FontIcon Glyph="&#xE946;"/>
+											<TextBlock Text="{Binding Tags,Converter={StaticResource JoinStringWithSpace}}" Margin="10,0,0,0"/>
+										</StackPanel>
+									</Button>
+								</StackPanel>
+
+								<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+									<Button Height="36" Background="Transparent" BorderBrush="Transparent" Command="{Binding PostsInfoButtonCommand}" IsEnabled="{Binding IsLoading,Converter={StaticResource BoolToBoolRe}}">
+										<StackPanel Orientation="Horizontal">
+											<FontIcon Glyph="&#xE1EC;"/>
+											<TextBlock Text="Posts Info" Margin="10,0,0,0"/>
+										</StackPanel>
+									</Button>
+								</StackPanel>
+
+								<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+									<Button Height="36" Command="{Binding RefreshCommand}">
+										<StackPanel Orientation="Horizontal">
+											<FontIcon Glyph="&#xE149;"/>
+											<TextBlock Text="Refresh" Margin="10,0,0,0"/>
+										</StackPanel>
+									</Button>
+
+									<StackPanel Orientation="Horizontal" Visibility="{Binding InputByPosts,Converter={StaticResource BoolToVisibilityRe}}">
+
+										<Border Style="{StaticResource BorderSeparator}"/>
+
+										<Button Height="36" Command="{Binding PreviousPageCommand}" IsEnabled="{Binding EnablePreviousPageButton}">
+											<FontIcon Glyph="&#xE0E2;"/>
+										</Button>
+
+										<Button Margin="10,0,10,0" Padding="7,0,7,0" Height="36" MinWidth="50">
+											<TextBlock Text="{Binding Page}" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+											<Button.Flyout>
+												<Flyout x:Name="PageFlyout">
+													<StackPanel Orientation="Horizontal">
+														<muxc:NumberBox Value="{Binding PageValue,Mode=TwoWay}" SpinButtonPlacementMode="Hidden" SmallChange="1" LargeChange="5" Minimum="1" MinWidth="100" ValidationMode="InvalidInputOverwritten">
+															<muxc:NumberBox.NumberFormatter>
+																<numberformatting:DecimalFormatter IntegerDigits="1" FractionDigits="0"/>
+															</muxc:NumberBox.NumberFormatter>
+														</muxc:NumberBox>
+														<Button x:Name="PageForwardButton" Margin="10,0,0,0" Click="PageForwardButton_Click" Command="{Binding ForwardPageCommand}">
+															<SymbolIcon Symbol="Forward"/>
+														</Button>
+													</StackPanel>
+												</Flyout>
+											</Button.Flyout>
+										</Button>
+
+										<Button Height="36" Command="{Binding NextPageCommand}">
+											<FontIcon Glyph="&#xE0E3;"/>
+										</Button>
+
+									</StackPanel>
+
+									<Border Style="{StaticResource BorderSeparator}"/>
+
+									<Button Height="36" Command="{Binding DownloadCommand}" IsEnabled="{Binding IsLoading,Converter={StaticResource BoolToBoolRe}}">
+										<StackPanel Orientation="Horizontal">
+											<FontIcon Glyph="&#xE118;"/>
+											<TextBlock Text="Download" Margin="10,0,0,0"/>
+										</StackPanel>
+									</Button>
+
+									<ToggleButton Height="36" Margin="10,0,0,0" IsChecked="{Binding IsInSelectionMode,Mode=TwoWay}" IsEnabled="{Binding IsLoading,Converter={StaticResource BoolToBoolRe}}">
+										<StackPanel Orientation="Horizontal">
+											<FontIcon Glyph="&#xE152;"/>
+											<TextBlock Text="Select" Margin="10,0,0,0"/>
+										</StackPanel>
+									</ToggleButton>
+
+								</StackPanel>
+							</Grid>
+						</Border>
+					</Grid>
+
+					<!-- Loading -->
+					<Grid Grid.Row="1">
+						<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}">
+							<ProgressRing IsActive="True" Height="100" Width="100"/>
+						</StackPanel>
+					</Grid>
+
+					<!-- Content -->
+					<Grid Grid.Row="1" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityRe}}">
+						<ScrollViewer x:Name="MainScrollViewer" VerticalScrollMode="Auto" Visibility="{Binding ErrorHint,Converter={StaticResource ArrayEmptyToVisibility}}">
+							<VariableSizedWrapGrid x:Name="MainGrid" Orientation="Horizontal" ItemHeight="{x:Bind ItemHeight}" ItemWidth="{x:Bind ItemWidth}"/>
+						</ScrollViewer>
+					</Grid>
+
+					<!-- Error Hint -->
+					<Grid Grid.Row="1" Visibility="{Binding ErrorHint,Converter={StaticResource ArrayNotEmptyToVisibility}}">
+						<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityRe}}">
+							<FontIcon Glyph="&#xE7BA;" FontSize="36" Margin="5"/>
+							<TextBlock Text="{Binding ErrorHint}" FontSize="24" Margin="5"/>
+						</StackPanel>
+					</Grid>	
+
+					<!-- Detail Page -->
+					<Grid Grid.RowSpan="2" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityRe}}">
+						<local:PostDetailView x:Name="PostDetailView" Visibility="Collapsed" RequestBack="PostDetailView_RequestBack" InputByPosts="{Binding InputByPosts}" PostsList="{Binding Posts,Converter={StaticResource UnifyE621Posts}}" ImagesListManagerItemClickCommand="{Binding ImagesListManagerItemClickCommand}"/>
+					</Grid>
+
+				</Grid>
+
+			</SplitView.Content>
+
+		</SplitView>
+
+	</Grid>
+</UserControl>

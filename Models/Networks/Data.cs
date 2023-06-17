@@ -1,5 +1,6 @@
 ﻿using E621Downloader.Models.Debugging;
 using E621Downloader.Models.Locals;
+using E621Downloader.Models.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -108,7 +109,6 @@ namespace E621Downloader.Models.Networks {
 				message?.Dispose();
 			}
 			stopwatch.Stop();
-
 			HttpResult<string> hr = new(result, code, content, stopwatch.ElapsedMilliseconds, helper);
 			HttpRequestHistories.AddNewItem(startDateTime, url, hr, "Get");
 			return hr;

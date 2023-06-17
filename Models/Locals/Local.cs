@@ -51,7 +51,7 @@ namespace E621Downloader.Models.Locals {
 			Debug.WriteLine("Initializing Local");
 			Debug.WriteLine(LocalFolder.Path);
 
-			if(initialized) {
+			if (initialized) {
 				throw new Exception("Local has been initialized more than one time!");
 			}
 			initialized = true;
@@ -80,16 +80,16 @@ namespace E621Downloader.Models.Locals {
 		public static string GetToken() => token;
 		public static async Task SetToken(string token) {
 			Local.token = token;
-			if(string.IsNullOrWhiteSpace(token)) {
+			if (string.IsNullOrWhiteSpace(token)) {
 				//set to download library
 				return;
 			}
 			try {
 				DownloadFolder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync(token);
-			} catch(ArgumentException ex) {
+			} catch (ArgumentException ex) {
 				Debug.WriteLine(ex);
 				ErrorHistories.Add(ex);
-			} catch(FileNotFoundException ex) {
+			} catch (FileNotFoundException ex) {
 				Debug.WriteLine(ex);
 				ErrorHistories.Add(ex);
 			}
@@ -119,7 +119,7 @@ namespace E621Downloader.Models.Locals {
 			string json = JsonConvert.SerializeObject(History, Formatting.Indented);
 			try {
 				await FileIO.WriteTextAsync(HistoryFile, json);
-			} catch(FileLoadException ex) {
+			} catch (FileLoadException ex) {
 				Debug.WriteLine(ex.Message);
 				ErrorHistories.Add(ex);
 			}
@@ -138,7 +138,7 @@ namespace E621Downloader.Models.Locals {
 		public static async Task ReadListing() {
 			string json = await FileIO.ReadTextAsync(ListingFile);
 			Listing = JsonConvert.DeserializeObject<Listing>(json);
-			if(Listing == null) {
+			if (Listing == null) {
 				Listing = Listing.GetDefaultListing();
 				await WriteListing();
 			}
@@ -157,7 +157,7 @@ namespace E621Downloader.Models.Locals {
 				//The process cannot access the file because it is being used by another process. (Exception from HRESULT: 0x80070020)
 				StorageFile target = await folder.CreateFileAsync($"{file.DisplayName}.meta", CreationCollisionOption.ReplaceExisting);
 				await FileIO.WriteTextAsync(target, meta.ConvertJson());
-			} catch(Exception ex) {
+			} catch (Exception ex) {
 				Debug.WriteLine(ex.Message);
 				ErrorHistories.Add(ex);
 			}
@@ -168,7 +168,7 @@ namespace E621Downloader.Models.Locals {
 				StorageFolder folder = await file.GetParentAsync();
 				StorageFile target = await folder.CreateFileAsync($"{file.DisplayName}.meta", CreationCollisionOption.ReplaceExisting);
 				await FileIO.WriteTextAsync(target, meta.ConvertJson());
-			} catch(Exception ex) {
+			} catch (Exception ex) {
 				Debug.WriteLine(ex.Message);
 				ErrorHistories.Add(ex);
 			}
@@ -179,7 +179,7 @@ namespace E621Downloader.Models.Locals {
 			try {
 				(MetaFile _, StorageFile file) = await GetMetaFile(post.id.ToString(), groupName);
 				WriteMetaFile(meta, file);
-			} catch(Exception ex) {
+			} catch (Exception ex) {
 				Debug.WriteLine(ex.Message);
 				ErrorHistories.Add(ex);
 			}
@@ -197,11 +197,11 @@ namespace E621Downloader.Models.Locals {
 			public bool IsValid => meta != null /*&& source != null */&& SourceID != null;
 
 			public static void Add(List<Pair> list, MetaFile meta) {
-				foreach(var item in list) {
-					if(item.file == null) {//not sure
+				foreach (var item in list) {
+					if (item.file == null) {//not sure
 						continue;
 					}
-					if(item.SourceID == meta.MyPost.id.ToString()) {
+					if (item.SourceID == meta.MyPost.id.ToString()) {
 						item.meta = meta;
 						return;
 					}
@@ -209,8 +209,8 @@ namespace E621Downloader.Models.Locals {
 				list.Add(new Pair() { meta = meta });
 			}
 			public static void Add(List<Pair> list, BitmapImage source, StorageFile file) {
-				foreach(var item in list) {
-					if(item.meta != null && item.meta.MyPost.id.ToString() == file.DisplayName) {
+				foreach (var item in list) {
+					if (item.meta != null && item.meta.MyPost.id.ToString() == file.DisplayName) {
 						item.file = file;
 						item.source = source;
 						return;
@@ -225,8 +225,8 @@ namespace E621Downloader.Models.Locals {
 
 			public static List<(MetaFile, BitmapImage, StorageFile)> Convert(List<Pair> list, Func<Pair, bool> check) {
 				var result = new List<(MetaFile, BitmapImage, StorageFile)>();
-				foreach(Pair item in list) {
-					if((check?.Invoke(item)).Value) {
+				foreach (Pair item in list) {
+					if ((check?.Invoke(item)).Value) {
 						result.Add((item.meta, item.source, item.file));
 					}
 				}
@@ -237,40 +237,40 @@ namespace E621Downloader.Models.Locals {
 		public static async Task<List<(MetaFile meta, BitmapImage bitmap, StorageFile file)>> GetMetaFiles(StorageFolder folder, Action<StorageFile, int, int> onNextFileLoad = null) {
 			var result = new List<(MetaFile, BitmapImage)>();
 			//StorageFolder folder = await DownloadFolder.GetFolderAsync(folderName);
-			if(folder == null) {
+			if (folder == null) {
 				return new List<(MetaFile, BitmapImage, StorageFile)>();
 			}
 			var pairs = new List<Pair>();
 			IReadOnlyList<StorageFile> files = await folder.GetFilesAsync();
-			for(int i = 0; i < files.Count; i++) {
+			for (int i = 0; i < files.Count; i++) {
 				try {
 					StorageFile file = files[i];
 					onNextFileLoad?.Invoke(file, i + 1, files.Count);
-					if(file.FileType == ".meta") {
+					if (file.FileType == ".meta") {
 						using Stream stream = await file.OpenStreamForReadAsync();
 						using StreamReader reader = new(stream);
 						MetaFile meta = JsonConvert.DeserializeObject<MetaFile>(await reader.ReadToEndAsync());
 
-						if(meta != null) {
+						if (meta != null) {
 							Pair.Add(pairs, meta);
 						}
 					} else {
 						BitmapImage bitmap = new();
 						ThumbnailMode mode = ThumbnailMode.SingleItem;
-						if(new string[] { ".webm" }.Contains(file.FileType)) {
+						if (new string[] { ".webm" }.Contains(file.FileType)) {
 							mode = ThumbnailMode.SingleItem;
-						} else if(new string[] { ".jpg", ".png" }.Contains(file.FileType)) {
+						} else if (new string[] { ".jpg", ".png" }.Contains(file.FileType)) {
 							mode = ThumbnailMode.PicturesView;
 						}
 
 						using StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(mode);
-						if(thumbnail != null) {
+						if (thumbnail != null) {
 							using Stream stream = thumbnail.AsStreamForRead();
 							await bitmap.SetSourceAsync(stream.AsRandomAccessStream());
 						}
 						Pair.Add(pairs, bitmap, file);
 					}
-				} catch(Exception ex) {
+				} catch (Exception ex) {
 					ErrorHistories.Add(ex);
 					continue;
 				}
@@ -287,14 +287,14 @@ namespace E621Downloader.Models.Locals {
 		}
 
 		public static async Task<MetaFile> ReadMetaFile(StorageFile file) {
-			if(file.FileType != ".meta") {
+			if (file.FileType != ".meta") {
 				return null;
 			}
 			using Stream stream = await file.OpenStreamForReadAsync();
 			using StreamReader reader = new(stream);
 			string content = await reader.ReadToEndAsync();
 			MetaFile meta = JsonConvert.DeserializeObject<MetaFile>(content);
-			if(meta == null) {
+			if (meta == null) {
 				return null;
 			}
 			return meta;
@@ -302,16 +302,16 @@ namespace E621Downloader.Models.Locals {
 
 		public static async Task<List<MetaFile>> GetAllMetaFiles() {
 			var metas = new List<MetaFile>();
-			foreach(StorageFolder folder in await DownloadFolder.GetFoldersAsync()) {
-				foreach(StorageFile file in await folder.GetFilesAsync()) {
-					if(file.FileType != ".meta") {
+			foreach (StorageFolder folder in await DownloadFolder.GetFoldersAsync()) {
+				foreach (StorageFile file in await folder.GetFilesAsync()) {
+					if (file.FileType != ".meta") {
 						continue;
 					}
 					using Stream stream = await file.OpenStreamForReadAsync();
 					using StreamReader reader = new(stream);
 					string content = await reader.ReadToEndAsync();
 					MetaFile meta = JsonConvert.DeserializeObject<MetaFile>(content);
-					if(meta == null) {
+					if (meta == null) {
 						continue;
 					}
 					metas.Add(meta);
@@ -328,8 +328,8 @@ namespace E621Downloader.Models.Locals {
 		public static async Task<List<MetaFile>> FindAllMetaFiles() {
 			var result = new List<MetaFile>();
 
-			foreach(StorageFolder folder in await DownloadFolder.GetFoldersAsync()) {
-				foreach(StorageFile item in await folder.GetFilesAsync()) {
+			foreach (StorageFolder folder in await DownloadFolder.GetFoldersAsync()) {
+				foreach (StorageFile item in await folder.GetFilesAsync()) {
 					using Stream stream = await item.OpenStreamForReadAsync();
 					using StreamReader reader = new(stream);
 					result.Add(JsonConvert.DeserializeObject(await reader.ReadToEndAsync()) as MetaFile);
@@ -341,17 +341,17 @@ namespace E621Downloader.Models.Locals {
 		public static async Task WriteLocalSettings() {
 			try {
 				await FileIO.WriteTextAsync(LocalSettingsFile, JsonConvert.SerializeObject(LocalSettings.Current, Formatting.Indented));
-			} catch(Exception ex) {
+			} catch (Exception ex) {
 				ErrorHistories.Add(ex);
 			}
 		}
 
 		public static async Task ReadLocalSettings() {
-			using(Stream stream = await LocalSettingsFile.OpenStreamForReadAsync()) {
+			using (Stream stream = await LocalSettingsFile.OpenStreamForReadAsync()) {
 				using StreamReader reader = new(stream);
 				LocalSettings.Current = JsonConvert.DeserializeObject<LocalSettings>(await reader.ReadToEndAsync());
 			}
-			if(LocalSettings.Current == null) {
+			if (LocalSettings.Current == null) {
 				LocalSettings.Current = LocalSettings.GetDefault();
 				await WriteLocalSettings();
 			}
@@ -366,7 +366,7 @@ namespace E621Downloader.Models.Locals {
 		public static async Task WriteFavoritesLists() {
 			try {
 				await FileIO.WriteTextAsync(FavoritesListFile, JsonConvert.SerializeObject(FavoritesList.Table, Formatting.Indented));
-			} catch(FileLoadException) { }
+			} catch (FileLoadException) { }
 		}
 
 		//F:\E621\creepypasta -momo_(creepypasta) rating;e\1820721.png
@@ -374,7 +374,7 @@ namespace E621Downloader.Models.Locals {
 			StorageFile file;
 			try {
 				file = await StorageFile.GetFileFromPathAsync(path);
-			} catch(Exception ex) {
+			} catch (Exception ex) {
 				ErrorHistories.Add(ex);
 				return (null, null);
 			}
@@ -388,7 +388,7 @@ namespace E621Downloader.Models.Locals {
 				using Stream stream = await metaFile.OpenStreamForReadAsync();
 				using StreamReader reader = new(stream);
 				meta = JsonConvert.DeserializeObject<MetaFile>(await reader.ReadToEndAsync());
-			} catch(FileNotFoundException ex) {
+			} catch (FileNotFoundException ex) {
 				ErrorHistories.Add(ex);
 				return (file, null);
 			}

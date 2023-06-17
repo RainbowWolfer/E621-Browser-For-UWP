@@ -1,0 +1,278 @@
+<UserControl
+    x:Class="YiffBrowser.Views.Controls.ListingsManager"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YiffBrowser.Views.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:i="using:Microsoft.Xaml.Interactivity"
+	xmlns:core="using:Microsoft.Xaml.Interactions.Core" 
+	xmlns:tagsinfoviews="using:YiffBrowser.Views.Controls.TagsInfoViews"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+	mc:Ignorable="d"
+	MinWidth="650"
+	MaxHeight="400">
+
+	<Grid>
+		<Grid.DataContext>
+			<local:ListingsManagerViewModel x:Name="ViewModel"/>
+		</Grid.DataContext>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="2.5*"/>
+			<ColumnDefinition Width="3*"/>
+		</Grid.ColumnDefinitions>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="auto"/>
+			</Grid.RowDefinitions>
+
+			<ListView x:Name="ListingsListView" SelectionMode="Single" Margin="5" ItemsSource="{Binding ListingItems}" SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}" Height="250" Padding="0,0,5,0" Grid.Row="1">
+				<ListView.ItemTemplate>
+					<DataTemplate x:DataType="local:ListingViewItem">
+						<ListViewItem IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsEnabled,Converter={StaticResource BoolToVisibility}}">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="auto"/>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="auto"/>
+								</Grid.ColumnDefinitions>
+
+								<Grid.ContextFlyout>
+									<MenuFlyout>
+										<MenuFlyoutItem Icon="Rename" Text="Rename" Command="{Binding RenameCommand}" IsEnabled="{Binding Item.IsCloud,Converter={StaticResource BoolToBoolRe}}"/>
+										<MenuFlyoutItem Icon="Delete" Text="Delete" Command="{Binding DeleteCommand}" IsEnabled="{Binding Item.IsCloud,Converter={StaticResource BoolToBoolRe}}"/>
+									</MenuFlyout>
+								</Grid.ContextFlyout>
+
+								<FontIcon Glyph="&#xEA41;" FontSize="20" VerticalAlignment="Center" Visibility="{Binding Item.IsCloud,Converter={StaticResource BoolToVisibilityRe}}"/>
+								<FontIcon Glyph="&#xEBC3;" FontSize="20" VerticalAlignment="Center" Visibility="{Binding Item.IsCloud,Converter={StaticResource BoolToVisibility}}"/>
+
+								<StackPanel Grid.Column="1" Margin="10,0,20,0" VerticalAlignment="Center" Orientation="Horizontal">
+									<TextBlock FontSize="16" VerticalAlignment="Center">
+									<Run Text="{Binding Item.Name}" FontSize="18"/>
+									<Run Text=" "/>
+									<Run Text="("/>
+									<Run Text="{Binding Item.Tags.Count}"/>
+									<Run Text=")"/>
+									</TextBlock>
+								</StackPanel>
+
+								<CheckBox Grid.Column="2" MinWidth="0" MinHeight="0" Width="25" Height="20" IsChecked="{Binding IsSelected,Mode=TwoWay}" IsHitTestVisible="{Binding IsSelected,Converter={StaticResource BoolToBoolRe}}" ToolTipService.ToolTip="Set active">
+									<i:Interaction.Behaviors>
+										<core:EventTriggerBehavior EventName="Checked">
+											<core:InvokeCommandAction Command="{Binding CheckedCommand}"/>
+										</core:EventTriggerBehavior>
+									</i:Interaction.Behaviors>
+								</CheckBox>
+
+								<Grid Grid.ColumnSpan="3" VerticalAlignment="Bottom" Visibility="{Binding Item.IsCloud,Converter={StaticResource BoolToVisibility}}">
+									<ProgressBar IsIndeterminate="True" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}"/>
+								</Grid>
+
+							</Grid>
+						</ListViewItem>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+
+			<StackPanel Grid.Row="2">
+
+				<Button HorizontalAlignment="Stretch" Margin="5" ToolTipService.Placement="Bottom" Command="{Binding PasteAsNewListCommand}" IsEnabled="{Binding EnablePasting}">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Paste as a new list" VerticalAlignment="Center" FontSize="16" Margin="0,0,10,0"/>
+						<FontIcon Glyph="&#xE16D;" FontSize="20" VerticalAlignment="Center" Margin="0,5,0,0"/>
+					</StackPanel>
+				</Button>
+
+			</StackPanel>
+
+			<StackPanel Grid.Row="0" Margin="5">
+				<local:AddButtonInput PlaceholderText="New List Name" Margin="5" Exists="{Binding ExistListNames,Mode=OneWay}" SubmitCommand="{Binding OnNewListSubmitCommand}"/>
+			</StackPanel>
+
+		</Grid>
+
+		<Grid Grid.Column="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="auto"/>
+			</Grid.RowDefinitions>
+
+			<Grid Grid.Row="1" Visibility="{Binding ItemTags.Count,Converter={StaticResource ArrayEmptyToVisibility}}">
+				<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+					<FontIcon Glyph="&#xF165;" FontSize="50" Margin="5"/>
+					<TextBlock Text="No Tags" TextAlignment="Center" Margin="5"/>
+				</StackPanel>
+				<!--<Button HorizontalAlignment="Center" Visibility="Collapsed">
+					<StackPanel Margin="5">
+						<FontIcon Glyph="&#xE117;" FontSize="56" Margin="5"/>
+						<TextBlock Text="Sync" TextAlignment="Center" FontSize="16" Margin="5,5,5,0"/>
+					</StackPanel>
+				</Button>-->
+			</Grid>
+
+			<ListView Grid.Row="1" ItemsSource="{Binding ItemTags}" SelectedIndex="{Binding TagItemsSelectedIndex,Mode=TwoWay}" Visibility="{Binding ItemTags.Count,Converter={StaticResource ArrayNotEmptyToVisibility}}" Padding="0,0,10,0" Height="300">
+				<ListView.ItemTemplate>
+					<DataTemplate x:DataType="local:TagViewItem">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="auto"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="auto"/>
+							</Grid.ColumnDefinitions>
+
+							<Button Background="Transparent" BorderBrush="Transparent" Padding="3" Margin="5,0,10,0">
+								<FontIcon Glyph="&#xE946;"/>
+								<Button.Flyout>
+									<Flyout>
+										<Grid>
+											<i:Interaction.Behaviors>
+												<core:EventTriggerBehavior EventName="Loaded">
+													<core:InvokeCommandAction Command="{Binding LoadedCommand}" CommandParameter="{Binding Tag}"/>
+												</core:EventTriggerBehavior>
+											</i:Interaction.Behaviors>
+											<ProgressBar IsIndeterminate="True" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}"/>
+											<Grid Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityRe}}">
+												<tagsinfoviews:BriefTagView E621Tag="{Binding E621Tag,Mode=OneWay}"/>
+											</Grid>
+										</Grid>
+									</Flyout>
+								</Button.Flyout>
+							</Button>
+
+							<TextBlock Text="{Binding Tag}" Grid.Column="1" VerticalAlignment="Center"/>
+
+							<Button Grid.Column="2" BorderBrush="Transparent" Background="Transparent" Padding="3">
+								<FontIcon Glyph="&#xE712;" FontSize="14"/>
+
+								<Button.Flyout>
+									<MenuFlyout Placement="Bottom">
+										<MenuFlyoutItem Icon="Delete" Text="Delete" Command="{Binding DeleteCommand}"/>
+										<MenuFlyoutItem Icon="Copy" Text="Copy" Command="{Binding CopyCommand}"/>
+									</MenuFlyout>
+								</Button.Flyout>
+							</Button>
+
+						</Grid>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+
+			<Grid Grid.Row="0" Margin="5">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="auto"/>
+					<ColumnDefinition Width="auto"/>
+				</Grid.ColumnDefinitions>
+
+				<local:AddButtonInput PlaceholderText="Your Tag" Margin="5" Exists="{Binding ExistTagNames}" SubmitCommand="{Binding OnNewTagSubmitCommand}" IsEnabled="True"/>
+
+				<DropDownButton Grid.Column="1" Margin="5">
+					<DropDownButton.Content>
+						<StackPanel Orientation="Horizontal">
+							<FontIcon Glyph="&#xE81E;" VerticalAlignment="Center"/>
+							<!--<TextBlock Text="Actions" Margin="10,0,0,0" VerticalAlignment="Center"/>-->
+						</StackPanel>
+					</DropDownButton.Content>
+					<DropDownButton.Flyout>
+						<MenuFlyout Placement="Bottom">
+							<MenuFlyoutItem x:Name="ExportClipboardItem" Text="Export to Clipboard" Command="{Binding ExportClipboardCommand}">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE72D;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
+							<MenuFlyoutItem x:Name="ImportClipboardItem" Text="Import from Clipboard (Override)" IsEnabled="{Binding EnablePasting}" Command="{Binding ImportClipboardCommand}">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xF0E3;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
+							<MenuFlyoutItem x:Name="ClearAllTagsItem" Text="Clear All" Command="{Binding ClearAllCommand}">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE75C;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
+							<MenuFlyoutItem x:Name="DownloadCloudItem" Text="Load From Cloud" Visibility="{Binding IsCurrentListingCloud,Converter={StaticResource BoolToVisibility}}" Command="{Binding DownloadCloudCommand}">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE896;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
+							<MenuFlyoutItem x:Name="UploadCloudItem" Text="Upload To Cloud" Visibility="{Binding IsCurrentListingCloud,Converter={StaticResource BoolToVisibility}}" Command="{Binding UploadCloudCommand}">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE11C;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
+						</MenuFlyout>
+					</DropDownButton.Flyout>
+				</DropDownButton>
+
+				<Button Height="33" Padding="6" Grid.Column="2" Margin="5" Visibility="{Binding IsCurrentListingCloud,Converter={StaticResource BoolToVisibility}}">
+					<Button.Flyout>
+						<Flyout Placement="Bottom">
+							<StackPanel Width="250">
+								<TextBlock Text="E621" FontWeight="Bold" TextAlignment="Center" FontSize="18" Margin="5"/>
+								<TextBlock Text="This is synced with the account settings. Be careful not to override your original black list tags" TextAlignment="Center" Margin="5" TextWrapping="Wrap" FontSize="15"/>
+							</StackPanel>
+						</Flyout>
+					</Button.Flyout>
+					<FontIcon Glyph="&#xEDB1;"/>
+				</Button>
+			</Grid>
+		</Grid>
+
+		<muxc:TeachingTip x:Name="DeleteConfirmTeachingTip" Title="Confirm" Subtitle="Are you sure to delete this list?" 
+			IsLightDismissEnabled="True" PreferredPlacement="Bottom" 
+			ActionButtonContent="Delete" CloseButtonContent="Cancel" 
+			IsOpen="{Binding IsDeleteListTipOpen,Mode=TwoWay}" 
+			ActionButtonCommand="{Binding ConfirmDeleteListingCommand}" 
+			CloseButtonCommand="{Binding CancelDeleteListingCommand}">
+			<muxc:TeachingTip.IconSource>
+				<muxc:FontIconSource Glyph="&#xE897;"/>
+			</muxc:TeachingTip.IconSource>
+		</muxc:TeachingTip>
+
+		<muxc:TeachingTip x:Name="RenameTeachingTip" Title="Rename" 
+			IsLightDismissEnabled="True" PreferredPlacement="Bottom" 
+			ActionButtonContent="Confirm" CloseButtonContent="Cancel" 
+			IsOpen="{Binding IsRenameListTipOpen,Mode=TwoWay}" 
+			ActionButtonCommand="{Binding ConfirmRenameListingCommand}" 
+			CloseButtonCommand="{Binding CancelRenameListingCommand}">
+			<muxc:TeachingTip.IconSource>
+				<muxc:FontIconSource Glyph="&#xE8AC;"/>
+			</muxc:TeachingTip.IconSource>
+			<muxc:TeachingTip.Content>
+				<local:TextSubmitInput Exists="{Binding ExistListNames,Mode=OneWay}" 
+					Text="{Binding RenameListingText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+					SubmitCommand="{Binding ConfirmRenameListingCommand}" Margin="0,15,0,0"/>
+			</muxc:TeachingTip.Content>
+		</muxc:TeachingTip>
+
+
+		<muxc:TeachingTip x:Name="CenteredTeachingTip" Title="{Binding CenterTipTitle}" Subtitle="{Binding CenterTipSubtitle}"
+			IsLightDismissEnabled="True" PreferredPlacement="Center" 
+			CloseButtonContent="OK" 
+			IsOpen="{Binding IsCenterTipOpen,Mode=TwoWay}">
+			<muxc:TeachingTip.IconSource>
+				<muxc:FontIconSource Glyph="&#xE7BA;"/>
+			</muxc:TeachingTip.IconSource>
+		</muxc:TeachingTip>
+
+		<muxc:TeachingTip x:Name="CenteredConfirmTeachingTip"
+			ActionButtonCommand="{Binding ConfirmTipCommand}"
+			Title="{Binding ConfirmTipTitle}"
+			Subtitle="{Binding ConfirmTipSubtitle}"
+			ActionButtonContent="{Binding ConfirmTipYes}"
+			CloseButtonContent="{Binding ConfirmTipNo}"
+			IsOpen="{Binding IsConfirmTipOpen,Mode=TwoWay}"
+			IsLightDismissEnabled="True" PreferredPlacement="Center">
+			<muxc:TeachingTip.IconSource>
+				<muxc:FontIconSource Glyph="&#xE7BA;"/>
+			</muxc:TeachingTip.IconSource>
+		</muxc:TeachingTip>
+
+
+	</Grid>
+</UserControl>

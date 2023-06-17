@@ -1,0 +1,39 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:YiffBrowser.Converters">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary>
+			<converters:ArrayEmptyToVisibilityConverter x:Key="ArrayEmptyToVisibility"/>
+			<converters:ArrayNotEmptyToVisibilityConverter x:Key="ArrayNotEmptyToVisibility"/>
+			<converters:ArrayEmptyToBoolConverter x:Key="ArrayEmptyToBool"/>
+			<converters:ArrayEmptyToBoolConverter x:Key="ArrayNotEmptyToBool"/>
+			<converters:ColorToBrushConverter x:Key="ColorToBrush"/>
+			<converters:BoolToBoolReConverter x:Key="BoolToBoolRe"/>
+			<converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+			<converters:BoolToVisibilityReConverter x:Key="BoolToVisibilityRe"/>
+			<converters:JoinStringConverter x:Key="JoinStringWithSpace"/>
+			<converters:AbsConverter x:Key="Abs"/>
+			<converters:NumberToKBConverter x:Key="NumberToKB"/>
+			<converters:SubStringConverter x:Key="RatingHeader" Length="1"/>
+			<converters:E621RatingToBrushConverter x:Key="E621RatingToBrush"/>
+			<converters:E621RatingToIconConverter x:Key="E621RatingToIcon"/>
+			<converters:NotNullToVisibilityConverter x:Key="NotNullToVisibility"/>
+			<converters:NullToVisibilityConverter x:Key="NullToVisibility"/>
+			<converters:NotNullToBoolConverter x:Key="NotNullToBool"/>
+			<converters:NullToBoolConverter x:Key="NullToBool"/>
+			<converters:ArrayToCountConverter x:Key="ArrayToCount"/>
+			<converters:UnifyE621PostsConverter x:Key="UnifyE621Posts"/>
+			<converters:DurationConverter x:Key="Duration"/>
+
+			<x:String x:Key="DefaultText">
+				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+			</x:String>
+
+			<x:String x:Key="DefaultTextShort">
+				Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+			</x:String>
+
+		</ResourceDictionary>
+	</ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

@@ -1,0 +1,369 @@
+<UserControl
+    x:Class="YiffBrowser.Views.Controls.PostDetailView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YiffBrowser.Views.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:pictureviews="using:YiffBrowser.Views.Controls.PictureViews" 
+	xmlns:converters="using:YiffBrowser.Converters" 
+	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+	mc:Ignorable="d">
+
+	<UserControl.Resources>
+
+		<Style x:Key="RectangleSeparator" TargetType="Rectangle">
+			<Setter Property="Width" Value="4"/>
+			<Setter Property="Height" Value="20"/>
+			<Setter Property="Margin" Value="10,0,10,0"/>
+			<Setter Property="RadiusX" Value="5"/>
+			<Setter Property="RadiusY" Value="2"/>
+			<Setter Property="RelativePanel.AlignVerticalCenterWithPanel" Value="True"/>
+			<Setter Property="Fill" Value="{x:Bind DownloadButton.Foreground}"/>
+		</Style>
+
+		<Style x:Key="IDFlyoutInfoBorderStyle" TargetType="Border">
+			<Setter Property="Margin" Value="0,0,0,5"/>
+			<Setter Property="Background" Value="{StaticResource ControlFillColorDefaultBrush}"/>
+			<Setter Property="Padding" Value="10,5,10,5"/>
+			<Setter Property="CornerRadius" Value="5"/>
+		</Style>
+
+		<Style x:Key="IDFlyoutInfoTextStyle" TargetType="TextBlock">
+			<Setter Property="Margin" Value="10,0,0,5"/>
+			<Setter Property="VerticalAlignment" Value="Center"/>
+			<Setter Property="Grid.Column" Value="1"/>
+		</Style>
+
+		<converters:BoolToSplitViewDisplayModeConverter x:Key="IsOverlay" TrueValue="Overlay" FalseValue="Inline"/>
+
+		<Storyboard x:Name="ImagesListManagerTransformStoryboard">
+			<DoubleAnimation x:Name="ImagesListManagerTransformAnimation" Storyboard.TargetName="ImagesListManagerTransform" Storyboard.TargetProperty="Y">
+				<DoubleAnimation.EasingFunction>
+					<ExponentialEase Exponent="15" EasingMode="EaseOut"/>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+		</Storyboard>
+
+	</UserControl.Resources>
+
+	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+		<Grid.DataContext>
+			<local:PostDetailViewModel x:Name="ViewModel" E621Post="{x:Bind E621Post,Mode=OneWay}" AllPosts="{x:Bind PostsList,Mode=OneWay}"/>
+		</Grid.DataContext>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="300" MinWidth="250" MaxWidth="450"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<!--<GridSplitter />-->
+		<controls:GridSplitter Grid.RowSpan="2" HorizontalAlignment="Right" Width="8" MinWidth="0" Background="#14000000"/>
+
+		<Grid Grid.Column="1" Background="{StaticResource SystemColorBackgroundBrush}" CornerRadius="10" Margin="10" Padding="5,3,5,3">
+			<StackPanel Orientation="Horizontal">
+
+				<FontIcon Glyph="{Binding FileTypeIcon}" Height="33" Width="40" FontSize="24" ToolTipService.Placement="Bottom" ToolTipService.ToolTip="{Binding FileTypeToolTip}"/>
+
+				<TextBlock Text="{Binding Duration,Converter={StaticResource Duration}}" FontSize="18" VerticalAlignment="Center" Margin="0,0,5,0" ToolTipService.ToolTip="{Binding Duration}" Visibility="{Binding Duration,Converter={StaticResource ArrayNotEmptyToVisibility}}"/>
+
+				<Button Margin="5,0,0,0" Height="33" Padding="11,0,11,0" ToolTipService.Placement="Bottom" ToolTipService.ToolTip="{Binding RatingToolTip}">
+					<TextBlock Text="{Binding IDTitle}" VerticalAlignment="Center" FontFamily="Cascadia Mono" FontSize="24" Foreground="{Binding RatingColor,Converter={StaticResource ColorToBrush}}"/>
+					<Button.Flyout>
+						<Flyout Placement="Bottom">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="auto"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="auto"/>
+									<RowDefinition Height="auto"/>
+									<RowDefinition Height="auto"/>
+									<RowDefinition Height="auto"/>
+									<RowDefinition Height="auto"/>
+									<RowDefinition Height="auto"/>
+								</Grid.RowDefinitions>
+
+								<Border Grid.Row="0" Style="{StaticResource IDFlyoutInfoBorderStyle}">
+									<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+										<TextBlock Text="Created Date"/>
+										<FontIcon Glyph="&#xEE93;" Margin="10,0,0,0"/>
+									</StackPanel>
+								</Border>
+								<TextBlock Text="{Binding E621Post.CreatedAt}" Grid.Row="0" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
+
+								<Border Grid.Row="1" Style="{StaticResource IDFlyoutInfoBorderStyle}">
+									<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+										<TextBlock Text="Updated Date"/>
+										<FontIcon Glyph="&#xE163;" Margin="10,0,0,0"/>
+									</StackPanel>
+								</Border>
+								<TextBlock Text="{Binding E621Post.UpdatedAt}" Grid.Row="1" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
+
+								<Border Grid.Row="2" Style="{StaticResource IDFlyoutInfoBorderStyle}">
+									<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+										<TextBlock Text="Size"/>
+										<FontIcon Glyph="&#xEE93;" Margin="10,0,0,0"/>
+									</StackPanel>
+								</Border>
+								<TextBlock Text="{Binding E621Post.File.SizeInfo}" Grid.Row="2" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
+
+								<Border Grid.Row="3" Style="{StaticResource IDFlyoutInfoBorderStyle}">
+									<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+										<TextBlock Text="Approver ID"/>
+										<FontIcon Glyph="&#xE2AF;" Margin="10,0,0,0"/>
+									</StackPanel>
+								</Border>
+								<TextBlock Text="{Binding E621Post.ApproverId}" Grid.Row="3" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
+
+								<Border Grid.Row="4" Style="{StaticResource IDFlyoutInfoBorderStyle}">
+									<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+										<TextBlock Text="Uploader ID"/>
+										<FontIcon Glyph="&#xE898;" Margin="10,0,0,0"/>
+									</StackPanel>
+								</Border>
+								<TextBlock Text="{Binding E621Post.UploaderId}" Grid.Row="4" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
+
+								<Grid Grid.Row="5" Grid.ColumnSpan="2">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+
+									<Button HorizontalAlignment="Stretch" Margin="0,5,5,0" Command="{Binding CopyIDCommand}">
+										<StackPanel Orientation="Horizontal">
+											<FontIcon Glyph="&#xE16F;"/>
+											<TextBlock Text="Copy ID" Margin="10,0,0,0"/>
+										</StackPanel>
+									</Button>
+
+									<Button Grid.Column="1" HorizontalAlignment="Stretch" Margin="5,5,0,0" Command="{Binding OpenInBrowserCommand}">
+										<StackPanel Orientation="Horizontal">
+											<FontIcon Glyph="&#xE12B;"/>
+											<TextBlock Text="Open In Browser" Margin="10,0,0,0"/>
+										</StackPanel>
+									</Button>
+
+								</Grid>
+
+
+							</Grid>
+						</Flyout>
+					</Button.Flyout>
+				</Button>
+
+				<FontIcon Glyph="&#xE7BA;" Height="33" Width="40" FontSize="24" Margin="5,0,0,0" Foreground="{Binding SoundWarningColor,Converter={StaticResource ColorToBrush}}" ToolTipService.Placement="Bottom" ToolTipService.ToolTip="{Binding SoundWarningToolTip}" Visibility="{Binding ShowSoundWarning,Converter={StaticResource BoolToVisibility}}"/>
+
+				<Rectangle Style="{StaticResource RectangleSeparator}"/>
+
+				<FontIcon Glyph="&#xE10C;" FontSize="24" Visibility="Collapsed" ToolTipService.ToolTip="Loading"/>
+
+				<ToggleButton IsChecked="{Binding HasVotedUp,Mode=TwoWay}" IsEnabled="{Binding IsVoteLoading,Converter={StaticResource BoolToBoolRe}}" Height="33" Width="38" Padding="0" CornerRadius="4" BorderThickness="0" ToolTipService.ToolTip="Vote Up">
+					<Grid>
+						<FontIcon Glyph="&#xE96D;" Foreground="LightGreen" Visibility="{Binding IsVoteLoading,Converter={StaticResource BoolToVisibilityRe}}"/>
+						<FontIcon Glyph="&#xE10C;" Visibility="{Binding IsVoteLoading,Converter={StaticResource BoolToVisibility}}"/>
+					</Grid>
+				</ToggleButton>
+
+				<Button Margin="10,0,10,0" Height="33" Padding="11,0,11,0">
+					<TextBlock Text="{Binding VoteTotal}" FontSize="18" MinWidth="35" TextAlignment="Center"/>
+					<Button.Flyout>
+						<Flyout Placement="Bottom">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="auto"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="auto"/>
+									<RowDefinition Height="auto"/>
+								</Grid.RowDefinitions>
+
+								<Border Grid.Row="0" Style="{StaticResource IDFlyoutInfoBorderStyle}">
+									<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+										<FontIcon Glyph="&#xE70E;"/>
+									</StackPanel>
+								</Border>
+								<TextBlock Text="{Binding VoteUp,Converter={StaticResource Abs}}" Grid.Row="0" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
+
+								<Border Grid.Row="1" Style="{StaticResource IDFlyoutInfoBorderStyle}">
+									<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+										<FontIcon Glyph="&#xE70D;"/>
+									</StackPanel>
+								</Border>
+								<TextBlock Text="{Binding VoteDown,Converter={StaticResource Abs}}" Grid.Row="1" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
+							</Grid>
+							<!--<StackPanel>
+								<StackPanel Orientation="Horizontal" Background="#3f808080" CornerRadius="4" Padding="4">
+									<FontIcon Glyph="&#xE70E;" FontSize="20" VerticalAlignment="Center" Margin="0,0,10,0"/>
+									<TextBlock Text="{Binding VoteUp,Converter={StaticResource Abs}}" FontSize="16" VerticalAlignment="Center"/>
+								</StackPanel>
+								<StackPanel Orientation="Horizontal" Background="#3f808080" CornerRadius="4" Padding="4" Margin="0,5,0,0">
+									<FontIcon Glyph="&#xE70D;" FontSize="20" VerticalAlignment="Center" Margin="0,0,10,0"/>
+									<TextBlock Text="{Binding VoteDown,Converter={StaticResource Abs}}" FontSize="16" VerticalAlignment="Center"/>
+								</StackPanel>
+							</StackPanel>-->
+						</Flyout>
+					</Button.Flyout>
+				</Button>
+
+				<ToggleButton IsChecked="{Binding HasVotedDown,Mode=TwoWay}" IsEnabled="{Binding IsVoteLoading,Converter={StaticResource BoolToBoolRe}}" Height="33" Width="38" Padding="0" CornerRadius="4" BorderThickness="0" ToolTipService.ToolTip="Vote Down">
+					<Grid>
+						<FontIcon Glyph="&#xE96E;" Foreground="OrangeRed" Visibility="{Binding IsVoteLoading,Converter={StaticResource BoolToVisibilityRe}}"/>
+						<FontIcon Glyph="&#xE10C;" Visibility="{Binding IsVoteLoading,Converter={StaticResource BoolToVisibility}}"/>
+					</Grid>
+				</ToggleButton>
+
+				<Rectangle Style="{StaticResource RectangleSeparator}"/>
+
+				<local:CustomToggleSplitButton IsOn="{Binding HasFavorited,Mode=TwoWay}" IsLoading="{Binding IsFavoriteLoading}" OnTitle="Favorited" OffTitle="Favorite" OffIcon="&#xEB51;" OnIcon="&#xEB52;" MinWidth="160"/>
+
+				<Button x:Name="DownloadButton" Height="33" Padding="10,0,10,0" Margin="10,0,0,0">
+					<StackPanel Orientation="Horizontal">
+						<FontIcon Glyph="&#xE118;"/>
+						<TextBlock Text="Download" Margin="10,0,0,0"/>
+					</StackPanel>
+				</Button>
+
+			</StackPanel>
+
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+				<DropDownButton FontSize="18" Content="Action" Height="33" CornerRadius="5" BorderThickness="0" Background="Transparent" Margin="0,0,10,0">
+					<DropDownButton.Flyout>
+						<MenuFlyout Placement="Bottom">
+							<MenuFlyoutItem Text="Copy Image" Visibility="{Binding IsMedia,Converter={StaticResource BoolToVisibilityRe}}" IsEnabled="{Binding AbleToCopyImage}" Command="{Binding CopyImageCommand}">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE91B;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
+							<MenuFlyoutSubItem Text="Set As">
+								<MenuFlyoutSubItem.Icon>
+									<FontIcon Glyph="&#xEE71;"/>
+								</MenuFlyoutSubItem.Icon>
+								<MenuFlyoutItem Text="Set As Wallpaper">
+									<MenuFlyoutItem.Icon>
+										<FontIcon Glyph="&#xE620;"/>
+									</MenuFlyoutItem.Icon>
+								</MenuFlyoutItem>
+								<MenuFlyoutItem Text="Set As Lock-screen">
+									<MenuFlyoutItem.Icon>
+										<FontIcon Glyph="&#xEE3F;"/>
+									</MenuFlyoutItem.Icon>
+								</MenuFlyoutItem>
+								<MenuFlyoutItem Text="Set As Avatar" IsEnabled="False">
+									<MenuFlyoutItem.Icon>
+										<FontIcon Glyph="&#xE156;"/>
+									</MenuFlyoutItem.Icon>
+								</MenuFlyoutItem>
+							</MenuFlyoutSubItem>
+							<MenuFlyoutItem Text="Open In Photos">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE155;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
+							<MenuFlyoutItem Text="Slideshow">
+								<MenuFlyoutItem.Icon>
+									<FontIcon Glyph="&#xE173;"/>
+								</MenuFlyoutItem.Icon>
+							</MenuFlyoutItem>
+						</MenuFlyout>
+					</DropDownButton.Flyout>
+				</DropDownButton>
+				<Button FontSize="18" Background="Transparent" BorderThickness="0" Height="33" Padding="7,0,7,0" Command="{Binding OpenMoreInfoCommand}">
+					<Button.Content>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="More Info" Margin="5"/>
+							<FontIcon Glyph="&#xE169;" Margin="5"/>
+						</StackPanel>
+					</Button.Content>
+				</Button>
+			</StackPanel>
+		</Grid>
+
+		<Grid Margin="0,0,10,0" Grid.RowSpan="2">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<Button Click="BackButton_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+				<StackPanel Orientation="Horizontal">
+					<FontIcon Glyph="&#xE76B;" FontSize="18"/>
+					<TextBlock Text="Back" FontSize="18" Margin="15,0,0,0"/>
+				</StackPanel>
+			</Button>
+
+			<Grid Margin="10,0,10,10" Grid.Row="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="auto"/>
+				</Grid.ColumnDefinitions>
+
+
+				<Button Grid.Column="0" HorizontalAlignment="Stretch" Margin="0,0,5,0" Height="34" Command="{Binding PreviousCommand}">
+					<StackPanel Orientation="Horizontal">
+						<FontIcon Glyph="&#xE72B;" FontSize="16"/>
+						<TextBlock Text="Previous" FontSize="14" Margin="10,0,0,0"/>
+					</StackPanel>
+				</Button>
+
+
+				<Button Grid.Column="1" HorizontalAlignment="Stretch" Margin="5,0,5,0" Height="34" Command="{Binding NextCommand}">
+					<StackPanel Orientation="Horizontal">
+						<FontIcon Glyph="&#xE72A;" FontSize="16"/>
+						<TextBlock Text="Next" FontSize="14" Margin="10,0,0,0"/>
+					</StackPanel>
+				</Button>
+
+				<ToggleButton IsChecked="{x:Bind IsShowingImagesListManager,Mode=TwoWay}" Grid.Column="2" HorizontalAlignment="Stretch" Margin="5,0,0,0" Height="34" IsEnabled="{Binding IsImagesListManagerLocked,Converter={StaticResource BoolToBoolRe}}" ToolTipService.ToolTip="Toggle Images List View">
+					<StackPanel Orientation="Horizontal">
+						<FontIcon Glyph="&#xE158;" FontSize="16"/>
+					</StackPanel>
+				</ToggleButton>
+
+			</Grid>
+
+			<local:PostTagsListView Grid.Row="2" Tags="{Binding E621Post.Tags}" ShowAddMinusButton="{Binding InputByPosts,Converter={StaticResource BoolToBoolRe}}"/>
+		</Grid>
+
+		<Grid Grid.Row="1" Grid.Column="1">
+			<SplitView IsPaneOpen="{Binding ShowMoreInfoSplitView,Mode=TwoWay}" DisplayMode="{Binding IsSidePaneOverlay,Converter={StaticResource IsOverlay}}" PanePlacement="Right" OpenPaneLength="550">
+
+				<SplitView.Pane>
+					<pictureviews:PostImageSideView E621Post="{Binding E621Post}" IsOverlayCheck="{Binding IsSidePaneOverlay,Mode=TwoWay}"/>
+				</SplitView.Pane>
+
+				<Grid x:Name="MainGrid" Tapped="MainGrid_Tapped" PointerReleased="MainGrid_PointerReleased" PointerPressed="MainGrid_PointerPressed">
+
+					<Image x:Name="BackgroundImage" Source="{x:Bind InitialImageURL,Mode=OneWay}" Margin="0,30,0,0" Visibility="{Binding ShowBackgroundImage,Converter={StaticResource BoolToVisibility}}"/>
+
+					<Grid Visibility="{Binding IsMedia,Converter={StaticResource BoolToVisibilityRe}}">
+						<local:PictureDisplayView x:Name="PictureDisplayView" URL="{Binding ImageURL}" FileSize="{Binding FileSize}" OnImageLoadedCommand="{Binding OnImageLoadedCommand}"/>
+					</Grid>
+
+					<Grid Visibility="{Binding IsMedia,Converter={StaticResource BoolToVisibility}}">
+						<local:MediaDisplayView x:Name="MediaDisplayView" URL="{Binding MediaURL}"/>
+					</Grid>
+
+					<ScrollViewer x:Name="ImagesListManagerScroll" VerticalAlignment="Top" Canvas.ZIndex="999" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" HorizontalScrollMode="Disabled" IsHitTestVisible="False" Margin="160,0,160,0">
+						<pictureviews:ImagesListManager PostsList="{x:Bind PostsList,Mode=OneWay}" CurrentPost="{Binding E621Post}" ItemClickCommand="{Binding ImagesListManagerItemClickCommand}" IsLocked="{Binding IsImagesListManagerLocked,Mode=TwoWay}" Margin="0,0,0,10">
+							<pictureviews:ImagesListManager.RenderTransform>
+								<TranslateTransform x:Name="ImagesListManagerTransform" Y="-150"/>
+							</pictureviews:ImagesListManager.RenderTransform>
+						</pictureviews:ImagesListManager>
+					</ScrollViewer>
+
+				</Grid>
+			</SplitView>
+		</Grid>
+
+	</Grid>
+</UserControl>

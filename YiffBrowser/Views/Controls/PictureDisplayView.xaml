@@ -1,0 +1,49 @@
+<UserControl
+    x:Class="YiffBrowser.Views.Controls.PictureDisplayView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YiffBrowser.Views.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+		<Grid.DataContext>
+			<local:PictureDisplayViewModel x:Name="ViewModel"/>
+		</Grid.DataContext>
+
+		<Border Margin="10,0,10,5" Visibility="{Binding ShowProgress,Converter={StaticResource BoolToVisibility}}" CornerRadius="4" VerticalAlignment="Top">
+			<Grid Background="{StaticResource ControlFillColorDefaultBrush}">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="auto"/>
+				</Grid.ColumnDefinitions>
+
+				<ProgressBar Value="{Binding Progress}" IsIndeterminate="{Binding IsProgressIndeterminate}" Margin="10"/>
+
+				<TextBlock Grid.Column="1" Margin="10,-1,10,0" VerticalAlignment="Center">
+					<Run Text="{Binding DownloadedFileSize,Converter={StaticResource NumberToKB}}"/>
+					<Run Text="/"/>
+					<Run Text="{Binding FileSize,Converter={StaticResource NumberToKB}}"/>
+				</TextBlock>
+
+			</Grid>
+
+		</Border>
+
+		<ScrollViewer x:Name="MyScrollViewer" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
+			<Image x:Name="MainImage" Source="{Binding Bitmap}"
+				DoubleTapped="MainImage_DoubleTapped" 
+				PointerWheelChanged="MainImage_PointerWheelChanged" 
+				ManipulationMode="TranslateX,TranslateY,Scale" 
+				ManipulationDelta="MainImage_ManipulationDelta" 
+				ImageOpened="MainImage_ImageOpened" 
+				ImageFailed="MainImage_ImageFailed">
+				<Image.RenderTransform>
+					<CompositeTransform x:Name="ImageTransform"/>
+				</Image.RenderTransform>
+			</Image>
+		</ScrollViewer>
+
+	</Grid>
+</UserControl>

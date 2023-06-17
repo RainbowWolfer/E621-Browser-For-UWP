@@ -1,0 +1,110 @@
+<UserControl
+    x:Class="YiffBrowser.Views.Controls.TagsInfoViews.TagsInfoView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:YiffBrowser.Views.Controls"
+	xmlns:local="using:YiffBrowser.Views.Controls.TagsInfoViews"
+	mc:Ignorable="d"
+	MinWidth="300">
+
+	<Grid>
+		<Grid.DataContext>
+			<local:TagsInfoViewModel x:Name="ViewModel" Tags="{x:Bind Tags}"/>
+		</Grid.DataContext>
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<controls:CustomToggleSplitButton OnTitle="Following" OnIcon="&#xEB52;" OffTitle="Follow" OffIcon="&#xEB51;" IsOn="{Binding IsFollowChecked,Mode=TwoWay}" SideToggleOpeningCommand="{Binding FollowSideToggleOpeningCommand}" SideToggleClosingCommand="{Binding SideToggleClosingCommand}" Margin="5,0,5,0">
+			<controls:CustomToggleSplitButton.SideToggleContent>
+				<StackPanel>
+
+					<ListView ItemsSource="{Binding ListingsCheckItems}" MaxHeight="250">
+						<ListView.ItemTemplate>
+							<DataTemplate x:DataType="local:ListingCheckViewItem">
+								<CheckBox Content="{Binding Item.Name}" IsChecked="{Binding IsChecked,Mode=TwoWay}"/>
+							</DataTemplate>
+						</ListView.ItemTemplate>
+					</ListView>
+
+					<Button HorizontalAlignment="Stretch" Margin="5,5,5,0">
+						<StackPanel Orientation="Horizontal">
+							<FontIcon Glyph="&#xE115;" Margin="0,0,10,0"/>
+							<TextBlock Text="Settings"/>
+						</StackPanel>
+					</Button>
+
+				</StackPanel>
+			</controls:CustomToggleSplitButton.SideToggleContent>
+		</controls:CustomToggleSplitButton>
+
+		<controls:CustomToggleSplitButton OnTitle="Blocking" OnIcon="&#xECE4;" OffTitle="Block" OffIcon="&#xECE4;" IsOn="{Binding IsBlockChecked,Mode=TwoWay}" SideToggleOpeningCommand="{Binding BlockSideToggleOpeningCommand}" SideToggleClosingCommand="{Binding SideToggleClosingCommand}" Margin="5,0,5,0" Grid.Column="1">
+			<controls:CustomToggleSplitButton.SideToggleContent>
+				<StackPanel>
+
+					<ListView ItemsSource="{Binding ListingsCheckItems}" MaxHeight="250">
+						<ListView.ItemTemplate>
+							<DataTemplate x:DataType="local:ListingCheckViewItem">
+								<CheckBox Content="{Binding Item.Name}" IsChecked="{Binding IsChecked,Mode=TwoWay}"/>
+							</DataTemplate>
+						</ListView.ItemTemplate>
+					</ListView>
+
+					<Button HorizontalAlignment="Stretch" Margin="5,5,5,0">
+						<StackPanel Orientation="Horizontal">
+							<FontIcon Glyph="&#xE115;" Margin="0,0,10,0"/>
+							<TextBlock Text="Settings"/>
+						</StackPanel>
+					</Button>
+
+				</StackPanel>
+			</controls:CustomToggleSplitButton.SideToggleContent>
+		</controls:CustomToggleSplitButton>
+
+		<Pivot ItemsSource="{Binding TagItems}" Grid.Row="1" Grid.ColumnSpan="2" SelectedIndex="0">
+
+			<Pivot.HeaderTemplate>
+				<DataTemplate x:DataType="local:TagInfoViewPivotItem">
+					<StackPanel Orientation="Horizontal">
+
+						<Rectangle Fill="{Binding CategoryColor,Converter={StaticResource ColorToBrush}}" Width="20" Height="20" RadiusX="4" RadiusY="4" ToolTipService.ToolTip="{Binding CategoryName}" Visibility="{Binding CategoryName,Converter={StaticResource ArrayNotEmptyToVisibility}}" Margin="0,0,10,0"/>
+
+						<TextBlock>
+							<Run Text="{Binding Tag}"/>
+							<Run Text="{Binding Count}" FontSize="18"/>
+						</TextBlock>
+
+					</StackPanel>
+
+				</DataTemplate>
+			</Pivot.HeaderTemplate>
+
+			<Pivot.ItemTemplate>
+				<DataTemplate x:DataType="local:TagInfoViewPivotItem">
+					<PivotItem Padding="0,10,0,0">
+
+						<Grid BorderBrush="{StaticResource ControlElevationBorderBrush}" BorderThickness="2" CornerRadius="10" Padding="10">
+							<ProgressBar IsIndeterminate="True" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}"/>
+
+							<ScrollViewer Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityRe}}" MaxHeight="450" Padding="0,0,10,0">
+								<TextBlock Text="{Binding WikiContent}" TextWrapping="Wrap"/>
+							</ScrollViewer>
+
+						</Grid>
+
+					</PivotItem>
+				</DataTemplate>
+			</Pivot.ItemTemplate>
+
+		</Pivot>
+
+	</Grid>
+</UserControl>

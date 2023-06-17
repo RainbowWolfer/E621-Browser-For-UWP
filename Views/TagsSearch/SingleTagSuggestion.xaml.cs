@@ -53,7 +53,8 @@ namespace E621Downloader.Views.TagsSearch {
 				FromText.Text = AntecedentName;
 				ToText.Text = CompleteName;
 			}
-			var catrgory = E621Tag.GetTagCategory(Category);
+
+			TagCategory catrgory = E621Tag.GetTagCategory(Category);
 			bool isDark = App.GetApplicationTheme() == ApplicationTheme.Dark;
 			MainColor = E621Tag.GetCatrgoryColor(catrgory, isDark);
 		}

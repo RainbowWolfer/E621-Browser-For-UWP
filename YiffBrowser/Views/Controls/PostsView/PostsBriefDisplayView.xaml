@@ -1,0 +1,21 @@
+<UserControl
+    x:Class="YiffBrowser.Views.Controls.PostsView.PostsBriefDisplayView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YiffBrowser.Views.Controls.PostsView"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:e621="using:YiffBrowser.Models.E621" 
+    xmlns:controls="using:YiffBrowser.Views.Controls"
+	mc:Ignorable="d">
+
+    <Grid>
+		<GridView ItemsSource="{x:Bind Posts,Mode=OneWay}" Width="950">
+			<GridView.ItemTemplate>
+				<DataTemplate x:DataType="e621:E621Post">
+					<controls:ImageViewItem Post="{Binding}" Height="300" Width="300"/>
+				</DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+    </Grid>
+</UserControl>
