@@ -6,6 +6,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:controls="using:YiffBrowser.Views.Controls"
 	xmlns:local="using:YiffBrowser.Views.Controls.TagsInfoViews"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
 	mc:Ignorable="d"
 	MinWidth="300">
 
@@ -92,7 +93,7 @@
 					<PivotItem Padding="0,10,0,0">
 
 						<Grid BorderBrush="{StaticResource ControlElevationBorderBrush}" BorderThickness="2" CornerRadius="10" Padding="10">
-							<ProgressBar IsIndeterminate="True" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}"/>
+							<muxc:ProgressBar IsIndeterminate="True" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}"/>
 
 							<ScrollViewer Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityRe}}" MaxHeight="450" Padding="0,0,10,0">
 								<TextBlock Text="{Binding WikiContent}" TextWrapping="Wrap"/>

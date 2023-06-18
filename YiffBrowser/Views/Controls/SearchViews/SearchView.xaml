@@ -8,6 +8,7 @@
 	xmlns:e621="using:YiffBrowser.Models.E621"
 	xmlns:i="using:Microsoft.Xaml.Interactivity"
 	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
 	mc:Ignorable="d"
 	MinWidth="500">
 
@@ -35,8 +36,8 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 
-		<DropDownButton Content="{Binding OrderDropDownText}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" Margin="5">
-			<DropDownButton.Flyout>
+		<muxc:DropDownButton Content="{Binding OrderDropDownText}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" Margin="5">
+			<muxc:DropDownButton.Flyout>
 				<MenuFlyout Placement="Bottom">
 					<MenuFlyoutItem Text="Default" Command="{Binding OrderDropDownCommand}" CommandParameter=""/>
 					<MenuFlyoutItem Text="New" Command="{Binding OrderDropDownCommand}" CommandParameter="order:new"/>
@@ -46,11 +47,11 @@
 					<MenuFlyoutItem Text="Random" Command="{Binding OrderDropDownCommand}" CommandParameter="order:random"/>
 					<MenuFlyoutItem Text="Filesize" Command="{Binding OrderDropDownCommand}" CommandParameter="order:filesize"/>
 				</MenuFlyout>
-			</DropDownButton.Flyout>
-		</DropDownButton>
+			</muxc:DropDownButton.Flyout>
+		</muxc:DropDownButton>
 
-		<DropDownButton Content="{Binding TypeDropDownText}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5">
-			<DropDownButton.Flyout>
+		<muxc:DropDownButton Content="{Binding TypeDropDownText}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5">
+			<muxc:DropDownButton.Flyout>
 				<MenuFlyout Placement="Bottom">
 					<MenuFlyoutItem Text="All" Command="{Binding TypeDropDownCommand}" CommandParameter=""/>
 					<MenuFlyoutItem Text="JPG" Command="{Binding TypeDropDownCommand}" CommandParameter="type:jpg"/>
@@ -59,19 +60,19 @@
 					<MenuFlyoutItem Text="WEBM" Command="{Binding TypeDropDownCommand}" CommandParameter="type:webm"/>
 					<MenuFlyoutItem Text="ANIM" Command="{Binding TypeDropDownCommand}" CommandParameter="type:anim"/>
 				</MenuFlyout>
-			</DropDownButton.Flyout>
-		</DropDownButton>
+			</muxc:DropDownButton.Flyout>
+		</muxc:DropDownButton>
 
-		<DropDownButton Content="{Binding RatingDropDownText}" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Stretch" Margin="5">
-			<DropDownButton.Flyout>
+		<muxc:DropDownButton Content="{Binding RatingDropDownText}" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Stretch" Margin="5">
+			<muxc:DropDownButton.Flyout>
 				<MenuFlyout Placement="Bottom">
 					<MenuFlyoutItem Text="All" Command="{Binding RatingDropDownCommand}" CommandParameter=""/>
 					<MenuFlyoutItem Text="Safe" Command="{Binding RatingDropDownCommand}" CommandParameter="rating:safe"/>
 					<MenuFlyoutItem Text="Questionable" Command="{Binding RatingDropDownCommand}" CommandParameter="rating:questionable"/>
 					<MenuFlyoutItem Text="Explicit" Command="{Binding RatingDropDownCommand}" CommandParameter="rating:explicit"/>
 				</MenuFlyout>
-			</DropDownButton.Flyout>
-		</DropDownButton>
+			</muxc:DropDownButton.Flyout>
+		</muxc:DropDownButton>
 
 		<Grid Grid.Row="1" Grid.ColumnSpan="3" Margin="5">
 			<Grid.ColumnDefinitions>
@@ -113,7 +114,7 @@
 
 		<Grid Grid.Row="2" Grid.ColumnSpan="3" Margin="5">
 			<TextBlock Text="{Binding AlternativeHintText}" Visibility="{Binding AlternativeHintText,Converter={StaticResource ArrayNotEmptyToVisibility}}" TextAlignment="Center" FontSize="16" VerticalAlignment="Top"/>
-			<ProgressBar IsIndeterminate="True" VerticalAlignment="Top" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}"/>
+			<muxc:ProgressBar IsIndeterminate="True" VerticalAlignment="Top" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}"/>
 
 			<ListView ItemsSource="{Binding AutoCompletes}" SelectionMode="None" IsItemClickEnabled="True" MaxHeight="500">
 				<i:Interaction.Behaviors>
@@ -139,12 +140,12 @@
 			</Button.Content>
 		</Button>
 
-		<DropDownButton HorizontalAlignment="Stretch" Margin="5,10,5,0" Grid.Column="1" Grid.Row="3" IsEnabled="{Binding IsRandomTagLoading,Converter={StaticResource BoolToBoolRe}}">
+		<muxc:DropDownButton HorizontalAlignment="Stretch" Margin="5,10,5,0" Grid.Column="1" Grid.Row="3" IsEnabled="{Binding IsRandomTagLoading,Converter={StaticResource BoolToBoolRe}}">
 			<Grid Height="22">
 				<TextBlock TextAlignment="Center" Text="More" FontSize="16" Visibility="{Binding IsRandomTagLoading,Converter={StaticResource BoolToVisibilityRe}}"/>
-				<ProgressBar IsIndeterminate="True" Width="100" Height="10" Visibility="{Binding IsRandomTagLoading,Converter={StaticResource BoolToVisibility}}"/>
+				<muxc:ProgressBar IsIndeterminate="True" Width="100" Height="10" Visibility="{Binding IsRandomTagLoading,Converter={StaticResource BoolToVisibility}}"/>
 			</Grid>
-			<DropDownButton.Flyout>
+			<muxc:DropDownButton.Flyout>
 				<MenuFlyout Placement="Bottom">
 					<MenuFlyoutItem x:Name="HotItem" Text="Hot" Command="{Binding HotOptionCommand}">
 						<MenuFlyoutItem.Icon>
@@ -157,8 +158,8 @@
 						</MenuFlyoutItem.Icon>
 					</MenuFlyoutItem>
 				</MenuFlyout>
-			</DropDownButton.Flyout>
-		</DropDownButton>
+			</muxc:DropDownButton.Flyout>
+		</muxc:DropDownButton>
 
 		<Button HorizontalAlignment="Stretch" Grid.Column="2" Margin="5,10,5,0" Grid.Row="3" Command="{Binding BackCommand}">
 			<Button.Content>

@@ -5,6 +5,7 @@
     xmlns:local="using:YiffBrowser.Views.Controls.Users"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
 	Loaded="UserControl_Loaded">
 
@@ -84,7 +85,7 @@
 			</Grid>
 
 			<Grid>
-				<ProgressBar Margin="5,15,5,0" IsIndeterminate="True" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}"/>
+				<muxc:ProgressBar Margin="5,15,5,0" IsIndeterminate="True" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}"/>
 			</Grid>
 
 		</StackPanel>

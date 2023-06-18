@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:i="using:Microsoft.Xaml.Interactivity"
 	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
 
 	<UserControl.Resources>
@@ -68,7 +69,7 @@
 			</Grid>
 
 			<Grid Width="205" Height="205">
-				<ProgressRing IsActive="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="20" Visibility="{Binding IsAvatarLoading,Converter={StaticResource BoolToVisibility}}"/>
+				<muxc:ProgressRing IsActive="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="20" Visibility="{Binding IsAvatarLoading,Converter={StaticResource BoolToVisibility}}"/>
 				<Border CornerRadius="10">
 					<Border.Background>
 						<ImageBrush ImageSource="{Binding AvatarURL}" Stretch="UniformToFill">
@@ -155,7 +156,7 @@
 							<FontIcon Glyph="&#xE72C;" Margin="10,0,0,0"/>
 						</StackPanel>
 
-						<ProgressBar Width="100" IsIndeterminate="True" Visibility="{Binding IsRefreshing,Converter={StaticResource BoolToVisibility}}"/>
+						<muxc:ProgressBar Width="100" IsIndeterminate="True" Visibility="{Binding IsRefreshing,Converter={StaticResource BoolToVisibility}}"/>
 					</Grid>
 				</Button>
 

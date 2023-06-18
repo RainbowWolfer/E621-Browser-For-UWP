@@ -5,6 +5,7 @@
     xmlns:local="using:YiffBrowser.Views.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
 
     <Grid>
@@ -19,7 +20,7 @@
 					<ColumnDefinition Width="auto"/>
 				</Grid.ColumnDefinitions>
 
-				<ProgressBar Value="{Binding Progress}" IsIndeterminate="{Binding IsProgressIndeterminate}" Margin="10"/>
+				<muxc:ProgressBar Value="{Binding Progress}" IsIndeterminate="{Binding IsProgressIndeterminate}" Margin="10"/>
 
 				<TextBlock Grid.Column="1" Margin="10,-1,10,0" VerticalAlignment="Center">
 					<Run Text="{Binding DownloadedFileSize,Converter={StaticResource NumberToKB}}"/>

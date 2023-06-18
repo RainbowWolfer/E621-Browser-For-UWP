@@ -138,7 +138,7 @@
 					<!-- Loading -->
 					<Grid Grid.Row="1">
 						<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}">
-							<ProgressRing IsActive="True" Height="100" Width="100"/>
+							<muxc:ProgressRing IsActive="True" Height="100" Width="100"/>
 						</StackPanel>
 					</Grid>
 

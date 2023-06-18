@@ -69,7 +69,7 @@
 								</CheckBox>
 
 								<Grid Grid.ColumnSpan="3" VerticalAlignment="Bottom" Visibility="{Binding Item.IsCloud,Converter={StaticResource BoolToVisibility}}">
-									<ProgressBar IsIndeterminate="True" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}"/>
+									<muxc:ProgressBar IsIndeterminate="True" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}"/>
 								</Grid>
 
 							</Grid>
@@ -135,7 +135,7 @@
 													<core:InvokeCommandAction Command="{Binding LoadedCommand}" CommandParameter="{Binding Tag}"/>
 												</core:EventTriggerBehavior>
 											</i:Interaction.Behaviors>
-											<ProgressBar IsIndeterminate="True" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}"/>
+											<muxc:ProgressBar IsIndeterminate="True" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}"/>
 											<Grid Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityRe}}">
 												<tagsinfoviews:BriefTagView E621Tag="{Binding E621Tag,Mode=OneWay}"/>
 											</Grid>
@@ -171,14 +171,14 @@
 
 				<local:AddButtonInput PlaceholderText="Your Tag" Margin="5" Exists="{Binding ExistTagNames}" SubmitCommand="{Binding OnNewTagSubmitCommand}" IsEnabled="True"/>
 
-				<DropDownButton Grid.Column="1" Margin="5">
-					<DropDownButton.Content>
+				<muxc:DropDownButton Grid.Column="1" Margin="5">
+					<muxc:DropDownButton.Content>
 						<StackPanel Orientation="Horizontal">
 							<FontIcon Glyph="&#xE81E;" VerticalAlignment="Center"/>
 							<!--<TextBlock Text="Actions" Margin="10,0,0,0" VerticalAlignment="Center"/>-->
 						</StackPanel>
-					</DropDownButton.Content>
-					<DropDownButton.Flyout>
+					</muxc:DropDownButton.Content>
+					<muxc:DropDownButton.Flyout>
 						<MenuFlyout Placement="Bottom">
 							<MenuFlyoutItem x:Name="ExportClipboardItem" Text="Export to Clipboard" Command="{Binding ExportClipboardCommand}">
 								<MenuFlyoutItem.Icon>
@@ -206,8 +206,8 @@
 								</MenuFlyoutItem.Icon>
 							</MenuFlyoutItem>
 						</MenuFlyout>
-					</DropDownButton.Flyout>
-				</DropDownButton>
+					</muxc:DropDownButton.Flyout>
+				</muxc:DropDownButton>
 
 				<Button Height="33" Padding="6" Grid.Column="2" Margin="5" Visibility="{Binding IsCurrentListingCloud,Converter={StaticResource BoolToVisibility}}">
 					<Button.Flyout>

@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:i="using:Microsoft.Xaml.Interactivity"
 	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
 
 	<UserControl.Resources>
@@ -54,7 +55,7 @@
 									</core:EventTriggerBehavior>
 								</i:Interaction.Behaviors>
 
-								<ProgressRing IsActive="True" Visibility="{Binding ShowLoading,Converter={StaticResource BoolToVisibility}}"/>
+								<muxc:ProgressRing IsActive="True" Visibility="{Binding ShowLoading,Converter={StaticResource BoolToVisibility}}"/>
 
 								<Border VerticalAlignment="Center" HorizontalAlignment="Center" Height="80" Width="80" CornerRadius="10">
 

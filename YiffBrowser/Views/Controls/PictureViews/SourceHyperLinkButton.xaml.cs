@@ -51,34 +51,34 @@ namespace YiffBrowser.Views.Controls.PictureViews {
 			}
 			string path = null;
 			if (_url.Contains("tumblr")) {//something.tumblr.com
-				path = "/Resources/Icons/tumblr-icon.png";
+				path = App.GetResourcesString("Icons/tumblr-icon.png");
 			}
 			if (_url.StartsWith("twitter") || _url.StartsWith("www.twitter") || _url.StartsWith("pbs.twimg")) {
-				path = "/Resources/Icons/Twitter-icon.png";
+				path = App.GetResourcesString("Icons/Twitter-icon.png");
 			} else if (_url.StartsWith("www.furaffinity") || _url.StartsWith("furaffinity") || _url.StartsWith("d.furaffinity")) {
-				path = "/Resources/Icons/Furaffinity-icon.png";
+				path = App.GetResourcesString("Icons/Furaffinity-icon.png");
 			} else if (_url.StartsWith("www.deviantart") || _url.StartsWith("deviantart")) {
-				path = "/Resources/Icons/DeviantArt-icon.png";
+				path = App.GetResourcesString("Icons/DeviantArt-icon.png");
 			} else if (_url.StartsWith("www.inkbunny") || _url.StartsWith("inkbunny")) {
-				path = "/Resources/Icons/InkBunny-icon.png";
+				path = App.GetResourcesString("Icons/InkBunny-icon.png");
 			} else if (_url.StartsWith("www.weasyl.com") || _url.StartsWith("weasyl.com")) {
-				path = "/Resources/Icons/weasyl-icon.png";
+				path = App.GetResourcesString("Icons/weasyl-icon.png");
 			} else if (_url.StartsWith("www.pixiv") || _url.StartsWith("pixiv")) {
-				path = "/Resources/Icons/Pixiv-icon.png";
+				path = App.GetResourcesString("Icons/Pixiv-icon.png");
 			} else if (_url.StartsWith("www.instagram") || _url.StartsWith("instagram")) {
-				path = "/Resources/Icons/Instagram-icon.png";
+				path = App.GetResourcesString("Icons/Instagram-icon.png");
 			} else if (_url.StartsWith("www.patreon") || _url.StartsWith("patreon")) {
-				path = "/Resources/Icons/Patreon-icon.png";
+				path = App.GetResourcesString("Icons/Patreon-icon.png");
 			} else if (_url.StartsWith("www.subscribestar") || _url.StartsWith("subscribestar")) {
-				path = "/Resources/Icons/SubscribeStar-icon.png";
+				path = App.GetResourcesString("Icons/SubscribeStar-icon.png");
 			} else if (_url.StartsWith("mega")) {
-				path = "/Resources/Icons/Mega-icon.png";
+				path = App.GetResourcesString("Icons/Mega-icon.png");
 			} else if (_url.StartsWith("furrynetwork")) {
-				path = "/Resources/Icons/FurryNetwork-icon.png";
+				path = App.GetResourcesString("Icons/FurryNetwork-icon.png");
 			} else if (_url.StartsWith("t.me")) {
-				path = "/Resources/Icons/Telegram-icon.png";
+				path = App.GetResourcesString("Icons/Telegram-icon.png");
 			} else if (_url.StartsWith("newgrounds") || _url.StartsWith("www.newgrounds")) {
-				path = "/Resources/Icons/NewGrounds-icon.png";
+				path = App.GetResourcesString("Icons/NewGrounds-icon.png");
 			}
 
 			IconPath = path;

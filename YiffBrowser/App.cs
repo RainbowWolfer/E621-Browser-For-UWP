@@ -8,13 +8,16 @@ using Windows.UI.Xaml.Media;
 using YiffBrowser.Models.E621;
 
 namespace YiffBrowser {
+	/// <summary>
+	/// YiffBrowser
+	/// </summary>
 	public static class App {
 		public static Application Current => Application.Current;
 
 		#region Style
 
 		public static Style DialogStyle => Current.Resources["DefaultContentDialogStyle"] as Style;
-		public static Brush TextBoxDefaultBorderBrush => (Brush)Current.Resources["TextControlBorderBrush"];
+		public static Brush TextBoxDefaultBorderBrush => Current.Resources["TextControlBorderBrush"] as Brush;
 
 		#endregion
 
@@ -29,6 +32,10 @@ namespace YiffBrowser {
 		//todo
 		internal static bool IsDarkTheme() {
 			return false;
+		}
+
+		public static string GetResourcesString(string uri) {
+			return $"ms-appx:///YiffBrowser/Resources/{uri.TrimStart('/')}";
 		}
 
 	}

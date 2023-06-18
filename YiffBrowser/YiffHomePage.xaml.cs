@@ -35,7 +35,7 @@ namespace YiffBrowser {
 			set {
 				userAvatarURL = value;
 				if (value.IsBlank()) {
-					UserAvatarPicture.ProfilePicture = new BitmapImage(new Uri("ms-appx:///Resources/E621/e612-Bigger.png"));
+					UserAvatarPicture.ProfilePicture = new BitmapImage(new Uri(App.GetResourcesString("E621/e612-Bigger.png")));
 				} else {
 					UserAvatarPicture.ProfilePicture = new BitmapImage(new Uri(value));
 				}

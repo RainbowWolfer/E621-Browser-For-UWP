@@ -421,8 +421,26 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <Content Include="Resources\E621\e612-Bigger.png" />
+    <Content Include="Resources\E621\e612.png" />
+    <Content Include="Resources\E621\Helper_Step1.png" />
+    <Content Include="Resources\E621\Helper_Step2.png" />
+    <Content Include="Resources\Icons\DeviantArt-icon.png" />
+    <Content Include="Resources\Icons\Furaffinity-icon.png" />
+    <Content Include="Resources\Icons\FurryNetwork-icon.png" />
+    <Content Include="Resources\Icons\InkBunny-icon.png" />
+    <Content Include="Resources\Icons\Instagram-icon.png" />
+    <Content Include="Resources\Icons\Mega-icon.png" />
+    <Content Include="Resources\Icons\NewGrounds-icon.png" />
+    <Content Include="Resources\Icons\Patreon-icon.png" />
+    <Content Include="Resources\Icons\Pixiv-icon.png" />
+    <Content Include="Resources\Icons\SubscribeStar-icon.png" />
+    <Content Include="Resources\Icons\Telegram-icon.png" />
+    <Content Include="Resources\Icons\tumblr-icon.png" />
+    <Content Include="Resources\Icons\Twitter-icon.png" />
+    <Content Include="Resources\Icons\weasyl-icon.png" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

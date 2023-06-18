@@ -72,7 +72,7 @@
 
 					<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsLoadingComments,Converter={StaticResource BoolToVisibility}}">
 						<TextBlock Text="Loading Comments" FontSize="22" Margin="5"/>
-						<ProgressBar IsIndeterminate="True" Margin="5"/>
+						<muxc:ProgressBar IsIndeterminate="True" Margin="5"/>
 					</StackPanel>
 
 					<Grid Visibility="{Binding IsLoadingComments,Converter={StaticResource BoolToVisibilityRe}}">
@@ -134,7 +134,7 @@
 													</Border.ContextFlyout>
 												</Border>
 
-												<ProgressBar Width="80" IsIndeterminate="True" Visibility="{Binding IsLoadingAvatar,Converter={StaticResource BoolToVisibility}}" Margin="5"/>
+												<muxc:ProgressBar Width="80" IsIndeterminate="True" Visibility="{Binding IsLoadingAvatar,Converter={StaticResource BoolToVisibility}}" Margin="5"/>
 
 												<Grid Margin="5">
 													<Grid.ColumnDefinitions>
@@ -216,7 +216,7 @@
 
 												<FontIcon Glyph="&#xE158;"/>
 
-												<ProgressBar IsIndeterminate="True" Grid.Column="1" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}" Margin="30,0,30,0"/>
+												<muxc:ProgressBar IsIndeterminate="True" Grid.Column="1" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}" Margin="30,0,30,0"/>
 
 												<TextBlock FontSize="18" Margin="10,0,0,0" Grid.Column="1" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityRe}}">
 													<Run Text="{Binding PoolName}"/>
@@ -242,7 +242,7 @@
 								<StackPanel Orientation="Horizontal">
 									<FontIcon Glyph="&#xE8CF;" FontSize="22"/>
 									<TextBlock Text="Parent" Margin="15,0,0,0" FontSize="22"/>
-									<ProgressRing IsActive="True" Margin="15,0,0,0" Height="20" Width="20" Visibility="{Binding IsLoadingParent,Converter={StaticResource BoolToVisibility}}"/>
+									<muxc:ProgressRing IsActive="True" Margin="15,0,0,0" Height="20" Width="20" Visibility="{Binding IsLoadingParent,Converter={StaticResource BoolToVisibility}}"/>
 								</StackPanel>
 							</muxc:Expander.Header>
 
@@ -262,7 +262,7 @@
 								<StackPanel Orientation="Horizontal">
 									<FontIcon Glyph="&#xE902;" FontSize="22"/>
 									<TextBlock Text="Children" Margin="15,0,0,0" FontSize="22"/>
-									<ProgressRing IsActive="True" Margin="15,0,0,0" Height="20" Width="20" Visibility="{Binding IsLoadingChildren,Converter={StaticResource BoolToVisibility}}"/>
+									<muxc:ProgressRing IsActive="True" Margin="15,0,0,0" Height="20" Width="20" Visibility="{Binding IsLoadingChildren,Converter={StaticResource BoolToVisibility}}"/>
 								</StackPanel>
 							</muxc:Expander.Header>
 							<Grid>
