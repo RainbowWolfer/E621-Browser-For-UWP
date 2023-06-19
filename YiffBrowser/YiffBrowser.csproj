@@ -148,6 +148,7 @@
     <Compile Include="Helpers\CommonHelpers.cs" />
     <Compile Include="Helpers\ContentDialogHelper.cs" />
     <Compile Include="Helpers\E621Helpers.cs" />
+    <Compile Include="Interfaces\IContentDialogView.cs" />
     <Compile Include="IsExternalInit.cs" />
     <Compile Include="Models\E621\E621AutoComplete.cs" />
     <Compile Include="Models\E621\E621Comment.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Models\E621\E621Vote.cs" />
     <Compile Include="Models\E621\E621Wiki.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Downloads\DownloadInstance.cs" />
     <Compile Include="Services\Downloads\DownloadManager.cs" />
     <Compile Include="Services\HelloInLanguages.cs" />
     <Compile Include="Services\Locals\Listing.cs" />

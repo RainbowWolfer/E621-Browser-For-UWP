@@ -108,6 +108,8 @@ namespace YiffBrowser {
 			} else {
 				if (tag == TAG_HOME) {
 					targetType = typeof(E621HomePage);
+				} else if (tag == TAG_DOWNLOADS) {
+					targetType = typeof(DownloadPage);
 				} else {
 					targetType = typeof(TestPage);
 					//throw new NotSupportedException($"{tag}");
@@ -135,6 +137,7 @@ namespace YiffBrowser {
 
 				ContentDialog dialog = view.CreateContentDialog(new ContentDialogParameters() {
 					CloseText = "Back",
+					MaxWidth = ContentDialogParameters.DEFAULT_MAX_WIDTH,
 				});
 				view.Dialog = dialog;
 				dialog.Closing += (s, e) => {

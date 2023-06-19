@@ -19,7 +19,7 @@ namespace YiffBrowser.Views.Controls {
 			set => SetValue(MediaLoadedCommandProperty, value);
 		}
 
-		public static readonly DependencyProperty MediaLoadedCommandProperty =DependencyProperty.Register(
+		public static readonly DependencyProperty MediaLoadedCommandProperty = DependencyProperty.Register(
 			nameof(MediaLoadedCommand),
 			typeof(ICommand),
 			typeof(MediaDisplayView),
@@ -42,7 +42,7 @@ namespace YiffBrowser.Views.Controls {
 
 		private static void OnURLChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
 			if (d is MediaDisplayView view) {
-				view.ViewModel.Initiaize((string)e.NewValue);
+				view.ViewModel.Initialize((string)e.NewValue);
 			}
 		}
 
@@ -54,15 +54,15 @@ namespace YiffBrowser.Views.Controls {
 		}
 
 		private void MediaPlayer_MediaFailed(MediaPlayer sender, MediaPlayerFailedEventArgs args) {
-			
+
 		}
 
 		private void MediaPlayer_MediaOpened(MediaPlayer sender, object args) {
-			
+
 		}
 
-		public void GetAudio(){
-			
+		public void GetAudio() {
+
 		}
 
 		public void Play() {
@@ -74,9 +74,9 @@ namespace YiffBrowser.Views.Controls {
 		}
 
 		private void Space_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
-			if (MediaPlayer.MediaPlayer.CurrentState == MediaPlayerState.Paused) {
+			if (MediaPlayer.MediaPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Paused) {
 				MediaPlayer.MediaPlayer.Play();
-			} else if (MediaPlayer.MediaPlayer.CurrentState == MediaPlayerState.Playing) {
+			} else if (MediaPlayer.MediaPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Playing) {
 				MediaPlayer.MediaPlayer.Pause();
 			} else {
 
@@ -92,9 +92,9 @@ namespace YiffBrowser.Views.Controls {
 		}
 
 		private void Step(double seconds) {
-			TimeSpan currentPosition = MediaPlayer.MediaPlayer.Position;
+			TimeSpan currentPosition = MediaPlayer.MediaPlayer.PlaybackSession.Position;
 			TimeSpan newPosition = currentPosition.Add(TimeSpan.FromSeconds(seconds));
-			MediaPlayer.MediaPlayer.Position = newPosition;
+			MediaPlayer.MediaPlayer.PlaybackSession.Position = newPosition;
 		}
 
 		private void CtrlLeft_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
@@ -115,7 +115,7 @@ namespace YiffBrowser.Views.Controls {
 			set => SetProperty(ref mediaSource, value);
 		}
 
-		public void Initiaize(string url) {
+		public void Initialize(string url) {
 			MediaSource = null;
 			if (!url.IsBlank()) {
 				MediaSource = MediaSource.CreateFromUri(new Uri(url));

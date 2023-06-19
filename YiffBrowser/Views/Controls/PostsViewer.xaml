@@ -93,7 +93,7 @@
 										<Button Margin="10,0,10,0" Padding="7,0,7,0" Height="36" MinWidth="50">
 											<TextBlock Text="{Binding Page}" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 											<Button.Flyout>
-												<Flyout x:Name="PageFlyout">
+												<Flyout x:Name="PageFlyout" Placement="Bottom">
 													<StackPanel Orientation="Horizontal">
 														<muxc:NumberBox Value="{Binding PageValue,Mode=TwoWay}" SpinButtonPlacementMode="Hidden" SmallChange="1" LargeChange="5" Minimum="1" MinWidth="100" ValidationMode="InvalidInputOverwritten">
 															<muxc:NumberBox.NumberFormatter>
@@ -144,8 +144,20 @@
 
 					<!-- Content -->
 					<Grid Grid.Row="1" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityRe}}">
-						<ScrollViewer x:Name="MainScrollViewer" VerticalScrollMode="Auto" Visibility="{Binding ErrorHint,Converter={StaticResource ArrayEmptyToVisibility}}">
-							<VariableSizedWrapGrid x:Name="MainGrid" Orientation="Horizontal" ItemHeight="{x:Bind ItemHeight}" ItemWidth="{x:Bind ItemWidth}"/>
+						<ScrollViewer x:Name="MainScrollViewer" VerticalScrollMode="Auto" Visibility="{Binding ErrorHint,Converter={StaticResource ArrayEmptyToVisibility}}" Padding="0,0,10,0">
+							<StackPanel>
+								<VariableSizedWrapGrid x:Name="MainGrid" Orientation="Horizontal" ItemHeight="{x:Bind ItemHeight}" ItemWidth="{x:Bind ItemWidth}"/>
+								<Grid Margin="5" Background="{ThemeResource ButtonPressedForegroundThemeBrush}" CornerRadius="10">
+									<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+										<Button HorizontalAlignment="Center" Margin="5">
+											<TextBlock Text="Previous Page"/>
+										</Button>
+										<Button HorizontalAlignment="Center" Margin="5">
+											<TextBlock Text="Next Page"/>
+										</Button>
+									</StackPanel>
+								</Grid>
+							</StackPanel>
 						</ScrollViewer>
 					</Grid>
 
@@ -155,7 +167,7 @@
 							<FontIcon Glyph="&#xE7BA;" FontSize="36" Margin="5"/>
 							<TextBlock Text="{Binding ErrorHint}" FontSize="24" Margin="5"/>
 						</StackPanel>
-					</Grid>	
+					</Grid>
 
 					<!-- Detail Page -->
 					<Grid Grid.RowSpan="2" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityRe}}">

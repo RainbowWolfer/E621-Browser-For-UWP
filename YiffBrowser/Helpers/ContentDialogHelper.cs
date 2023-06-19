@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
+using YiffBrowser.Interfaces;
 
 namespace YiffBrowser.Helpers {
 	public static class ContentDialogHelper {
@@ -19,6 +20,9 @@ namespace YiffBrowser.Helpers {
 				DefaultButton = parameters.DefaultButton
 			};
 
+			if (target is IContentDialogView view) {
+				view.Dialog = dialog;
+			}
 
 			if (parameters.MaxWidth.HasValue) {
 				dialog.Resources["ContentDialogMaxWidth"] = parameters.MaxWidth.Value;

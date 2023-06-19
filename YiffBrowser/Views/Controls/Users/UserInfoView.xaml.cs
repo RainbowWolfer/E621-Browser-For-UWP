@@ -9,6 +9,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using YiffBrowser.Helpers;
+using YiffBrowser.Interfaces;
 using YiffBrowser.Models.E621;
 using YiffBrowser.Services;
 using YiffBrowser.Services.Locals;
@@ -16,7 +17,7 @@ using YiffBrowser.Services.Networks;
 using YiffBrowser.Views.Pages.E621;
 
 namespace YiffBrowser.Views.Controls.Users {
-	public sealed partial class UserInfoView : UserControl {
+	public sealed partial class UserInfoView : UserControl, IContentDialogView {
 		public event TypedEventHandler<UserInfoView, string> OnAvatarRefreshed;
 
 		public ContentDialog Dialog { get; set; }
