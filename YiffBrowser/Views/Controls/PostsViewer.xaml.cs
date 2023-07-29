@@ -5,17 +5,22 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows.Input;
+using Windows.System;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
+using YiffBrowser.Services.Downloads;
 using YiffBrowser.Services.Locals;
 using YiffBrowser.Services.Networks;
 using YiffBrowser.Views.Controls.PictureViews;
+using YiffBrowser.Views.Controls.PostsView;
 using YiffBrowser.Views.Controls.TagsInfoViews;
 
 namespace YiffBrowser.Views.Controls {
@@ -85,6 +90,10 @@ namespace YiffBrowser.Views.Controls {
 			view.ViewModel.OnImagesListManagerItemClick += view.ViewModel_OnImagesListManagerItemClick;
 			view.ViewModel.IsInSelectionModeChanged += view.ViewModel_IsInSelectionModeChanged;
 
+			view.ViewModel.RequestGetAllItems = () => {
+				return view.MainGrid.Children.Cast<ImageViewItem>().ToArray();
+			};
+
 			view.Root.DataContext = view.ViewModel;
 
 			view.ViewModel.Initialize(value);
@@ -97,6 +106,7 @@ namespace YiffBrowser.Views.Controls {
 			foreach (ImageViewItem item in MainGrid.Children.Cast<ImageViewItem>()) {
 				item.IsSelected = false;
 			}
+			ViewModel.CountSelectedItems();
 		}
 
 		private void ViewModel_OnScrollReset() {
@@ -161,7 +171,7 @@ namespace YiffBrowser.Views.Controls {
 			if (ViewModel.IsInSelectionMode) {
 
 				view.IsSelected = !view.IsSelected;
-
+				ViewModel.CountSelectedItems();
 			} else {
 
 				if (openedImageItem != null) {
@@ -227,10 +237,6 @@ namespace YiffBrowser.Views.Controls {
 			PageFlyout.Hide();
 		}
 
-		private void UserControl_Loaded(object sender, RoutedEventArgs e) {
-			ViewModel.XamlRoot = XamlRoot;
-		}
-
 		public void PauseVideo() {
 			PostDetailView.PauseVideo();
 		}
@@ -244,13 +250,14 @@ namespace YiffBrowser.Views.Controls {
 	}
 
 	public class PostsViewerViewModel : BindableBase {
-		public XamlRoot XamlRoot { get; set; }
-
 		public event NotifyCollectionChangedEventHandler PostsCollectionChanged;
 		public event OnPreviewsUpdateEventHandler OnPreviewsUpdated;
+
 		public event Action OnScrollReset;
 		public event Action<E621Post> OnImagesListManagerItemClick;
 		public event Action<bool> IsInSelectionModeChanged;
+
+		public Func<ImageViewItem[]> RequestGetAllItems { get; set; }
 
 		private int pageValue;
 		private bool isLoading;
@@ -264,6 +271,7 @@ namespace YiffBrowser.Views.Controls {
 		private PostsInfoViewParameters postsInfoViewParameters;
 		private string errorHint;
 		private bool isPool;
+		private string selectionInfo = string.Empty;
 
 		public int PageValue {
 			get => pageValue;
@@ -295,6 +303,7 @@ namespace YiffBrowser.Views.Controls {
 			set => SetProperty(ref errorHint, value);
 		}
 
+		#region Selection
 		public bool IsInSelectionMode {
 			get => isInSelectionMode;
 			set => SetProperty(ref isInSelectionMode, value, OnIsInSelectionModeChanged);
@@ -303,6 +312,43 @@ namespace YiffBrowser.Views.Controls {
 		private void OnIsInSelectionModeChanged() {
 			IsInSelectionModeChanged?.Invoke(IsInSelectionMode);
 		}
+
+		public string SelectionInfo {
+			get => selectionInfo;
+			set => SetProperty(ref selectionInfo, value);
+		}
+
+		public ICommand SelectAllCommand => new DelegateCommand(SelectAll);
+		public ICommand ReverseSelectionCommand => new DelegateCommand(ReverseSelection);
+
+		private void SelectAll() {
+			IsInSelectionMode = true;
+			foreach (ImageViewItem item in RequestGetAllItems()) {
+				item.IsSelected = true;
+			}
+			CountSelectedItems();
+		}
+
+		private void ReverseSelection() {
+			if (!IsInSelectionMode) {
+				return;
+			}
+
+			foreach (ImageViewItem item in RequestGetAllItems()) {
+				item.IsSelected = !item.IsSelected;
+			}
+			CountSelectedItems();
+		}
+
+
+
+		public void CountSelectedItems() {
+			ImageViewItem[] items = RequestGetAllItems();
+			int count = items.Count(x => x.IsSelected);
+			SelectionInfo = $"{count}/{items.Length}";
+		}
+
+		#endregion
 
 		public ObservableCollection<E621Post> Posts { get; } = new ObservableCollection<E621Post>();
 		public ObservableCollection<E621Post> Blocks { get; } = new ObservableCollection<E621Post>();
@@ -387,13 +433,36 @@ namespace YiffBrowser.Views.Controls {
 		public ICommand DownloadCommand => new DelegateCommand(Download);
 
 		private async void Download() {
-			Stopwatch stopwatch = Stopwatch.StartNew();
-			foreach (E621Post post in Posts) {
-				//await DownloadManager.Download(post);
+			E621Post[] posts;
+
+
+			if (IsInSelectionMode) {
+				posts = RequestGetAllItems().Where(x => x.IsSelected).Select(x => x.Post).ToArray();
+			} else {
+				posts = RequestGetAllItems().Select(x => x.Post).ToArray();
 			}
-			stopwatch.Stop();
-			long ms = stopwatch.ElapsedMilliseconds;
-			Debug.WriteLine($"{ms}ms");
+
+			DownloadView view = new(posts, IsInSelectionMode);
+			ContentDialogResult dialogResult = await view.CreateContentDialog(DownloadView.contentDialogParameters).ShowDialogAsync();
+
+			if (dialogResult != ContentDialogResult.Primary) {
+				return;
+			}
+
+			DownloadViewResult result = view.GetResult();
+			if (result == null) {
+				return;
+			}
+
+			if (result.MultiplePages) {
+
+			} else {
+				string folderName = result.FolderName;
+				foreach (E621Post post in posts) {
+					await DownloadManager.RegisterDownload(post, folderName);
+				}
+			}
+
 		}
 
 		private void OnPageChanged() {
@@ -502,5 +571,6 @@ namespace YiffBrowser.Views.Controls {
 		private void ImagesListManagerItemClick(E621Post post) {
 			OnImagesListManagerItemClick?.Invoke(post);
 		}
+
 	}
 }

@@ -1,0 +1,204 @@
+﻿<UserControl
+    x:Class="YiffBrowser.Views.Controls.PostsView.DownloadView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YiffBrowser.Views.Controls.PostsView"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="using:Microsoft.Xaml.Interactivity" 
+	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="350"
+    d:DesignWidth="650"
+    d:RequestedTheme="Dark"
+    Width="650"
+    Height="350">
+
+	<Grid>
+
+		<Grid.DataContext>
+			<local:DownloadViewModel x:Name="ViewModel"/>
+		</Grid.DataContext>
+
+
+		<i:Interaction.Behaviors>
+			<core:EventTriggerBehavior EventName="Loaded">
+				<core:InvokeCommandAction Command="{Binding LoadedCommand}"/>
+			</core:EventTriggerBehavior>
+		</i:Interaction.Behaviors>
+
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="auto"/>
+		</Grid.RowDefinitions>
+
+		<Grid Margin="5">
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="auto"/>
+				<ColumnDefinition Width="auto"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="auto"/>
+				<ColumnDefinition Width="auto"/>
+			</Grid.ColumnDefinitions>
+
+			<Grid Margin="0,0,10,0">
+				<ComboBox SelectedIndex="{Binding SortMethodSelectedIndex,Mode=TwoWay}" Width="190" ToolTipService.ToolTip="Sort Method" IsEnabled="{Binding IsLoading,Converter={StaticResource BoolToBoolRe}}">
+					<ComboBoxItem>
+						<StackPanel Orientation="Horizontal">
+							<FontIcon Glyph="&#xE787;"/>
+							<TextBlock Text="By Modified Date" Margin="10,0,0,0"/>
+						</StackPanel>
+					</ComboBoxItem>
+					<ComboBoxItem>
+						<StackPanel Orientation="Horizontal">
+							<FontIcon Glyph="&#xE787;"/>
+							<TextBlock Text="By Created Date" Margin="10,0,0,0"/>
+						</StackPanel>
+					</ComboBoxItem>
+					<ComboBoxItem>
+						<StackPanel Orientation="Horizontal">
+							<FontIcon Glyph="&#xE7C3;"/>
+							<TextBlock Text="By Name" Margin="10,0,0,0"/>
+						</StackPanel>
+					</ComboBoxItem>
+				</ComboBox>
+			</Grid>
+
+			<Grid Grid.Column="1" Margin="0,0,10,0">
+				<Button Command="{Binding ToggleSortAscending}" IsEnabled="{Binding IsLoading,Converter={StaticResource BoolToBoolRe}}">
+					<Grid>
+						<FontIcon Glyph="&#xE0A0;" Visibility="{Binding SortAscending,Converter={StaticResource BoolToVisibility}}"/>
+						<FontIcon Glyph="&#xE0A1;" Visibility="{Binding SortAscending,Converter={StaticResource BoolToVisibilityRe}}"/>
+					</Grid>
+				</Button>
+			</Grid>
+
+			<AutoSuggestBox QueryIcon="Find" PlaceholderText="Search Folder Name" Grid.Column="2" IsEnabled="{Binding IsLoading,Converter={StaticResource BoolToBoolRe}}">
+				<i:Interaction.Behaviors>
+					<core:EventTriggerBehavior EventName="QuerySubmitted">
+						<core:InvokeCommandAction Command="{Binding SearchCommand}"/>
+					</core:EventTriggerBehavior>
+					<core:EventTriggerBehavior EventName="GotFocus">
+						<core:InvokeCommandAction Command="{Binding GotFocusCommand}"/>
+					</core:EventTriggerBehavior>
+				</i:Interaction.Behaviors>
+
+			</AutoSuggestBox>
+
+			<Button Grid.Column="3" Margin="10,0,0,0" ToolTipService.ToolTip="Create New Folder" Visibility="{Binding ShowCreateNewFolder,Converter={StaticResource BoolToVisibilityRe}}" Command="{Binding EnterCreateNewFolderCommand}" IsEnabled="{Binding IsLoading,Converter={StaticResource BoolToBoolRe}}">
+				<FontIcon Glyph="&#xE710;"/>
+			</Button>
+
+			<Grid Grid.Column="4" Margin="10,0,0,0" Visibility="{Binding ShowCreateNewFolder,Converter={StaticResource BoolToVisibility}}" d:Visibility="Visible">
+				<StackPanel Orientation="Horizontal">
+					<TextBox x:Name="CreateNewFolderTextBox" Text="{Binding NewFolderName,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" PlaceholderText="New Folder Name" CornerRadius="4,0,0,4" MinWidth="150" MaxWidth="250" IsEnabled="{Binding IsLoading,Converter={StaticResource BoolToBoolRe}}"/>
+					<Button CornerRadius="0,4,4,0" Command="{Binding AcceptCreateNewFolderCommand}" IsEnabled="{Binding IsLoading,Converter={StaticResource BoolToBoolRe}}">
+						<FontIcon Glyph="&#xE10B;"/>
+					</Button>
+				</StackPanel>
+			</Grid>
+
+		</Grid>
+
+		<Grid Grid.Row="1" Margin="5">
+
+			<Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}">
+				<muxc:ProgressRing IsIndeterminate="True" Height="50" Width="50"/>
+			</Grid>
+
+			<GridView d:ItemsSource="1 2 3" SelectedIndex="0" ItemsSource="{Binding Filter.View}" SelectionMode="Single" SelectedItem="{Binding SelectedItem,Mode=TwoWay}" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityRe}}" d:Visibility="Visible">
+
+				<GridView.ItemTemplate>
+					<DataTemplate x:DataType="local:DownloadFolderInfo">
+						<Grid Width="190" Margin="8,0" ToolTipService.ToolTip="{Binding ToolTip}">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+
+							<FontIcon Glyph="&#xE8B7;" FontSize="24" Foreground="Yellow" Margin="5,0" Visibility="{Binding IsRoot,Converter={StaticResource BoolToVisibilityRe}}"/>
+							<FontIcon Glyph="&#xE80F;" FontSize="24" Foreground="Yellow" Margin="5,0" Visibility="{Binding IsRoot,Converter={StaticResource BoolToVisibility}}"/>
+
+							<TextBlock Text="{Binding FolderName}" d:Text="Folder Name" VerticalAlignment="Center" Margin="5,0" TextWrapping="Wrap" Grid.Column="1"/>
+
+						</Grid>
+					</DataTemplate>
+				</GridView.ItemTemplate>
+
+			</GridView>
+		</Grid>
+
+		<Grid Grid.Row="2" Margin="5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
+			<ToggleButton VerticalAlignment="Stretch" Margin="5,0" d:Visibility="Visible" IsChecked="{Binding ChooseMultiPages,Mode=TwoWay}" Visibility="{Binding IsInSelectionMode,Converter={StaticResource BoolToVisibilityRe}}">
+				<Grid MinWidth="160" HorizontalAlignment="Center">
+					<StackPanel Orientation="Horizontal" d:Visibility="Collapsed" Visibility="{Binding ChooseMultiPages,Converter={StaticResource BoolToVisibilityRe}}">
+						<FontIcon Glyph="&#xE160;"/>
+						<TextBlock Text="This Page Only" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" d:Visibility="Visible" Visibility="{Binding ChooseMultiPages,Converter={StaticResource BoolToVisibility}}">
+						<FontIcon Glyph="&#xE11E;"/>
+						<TextBlock Margin="10,0,0,0">
+							<Run Text="Page Range"/>
+							<Run Text="("/>
+							<Run Text="{Binding PageStart}"/>
+							<Run Text="-"/>
+							<Run Text="{Binding PageEnd}"/>
+							<Run Text=")"/>
+						</TextBlock>
+					</StackPanel>
+				</Grid>
+			</ToggleButton>
+
+			<Grid Margin="5,0" d:Visibility="Collapsed" Visibility="{Binding IsInSelectionMode,Converter={StaticResource BoolToVisibility}}">
+				<ToggleButton MinHeight="0" VerticalAlignment="Stretch" IsChecked="True" IsHitTestVisible="False">
+					<StackPanel Orientation="Horizontal" Padding="10,0">
+						<FontIcon Glyph="&#xE152;"/>
+						<TextBlock Text="In Selection Mode" Margin="10,0" VerticalAlignment="Center"/>
+					</StackPanel>
+				</ToggleButton>
+			</Grid>
+
+
+			<Grid Grid.Column="1" d:Visibility="Collapsed" Visibility="{Binding ChooseMultiPages,Converter={StaticResource BoolToVisibility}}">
+				<controls:RangeSelector x:Name="PageRangeSelector" RangeStart="{Binding PageStart,Mode=TwoWay}" RangeEnd="{Binding PageEnd,Mode=TwoWay}" Maximum="10" Minimum="1" VerticalAlignment="Center" Margin="5"/>
+			</Grid>
+
+			<Grid Grid.Column="1" d:Visibility="Visible" Visibility="{Binding ChooseMultiPages,Converter={StaticResource BoolToVisibilityRe}}">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+
+				<StackPanel Orientation="Horizontal" BorderBrush="Gray" BorderThickness="2" CornerRadius="4" Padding="10,5" Grid.Column="0" Margin="5,0">
+					<FontIcon Glyph="&#xE158;"/>
+					<TextBlock Margin="10,0,0,0" VerticalAlignment="Center">
+						<Run Text="Total Files Count :"/>
+						<Run Text="{Binding TotalFileCount}" d:Text="102"/>
+					</TextBlock>
+				</StackPanel>
+
+				<StackPanel Orientation="Horizontal" BorderBrush="Gray" BorderThickness="2" CornerRadius="4" Padding="10,5" Grid.Column="1" Margin="5,0">
+					<FontIcon Glyph="&#xE7C3;"/>
+					<TextBlock Margin="10,0,0,0" VerticalAlignment="Center">
+						<Run Text="Total Size :"/>
+						<Run Text="{Binding TotalFileSize,Converter={StaticResource NumberToKB},ConverterParameter=' '}"/>
+					</TextBlock>
+				</StackPanel>
+
+			</Grid>
+
+		</Grid>
+
+	</Grid>
+</UserControl>

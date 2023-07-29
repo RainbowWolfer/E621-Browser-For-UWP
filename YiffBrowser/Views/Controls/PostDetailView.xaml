@@ -225,7 +225,7 @@
 
 				<local:CustomToggleSplitButton IsOn="{Binding HasFavorited,Mode=TwoWay}" IsLoading="{Binding IsFavoriteLoading}" OnTitle="Favorited" OffTitle="Favorite" OffIcon="&#xEB51;" OnIcon="&#xEB52;" MinWidth="160"/>
 
-				<Button x:Name="DownloadButton" Height="33" Padding="10,0,10,0" Margin="10,0,0,0">
+				<Button x:Name="DownloadButton" Height="33" Padding="10,0,10,0" Margin="10,0,0,0" Command="{Binding DownloadCommand}">
 					<StackPanel Orientation="Horizontal">
 						<FontIcon Glyph="&#xE118;"/>
 						<TextBlock Text="Download" Margin="10,0,0,0"/>

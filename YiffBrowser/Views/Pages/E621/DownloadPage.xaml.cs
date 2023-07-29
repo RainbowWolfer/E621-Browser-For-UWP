@@ -1,5 +1,7 @@
 using Prism.Mvvm;
+using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Controls;
+using YiffBrowser.Services.Downloads;
 
 namespace YiffBrowser.Views.Pages.E621 {
 	public sealed partial class DownloadPage : Page {
@@ -12,47 +14,15 @@ namespace YiffBrowser.Views.Pages.E621 {
 
 	public class DownloadPageViewModel : BindableBase {
 
+		public ObservableCollection<DownloadInstance> WaitPool { get; }
+		public ObservableCollection<DownloadInstance> DownloadingPool { get; }
+		public ObservableCollection<DownloadInstance> CompletedPool { get; }
+
 		public DownloadPageViewModel() {
-			Load();
+			WaitPool = DownloadManager.waitPool;
+			DownloadingPool = DownloadManager.downloadingPool;
+			CompletedPool = DownloadManager.completedPool;
 		}
 
-		private async void Load() {
-			//Uri source = new Uri("https://example.com/image.jpg");
-			//{
-			//	// Create a StorageFile for the destination file
-			//	StorageFolder downloadsFolder = await KnownFolders.GetFolderForUserAsync(null /* current user */, KnownFolderId.PicturesLibrary);
-			//	StorageFile destinationFile = await downloadsFolder.CreateFileAsync("image.jpg", CreationCollisionOption.GenerateUniqueName);
-			//	BackgroundTransferCompletionGroup completionGroup = new();
-			//	DownloadOperation download = new DownloadOperation(source, destinationFile, completionGroup);
-			//	await download.StartAsync();
-			//}
-			//{
-			//	BackgroundDownloader downloadDownloader = new(completionGroup);
-			//	await downloadDownloader.CreateDownloadAsync();
-			//	//downloadDownloader.
-			//}
-			//{
-			//	BackgroundTransferGroup group = BackgroundTransferGroup.CreateGroup("Default");
-			//	group.TransferBehavior = BackgroundTransferBehavior.Serialized;
-			//	BackgroundDownloader downloader = new() {
-			//		TransferGroup = group,
-			//	};
-			//	DownloadOperation download = downloader.CreateDownload();
-			//	await download.StartAsync();
-
-			//	IReadOnlyList<DownloadOperation> v = await BackgroundDownloader.GetCurrentDownloadsForTransferGroupAsync(group);
-			//	foreach (var item in v) {
-			//		item.Pause();
-			//	}
-			//}
-
-			//{
-
-
-			//	BackgroundDownloader downloader = new BackgroundDownloader();
-			//	DownloadOperation download = downloader.CreateDownload(source, destinationFile);
-			//	//download.Pause
-			//}
-		}
 	}
 }

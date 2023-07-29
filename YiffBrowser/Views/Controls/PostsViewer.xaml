@@ -8,8 +8,7 @@
 	xmlns:numberformatting="using:Windows.Globalization.NumberFormatting" 
 	xmlns:converters="using:YiffBrowser.Converters"
 	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-	mc:Ignorable="d"
-	Loaded="UserControl_Loaded">
+	mc:Ignorable="d" d:RequestedTheme="Dark">
 
 	<UserControl.Resources>
 		<Style x:Key="BorderSeparator" TargetType="Border">
@@ -48,7 +47,7 @@
 					</Grid.RowDefinitions>
 
 					<Grid Grid.Row="0">
-						<Border Background="{StaticResource SystemColorBackgroundBrush}" CornerRadius="10" Margin="5" Padding="5">
+						<Border d:Background="Black" Background="{StaticResource ButtonPressedForegroundThemeBrush}" CornerRadius="10" Margin="5" Padding="5">
 							<Grid>
 
 								<Grid.Resources>
@@ -123,12 +122,27 @@
 										</StackPanel>
 									</Button>
 
-									<ToggleButton Height="36" Margin="10,0,0,0" IsChecked="{Binding IsInSelectionMode,Mode=TwoWay}" IsEnabled="{Binding IsLoading,Converter={StaticResource BoolToBoolRe}}">
+									<muxc:ToggleSplitButton Height="36" Margin="10,0,0,0" IsChecked="{Binding IsInSelectionMode,Mode=TwoWay}" IsEnabled="{Binding IsLoading,Converter={StaticResource BoolToBoolRe}}">
+
 										<StackPanel Orientation="Horizontal">
 											<FontIcon Glyph="&#xE152;"/>
 											<TextBlock Text="Select" Margin="10,0,0,0"/>
+											<TextBlock Text="{Binding SelectionInfo}" d:Text="1/75" Margin="5,0,0,0" Visibility="{Binding IsInSelectionMode,Converter={StaticResource BoolToVisibility}}" d:Visibility="Visible"/>
 										</StackPanel>
-									</ToggleButton>
+
+										<muxc:ToggleSplitButton.Flyout>
+											<MenuFlyout Placement="Bottom">
+												<MenuFlyoutItem Text="Select All" Icon="SelectAll" Command="{Binding SelectAllCommand}"/>
+												<MenuFlyoutItem Text="Reverse Selection" Command="{Binding ReverseSelectionCommand}" IsEnabled="{Binding IsInSelectionMode}">
+													<MenuFlyoutItem.Icon>
+														<FontIcon Glyph="&#xE152;"/>
+													</MenuFlyoutItem.Icon>
+												</MenuFlyoutItem>
+											</MenuFlyout>
+										</muxc:ToggleSplitButton.Flyout>
+
+
+									</muxc:ToggleSplitButton>
 
 								</StackPanel>
 							</Grid>

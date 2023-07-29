@@ -365,7 +365,8 @@ namespace YiffBrowser.Views.Controls {
 				case FileType.Anim:
 					//display error
 					break;
-				default: throw new NotSupportedException();
+				default:
+					throw new NotSupportedException();
 			}
 
 			//hasFavorited = E621Post.IsFavorited;
@@ -582,6 +583,12 @@ namespace YiffBrowser.Views.Controls {
 			}
 
 			OnImagesListManagerItemClick?.Invoke(AllPosts[index]);
+		}
+
+		public ICommand DownloadCommand => new DelegateCommand(Download);
+
+		private void Download() {
+			
 		}
 	}
 }

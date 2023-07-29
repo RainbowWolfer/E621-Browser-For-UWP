@@ -150,6 +150,7 @@
     <Compile Include="Helpers\E621Helpers.cs" />
     <Compile Include="Interfaces\IContentDialogView.cs" />
     <Compile Include="IsExternalInit.cs" />
+    <Compile Include="Models\CollectionSearchFilter.cs" />
     <Compile Include="Models\E621\E621AutoComplete.cs" />
     <Compile Include="Models\E621\E621Comment.cs" />
     <Compile Include="Models\E621\E621Pool.cs" />
@@ -218,6 +219,9 @@
     </Compile>
     <Compile Include="Views\Controls\PostsViewer.xaml.cs">
       <DependentUpon>PostsViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\PostsView\DownloadView.xaml.cs">
+      <DependentUpon>DownloadView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\PostsView\PostsBriefDisplayView.xaml.cs">
       <DependentUpon>PostsBriefDisplayView.xaml</DependentUpon>
@@ -361,6 +365,10 @@
     <Page Include="Views\Controls\PostsViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\PostsView\DownloadView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\PostsView\PostsBriefDisplayView.xaml">
       <Generator>MSBuild:Compile</Generator>

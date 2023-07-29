@@ -124,10 +124,14 @@ namespace YiffBrowser.Helpers {
 		}
 
 
-		public static string FileSizeToKB(this int size) {
+		public static string FileSizeToKB(this int size, bool gap = false) {
 			string kb = $"{size / 1000}";
 			string output = Regex.Replace(kb, ".{3}(?!.)", ",$&").Trim(',');
-			return $"{output}KB";
+			if (gap) {
+				return $"{output} KB";
+			} else {
+				return $"{output}KB";
+			}
 		}
 
 		public static FileType GetFileType(this E621Post post) {

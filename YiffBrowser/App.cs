@@ -30,7 +30,7 @@ namespace YiffBrowser {
 		#endregion
 
 		//todo
-		internal static bool IsDarkTheme() {
+		public static bool IsDarkTheme() {
 			return false;
 		}
 
