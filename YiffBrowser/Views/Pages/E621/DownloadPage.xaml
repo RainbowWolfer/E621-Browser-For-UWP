@@ -5,8 +5,12 @@
     xmlns:local="using:YiffBrowser.Views.Pages.E621"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    mc:Ignorable="d"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls" 
+	xmlns:downloads="using:YiffBrowser.Services.Downloads"
+	xmlns:i="using:Microsoft.Xaml.Interactivity"
+	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+	xmlns:prism="using:Prism"
+	mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     NavigationCacheMode="Required" d:RequestedTheme="Dark">
 
@@ -21,7 +25,7 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<Border Background="{ThemeResource AppBarBackgroundThemeBrush}" Margin="5" CornerRadius="4" Padding="10,2,10,2">
+		<Border Background="{ThemeResource AppBarBackgroundThemeBrush}" Margin="5" CornerRadius="8" Padding="10,2,10,2">
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="auto"/>
@@ -59,8 +63,11 @@
 			</Grid>
 		</Border>
 
-		<Border Background="{ThemeResource AppBarBackgroundThemeBrush}" Margin="5" CornerRadius="4" Padding="10,2,10,2" Grid.Row="1">
-			<ListView ItemsSource="{Binding DownloadingPool}" d:ItemsSource="1 2 3" Padding="5">
+		<Border Background="{ThemeResource AppBarBackgroundThemeBrush}" Margin="5" CornerRadius="8" Padding="10,2,10,2" Grid.Row="1">
+			<ListView ItemsSource="{Binding DownloadingPool}" d:ItemsSource="1 2 3" Padding="5" MinHeight="172" IsItemClickEnabled="False" SelectionMode="None"
+				ScrollViewer.HorizontalScrollMode="Enabled"
+				ScrollViewer.HorizontalScrollBarVisibility="Auto"
+				ScrollViewer.VerticalScrollMode="Disabled">
 
 				<ListView.ItemsPanel>
 					<ItemsPanelTemplate>
@@ -81,24 +88,64 @@
 				</ListView.ItemContainerTransitions>
 
 				<ListView.ItemTemplate>
-					<DataTemplate>
-						<Grid>
-							<Border Height="150" Width="150" CornerRadius="10">
+					<DataTemplate x:DataType="downloads:DownloadInstance">
+						<Grid Background="Transparent" CornerRadius="8" BorderBrush="Transparent" BorderThickness="2" Tag="{Binding}">
+							<Grid.ContextFlyout>
+								<MenuFlyout Placement="Bottom" Opening="MenuFlyout_Opening" Closing="MenuFlyout_Closing">
+									<MenuFlyoutItem Text="Cancel" Icon="Cancel" Command="{Binding CancelDownloadCommand}"/>
+								</MenuFlyout>
+							</Grid.ContextFlyout>
+
+							<i:Interaction.Behaviors>
+								<core:DataTriggerBehavior Binding="{Binding IsContextMenuOpen}" Value="True">
+									<core:ChangePropertyAction PropertyName="BorderBrush" Value="{ThemeResource SystemAccentColor}"/>
+								</core:DataTriggerBehavior>
+								<core:DataTriggerBehavior Binding="{Binding IsContextMenuOpen}" Value="False">
+									<core:ChangePropertyAction PropertyName="BorderBrush" Value="Transparent"/>
+								</core:DataTriggerBehavior>
+							</i:Interaction.Behaviors>
+
+							<Border Height="150" Width="150" CornerRadius="8">
 								<Border.Background>
 									<ImageBrush ImageSource="/YiffBrowser/Resources/E621/e612-Bigger.png" Stretch="UniformToFill"/>
 								</Border.Background>
 							</Border>
+
+							<Border Height="150" Width="150" CornerRadius="8" Visibility="{Binding ShowPreviewImage,Converter={StaticResource BoolToVisibility}}">
+								<Border.Background>
+									<ImageBrush ImageSource="{Binding Post.Preview.URL}" Stretch="UniformToFill">
+										<i:Interaction.Behaviors>
+											<core:EventTriggerBehavior EventName="ImageOpened">
+												<core:InvokeCommandAction Command="{Binding OnPreviewLoadedCommand}"/>
+											</core:EventTriggerBehavior>
+										</i:Interaction.Behaviors>
+									</ImageBrush>
+								</Border.Background>
+							</Border>
+
 							<Border Background="Black" Opacity="0.5"/>
-							<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="10" Padding="5">
-								<!--<StackPanel.Background>
-								<SolidColorBrush Color="White" Opacity="0.2"/>
-							</StackPanel.Background>-->
-								<StackPanel.Shadow>
-									<ThemeShadow/>
-								</StackPanel.Shadow>
-								<muxc:ProgressRing IsIndeterminate="True"/>
-								<TextBlock Text="12%" TextAlignment="Center"/>
-							</StackPanel>
+
+							<Border CornerRadius="8">
+								<!--<Border.Background>
+									<SolidColorBrush Color="White" Opacity="0.2"/>
+								</Border.Background>-->
+								<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5">
+
+									<Grid Margin="5">
+										<muxc:ProgressRing IsIndeterminate="{Binding Initializing}" Value="{Binding Progress}" Minimum="0" Maximum="100" Height="55" Width="55"/>
+										<TextBlock Text="{Binding ProgressString}" d:Text="12.1%" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding Initializing,Converter={StaticResource BoolToVisibilityRe}}"/>
+									</Grid>
+
+									<TextBlock TextAlignment="Center" Visibility="{Binding Initializing,Converter={StaticResource BoolToVisibilityRe}}">
+										<Run Text="{Binding ReceivedBytes,Converter={StaticResource NumberToKB}}" d:Text="1KB"/>
+										<Run Text="/"/>
+										<Run Text="{Binding TotalBytesToReceive,Converter={StaticResource NumberToKB}}" d:Text="10KB"/>
+									</TextBlock>
+
+									<TextBlock Text="Getting Data" TextAlignment="Center" Visibility="{Binding Initializing,Converter={StaticResource BoolToVisibility}}"/>
+
+								</StackPanel>
+							</Border>
 						</Grid>
 					</DataTemplate>
 				</ListView.ItemTemplate>
@@ -106,12 +153,18 @@
 			</ListView>
 		</Border>
 
-		<Border Background="{ThemeResource AppBarBackgroundThemeBrush}" Margin="5" CornerRadius="4" Padding="10,2,10,2" Grid.Row="2">
+		<Border Background="{ThemeResource AppBarBackgroundThemeBrush}" Margin="5" CornerRadius="8" Padding="10,2,10,2" Grid.Row="2">
 			<Pivot>
-				<PivotItem Header="Pending">
+				<PivotItem>
+					<PivotItem.Header>
+						<TextBlock>
+							<Run Text="Pending"/>
+							<Run Text="{Binding WaitPool.Count}"/>
+						</TextBlock>
+					</PivotItem.Header>
 					<ListView ItemsSource="{Binding WaitPool}" d:ItemsSource="1 2 3">
 						<ListView.ItemTemplate>
-							<DataTemplate>
+							<DataTemplate x:DataType="downloads:DownloadInstance">
 								<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="auto"/>
@@ -119,16 +172,16 @@
 										<ColumnDefinition Width="auto"/>
 									</Grid.ColumnDefinitions>
 
-									<Border Padding="7,2,7,2" Background="{ThemeResource SystemControlBackgroundBaseMediumRevealBorderBrush}" CornerRadius="4" Margin="5">
+									<Border Padding="7,2,7,2" Background="{ThemeResource SystemControlBackgroundBaseMediumRevealBorderBrush}" CornerRadius="4" Margin="5" Visibility="Collapsed">
 										<StackPanel Orientation="Horizontal">
 											<FontIcon Glyph="&#xE10C;"/>
 											<TextBlock Text="Pending" Margin="5,0,0,0"/>
 										</StackPanel>
 									</Border>
 
-									<TextBlock Text="https://static1.e621.net/data/21/99/2199e977f2a496c7152a5ce3cc2929b0.png" Grid.Column="1" Margin="5" VerticalAlignment="Center"/>
+									<TextBlock Text="{Binding Post.File.URL}" d:Text="https://static1.e621.net/data/21/99/2199e977f2a496c7152a5ce3cc2929b0.png" Grid.Column="1" Margin="0" VerticalAlignment="Center"/>
 
-									<Button Grid.Column="2">
+									<Button Grid.Column="2" Command="{Binding CancelDownloadCommand}">
 										<StackPanel Orientation="Horizontal">
 											<FontIcon Glyph="&#xE106;"/>
 											<TextBlock Text="Cancel" Margin="5,0,0,0"/>
@@ -140,10 +193,16 @@
 						</ListView.ItemTemplate>
 					</ListView>
 				</PivotItem>
-				<PivotItem Header="Completed">
+				<PivotItem>
+					<PivotItem.Header>
+						<TextBlock>
+							<Run Text="Completed"/>
+							<Run Text="{Binding CompletedPool.Count}"/>
+						</TextBlock>
+					</PivotItem.Header>
 					<ListView ItemsSource="{Binding CompletedPool}" d:ItemsSource="1 2 3">
 						<ListView.ItemTemplate>
-							<DataTemplate>
+							<DataTemplate x:DataType="downloads:DownloadInstance">
 								<Grid>
 									<TextBlock Text="{Binding Post}"/>
 								</Grid>

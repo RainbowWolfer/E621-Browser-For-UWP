@@ -10,6 +10,17 @@ namespace YiffBrowser.Views.Pages.E621 {
 			this.InitializeComponent();
 		}
 
+		private void MenuFlyout_Opening(object sender, object e) {
+			if (sender is MenuFlyout { Target: Grid { Tag: DownloadInstance instance } }) {
+				instance.IsContextMenuOpen = true;
+			}
+		}
+
+		private void MenuFlyout_Closing(Windows.UI.Xaml.Controls.Primitives.FlyoutBase sender, Windows.UI.Xaml.Controls.Primitives.FlyoutBaseClosingEventArgs args) {
+			if (sender?.Target?.Tag is DownloadInstance instance) {
+				instance.IsContextMenuOpen = false;
+			}
+		}
 	}
 
 	public class DownloadPageViewModel : BindableBase {

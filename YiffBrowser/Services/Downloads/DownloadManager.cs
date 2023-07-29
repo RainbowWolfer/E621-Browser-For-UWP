@@ -34,7 +34,7 @@ namespace YiffBrowser.Services.Downloads {
 		}
 
 		private static void DispatcherTimer_Tick(object sender, object e) {
-			const int MAX_DOWNLOADING = 10;
+			const int MAX_DOWNLOADING = 12;
 			if (downloadingPool.Count < MAX_DOWNLOADING) {
 				int needAddCount = MAX_DOWNLOADING - downloadingPool.Count;
 				DownloadInstance[] adds = waitPool.Take(needAddCount).ToArray();
@@ -47,6 +47,16 @@ namespace YiffBrowser.Services.Downloads {
 			}
 		}
 
+		private static async void Item_OnCancel(DownloadInstance sender, EventArgs args) {
+			sender.OnCancel -= Item_OnCancel;
+			if (downloadingPool.Contains(sender)) {
+				downloadingPool.Remove(sender);
+			} else if (waitPool.Contains(sender)) {
+				waitPool.Remove(sender);
+			}
+			await sender.Download.ResultFile.DeleteAsync();
+		}
+
 		private static void Item_OnProgressed(DownloadInstance sender, DownloadProgress args) {
 			if (args.HasCompleted) {
 				sender.OnProgressed -= Item_OnProgressed;
@@ -57,11 +67,15 @@ namespace YiffBrowser.Services.Downloads {
 
 		public static async Task RegisterDownload(E621Post post, string folderName = null) {
 			string filename = $"{post.ID}.{post.File.Ext}";
+
 			StorageFolder folder = await GetFolder(folderName);
 			StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.OpenIfExists);
-			Uri uri = new(post.File.URL);
-			DownloadOperation download = downloader.CreateDownload(uri, file);
-			waitPool.Add(new DownloadInstance(post, download));
+
+			DownloadOperation download = downloader.CreateDownload(new Uri(post.File.URL), file);
+
+			DownloadInstance instance = new(post, download);
+			waitPool.Add(instance);
+			instance.OnCancel += Item_OnCancel;
 		}
 
 		private static async ValueTask<StorageFolder> GetFolder(string folder = null) {
