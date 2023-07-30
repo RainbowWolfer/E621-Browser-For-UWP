@@ -9,9 +9,16 @@
     mc:Ignorable="d" d:RequestedTheme="Dark">
 
     <Grid>
+
 		<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+
 			<muxc:ProgressRing Height="80" Width="80" Value="{x:Bind Progress,Mode=OneWay}" IsActive="True" IsIndeterminate="{x:Bind IsIndeterminate,Mode=OneWay}" Margin="5"/>
+
 			<TextBlock Text="{x:Bind Text,Mode=OneWay}" TextAlignment="Center" FontSize="18" Margin="5" Visibility="{x:Bind Text,Mode=OneWay,Converter={StaticResource ArrayNotEmptyToVisibility}}"/>
+
+			<Button Height="0" Width="0" AllowFocusWhenDisabled="True" IsEnabled="False" Opacity="0"/>
+
 		</StackPanel>
+
     </Grid>
 </UserControl>

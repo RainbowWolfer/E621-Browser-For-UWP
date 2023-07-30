@@ -6,18 +6,48 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    d:RequestedTheme="Dark"
+    NavigationCacheMode="Required"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    d:Height="600" d:Width="1000">
 
 	<Page.DataContext>
 		<local:SettingsPageViewModel/>
 	</Page.DataContext>
 
-    <Grid>
-		<StackPanel>
-			<Button Content="Open Local Settings Folder" Command="{Binding OpenAppLocalFolderCommand}"/>
-			<Button Content="Select Download Folder" Command="{Binding SelectDownloadFolderCommand}"/>
-			<Button Content="Clear Download Folder" Command="{Binding ClearDownloadFolderCommand}"/>
-			<TextBlock Text="{Binding DownloadFolderPath}"/>
-		</StackPanel>
-    </Grid>
+	<Grid>
+		<Pivot>
+
+			<PivotItem Header="General">
+
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+
+					<Grid Margin="10">
+						<TextBlock Text="HELLO WORLD"/>
+					</Grid>
+
+					<ScrollViewer Grid.Row="1" Margin="10">
+
+						<StackPanel>
+							<Button Content="Open Local Settings Folder" Command="{Binding OpenAppLocalFolderCommand}"/>
+							<Button Content="Select Download Folder" Command="{Binding SelectDownloadFolderCommand}"/>
+							<Button Content="Clear Download Folder" Command="{Binding ClearDownloadFolderCommand}"/>
+							<TextBlock Text="{Binding DownloadFolderPath}"/>
+						</StackPanel>
+
+					</ScrollViewer>
+				</Grid>
+
+			</PivotItem>
+
+			<PivotItem Header="About"/>
+			<PivotItem Header="Debug"/>
+			<PivotItem Header="Update Notes"/>
+
+		</Pivot>
+	</Grid>
 </Page>

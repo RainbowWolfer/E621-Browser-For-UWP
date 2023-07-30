@@ -69,7 +69,6 @@ namespace YiffBrowser {
 			}
 
 			await LoaderControl.Start(Init);
-			//DownloadManager.Initialize();
 
 			NavigateHome();
 

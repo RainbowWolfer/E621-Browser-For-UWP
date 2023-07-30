@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using YiffBrowser.Interfaces;
 
@@ -60,16 +61,24 @@ namespace YiffBrowser.Helpers {
 	}
 
 
-	public class LoadingDialogControl {
-		public ContentDialog Dialog { get; private set; }
+	public class LoadingDialogControl(object content, ContentDialogParameters parameters = null) {
+		public ContentDialog Dialog { get; private set; } = content.CreateContentDialog(parameters ?? new ContentDialogParameters());
 
 		public async Task Start(Func<Task> task) {
 			if (task is null) {
 				throw new ArgumentNullException(nameof(task));
 			}
 
+			bool finished = false;
+			Dialog.Closing += (s, e) => {
+			if(!finished){
+					e.Cancel = true;
+			}
+			};
+
 			ShowDialog();
 			await task();
+			finished = true;
 			HideDialog();
 		}
 
@@ -79,10 +88,6 @@ namespace YiffBrowser.Helpers {
 
 		private void HideDialog() {
 			Dialog.Hide();
-		}
-
-		public LoadingDialogControl(object content, ContentDialogParameters parameters = null) {
-			Dialog = content.CreateContentDialog(parameters ?? new ContentDialogParameters());
 		}
 	}
 }
