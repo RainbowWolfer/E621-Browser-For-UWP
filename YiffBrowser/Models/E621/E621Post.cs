@@ -108,7 +108,7 @@ namespace YiffBrowser.Models.E621 {
 		public string Ext { get; set; }
 
 		[JsonProperty("size")]
-		public int Size { get; set; }
+		public long Size { get; set; }
 
 		[JsonProperty("md5")]
 		public string Md5 { get; set; }
@@ -232,7 +232,7 @@ namespace YiffBrowser.Models.E621 {
 		[EnumMember(Value = "q")]
 		Questionable,
 		[EnumMember(Value = "e")]
-		Explict,
+		Explicit,
 	}
 
 

@@ -74,17 +74,24 @@ namespace YiffBrowser.Views.Controls.PostsView {
 
 	public class DownloadViewResult {
 		public string FolderName { get; set; }
+		public bool IsRoot { get; set; } = false;
 		public bool MultiplePages { get; set; }
 		public int FromPage { get; set; }
 		public int ToPage { get; set; }
 
 		public DownloadViewResult(string folderName, int fromPage, int toPage) {
+			if (folderName == null) {
+				IsRoot = true;
+			}
 			FolderName = folderName;
 			MultiplePages = true;
 			FromPage = fromPage;
 			ToPage = toPage;
 		}
 		public DownloadViewResult(string folderName) {
+			if (folderName == null) {
+				IsRoot = true;
+			}
 			FolderName = folderName;
 			MultiplePages = false;
 			FromPage = -1;
@@ -105,7 +112,7 @@ namespace YiffBrowser.Views.Controls.PostsView {
 		private CollectionSearchFilter<DownloadFolderInfo> filter;
 		private E621Post[] posts;
 		private int totalFileCount;
-		private int totalFileSize;
+		private long totalFileSize;
 		private bool chooseMultiPages;
 		private bool isInSelectionMode;
 		private int pageStart;
@@ -264,7 +271,13 @@ namespace YiffBrowser.Views.Controls.PostsView {
 			get => posts;
 			set => SetProperty(ref posts, value, () => {
 				TotalFileCount = Posts.Length;
-				TotalFileSize = Posts.Select(x => x.File?.Size ?? 0).Sum();
+				long size = 0;
+				foreach (E621Post post in Posts) {
+					long s = post.File.Size;
+					size += s;
+				}
+				TotalFileSize = size;
+				//TotalFileSize = Posts.Select(x => x.File?.Size ?? 0).Sum();
 			});
 		}
 
@@ -286,11 +299,13 @@ namespace YiffBrowser.Views.Controls.PostsView {
 				return null;
 			}
 
+			string folderName = SelectedItem.IsRoot ? null : SelectedItem.FolderName;
+
 			DownloadViewResult result;
 			if (ChooseMultiPages) {
-				result = new(SelectedItem.FolderName, PageStart, PageEnd);
+				result = new(folderName, PageStart, PageEnd);
 			} else {
-				result = new(SelectedItem.FolderName);
+				result = new(folderName);
 			}
 
 			return result;
@@ -317,7 +332,7 @@ namespace YiffBrowser.Views.Controls.PostsView {
 			get => totalFileCount;
 			set => SetProperty(ref totalFileCount, value);
 		}
-		public int TotalFileSize {
+		public long TotalFileSize {
 			get => totalFileSize;
 			set => SetProperty(ref totalFileSize, value);
 		}

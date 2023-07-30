@@ -9,7 +9,8 @@
 	xmlns:downloads="using:YiffBrowser.Services.Downloads"
 	xmlns:i="using:Microsoft.Xaml.Interactivity"
 	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-	xmlns:prism="using:Prism"
+	xmlns:prism="using:Prism" xmlns:common="using:YiffBrowser.Views.Controls.Common" 
+	xmlns:customcontrols="using:YiffBrowser.Views.Controls.CustomControls"
 	mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     NavigationCacheMode="Required" d:RequestedTheme="Dark">
@@ -33,27 +34,32 @@
 					<ColumnDefinition Width="auto"/>
 				</Grid.ColumnDefinitions>
 
-				<StackPanel Orientation="Horizontal">
+				<StackPanel Orientation="Horizontal" MinWidth="70">
 					<FontIcon Glyph="&#xE118;"/>
 					<TextBlock VerticalAlignment="Center" Margin="10,0,0,0" FontWeight="Bold">
-						<Run Text="1"/>
+						<Run Text="{Binding CompletedPool.Count}"/>
 						<Run Text="/"/>
-						<Run Text="12"/>
+						<Run Text="{Binding TotalUnfinishedDownloadCount}"/>
 					</TextBlock>
 				</StackPanel>
 
-				<muxc:ProgressBar IsIndeterminate="True" Grid.Column="1" Margin="5"/>
+				<muxc:ProgressBar Value="{Binding TotalProgress}" Minimum="0" Maximum="1" Grid.Column="1" Margin="20,0" ShowPaused="{Binding Pausing}"/>
 
 				<StackPanel Grid.Column="2" Orientation="Horizontal">
-					<Button Margin="5">
-						<StackPanel Orientation="Horizontal">
-							<FontIcon Glyph="&#xE103;" VerticalAlignment="Center"/>
-							<FontIcon Glyph="&#xE102;" VerticalAlignment="Center"/>
-							<TextBlock Text="Pause" VerticalAlignment="Center" Margin="10,0,0,0"/>
-						</StackPanel>
+					<Button Margin="5" Command="{Binding TogglePauseCommand}" IsEnabled="{Binding TotalUnfinishedDownloadCount,Converter={StaticResource CountToBool}}">
+						<Grid>
+							<StackPanel Orientation="Horizontal" Visibility="{Binding Pausing,Converter={StaticResource BoolToVisibilityRe}}">
+								<FontIcon Glyph="&#xE103;" VerticalAlignment="Center"/>
+								<TextBlock Text="Pause" VerticalAlignment="Center" Margin="10,0,0,0"/>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" Visibility="{Binding Pausing,Converter={StaticResource BoolToVisibility}}">
+								<FontIcon Glyph="&#xE102;" VerticalAlignment="Center"/>
+								<TextBlock Text="Resume" VerticalAlignment="Center" Margin="10,0,0,0"/>
+							</StackPanel>
+						</Grid>
 					</Button>
 
-					<Button Margin="5">
+					<Button Margin="5" Command="{Binding CancelAllCommand}" IsEnabled="{Binding TotalUnfinishedDownloadCount,Converter={StaticResource CountToBool}}">
 						<StackPanel Orientation="Horizontal">
 							<FontIcon Glyph="&#xE106;" VerticalAlignment="Center"/>
 							<TextBlock Text="Cancel All" VerticalAlignment="Center" Margin="10,0,0,0"/>
@@ -64,124 +70,173 @@
 		</Border>
 
 		<Border Background="{ThemeResource AppBarBackgroundThemeBrush}" Margin="5" CornerRadius="8" Padding="10,2,10,2" Grid.Row="1">
-			<ListView ItemsSource="{Binding DownloadingPool}" d:ItemsSource="1 2 3" Padding="5" MinHeight="172" IsItemClickEnabled="False" SelectionMode="None"
-				ScrollViewer.HorizontalScrollMode="Enabled"
-				ScrollViewer.HorizontalScrollBarVisibility="Auto"
-				ScrollViewer.VerticalScrollMode="Disabled">
+			<Grid MinHeight="172">
 
-				<ListView.ItemsPanel>
-					<ItemsPanelTemplate>
-						<StackPanel Orientation="Horizontal"/>
-					</ItemsPanelTemplate>
-				</ListView.ItemsPanel>
+				<Grid Visibility="{Binding DownloadingPool.Count,Converter={StaticResource CountToVisibilityRe}}">
+					<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+						<FontIcon Glyph="&#xF133;" FontSize="32" Margin="5"/>
+						<TextBlock Text="No Active Downloads Currently" FontSize="18" Margin="5"/>
+					</StackPanel>
+				</Grid>
 
-				<ListView.ItemContainerStyle>
-					<Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemExpanded}">
-						<Setter Property="Padding" Value="5"/>
-					</Style>
-				</ListView.ItemContainerStyle>
+				<ListView ItemsSource="{Binding DownloadingPool}" d:ItemsSource="1 2 3" Padding="5" IsItemClickEnabled="False" SelectionMode="None" Visibility="{Binding DownloadingPool.Count,Converter={StaticResource CountToVisibility}}"
+					d:Visibility="Visible"
+					ScrollViewer.HorizontalScrollMode="Enabled"
+					ScrollViewer.HorizontalScrollBarVisibility="Auto"
+					ScrollViewer.VerticalScrollMode="Disabled">
 
-				<ListView.ItemContainerTransitions>
-					<TransitionCollection>
-						<EntranceThemeTransition IsStaggeringEnabled="True" />
-					</TransitionCollection>
-				</ListView.ItemContainerTransitions>
+					<ListView.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Horizontal"/>
+						</ItemsPanelTemplate>
+					</ListView.ItemsPanel>
 
-				<ListView.ItemTemplate>
-					<DataTemplate x:DataType="downloads:DownloadInstance">
-						<Grid Background="Transparent" CornerRadius="8" BorderBrush="Transparent" BorderThickness="2" Tag="{Binding}">
-							<Grid.ContextFlyout>
-								<MenuFlyout Placement="Bottom" Opening="MenuFlyout_Opening" Closing="MenuFlyout_Closing">
-									<MenuFlyoutItem Text="Cancel" Icon="Cancel" Command="{Binding CancelDownloadCommand}"/>
-								</MenuFlyout>
-							</Grid.ContextFlyout>
+					<ListView.ItemContainerStyle>
+						<Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemExpanded}">
+							<Setter Property="Padding" Value="5"/>
+						</Style>
+					</ListView.ItemContainerStyle>
 
-							<i:Interaction.Behaviors>
-								<core:DataTriggerBehavior Binding="{Binding IsContextMenuOpen}" Value="True">
-									<core:ChangePropertyAction PropertyName="BorderBrush" Value="{ThemeResource SystemAccentColor}"/>
-								</core:DataTriggerBehavior>
-								<core:DataTriggerBehavior Binding="{Binding IsContextMenuOpen}" Value="False">
-									<core:ChangePropertyAction PropertyName="BorderBrush" Value="Transparent"/>
-								</core:DataTriggerBehavior>
-							</i:Interaction.Behaviors>
+					<!--<ListView.ItemContainerTransitions>
+						<TransitionCollection>
+							<EntranceThemeTransition IsStaggeringEnabled="True" />
+						</TransitionCollection>
+					</ListView.ItemContainerTransitions>-->
 
-							<Border Height="150" Width="150" CornerRadius="8">
-								<Border.Background>
-									<ImageBrush ImageSource="/YiffBrowser/Resources/E621/e612-Bigger.png" Stretch="UniformToFill"/>
-								</Border.Background>
-							</Border>
+					<ListView.ItemTemplate>
+						<DataTemplate x:DataType="downloads:DownloadInstance">
+							<Grid Background="Transparent" CornerRadius="8" BorderBrush="Transparent" BorderThickness="2" Tag="{Binding}">
+								<Grid.ContextFlyout>
+									<MenuFlyout Placement="Bottom" Opening="MenuFlyout_Opening" Closing="MenuFlyout_Closing">
+										<MenuFlyoutItem Text="Cancel" Icon="Cancel" Command="{Binding CancelDownloadCommand}"/>
+									</MenuFlyout>
+								</Grid.ContextFlyout>
 
-							<Border Height="150" Width="150" CornerRadius="8" Visibility="{Binding ShowPreviewImage,Converter={StaticResource BoolToVisibility}}">
-								<Border.Background>
-									<ImageBrush ImageSource="{Binding Post.Preview.URL}" Stretch="UniformToFill">
-										<i:Interaction.Behaviors>
-											<core:EventTriggerBehavior EventName="ImageOpened">
-												<core:InvokeCommandAction Command="{Binding OnPreviewLoadedCommand}"/>
-											</core:EventTriggerBehavior>
-										</i:Interaction.Behaviors>
-									</ImageBrush>
-								</Border.Background>
-							</Border>
+								<i:Interaction.Behaviors>
+									<core:DataTriggerBehavior Binding="{Binding IsContextMenuOpen}" Value="True">
+										<core:ChangePropertyAction PropertyName="BorderBrush" Value="{ThemeResource SystemAccentColor}"/>
+									</core:DataTriggerBehavior>
+									<core:DataTriggerBehavior Binding="{Binding IsContextMenuOpen}" Value="False">
+										<core:ChangePropertyAction PropertyName="BorderBrush" Value="Transparent"/>
+									</core:DataTriggerBehavior>
+								</i:Interaction.Behaviors>
 
-							<Border Background="Black" Opacity="0.5"/>
+								<Border Height="150" Width="150" CornerRadius="8">
+									<Border.Background>
+										<ImageBrush ImageSource="/YiffBrowser/Resources/E621/e612-Bigger.png" Stretch="UniformToFill"/>
+									</Border.Background>
+								</Border>
 
-							<Border CornerRadius="8">
-								<!--<Border.Background>
-									<SolidColorBrush Color="White" Opacity="0.2"/>
-								</Border.Background>-->
-								<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5">
+								<Border Height="150" Width="150" CornerRadius="8" Visibility="{Binding ShowPreviewImage,Converter={StaticResource BoolToVisibility}}">
+									<Border.Background>
+										<ImageBrush ImageSource="{Binding Post.Preview.URL}" Stretch="UniformToFill">
+											<i:Interaction.Behaviors>
+												<core:EventTriggerBehavior EventName="ImageOpened">
+													<core:InvokeCommandAction Command="{Binding OnPreviewLoadedCommand}"/>
+												</core:EventTriggerBehavior>
+											</i:Interaction.Behaviors>
+										</ImageBrush>
+									</Border.Background>
+								</Border>
 
-									<Grid Margin="5">
-										<muxc:ProgressRing IsIndeterminate="{Binding Initializing}" Value="{Binding Progress}" Minimum="0" Maximum="100" Height="55" Width="55"/>
-										<TextBlock Text="{Binding ProgressString}" d:Text="12.1%" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding Initializing,Converter={StaticResource BoolToVisibilityRe}}"/>
-									</Grid>
+								<Border Background="Black" Opacity="0.5"/>
 
-									<TextBlock TextAlignment="Center" Visibility="{Binding Initializing,Converter={StaticResource BoolToVisibilityRe}}">
-										<Run Text="{Binding ReceivedBytes,Converter={StaticResource NumberToKB}}" d:Text="1KB"/>
-										<Run Text="/"/>
-										<Run Text="{Binding TotalBytesToReceive,Converter={StaticResource NumberToKB}}" d:Text="10KB"/>
-									</TextBlock>
+								<Border CornerRadius="8">
+									<!--<Border.Background>
+										<SolidColorBrush Color="White" Opacity="0.2"/>
+									</Border.Background>-->
+									<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5">
 
-									<TextBlock Text="Getting Data" TextAlignment="Center" Visibility="{Binding Initializing,Converter={StaticResource BoolToVisibility}}"/>
+										<Grid Margin="5">
+											<muxc:ProgressRing IsIndeterminate="{Binding Initializing}" Value="{Binding Progress}" Minimum="0" Maximum="100" Height="55" Width="55" d:IsIndeterminate="False" d:Value="40" Visibility="{Binding ShowProgressRing,Converter={StaticResource BoolToVisibility}}"/>
+											<Grid Visibility="{Binding Pausing,Converter={StaticResource BoolToVisibilityRe}}">
+												<TextBlock Text="{Binding ProgressString}" d:Text="12.1%" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding Initializing,Converter={StaticResource BoolToVisibilityRe}}"/>
+											</Grid>
+											<Grid Visibility="{Binding Pausing,Converter={StaticResource BoolToVisibility}}">
+												<FontIcon Glyph="&#xE103;"/>
+											</Grid>
+										</Grid>
 
-								</StackPanel>
-							</Border>
-						</Grid>
-					</DataTemplate>
-				</ListView.ItemTemplate>
+										<Grid Visibility="{Binding Pausing,Converter={StaticResource BoolToVisibilityRe}}">
+											<TextBlock TextAlignment="Center" Visibility="{Binding Initializing,Converter={StaticResource BoolToVisibilityRe}}">
+												<Run Text="{Binding ReceivedBytes,Converter={StaticResource NumberToKB}}" d:Text="1KB"/>
+												<Run Text="/"/>
+												<Run Text="{Binding TotalBytesToReceive,Converter={StaticResource NumberToKB}}" d:Text="10KB"/>
+											</TextBlock>
+											<TextBlock Text="Getting Data" TextAlignment="Center" Visibility="{Binding Initializing,Converter={StaticResource BoolToVisibility}}"/>
+										</Grid>
 
-			</ListView>
+									</StackPanel>
+								</Border>
+
+								<common:TypeHintView Post="{Binding Post}"/>
+							</Grid>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+
+				</ListView>
+			</Grid>
 		</Border>
 
 		<Border Background="{ThemeResource AppBarBackgroundThemeBrush}" Margin="5" CornerRadius="8" Padding="10,2,10,2" Grid.Row="2">
 			<Pivot>
+
 				<PivotItem>
+
 					<PivotItem.Header>
 						<TextBlock>
 							<Run Text="Pending"/>
 							<Run Text="{Binding WaitPool.Count}"/>
 						</TextBlock>
 					</PivotItem.Header>
+
 					<ListView ItemsSource="{Binding WaitPool}" d:ItemsSource="1 2 3">
 						<ListView.ItemTemplate>
 							<DataTemplate x:DataType="downloads:DownloadInstance">
 								<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="auto"/>
+										<ColumnDefinition Width="auto"/>
+										<ColumnDefinition Width="auto"/>
+										<ColumnDefinition Width="auto"/>
 										<ColumnDefinition Width="*"/>
 										<ColumnDefinition Width="auto"/>
 									</Grid.ColumnDefinitions>
 
-									<Border Padding="7,2,7,2" Background="{ThemeResource SystemControlBackgroundBaseMediumRevealBorderBrush}" CornerRadius="4" Margin="5" Visibility="Collapsed">
+
+									<Border VerticalAlignment="Center" Padding="8,4" Background="#44ffffff" CornerRadius="4" Grid.Column="0" MinWidth="150" ToolTipService.ToolTip="Destiation Folder">
 										<StackPanel Orientation="Horizontal">
-											<FontIcon Glyph="&#xE10C;"/>
-											<TextBlock Text="Pending" Margin="5,0,0,0"/>
+											<FontIcon d:Glyph="&#xE8B7;">
+												<i:Interaction.Behaviors>
+													<core:DataTriggerBehavior Binding="{Binding Information.IsRoot}" Value="True">
+														<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE10F;"/>
+													</core:DataTriggerBehavior>
+													<core:DataTriggerBehavior Binding="{Binding Information.IsRoot}" Value="False">
+														<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE8B7;"/>
+													</core:DataTriggerBehavior>
+												</i:Interaction.Behaviors>
+											</FontIcon>
+											<TextBlock Text="{Binding Information.DestinationFolder.DisplayName}" d:Text="Folder Name Here" Margin="5,0,0,0"/>
 										</StackPanel>
 									</Border>
 
-									<TextBlock Text="{Binding Post.File.URL}" d:Text="https://static1.e621.net/data/21/99/2199e977f2a496c7152a5ce3cc2929b0.png" Grid.Column="1" Margin="0" VerticalAlignment="Center"/>
+									<Border VerticalAlignment="Center" Padding="8,4" Background="#44ffffff" CornerRadius="4" Margin="10,0,0,0" Grid.Column="1" MinWidth="85" ToolTipService.ToolTip="File Type">
+										<StackPanel Orientation="Horizontal">
+											<customcontrols:FileTypeFontIcon FileType="{Binding FileType}" d:Glyph="&#xE91B;"/>
+											<TextBlock Text="{Binding FileTypeString}" d:Text="GIF" Margin="5,0,0,0"/>
+										</StackPanel>
+									</Border>
 
-									<Button Grid.Column="2" Command="{Binding CancelDownloadCommand}">
+									<Border VerticalAlignment="Center" Padding="8,4" Background="#44ffffff" CornerRadius="4" Margin="10,0,0,0" Grid.Column="2" MinWidth="100" ToolTipService.ToolTip="File Size">
+										<StackPanel Orientation="Horizontal">
+											<FontIcon Glyph="&#xEDA2;"/>
+											<TextBlock d:Text="3,123 KB" Text="{Binding Post.File.Size,Converter={StaticResource NumberToKB},ConverterParameter=' '}" Margin="5,0,0,0"/>
+										</StackPanel>
+									</Border>
+
+									<TextBlock Text="{Binding Post.File.URL}" d:Text="https://static1.e621.net/data/21/99/2199e977f2a496c7152a5ce3cc2929b0.png" Grid.Column="4" Margin="10,0" VerticalAlignment="Center" ToolTipService.ToolTip="Target URL"/>
+
+									<Button Grid.Column="5" Command="{Binding CancelDownloadCommand}">
 										<StackPanel Orientation="Horizontal">
 											<FontIcon Glyph="&#xE106;"/>
 											<TextBlock Text="Cancel" Margin="5,0,0,0"/>
@@ -193,23 +248,43 @@
 						</ListView.ItemTemplate>
 					</ListView>
 				</PivotItem>
+
 				<PivotItem>
+
 					<PivotItem.Header>
 						<TextBlock>
 							<Run Text="Completed"/>
 							<Run Text="{Binding CompletedPool.Count}"/>
 						</TextBlock>
 					</PivotItem.Header>
-					<ListView ItemsSource="{Binding CompletedPool}" d:ItemsSource="1 2 3">
-						<ListView.ItemTemplate>
-							<DataTemplate x:DataType="downloads:DownloadInstance">
-								<Grid>
-									<TextBlock Text="{Binding Post}"/>
-								</Grid>
-							</DataTemplate>
-						</ListView.ItemTemplate>
-					</ListView>
+
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+
+						<StackPanel Orientation="Horizontal">
+							<Button Command="{Binding ClearAllCompletedCommand}" Margin="5">
+								<StackPanel Orientation="Horizontal">
+									<FontIcon Glyph="&#xE106;"/>
+									<TextBlock Text="Clear All" Margin="5,0,0,0"/>
+								</StackPanel>
+							</Button>
+						</StackPanel>
+
+						<ListView ItemsSource="{Binding CompletedPool}" d:ItemsSource="1 2 3" Grid.Row="1">
+							<ListView.ItemTemplate>
+								<DataTemplate x:DataType="downloads:DownloadInstance">
+									<Grid>
+										<TextBlock Text="{Binding Post}"/>
+									</Grid>
+								</DataTemplate>
+							</ListView.ItemTemplate>
+						</ListView>
+					</Grid>
 				</PivotItem>
+
 			</Pivot>
 
 		</Border>

@@ -1,0 +1,32 @@
+﻿<UserControl
+    x:Class="YiffBrowser.Views.Controls.Common.TypeHintView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YiffBrowser.Views.Controls.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="50"
+    d:DesignWidth="100">
+
+	<Grid>
+		<Grid.DataContext>
+			<local:TypeHintViewModel x:Name="ViewModel"/>
+		</Grid.DataContext>
+
+		<Border x:Name="TypeHintBorder" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="4" Margin="5" Padding="6,3,6,3" Visibility="{Binding TypeHint,Converter={StaticResource ArrayNotEmptyToVisibility}}">
+			<Border.Background>
+				<SolidColorBrush Color="Gray" Opacity="0.5"/>
+			</Border.Background>
+			<Border.Shadow>
+				<ThemeShadow/>
+			</Border.Shadow>
+
+			<TextBlock Text="{Binding TypeHint}" d:Text="GIF" FontSize="16">
+				<TextBlock.Shadow>
+					<ThemeShadow/>
+				</TextBlock.Shadow>
+			</TextBlock>
+		</Border>
+	</Grid>
+</UserControl>

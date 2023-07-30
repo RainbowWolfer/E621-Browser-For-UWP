@@ -8,6 +8,8 @@
 	xmlns:i="using:Microsoft.Xaml.Interactivity"
 	xmlns:core="using:Microsoft.Xaml.Interactions.Core" 
 	xmlns:converters="using:YiffBrowser.Converters"
+	d:Height="300"
+	d:Width="300"
 	mc:Ignorable="d" d:RequestedTheme="Dark">
 
 	<UserControl.Resources>

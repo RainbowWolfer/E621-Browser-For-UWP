@@ -125,6 +125,10 @@ namespace YiffBrowser.Helpers {
 
 
 		public static string FileSizeToKB(this int size, bool gap = false) {
+			return FileSizeToKB((long)size, gap);
+		}
+
+		public static string FileSizeToKB(this long size, bool gap = false) {
 			string kb = $"{size / 1000}";
 			string output = Regex.Replace(kb, ".{3}(?!.)", ",$&").Trim(',');
 			if (gap) {
@@ -141,7 +145,7 @@ namespace YiffBrowser.Helpers {
 				"gif" => FileType.Gif,
 				"anim" or "swf" => FileType.Anim,
 				"webm" => FileType.Webm,
-				_ => throw new System.Exception($"New Type({post.File.Ext}) Found"),
+				_ => throw new Exception($"New Type({post.File.Ext}) Found"),
 			};
 		}
 

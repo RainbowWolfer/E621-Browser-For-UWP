@@ -133,6 +133,10 @@
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityReConverter.cs" />
     <Compile Include="Converters\ColorToBrushConverter.cs" />
+    <Compile Include="Converters\CountToBoolConverter.cs" />
+    <Compile Include="Converters\CountToBoolReConverter.cs" />
+    <Compile Include="Converters\CountToVisibilityConverter.cs" />
+    <Compile Include="Converters\CountToVisibilityReConverter.cs" />
     <Compile Include="Converters\DurationConverter.cs" />
     <Compile Include="Converters\E621RatingToBrushConverter.cs" />
     <Compile Include="Converters\E621RatingToIconConverter.cs" />
@@ -171,6 +175,10 @@
     <Compile Include="Views\Controls\AddButtonInput.xaml.cs">
       <DependentUpon>AddButtonInput.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\Common\TypeHintView.xaml.cs">
+      <DependentUpon>TypeHintView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\CustomControls\FileTypeFontIcon.cs" />
     <Compile Include="Views\Controls\CustomControls\LockableToggleButton.cs" />
     <Compile Include="Views\Controls\CustomToggleSplitButton.xaml.cs">
       <DependentUpon>CustomToggleSplitButton.xaml</DependentUpon>
@@ -301,6 +309,10 @@
     <Page Include="Views\Controls\AddButtonInput.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Common\TypeHintView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\CustomToggleSplitButton.xaml">
       <Generator>MSBuild:Compile</Generator>

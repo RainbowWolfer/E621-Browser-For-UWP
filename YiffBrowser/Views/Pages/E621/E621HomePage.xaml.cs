@@ -96,8 +96,8 @@ namespace YiffBrowser.Views.Pages.E621 {
 		public E621HomePageViewModel() {
 			Instance = this;
 
-			string[] startupTags = Local.Settings.StartupTags;
-			//string[] startupTags = { "inpool:true" };
+			//string[] startupTags = Local.Settings.StartupTags;
+			string[] startupTags = { "order:filesize" };
 			Items.Add(new HomeTabViewItem(startupTags));
 			SelectedIndex = 0;
 		}

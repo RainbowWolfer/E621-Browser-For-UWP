@@ -12,17 +12,17 @@ using Windows.UI.Xaml.Media;
 using YiffBrowser.Helpers;
 
 namespace YiffBrowser.Views.Controls {
-	public delegate void OnSumbitEventHandler(object sender, OnSumbitEventArgs e);
+	public delegate void OnSubmitEventHandler(object sender, OnSubmitEventArgs e);
 
-	public class OnSumbitEventArgs : RoutedEventArgs {
+	public class OnSubmitEventArgs : RoutedEventArgs {
 		public string SubmitText { get; set; }
-		public OnSumbitEventArgs(string submitText) : base() {
+		public OnSubmitEventArgs(string submitText) : base() {
 			SubmitText = submitText.Trim();
 		}
 	}
 
 	public sealed partial class AddButtonInput : UserControl {
-		public event OnSumbitEventHandler OnSubmit;
+		public event OnSubmitEventHandler OnSubmit;
 
 		public string PlaceholderText {
 			get => (string)GetValue(PlaceholderTextProperty);
@@ -87,7 +87,7 @@ namespace YiffBrowser.Views.Controls {
 
 
 	public class AddButtonInputViewModel : BindableBase {
-		public event OnSumbitEventHandler OnSubmit;
+		public event OnSubmitEventHandler OnSubmit;
 
 		private string placeholderText = string.Empty;
 		private string text = string.Empty;
@@ -131,16 +131,16 @@ namespace YiffBrowser.Views.Controls {
 			}
 		}
 
-		public ICommand SubmitCommand => new DelegateCommand(Sumbit);
+		public ICommand SubmitCommand => new DelegateCommand(Submit);
 		public ICommand TextBoxKeyDownCommand => new DelegateCommand<KeyRoutedEventArgs>(TextBoxKeyDown);
 
 		private void TextBoxKeyDown(KeyRoutedEventArgs args) {
 			if (args.Key == VirtualKey.Enter) {
-				Sumbit();
+				Submit();
 			}
 		}
 
-		private void Sumbit() {
+		private void Submit() {
 			if (text.IsBlank()) {
 				ErrorTip = "Cannot be empty";
 				IsErrorTipOpen = true;
@@ -154,7 +154,7 @@ namespace YiffBrowser.Views.Controls {
 				IsErrorTipOpen = false;
 			}
 
-			OnSubmit?.Invoke(this, new OnSumbitEventArgs(Text));
+			OnSubmit?.Invoke(this, new OnSubmitEventArgs(Text));
 
 			Text = string.Empty;
 			TextBoxBrush = App.TextBoxDefaultBorderBrush;

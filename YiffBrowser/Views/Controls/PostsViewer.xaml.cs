@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.System;
 using Windows.UI.ViewManagement;
@@ -458,9 +459,11 @@ namespace YiffBrowser.Views.Controls {
 
 			} else {
 				string folderName = result.FolderName;
+
 				foreach (E621Post post in posts) {
 					await DownloadManager.RegisterDownload(post, folderName);
 				}
+
 			}
 
 		}

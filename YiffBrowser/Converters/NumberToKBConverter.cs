@@ -9,7 +9,12 @@ using YiffBrowser.Helpers;
 namespace YiffBrowser.Converters {
 	public class NumberToKBConverter : IValueConverter {
 		public object Convert(object value, Type targetType, object parameter, string language) {
-			int number = (int)CommonHelpers.Abs(value);
+			long number;
+			if (value is long l) {
+				number = l;
+			} else {
+				number = (int)CommonHelpers.Abs(value);
+			}
 			if (parameter != null) {
 				return number.FileSizeToKB(true);
 			} else {

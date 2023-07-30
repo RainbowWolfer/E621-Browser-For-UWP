@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace YiffBrowser.Services.Downloads {
 		public static readonly ObservableCollection<DownloadInstance> downloadingPool = new();
 		public static readonly ObservableCollection<DownloadInstance> completedPool = new();
 
+		private static bool pausing = false;
 		private static readonly DispatcherTimer timer = new();
 
 		static DownloadManager() {
@@ -34,6 +36,9 @@ namespace YiffBrowser.Services.Downloads {
 		}
 
 		private static void DispatcherTimer_Tick(object sender, object e) {
+			if (Pausing) {
+				return;
+			}
 			const int MAX_DOWNLOADING = 12;
 			if (downloadingPool.Count < MAX_DOWNLOADING) {
 				int needAddCount = MAX_DOWNLOADING - downloadingPool.Count;
@@ -58,10 +63,28 @@ namespace YiffBrowser.Services.Downloads {
 		}
 
 		private static void Item_OnProgressed(DownloadInstance sender, DownloadProgress args) {
-			if (args.HasCompleted) {
+			if (args.Status == BackgroundTransferStatus.Completed
+				&& (args.HasCompleted && args.TotalBytesToReceive != 0 && args.TotalBytesToReceive != 0)
+			) {
 				sender.OnProgressed -= Item_OnProgressed;
 				downloadingPool.Remove(sender);
-				completedPool.Add(sender);
+				completedPool.Insert(0, sender);
+			}
+		}
+
+		public static bool Pausing {
+			get => pausing;
+			set {
+				pausing = value;
+				if (value) {
+					foreach (DownloadInstance item in downloadingPool) {
+						item.Pause();
+					}
+				} else {
+					foreach (DownloadInstance item in downloadingPool) {
+						item.Resume();
+					}
+				}
 			}
 		}
 
@@ -73,16 +96,23 @@ namespace YiffBrowser.Services.Downloads {
 
 			DownloadOperation download = downloader.CreateDownload(new Uri(post.File.URL), file);
 
-			DownloadInstance instance = new(post, download);
+			DownloadInstance instance = new(post, download,
+				new DownloadInstanceInformation(folder, folder == Local.DownloadFolder)
+			);
+
 			waitPool.Add(instance);
 			instance.OnCancel += Item_OnCancel;
 		}
 
+		//public static void RegisterDownloads(string folderName = null, params E621Post[] posts) {
+
+		//}
+
 		private static async ValueTask<StorageFolder> GetFolder(string folder = null) {
 			if (folder.IsBlank()) {
-				return Local.LocalFolder;
+				return Local.DownloadFolder;
 			} else {
-				return await Local.LocalFolder.CreateFolderAsync(folder, CreationCollisionOption.OpenIfExists);
+				return await Local.DownloadFolder.CreateFolderAsync(folder, CreationCollisionOption.OpenIfExists);
 			}
 		}
 

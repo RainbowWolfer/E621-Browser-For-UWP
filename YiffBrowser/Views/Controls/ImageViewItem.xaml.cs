@@ -74,8 +74,6 @@ namespace YiffBrowser.Views.Controls {
 			new PropertyMetadata(false)
 		);
 
-
-
 		public ImageViewItem() {
 			this.InitializeComponent();
 			TypeHintBorder.Translation += new Vector3(0, 0, 32);

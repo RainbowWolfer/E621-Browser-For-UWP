@@ -186,7 +186,7 @@ namespace YiffBrowser.Views.Controls {
 		private E621Post e621Post;
 		private string imageURL;
 		private bool isMedia;
-		private int fileSize;
+		private long fileSize;
 		private bool showBackgroundImage = true;
 		private string mediaURL;
 		private bool showMoreInfoSplitView;
@@ -238,7 +238,7 @@ namespace YiffBrowser.Views.Controls {
 			set => SetProperty(ref mediaURL, value);
 		}
 
-		public int FileSize {
+		public long FileSize {
 			get => fileSize;
 			set => SetProperty(ref fileSize, value);
 		}
@@ -337,7 +337,7 @@ namespace YiffBrowser.Views.Controls {
 			List<string> tags = E621Post.Tags.GetAllTags();
 			if (tags.Contains("sound_warning")) {
 				ShowSoundWarning = true;
-				SoundWarningColor = E621Rating.Explict.GetRatingColor();
+				SoundWarningColor = E621Rating.Explicit.GetRatingColor();
 				SoundWarningToolTip = "This Video Has 'sound_warning' Tag";
 			} else if (tags.Contains("sound")) {
 				ShowSoundWarning = true;

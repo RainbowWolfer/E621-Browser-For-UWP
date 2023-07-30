@@ -45,21 +45,21 @@ namespace YiffBrowser.Views.Controls {
 			}
 		}
 
-		public int FileSize {
-			get => (int)GetValue(FileSizeProperty);
+		public long FileSize {
+			get => (long)GetValue(FileSizeProperty);
 			set => SetValue(FileSizeProperty, value);
 		}
 
 		public static readonly DependencyProperty FileSizeProperty = DependencyProperty.Register(
 			nameof(FileSize),
-			typeof(int),
+			typeof(long),
 			typeof(PictureDisplayView),
 			new PropertyMetadata(0, OnFileSizeChanged)
 		);
 
 		private static void OnFileSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
 			if (d is PictureDisplayView view) {
-				view.ViewModel.FileSize = (int)e.NewValue;
+				view.ViewModel.FileSize = (long)e.NewValue;
 			}
 		}
 
@@ -230,8 +230,8 @@ namespace YiffBrowser.Views.Controls {
 		private bool showProgressError = false;
 
 		private BitmapImage bitmap = null;
-		private int fileSize;
-		private int downloadedFileSize;
+		private long fileSize;
+		private long downloadedFileSize;
 
 		public int Progress {
 			get => progress;
@@ -258,12 +258,12 @@ namespace YiffBrowser.Views.Controls {
 			set => SetProperty(ref bitmap, value);
 		}
 
-		public int FileSize {
+		public long FileSize {
 			get => fileSize;
 			set => SetProperty(ref fileSize, value);
 		}
 
-		public int DownloadedFileSize {
+		public long DownloadedFileSize {
 			get => downloadedFileSize;
 			set => SetProperty(ref downloadedFileSize, value);
 		}
