@@ -71,9 +71,9 @@ namespace YiffBrowser.Helpers {
 
 			bool finished = false;
 			Dialog.Closing += (s, e) => {
-			if(!finished){
+				if (!finished) {
 					e.Cancel = true;
-			}
+				}
 			};
 
 			ShowDialog();
