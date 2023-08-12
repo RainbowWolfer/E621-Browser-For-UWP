@@ -39,5 +39,9 @@
 			</x:String>
 
 		</ResourceDictionary>
+
+		<ResourceDictionary Source="Themes\Generic.xaml"/>
+		<ResourceDictionary Source="Themes\Default.xaml"/>
+
 	</ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

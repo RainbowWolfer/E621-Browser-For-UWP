@@ -434,8 +434,12 @@ namespace YiffBrowser.Views.Controls {
 		public ICommand DownloadCommand => new DelegateCommand(Download);
 
 		private async void Download() {
-			E621Post[] posts;
+			if (Local.DownloadFolder == null) {
+				
+				return;
+			}
 
+			E621Post[] posts;
 
 			if (IsInSelectionMode) {
 				posts = RequestGetAllItems().Where(x => x.IsSelected).Select(x => x.Post).ToArray();

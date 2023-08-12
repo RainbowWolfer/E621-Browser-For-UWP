@@ -179,7 +179,9 @@
       <DependentUpon>TypeHintView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\CustomControls\FileTypeFontIcon.cs" />
+    <Compile Include="Views\Controls\CustomControls\IconTextHorizontal.cs" />
     <Compile Include="Views\Controls\CustomControls\LockableToggleButton.cs" />
+    <Compile Include="Views\Controls\CustomControls\SettingCardControl.cs" />
     <Compile Include="Views\Controls\CustomToggleSplitButton.xaml.cs">
       <DependentUpon>CustomToggleSplitButton.xaml</DependentUpon>
     </Compile>
@@ -305,6 +307,14 @@
     <Page Include="Dictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Default.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Controls\AddButtonInput.xaml">
       <Generator>MSBuild:Compile</Generator>

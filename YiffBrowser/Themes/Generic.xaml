@@ -1,0 +1,37 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YiffBrowser" 
+    xmlns:cc="using:YiffBrowser.Views.Controls.CustomControls">
+
+	<cc:DoubleToThicknessConverter x:Key="Double2Thickness"/>
+
+	<Style TargetType="cc:IconTextHorizontal">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="cc:IconTextHorizontal">
+					<Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+
+						<StackPanel Orientation="Horizontal">
+
+							<FontIcon VerticalAlignment="Center" 
+								Glyph="{TemplateBinding Glyph}"
+								Visibility="{Binding Glyph,RelativeSource={RelativeSource Mode=TemplatedParent},Converter={StaticResource ArrayNotEmptyToVisibility}}"/>
+
+							<TextBlock VerticalAlignment="Center" TextAlignment="{TemplateBinding TextAlignment}"
+								Width="{TemplateBinding TextWidth}"
+								Text="{TemplateBinding Text}"
+								Margin="{Binding Spacing,RelativeSource={RelativeSource Mode=TemplatedParent},Converter={StaticResource Double2Thickness}}" 
+								Visibility="{Binding Text,RelativeSource={RelativeSource Mode=TemplatedParent},Converter={StaticResource ArrayNotEmptyToVisibility}}"/>
+
+						</StackPanel>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+</ResourceDictionary>

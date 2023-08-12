@@ -5,6 +5,8 @@
     xmlns:local="using:YiffBrowser.Views.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+	xmlns:cc="using:YiffBrowser.Views.Controls.CustomControls"
     mc:Ignorable="d"
     d:RequestedTheme="Dark"
     NavigationCacheMode="Required"
@@ -15,39 +17,127 @@
 		<local:SettingsPageViewModel/>
 	</Page.DataContext>
 
+	<Page.Resources>
+		<Style x:Key="GroupBox" TargetType="muxc:Expander">
+			<Setter Property="HorizontalAlignment" Value="Stretch"/>
+			<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+			<Setter Property="IsExpanded" Value="True"/>
+			<Setter Property="Margin" Value="5"/>
+		</Style>
+
+		<Style TargetType="cc:SettingCardControl">
+			<Setter Property="MinWidth" Value="350"/>
+			<Setter Property="Margin" Value="10"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="cc:SettingCardControl">
+						<Border Background="#73393939" CornerRadius="8" Padding="8">
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="auto"/>
+									<RowDefinition Height="*"/>
+								</Grid.RowDefinitions>
+
+								<Grid Margin="5,5,5,15">
+									<Border Background="#45AFAFAF" CornerRadius="8" Padding="10,0,10,6">
+										<TextBlock Text="{TemplateBinding Title}" TextAlignment="Center" FontWeight="Bold" FontSize="32"/>
+									</Border>
+								</Grid>
+
+								<ScrollViewer HorizontalScrollBarVisibility="Disabled" HorizontalScrollMode="Disabled" VerticalScrollBarVisibility="Auto" VerticalScrollMode="Enabled" Grid.Row="1">
+									<ContentPresenter Content="{TemplateBinding Content}"/>
+								</ScrollViewer>
+							</Grid>
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</Page.Resources>
+
 	<Grid>
-		<Pivot>
-
-			<PivotItem Header="General">
-
+		<ScrollViewer HorizontalScrollBarVisibility="Visible" HorizontalScrollMode="Enabled" VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" Padding="10">
+			<StackPanel Orientation="Horizontal">
 				<Grid>
 					<Grid.RowDefinitions>
-						<RowDefinition Height="auto"/>
+						<RowDefinition Height="*"/>
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
+					<cc:SettingCardControl Title="LISTING">
+						<StackPanel HorizontalAlignment="Stretch">
+							<StackPanel.Resources>
+								<Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+									<Setter Property="Margin" Value="5"/>
+									<Setter Property="HorizontalAlignment" Value="Stretch"/>
+								</Style>
+								<Style TargetType="cc:IconTextHorizontal">
+									<Setter Property="TextWidth" Value="100"/>
+									<Setter Property="TextAlignment" Value="Center"/>
+								</Style>
+							</StackPanel.Resources>
 
-					<Grid Margin="10">
-						<TextBlock Text="HELLO WORLD"/>
-					</Grid>
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<!--<ColumnDefinition Width="auto" MinWidth="70"/>-->
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="auto"/>
+									<RowDefinition Height="auto"/>
+									<RowDefinition Height="auto"/>
+								</Grid.RowDefinitions>
 
-					<ScrollViewer Grid.Row="1" Margin="10">
+								<Button>
+									<cc:IconTextHorizontal Glyph="&#xE733;" Text="Tags Blacklist"/>
+								</Button>
 
-						<StackPanel>
-							<Button Content="Open Local Settings Folder" Command="{Binding OpenAppLocalFolderCommand}"/>
+								<Button Grid.Row="1">
+									<cc:IconTextHorizontal Glyph="&#xE1CF;" Text="Tags Follow List"/>
+								</Button>
+
+								<Button Grid.Row="2">
+									<cc:IconTextHorizontal Glyph="&#xE299;" Text="Pool Follow List"/>
+								</Button>
+
+								<!--<Border Grid.Column="1" Margin="5" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" CornerRadius="4" Padding="7,2">
+									<TextBlock Text="23" VerticalAlignment="Center" TextAlignment="Center"/>
+								</Border>
+								
+								<Border Grid.Row="1" Grid.Column="1" Margin="5" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" CornerRadius="4" Padding="7,2">
+									<TextBlock Text="52" VerticalAlignment="Center" TextAlignment="Center"/>
+								</Border>
+								
+								<Border Grid.Row="2" Grid.Column="1" Margin="5" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" CornerRadius="4" Padding="7,2">
+									<TextBlock Text="3" VerticalAlignment="Center" TextAlignment="Center"/>
+								</Border>-->
+
+
+							</Grid>
+
+						</StackPanel>
+					</cc:SettingCardControl>
+					<cc:SettingCardControl Title="DOWNLOAD" Grid.Row="1">
+						<StackPanel HorizontalAlignment="Center">
 							<Button Content="Select Download Folder" Command="{Binding SelectDownloadFolderCommand}"/>
 							<Button Content="Clear Download Folder" Command="{Binding ClearDownloadFolderCommand}"/>
 							<TextBlock Text="{Binding DownloadFolderPath}"/>
 						</StackPanel>
-
-					</ScrollViewer>
+					</cc:SettingCardControl>
 				</Grid>
 
-			</PivotItem>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="auto"/>
+					</Grid.RowDefinitions>
+					<cc:SettingCardControl Title="GENERAL"/>
+					<cc:SettingCardControl Title="DEBUG" Grid.Row="1"/>
+				</Grid>
 
-			<PivotItem Header="About"/>
-			<PivotItem Header="Debug"/>
-			<PivotItem Header="Update Notes"/>
-
-		</Pivot>
+				<cc:SettingCardControl Title="VIEW"/>
+				<cc:SettingCardControl Title="ABOUT"/>
+				<cc:SettingCardControl Title="RELEASE NOTES" Width="500"/>
+			</StackPanel>
+		</ScrollViewer>
 	</Grid>
 </Page>

@@ -6,6 +6,7 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.System;
 using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using YiffBrowser.Services.Locals;
 
@@ -19,9 +20,14 @@ namespace YiffBrowser.Views.Pages {
 	public class SettingsPageViewModel : BindableBase {
 
 		private string downloadFolderPath;
+
 		public string DownloadFolderPath {
 			get => downloadFolderPath;
 			set => SetProperty(ref downloadFolderPath, value);
+		}
+
+		public SettingsPageViewModel() {
+
 		}
 
 		public ICommand ClearDownloadFolderCommand => new DelegateCommand(ClearDownloadFolder);
@@ -47,6 +53,10 @@ namespace YiffBrowser.Views.Pages {
 			await Launcher.LaunchFolderAsync(Local.LocalFolder, new FolderLauncherOptions() {
 				DesiredRemainingView = ViewSizePreference.UseMore,
 			});
+		}
+
+		private void UpdateDownloadFolderPath() {
+			DownloadFolderPath = Local.DownloadFolder.Path;
 		}
 	}
 }
