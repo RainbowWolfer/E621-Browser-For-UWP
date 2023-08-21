@@ -12,8 +12,7 @@
 	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
 	mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-	NavigationCacheMode="Required"
-	Loaded="Page_Loaded">
+	NavigationCacheMode="Required">
 
 	<Page.DataContext>
 		<local:E621HomePageViewModel x:Name="ViewModel"/>

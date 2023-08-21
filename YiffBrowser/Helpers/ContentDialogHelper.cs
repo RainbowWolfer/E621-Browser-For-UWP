@@ -51,7 +51,7 @@ namespace YiffBrowser.Helpers {
 		public const double DEFAULT_MAX_WIDTH = 1050;
 		public double? MaxWidth { get; set; } = null;
 
-		public string Title { get; set; } = string.Empty;
+		public object Title { get; set; } = string.Empty;
 		public string PrimaryText { get; set; } = string.Empty;
 		public string SecondaryText { get; set; } = string.Empty;
 		public string CloseText { get; set; } = string.Empty;

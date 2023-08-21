@@ -16,6 +16,7 @@ using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Locals;
 using YiffBrowser.Services.Networks;
+using YiffBrowser.Views.Controls.CustomControls;
 
 namespace YiffBrowser.Views.Controls {
 	public sealed partial class ListingsManager : UserControl {
@@ -53,8 +54,12 @@ namespace YiffBrowser.Views.Controls {
 
 		public static async Task ShowAsDialog(bool followsOrBlocks) {
 			ListingsManager view = new(followsOrBlocks);
+			IconTextHorizontal title = new() {
+				Glyph = followsOrBlocks ? "\uE1CF" : "\uE733",
+				Text = followsOrBlocks ? "Follows" : "Blocks",
+			};
 			await view.CreateContentDialog(new ContentDialogParameters() {
-				Title = followsOrBlocks ? "Follows" : "Blocks",
+				Title = title,
 				CloseText = "Back",
 				MaxWidth = ContentDialogParameters.DEFAULT_MAX_WIDTH,
 			}).ShowDialogAsync();

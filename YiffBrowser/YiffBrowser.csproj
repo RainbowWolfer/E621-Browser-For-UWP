@@ -178,9 +178,11 @@
     <Compile Include="Views\Controls\Common\TypeHintView.xaml.cs">
       <DependentUpon>TypeHintView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\CustomControls\ContentToggleSwitch.cs" />
     <Compile Include="Views\Controls\CustomControls\FileTypeFontIcon.cs" />
     <Compile Include="Views\Controls\CustomControls\IconTextHorizontal.cs" />
     <Compile Include="Views\Controls\CustomControls\LockableToggleButton.cs" />
+    <Compile Include="Views\Controls\CustomControls\Paginator.cs" />
     <Compile Include="Views\Controls\CustomControls\SettingCardControl.cs" />
     <Compile Include="Views\Controls\CustomToggleSplitButton.xaml.cs">
       <DependentUpon>CustomToggleSplitButton.xaml</DependentUpon>
@@ -453,7 +455,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\E621\e612-Bigger.png" />
     <Content Include="Resources\E621\e612.png" />

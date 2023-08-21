@@ -20,6 +20,7 @@ using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Downloads;
 using YiffBrowser.Services.Locals;
 using YiffBrowser.Services.Networks;
+using YiffBrowser.Views.Controls.CustomControls;
 using YiffBrowser.Views.Controls.PictureViews;
 using YiffBrowser.Views.Controls.PostsView;
 using YiffBrowser.Views.Controls.TagsInfoViews;
@@ -273,6 +274,7 @@ namespace YiffBrowser.Views.Controls {
 		private string errorHint;
 		private bool isPool;
 		private string selectionInfo = string.Empty;
+		private PaginatorViewModel paginatorViewModel;
 
 		public int PageValue {
 			get => pageValue;
@@ -287,6 +289,11 @@ namespace YiffBrowser.Views.Controls {
 		public bool EnablePreviousPageButton {
 			get => enablePreviousPageButton;
 			set => SetProperty(ref enablePreviousPageButton, value);
+		}
+
+		public PaginatorViewModel PaginatorViewModel {
+			get => paginatorViewModel;
+			set => SetProperty(ref paginatorViewModel, value);
 		}
 
 		public string[] Tags {
@@ -421,6 +428,7 @@ namespace YiffBrowser.Views.Controls {
 				IsPool = value.Pool != null;
 				Pool = value.Pool;
 
+				PaginatorViewModel = value.PaginatorViewModel;
 			}
 		}
 
@@ -435,7 +443,7 @@ namespace YiffBrowser.Views.Controls {
 
 		private async void Download() {
 			if (Local.DownloadFolder == null) {
-				
+
 				return;
 			}
 

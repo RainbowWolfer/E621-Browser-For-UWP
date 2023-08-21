@@ -76,6 +76,13 @@ namespace YiffBrowser.Models.E621 {
 		[JsonProperty("duration")]
 		public string Duration { get; set; }
 
+		#region Additional
+
+		public bool HasVotedUp { get; set; }
+		public bool HasVotedDown { get; set; }
+
+		#endregion
+
 
 		public bool HasNoValidURLs() {
 			if (Preview == null || Sample == null || File == null) {

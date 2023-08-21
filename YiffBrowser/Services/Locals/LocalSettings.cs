@@ -12,6 +12,7 @@ namespace YiffBrowser.Services.Locals {
 		public int E621PageLimitCount { get; set; } = 75;
 
 
+		public bool EnableStartupTags { get; set; } = true;
 		//"brazhnik"
 		public string[] StartupTags { get; set; } = { "order:rank" };
 

@@ -34,4 +34,15 @@
 		</Setter>
 	</Style>
 
+	<Style TargetType="cc:ContentToggleSwitch">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="cc:ContentToggleSwitch">
+					<ToggleSwitch OffContent="{TemplateBinding SwitchContent}" OnContent="{TemplateBinding SwitchContent}" IsOn="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=IsOn,Mode=TwoWay}"/>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+
 </ResourceDictionary>

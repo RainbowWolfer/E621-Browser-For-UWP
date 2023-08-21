@@ -20,7 +20,7 @@ using Windows.UI.Xaml.Navigation;
 using YiffBrowser;
 
 namespace E621Downloader {
-	public sealed partial class App: Application {
+	public sealed partial class App : Application {
 		//WUwPNbGDrfXnQoHfvU1nR3TD;
 		public static App Instance { get; private set; }
 
@@ -44,7 +44,7 @@ namespace E621Downloader {
 
 			InitializeTheme();
 
-			switch(GetStoredTheme()) {
+			switch (GetStoredTheme()) {
 				case ElementTheme.Light:
 					Current.RequestedTheme = ApplicationTheme.Light;
 					break;
@@ -58,7 +58,7 @@ namespace E621Downloader {
 		}
 
 		public static void InitializeTheme() {
-			if(ApplicationData.Current.LocalSettings.Values[IS_LIGHT_THEME] is null) {
+			if (ApplicationData.Current.LocalSettings.Values[IS_LIGHT_THEME] is null) {
 				ApplicationData.Current.LocalSettings.Values[IS_LIGHT_THEME] = 0;
 			}
 		}
@@ -72,14 +72,14 @@ namespace E621Downloader {
 		}
 
 		public static ElementTheme GetStoredTheme() {
-			if(Instance == null) {
+			if (Instance == null) {
 				return ElementTheme.Default;
 			}
 
-			if(ApplicationData.Current.LocalSettings.Values[IS_LIGHT_THEME] is int theme) {
-				if(theme == 1) {
+			if (ApplicationData.Current.LocalSettings.Values[IS_LIGHT_THEME] is int theme) {
+				if (theme == 1) {
 					return ElementTheme.Light;
-				} else if(theme == 2) {
+				} else if (theme == 2) {
 					return ElementTheme.Dark;
 				} else {
 					return ElementTheme.Default;
@@ -90,10 +90,10 @@ namespace E621Downloader {
 		}
 
 		public static void SetStoredTheme(ElementTheme theme) {
-			if(Instance == null) {
+			if (Instance == null) {
 				return;
 			}
-			switch(theme) {
+			switch (theme) {
 				case ElementTheme.Default:
 					ApplicationData.Current.LocalSettings.Values[IS_LIGHT_THEME] = 0;
 					break;
@@ -119,7 +119,7 @@ namespace E621Downloader {
 		protected override async void OnLaunched(LaunchActivatedEventArgs e) {
 			//read local stored language preference
 			await LocalLanguage.Initialize();
-			if(LocalLanguage.Current.language != null) {
+			if (LocalLanguage.Current.language != null) {
 				ResourceContext.SetGlobalQualifierValue("Language", LocalLanguage.Current.GetSystemLanguage());
 			}
 			//else {
@@ -127,40 +127,43 @@ namespace E621Downloader {
 			//	ResourceContext.SetGlobalQualifierValue("Language", systemLanguage);
 			//	//ApplicationLanguages.PrimaryLanguageOverride = GlobalizationPreferences.Languages.FirstOrDefault();
 			//}
-			if(Window.Current.Content is not Frame rootFrame) {
+			if (Window.Current.Content is not Frame rootFrame) {
 				rootFrame = new Frame();
 
 				rootFrame.NavigationFailed += OnNavigationFailed;
 
-				if(e.PreviousExecutionState == ApplicationExecutionState.Terminated) {
+				if (e.PreviousExecutionState == ApplicationExecutionState.Terminated) {
 					//TODO: Load state from previously suspended application
 				}
 
 				Window.Current.Content = rootFrame;
 			}
 
-			if(e.PrelaunchActivated == false) {
-				if(rootFrame.Content == null) {
+			if (e.PrelaunchActivated == false) {
+				if (rootFrame.Content == null) {
 					bool didAppCrash = await Crashes.HasCrashedInLastSessionAsync();
-					if(didAppCrash) {
+					if (didAppCrash) {
 						rootFrame.Navigate(typeof(DefaultPage), e.Arguments);
 					} else {
-						//rootFrame.Navigate(typeof(MainPage), e.Arguments);
+#if Release
+						rootFrame.Navigate(typeof(MainPage), e.Arguments);
+#else
 						rootFrame.Navigate(typeof(YiffHomePage), e.Arguments);
+#endif
 					}
 				}
-				
+
 				Window.Current.Activate();
 			}
 
 			Window.Current.CoreWindow.KeyDown += (sender, args) => {
-				if(ShouldSkipHotkeysDisable(args.VirtualKey) || (LocalSettings.Current?.enableHotKeys ?? true)) {
+				if (ShouldSkipHotkeysDisable(args.VirtualKey) || (LocalSettings.Current?.enableHotKeys ?? true)) {
 					KeyListener.RegisterKeyDown(args.VirtualKey);
 				}
 			};
 
 			Window.Current.CoreWindow.KeyUp += (sender, args) => {
-				if(ShouldSkipHotkeysDisable(args.VirtualKey) || (LocalSettings.Current?.enableHotKeys ?? true)) {
+				if (ShouldSkipHotkeysDisable(args.VirtualKey) || (LocalSettings.Current?.enableHotKeys ?? true)) {
 					KeyListener.RegisterKeyUp(args.VirtualKey);
 				}
 			};
@@ -181,7 +184,7 @@ namespace E621Downloader {
 		}
 
 		private async void SetJumpList() {
-			if(!JumpList.IsSupported()) {
+			if (!JumpList.IsSupported()) {
 				return;
 			}
 			var jumpList = await JumpList.LoadCurrentAsync();

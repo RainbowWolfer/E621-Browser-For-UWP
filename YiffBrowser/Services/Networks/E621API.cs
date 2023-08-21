@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Locals;
+using YiffBrowser.Views.Controls.CustomControls;
 
 namespace YiffBrowser.Services.Networks {
 	public static class E621API {
@@ -213,6 +214,8 @@ namespace YiffBrowser.Services.Networks {
 
 	public class E621PostParameters {
 		public event Action<string[]> OnPreviewsUpdated;
+
+		public PaginatorViewModel PaginatorViewModel { get; } = new PaginatorViewModel();
 
 		public int Page { get; set; } = 1;
 		public string[] Tags { get; set; } = { "" };

@@ -26,10 +26,6 @@ namespace YiffBrowser.Views.Pages.E621 {
 			//sender.TabItems.Remove(args.Tab);
 		}
 
-		private void Page_Loaded(object sender, RoutedEventArgs e) {
-			ViewModel.XamlRoot = XamlRoot;
-		}
-
 		private void TabView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
 			if (e.RemovedItems.FirstOrDefault() is HomeTabViewItem item1) {
 				TabViewItem tabViewItem = (TabViewItem)MainTabView.ContainerFromItem(item1);
@@ -51,7 +47,6 @@ namespace YiffBrowser.Views.Pages.E621 {
 	}
 
 	public class E621HomePageViewModel : BindableBase {
-		public XamlRoot XamlRoot { get; set; }
 		private int selectedIndex;
 
 		public ObservableCollection<HomeTabViewItem> Items { get; } = new();
@@ -65,7 +60,6 @@ namespace YiffBrowser.Views.Pages.E621 {
 
 		private async void Search() {
 			ContentDialog dialog = new() {
-				XamlRoot = XamlRoot,
 				Style = App.DialogStyle,
 				Title = "Search",
 			};
@@ -96,10 +90,11 @@ namespace YiffBrowser.Views.Pages.E621 {
 		public E621HomePageViewModel() {
 			Instance = this;
 
-			//string[] startupTags = Local.Settings.StartupTags;
-			string[] startupTags = { "order:filesize" };
-			Items.Add(new HomeTabViewItem(startupTags));
-			SelectedIndex = 0;
+			if (Local.Settings.EnableStartupTags) {
+				string[] startupTags = Local.Settings.StartupTags;
+				Items.Add(new HomeTabViewItem(startupTags));
+				SelectedIndex = 0;
+			}
 		}
 
 

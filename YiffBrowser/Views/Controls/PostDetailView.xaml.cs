@@ -320,6 +320,16 @@ namespace YiffBrowser.Views.Controls {
 			VoteDown = E621Post.Score.Down;
 			VoteTotal = E621Post.Score.Total;
 
+			IsVoteLoading = true;
+			IsFavoriteLoading = true;
+
+			HasFavorited = E621Post.IsFavorited;
+			HasVotedUp = E621Post.HasVotedUp;
+			HasVotedDown = E621Post.HasVotedDown;
+
+			IsVoteLoading = false;
+			IsFavoriteLoading = false;
+
 			FileSize = E621Post.File.Size;
 			Duration = E621Post.Duration;
 
@@ -449,6 +459,8 @@ namespace YiffBrowser.Views.Controls {
 
 			if (result.ResultType != HttpResultType.Success) {
 				HasVotedUp = !HasVotedUp;
+			} else {
+				E621Post.HasVotedUp = HasVotedUp;
 			}
 
 			if (result.Data != null) {
@@ -478,6 +490,8 @@ namespace YiffBrowser.Views.Controls {
 
 			if (result.ResultType != HttpResultType.Success) {
 				HasVotedDown = !HasVotedDown;
+			} else {
+				E621Post.HasVotedUp = HasVotedDown;
 			}
 
 			if (result.Data != null) {
@@ -588,7 +602,7 @@ namespace YiffBrowser.Views.Controls {
 		public ICommand DownloadCommand => new DelegateCommand(Download);
 
 		private void Download() {
-			
+
 		}
 	}
 }
