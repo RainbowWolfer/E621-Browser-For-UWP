@@ -9,7 +9,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:downloads="using:YiffBrowser.Services.Downloads"
     xmlns:common="using:YiffBrowser.Views.Controls.Common"
-    xmlns:customcontrols="using:YiffBrowser.Views.Controls.CustomControls"
+    xmlns:cc="using:YiffBrowser.Views.Controls.CustomControls"
     xmlns:local="using:YiffBrowser.Views.Pages.E621"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -203,7 +203,6 @@
 										<ColumnDefinition Width="auto"/>
 									</Grid.ColumnDefinitions>
 
-
 									<Border VerticalAlignment="Center" Padding="8,4" Background="#44ffffff" CornerRadius="4" Grid.Column="0" MinWidth="150" ToolTipService.ToolTip="Destiation Folder">
 										<StackPanel Orientation="Horizontal">
 											<FontIcon d:Glyph="&#xE8B7;">
@@ -222,7 +221,7 @@
 
 									<Border VerticalAlignment="Center" Padding="8,4" Background="#44ffffff" CornerRadius="4" Margin="10,0,0,0" Grid.Column="1" MinWidth="85" ToolTipService.ToolTip="File Type">
 										<StackPanel Orientation="Horizontal">
-											<customcontrols:FileTypeFontIcon FileType="{Binding FileType}" d:Glyph="&#xE91B;"/>
+											<cc:FileTypeFontIcon FileType="{Binding FileType}" d:Glyph="&#xE91B;"/>
 											<TextBlock Text="{Binding FileTypeString}" d:Text="GIF" Margin="5,0,0,0"/>
 										</StackPanel>
 									</Border>
@@ -276,8 +275,74 @@
 						<ListView ItemsSource="{Binding CompletedPool}" d:ItemsSource="1 2 3" Grid.Row="1">
 							<ListView.ItemTemplate>
 								<DataTemplate x:DataType="downloads:DownloadInstance">
-									<Grid>
+									<!--<Grid>
 										<TextBlock Text="{Binding Post}"/>
+									</Grid>-->
+									<Grid Background="Transparent">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="auto"/>
+											<ColumnDefinition Width="auto"/>
+											<ColumnDefinition Width="auto"/>
+											<ColumnDefinition Width="auto"/>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="auto"/>
+											<ColumnDefinition Width="auto"/>
+											<ColumnDefinition Width="auto"/>
+										</Grid.ColumnDefinitions>
+
+										<Border VerticalAlignment="Center" Padding="8,4" Background="#44ffffff" CornerRadius="4" Grid.Column="1" MinWidth="150" ToolTipService.ToolTip="Destiation Folder">
+											<StackPanel Orientation="Horizontal">
+												<FontIcon d:Glyph="&#xE8B7;">
+													<i:Interaction.Behaviors>
+														<core:DataTriggerBehavior Binding="{Binding Information.IsRoot}" Value="True">
+															<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE10F;"/>
+														</core:DataTriggerBehavior>
+														<core:DataTriggerBehavior Binding="{Binding Information.IsRoot}" Value="False">
+															<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE8B7;"/>
+														</core:DataTriggerBehavior>
+													</i:Interaction.Behaviors>
+												</FontIcon>
+												<TextBlock Text="{Binding Information.DestinationFolder.DisplayName}" d:Text="Folder Name Here" Margin="5,0,0,0"/>
+											</StackPanel>
+										</Border>
+
+										<Border VerticalAlignment="Center" Padding="8,4" Background="#44ffffff" CornerRadius="4" Margin="10,0,0,0" Grid.Column="2" MinWidth="85" ToolTipService.ToolTip="File Type">
+											<StackPanel Orientation="Horizontal">
+												<cc:FileTypeFontIcon FileType="{Binding FileType}" d:Glyph="&#xE91B;"/>
+												<TextBlock Text="{Binding FileTypeString}" d:Text="GIF" Margin="5,0,0,0"/>
+											</StackPanel>
+										</Border>
+
+										<Border VerticalAlignment="Center" Padding="8,4" Background="#44ffffff" CornerRadius="4" Margin="10,0,0,0" Grid.Column="3" MinWidth="100" ToolTipService.ToolTip="File Size">
+											<StackPanel Orientation="Horizontal">
+												<FontIcon Glyph="&#xEDA2;"/>
+												<TextBlock d:Text="3,123 KB" Text="{Binding Post.File.Size,Converter={StaticResource NumberToKB},ConverterParameter=' '}" Margin="5,0,0,0"/>
+											</StackPanel>
+										</Border>
+
+										<TextBlock Grid.Column="4" Margin="10,0" VerticalAlignment="Center" ToolTipService.ToolTip="Post ID">
+											<Run Text="#"/>
+											<Run Text="{Binding Post.ID}" d:Text="123321"/>
+										</TextBlock>
+
+										<TextBlock Text="{Binding CompletedTime}" Grid.Column="5" d:Text="2022-22-22 22-22-22" VerticalAlignment="Center" ToolTipService.ToolTip="Download Completion Time"/>
+
+										<Button Height="28" Padding="11,0" Grid.Column="6" Margin="10,0,0,0" Command="{Binding ViewDownloadedFolderCommand}">
+											<cc:IconTextHorizontal Glyph="&#xEC50;" Text="View"/>
+										</Button>
+
+										<Grid.ContextFlyout>
+											<MenuFlyout>
+												<MenuFlyoutItem Text="Show In Explorer" Command="{Binding ViewDownloadedFolderCommand}">
+													<MenuFlyoutItem.Icon>
+														<FontIcon Glyph="&#xE838;"/>
+													</MenuFlyoutItem.Icon>
+												</MenuFlyoutItem>
+												<MenuFlyoutSeparator/>
+												<MenuFlyoutItem Text="Remove" Icon="Delete" Command="{Binding RemoveFromCompleteCommand}"/>
+											</MenuFlyout>
+										</Grid.ContextFlyout>
+
 									</Grid>
 								</DataTemplate>
 							</ListView.ItemTemplate>

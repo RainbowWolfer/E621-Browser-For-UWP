@@ -200,9 +200,6 @@
     <Compile Include="Views\Controls\LoadingViews\LoadingRingWithTextBelow.xaml.cs">
       <DependentUpon>LoadingRingWithTextBelow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\LoadingViews\MyUserControl1.xaml.cs">
-      <DependentUpon>MyUserControl1.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Controls\MediaDisplayView.xaml.cs">
       <DependentUpon>MediaDisplayView.xaml</DependentUpon>
     </Compile>
@@ -346,10 +343,6 @@
     <Page Include="Views\Controls\LoadingViews\LoadingRingWithTextBelow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Controls\LoadingViews\MyUserControl1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\MediaDisplayView.xaml">
       <Generator>MSBuild:Compile</Generator>

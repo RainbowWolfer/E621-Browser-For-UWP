@@ -2,11 +2,14 @@ using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Storage.Streams;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -547,17 +550,22 @@ namespace YiffBrowser.Views.Controls {
 
 		public ICommand CopyImageCommand => new DelegateCommand(CopyImage);
 
-		private void CopyImage() {
+		private async void CopyImage() {
 			if (!AbleToCopyImage) {
 				return;
 			}
+			AbleToCopyImage = false;
 
-			DataPackage imageDataPackage = new() {
-				RequestedOperation = DataPackageOperation.Copy,
-			};
+			await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+				DataPackage imageDataPackage = new() {
+					RequestedOperation = DataPackageOperation.Copy,
+				};
 
-			imageDataPackage.SetBitmap(RandomAccessStreamReference.CreateFromUri(new Uri(E621Post.File.URL)));
-			Clipboard.SetContent(imageDataPackage);
+				imageDataPackage.SetBitmap(RandomAccessStreamReference.CreateFromUri(new Uri(E621Post.File.URL)));
+				Clipboard.SetContent(imageDataPackage);
+			});
+
+			AbleToCopyImage = true;
 		}
 
 		public ICommand ImagesListManagerItemClickCommand => new DelegateCommand<E621Post>(ImagesListManagerItemClick);

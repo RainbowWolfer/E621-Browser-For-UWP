@@ -55,7 +55,7 @@
 
 		<StackPanel Margin="5">
 
-			<Grid x:Name="HelloGrid" Margin="5" Background="Transparent" PointerEntered="HelloGrid_PointerEntered" PointerExited="HelloGrid_PointerExited">
+			<Grid x:Name="HelloGrid" Margin="5,0,5,10" Background="Transparent" PointerEntered="HelloGrid_PointerEntered" PointerExited="HelloGrid_PointerExited">
 				<TextBlock x:Name="Hello1Text" Text="{Binding HelloText1}" Foreground="#FFD700" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="1" FontSize="32">
 					<TextBlock.RenderTransform>
 						<TranslateTransform x:Name="Hello1Transform" Y="0"/>

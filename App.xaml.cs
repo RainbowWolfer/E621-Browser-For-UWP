@@ -146,10 +146,10 @@ namespace E621Downloader {
 						rootFrame.Navigate(typeof(DefaultPage), e.Arguments);
 					} else {
 #if Release
-						rootFrame.Navigate(typeof(MainPage), e.Arguments);
 #else
-						rootFrame.Navigate(typeof(YiffHomePage), e.Arguments);
 #endif
+						rootFrame.Navigate(typeof(YiffHomePage), e.Arguments);
+						//rootFrame.Navigate(typeof(MainPage), e.Arguments);
 					}
 				}
 

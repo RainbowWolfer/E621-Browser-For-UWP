@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -9,8 +10,11 @@ using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
+using Windows.System;
+using Windows.UI.ViewManagement;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
+using YiffBrowser.Services.Locals;
 
 namespace YiffBrowser.Services.Downloads {
 	public class DownloadInstance(E621Post post, DownloadOperation download, DownloadInstanceInformation info) : BindableBase {
@@ -25,10 +29,14 @@ namespace YiffBrowser.Services.Downloads {
 
 		public event TypedEventHandler<DownloadInstance, DownloadProgress> OnProgressed;
 		public event TypedEventHandler<DownloadInstance, EventArgs> OnCancel;
+		public event TypedEventHandler<DownloadInstance, EventArgs> RequestRemoveFromComplete;
 
 		public E621Post Post { get; } = post;
 		public DownloadOperation Download { get; } = download;
 		public DownloadInstanceInformation Information { get; } = info;
+
+		public DateTime StartTime { get; private set; } = default;
+		public DateTime CompletedTime { get; private set; } = default;
 
 		public CancellationTokenSource CancellationTokenSource { get; } = new CancellationTokenSource();
 
@@ -37,11 +45,9 @@ namespace YiffBrowser.Services.Downloads {
 			try {
 				Initializing = true;
 
+				StartTime = DateTime.Now;
+
 				await Download.StartAsync().AsTask(CancellationTokenSource.Token, new Progress<DownloadOperation>(HandleDownloadProgress));
-
-				//Download.AttachAsync();
-
-				ResponseInformation response = Download.GetResponseInformation();
 
 			} catch (TaskCanceledException) {
 
@@ -57,9 +63,15 @@ namespace YiffBrowser.Services.Downloads {
 			ReceivedBytes = operation.Progress.BytesReceived;
 
 			DownloadProgress progress = new(TotalBytesToReceive, ReceivedBytes, operation.Progress.Status);
+
+			if (progress.HasCompleted) {
+				CompletedTime = DateTime.Now;
+			}
+
 			OnProgressed?.Invoke(this, progress);
 
 			Progress = progress.Progress;
+
 		}
 
 		public void Pause() {
@@ -141,6 +153,26 @@ namespace YiffBrowser.Services.Downloads {
 
 		public string FileTypeString => FileType.ToString().ToUpper();
 
+		public ICommand ViewDownloadedFolderCommand => new DelegateCommand(ViewDownloadedFolder);
+
+		private async void ViewDownloadedFolder() {
+			try {
+				FolderLauncherOptions option = new() {
+					DesiredRemainingView = ViewSizePreference.UseMore,
+				};
+				option.ItemsToSelect.Add(Information.TargetFile);
+				await Launcher.LaunchFolderAsync(Information.DestinationFolder, option);
+			} catch (Exception ex) {
+				Debug.WriteLine(ex);
+			}
+		}
+
+		public ICommand RemoveFromCompleteCommand => new DelegateCommand(RemoveFromComplete);
+
+		private void RemoveFromComplete() {
+			RequestRemoveFromComplete?.Invoke(this, EventArgs.Empty);
+		}
+
 		#endregion
 
 	}
@@ -150,5 +182,5 @@ namespace YiffBrowser.Services.Downloads {
 		public bool HasCompleted => BytesReceived >= TotalBytesToReceive;
 	}
 
-	public record DownloadInstanceInformation(StorageFolder DestinationFolder, bool IsRoot);
+	public record DownloadInstanceInformation(StorageFolder DestinationFolder, bool IsRoot, StorageFile TargetFile);
 }

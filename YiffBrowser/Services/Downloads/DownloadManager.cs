@@ -63,12 +63,14 @@ namespace YiffBrowser.Services.Downloads {
 		}
 
 		private static void Item_OnProgressed(DownloadInstance sender, DownloadProgress args) {
-			if (args.Status == BackgroundTransferStatus.Completed
-				&& (args.HasCompleted && args.TotalBytesToReceive != 0 && args.TotalBytesToReceive != 0)
-			) {
+			Debug.WriteLine($"{args.BytesReceived} - {args.TotalBytesToReceive} - {args.Status}");
+			if (args.HasCompleted && args.BytesReceived != 0 && args.TotalBytesToReceive != 0) {
 				sender.OnProgressed -= Item_OnProgressed;
 				downloadingPool.Remove(sender);
 				completedPool.Insert(0, sender);
+				sender.RequestRemoveFromComplete += (s, e) => {
+					completedPool.Remove(sender);
+				};
 			}
 		}
 
@@ -97,7 +99,7 @@ namespace YiffBrowser.Services.Downloads {
 			DownloadOperation download = downloader.CreateDownload(new Uri(post.File.URL), file);
 
 			DownloadInstance instance = new(post, download,
-				new DownloadInstanceInformation(folder, folder == Local.DownloadFolder)
+				new DownloadInstanceInformation(folder, folder == Local.DownloadFolder, file)
 			);
 
 			waitPool.Add(instance);
