@@ -1,11 +1,8 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -210,12 +207,86 @@ namespace YiffBrowser.Services.Networks {
 		}
 
 		#endregion
+
+		#region Paginator
+
+
+		public static async Task<DataResult<E621Paginator>> GetPaginatorAsync(string[] tags, int page = 1, CancellationToken? token = null) {
+			string tag = string.Join("+", tags).Trim().ToLower();
+
+			string url = $"https://{GetHost()}/posts?tags={tag}&page={page}";
+			HttpResult<string> result = await NetCode.ReadURLAsync(url, token);
+			if (result.Result != HttpResultType.Success) {
+				return new DataResult<E621Paginator>(result.Result, null);
+			}
+
+			try {
+				string data = result.Content;
+				int startIndex = data.IndexOf("paginator");
+
+				int currentPageIndex = data.IndexOf("current-page", startIndex);
+
+				StringBuilder currentPageString = new();
+				for (int j = currentPageIndex + 1; j < data.IndexOf("</li>", currentPageIndex); j++) {
+					if (char.IsDigit(data[j])) {
+						currentPageString.Append(data[j]);
+						for (int k = 1; k <= 4; k++) {
+							if (char.IsDigit(data[j + k])) {
+								currentPageString.Append(data[j + k]);
+							} else {
+								break;
+							}
+						}
+						break;
+					}
+				}
+
+				List<string> pagesString = new();
+				int i = data.IndexOf("numbered-page", startIndex);
+				while (i != -1) {
+					StringBuilder pageString = new StringBuilder();
+					for (int j = i + 1; j < data.IndexOf("</li>", i); j++) {
+						if (char.IsDigit(data[j])) {
+							pageString.Append(data[j]);
+							for (int k = 1; k <= 4; k++) {
+								if (char.IsDigit(data[j + k])) {
+									pageString.Append(data[j + k]);
+								} else {
+									break;
+								}
+							}
+							pagesString.Add(pageString.ToString());
+							break;
+						}
+					}
+					i = data.IndexOf("numbered-page", i + 10);
+				}
+
+				int currentPage = int.Parse(currentPageString.ToString());
+				List<int> pages = new() { currentPage };
+				foreach (string s in pagesString) {
+					pages.Add(int.Parse(s));
+				}
+				return new DataResult<E621Paginator>(HttpResultType.Success, new E621Paginator() {
+					CurrentPage = currentPage,
+					Pages = pages.ToArray(),
+				});
+			} catch (Exception ex) {
+				Debug.WriteLine(ex);
+				//return 0 length paginator
+				return new DataResult<E621Paginator>(HttpResultType.Success, new E621Paginator() {
+					CurrentPage = 1,
+					Pages = new int[] { 0 }
+				});
+			}
+		}
+
+		#endregion
+
 	}
 
 	public class E621PostParameters {
 		public event Action<string[]> OnPreviewsUpdated;
-
-		public PaginatorViewModel PaginatorViewModel { get; } = new PaginatorViewModel();
 
 		public int Page { get; set; } = 1;
 		public string[] Tags { get; set; } = { "" };

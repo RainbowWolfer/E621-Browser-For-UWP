@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Numerics;
 using System.Windows.Input;
+using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using YiffBrowser.Helpers;
@@ -11,7 +12,9 @@ using YiffBrowser.Models.E621;
 
 namespace YiffBrowser.Views.Controls {
 	public sealed partial class ImageViewItem : UserControl {
-		public event Action<ImageViewItem, ImageViewItemViewModel> ImageClick;
+		public event TypedEventHandler<ImageViewItem, ImageViewItemViewModel> ImageClick;
+		public event TypedEventHandler<ImageViewItem, ImageViewItemViewModel> SelectThis;
+		public event TypedEventHandler<ImageViewItem, ImageViewItemViewModel> DownloadThis;
 
 		public event Action OnPostDeleted;
 
@@ -99,6 +102,14 @@ namespace YiffBrowser.Views.Controls {
 				return GetSampleImage();
 			}
 		}
+
+		private void SelectThisItem_Click(object sender, RoutedEventArgs e) {
+			SelectThis?.Invoke(this, ViewModel);
+		}
+
+		private void DownloadThisItem_Click(object sender, RoutedEventArgs e) {
+			DownloadThis?.Invoke(this, ViewModel);
+		}
 	}
 
 	public class ImageViewItemViewModel : BindableBase {
@@ -162,8 +173,8 @@ namespace YiffBrowser.Views.Controls {
 
 		public ICommand OnPreviewLoadedCommand => new DelegateCommand(OnPreviewLoaded);
 		public ICommand OnSampleLoadedCommand => new DelegateCommand(OnSampleLoaded);
+
 		public ICommand OpenInBrowserCommand => new DelegateCommand(OpenInBrowser);
-		public ICommand OpenCommand => new DelegateCommand(Open);
 
 		private void OnPreviewLoaded() {
 			SampleImageURL = Post.Sample.URL;
@@ -177,10 +188,6 @@ namespace YiffBrowser.Views.Controls {
 
 		private void OpenInBrowser() {
 			@$"https://e621.net/posts/{Post.ID}".OpenInBrowser();
-		}
-
-		private void Open() {
-
 		}
 
 	}

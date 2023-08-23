@@ -33,11 +33,12 @@ namespace YiffBrowser.Views.Controls.PostsView {
 			MaxWidth = ContentDialogParameters.DEFAULT_MAX_WIDTH,
 		};
 
-		public DownloadView(E621Post[] posts, bool isInSelectionMode) {
+		public DownloadView(E621Post[] posts, bool isInSelectionMode, string specialMessage = null) {
 			this.InitializeComponent();
 			ViewModel.RequestFocusCreateNewFolderTextBox += ViewModel_RequestFocusCreateNewFolderTextBox;
 			ViewModel.Posts = posts;
 			ViewModel.IsInSelectionMode = isInSelectionMode;
+			ViewModel.SpecialMessageInSelectionMode = specialMessage;
 		}
 
 		public ContentDialog Dialog {
@@ -117,6 +118,7 @@ namespace YiffBrowser.Views.Controls.PostsView {
 		private bool isInSelectionMode;
 		private int pageStart;
 		private int pageEnd;
+		private string specialMessageInSelectionMode = null;
 
 		public ContentDialog Dialog { get; set; }
 
@@ -309,6 +311,11 @@ namespace YiffBrowser.Views.Controls.PostsView {
 			}
 
 			return result;
+		}
+
+		public string SpecialMessageInSelectionMode {
+			get => specialMessageInSelectionMode ?? "In Selection Mode";
+			set => SetProperty(ref specialMessageInSelectionMode, value);
 		}
 
 		public bool IsInSelectionMode {

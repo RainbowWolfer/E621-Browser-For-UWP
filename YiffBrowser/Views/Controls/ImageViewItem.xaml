@@ -185,17 +185,17 @@
 						<TextBlock Text="{Binding Post.Score.Total}"/>
 						<FontIcon Glyph="&#xE878;" FontSize="15" Margin="5,0,0,0"/>
 					</StackPanel>
-					
+
 					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
 						<TextBlock Text="{Binding Post.FavCount}"/>
 						<FontIcon Glyph="&#xEB52;" FontSize="15" Margin="5,0,0,0"/>
 					</StackPanel>
-					
+
 					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2">
 						<TextBlock Text="{Binding Post.CommentCount}"/>
 						<FontIcon Glyph="&#xE90A;" FontSize="15" Margin="5,0,0,0"/>
 					</StackPanel>
-					
+
 					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="3">
 						<TextBlock Text="{Binding Post.Rating,Converter={StaticResource RatingHeader}}"/>
 						<FontIcon Glyph="{Binding Post.Rating,Converter={StaticResource E621RatingToIcon}}" FontSize="15" Margin="5,0,0,0" Foreground="{Binding Post.Rating,Converter={StaticResource E621RatingToBrush}}"/>
@@ -207,9 +207,18 @@
 
 			<Button.ContextFlyout>
 				<MenuFlyout>
-					<MenuFlyoutItem Text="Select this" Icon="ViewAll"/>
+					<MenuFlyoutItem x:Name="SelectThisItem" Text="Select this" Icon="ViewAll" Click="SelectThisItem_Click">
+						<i:Interaction.Behaviors>
+							<core:DataTriggerBehavior Binding="{x:Bind IsSelected,Mode=OneWay}" Value="True">
+								<core:ChangePropertyAction PropertyName="Text" Value="Unselect this"/>
+							</core:DataTriggerBehavior>
+							<core:DataTriggerBehavior Binding="{x:Bind IsSelected,Mode=OneWay}" Value="False">
+								<core:ChangePropertyAction PropertyName="Text" Value="Select this"/>
+							</core:DataTriggerBehavior>
+						</i:Interaction.Behaviors>
+					</MenuFlyoutItem>
 					<MenuFlyoutSeparator/>
-					<MenuFlyoutItem Text="Download" Icon="Download"/>
+					<MenuFlyoutItem x:Name="DownloadThisItem" Text="Download" Icon="Download" Click="DownloadThisItem_Click"/>
 					<MenuFlyoutItem Text="Open in browser" Icon="World" Command="{Binding OpenInBrowserCommand}"/>
 				</MenuFlyout>
 			</Button.ContextFlyout>

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml.Controls;
+using YiffBrowser.Models.E621;
 
 namespace YiffBrowser.Views.Controls.CustomControls {
 	internal class Paginator : Control {
@@ -18,7 +19,7 @@ namespace YiffBrowser.Views.Controls.CustomControls {
 
 	}
 
-	public class PaginatorViewModel : BindableBase {
+	public class PaginatorViewModel(E621Paginator paginator) : BindableBase {
 		private bool isLoading;
 
 		public bool IsLoading {
@@ -26,13 +27,9 @@ namespace YiffBrowser.Views.Controls.CustomControls {
 			set => SetProperty(ref isLoading, value);
 		}
 
+		public E621Paginator Paginator { get; } = paginator;
+
 		public ObservableCollection<PaginatorItemViewModel> Items { get; } = new();
-
-		public PaginatorViewModel() {
-
-		}
-
-
 	}
 
 	public class PaginatorItemViewModel : BindableBase {

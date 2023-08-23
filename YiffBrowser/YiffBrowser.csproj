@@ -157,6 +157,7 @@
     <Compile Include="Models\CollectionSearchFilter.cs" />
     <Compile Include="Models\E621\E621AutoComplete.cs" />
     <Compile Include="Models\E621\E621Comment.cs" />
+    <Compile Include="Models\E621\E621Paginator.cs" />
     <Compile Include="Models\E621\E621Pool.cs" />
     <Compile Include="Models\E621\E621Post.cs" />
     <Compile Include="Models\E621\E621Tag.cs" />

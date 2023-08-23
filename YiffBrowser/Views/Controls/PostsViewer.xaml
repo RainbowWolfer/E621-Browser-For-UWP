@@ -110,14 +110,7 @@
 																	<Setter Property="Margin" Value="5"/>
 																</Style>
 															</StackPanel.Resources>
-															<Button Content="1"/>
-															<Button Content="2"/>
-															<Button Content="3"/>
-															<Button Content="4"/>
-															<Button Content="5"/>
-															<Button Content="..."/>
-															<Button Content="49"/>
-															<Button Content="50"/>
+															<Button Content="{Binding PaginatorViewModel}"/>
 														</StackPanel>
 
 														<muxc:NumberBox Value="{Binding PageValue,Mode=TwoWay}" SpinButtonPlacementMode="Hidden" SmallChange="1" LargeChange="5" Minimum="1" MinWidth="100" ValidationMode="InvalidInputOverwritten" Grid.Row="1">

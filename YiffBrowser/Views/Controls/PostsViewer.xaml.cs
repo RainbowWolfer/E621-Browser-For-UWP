@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.System;
@@ -132,15 +133,18 @@ namespace YiffBrowser.Views.Controls {
 					AddPost(post);
 				}
 			} else if (e.Action == NotifyCollectionChangedAction.Remove) {
-				List<ImageViewItem> views = new();
+				List<ImageViewItem> toRemoves = new();
 				foreach (E621Post post in e.OldItems.Cast<E621Post>()) {
 					foreach (ImageViewItem view in MainGrid.Children.Cast<ImageViewItem>()) {
 						if (view.Post == post) {
-							views.Add(view);
+							toRemoves.Add(view);
 						}
 					}
 				}
-				foreach (ImageViewItem view in views) {
+				foreach (ImageViewItem view in toRemoves) {
+					view.ImageClick -= View_ImageClick;
+					view.SelectThis -= View_SelectThis;
+					view.DownloadThis -= View_DownloadThis;
 					MainGrid.Children.Remove(view);
 				}
 			} else {
@@ -157,6 +161,8 @@ namespace YiffBrowser.Views.Controls {
 				ViewModel.Posts.Remove(post);
 			};
 			view.ImageClick += View_ImageClick;
+			view.SelectThis += View_SelectThis;
+			view.DownloadThis += View_DownloadThis;
 
 			double ratio = post.File.Width / (double)post.File.Height;
 			double h = (ItemWidth / ratio) / ItemHeight;
@@ -166,6 +172,16 @@ namespace YiffBrowser.Views.Controls {
 			VariableSizedWrapGrid.SetColumnSpan(view, 1);
 
 			MainGrid.Children.Add(view);
+		}
+
+		private void View_DownloadThis(ImageViewItem sender, ImageViewItemViewModel args) {
+			ViewModel.Download(sender.Post);
+		}
+
+		private void View_SelectThis(ImageViewItem sender, ImageViewItemViewModel args) {
+			ViewModel.IsInSelectionMode = true;
+			sender.IsSelected = !sender.IsSelected;
+			ViewModel.CountSelectedItems();
 		}
 
 		private ImageViewItem openedImageItem;
@@ -258,6 +274,7 @@ namespace YiffBrowser.Views.Controls {
 		public event Action OnScrollReset;
 		public event Action<E621Post> OnImagesListManagerItemClick;
 		public event Action<bool> IsInSelectionModeChanged;
+
 
 		public Func<ImageViewItem[]> RequestGetAllItems { get; set; }
 
@@ -407,6 +424,47 @@ namespace YiffBrowser.Views.Controls {
 		#endregion
 
 
+		#region Paginator
+
+		private CancellationTokenSource paginatorCTS;
+		private bool isLoadingPaginator;
+
+		public bool IsLoadingPaginator {
+			get => isLoadingPaginator;
+			set => SetProperty(ref isLoadingPaginator, value);
+		}
+
+		private async Task LoadPaginator() {
+			paginatorCTS?.Cancel();
+			paginatorCTS = new CancellationTokenSource();
+
+			IsLoadingPaginator = true;
+
+			DataResult<E621Paginator> paginatorResult = await E621API.GetPaginatorAsync(Tags, 1, paginatorCTS.Token);
+
+			if (paginatorResult.ResultType == HttpResultType.Canceled) {
+				IsLoadingPaginator = false;
+				return;
+			}
+
+			PaginatorViewModel = new PaginatorViewModel(paginatorResult.Data);
+			IsLoadingPaginator = false;
+		}
+
+		private async void UpdatePaginator(bool refresh = false) {
+			if (PaginatorViewModel == null || refresh) {
+				await LoadPaginator();
+			}
+			if (PaginatorViewModel == null) {
+				return;
+			}
+
+			//PaginatorViewModel.
+		}
+
+		#endregion
+
+
 		public PostsViewerViewModel() {
 			Posts.CollectionChanged += (s, e) => PostsCollectionChanged?.Invoke(s, e);
 		}
@@ -427,8 +485,6 @@ namespace YiffBrowser.Views.Controls {
 
 				IsPool = value.Pool != null;
 				Pool = value.Pool;
-
-				PaginatorViewModel = value.PaginatorViewModel;
 			}
 		}
 
@@ -441,9 +497,30 @@ namespace YiffBrowser.Views.Controls {
 
 		public ICommand DownloadCommand => new DelegateCommand(Download);
 
-		private async void Download() {
-			if (Local.DownloadFolder == null) {
+		public async void Download(E621Post post) {
+			if (!await CheckDownloadFolder()) {
+				return;
+			}
 
+			DownloadView view = new(new E621Post[] { post }, true, $"Download #{post.ID}");
+			ContentDialogResult dialogResult = await view.CreateContentDialog(DownloadView.contentDialogParameters).ShowDialogAsync();
+
+			if (dialogResult != ContentDialogResult.Primary) {
+				return;
+			}
+
+			DownloadViewResult result = view.GetResult();
+			if (result == null) {
+				return;
+			}
+			string folderName = result.FolderName;
+
+			await DownloadManager.RegisterDownload(post, folderName);
+
+		}
+
+		private async void Download() {
+			if (!await CheckDownloadFolder()) {
 				return;
 			}
 
@@ -478,6 +555,25 @@ namespace YiffBrowser.Views.Controls {
 
 			}
 
+		}
+
+		private async Task<bool> CheckDownloadFolder() {
+			if (Local.DownloadFolder == null) {
+				ContentDialogResult result = await "No download folder selected. Please go to Settings Page to select a folder for download.".CreateContentDialog(new ContentDialogParameters() {
+					Title = "Unable to download now",
+					SecondaryText = "Go to Settings",
+					CloseText = "Back",
+					DefaultButton = ContentDialogButton.Secondary,
+				}).ShowAsync();
+
+				if (result == ContentDialogResult.Secondary) {
+					YiffHomePage.Instance.NavigateSettings();
+				}
+
+				return false;
+			}
+
+			return true;
 		}
 
 		private void OnPageChanged() {
@@ -524,6 +620,8 @@ namespace YiffBrowser.Views.Controls {
 				} catch {
 					posts = null;
 				}
+
+				UpdatePaginator();
 
 				LoadPosts(posts);
 

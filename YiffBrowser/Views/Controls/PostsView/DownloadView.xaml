@@ -164,7 +164,7 @@
 				<ToggleButton MinHeight="0" VerticalAlignment="Stretch" IsChecked="True" IsHitTestVisible="False">
 					<StackPanel Orientation="Horizontal" Padding="10,0">
 						<FontIcon Glyph="&#xE152;"/>
-						<TextBlock Text="In Selection Mode" Margin="10,0" VerticalAlignment="Center"/>
+						<TextBlock Text="{Binding SpecialMessageInSelectionMode}" d:Text="In Selection Mode" Margin="10,0" VerticalAlignment="Center"/>
 					</StackPanel>
 				</ToggleButton>
 			</Grid>

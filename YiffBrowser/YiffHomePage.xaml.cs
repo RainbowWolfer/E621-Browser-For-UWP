@@ -17,9 +17,9 @@ using NavigationViewItem = Microsoft.UI.Xaml.Controls.NavigationViewItem;
 using NavigationViewItemInvokedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs;
 using NavigationViewPaneClosingEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewPaneClosingEventArgs;
 
-
 namespace YiffBrowser {
 	public sealed partial class YiffHomePage : Page {
+		public static YiffHomePage Instance { get; private set; }
 		public static LoadingDialogControl LoaderControl { get; private set; }
 
 		public string TAG_HOME { get; } = "TAG_HOME";
@@ -52,6 +52,7 @@ namespace YiffBrowser {
 		}
 
 		public YiffHomePage() {
+			Instance = this;
 			this.InitializeComponent();
 		}
 
@@ -121,6 +122,16 @@ namespace YiffBrowser {
 		public void NavigateHome() {
 			MainNavigationView.SelectedItem = ItemHome;
 			MainFrame.Navigate(typeof(E621HomePage), null, new EntranceNavigationTransitionInfo());
+		}
+
+		public void NavigateDownload() {
+			MainNavigationView.SelectedItem = ItemDownload;
+			MainFrame.Navigate(typeof(DownloadPage), null, new EntranceNavigationTransitionInfo());
+		}
+
+		public void NavigateSettings() {
+			MainNavigationView.SelectedItem = MainNavigationView.SettingsItem;
+			MainFrame.Navigate(typeof(SettingsPage), null, new EntranceNavigationTransitionInfo());
 		}
 
 		private async void UserButton_Click(object sender, RoutedEventArgs e) {
