@@ -181,7 +181,7 @@
 						<ScrollViewer x:Name="MainScrollViewer" VerticalScrollMode="Auto" Visibility="{Binding ErrorHint,Converter={StaticResource ArrayEmptyToVisibility}}" Padding="0,0,10,0">
 							<StackPanel>
 								<VariableSizedWrapGrid x:Name="MainGrid" Orientation="Horizontal" ItemHeight="{x:Bind ItemHeight}" ItemWidth="{x:Bind ItemWidth}"/>
-								<Grid Margin="5" Background="{ThemeResource ButtonPressedForegroundThemeBrush}" CornerRadius="10">
+								<Grid Margin="5" Background="{ThemeResource ButtonPressedForegroundThemeBrush}" CornerRadius="10" Visibility="{Binding InputByPosts,Converter={StaticResource BoolToVisibilityRe}}">
 									<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 										<Button HorizontalAlignment="Center" Margin="5">
 											<TextBlock Text="Previous Page"/>
