@@ -3,10 +3,13 @@ using Prism.Mvvm;
 using System;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
 
@@ -15,6 +18,8 @@ namespace YiffBrowser.Views.Controls {
 		public event TypedEventHandler<ImageViewItem, ImageViewItemViewModel> ImageClick;
 		public event TypedEventHandler<ImageViewItem, ImageViewItemViewModel> SelectThis;
 		public event TypedEventHandler<ImageViewItem, ImageViewItemViewModel> DownloadThis;
+
+		public Func<bool> IsInSelectionMode { get; set; }
 
 		public event Action OnPostDeleted;
 
@@ -74,8 +79,12 @@ namespace YiffBrowser.Views.Controls {
 			nameof(IsSelected),
 			typeof(bool),
 			typeof(ImageViewItem),
-			new PropertyMetadata(false)
+			new PropertyMetadata(false, OnIsSelectedChanged)
 		);
+
+		private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+
+		}
 
 		public ImageViewItem() {
 			this.InitializeComponent();
@@ -110,6 +119,43 @@ namespace YiffBrowser.Views.Controls {
 		private void DownloadThisItem_Click(object sender, RoutedEventArgs e) {
 			DownloadThis?.Invoke(this, ViewModel);
 		}
+
+		private void SampleImageBrush_ImageOpened(object sender, RoutedEventArgs e) {
+			BitmapImage bitmap = (SampleImageBrush.ImageSource as BitmapImage);
+			bitmap.Stop();
+			bitmap.DecodePixelType = DecodePixelType.Logical;
+			bitmap.DecodePixelWidth = (int)SampleImage.ActualWidth;
+			bitmap.DecodePixelHeight = (int)SampleImage.ActualHeight;
+		}
+
+		private void PreviewImageBrush_ImageOpened(object sender, RoutedEventArgs e) {
+			BitmapImage bitmap = (PreviewImageBrush.ImageSource as BitmapImage);
+			bitmap.Stop();
+			bitmap.DecodePixelType = DecodePixelType.Logical;
+			bitmap.DecodePixelWidth = (int)PreviewImage.ActualWidth;
+			bitmap.DecodePixelHeight = (int)PreviewImage.ActualHeight;
+		}
+
+		private void Image_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
+			if (IsInSelectionMode?.Invoke() ?? false) {
+				ButtonBorder.BorderThickness = new Thickness(!IsSelected ? 2 : 0);
+			} else {
+				ImageScaleXAnimation.To = 1.05;
+				ImageScaleYAnimation.To = 1.05;
+				ImageScaleStoryboard.Begin();
+			}
+		}
+
+		private void Image_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
+			ImageScaleXAnimation.To = 1;
+			ImageScaleYAnimation.To = 1;
+			ImageScaleStoryboard.Begin();
+			ButtonBorder.BorderThickness = new Thickness(0);
+		}
+
+		private void UserControl_Loaded(object sender, RoutedEventArgs e) {
+
+		}
 	}
 
 	public class ImageViewItemViewModel : BindableBase {
@@ -122,6 +168,10 @@ namespace YiffBrowser.Views.Controls {
 		private string sampleImageURL;
 		private string errorLoadingHint;
 		private bool hidePreviewImage;
+		private BitmapImage sampleImage;
+		private bool isSampleLoading = false;
+		private double sampleLoadingProgress = 0;
+		private bool sampleLoadingIsIndeterminate = true;
 
 		public string PreviewImageURL {
 			get => previewImageURL;
@@ -130,7 +180,7 @@ namespace YiffBrowser.Views.Controls {
 
 		public string SampleImageURL {
 			get => sampleImageURL;
-			set => SetProperty(ref sampleImageURL, value);
+			set => SetProperty(ref sampleImageURL, value, OnSampleImageURLChanged);
 		}
 
 		public E621Post Post {
@@ -184,10 +234,70 @@ namespace YiffBrowser.Views.Controls {
 		private void OnSampleLoaded() {
 			ImageLoadStage = LoadStage.Sample;
 			HidePreviewImage = true;
+			IsSampleLoading = false;
 		}
 
 		private void OpenInBrowser() {
 			@$"https://e621.net/posts/{Post.ID}".OpenInBrowser();
+		}
+
+		public ImageViewItemViewModel() {
+			LoopAssign();
+		}
+
+		private BitmapImage SampleImage {
+			get => sampleImage;
+			set {
+				if (sampleImage != null) {
+					sampleImage.DownloadProgress -= SampleImage_DownloadProgress;
+				}
+				sampleImage = value;
+				if (sampleImage != null) {
+					sampleImage.DownloadProgress += SampleImage_DownloadProgress;
+				}
+			}
+		}
+
+		private ImageBrush SampleImageBrush { get; set; }
+
+		public ICommand LoadedCommand => new DelegateCommand<FrameworkElement>(Loaded);
+		private void Loaded(FrameworkElement view) {
+			SampleImageBrush = (ImageBrush)view.FindName(nameof(SampleImageBrush));
+		}
+		private void OnSampleImageURLChanged() {
+			SampleImage = null;
+			IsSampleLoading = true;
+		}
+
+		private async void LoopAssign() {
+			while (true) {
+				await Task.Delay(500);
+				if (SampleImage != null) {
+					continue;
+				}
+				SampleImage = SampleImageBrush?.ImageSource as BitmapImage;
+			}
+		}
+
+		private void SampleImage_DownloadProgress(object sender, DownloadProgressEventArgs e) {
+			SampleLoadingIsIndeterminate = false;
+			IsSampleLoading = true;
+			SampleLoadingProgress = e.Progress;
+		}
+
+		public bool IsSampleLoading {
+			get => isSampleLoading;
+			set => SetProperty(ref isSampleLoading, value);
+		}
+
+		public double SampleLoadingProgress {
+			get => sampleLoadingProgress;
+			set => SetProperty(ref sampleLoadingProgress, value);
+		}
+
+		public bool SampleLoadingIsIndeterminate {
+			get => sampleLoadingIsIndeterminate;
+			set => SetProperty(ref sampleLoadingIsIndeterminate, value);
 		}
 
 	}

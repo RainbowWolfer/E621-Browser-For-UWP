@@ -4,15 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.System;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -29,13 +25,8 @@ using YiffBrowser.Views.Controls.TagsInfoViews;
 namespace YiffBrowser.Views.Controls {
 	public delegate void OnPreviewsUpdateEventHandler(object sender, OnPreviewsUpdateEventArgs e);
 
-	public class OnPreviewsUpdateEventArgs : RoutedEventArgs {
-		public string[] PreviewURLs { get; set; }
-
-		public OnPreviewsUpdateEventArgs(string[] previewURLs) : base() {
-			PreviewURLs = previewURLs;
-		}
-
+	public class OnPreviewsUpdateEventArgs(string[] previewURLs) : RoutedEventArgs() {
+		public string[] PreviewURLs { get; set; } = previewURLs;
 	}
 
 	public sealed partial class PostsViewer : UserControl {
@@ -160,9 +151,11 @@ namespace YiffBrowser.Views.Controls {
 			view.OnPostDeleted += () => {
 				ViewModel.Posts.Remove(post);
 			};
+			view.IsInSelectionMode = () => ViewModel.IsInSelectionMode;
 			view.ImageClick += View_ImageClick;
 			view.SelectThis += View_SelectThis;
 			view.DownloadThis += View_DownloadThis;
+
 
 			double ratio = post.File.Width / (double)post.File.Height;
 			double h = (ItemWidth / ratio) / ItemHeight;
@@ -251,10 +244,6 @@ namespace YiffBrowser.Views.Controls {
 			PostDetailView.InitialImageURL = post.Sample.URL;
 		}
 
-		private void PageForwardButton_Click(object sender, RoutedEventArgs e) {
-			PageFlyout.Hide();
-		}
-
 		public void PauseVideo() {
 			PostDetailView.PauseVideo();
 		}
@@ -265,6 +254,9 @@ namespace YiffBrowser.Views.Controls {
 			}
 		}
 
+		private void ClosePaginatorFlyout(object sender, RoutedEventArgs e) {
+			PageFlyout.Hide();
+		}
 	}
 
 	public class PostsViewerViewModel : BindableBase {
@@ -447,8 +439,20 @@ namespace YiffBrowser.Views.Controls {
 				return;
 			}
 
+			if (PaginatorViewModel != null) {
+				PaginatorViewModel.RequestNavigatePage -= PaginatorViewModel_RequestNavigatePage;
+			}
+
 			PaginatorViewModel = new PaginatorViewModel(paginatorResult.Data);
+			PaginatorViewModel.RequestNavigatePage += PaginatorViewModel_RequestNavigatePage;
 			IsLoadingPaginator = false;
+		}
+
+		private void PaginatorViewModel_RequestNavigatePage(PaginatorViewModel sender, int pageNumber) {
+			if (IsLoading) {
+				return;
+			}
+			Page = pageNumber;
 		}
 
 		private async void UpdatePaginator(bool refresh = false) {
@@ -458,8 +462,8 @@ namespace YiffBrowser.Views.Controls {
 			if (PaginatorViewModel == null) {
 				return;
 			}
-
-			//PaginatorViewModel.
+			PaginatorViewModel.Paginator.CurrentPage = Page;
+			PaginatorViewModel.Update();
 		}
 
 		#endregion
@@ -488,7 +492,7 @@ namespace YiffBrowser.Views.Controls {
 			}
 		}
 
-		public ICommand RefreshCommand => new DelegateCommand(Refresh);
+		public ICommand RefreshCommand => new DelegateCommand(() => Refresh(true));
 
 		public ICommand PreviousPageCommand => new DelegateCommand(PreviousPage);
 		public ICommand NextPageCommand => new DelegateCommand(NextPage);
@@ -592,7 +596,7 @@ namespace YiffBrowser.Views.Controls {
 			LoadPosts(posts);
 		}
 
-		private async void Refresh() {
+		private async void Refresh(bool refreshPaginator = false) {
 			OnScrollReset?.Invoke();
 			if (InputByPosts) {
 				E621Post[] posts = Posts.ToArray().Concat(Blocks).ToArray();
@@ -611,6 +615,8 @@ namespace YiffBrowser.Views.Controls {
 				Posts.Clear();
 				Blocks.Clear();
 
+				UpdatePaginator(refreshPaginator);
+
 				E621Post[] posts;
 				try {
 					posts = await E621API.GetPostsByTagsAsync(new E621PostParameters() {
@@ -620,8 +626,6 @@ namespace YiffBrowser.Views.Controls {
 				} catch {
 					posts = null;
 				}
-
-				UpdatePaginator();
 
 				LoadPosts(posts);
 

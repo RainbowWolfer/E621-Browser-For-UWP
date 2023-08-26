@@ -1,16 +1,18 @@
 <UserControl
     x:Class="YiffBrowser.Views.Controls.ImageViewItem"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:YiffBrowser.Views.Controls"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
 	xmlns:i="using:Microsoft.Xaml.Interactivity"
-	xmlns:core="using:Microsoft.Xaml.Interactions.Core" 
 	xmlns:converters="using:YiffBrowser.Converters"
+	xmlns:local="using:YiffBrowser.Views.Controls"
 	d:Height="300"
 	d:Width="300"
-	mc:Ignorable="d" d:RequestedTheme="Dark">
+	mc:Ignorable="d" d:RequestedTheme="Dark"
+	Loaded="UserControl_Loaded">
 
 	<UserControl.Resources>
 		<Style x:Key="MyButtonStyle" TargetType="Button">
@@ -88,8 +90,17 @@
 		</Style>
 
 		<converters:BoolToCornerRadiusConverter x:Key="IsSelectedCornerRadius" TrueValue="10" FalseValue="10,10,0,0"/>
-		<converters:BoolToBrushConverter x:Key="IsSelectedBrush" TrueValue="Orange" FalseValue="{StaticResource CardBackgroundFillColorDefaultBrush}"/>
+		<converters:BoolToBrushConverter x:Key="IsSelectedBrush" TrueValue="{StaticResource SystemAccentColor}" FalseValue="{StaticResource CardBackgroundFillColorDefaultBrush}"/>
 		<converters:BoolToThicknessConverter x:Key="IsSelectedThickness" TrueValue="2" FalseValue="0"/>
+
+		<ScaleTransform x:Key="ImageScale" x:Name="ImageScale" CenterX="300" CenterY="1.5"/>
+
+		<ExponentialEase x:Key="Ease" Exponent="15" EasingMode="EaseOut"/>
+
+		<Storyboard x:Name="ImageScaleStoryboard">
+			<DoubleAnimation x:Name="ImageScaleXAnimation" Storyboard.TargetName="ImageScale" Storyboard.TargetProperty="ScaleX" EnableDependentAnimation="True" EasingFunction="{StaticResource Ease}"/>
+			<DoubleAnimation x:Name="ImageScaleYAnimation" Storyboard.TargetName="ImageScale" Storyboard.TargetProperty="ScaleY" EnableDependentAnimation="True" EasingFunction="{StaticResource Ease}"/>
+		</Storyboard>
 
 	</UserControl.Resources>
 
@@ -99,111 +110,115 @@
 			<local:ImageViewItemViewModel x:Name="ViewModel"/>
 		</Grid.DataContext>
 
+		<i:Interaction.Behaviors>
+			<core:EventTriggerBehavior EventName="Loaded">
+				<core:InvokeCommandAction Command="{Binding LoadedCommand}" CommandParameter="{x:Bind}"/>
+			</core:EventTriggerBehavior>
+		</i:Interaction.Behaviors>
+
 		<Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" CornerRadius="10" Style="{StaticResource MyButtonStyle}" Click="Button_Click" Background="{x:Bind IsSelected,Mode=OneWay,Converter={StaticResource IsSelectedBrush}}" BorderThickness="{x:Bind IsSelected,Mode=OneWay,Converter={StaticResource IsSelectedThickness}}">
-
-			<Grid>
-
-				<Grid.RowDefinitions>
-					<RowDefinition Height="*"/>
-					<RowDefinition Height="auto"/>
-				</Grid.RowDefinitions>
-
+			<Border x:Name="ButtonBorder" CornerRadius="10" BorderBrush="{StaticResource SystemAccentColor}" BorderThickness="0">
 				<Grid>
-					<Border x:Name="PreviewImage" CornerRadius="{x:Bind IsSelected,Mode=OneWay,Converter={StaticResource IsSelectedCornerRadius}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding HidePreviewImage,Converter={StaticResource BoolToVisibilityRe}}">
+
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="auto"/>
+					</Grid.RowDefinitions>
+
+					<Grid x:Name="ContentGrid">
+						<Grid.Clip>
+							<RectangleGeometry Rect="{Binding ElementName=ContentGrid, Converter={StaticResource FrameworkElementToSizeRectConverter}}"/>
+						</Grid.Clip>
+						<Border x:Name="PreviewImage" CornerRadius="{x:Bind IsSelected,Mode=OneWay,Converter={StaticResource IsSelectedCornerRadius}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding HidePreviewImage,Converter={StaticResource BoolToVisibilityRe}}" RenderTransformOrigin="0.5,0.5" PointerEntered="Image_PointerEntered" PointerExited="Image_PointerExited">
+							<Border.Background>
+								<ImageBrush x:Name="PreviewImageBrush" ImageSource="{Binding PreviewImageURL}" Stretch="UniformToFill" ImageOpened="PreviewImageBrush_ImageOpened" Transform="{StaticResource ImageScale}">
+									<i:Interaction.Behaviors>
+										<core:EventTriggerBehavior EventName="ImageOpened">
+											<core:InvokeCommandAction Command="{Binding OnPreviewLoadedCommand}"/>
+										</core:EventTriggerBehavior>
+									</i:Interaction.Behaviors>
+								</ImageBrush>
+							</Border.Background>
+						</Border>
+
+						<Border x:Name="SampleImage" CornerRadius="{x:Bind IsSelected,Mode=OneWay,Converter={StaticResource IsSelectedCornerRadius}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" PointerEntered="Image_PointerEntered" PointerExited="Image_PointerExited">
+							<Border.Background>
+								<ImageBrush x:Name="SampleImageBrush" ImageSource="{Binding SampleImageURL}" Stretch="UniformToFill" ImageOpened="SampleImageBrush_ImageOpened" Transform="{StaticResource ImageScale}" AlignmentX="Center" AlignmentY="Center">
+									<i:Interaction.Behaviors>
+										<core:EventTriggerBehavior EventName="ImageOpened">
+											<core:InvokeCommandAction Command="{Binding OnSampleLoadedCommand}"/>
+										</core:EventTriggerBehavior>
+									</i:Interaction.Behaviors>
+								</ImageBrush>
+							</Border.Background>
+						</Border>
+
+						<Border HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" CornerRadius="4" Margin="5" Visibility="{Binding IsSampleLoading,Converter={StaticResource BoolToVisibility}}">
+							<Border.Background>
+								<SolidColorBrush Color="Gray" Opacity="0.5"/>
+							</Border.Background>
+
+							<muxc:ProgressRing IsIndeterminate="{Binding SampleLoadingIsIndeterminate}" IsActive="True" Value="{Binding SampleLoadingProgress}" Height="20" Width="20"/>
+
+						</Border>
+
+					</Grid>
+
+					<Grid Visibility="{Binding ErrorLoadingHint,Converter={StaticResource ArrayNotEmptyToVisibility}}">
+						<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+							<FontIcon Glyph="&#xE946;" FontSize="24"/>
+							<TextBlock Text="{Binding ErrorLoadingHint}" FontSize="16" TextWrapping="Wrap" TextAlignment="Center"/>
+						</StackPanel>
+					</Grid>
+
+
+					<Border x:Name="TypeHintBorder" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="4" Margin="5" Padding="6,3,6,3" Visibility="{Binding TypeHint,Converter={StaticResource ArrayNotEmptyToVisibility}}">
 						<Border.Background>
-							<ImageBrush ImageSource="{Binding PreviewImageURL}" Stretch="UniformToFill">
-								<i:Interaction.Behaviors>
-									<core:EventTriggerBehavior EventName="ImageOpened">
-										<core:InvokeCommandAction Command="{Binding OnPreviewLoadedCommand}"/>
-									</core:EventTriggerBehavior>
-								</i:Interaction.Behaviors>
-							</ImageBrush>
+							<SolidColorBrush Color="Gray" Opacity="0.5"/>
 						</Border.Background>
-					</Border>
-
-					<Border x:Name="SampleImage" CornerRadius="{x:Bind IsSelected,Mode=OneWay,Converter={StaticResource IsSelectedCornerRadius}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-						<Border.Background>
-							<ImageBrush ImageSource="{Binding SampleImageURL}" Stretch="UniformToFill">
-								<i:Interaction.Behaviors>
-									<core:EventTriggerBehavior EventName="ImageOpened">
-										<core:InvokeCommandAction Command="{Binding OnSampleLoadedCommand}"/>
-									</core:EventTriggerBehavior>
-								</i:Interaction.Behaviors>
-							</ImageBrush>
-						</Border.Background>
-					</Border>
-
-					<!--<Image x:Name="PreviewImage" Source="{Binding PreviewImageURL}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding HidePreviewImage,Converter={StaticResource BoolToVisibilityRe}}">
-						<i:Interaction.Behaviors>
-							<core:EventTriggerBehavior EventName="ImageOpened">
-								<core:InvokeCommandAction Command="{Binding OnPreviewLoadedCommand}"/>
-							</core:EventTriggerBehavior>
-						</i:Interaction.Behaviors>
-					</Image>
-
-					<Image x:Name="SampleImage" Source="{Binding SampleImageURL}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center">
-						<i:Interaction.Behaviors>
-							<core:EventTriggerBehavior EventName="ImageOpened">
-								<core:InvokeCommandAction Command="{Binding OnSampleLoadedCommand}"/>
-							</core:EventTriggerBehavior>
-						</i:Interaction.Behaviors>
-					</Image>-->
-				</Grid>
-
-				<Grid Visibility="{Binding ErrorLoadingHint,Converter={StaticResource ArrayNotEmptyToVisibility}}">
-					<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-						<FontIcon Glyph="&#xE946;" FontSize="24"/>
-						<TextBlock Text="{Binding ErrorLoadingHint}" FontSize="16" TextWrapping="Wrap" TextAlignment="Center"/>
-					</StackPanel>
-				</Grid>
-
-
-				<Border x:Name="TypeHintBorder" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="4" Margin="5" Padding="6,3,6,3" Visibility="{Binding TypeHint,Converter={StaticResource ArrayNotEmptyToVisibility}}">
-					<Border.Background>
-						<SolidColorBrush Color="Gray" Opacity="0.5"/>
-					</Border.Background>
-					<Border.Shadow>
-						<ThemeShadow/>
-					</Border.Shadow>
-
-					<TextBlock Text="{Binding TypeHint}" FontSize="16">
-						<TextBlock.Shadow>
+						<Border.Shadow>
 							<ThemeShadow/>
-						</TextBlock.Shadow>
-					</TextBlock>
-				</Border>
+						</Border.Shadow>
 
-				<Grid VerticalAlignment="Bottom" Height="25" Background="{x:Bind IsSelected,Mode=OneWay,Converter={StaticResource IsSelectedBrush}}" Grid.Row="1" Padding="20,0,20,0" Visibility="{x:Bind ShowPostInfo,Mode=OneWay,Converter={StaticResource BoolToVisibility}}">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
+						<TextBlock Text="{Binding TypeHint}" FontSize="16">
+							<TextBlock.Shadow>
+								<ThemeShadow/>
+							</TextBlock.Shadow>
+						</TextBlock>
+					</Border>
 
-					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0">
-						<TextBlock Text="{Binding Post.Score.Total}"/>
-						<FontIcon Glyph="&#xE878;" FontSize="15" Margin="5,0,0,0"/>
-					</StackPanel>
+					<Grid VerticalAlignment="Bottom" Height="25" Background="{x:Bind IsSelected,Mode=OneWay,Converter={StaticResource IsSelectedBrush}}" Grid.Row="1" Padding="20,0,20,0" Visibility="{x:Bind ShowPostInfo,Mode=OneWay,Converter={StaticResource BoolToVisibility}}">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
 
-					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
-						<TextBlock Text="{Binding Post.FavCount}"/>
-						<FontIcon Glyph="&#xEB52;" FontSize="15" Margin="5,0,0,0"/>
-					</StackPanel>
+						<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0">
+							<TextBlock Text="{Binding Post.Score.Total}"/>
+							<FontIcon Glyph="&#xE878;" FontSize="15" Margin="5,0,0,0"/>
+						</StackPanel>
 
-					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2">
-						<TextBlock Text="{Binding Post.CommentCount}"/>
-						<FontIcon Glyph="&#xE90A;" FontSize="15" Margin="5,0,0,0"/>
-					</StackPanel>
+						<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
+							<TextBlock Text="{Binding Post.FavCount}"/>
+							<FontIcon Glyph="&#xEB52;" FontSize="15" Margin="5,0,0,0"/>
+						</StackPanel>
 
-					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="3">
-						<TextBlock Text="{Binding Post.Rating,Converter={StaticResource RatingHeader}}"/>
-						<FontIcon Glyph="{Binding Post.Rating,Converter={StaticResource E621RatingToIcon}}" FontSize="15" Margin="5,0,0,0" Foreground="{Binding Post.Rating,Converter={StaticResource E621RatingToBrush}}"/>
-					</StackPanel>
+						<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2">
+							<TextBlock Text="{Binding Post.CommentCount}"/>
+							<FontIcon Glyph="&#xE90A;" FontSize="15" Margin="5,0,0,0"/>
+						</StackPanel>
+
+						<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="3">
+							<TextBlock Text="{Binding Post.Rating,Converter={StaticResource RatingHeader}}"/>
+							<FontIcon Glyph="{Binding Post.Rating,Converter={StaticResource E621RatingToIcon}}" FontSize="15" Margin="5,0,0,0" Foreground="{Binding Post.Rating,Converter={StaticResource E621RatingToBrush}}"/>
+						</StackPanel>
+
+					</Grid>
 
 				</Grid>
-
-			</Grid>
+			</Border>
 
 			<Button.ContextFlyout>
 				<MenuFlyout>

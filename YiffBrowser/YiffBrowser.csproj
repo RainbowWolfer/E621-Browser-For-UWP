@@ -137,9 +137,11 @@
     <Compile Include="Converters\CountToBoolReConverter.cs" />
     <Compile Include="Converters\CountToVisibilityConverter.cs" />
     <Compile Include="Converters\CountToVisibilityReConverter.cs" />
+    <Compile Include="Converters\DoubleToRectConverter.cs" />
     <Compile Include="Converters\DurationConverter.cs" />
     <Compile Include="Converters\E621RatingToBrushConverter.cs" />
     <Compile Include="Converters\E621RatingToIconConverter.cs" />
+    <Compile Include="Converters\FrameworkElementToSizeRectConverter.cs" />
     <Compile Include="Converters\JoinStringConverter.cs" />
     <Compile Include="Converters\NotNullToBoolConverter.cs" />
     <Compile Include="Converters\NotNullToVisibilityConverter.cs" />

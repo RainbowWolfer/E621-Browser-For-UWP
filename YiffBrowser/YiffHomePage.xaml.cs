@@ -26,6 +26,7 @@ namespace YiffBrowser {
 		public string TAG_FAVORITES { get; } = "TAG_FAVORITES";
 		public string TAG_FOLLOWS { get; } = "TAG_FOLLOWS";
 		public string TAG_DOWNLOADS { get; } = "TAG_DOWNLOADS";
+		public string TAG_LOCAL { get; } = "TAG_LOCAL";
 
 		private string userAvatarURL;
 		private string usernameText;

@@ -91,19 +91,24 @@ namespace YiffBrowser.Services.Downloads {
 		}
 
 		public static async Task RegisterDownload(E621Post post, string folderName = null) {
-			string filename = $"{post.ID}.{post.File.Ext}";
+			try {
+				string filename = $"{post.ID}.{post.File.Ext}";
 
-			StorageFolder folder = await GetFolder(folderName);
-			StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.OpenIfExists);
+				StorageFolder folder = await GetFolder(folderName);
+				StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.OpenIfExists);
 
-			DownloadOperation download = downloader.CreateDownload(new Uri(post.File.URL), file);
+				DownloadOperation download = downloader.CreateDownload(new Uri(post.File.URL), file);
 
-			DownloadInstance instance = new(post, download,
-				new DownloadInstanceInformation(folder, folder == Local.DownloadFolder, file)
-			);
+				DownloadInstance instance = new(post, download,
+					new DownloadInstanceInformation(folder, folder == Local.DownloadFolder, file)
+				);
 
-			waitPool.Add(instance);
-			instance.OnCancel += Item_OnCancel;
+				waitPool.Add(instance);
+				instance.OnCancel += Item_OnCancel;
+
+			} catch (Exception ex) {
+				Debug.WriteLine(ex.ToString());
+			}
 		}
 
 		//public static void RegisterDownloads(string folderName = null, params E621Post[] posts) {

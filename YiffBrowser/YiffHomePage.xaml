@@ -10,7 +10,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Page.Resources>
-		
+
 	</Page.Resources>
 
 	<Grid x:Name="Root" Loaded="Root_Loaded">
@@ -21,10 +21,20 @@
 		<muxc:NavigationView x:Name="MainNavigationView" PaneTitle="Yiff Browser" ItemInvoked="MainNavigationView_ItemInvoked" IsPaneOpen="False" PaneOpening="MainNavigationView_PaneOpening" PaneClosing="MainNavigationView_PaneClosing">
 
 			<muxc:NavigationView.MenuItems>
-				<muxc:NavigationViewItem x:Name="ItemHome" Icon="Home" Content="Home" Tag="{x:Bind TAG_HOME}"/>
+				<muxc:NavigationViewItem x:Name="ItemHome" Icon="Home" Content="Home" Tag="{x:Bind TAG_HOME}" ToolTipService.ToolTip="WQ"/>
 				<!--<muxc:NavigationViewItem Icon="Home" Content="Furaffinity"/>-->
-				<muxc:NavigationViewItem x:Name="ItemFavorite" Icon="Favorite" Content="Favorites" Tag="{x:Bind TAG_FAVORITES}"/>
+				<muxc:NavigationViewItem x:Name="ItemFavorite" Content="Favorites" Tag="{x:Bind TAG_FAVORITES}">
+					<muxc:NavigationViewItem.Icon>
+						<FontIcon Glyph="&#xE1CE;"/>
+					</muxc:NavigationViewItem.Icon>
+				</muxc:NavigationViewItem>
 				<muxc:NavigationViewItem x:Name="ItemFlag" Icon="Flag" Content="Follows" Tag="{x:Bind TAG_FOLLOWS}"/>
+				<muxc:NavigationViewItemSeparator/>
+				<muxc:NavigationViewItem x:Name="ItemLocal" Content="Local" Tag="{x:Bind TAG_LOCAL}">
+					<muxc:NavigationViewItem.Icon>
+						<FontIcon Glyph="&#xED25;"/>
+					</muxc:NavigationViewItem.Icon>
+				</muxc:NavigationViewItem>
 				<muxc:NavigationViewItem x:Name="ItemDownload" Icon="Download" Content="Downloads" Tag="{x:Bind TAG_DOWNLOADS}"/>
 			</muxc:NavigationView.MenuItems>
 
