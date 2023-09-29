@@ -35,8 +35,6 @@ namespace YiffBrowser.Views.Controls {
 			}
 		}
 
-
-
 		public bool ShowAddMinusButton {
 			get => (bool)GetValue(ShowAddMinusButtonProperty);
 			set => SetValue(ShowAddMinusButtonProperty, value);
@@ -136,6 +134,14 @@ namespace YiffBrowser.Views.Controls {
 			GroupTag group = (GroupTag)e.ClickedItem;
 			E621HomePageViewModel.CreateNewTag(group.Content);
 		}
+
+		private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) {
+			foreach (GroupTagListWithColor group in tags) {
+				foreach (GroupTag item in group) {
+					item.IsVisible = item.Content.SearchFor(args.QueryText);
+				}
+			}
+		}
 	}
 
 	public class GroupTag : BindableBase {
@@ -148,6 +154,7 @@ namespace YiffBrowser.Views.Controls {
 		private bool isInFollows;
 		private bool isInBlocks;
 		private bool showAddMinusButton = true;
+		private bool isVisible;
 
 		public string Content {
 			get => content;
@@ -171,6 +178,11 @@ namespace YiffBrowser.Views.Controls {
 		public bool ShowAddMinusButton {
 			get => showAddMinusButton;
 			set => SetProperty(ref showAddMinusButton, value);
+		}
+
+		public bool IsVisible {
+			get => isVisible;
+			set => SetProperty(ref isVisible, value);
 		}
 
 		public ICommand InfoCommand => new DelegateCommand(Info);

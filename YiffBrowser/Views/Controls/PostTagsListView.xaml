@@ -5,7 +5,10 @@
     xmlns:local="using:YiffBrowser.Views.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:RequestedTheme="Dark">
+    mc:Ignorable="d" 
+	d:RequestedTheme="Dark"
+	d:Height="500"
+	d:Width="250">
 
 	<UserControl.Resources>
 		<CollectionViewSource x:Name="Collection" Source="{x:Bind tags,Mode=OneWay}" IsSourceGrouped="True"/>
@@ -15,7 +18,20 @@
 	</UserControl.Resources>
 
 	<Grid>
-		<ListView x:Name="TagsListView" ItemsSource="{Binding Source={StaticResource Collection}}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="TagsListView_ItemClick">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<AutoSuggestBox Margin="0,0,0,5" QueryIcon="Find" PlaceholderText="Search Tag" QuerySubmitted="AutoSuggestBox_QuerySubmitted"/>
+
+		<ListView x:Name="TagsListView" Grid.Row="1" ItemsSource="{Binding Source={StaticResource Collection}}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="TagsListView_ItemClick" d:ItemsSource="1 2 3 4 5" Padding="0,0,5,0">
+			<!--<ListView.ItemContainerStyle>
+				<Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemExpanded}">
+					<Setter Property="Visibility" Value="{Binding IsVisible,Converter={StaticResource BoolToVisibility}}"/>
+					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+				</Style>
+			</ListView.ItemContainerStyle>-->
 			<ListView.ItemsPanel>
 				<ItemsPanelTemplate>
 					<ItemsStackPanel AreStickyGroupHeadersEnabled="True"/>
@@ -65,7 +81,7 @@
 							<FontIcon Glyph="&#xE946;" FontSize="16"/>
 						</Button>
 
-						<TextBlock x:Name="TagText" Grid.Column="1" Text="{Binding Content}" Margin="2,0,20,0" TextWrapping="Wrap" Foreground="{Binding Color,Converter={StaticResource ColorToBrush}}" VerticalAlignment="Center"/>
+						<TextBlock x:Name="TagText" d:Text="Tag" d:Foreground="Orange" Grid.Column="1" Text="{Binding Content}" Margin="2,0,20,0" TextWrapping="Wrap" Foreground="{Binding Color,Converter={StaticResource ColorToBrush}}" VerticalAlignment="Center"/>
 
 						<Button x:Name="MinusButton" Grid.Column="2" Style="{StaticResource TagButton}" Command="{Binding MinusCommand}" Visibility="{Binding ShowAddMinusButton,Converter={StaticResource BoolToVisibility}}" ToolTipService.ToolTip="Search without this tag">
 							<FontIcon Glyph="&#xE108;" FontSize="16"/>

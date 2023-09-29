@@ -62,7 +62,7 @@ namespace YiffBrowser.Views.Pages.E621 {
 		}
 
 		private void UpdateProgress() {
-			TotalUnfinishedDownloadCount = DownloadingPool.Count + WaitPool.Count;
+			TotalUnfinishedDownloadCount = DownloadingPool.Count + WaitPool.Count + CompletedPool.Count;
 			if (CompletedPool.Count == 0) {
 				TotalProgress = 0;
 			} else {

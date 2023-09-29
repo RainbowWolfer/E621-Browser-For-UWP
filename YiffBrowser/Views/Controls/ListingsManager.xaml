@@ -10,6 +10,9 @@
 	xmlns:tagsinfoviews="using:YiffBrowser.Views.Controls.TagsInfoViews"
 	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
 	mc:Ignorable="d"
+	d:RequestedTheme="Dark"
+	d:Width="600"
+	d:Height="400"
 	MinWidth="650"
 	MaxHeight="400">
 
@@ -29,7 +32,7 @@
 				<RowDefinition Height="auto"/>
 			</Grid.RowDefinitions>
 
-			<ListView x:Name="ListingsListView" SelectionMode="Single" Margin="5" ItemsSource="{Binding ListingItems}" SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}" Height="250" Padding="0,0,5,0" Grid.Row="1">
+			<ListView x:Name="ListingsListView" SelectionMode="Single" Margin="5" ItemsSource="{Binding ListingItems}" SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}" Padding="0,0,5,0" Grid.Row="1" d:ItemsSource="1 2 3 34 45">
 				<ListView.ItemTemplate>
 					<DataTemplate x:DataType="local:ListingViewItem">
 						<ListViewItem IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsEnabled,Converter={StaticResource BoolToVisibility}}">
@@ -80,10 +83,10 @@
 
 			<StackPanel Grid.Row="2">
 
-				<Button HorizontalAlignment="Stretch" Margin="5" ToolTipService.Placement="Bottom" Command="{Binding PasteAsNewListCommand}" IsEnabled="{Binding EnablePasting}">
+				<Button HorizontalAlignment="Stretch" Margin="5" ToolTipService.Placement="Bottom" Command="{Binding PasteAsNewListCommand}" IsEnabled="{Binding EnablePasting}" Height="35">
 					<StackPanel Orientation="Horizontal">
-						<TextBlock Text="Paste as a new list" VerticalAlignment="Center" FontSize="16" Margin="0,0,10,0"/>
-						<FontIcon Glyph="&#xE16D;" FontSize="20" VerticalAlignment="Center" Margin="0,5,0,0"/>
+						<TextBlock Text="Paste as a new list" VerticalAlignment="Center" Margin="0,0,10,0"/>
+						<FontIcon Glyph="&#xE16D;" VerticalAlignment="Center"/>
 					</StackPanel>
 				</Button>
 
@@ -95,7 +98,7 @@
 
 		</Grid>
 
-		<Grid Grid.Column="1">
+		<Grid Grid.Column="1" MinHeight="400">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="auto"/>
 				<RowDefinition Height="*"/>
@@ -114,53 +117,6 @@
 					</StackPanel>
 				</Button>-->
 			</Grid>
-			in
-			<ListView Grid.Row="1" ItemsSource="{Binding ItemTags}" SelectedIndex="{Binding TagItemsSelectedIndex,Mode=TwoWay}" Visibility="{Binding ItemTags.Count,Converter={StaticResource ArrayNotEmptyToVisibility}}" Padding="0,0,10,0" Height="300">
-				<ListView.ItemTemplate>
-					<DataTemplate x:DataType="local:TagViewItem">
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="auto"/>
-								<ColumnDefinition Width="*"/>
-								<ColumnDefinition Width="auto"/>
-							</Grid.ColumnDefinitions>
-
-							<Button Background="Transparent" BorderBrush="Transparent" Padding="3" Margin="5,0,10,0">
-								<FontIcon Glyph="&#xE946;"/>
-								<Button.Flyout>
-									<Flyout>
-										<Grid>
-											<i:Interaction.Behaviors>
-												<core:EventTriggerBehavior EventName="Loaded">
-													<core:InvokeCommandAction Command="{Binding LoadedCommand}" CommandParameter="{Binding Tag}"/>
-												</core:EventTriggerBehavior>
-											</i:Interaction.Behaviors>
-											<muxc:ProgressBar IsIndeterminate="True" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}"/>
-											<Grid Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityRe}}">
-												<tagsinfoviews:BriefTagView E621Tag="{Binding E621Tag,Mode=OneWay}"/>
-											</Grid>
-										</Grid>
-									</Flyout>
-								</Button.Flyout>
-							</Button>
-
-							<TextBlock Text="{Binding Tag}" Grid.Column="1" VerticalAlignment="Center"/>
-
-							<Button Grid.Column="2" BorderBrush="Transparent" Background="Transparent" Padding="3">
-								<FontIcon Glyph="&#xE712;" FontSize="14"/>
-
-								<Button.Flyout>
-									<MenuFlyout Placement="Bottom">
-										<MenuFlyoutItem Icon="Delete" Text="Delete" Command="{Binding DeleteCommand}"/>
-										<MenuFlyoutItem Icon="Copy" Text="Copy" Command="{Binding CopyCommand}"/>
-									</MenuFlyout>
-								</Button.Flyout>
-							</Button>
-
-						</Grid>
-					</DataTemplate>
-				</ListView.ItemTemplate>
-			</ListView>
 
 			<Grid Grid.Row="0" Margin="5">
 				<Grid.ColumnDefinitions>
@@ -169,7 +125,7 @@
 					<ColumnDefinition Width="auto"/>
 				</Grid.ColumnDefinitions>
 
-				<local:AddButtonInput PlaceholderText="Your Tag" Margin="5" Exists="{Binding ExistTagNames}" SubmitCommand="{Binding OnNewTagSubmitCommand}" IsEnabled="True"/>
+				<local:AddButtonInput PlaceholderText="Add New Tag" Margin="5" Exists="{Binding ExistTagNames}" SubmitCommand="{Binding OnNewTagSubmitCommand}" IsEnabled="True"/>
 
 				<muxc:DropDownButton Grid.Column="1" Margin="5">
 					<muxc:DropDownButton.Content>
@@ -221,6 +177,76 @@
 					<FontIcon Glyph="&#xEDB1;"/>
 				</Button>
 			</Grid>
+
+			<ListView Grid.Row="1" ItemsSource="{Binding TagsFilter.View}" SelectedIndex="{Binding TagItemsSelectedIndex,Mode=TwoWay}" Visibility="{Binding ItemTags.Count,Converter={StaticResource ArrayNotEmptyToVisibility}}" Padding="0,0,10,0" d:ItemsSource="1 2 3 4 5 6">
+				<ListView.ItemTemplate>
+					<DataTemplate x:DataType="local:TagViewItem">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="auto"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="auto"/>
+							</Grid.ColumnDefinitions>
+
+							<Button Background="Transparent" BorderBrush="Transparent" Padding="3" Margin="5,0,10,0">
+								<FontIcon Glyph="&#xE946;"/>
+								<Button.Flyout>
+									<Flyout>
+										<Grid>
+											<i:Interaction.Behaviors>
+												<core:EventTriggerBehavior EventName="Loaded">
+													<core:InvokeCommandAction Command="{Binding LoadedCommand}" CommandParameter="{Binding Tag}"/>
+												</core:EventTriggerBehavior>
+											</i:Interaction.Behaviors>
+											<muxc:ProgressBar IsIndeterminate="True" Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibility}}"/>
+											<Grid Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibilityRe}}">
+												<tagsinfoviews:BriefTagView E621Tag="{Binding E621Tag,Mode=OneWay}"/>
+											</Grid>
+										</Grid>
+									</Flyout>
+								</Button.Flyout>
+							</Button>
+
+							<TextBlock Text="{Binding Tag}" Grid.Column="1" VerticalAlignment="Center"/>
+
+							<Button Grid.Column="2" BorderBrush="Transparent" Background="Transparent" Padding="3">
+								<FontIcon Glyph="&#xE712;" FontSize="14"/>
+
+								<Button.Flyout>
+									<MenuFlyout Placement="Bottom">
+										<MenuFlyoutItem Icon="Delete" Text="Delete" Command="{Binding DeleteCommand}"/>
+										<MenuFlyoutItem Icon="Copy" Text="Copy" Command="{Binding CopyCommand}"/>
+									</MenuFlyout>
+								</Button.Flyout>
+							</Button>
+
+						</Grid>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+
+			<Grid Grid.Row="2">
+				<StackPanel>
+					<StackPanel Orientation="Horizontal" Margin="10,5,10,0" Visibility="{Binding TagsFilter.DifferentFromAfterFilter,Converter={StaticResource BoolToVisibility}}">
+						<FontIcon Glyph="&#xE773;"/>
+						<TextBlock Margin="5,0" VerticalAlignment="Center">
+							<Run Text="Found "/>
+							<Run Text="{Binding TagsFilter.AfterFilterCount}"/>
+							<Run Text="/"/>
+							<Run Text="{Binding ItemTags.Count}"/>
+							<Run Text="Tags"/>
+						</TextBlock>
+					</StackPanel>
+					<AutoSuggestBox d:Text="Tag" Margin="5" QueryIcon="Find" Height="35" PlaceholderText="Search Tag" VerticalContentAlignment="Center">
+						<i:Interaction.Behaviors>
+							<core:EventTriggerBehavior EventName="QuerySubmitted">
+								<core:InvokeCommandAction Command="{Binding SearchCommand}"/>
+							</core:EventTriggerBehavior>
+						</i:Interaction.Behaviors>
+					</AutoSuggestBox>
+				</StackPanel>
+			</Grid>
+
 		</Grid>
 
 		<muxc:TeachingTip x:Name="DeleteConfirmTeachingTip" Title="Confirm" Subtitle="Are you sure to delete this list?" 

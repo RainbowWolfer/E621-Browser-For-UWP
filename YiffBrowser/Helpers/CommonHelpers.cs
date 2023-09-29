@@ -2,9 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.System;
@@ -13,6 +11,11 @@ using YiffBrowser.Models.E621;
 
 namespace YiffBrowser.Helpers {
 	public static class CommonHelpers {
+
+		public static bool SearchFor(this string source, string target) {
+			return source.ToLower().Trim().Contains(target.ToLower().Trim());
+		}
+
 		public static int Count(this IEnumerable ie) {
 			if (ie == null) {
 				return 0;

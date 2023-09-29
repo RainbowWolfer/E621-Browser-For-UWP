@@ -14,6 +14,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using YiffBrowser.Helpers;
+using YiffBrowser.Models;
 using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Locals;
 using YiffBrowser.Services.Networks;
@@ -109,6 +110,7 @@ namespace YiffBrowser.Views.Controls {
 		private string confirmTipTitle;
 		private bool isConfirmTipOpen = false;
 		private ICommand confirmTipCommand;
+		private CollectionSearchFilter<TagViewItem> tagsFilter;
 
 		public string[] PasteTagsContent { get; private set; }
 
@@ -117,6 +119,11 @@ namespace YiffBrowser.Views.Controls {
 		public ObservableCollection<TagViewItem> ItemTags {
 			get => itemTags;
 			set => SetProperty(ref itemTags, value);
+		}
+
+		public CollectionSearchFilter<TagViewItem> TagsFilter {
+			get => tagsFilter;
+			set => SetProperty(ref tagsFilter, value);
 		}
 
 		public ListingViewItem CheckedItem {
@@ -152,6 +159,7 @@ namespace YiffBrowser.Views.Controls {
 
 		private void OnSelectedIndexChanged() {
 			ItemTags = new ObservableCollection<TagViewItem>();
+			TagsFilter = new CollectionSearchFilter<TagViewItem>(ItemTags, x => x.Tag);
 
 			ListingViewItem item = GetSelectedListing();
 			if (item == null) {
@@ -235,6 +243,12 @@ namespace YiffBrowser.Views.Controls {
 
 			Clipboard.ContentChanged += (s, e) => UpdatePastImportEnable();
 			UpdatePastImportEnable();
+		}
+
+		public ICommand SearchCommand => new DelegateCommand<AutoSuggestBoxQuerySubmittedEventArgs>(Search);
+
+		private void Search(AutoSuggestBoxQuerySubmittedEventArgs args) {
+			TagsFilter.Search(args.QueryText);
 		}
 
 		private async void UpdatePastImportEnable() {
