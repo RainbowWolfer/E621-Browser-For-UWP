@@ -114,7 +114,7 @@
 					</StackPanel>
 				</Button>-->
 			</Grid>
-
+			in
 			<ListView Grid.Row="1" ItemsSource="{Binding ItemTags}" SelectedIndex="{Binding TagItemsSelectedIndex,Mode=TwoWay}" Visibility="{Binding ItemTags.Count,Converter={StaticResource ArrayNotEmptyToVisibility}}" Padding="0,0,10,0" Height="300">
 				<ListView.ItemTemplate>
 					<DataTemplate x:DataType="local:TagViewItem">

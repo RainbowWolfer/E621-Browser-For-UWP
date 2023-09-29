@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Networks;
@@ -52,6 +54,14 @@ namespace YiffBrowser.Views.Controls.PictureViews {
 
 		private void ImageViewItem_ImageClick(ImageViewItem sender, ImageViewItemViewModel args) {
 			ViewModel.RelationsCommand?.Execute(null);
+		}
+
+		private void ImageBrush_ImageOpened(object sender, RoutedEventArgs e) {
+			ImageBrush image = sender as ImageBrush;
+			BitmapImage bitmap = image.ImageSource as BitmapImage;
+			bitmap.DecodePixelType = DecodePixelType.Logical;
+			bitmap.DecodePixelHeight = 120;
+			bitmap.DecodePixelWidth = 120;
 		}
 	}
 

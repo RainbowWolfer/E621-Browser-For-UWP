@@ -9,7 +9,13 @@
 	xmlns:converters="using:YiffBrowser.Converters" 
 	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
 	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-	mc:Ignorable="d" d:RequestedTheme="Dark">
+	mc:Ignorable="d" d:RequestedTheme="Dark"
+	KeyboardAcceleratorPlacementMode="Hidden">
+
+	<UserControl.KeyboardAccelerators>
+		<KeyboardAccelerator Key="A" Invoked="LeftKey_Invoked"/>
+		<KeyboardAccelerator Key="D" Invoked="RightKey_Invoked"/>
+	</UserControl.KeyboardAccelerators>
 
 	<UserControl.Resources>
 

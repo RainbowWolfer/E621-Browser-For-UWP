@@ -110,7 +110,7 @@ namespace E621Downloader {
 
 			SettingsKey.ScopeOwner = MyNavigationView.SettingsItem as NavigationViewItem;
 
-			var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+			CoreApplicationViewTitleBar coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
 			coreTitleBar.ExtendViewIntoTitleBar = true;
 			Window.Current.SetTitleBar(AppTitleBar);
 			coreTitleBar.IsVisibleChanged += (sender, e) => {
@@ -121,7 +121,7 @@ namespace E621Downloader {
 				}
 			};
 
-			var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+			ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
 			//titleBar.InactiveBackgroundColor = null;
 
 			currentTag = PageTag.Welcome;

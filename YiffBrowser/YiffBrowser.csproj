@@ -147,6 +147,7 @@
     <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
     <Compile Include="Converters\NullToBoolConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Converters\NumberDividedBy2Converter.cs" />
     <Compile Include="Converters\NumberToKBConverter.cs" />
     <Compile Include="Converters\SubStringConverter.cs" />
     <Compile Include="Converters\UnifyArrayConverter.cs" />

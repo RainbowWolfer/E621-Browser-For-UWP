@@ -366,7 +366,11 @@ namespace E621Downloader.Models.Locals {
 		public static async Task WriteFavoritesLists() {
 			try {
 				await FileIO.WriteTextAsync(FavoritesListFile, JsonConvert.SerializeObject(FavoritesList.Table, Formatting.Indented));
-			} catch (FileLoadException) { }
+			} catch (Exception ex) {
+				ErrorHistories.Add(ex);
+			}
+			//FileNotFoundException
+			//FileLoadException
 		}
 
 		//F:\E621\creepypasta -momo_(creepypasta) rating;e\1820721.png

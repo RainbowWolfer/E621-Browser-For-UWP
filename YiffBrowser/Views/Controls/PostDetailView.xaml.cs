@@ -181,6 +181,14 @@ namespace YiffBrowser.Views.Controls {
 			}
 			IsShowingImagesListManager = !IsShowingImagesListManager;
 		}
+
+		private void LeftKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			ViewModel.Previous();
+		}
+
+		private void RightKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			ViewModel.Next();
+		}
 	}
 
 	public class PostDetailViewModel : BindableBase {
@@ -577,7 +585,7 @@ namespace YiffBrowser.Views.Controls {
 		public ICommand NextCommand => new DelegateCommand(Next);
 		public ICommand PreviousCommand => new DelegateCommand(Previous);
 
-		private void Next() {
+		public void Next() {
 			int index = Array.IndexOf(AllPosts, E621Post);
 			if (index == -1) {
 				return;
@@ -592,7 +600,7 @@ namespace YiffBrowser.Views.Controls {
 			OnImagesListManagerItemClick?.Invoke(AllPosts[index]);
 		}
 
-		private void Previous() {
+		public void Previous() {
 			int index = Array.IndexOf(AllPosts, E621Post);
 			if (index == -1) {
 				return;

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
@@ -237,10 +238,14 @@ namespace YiffBrowser.Views.Controls {
 		}
 
 		private async void UpdatePastImportEnable() {
-			DataPackageView dataPackageView = Clipboard.GetContent();
 			string text = null;
-			if (dataPackageView.Contains(StandardDataFormats.Text)) {
-				text = await dataPackageView.GetTextAsync();
+			try {
+				DataPackageView dataPackageView = Clipboard.GetContent();
+				if (dataPackageView.Contains(StandardDataFormats.Text)) {
+					text = await dataPackageView.GetTextAsync();
+				}
+			} catch (Exception ex) {
+				Debug.WriteLine(ex);
 			}
 			EnablePasting = text.IsNotBlank();
 			if (EnablePasting) {

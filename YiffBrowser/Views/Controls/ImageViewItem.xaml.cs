@@ -70,6 +70,20 @@ namespace YiffBrowser.Views.Controls {
 
 
 
+		public bool UseImageSize {
+			get => (bool)GetValue(UseImageSizeProperty);
+			set => SetValue(UseImageSizeProperty, value);
+		}
+
+		public static readonly DependencyProperty UseImageSizeProperty = DependencyProperty.Register(
+			nameof(UseImageSize),
+			typeof(bool),
+			typeof(ImageViewItem),
+			new PropertyMetadata(true)
+		);
+
+
+
 		public bool IsSelected {
 			get => (bool)GetValue(IsSelectedProperty);
 			set => SetValue(IsSelectedProperty, value);
@@ -124,16 +138,25 @@ namespace YiffBrowser.Views.Controls {
 			BitmapImage bitmap = (SampleImageBrush.ImageSource as BitmapImage);
 			bitmap.Stop();
 			bitmap.DecodePixelType = DecodePixelType.Logical;
-			bitmap.DecodePixelWidth = (int)SampleImage.ActualWidth;
-			bitmap.DecodePixelHeight = (int)SampleImage.ActualHeight;
+			if (UseImageSize) {
+				bitmap.DecodePixelWidth = (int)SampleImage.ActualWidth;
+				bitmap.DecodePixelHeight = (int)SampleImage.ActualHeight;
+			} else {
+				//bitmap.DecodePixelWidth = (int)SampleImage.ActualWidth;
+				//bitmap.DecodePixelHeight = (int)SampleImage.ActualHeight;
+			}
+			UpdateScaleCenter();
 		}
 
 		private void PreviewImageBrush_ImageOpened(object sender, RoutedEventArgs e) {
 			BitmapImage bitmap = (PreviewImageBrush.ImageSource as BitmapImage);
 			bitmap.Stop();
 			bitmap.DecodePixelType = DecodePixelType.Logical;
-			bitmap.DecodePixelWidth = (int)PreviewImage.ActualWidth;
-			bitmap.DecodePixelHeight = (int)PreviewImage.ActualHeight;
+			if (UseImageSize) {
+				bitmap.DecodePixelWidth = (int)PreviewImage.ActualWidth;
+				bitmap.DecodePixelHeight = (int)PreviewImage.ActualHeight;
+			}
+			UpdateScaleCenter();
 		}
 
 		private void Image_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
@@ -154,7 +177,12 @@ namespace YiffBrowser.Views.Controls {
 		}
 
 		private void UserControl_Loaded(object sender, RoutedEventArgs e) {
+			UpdateScaleCenter();
+		}
 
+		private void UpdateScaleCenter() {
+			ImageScale.CenterX = ContentGrid.ActualWidth / 2;
+			ImageScale.CenterY = ContentGrid.ActualHeight / 2;
 		}
 	}
 
@@ -260,8 +288,8 @@ namespace YiffBrowser.Views.Controls {
 
 		private ImageBrush SampleImageBrush { get; set; }
 
-		public ICommand LoadedCommand => new DelegateCommand<FrameworkElement>(Loaded);
-		private void Loaded(FrameworkElement view) {
+		public ICommand LoadedCommand => new DelegateCommand<ImageViewItem>(Loaded);
+		private void Loaded(ImageViewItem view) {
 			SampleImageBrush = (ImageBrush)view.FindName(nameof(SampleImageBrush));
 		}
 		private void OnSampleImageURLChanged() {

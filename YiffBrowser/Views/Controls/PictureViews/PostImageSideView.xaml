@@ -124,7 +124,7 @@
 
 												<Border Height="120" Width="120" CornerRadius="10" Visibility="{Binding UserAvatarURL,Converter={StaticResource ArrayNotEmptyToVisibility}}" Margin="0,5,0,0">
 													<Border.Background>
-														<ImageBrush ImageSource="{Binding UserAvatarURL}" Stretch="UniformToFill"/>
+														<ImageBrush ImageSource="{Binding UserAvatarURL}" Stretch="UniformToFill" ImageOpened="ImageBrush_ImageOpened"/>
 													</Border.Background>
 													<Border.ContextFlyout>
 														<MenuFlyout>
@@ -188,11 +188,11 @@
 								<TextBlock Text="Not Found" HorizontalAlignment="Center" Visibility="{Binding PoolItems,Converter={StaticResource ArrayEmptyToVisibility}}"/>
 								<ListView SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{Binding PoolItems}" Visibility="{Binding PoolItems,Converter={StaticResource ArrayNotEmptyToVisibility}}" MaxHeight="300">
 
-									<i:Interaction.Behaviors>
+									<!--<i:Interaction.Behaviors>
 										<core:EventTriggerBehavior EventName="ItemClick">
 											<core:InvokeCommandAction Command="{Binding ItemClickCommand}"/>
 										</core:EventTriggerBehavior>
-									</i:Interaction.Behaviors>
+									</i:Interaction.Behaviors>-->
 
 									<ListView.ItemTemplate>
 										<DataTemplate x:DataType="local:PostPoolItem">
@@ -250,7 +250,7 @@
 								<TextBlock Text="Not Found" HorizontalAlignment="Center" Visibility="{Binding ParentPost,Converter={StaticResource NullToVisibility}}"/>
 
 								<StackPanel Orientation="Horizontal" Visibility="{Binding ParentPost,Converter={StaticResource NotNullToVisibility}}">
-									<controls:ImageViewItem Post="{Binding ParentPost}" Height="230" Width="230" Margin="5" Command="{Binding RelationsCommand}"/>
+									<controls:ImageViewItem Post="{Binding ParentPost}" Height="230" Width="230" Margin="5" Command="{Binding RelationsCommand}" UseImageSize="False"/>
 								</StackPanel>
 
 							</Grid>
@@ -273,7 +273,7 @@
 										<DataTemplate x:DataType="e621:E621Post">
 											<Grid>
 												<TextBlock x:Name="proxy" helpers:AncestorSource.AncestorType="GridView" />
-												<controls:ImageViewItem Post="{Binding}" Height="230" Width="230" Margin="5" ImageClick="ImageViewItem_ImageClick"/>
+												<controls:ImageViewItem Post="{Binding}" Height="230" Width="230" Margin="5" ImageClick="ImageViewItem_ImageClick" UseImageSize="False"/>
 											</Grid>
 										</DataTemplate>
 									</GridView.ItemTemplate>
