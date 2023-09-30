@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Foundation;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -97,7 +98,9 @@ namespace YiffBrowser.Views.Controls {
 		);
 
 		private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-
+			if (d is ImageViewItem view) {
+				view.ViewModel.IsSelected = (bool)e.NewValue;
+			}
 		}
 
 		public ImageViewItem() {
@@ -162,6 +165,9 @@ namespace YiffBrowser.Views.Controls {
 		private void Image_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
 			if (IsInSelectionMode?.Invoke() ?? false) {
 				ButtonBorder.BorderThickness = new Thickness(!IsSelected ? 2 : 0);
+				ImageScaleXAnimation.To = 1.05;
+				ImageScaleYAnimation.To = 1.05;
+				ImageScaleStoryboard.Begin();
 			} else {
 				ImageScaleXAnimation.To = 1.05;
 				ImageScaleYAnimation.To = 1.05;
@@ -200,6 +206,24 @@ namespace YiffBrowser.Views.Controls {
 		private bool isSampleLoading = false;
 		private double sampleLoadingProgress = 0;
 		private bool sampleLoadingIsIndeterminate = true;
+		private bool isSelected;
+		private Brush isSelectedBrush;
+
+		public bool IsSelected {
+			get => isSelected;
+			set => SetProperty(ref isSelected, value, () => {
+				if (value) {
+					IsSelectedBrush = new SolidColorBrush((Color)Application.Current.Resources["SystemAccentColor"]);
+				} else {
+					IsSelectedBrush = (Brush)Application.Current.Resources["CardBackgroundFillColorDefaultBrush"];
+				}
+			});
+		}
+
+		public Brush IsSelectedBrush {
+			get => isSelectedBrush;
+			set => SetProperty(ref isSelectedBrush, value);
+		}
 
 		public string PreviewImageURL {
 			get => previewImageURL;
@@ -270,6 +294,7 @@ namespace YiffBrowser.Views.Controls {
 		}
 
 		public ImageViewItemViewModel() {
+			IsSelected = false;
 			LoopAssign();
 		}
 

@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="using:Microsoft.Xaml.Interactivity" 
-	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+	xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
 	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
 	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
@@ -170,11 +170,11 @@
 			</Grid>
 
 
-			<Grid Grid.Column="1" d:Visibility="Collapsed" Visibility="{Binding ChooseMultiPages,Converter={StaticResource BoolToVisibility}}">
+			<Grid Grid.Column="1" d:Visibility="Visible" Visibility="{Binding ChooseMultiPages,Converter={StaticResource BoolToVisibility}}">
 				<controls:RangeSelector x:Name="PageRangeSelector" RangeStart="{Binding PageStart,Mode=TwoWay}" RangeEnd="{Binding PageEnd,Mode=TwoWay}" Maximum="10" Minimum="1" VerticalAlignment="Center" Margin="5"/>
 			</Grid>
 
-			<Grid Grid.Column="1" d:Visibility="Visible" Visibility="{Binding ChooseMultiPages,Converter={StaticResource BoolToVisibilityRe}}">
+			<Grid Grid.Column="1" d:Visibility="Collapsed" Visibility="{Binding ChooseMultiPages,Converter={StaticResource BoolToVisibilityRe}}">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="auto"/>
 					<ColumnDefinition Width="*"/>

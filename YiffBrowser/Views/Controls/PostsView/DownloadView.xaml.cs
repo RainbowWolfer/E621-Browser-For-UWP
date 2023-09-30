@@ -234,10 +234,7 @@ namespace YiffBrowser.Views.Controls.PostsView {
 		public string RootPath { get; private set; }
 
 		public DownloadViewModel() {
-			if (Local.DownloadFolder == null) {
-				throw new ArgumentNullException("Local.DownloadFolder");
-			}
-
+			
 		}
 
 		public bool IsLoading {

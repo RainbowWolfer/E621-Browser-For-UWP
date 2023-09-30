@@ -91,7 +91,6 @@
 		</Style>
 
 		<converters:BoolToCornerRadiusConverter x:Key="IsSelectedCornerRadius" TrueValue="10" FalseValue="10,10,0,0"/>
-		<converters:BoolToBrushConverter x:Key="IsSelectedBrush" TrueValue="{StaticResource SystemAccentColor}" FalseValue="{StaticResource CardBackgroundFillColorDefaultBrush}"/>
 		<converters:BoolToThicknessConverter x:Key="IsSelectedThickness" TrueValue="2" FalseValue="0"/>
 
 		<ScaleTransform x:Key="ImageScale" x:Name="ImageScale"/>
@@ -117,7 +116,7 @@
 			</core:EventTriggerBehavior>
 		</i:Interaction.Behaviors>
 
-		<Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" CornerRadius="10" Style="{StaticResource MyButtonStyle}" Click="Button_Click" Background="{x:Bind IsSelected,Mode=OneWay,Converter={StaticResource IsSelectedBrush}}" BorderThickness="{x:Bind IsSelected,Mode=OneWay,Converter={StaticResource IsSelectedThickness}}">
+		<Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" CornerRadius="10" Style="{StaticResource MyButtonStyle}" Click="Button_Click" Background="{Binding IsSelectedBrush}" BorderThickness="{x:Bind IsSelected,Mode=OneWay,Converter={StaticResource IsSelectedThickness}}">
 			<Border x:Name="ButtonBorder" CornerRadius="10" BorderBrush="{StaticResource SystemAccentColor}" BorderThickness="0">
 				<Grid>
 
@@ -188,7 +187,7 @@
 						</TextBlock>
 					</Border>
 
-					<Grid VerticalAlignment="Bottom" Height="25" Background="{x:Bind IsSelected,Mode=OneWay,Converter={StaticResource IsSelectedBrush}}" Grid.Row="1" Padding="20,0,20,0" Visibility="{x:Bind ShowPostInfo,Mode=OneWay,Converter={StaticResource BoolToVisibility}}">
+					<Grid VerticalAlignment="Bottom" Height="25" Background="{Binding IsSelectedBrush}" Grid.Row="1" Padding="20,0,20,0" Visibility="{x:Bind ShowPostInfo,Mode=OneWay,Converter={StaticResource BoolToVisibility}}">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="*"/>
