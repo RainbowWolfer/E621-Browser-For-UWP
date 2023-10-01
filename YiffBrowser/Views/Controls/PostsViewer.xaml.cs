@@ -506,7 +506,7 @@ namespace YiffBrowser.Views.Controls {
 				return;
 			}
 
-			DownloadView view = new(new E621Post[] { post }, true, $"Download #{post.ID}");
+			DownloadView view = new(post);
 			ContentDialogResult dialogResult = await view.CreateContentDialog(DownloadView.contentDialogParameters).ShowDialogAsync();
 
 			if (dialogResult != ContentDialogResult.Primary) {
@@ -536,7 +536,7 @@ namespace YiffBrowser.Views.Controls {
 				posts = RequestGetAllItems().Select(x => x.Post).ToArray();
 			}
 
-			DownloadView view = new(posts, IsInSelectionMode);
+			DownloadView view = new(posts, IsInSelectionMode, PaginatorViewModel);
 			ContentDialogResult dialogResult = await view.CreateContentDialog(DownloadView.contentDialogParameters).ShowDialogAsync();
 
 			if (dialogResult != ContentDialogResult.Primary) {
@@ -549,6 +549,13 @@ namespace YiffBrowser.Views.Controls {
 			}
 
 			if (result.MultiplePages) {
+				//get all page stuff
+				for (int i = result.FromPage; i <= result.ToPage; i++) {
+					await E621API.GetPostsByTagsAsync(new E621PostParameters() {
+						Page = i,
+						Tags = Tags,
+					});
+				}
 
 			} else {
 				string folderName = result.FolderName;

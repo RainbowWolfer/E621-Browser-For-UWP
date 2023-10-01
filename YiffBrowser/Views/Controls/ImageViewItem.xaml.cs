@@ -211,13 +211,14 @@ namespace YiffBrowser.Views.Controls {
 
 		public bool IsSelected {
 			get => isSelected;
-			set => SetProperty(ref isSelected, value, () => {
+			set {
+				SetProperty(ref isSelected, value);
 				if (value) {
 					IsSelectedBrush = new SolidColorBrush((Color)Application.Current.Resources["SystemAccentColor"]);
 				} else {
 					IsSelectedBrush = (Brush)Application.Current.Resources["CardBackgroundFillColorDefaultBrush"];
 				}
-			});
+			}
 		}
 
 		public Brush IsSelectedBrush {

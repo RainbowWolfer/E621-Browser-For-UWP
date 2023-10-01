@@ -6,7 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    mc:Ignorable="d" d:RequestedTheme="Dark">
+    mc:Ignorable="d" 
+    d:RequestedTheme="Dark">
 
     <Grid>
 
@@ -14,7 +15,7 @@
 
 			<muxc:ProgressRing Height="80" Width="80" Value="{x:Bind Progress,Mode=OneWay}" IsActive="True" IsIndeterminate="{x:Bind IsIndeterminate,Mode=OneWay}" Margin="5"/>
 
-			<TextBlock Text="{x:Bind Text,Mode=OneWay}" TextAlignment="Center" FontSize="18" Margin="5" Visibility="{x:Bind Text,Mode=OneWay,Converter={StaticResource ArrayNotEmptyToVisibility}}"/>
+			<TextBlock d:Text="Loading" Text="{x:Bind Text,Mode=OneWay}" TextAlignment="Center" FontSize="18" Margin="5" Visibility="{x:Bind Text,Mode=OneWay,Converter={StaticResource ArrayNotEmptyToVisibility}}"/>
 
 			<Button Height="0" Width="0" AllowFocusWhenDisabled="True" IsEnabled="False" Opacity="0"/>
 

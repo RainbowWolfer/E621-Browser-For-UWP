@@ -140,7 +140,7 @@
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 
-			<ToggleButton VerticalAlignment="Stretch" Margin="5,0" d:Visibility="Visible" IsChecked="{Binding ChooseMultiPages,Mode=TwoWay}" Visibility="{Binding IsInSelectionMode,Converter={StaticResource BoolToVisibilityRe}}">
+			<ToggleButton VerticalAlignment="Stretch" Margin="5,0" d:Visibility="Visible" IsChecked="{Binding ChooseMultiPages,Mode=TwoWay}" Visibility="{Binding CustomMessage,Converter={StaticResource ArrayEmptyToVisibility}}">
 				<Grid MinWidth="160" HorizontalAlignment="Center">
 					<StackPanel Orientation="Horizontal" d:Visibility="Collapsed" Visibility="{Binding ChooseMultiPages,Converter={StaticResource BoolToVisibilityRe}}">
 						<FontIcon Glyph="&#xE160;"/>
@@ -160,43 +160,88 @@
 				</Grid>
 			</ToggleButton>
 
-			<Grid Margin="5,0" d:Visibility="Collapsed" Visibility="{Binding IsInSelectionMode,Converter={StaticResource BoolToVisibility}}">
+			<Grid Margin="5,0" d:Visibility="Visible" Visibility="{Binding CustomMessage,Converter={StaticResource ArrayNotEmptyToVisibility}}">
 				<ToggleButton MinHeight="0" VerticalAlignment="Stretch" IsChecked="True" IsHitTestVisible="False">
 					<StackPanel Orientation="Horizontal" Padding="10,0">
 						<FontIcon Glyph="&#xE152;"/>
-						<TextBlock Text="{Binding SpecialMessageInSelectionMode}" d:Text="In Selection Mode" Margin="10,0" VerticalAlignment="Center"/>
+						<TextBlock Text="{Binding CustomMessage}" d:Text="In Selection Mode" Margin="10,0" VerticalAlignment="Center"/>
 					</StackPanel>
 				</ToggleButton>
 			</Grid>
 
+			<Grid Grid.Column="1" Visibility="{Binding SinglePostMode,Converter={StaticResource BoolToVisibilityRe}}" d:Visibility="Collapsed">
 
-			<Grid Grid.Column="1" d:Visibility="Visible" Visibility="{Binding ChooseMultiPages,Converter={StaticResource BoolToVisibility}}">
-				<controls:RangeSelector x:Name="PageRangeSelector" RangeStart="{Binding PageStart,Mode=TwoWay}" RangeEnd="{Binding PageEnd,Mode=TwoWay}" Maximum="10" Minimum="1" VerticalAlignment="Center" Margin="5"/>
-			</Grid>
+				<Grid d:Visibility="Collapsed" Visibility="{Binding ChooseMultiPages,Converter={StaticResource BoolToVisibility}}">
+					<controls:RangeSelector x:Name="PageRangeSelector" RangeStart="{Binding PageStart,Mode=TwoWay}" RangeEnd="{Binding PageEnd,Mode=TwoWay}" Maximum="{Binding PageMax}" Minimum="1" VerticalAlignment="Center" Margin="5,0"/>
+				</Grid>
 
-			<Grid Grid.Column="1" d:Visibility="Collapsed" Visibility="{Binding ChooseMultiPages,Converter={StaticResource BoolToVisibilityRe}}">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="auto"/>
-					<ColumnDefinition Width="*"/>
-				</Grid.ColumnDefinitions>
+				<Grid d:Visibility="Visible" Visibility="{Binding ChooseMultiPages,Converter={StaticResource BoolToVisibilityRe}}">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="auto"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
 
-				<StackPanel Orientation="Horizontal" BorderBrush="Gray" BorderThickness="2" CornerRadius="4" Padding="10,5" Grid.Column="0" Margin="5,0">
-					<FontIcon Glyph="&#xE158;"/>
-					<TextBlock Margin="10,0,0,0" VerticalAlignment="Center">
+					<StackPanel Orientation="Horizontal" BorderBrush="Gray" BorderThickness="2" CornerRadius="4" Padding="10,5" Grid.Column="0" Margin="5,0">
+						<FontIcon Glyph="&#xE158;"/>
+						<TextBlock Margin="10,0,0,0" VerticalAlignment="Center">
 						<Run Text="Total Files Count :"/>
 						<Run Text="{Binding TotalFileCount}" d:Text="102"/>
-					</TextBlock>
-				</StackPanel>
+						</TextBlock>
+					</StackPanel>
 
-				<StackPanel Orientation="Horizontal" BorderBrush="Gray" BorderThickness="2" CornerRadius="4" Padding="10,5" Grid.Column="1" Margin="5,0">
-					<FontIcon Glyph="&#xE7C3;"/>
-					<TextBlock Margin="10,0,0,0" VerticalAlignment="Center">
+					<StackPanel Orientation="Horizontal" BorderBrush="Gray" BorderThickness="2" CornerRadius="4" Padding="10,5" Grid.Column="1" Margin="5,0">
+						<FontIcon Glyph="&#xE7C3;"/>
+						<TextBlock Margin="10,0,0,0" VerticalAlignment="Center">
 						<Run Text="Total Size :"/>
 						<Run Text="{Binding TotalFileSize,Converter={StaticResource NumberToKB},ConverterParameter=' '}"/>
-					</TextBlock>
-				</StackPanel>
+						</TextBlock>
+					</StackPanel>
+
+				</Grid>
 
 			</Grid>
+
+			<Grid Grid.Column="1" Visibility="{Binding SinglePostMode,Converter={StaticResource BoolToVisibility}}" d:Visibility="Visible">
+
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="auto"/>
+					</Grid.ColumnDefinitions>
+
+					<Border x:Name="SinlgePostBorder" CornerRadius="4" BorderBrush="Gray" ToolTipService.Placement="Right" d:BorderThickness="2">
+
+						<i:Interaction.Behaviors>
+							<core:DataTriggerBehavior Binding="{Binding SamplePreviewLoading}" Value="True">
+								<core:ChangePropertyAction PropertyName="BorderThickness" Value="2"/>
+							</core:DataTriggerBehavior>
+							<core:DataTriggerBehavior Binding="{Binding SamplePreviewLoading}" Value="False">
+								<core:ChangePropertyAction PropertyName="BorderThickness" Value="0"/>
+							</core:DataTriggerBehavior>
+						</i:Interaction.Behaviors>
+
+						<Border.Background>
+							<ImageBrush ImageSource="{Binding SampleURL}" Stretch="UniformToFill" ImageOpened="ImageBrush_ImageOpened"/>
+						</Border.Background>
+
+						<Grid Visibility="{Binding SamplePreviewLoading,Converter={StaticResource BoolToVisibility}}">
+							<muxc:ProgressBar IsIndeterminate="True" MaxWidth="100"/>
+						</Grid>
+
+					</Border>
+
+					<StackPanel Orientation="Horizontal" BorderBrush="Gray" BorderThickness="2" CornerRadius="4" Padding="10,5" Grid.Column="1" Margin="5,0" MinWidth="150">
+						<FontIcon Glyph="&#xE7C3;"/>
+						<TextBlock Margin="10,0,0,0" VerticalAlignment="Center">
+							<Run Text="Size :"/>
+							<Run Text="{Binding TotalFileSize,Converter={StaticResource NumberToKB},ConverterParameter=' '}"/>
+						</TextBlock>
+					</StackPanel>
+
+				</Grid>
+
+			</Grid>
+
 
 		</Grid>
 

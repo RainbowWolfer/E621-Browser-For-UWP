@@ -14,11 +14,13 @@ using Windows.System;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using YiffBrowser.Helpers;
 using YiffBrowser.Interfaces;
 using YiffBrowser.Models;
 using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Locals;
+using YiffBrowser.Views.Controls.CustomControls;
 
 namespace YiffBrowser.Views.Controls.PostsView {
 	public sealed partial class DownloadView : UserControl, IContentDialogView {
@@ -33,12 +35,24 @@ namespace YiffBrowser.Views.Controls.PostsView {
 			MaxWidth = ContentDialogParameters.DEFAULT_MAX_WIDTH,
 		};
 
-		public DownloadView(E621Post[] posts, bool isInSelectionMode, string specialMessage = null) {
-			this.InitializeComponent();
+		private DownloadView() {
+			InitializeComponent();
 			ViewModel.RequestFocusCreateNewFolderTextBox += ViewModel_RequestFocusCreateNewFolderTextBox;
+		}
+
+		public DownloadView(E621Post[] posts, bool isInSelectionMode, PaginatorViewModel paginatorViewModel) : this() {
 			ViewModel.Posts = posts;
-			ViewModel.IsInSelectionMode = isInSelectionMode;
-			ViewModel.SpecialMessageInSelectionMode = specialMessage;
+			ViewModel.Paginator = paginatorViewModel;
+			ViewModel.CustomMessage = isInSelectionMode ? "In Selection Mode" : null;
+			ViewModel.SinglePostMode = false;
+		}
+
+		public DownloadView(E621Post singlePost) : this() {
+			ViewModel.Posts = new E621Post[1] { singlePost };
+			ViewModel.CustomMessage = $"Post #{singlePost.ID}";
+			ViewModel.SinglePostMode = true;
+			ViewModel.SamplePreviewLoading = true;
+			ViewModel.SampleURL = singlePost.Sample?.URL;
 		}
 
 		public ContentDialog Dialog {
@@ -58,7 +72,7 @@ namespace YiffBrowser.Views.Controls.PostsView {
 
 				dialog.SecondaryButtonClick += async (s, e) => {
 					string path = Local.DownloadFolder.Path;
-					await Launcher.LaunchFolderAsync(Local.LocalFolder, new FolderLauncherOptions() {
+					await Launcher.LaunchFolderAsync(Local.DownloadFolder, new FolderLauncherOptions() {
 						DesiredRemainingView = ViewSizePreference.UseMore,
 					});
 				};
@@ -71,6 +85,13 @@ namespace YiffBrowser.Views.Controls.PostsView {
 		}
 
 		public DownloadViewResult GetResult() => ViewModel.GetResult();
+
+		private void ImageBrush_ImageOpened(object sender, RoutedEventArgs e) {
+			ViewModel.SamplePreviewLoading = false;
+			ToolTipService.SetToolTip(SinlgePostBorder, new Image() {
+				Source = (sender as ImageBrush).ImageSource,
+			});
+		}
 	}
 
 	public class DownloadViewResult {
@@ -114,11 +135,15 @@ namespace YiffBrowser.Views.Controls.PostsView {
 		private E621Post[] posts;
 		private int totalFileCount;
 		private long totalFileSize;
-		private bool chooseMultiPages;
-		private bool isInSelectionMode;
+		private bool chooseMultiPages = false;
 		private int pageStart;
 		private int pageEnd;
-		private string specialMessageInSelectionMode = null;
+		private int pageMax;
+		private string customMessage = null;
+		private bool singlePostMode = false;
+		private bool samplePreviewLoading = false;
+		private string sampleURL = null;
+		private PaginatorViewModel paginator = null;
 
 		public ContentDialog Dialog { get; set; }
 
@@ -234,7 +259,7 @@ namespace YiffBrowser.Views.Controls.PostsView {
 		public string RootPath { get; private set; }
 
 		public DownloadViewModel() {
-			
+
 		}
 
 		public bool IsLoading {
@@ -266,6 +291,19 @@ namespace YiffBrowser.Views.Controls.PostsView {
 
 		public ICommand GotFocusCommand => new DelegateCommand(GotFocus);
 
+		public PaginatorViewModel Paginator {
+			get => paginator;
+			set => SetProperty(ref paginator, value, () => {
+				if (value == null) {
+					return;
+				}
+
+				PageMax = value.Paginator.GetMaxPage();
+				PageStart = value.Paginator.CurrentPage;
+				PageEnd = PageMax;
+			});
+		}
+
 		public E621Post[] Posts {
 			get => posts;
 			set => SetProperty(ref posts, value, () => {
@@ -276,7 +314,6 @@ namespace YiffBrowser.Views.Controls.PostsView {
 					size += s;
 				}
 				TotalFileSize = size;
-				//TotalFileSize = Posts.Select(x => x.File?.Size ?? 0).Sum();
 			});
 		}
 
@@ -310,26 +347,44 @@ namespace YiffBrowser.Views.Controls.PostsView {
 			return result;
 		}
 
-		public string SpecialMessageInSelectionMode {
-			get => specialMessageInSelectionMode ?? "In Selection Mode";
-			set => SetProperty(ref specialMessageInSelectionMode, value);
+		public bool SinglePostMode {
+			get => singlePostMode;
+			set => SetProperty(ref singlePostMode, value);
 		}
 
-		public bool IsInSelectionMode {
-			get => isInSelectionMode;
-			set => SetProperty(ref isInSelectionMode, value);
+		public string CustomMessage {
+			get => customMessage;
+			set => SetProperty(ref customMessage, value);
 		}
+
+		public bool SamplePreviewLoading {
+			get => samplePreviewLoading;
+			set => SetProperty(ref samplePreviewLoading, value);
+		}
+
+		public string SampleURL {
+			get => sampleURL;
+			set => SetProperty(ref sampleURL, value);
+		}
+
 		public bool ChooseMultiPages {
 			get => chooseMultiPages;
 			set => SetProperty(ref chooseMultiPages, value);
 		}
+
 		public int PageStart {
 			get => pageStart;
 			set => SetProperty(ref pageStart, value);
 		}
+
 		public int PageEnd {
 			get => pageEnd;
 			set => SetProperty(ref pageEnd, value);
+		}
+
+		public int PageMax {
+			get => pageMax;
+			set => SetProperty(ref pageMax, value);
 		}
 
 		public int TotalFileCount {
