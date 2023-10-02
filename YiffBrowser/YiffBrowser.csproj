@@ -195,6 +195,9 @@
     <Compile Include="Views\Controls\CustomToggleSplitButton.xaml.cs">
       <DependentUpon>CustomToggleSplitButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\DownloadViews\GettingPostsByPageLoadingView.xaml.cs">
+      <DependentUpon>GettingPostsByPageLoadingView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\ImagesSlideShowView.xaml.cs">
       <DependentUpon>ImagesSlideShowView.xaml</DependentUpon>
     </Compile>
@@ -343,6 +346,10 @@
     <Page Include="Views\Controls\CustomToggleSplitButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\DownloadViews\GettingPostsByPageLoadingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\ImagesSlideShowView.xaml">
       <Generator>MSBuild:Compile</Generator>

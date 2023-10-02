@@ -17,7 +17,7 @@ namespace YiffBrowser.Services.Networks {
 		public static int GetPostsPerPageCount() => Local.Settings?.E621PageLimitCount ?? 75;
 
 		#region Posts
-		public static async ValueTask<E621Post[]> GetPostsByTagsAsync(E621PostParameters parameters) {
+		public static async ValueTask<E621Post[]> GetPostsByTagsAsync(E621PostParameters parameters, CancellationToken? token = null) {
 			if (parameters.Page <= 0) {
 				parameters.Page = 1;
 			}
@@ -29,7 +29,7 @@ namespace YiffBrowser.Services.Networks {
 				url += string.Join("+", tags);
 			}
 
-			HttpResult<string> result = await NetCode.ReadURLAsync(url);
+			HttpResult<string> result = await NetCode.ReadURLAsync(url, token);
 
 			if (result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<E621PostsRoot>(result.Content)?.Posts.ToArray() ?? Array.Empty<E621Post>();

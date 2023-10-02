@@ -1,0 +1,49 @@
+﻿<UserControl
+    x:Class="YiffBrowser.Views.Controls.DownloadViews.GettingPostsByPageLoadingView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:customcontrols="using:YiffBrowser.Views.Controls.CustomControls" xmlns:local="using:YiffBrowser.Views.Controls.DownloadViews"
+	mc:Ignorable="d"
+    Height="120"
+    Width="320"
+    d:RequestedTheme="Dark">
+
+	<Grid>
+		<Grid.DataContext>
+			<local:GettingPostsByPageLoadingViewModel x:Name="ViewModel"/>
+		</Grid.DataContext>
+		<StackPanel VerticalAlignment="Center">
+			<StackPanel Orientation="Horizontal">
+				<muxc:ProgressRing x:Name="LoadingRing" Height="60" Width="60"/>
+				<StackPanel Margin="20,0" VerticalAlignment="Center">
+					<TextBlock x:Name="TitleText" Text="Loading Posts" FontSize="18" FontWeight="SemiBold"/>
+					<TextBlock x:Name="DetailText">
+						<Run Text="Getting Posts From Page"/>
+						<Run Text="{x:Bind CurrentPage,Mode=OneWay}" d:Text="1"/>
+						<Run Text="("/>
+						<Run Text="{x:Bind FromPage,Mode=OneWay}" d:Text="20"/>
+						<Run Text="~"/>
+						<Run Text="{x:Bind ToPage,Mode=OneWay}" d:Text="100"/>
+						<Run Text=")"/>
+					</TextBlock>
+					<TextBlock>
+						<Run Text="Total Posts Count :"/>
+						<Run Text="{Binding Count}" d:Text="123231"/>
+					</TextBlock>
+					<TextBlock>
+						<Run Text="Estimated Size :"/>
+						<Run Text="{Binding Size,Converter={StaticResource NumberToKB},ConverterParameter=1}" d:Text="123KB"/>
+					</TextBlock>
+				</StackPanel>
+			</StackPanel>
+
+			<Button x:Name="CancelButton" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Stretch" Margin="0,10" Click="CancelButton_Click">
+				<customcontrols:IconTextHorizontal Text="Cancel" Glyph="&#xE10A;"/>
+			</Button>
+
+		</StackPanel>
+	</Grid>
+</UserControl>

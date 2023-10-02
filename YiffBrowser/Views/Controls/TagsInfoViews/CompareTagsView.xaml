@@ -26,7 +26,7 @@
 					<ItemsPanelTemplate>
 						<StackPanel Background="Transparent" Orientation="Horizontal"/>
 					</ItemsPanelTemplate>
-				</ListView.ItemsPanel> ew.ItemsPanel>
+				</ListView.ItemsPanel>
 
 				<ListView.ItemContainerStyle>
 					<Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemExpanded}">

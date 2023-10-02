@@ -132,8 +132,9 @@ namespace YiffBrowser.Helpers {
 		}
 
 		public static string FileSizeToKB(this long size, bool gap = false) {
-			string kb = $"{size / 1000}";
-			string output = Regex.Replace(kb, ".{3}(?!.)", ",$&").Trim(',');
+			string output = (size / 1024.0).ToString("#,##0");
+			//string kb = $"{size / 1000}";
+			//string output = Regex.Replace(kb, ".{3}(?!.)", ",$&").Trim(',');
 			if (gap) {
 				return $"{output} KB";
 			} else {

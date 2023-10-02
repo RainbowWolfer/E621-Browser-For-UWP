@@ -18,6 +18,7 @@ using YiffBrowser.Services.Downloads;
 using YiffBrowser.Services.Locals;
 using YiffBrowser.Services.Networks;
 using YiffBrowser.Views.Controls.CustomControls;
+using YiffBrowser.Views.Controls.DownloadViews;
 using YiffBrowser.Views.Controls.PictureViews;
 using YiffBrowser.Views.Controls.PostsView;
 using YiffBrowser.Views.Controls.TagsInfoViews;
@@ -578,21 +579,54 @@ namespace YiffBrowser.Views.Controls {
 			if (result == null) {
 				return;
 			}
+			string folderName = result.FolderName;
+
+			bool cancel = false;
+			CancellationTokenSource cts = new();
 
 			if (result.MultiplePages) {
-				YiffHomePage.LoaderControl.Set("!!!!");
+				GettingPostsByPageLoadingView pageView = new() {
+					CurrentPage = 0,
+					FromPage = result.FromPage,
+					ToPage = result.ToPage,
+					CancelCommand = new DelegateCommand(() => {
+						cancel = true;
+						cts.Cancel();
+						YiffHomePage.LoaderControl.HideDialog();
+					}),
+				};
+
+				YiffHomePage.LoaderControl.Set(pageView, new ContentDialogParameters() {
+					MinHeight = 0,
+				});
+
+				List<E621Post> list = new();
+				pageView.Posts = list;
 				await YiffHomePage.LoaderControl.Start(async () => {
 					for (int i = result.FromPage; i <= result.ToPage; i++) {
-						await E621API.GetPostsByTagsAsync(new E621PostParameters() {
+						if (cts.Token.IsCancellationRequested) {
+							break;
+						}
+						pageView.CurrentPage = i;
+						pageView.UpdateCountAndSize();
+						E621Post[] posts = await E621API.GetPostsByTagsAsync(new E621PostParameters() {
 							Page = i,
 							Tags = Tags,
-						});
+						}, cts.Token);
+						list.AddRange(posts ?? Array.Empty<E621Post>());
 					}
 				});
 
+				cts.Dispose();
+				if (cancel) {
+					return;
+				}
+
+				foreach (E621Post post in list) {
+					await DownloadManager.RegisterDownload(post, folderName);
+				}
 
 			} else {
-				string folderName = result.FolderName;
 
 				foreach (E621Post post in posts) {
 					await DownloadManager.RegisterDownload(post, folderName);
