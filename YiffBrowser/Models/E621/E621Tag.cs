@@ -1,24 +1,37 @@
 ﻿using Microsoft.Toolkit.Uwp.Helpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Windows.UI;
+using YiffBrowser.Helpers;
 
 namespace YiffBrowser.Models.E621 {
 	public class E621Tag {
-		public int id;
-		public string name;
-		public int post_count;
-		public string related_tags;
-		public DateTime related_tags_updated_at;
-		public int category;
-		public bool is_locked;
-		public DateTime created_at;
-		public DateTime updated_at;
+		[JsonProperty("id")]
+		public int ID { get; set; }
+		[JsonProperty("name")]
+		public string Name { get; set; }
+		[JsonProperty("post_count")]
+		public int PostCount { get; set; }
+		[JsonProperty("related_tags")]
+		public string RelatedTags { get; set; }
+		[JsonProperty("related_tags_updated_at")]
+		public DateTime RelatedTagsUpdatedAt { get; set; }
+		[JsonProperty("category")]
+		public int Category { get; set; }
+		[JsonProperty("is_locked")]
+		public bool IsLocked { get; set; }
+		[JsonProperty("created_at")]
+		public DateTime CreatedAt { get; set; }
+		[JsonProperty("updated_at")]
+		public DateTime UpdatedAt { get; set; }
+
+		public string PostCountInK => PostCount.NumberToK();
 
 		public static Dictionary<string, E621Tag> Pool { get; } = new();
 
 		public override string ToString() {
-			return $"E621Tags:({id})({name})({related_tags})({post_count})({category})";
+			return $"E621Tags:({ID})({Name})({RelatedTags})({PostCount})({Category})";
 		}
 
 		public static string GetCategory(int category) {
@@ -36,7 +49,7 @@ namespace YiffBrowser.Models.E621 {
 			};
 		}
 
-		public static Color GetCatrgoryColor(E621TagCategory category) {
+		public static Color GetCategoryColor(E621TagCategory category) {
 			bool isDarkTheme = App.IsDarkTheme();
 			return category switch {
 				E621TagCategory.Artists => (isDarkTheme ? "#F2AC08" : "#E39B00").ToColor(),
@@ -53,8 +66,8 @@ namespace YiffBrowser.Models.E621 {
 			};
 		}
 
-		public static Color GetCatrgoryColor(int category) {
-			return GetCatrgoryColor((E621TagCategory)category);
+		public static Color GetCategoryColor(int category) {
+			return GetCategoryColor((E621TagCategory)category);
 		}
 	}
 

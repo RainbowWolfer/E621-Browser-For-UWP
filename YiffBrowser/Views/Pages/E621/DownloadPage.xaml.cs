@@ -113,7 +113,7 @@ namespace YiffBrowser.Views.Pages.E621 {
 				PrimaryText = "Yes",
 				CloseText = "No",
 				DefaultButton = ContentDialogButton.Close,
-			}).ShowDialogAsync() != ContentDialogResult.Primary) {
+			}).ShowAsyncSafe() != ContentDialogResult.Primary) {
 				return;
 			}
 

@@ -105,7 +105,7 @@ namespace YiffBrowser.Views.Controls.SearchViews {
 				ToName = AutoComplete.name;
 			}
 
-			MainColor = E621Tag.GetCatrgoryColor(AutoComplete.category);
+			MainColor = E621Tag.GetCategoryColor(AutoComplete.category);
 		}
 
 	}

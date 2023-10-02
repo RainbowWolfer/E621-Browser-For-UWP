@@ -18,9 +18,11 @@ namespace YiffBrowser.Views.Controls {
 	public sealed partial class ImageViewItem : UserControl {
 		public event TypedEventHandler<ImageViewItem, ImageViewItemViewModel> ImageClick;
 		public event TypedEventHandler<ImageViewItem, ImageViewItemViewModel> SelectThis;
+		public event TypedEventHandler<ImageViewItem, ImageViewItemViewModel> CompareTags;
 		public event TypedEventHandler<ImageViewItem, ImageViewItemViewModel> DownloadThis;
 
-		public Func<bool> IsInSelectionMode { get; set; }
+		//public Func<bool> IsInSelectionMode { get; set; }
+		//public Func<int> SelectedCount { get; set; }
 
 		public event Action OnPostDeleted;
 
@@ -137,6 +139,10 @@ namespace YiffBrowser.Views.Controls {
 			DownloadThis?.Invoke(this, ViewModel);
 		}
 
+		private void CompareTagsItem_Click(object sender, RoutedEventArgs e) {
+			CompareTags?.Invoke(this, ViewModel);
+		}
+
 		private void SampleImageBrush_ImageOpened(object sender, RoutedEventArgs e) {
 			BitmapImage bitmap = (SampleImageBrush.ImageSource as BitmapImage);
 			bitmap.Stop();
@@ -163,7 +169,7 @@ namespace YiffBrowser.Views.Controls {
 		}
 
 		private void Image_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
-			if (IsInSelectionMode?.Invoke() ?? false) {
+			if (ViewModel.IsInSelectionMode) {
 				ButtonBorder.BorderThickness = new Thickness(!IsSelected ? 2 : 0);
 				ImageScaleXAnimation.To = 1.05;
 				ImageScaleYAnimation.To = 1.05;
@@ -190,6 +196,12 @@ namespace YiffBrowser.Views.Controls {
 			ImageScale.CenterX = ContentGrid.ActualWidth / 2;
 			ImageScale.CenterY = ContentGrid.ActualHeight / 2;
 		}
+
+		public void SetSelectionInfo(bool isInSelectedMode, int selectedCount) {
+			ViewModel.IsInSelectionMode = isInSelectedMode;
+			ViewModel.SelectedCount = selectedCount;
+		}
+
 	}
 
 	public class ImageViewItemViewModel : BindableBase {
@@ -208,6 +220,8 @@ namespace YiffBrowser.Views.Controls {
 		private bool sampleLoadingIsIndeterminate = true;
 		private bool isSelected;
 		private Brush isSelectedBrush;
+		private bool isInSelectionMode;
+		private int selectedCount;
 
 		public bool IsSelected {
 			get => isSelected;
@@ -220,6 +234,20 @@ namespace YiffBrowser.Views.Controls {
 				}
 			}
 		}
+
+		public bool IsInSelectionMode {
+			get => isInSelectionMode;
+			set => SetProperty(ref isInSelectionMode, value);
+		}
+
+		public int SelectedCount {
+			get => selectedCount;
+			set => SetProperty(ref selectedCount, value, () => {
+				RaisePropertyChanged(nameof(SelectedMoreThanOne));
+			});
+		}
+
+		public bool SelectedMoreThanOne => SelectedCount > 1;
 
 		public Brush IsSelectedBrush {
 			get => isSelectedBrush;

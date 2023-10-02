@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Locals;
-using YiffBrowser.Views.Controls.CustomControls;
 
 namespace YiffBrowser.Services.Networks {
 	public static class E621API {
@@ -18,7 +17,7 @@ namespace YiffBrowser.Services.Networks {
 		public static int GetPostsPerPageCount() => Local.Settings?.E621PageLimitCount ?? 75;
 
 		#region Posts
-		public static async Task<E621Post[]> GetPostsByTagsAsync(E621PostParameters parameters) {
+		public static async ValueTask<E621Post[]> GetPostsByTagsAsync(E621PostParameters parameters) {
 			if (parameters.Page <= 0) {
 				parameters.Page = 1;
 			}
@@ -39,7 +38,7 @@ namespace YiffBrowser.Services.Networks {
 			}
 		}
 
-		public static async Task<E621Post> GetPostAsync(string postID, CancellationToken? token = null) {
+		public static async ValueTask<E621Post> GetPostAsync(string postID, CancellationToken? token = null) {
 			if (postID.IsBlank()) {
 				return null;
 			}
@@ -57,7 +56,7 @@ namespace YiffBrowser.Services.Networks {
 
 		#region Tags
 
-		public static async Task<E621AutoComplete[]> GetE621AutoCompleteAsync(string tag, CancellationToken? token = null) {
+		public static async ValueTask<E621AutoComplete[]> GetE621AutoCompleteAsync(string tag, CancellationToken? token = null) {
 			HttpResult<string> result = await NetCode.ReadURLAsync($"https://{GetHost()}/tags/autocomplete.json?search[name_matches]={tag}", token);
 			if (result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<E621AutoComplete[]>(result.Content);
@@ -66,7 +65,10 @@ namespace YiffBrowser.Services.Networks {
 			}
 		}
 
-		public static async Task<E621Tag> GetE621TagAsync(string tag, CancellationToken? token = null) {
+		public static async ValueTask<E621Tag> GetE621TagAsync(string tag, CancellationToken? token = null) {
+			if (tag.IsBlank()) {
+				return null;
+			}
 			tag = tag.ToLower().Trim();
 
 			if (E621Tag.Pool.TryGetValue(tag, out E621Tag e621Tag)) {
@@ -86,16 +88,16 @@ namespace YiffBrowser.Services.Networks {
 			}
 		}
 
-		public static async Task<E621Wiki> GetE621WikiAsync(string tag, CancellationToken? token = null) {
+		public static async ValueTask<E621Wiki> GetE621WikiAsync(string tag, CancellationToken? token = null) {
 			tag = tag.ToLower().Trim();
 
 			if (E621Wiki.wikiDictionary.ContainsKey(tag)) {
 				return new E621Wiki() {
-					body = E621Wiki.wikiDictionary[tag]
+					Body = E621Wiki.wikiDictionary[tag]
 				};
 			} else if (tag.StartsWith("fav:")) {
 				return new E621Wiki() {
-					body = $"Favorites of \"{tag.Substring(4)}\"",
+					Body = $"Favorites of \"{tag.Substring(4)}\"",
 				};
 			}
 
@@ -115,7 +117,7 @@ namespace YiffBrowser.Services.Networks {
 			}
 		}
 
-		public static async Task<bool> UploadBlacklistTags(string username, string[] tags) {
+		public static async ValueTask<bool> UploadBlacklistTags(string username, string[] tags) {
 			HttpResult<string> result = await NetCode.PutRequestAsync(
 				$"https://{GetHost()}/users/{username}.json",
 				new KeyValuePair<string, string>("user[blacklisted_tags]", string.Join("\n", tags))
@@ -126,7 +128,7 @@ namespace YiffBrowser.Services.Networks {
 		#endregion
 
 		#region Comments
-		public static async Task<E621Comment[]> GetCommentsAsync(int postID, CancellationToken? token = null) {
+		public static async ValueTask<E621Comment[]> GetCommentsAsync(int postID, CancellationToken? token = null) {
 			string url = $"https://{GetHost()}/comments.json?group_by=comment&search[post_id]={postID}";
 			HttpResult<string> result = await NetCode.ReadURLAsync(url, token);
 			if (result?.Content == "{\"comments\":[]}") {
@@ -144,7 +146,7 @@ namespace YiffBrowser.Services.Networks {
 
 		#region Pool
 
-		public static async Task<E621Pool> GetPoolAsync(string id, CancellationToken? token = null) {
+		public static async ValueTask<E621Pool> GetPoolAsync(string id, CancellationToken? token = null) {
 			HttpResult<string> result = await NetCode.ReadURLAsync($"https://{GetHost()}/pools/{id}.json", token);
 			if (result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<E621Pool>(result.Content);
@@ -157,7 +159,7 @@ namespace YiffBrowser.Services.Networks {
 
 		#region Users
 
-		public static async Task<E621User> GetUserAsync(string username, CancellationToken? token = null) {
+		public static async ValueTask<E621User> GetUserAsync(string username, CancellationToken? token = null) {
 			string url = $"https://{GetHost()}/users.json?search[name_matches]={username}";
 			HttpResult<string> result = await NetCode.ReadURLAsync(url, token);
 			if (result.Result == HttpResultType.Success) {
@@ -167,7 +169,7 @@ namespace YiffBrowser.Services.Networks {
 			}
 		}
 
-		public static async Task<E621User> GetUserAsync(int id, CancellationToken? token = null) {
+		public static async ValueTask<E621User> GetUserAsync(int id, CancellationToken? token = null) {
 			string url = $"https://{GetHost()}/users.json?search[id]={id}";
 			HttpResult<string> result = await NetCode.ReadURLAsync(url, token);
 			if (result.Result == HttpResultType.Success) {
@@ -177,19 +179,19 @@ namespace YiffBrowser.Services.Networks {
 			}
 		}
 
-		public static async Task<HttpResult<string>> PostAddFavoriteAsync(int postID, CancellationToken? token = null) {
+		public static async ValueTask<HttpResult<string>> PostAddFavoriteAsync(int postID, CancellationToken? token = null) {
 			string url = $"https://{GetHost()}/favorites.json";
 			return await NetCode.PostRequestAsync(url, new List<KeyValuePair<string, string>>() {
 				new KeyValuePair<string, string>("post_id", postID.ToString())
 			}, token);
 		}
 
-		public static async Task<HttpResult<string>> PostDeleteFavoriteAsync(int postID, CancellationToken? token = null) {
+		public static async ValueTask<HttpResult<string>> PostDeleteFavoriteAsync(int postID, CancellationToken? token = null) {
 			string url = $"https://{GetHost()}/favorites/{postID}.json";
 			return await NetCode.DeleteRequestAsync(url, token);
 		}
 
-		public static async Task<DataResult<E621Vote>> VotePost(int postID, int score, bool no_unvote, CancellationToken? token = null) {
+		public static async ValueTask<DataResult<E621Vote>> VotePost(int postID, int score, bool no_unvote, CancellationToken? token = null) {
 			HttpResult<string> result = await NetCode.PostRequestAsync($"https://{GetHost()}/posts/{postID}/votes.json", new List<KeyValuePair<string, string>> {
 				new KeyValuePair<string, string>("score", $"{score}"),
 				new KeyValuePair<string, string>("no_unvote", $"{no_unvote}"),
@@ -198,7 +200,7 @@ namespace YiffBrowser.Services.Networks {
 		}
 
 		// no up and down
-		public static async Task<DataResult<E621Vote>> VoteComment(int commentID, int score, bool no_unvote, CancellationToken? token = null) {
+		public static async ValueTask<DataResult<E621Vote>> VoteComment(int commentID, int score, bool no_unvote, CancellationToken? token = null) {
 			HttpResult<string> result = await NetCode.PostRequestAsync($"https://{GetHost()}/comments/{commentID}/votes.json", new List<KeyValuePair<string, string>> {
 				new KeyValuePair<string, string>("score", $"{score}"),
 				new KeyValuePair<string, string>("no_unvote", $"{no_unvote}"),
@@ -211,7 +213,7 @@ namespace YiffBrowser.Services.Networks {
 		#region Paginator
 
 
-		public static async Task<DataResult<E621Paginator>> GetPaginatorAsync(string[] tags, int page = 1, CancellationToken? token = null) {
+		public static async ValueTask<DataResult<E621Paginator>> GetPaginatorAsync(string[] tags, int page = 1, CancellationToken? token = null) {
 			string tag = string.Join("+", tags).Trim().ToLower();
 
 			string url = $"https://{GetHost()}/posts?tags={tag}&page={page}";

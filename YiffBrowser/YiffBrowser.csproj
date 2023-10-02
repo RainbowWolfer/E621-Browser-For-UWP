@@ -149,12 +149,16 @@
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Converters\NumberDividedBy2Converter.cs" />
     <Compile Include="Converters\NumberToKBConverter.cs" />
+    <Compile Include="Converters\ObjectToVisibilityConverter.cs" />
+    <Compile Include="Converters\ObjectToVisibilityReConverter.cs" />
     <Compile Include="Converters\SubStringConverter.cs" />
     <Compile Include="Converters\UnifyArrayConverter.cs" />
+    <Compile Include="Exceptions\CustomException.cs" />
     <Compile Include="Helpers\AncestorSource.cs" />
     <Compile Include="Helpers\CommonHelpers.cs" />
     <Compile Include="Helpers\ContentDialogHelper.cs" />
     <Compile Include="Helpers\E621Helpers.cs" />
+    <Compile Include="Helpers\FocusHelper.cs" />
     <Compile Include="Interfaces\IContentDialogView.cs" />
     <Compile Include="IsExternalInit.cs" />
     <Compile Include="Models\CollectionSearchFilter.cs" />
@@ -253,6 +257,12 @@
     </Compile>
     <Compile Include="Views\Controls\TagsInfoViews\BriefTagView.xaml.cs">
       <DependentUpon>BriefTagView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\TagsInfoViews\CompareTagsView.xaml.cs">
+      <DependentUpon>CompareTagsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\TagsInfoViews\TagSimpleInfoPopupView.xaml.cs">
+      <DependentUpon>TagSimpleInfoPopupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\TagsInfoViews\TagsInfoView.xaml.cs">
       <DependentUpon>TagsInfoView.xaml</DependentUpon>
@@ -418,6 +428,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Controls\TagsInfoViews\CompareTagsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\TagsInfoViews\TagSimpleInfoPopupView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\TagsInfoViews\TagsInfoView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -455,9 +473,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Resources\E621\e612-Bigger.png" />
     <Content Include="Resources\E621\e612.png" />

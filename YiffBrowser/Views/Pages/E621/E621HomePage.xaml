@@ -11,6 +11,7 @@
 	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
 	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
 	mc:Ignorable="d"
+	d:RequestedTheme="Dark"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
 	NavigationCacheMode="Required">
 

@@ -20,10 +20,10 @@ namespace YiffBrowser.Views.Controls.TagsInfoViews {
 
 		private static void OnE621TagChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
 			if (d is BriefTagView view && e.NewValue is E621Tag value) {
-				view.TitleText.Text = value.name;
-				view.PostCountText.Text = value.post_count.NumberToK();
-				view.CategoryText.Text = E621Tag.GetCategory(value.category);
-				view.CategoryRectangle.Fill = new SolidColorBrush(E621Tag.GetCatrgoryColor(value.category));
+				view.TitleText.Text = value.Name;
+				view.PostCountText.Text = value.PostCount.NumberToK();
+				view.CategoryText.Text = E621Tag.GetCategory(value.Category);
+				view.CategoryRectangle.Fill = new SolidColorBrush(E621Tag.GetCategoryColor(value.Category));
 			}
 		}
 

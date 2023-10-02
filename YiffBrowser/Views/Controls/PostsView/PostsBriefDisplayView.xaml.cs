@@ -40,7 +40,7 @@ namespace YiffBrowser.Views.Controls.PostsView {
 				Title = title,
 				CloseText = "Back",
 				MaxWidth = ContentDialogParameters.DEFAULT_MAX_WIDTH,
-			}).ShowDialogAsync();
+			}).ShowAsyncSafe();
 		}
 	}
 }

@@ -18,7 +18,7 @@ namespace YiffBrowser.Views.Controls.SearchViews {
 				{ Invalid, E621TagCategory.Invalid },
 				{ Lore, E621TagCategory.Lore },
 			}) {
-				item.Key.Fill = new SolidColorBrush(E621Tag.GetCatrgoryColor(item.Value));
+				item.Key.Fill = new SolidColorBrush(E621Tag.GetCategoryColor(item.Value));
 			}
 		}
 	}

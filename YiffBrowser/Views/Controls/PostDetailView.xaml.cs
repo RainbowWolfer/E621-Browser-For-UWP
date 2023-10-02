@@ -183,12 +183,19 @@ namespace YiffBrowser.Views.Controls {
 		}
 
 		private void LeftKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			if (FocusHelper.IsCurrentFocusOnTextBox()) {
+				return;
+			}
 			ViewModel.Previous();
 		}
 
 		private void RightKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
+			if (FocusHelper.IsCurrentFocusOnTextBox()) {
+				return;
+			}
 			ViewModel.Next();
 		}
+
 	}
 
 	public class PostDetailViewModel : BindableBase {

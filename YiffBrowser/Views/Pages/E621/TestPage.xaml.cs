@@ -21,7 +21,7 @@ namespace YiffBrowser.Views.Pages.E621 {
 			await view.CreateContentDialog(new ContentDialogParameters() {
 				Title = followsOrBlocks ? "Follows" : "Blocks",
 				CloseText = "Back",
-			}).ShowDialogAsync();
+			}).ShowAsyncSafe();
 
 			Local.Listing.Follows = view.GetResult();
 

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using YiffBrowser.Helpers;
 
@@ -170,7 +171,7 @@ namespace YiffBrowser.Models.E621 {
 		public int Total { get; set; }
 	}
 
-	public class Tags {
+	public class Tags : ICloneable {
 		[JsonProperty("general")]
 		public List<string> General { get; set; }
 
@@ -206,6 +207,29 @@ namespace YiffBrowser.Models.E621 {
 			Lore.ForEach(s => result.Add(s));
 			Meta.ForEach(s => result.Add(s));
 			return result;
+		}
+
+		public Tags CreateNewBySearch(string searchKey) {
+			if (searchKey.IsBlank()) {
+				return this;
+			}
+
+			Tags clone = new() {
+				General = General.Where(x => x.SearchFor(searchKey)).ToList(),
+				Species = Species.Where(x => x.SearchFor(searchKey)).ToList(),
+				Character = Character.Where(x => x.SearchFor(searchKey)).ToList(),
+				Copyright = Copyright.Where(x => x.SearchFor(searchKey)).ToList(),
+				Artist = Artist.Where(x => x.SearchFor(searchKey)).ToList(),
+				Invalid = Invalid.Where(x => x.SearchFor(searchKey)).ToList(),
+				Lore = Lore.Where(x => x.SearchFor(searchKey)).ToList(),
+				Meta = Meta.Where(x => x.SearchFor(searchKey)).ToList(),
+			};
+
+			return clone;
+		}
+
+		public object Clone() {
+			return MemberwiseClone();
 		}
 
 	}

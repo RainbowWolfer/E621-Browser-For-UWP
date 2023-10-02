@@ -64,7 +64,7 @@ namespace YiffBrowser.Views.Controls {
 				Title = title,
 				CloseText = "Back",
 				MaxWidth = ContentDialogParameters.DEFAULT_MAX_WIDTH,
-			}).ShowDialogAsync();
+			}).ShowAsyncSafe();
 
 			if (followsOrBlocks) {
 				Local.Listing.Follows = view.GetResult();

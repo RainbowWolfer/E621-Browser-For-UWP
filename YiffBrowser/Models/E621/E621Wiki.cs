@@ -1,23 +1,34 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace YiffBrowser.Models.E621 {
 	public class E621Wiki {
-		public int id;
-		public DateTime created_at;
-		public DateTime updated_at;
-		public string title;
-		public string body;
-		public int creator_id;
-		public bool is_locked;
-		public object updater_id;
-		public bool is_deleted;
-		public List<object> other_names;
-		public string creator_name;
-		public int category_name;
+		[JsonProperty("id")]
+		public int ID { get; set; }
+		[JsonProperty("created_at")]
+		public DateTime CreatedAt { get; set; }
+		[JsonProperty("updated_at")]
+		public DateTime UpdatedAt { get; set; }
+		[JsonProperty("title")]
+		public string Title { get; set; }
+		[JsonProperty("body")]
+		public string Body { get; set; }
+		[JsonProperty("creator_id")]
+		public int CreatorID { get; set; }
+		[JsonProperty("is_locked")]
+		public bool IsLocked { get; set; }
+		[JsonProperty("updater_id")]
+		public object UpdaterID { get; set; }
+		[JsonProperty("is_deleted")]
+		public bool IsDeleted { get; set; }
+		[JsonProperty("other_names")]
+		public List<object> OtherNames { get; set; }
+		[JsonProperty("creator_name")]
+		public string CreatorName { get; set; }
+		[JsonProperty("category_name")]
+		public int CategoryName { get; set; }
 
 		public static Dictionary<string, E621Wiki> Pool { get; } = new();
 

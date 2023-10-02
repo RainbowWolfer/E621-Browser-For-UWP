@@ -99,6 +99,7 @@ namespace YiffBrowser.Views.Controls {
 		private void ViewModel_IsInSelectionModeChanged(bool isInSelectionMode) {
 			foreach (ImageViewItem item in MainGrid.Children.Cast<ImageViewItem>()) {
 				item.IsSelected = false;
+				item.SetSelectionInfo(isInSelectionMode, 0);
 			}
 			ViewModel.CountSelectedItems();
 		}
@@ -135,6 +136,7 @@ namespace YiffBrowser.Views.Controls {
 				foreach (ImageViewItem view in toRemoves) {
 					view.ImageClick -= View_ImageClick;
 					view.SelectThis -= View_SelectThis;
+					view.CompareTags -= View_CompareTags;
 					view.DownloadThis -= View_DownloadThis;
 					MainGrid.Children.Remove(view);
 				}
@@ -151,9 +153,9 @@ namespace YiffBrowser.Views.Controls {
 			view.OnPostDeleted += () => {
 				ViewModel.Posts.Remove(post);
 			};
-			view.IsInSelectionMode = () => ViewModel.IsInSelectionMode;
 			view.ImageClick += View_ImageClick;
 			view.SelectThis += View_SelectThis;
+			view.CompareTags += View_CompareTags;
 			view.DownloadThis += View_DownloadThis;
 
 
@@ -165,6 +167,10 @@ namespace YiffBrowser.Views.Controls {
 			VariableSizedWrapGrid.SetColumnSpan(view, 1);
 
 			MainGrid.Children.Add(view);
+		}
+
+		private void View_CompareTags(ImageViewItem sender, ImageViewItemViewModel args) {
+			ViewModel.CompareTags();
 		}
 
 		private void View_DownloadThis(ImageViewItem sender, ImageViewItemViewModel args) {
@@ -183,6 +189,7 @@ namespace YiffBrowser.Views.Controls {
 
 				view.IsSelected = !view.IsSelected;
 				ViewModel.CountSelectedItems();
+
 			} else {
 
 				if (openedImageItem != null) {
@@ -285,6 +292,10 @@ namespace YiffBrowser.Views.Controls {
 		private string selectionInfo = string.Empty;
 		private PaginatorViewModel paginatorViewModel;
 
+		private CancellationTokenSource paginatorCTS;
+		private bool isLoadingPaginator;
+		private int selectedCount;
+
 		public int PageValue {
 			get => pageValue;
 			set => SetProperty(ref pageValue, value);
@@ -326,6 +337,18 @@ namespace YiffBrowser.Views.Controls {
 			set => SetProperty(ref isInSelectionMode, value, OnIsInSelectionModeChanged);
 		}
 
+		public int SelectedCount {
+			get => selectedCount;
+			set => SetProperty(ref selectedCount, value, () => {
+				foreach (ImageViewItem item in RequestGetAllItems()) {
+					item.SetSelectionInfo(IsInSelectionMode, value);
+				}
+				RaisePropertyChanged(nameof(SelectedMoreThanOne));
+			});
+		}
+
+		public bool SelectedMoreThanOne => SelectedCount > 1;
+
 		private void OnIsInSelectionModeChanged() {
 			IsInSelectionModeChanged?.Invoke(IsInSelectionMode);
 		}
@@ -337,6 +360,7 @@ namespace YiffBrowser.Views.Controls {
 
 		public ICommand SelectAllCommand => new DelegateCommand(SelectAll);
 		public ICommand ReverseSelectionCommand => new DelegateCommand(ReverseSelection);
+		public ICommand CompareTagsCommand => new DelegateCommand(CompareTags);
 
 		private void SelectAll() {
 			IsInSelectionMode = true;
@@ -357,11 +381,21 @@ namespace YiffBrowser.Views.Controls {
 			CountSelectedItems();
 		}
 
+		public async void CompareTags() {
+			E621Post[] array = RequestGetAllItems().Where(x => x.IsSelected).Select(x => x.Post).ToArray();
+			CompareTagsView view = new(array);
+			ContentDialog dialog = view.CreateContentDialog(new ContentDialogParameters() {
+				CloseText = "Back",
+				Title = $"Compare {array.Length} Posts' Tags - Find Common Tags",
+			});
+			await dialog.ShowAsyncSafe();
+		}
 
 
 		public void CountSelectedItems() {
 			ImageViewItem[] items = RequestGetAllItems();
 			int count = items.Count(x => x.IsSelected);
+			SelectedCount = count;
 			SelectionInfo = $"{count}/{items.Length}";
 		}
 
@@ -409,7 +443,7 @@ namespace YiffBrowser.Views.Controls {
 					Tags = Tags,
 				}.CreateContentDialog(new ContentDialogParameters() {
 					CloseText = "Back",
-				}).ShowDialogAsync();
+				}).ShowAsyncSafe();
 			}
 		}
 
@@ -417,9 +451,6 @@ namespace YiffBrowser.Views.Controls {
 
 
 		#region Paginator
-
-		private CancellationTokenSource paginatorCTS;
-		private bool isLoadingPaginator;
 
 		public bool IsLoadingPaginator {
 			get => isLoadingPaginator;
@@ -507,7 +538,7 @@ namespace YiffBrowser.Views.Controls {
 			}
 
 			DownloadView view = new(post);
-			ContentDialogResult dialogResult = await view.CreateContentDialog(DownloadView.contentDialogParameters).ShowDialogAsync();
+			ContentDialogResult dialogResult = await view.CreateContentDialog(DownloadView.contentDialogParameters).ShowAsyncSafe();
 
 			if (dialogResult != ContentDialogResult.Primary) {
 				return;
@@ -537,7 +568,7 @@ namespace YiffBrowser.Views.Controls {
 			}
 
 			DownloadView view = new(posts, IsInSelectionMode, PaginatorViewModel);
-			ContentDialogResult dialogResult = await view.CreateContentDialog(DownloadView.contentDialogParameters).ShowDialogAsync();
+			ContentDialogResult dialogResult = await view.CreateContentDialog(DownloadView.contentDialogParameters).ShowAsyncSafe();
 
 			if (dialogResult != ContentDialogResult.Primary) {
 				return;
@@ -549,13 +580,16 @@ namespace YiffBrowser.Views.Controls {
 			}
 
 			if (result.MultiplePages) {
-				//get all page stuff
-				for (int i = result.FromPage; i <= result.ToPage; i++) {
-					await E621API.GetPostsByTagsAsync(new E621PostParameters() {
-						Page = i,
-						Tags = Tags,
-					});
-				}
+				YiffHomePage.LoaderControl.Set("!!!!");
+				await YiffHomePage.LoaderControl.Start(async () => {
+					for (int i = result.FromPage; i <= result.ToPage; i++) {
+						await E621API.GetPostsByTagsAsync(new E621PostParameters() {
+							Page = i,
+							Tags = Tags,
+						});
+					}
+				});
+
 
 			} else {
 				string folderName = result.FolderName;
@@ -697,4 +731,24 @@ namespace YiffBrowser.Views.Controls {
 		}
 
 	}
+
+
+	//public class SelectionInfoModel : BindableBase {
+	//	private bool isInSelectionMode;
+	//	private int selectedCount;
+
+	//	public bool IsInSelectionMode {
+	//		get => isInSelectionMode;
+	//		set => SetProperty(ref isInSelectionMode, value);
+	//	}
+
+	//	public int SelectedCount {
+	//		get => selectedCount;
+	//		set => SetProperty(ref selectedCount, value, () => {
+	//			RaisePropertyChanged(nameof(SelectedMoreThanOne));
+	//		});
+	//	}
+
+	//	public bool SelectedMoreThanOne => SelectedCount > 1;
+	//}
 }

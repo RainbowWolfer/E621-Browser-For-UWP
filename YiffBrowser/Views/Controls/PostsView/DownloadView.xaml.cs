@@ -49,7 +49,7 @@ namespace YiffBrowser.Views.Controls.PostsView {
 
 		public DownloadView(E621Post singlePost) : this() {
 			ViewModel.Posts = new E621Post[1] { singlePost };
-			ViewModel.CustomMessage = $"Post #{singlePost.ID}";
+			ViewModel.CustomMessage = $"Post #{singlePost.ID} - {singlePost.GetFileType().ToString().ToUpper()}";
 			ViewModel.SinglePostMode = true;
 			ViewModel.SamplePreviewLoading = true;
 			ViewModel.SampleURL = singlePost.Sample?.URL;

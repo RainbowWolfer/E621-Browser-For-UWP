@@ -338,7 +338,7 @@
 
 			</Grid>
 
-			<local:PostTagsListView Grid.Row="2" Tags="{Binding E621Post.Tags}" ShowAddMinusButton="{Binding InputByPosts,Converter={StaticResource BoolToBoolRe}}"/>
+			<local:PostTagsListView Grid.Row="2" Tags="{Binding E621Post.Tags}" ShowAddMinusButton="{Binding InputByPosts,Converter={StaticResource BoolToBoolRe}}" ShowDialogTagInfo="True"/>
 		</Grid>
 
 		<Grid Grid.Row="1" Grid.Column="1">

@@ -32,11 +32,11 @@ namespace YiffBrowser.Helpers {
 			return dialog;
 		}
 
-		public static async Task<ContentDialogResult> ShowDialogAsync(this ContentDialog dialog) {
-			return await dialog.ShowDialogAsync(ContentDialogResult.None);
+		public static async Task<ContentDialogResult> ShowAsyncSafe(this ContentDialog dialog) {
+			return await dialog.ShowAsyncSafe(ContentDialogResult.None);
 		}
 
-		public static async Task<ContentDialogResult> ShowDialogAsync(this ContentDialog dialog, ContentDialogResult fallback) {
+		public static async Task<ContentDialogResult> ShowAsyncSafe(this ContentDialog dialog, ContentDialogResult fallback) {
 			try {
 				return await dialog.ShowAsync();
 			} catch {
@@ -61,10 +61,23 @@ namespace YiffBrowser.Helpers {
 	}
 
 
-	public class LoadingDialogControl(object content, ContentDialogParameters parameters = null) {
-		public ContentDialog Dialog { get; private set; } = content.CreateContentDialog(parameters ?? new ContentDialogParameters());
+	public class LoadingDialogControl {
+
+		public ContentDialog Dialog { get; private set; }
+
+		public LoadingDialogControl() {
+			
+		}
+
+		public void Set(object content, ContentDialogParameters parameters = null) {
+			Dialog = content.CreateContentDialog(parameters ?? new ContentDialogParameters());
+		}
 
 		public async Task Start(Func<Task> task) {
+			if (Dialog is null) {
+				throw new ArgumentNullException(nameof(Dialog));
+			}
+
 			if (task is null) {
 				throw new ArgumentNullException(nameof(task));
 			}
@@ -83,11 +96,18 @@ namespace YiffBrowser.Helpers {
 		}
 
 		private async void ShowDialog() {
-			await Dialog.ShowDialogAsync();
+			if (Dialog is null) {
+				throw new ArgumentNullException(nameof(Dialog));
+			}
+			await Dialog.ShowAsyncSafe();
 		}
 
 		private void HideDialog() {
+			if (Dialog is null) {
+				throw new ArgumentNullException(nameof(Dialog));
+			}
 			Dialog.Hide();
+			Dialog = null;
 		}
 	}
 }

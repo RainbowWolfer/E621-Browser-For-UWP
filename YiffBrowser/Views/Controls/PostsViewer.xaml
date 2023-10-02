@@ -192,6 +192,12 @@
 														<FontIcon Glyph="&#xE152;"/>
 													</MenuFlyoutItem.Icon>
 												</MenuFlyoutItem>
+												<MenuFlyoutSeparator/>
+												<MenuFlyoutItem Text="Compare Tags" Command="{Binding CompareTagsCommand}" IsEnabled="{Binding SelectedMoreThanOne}">
+													<MenuFlyoutItem.Icon>
+														<FontIcon Glyph="&#xF000;"/>
+													</MenuFlyoutItem.Icon>
+												</MenuFlyoutItem>
 											</MenuFlyout>
 										</muxc:ToggleSplitButton.Flyout>
 

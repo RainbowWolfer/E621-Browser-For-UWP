@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
+using YiffBrowser.Exceptions;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Locals;
@@ -20,7 +22,7 @@ using NavigationViewPaneClosingEventArgs = Microsoft.UI.Xaml.Controls.Navigation
 namespace YiffBrowser {
 	public sealed partial class YiffHomePage : Page {
 		public static YiffHomePage Instance { get; private set; }
-		public static LoadingDialogControl LoaderControl { get; private set; }
+		public static LoadingDialogControl LoaderControl { get; } = new LoadingDialogControl();
 
 		public string TAG_HOME { get; } = "TAG_HOME";
 		public string TAG_FAVORITES { get; } = "TAG_FAVORITES";
@@ -62,9 +64,7 @@ namespace YiffBrowser {
 		}
 
 		private async void Initialize() {
-			LoadingRingWithTextBelow loader = new("Initializing");
-
-			LoaderControl = new LoadingDialogControl(loader);
+			LoaderControl.Set(new LoadingRingWithTextBelow("Initializing"));
 
 			static async Task Init() {
 				await Local.Initialize();
@@ -78,14 +78,22 @@ namespace YiffBrowser {
 		}
 
 		private async void LoadLocalUser() {
+
 			if (Local.Settings.CheckLocalUser()) {
 
 				E621User user = await E621API.GetUserAsync(Local.Settings.Username);
-				UsernameText = user.name;
-				E621Post avatarPost = await E621API.GetPostAsync(user.avatar_id);
-
 				App.User = user;
+				if (user != null) {
+					UsernameText = user.name;
+				} else {
+					UsernameText = null;
+					UserAvatarURL = null;
+					return;
+				}
+
+				E621Post avatarPost = await E621API.GetPostAsync(user.avatar_id);
 				App.AvatarPost = avatarPost;
+
 				if (avatarPost != null && !avatarPost.HasNoValidURLs()) {
 					UserAvatarURL = avatarPost.Sample.URL;
 				} else {
@@ -93,9 +101,11 @@ namespace YiffBrowser {
 				}
 
 			} else {
-				UserAvatarURL = null;
 				UsernameText = null;
+				UserAvatarURL = null;
 			}
+
+
 		}
 
 
@@ -157,7 +167,7 @@ namespace YiffBrowser {
 					}
 				};
 
-				await dialog.ShowDialogAsync();
+				await dialog.ShowAsyncSafe();
 
 			} else {
 				LoginView view = new();
@@ -182,7 +192,7 @@ namespace YiffBrowser {
 					}
 				};
 
-				await dialog.ShowDialogAsync();
+				await dialog.ShowAsyncSafe();
 
 				if (Local.Settings.CheckLocalUser()) {
 					(E621User user, E621Post avatarPost) = view.GetUserResult();

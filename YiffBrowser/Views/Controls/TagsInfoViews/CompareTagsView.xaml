@@ -1,0 +1,54 @@
+﻿<UserControl
+    x:Class="YiffBrowser.Views.Controls.TagsInfoViews.CompareTagsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YiffBrowser.Views.Controls.TagsInfoViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:controls="using:YiffBrowser.Views.Controls"
+	mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    d:RequestedTheme="Dark">
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Grid>
+			<ListView ItemsSource="{x:Bind PreviewURLs}" Margin="5" Padding="0,0,0,5"
+				ScrollViewer.HorizontalScrollMode="Enabled"
+				ScrollViewer.HorizontalScrollBarVisibility="Auto"
+				ScrollViewer.VerticalScrollMode="Disabled">
+				<ListView.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Background="Transparent" Orientation="Horizontal"/>
+					</ItemsPanelTemplate>
+				</ListView.ItemsPanel> ew.ItemsPanel>
+
+				<ListView.ItemContainerStyle>
+					<Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemExpanded}">
+						<Setter Property="Padding" Value="5"/>
+						<Setter Property="Margin" Value="3,0"/>
+						<Setter Property="MinWidth" Value="0"/>
+						<Setter Property="CornerRadius" Value="4"/>
+					</Style>
+				</ListView.ItemContainerStyle>
+
+				<ListView.ItemTemplate>
+					<DataTemplate x:DataType="x:String">
+						<Border Width="50" Height="50" CornerRadius="4">
+							<Image Source="{Binding}" Stretch="UniformToFill"/>
+						</Border>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+		</Grid>
+
+		<Grid Grid.Row="1">
+			<controls:PostTagsListView Tags="{x:Bind Tags,Mode=OneWay}" ShowAddMinusButton="False" ShowDialogTagInfo="False"/>
+		</Grid>
+	</Grid>
+</UserControl>

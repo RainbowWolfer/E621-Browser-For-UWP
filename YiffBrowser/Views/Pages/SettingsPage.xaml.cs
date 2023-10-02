@@ -70,7 +70,7 @@ namespace YiffBrowser.Views.Pages {
 				PrimaryText = "Yes",
 				CloseText = "No",
 				DefaultButton = ContentDialogButton.Close,
-			}).ShowDialogAsync() != ContentDialogResult.Primary) {
+			}).ShowAsyncSafe() != ContentDialogResult.Primary) {
 				return;
 			}
 			Local.Settings.ClearDownloadFolder();

@@ -243,13 +243,13 @@ namespace YiffBrowser.Views.Controls.TagsInfoViews {
 
 			E621Tag = await E621API.GetE621TagAsync(tag);
 			if (E621Tag != null) {
-				Count = $"({E621Tag.post_count.NumberToK()})";
-				CategoryColor = E621Tag.GetCatrgoryColor(E621Tag.category);
-				CategoryName = E621Tag.GetCategory(E621Tag.category);
+				Count = $"({E621Tag.PostCount.NumberToK()})";
+				CategoryColor = E621Tag.GetCategoryColor(E621Tag.Category);
+				CategoryName = E621Tag.GetCategory(E621Tag.Category);
 			}
 
 			E621Wiki = await E621API.GetE621WikiAsync(tag);
-			WikiContent = E621Wiki?.body?.NotBlankCheck() ?? "No wiki found";
+			WikiContent = E621Wiki?.Body?.NotBlankCheck() ?? "No wiki found";
 
 			IsLoading = false;
 		}

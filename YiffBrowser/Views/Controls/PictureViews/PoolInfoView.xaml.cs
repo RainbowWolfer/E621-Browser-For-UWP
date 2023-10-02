@@ -59,7 +59,7 @@ namespace YiffBrowser.Views.Controls.PictureViews {
 			}.CreateContentDialog(new ContentDialogParameters() {
 				CloseText = "Back",
 				Title = $"Pool Info",
-			}).ShowDialogAsync();
+			}).ShowAsyncSafe();
 		}
 
 		private void FollowToggleButton_Click(object sender, RoutedEventArgs e) {

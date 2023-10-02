@@ -204,6 +204,11 @@
 							</core:DataTriggerBehavior>
 						</i:Interaction.Behaviors>
 					</MenuFlyoutItem>
+					<MenuFlyoutItem x:Name="CompareTagsItem" Text="Compare Tags" Click="CompareTagsItem_Click" IsEnabled="{Binding SelectedMoreThanOne}" Visibility="{Binding IsInSelectionMode,Converter={StaticResource BoolToVisibility}}">
+						<MenuFlyoutItem.Icon>
+							<FontIcon Glyph="&#xF000;"/>
+						</MenuFlyoutItem.Icon>
+					</MenuFlyoutItem>
 					<MenuFlyoutSeparator/>
 					<MenuFlyoutItem x:Name="DownloadThisItem" Text="Download" Icon="Download" Click="DownloadThisItem_Click"/>
 					<MenuFlyoutItem Text="Open in browser" Icon="World" Command="{Binding OpenInBrowserCommand}"/>
