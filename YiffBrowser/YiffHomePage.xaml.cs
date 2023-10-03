@@ -1,6 +1,11 @@
-﻿using System;
+﻿using Prism.Commands;
+using Prism.Mvvm;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core.Preview;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -8,6 +13,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using YiffBrowser.Exceptions;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
+using YiffBrowser.Services.Downloads;
 using YiffBrowser.Services.Locals;
 using YiffBrowser.Services.Networks;
 using YiffBrowser.Views.Controls.LoadingViews;
@@ -57,9 +63,46 @@ namespace YiffBrowser {
 		public YiffHomePage() {
 			Instance = this;
 			this.InitializeComponent();
+
+			CoreApplicationViewTitleBar coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+			coreTitleBar.ExtendViewIntoTitleBar = true;
+			Window.Current.SetTitleBar(AppTitleBar);
+			coreTitleBar.IsVisibleChanged += (sender, e) => {
+				if (sender.IsVisible) {
+					AppTitleBar.Visibility = Visibility.Visible;
+				} else {
+					AppTitleBar.Visibility = Visibility.Collapsed;
+				}
+			};
+
+			SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += async (sender, args) => {
+				if (DownloadManager.HasDownloading()) {
+					args.Handled = true;
+					if (await new ContentDialog() {
+						Title = "Confirm",
+						Content = "You have unfinished downloads",
+						PrimaryButtonText = "Quit",
+						CloseButtonText = "Back",
+						DefaultButton = ContentDialogButton.Close,
+					}.ShowAsync() == ContentDialogResult.Primary) {
+						Application.Current.Exit();
+					}
+				}
+			};
+
+			ViewModel.HasDownloadingChanged += ViewModel_HasDownloadingChanged;
 		}
 
-		private void Root_Loaded(object sender, RoutedEventArgs e) {
+		private void ViewModel_HasDownloadingChanged(bool hasDownloading) {
+			if (hasDownloading) {
+				DownloadProgressStoryboard.Begin();
+			} else {
+				DownloadProgressStoryboard.Stop();
+				DownloadIconRotateTransform.Angle = 0;
+			}
+		}
+
+		private void Page_Loaded(object sender, RoutedEventArgs e) {
 			Initialize();
 		}
 
@@ -215,5 +258,41 @@ namespace YiffBrowser {
 		private void MainNavigationView_PaneClosing(NavigationView sender, NavigationViewPaneClosingEventArgs args) {
 			UserButton.Width = 40;
 		}
+
+	}
+
+
+	internal class YiffHomePageViewModel : BindableBase {
+		public event Action<bool> HasDownloadingChanged;
+
+		private bool hasDownloading;
+
+		public bool HasDownloading {
+			get => hasDownloading;
+			set => SetProperty(ref hasDownloading, value, OnHasDownloadingChanged);
+		}
+
+		private void OnHasDownloadingChanged() {
+			HasDownloadingChanged?.Invoke(HasDownloading);
+		}
+
+		public ICommand TitleDownloadButtonCommand => new DelegateCommand(TitleDownloadButton);
+
+		private void TitleDownloadButton() {
+			YiffHomePage.Instance.NavigateDownload();
+		}
+
+		public YiffHomePageViewModel() {
+			CheckDownloadingLoop();
+		}
+
+		private async void CheckDownloadingLoop() {
+			while (true) {
+				HasDownloading = DownloadManager.HasDownloading();
+
+				await Task.Delay(200);
+			}
+		}
+
 	}
 }

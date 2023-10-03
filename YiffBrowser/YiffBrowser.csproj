@@ -196,6 +196,9 @@
     <Compile Include="Views\Controls\CustomToggleSplitButton.xaml.cs">
       <DependentUpon>CustomToggleSplitButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\DownloadViews\DownloadSimpleOverviewControl.xaml.cs">
+      <DependentUpon>DownloadSimpleOverviewControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\DownloadViews\GettingPostsByPageLoadingView.xaml.cs">
       <DependentUpon>GettingPostsByPageLoadingView.xaml</DependentUpon>
     </Compile>
@@ -348,6 +351,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Controls\DownloadViews\DownloadSimpleOverviewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\DownloadViews\GettingPostsByPageLoadingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -485,6 +492,7 @@
   <ItemGroup>
     <Content Include="Resources\E621\e612-Bigger.png" />
     <Content Include="Resources\E621\e612.png" />
+    <Content Include="Resources\E621\E612_Light.png" />
     <Content Include="Resources\E621\Helper_Step1.png" />
     <Content Include="Resources\E621\Helper_Step2.png" />
     <Content Include="Resources\Icons\DeviantArt-icon.png" />

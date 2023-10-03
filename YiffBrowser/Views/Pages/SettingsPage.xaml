@@ -148,7 +148,7 @@
 					</Grid.RowDefinitions>
 
 					<cc:SettingCardControl Title="GENERAL">
-						<StackPanel>
+						<StackPanel Margin="10,0">
 
 							<cc:ContentToggleSwitch SwitchContent="Startup Tags" IsOn="{Binding EnableStartupTags,Mode=TwoWay}"/>
 							<ContentControl IsEnabled="{Binding EnableStartupTags}" HorizontalContentAlignment="Stretch">

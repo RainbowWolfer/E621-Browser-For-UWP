@@ -123,25 +123,28 @@ namespace YiffBrowser.Services.Downloads {
 			string folderName = preparation.FolderName;
 			try {
 				string filename = $"{post.ID}.{post.File.Ext}";
+				DownloadInstance instance = null;
+				await Task.Run(async () => {
+					StorageFolder folder = await GetFolder(folderName);
+					if (preparation.HasRequestedCancel) {
+						return;
+					}
+					StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.OpenIfExists);
+					if (preparation.HasRequestedCancel) {
+						return;
+					}
 
-				StorageFolder folder = await GetFolder(folderName);
-				if (preparation.HasRequestedCancel) {
-					return;
-				}
-				StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.OpenIfExists);
-				if (preparation.HasRequestedCancel) {
-					return;
-				}
+					DownloadOperation download = downloader.CreateDownload(new Uri(post.File.URL), file);
+					if (preparation.HasRequestedCancel) {
+						return;
+					}
 
-				DownloadOperation download = downloader.CreateDownload(new Uri(post.File.URL), file);
-				if (preparation.HasRequestedCancel) {
-					return;
-				}
+					instance = new DownloadInstance(post, download,
+					   new DownloadInstanceInformation(folder, folder == Local.DownloadFolder, file)
+				   );
+				});
 
-				DownloadInstance instance = new(post, download,
-					new DownloadInstanceInformation(folder, folder == Local.DownloadFolder, file)
-				);
-				if (preparation.HasRequestedCancel) {
+				if (preparation.HasRequestedCancel || instance == null) {
 					return;
 				}
 
@@ -168,16 +171,9 @@ namespace YiffBrowser.Services.Downloads {
 			return Local.DownloadFolder != null && Local.Settings.DownloadFolderToken.IsNotBlank();
 		}
 
-		//public static bool HasDownloading() {
-		//	foreach (DownloadInstance item in downloads) {
-		//		if (item.Status is not BackgroundTransferStatus.Completed and
-		//			not BackgroundTransferStatus.Canceled and
-		//			not BackgroundTransferStatus.Error) {
-		//			return true;
-		//		}
-		//	}
-		//	return false;
-		//}
+		public static bool HasDownloading() {
+			return preparingPool.IsNotEmpty() || waitPool.IsNotEmpty() || downloadingPool.IsNotEmpty();
+		}
 
 	}
 }

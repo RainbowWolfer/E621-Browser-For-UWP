@@ -185,7 +185,7 @@
 				<PivotItem>
 
 					<PivotItem.Header>
-						<TextBlock ToolTipService.ToolTip="Wait system to create the download file">
+						<TextBlock ToolTipService.ToolTip="Wait for system to create the download file">
 							<Run Text="Preparing"/>
 							<Run Text="{Binding PreparingPool.Count}"/>
 						</TextBlock>
