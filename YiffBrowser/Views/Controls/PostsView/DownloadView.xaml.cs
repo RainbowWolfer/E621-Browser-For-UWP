@@ -14,6 +14,7 @@ using Windows.System;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
 using YiffBrowser.Helpers;
 using YiffBrowser.Interfaces;
@@ -26,7 +27,7 @@ namespace YiffBrowser.Views.Controls.PostsView {
 	public sealed partial class DownloadView : UserControl, IContentDialogView {
 		private ContentDialog dialog;
 
-		public static readonly ContentDialogParameters contentDialogParameters = new() {
+		public static readonly ContentDialogParameters parametersForDownloadDialog = new() {
 			Title = "Select Download Folder",
 			CloseText = "Back",
 			SecondaryText = "Open Download Folder",
@@ -35,7 +36,16 @@ namespace YiffBrowser.Views.Controls.PostsView {
 			MaxWidth = ContentDialogParameters.DEFAULT_MAX_WIDTH,
 		};
 
-		private DownloadView() {
+		public static readonly ContentDialogParameters parametersForAutoFolderSelectionDialog = new() {
+			Title = "Select Auto Download Folder",
+			CloseText = "Back",
+			SecondaryText = "Open Download Folder",
+			PrimaryText = "Confirm",
+			DefaultButton = ContentDialogButton.Primary,
+			MaxWidth = ContentDialogParameters.DEFAULT_MAX_WIDTH,
+		};
+
+		public DownloadView() {
 			InitializeComponent();
 			ViewModel.RequestFocusCreateNewFolderTextBox += ViewModel_RequestFocusCreateNewFolderTextBox;
 		}
@@ -96,25 +106,28 @@ namespace YiffBrowser.Views.Controls.PostsView {
 
 	public class DownloadViewResult {
 		public string FolderName { get; set; }
+		public string FolderPath { get; set; }
 		public bool IsRoot { get; set; } = false;
 		public bool MultiplePages { get; set; }
 		public int FromPage { get; set; }
 		public int ToPage { get; set; }
 
-		public DownloadViewResult(string folderName, int fromPage, int toPage) {
-			if (folderName == null) {
+		public DownloadViewResult(string folderPath, int fromPage, int toPage) {
+			if (folderPath == null) {
 				IsRoot = true;
 			}
-			FolderName = folderName;
+			FolderPath = folderPath;
+			FolderName = Path.GetFileName(folderPath);
 			MultiplePages = true;
 			FromPage = fromPage;
 			ToPage = toPage;
 		}
-		public DownloadViewResult(string folderName) {
-			if (folderName == null) {
+		public DownloadViewResult(string folderPath) {
+			if (folderPath == null) {
 				IsRoot = true;
 			}
-			FolderName = folderName;
+			FolderPath = folderPath;
+			FolderName = Path.GetFileName(folderPath);
 			MultiplePages = false;
 			FromPage = -1;
 			ToPage = -1;
@@ -307,9 +320,9 @@ namespace YiffBrowser.Views.Controls.PostsView {
 		public E621Post[] Posts {
 			get => posts;
 			set => SetProperty(ref posts, value, () => {
-				TotalFileCount = Posts.Length;
+				TotalFileCount = Posts?.Length ?? 0;
 				long size = 0;
-				foreach (E621Post post in Posts) {
+				foreach (E621Post post in Posts ?? Array.Empty<E621Post>()) {
 					long s = post.File.Size;
 					size += s;
 				}
@@ -322,11 +335,18 @@ namespace YiffBrowser.Views.Controls.PostsView {
 		}
 
 		private void OnSelectedItemChanged() {
-			if (SelectedItem == null) {
-				Dialog.PrimaryButtonText = "Download";
+			if (Posts.IsEmpty()) {
+				if (SelectedItem == null) {
+					Dialog.PrimaryButtonText = "Confirm";
+				} else {
+					Dialog.PrimaryButtonText = $"Confirm > {SelectedItem.FolderName}";
+				}
 			} else {
-				Dialog.PrimaryButtonText = $"Download > {SelectedItem.FolderName}";
-
+				if (SelectedItem == null) {
+					Dialog.PrimaryButtonText = "Download";
+				} else {
+					Dialog.PrimaryButtonText = $"Download > {SelectedItem.FolderName}";
+				}
 			}
 		}
 
@@ -335,13 +355,12 @@ namespace YiffBrowser.Views.Controls.PostsView {
 				return null;
 			}
 
-			string folderName = SelectedItem.IsRoot ? null : SelectedItem.FolderName;
-
+			string folderPath = SelectedItem.IsRoot ? null : SelectedItem.FolderPath;
 			DownloadViewResult result;
 			if (ChooseMultiPages) {
-				result = new(folderName, PageStart, PageEnd);
+				result = new DownloadViewResult(folderPath, PageStart, PageEnd);
 			} else {
-				result = new(folderName);
+				result = new DownloadViewResult(folderPath);
 			}
 
 			return result;

@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Controls;
 using YiffBrowser.Helpers;
 using YiffBrowser.Services.Locals;
 using YiffBrowser.Views.Controls;
+using YiffBrowser.Views.Controls.PostsView;
 
 namespace YiffBrowser.Views.Pages {
 	public sealed partial class SettingsPage : Page {
@@ -43,15 +44,49 @@ namespace YiffBrowser.Views.Pages {
 
 		private string downloadFolderPath;
 		private bool hasDownloadFolder;
+		private string autoDownloadFolderPath;
+		private RequestDownloadAction requestDownloadAction;
 
 		public string DownloadFolderPath {
 			get => downloadFolderPath;
 			set => SetProperty(ref downloadFolderPath, value);
 		}
 
+		public string AutoDownloadFolderPath {
+			get => autoDownloadFolderPath;
+			set => SetProperty(ref autoDownloadFolderPath, value);
+		}
+
+		public RequestDownloadAction RequestDownloadAction {
+			get => requestDownloadAction;
+			set => SetProperty(ref requestDownloadAction, value);
+		}
+
 		public bool HasDownloadFolder {
 			get => hasDownloadFolder;
 			set => SetProperty(ref hasDownloadFolder, value);
+		}
+
+		public ICommand SelectAutoDownloadFolderCommand => new DelegateCommand(SelectAutoDownloadFolder);
+
+		private async void SelectAutoDownloadFolder() {
+			if (RequestDownloadAction != RequestDownloadAction.Specify) {
+				return;
+			}
+			DownloadView view = new();
+			ContentDialogResult dialogResult = await view.CreateContentDialog(DownloadView.parametersForAutoFolderSelectionDialog).ShowAsyncSafe();
+
+			if (dialogResult != ContentDialogResult.Primary) {
+				return;
+			}
+
+			DownloadViewResult result = view.GetResult();
+			if (result == null) {
+				return;
+			}
+
+			AutoDownloadFolderPath = result.FolderPath;
+
 		}
 
 		public ICommand ClearDownloadFolderCommand => new DelegateCommand(ClearDownloadFolder);

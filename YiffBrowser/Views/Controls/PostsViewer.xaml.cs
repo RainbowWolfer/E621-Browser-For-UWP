@@ -539,7 +539,7 @@ namespace YiffBrowser.Views.Controls {
 			}
 
 			DownloadView view = new(post);
-			ContentDialogResult dialogResult = await view.CreateContentDialog(DownloadView.contentDialogParameters).ShowAsyncSafe();
+			ContentDialogResult dialogResult = await view.CreateContentDialog(DownloadView.parametersForDownloadDialog).ShowAsyncSafe();
 
 			if (dialogResult != ContentDialogResult.Primary) {
 				return;
@@ -569,7 +569,7 @@ namespace YiffBrowser.Views.Controls {
 			}
 
 			DownloadView view = new(posts, IsInSelectionMode, PaginatorViewModel);
-			ContentDialogResult dialogResult = await view.CreateContentDialog(DownloadView.contentDialogParameters).ShowAsyncSafe();
+			ContentDialogResult dialogResult = await view.CreateContentDialog(DownloadView.parametersForDownloadDialog).ShowAsyncSafe();
 
 			if (dialogResult != ContentDialogResult.Primary) {
 				return;

@@ -82,4 +82,11 @@ namespace YiffBrowser.Services.Locals {
 		#endregion
 
 	}
+
+
+	public enum RequestDownloadAction {
+		Select = 0,
+		TagsRelated = 1,
+		Specify = 2,
+	}
 }

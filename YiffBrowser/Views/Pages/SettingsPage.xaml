@@ -8,8 +8,9 @@
     xmlns:cc="using:YiffBrowser.Views.Controls.CustomControls"
     xmlns:local="using:YiffBrowser.Views.Pages"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    mc:Ignorable="d"
+	xmlns:ui="using:CommunityToolkit.WinUI"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core" xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+	mc:Ignorable="d"
     d:RequestedTheme="Dark"
     NavigationCacheMode="Required"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -66,15 +67,23 @@
 			<Setter Property="TextAlignment" Value="Center"/>
 		</Style>
 
+		<Style x:Key="HorizontalBorderSeparator" TargetType="Border">
+			<Setter Property="CornerRadius" Value="2"/>
+			<Setter Property="Height" Value="4"/>
+			<Setter Property="Width" Value="150"/>
+			<Setter Property="Background" Value="Gray"/>
+			<Setter Property="Margin" Value="5"/>
+		</Style>
+
 	</Page.Resources>
 
 	<Grid>
-		<ScrollViewer HorizontalScrollBarVisibility="Visible" HorizontalScrollMode="Enabled" VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" Padding="10">
+		<ScrollViewer HorizontalScrollBarVisibility="Visible" HorizontalScrollMode="Enabled" VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" Padding="0,5,5,10">
 			<StackPanel Orientation="Horizontal">
 				<Grid>
 					<Grid.RowDefinitions>
-						<RowDefinition Height="*"/>
-						<RowDefinition Height="*"/>
+						<RowDefinition Height="2*"/>
+						<RowDefinition Height="3*"/>
 					</Grid.RowDefinitions>
 					<cc:SettingCardControl Title="LISTING">
 						<StackPanel>
@@ -133,9 +142,39 @@
 								<cc:IconTextHorizontal Glyph="&#xE10A;" Text="Clear Download Folder"/>
 							</Button>
 
+							<!-- BorderThickness="1" BorderBrush="{StaticResource SystemControlBackgroundAccentRevealBorderBrush}"-->
 							<HyperlinkButton Visibility="{Binding HasDownloadFolder,Converter={StaticResource BoolToVisibility}}" d:Visibility="Visible" Command="{Binding OpenDownloadFolderInExplorerCommand}" HorizontalAlignment="Stretch" Margin="5">
 								<TextBlock Text="{Binding DownloadFolderPath}" d:Text="D:/E621" TextAlignment="Center" TextWrapping="Wrap" MaxWidth="300" HorizontalAlignment="Center"/>
 							</HyperlinkButton>
+
+							<Border Style="{StaticResource HorizontalBorderSeparator}"/>
+
+							<ContentControl HorizontalContentAlignment="Stretch" IsEnabled="{Binding HasDownloadFolder}">
+								<StackPanel Margin="5,0">
+									<TextBlock Text="Request Download Action" Margin="10,0,10,5" FontSize="16"/>
+									<ComboBox HorizontalAlignment="Stretch">
+										<ComboBoxItem Content="Mannualy Select Folder"/>
+										<ComboBoxItem Content="Auto Download To Tags Related Folder"/>
+										<ComboBoxItem Content="Auto Download To Specified Sub Folder"/>
+									</ComboBox>
+
+									<Button Margin="0,5" Command="{Binding SelectAutoDownloadFolderCommand}">
+										<cc:IconTextHorizontal Glyph="&#xE178;" Text="Select Auto Download Folder" TextWidth="180"/>
+									</Button>
+									<HyperlinkButton HorizontalAlignment="Stretch">
+										<TextBlock Text="{Binding AutoDownloadFolderPath}" d:Text="D:/E621" TextAlignment="Center" TextWrapping="Wrap" MaxWidth="300" HorizontalAlignment="Center"/>
+									</HyperlinkButton>
+								</StackPanel>
+							</ContentControl>
+
+							<StackPanel Margin="5,0">
+								<TextBlock Text="Download File Conflict Action" Margin="10,0,10,5" FontSize="16"/>
+								<ComboBox HorizontalAlignment="Stretch">
+									<ComboBoxItem Content="Generate New Name"/>
+									<ComboBoxItem Content="Skip Files With Same Name"/>
+									<ComboBoxItem Content="Replace Files With Same Name"/>
+								</ComboBox>
+							</StackPanel>
 
 						</StackPanel>
 					</cc:SettingCardControl>
@@ -150,19 +189,55 @@
 					<cc:SettingCardControl Title="GENERAL">
 						<StackPanel Margin="10,0">
 
-							<cc:ContentToggleSwitch SwitchContent="Startup Tags" IsOn="{Binding EnableStartupTags,Mode=TwoWay}"/>
-							<ContentControl IsEnabled="{Binding EnableStartupTags}" HorizontalContentAlignment="Stretch">
+							<StackPanel Margin="0,0,0,5">
+								<cc:ContentToggleSwitch SwitchContent="Startup Tags" IsOn="{Binding EnableStartupTags,Mode=TwoWay}"/>
+								<ContentControl IsEnabled="{Binding EnableStartupTags}" HorizontalContentAlignment="Stretch">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="auto"/>
+										</Grid.ColumnDefinitions>
+										<TextBox Text="{Binding StartupTags,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" d:Text="order:rank" CornerRadius="4,0,0,4"/>
+										<Button Grid.Column="1" CornerRadius="0,4,4,0" IsEnabled="{Binding StartupTagsChanged}" Command="{Binding AcceptStartupTagsCommand}">
+											<FontIcon Glyph="&#xE10B;"/>
+										</Button>
+									</Grid>
+								</ContentControl>
+							</StackPanel>
+
+							<StackPanel Margin="0,5">
+								<TextBlock Text="Host Type" Margin="5,0,0,5"/>
+								<controls:Segmented HorizontalAlignment="Stretch" SelectedIndex="2" SelectionMode="Single">
+									<controls:SegmentedItem Content="E926" Icon="{ui:FontIcon Glyph=&#xE821;}"/>
+									<controls:SegmentedItem Content="E621" Icon="{ui:FontIcon Glyph=&#xE18B;}"/>
+									<controls:SegmentedItem Content="E6AI" Icon="{ui:FontIcon Glyph=&#xF159;}"/>
+								</controls:Segmented>
+							</StackPanel>
+
+							<StackPanel Margin="0,5,0,0">
+								<TextBlock Text="Posts Per Page" Margin="5,0,0,0"/>
 								<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="*"/>
 										<ColumnDefinition Width="auto"/>
 									</Grid.ColumnDefinitions>
-									<TextBox Text="{Binding StartupTags,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" d:Text="order:rank" CornerRadius="4,0,0,4"/>
-									<Button Grid.Column="1" CornerRadius="0,4,4,0" IsEnabled="{Binding StartupTagsChanged}" Command="{Binding AcceptStartupTagsCommand}">
-										<FontIcon Glyph="&#xE10B;"/>
-									</Button>
+									<Slider Minimum="25" Maximum="125" Value="75" StepFrequency="5" TickFrequency="5" SmallChange="5" LargeChange="25" IsThumbToolTipEnabled="False"/>
+									<TextBlock Text="75" Grid.Column="1" VerticalAlignment="Center" FontSize="18" Margin="10,0"/>
 								</Grid>
-							</ContentControl>
+							</StackPanel>
+
+							<StackPanel Margin="0,5">
+								<TextBlock Text="Theme" FontSize="16"/>
+								<StackPanel Orientation="Horizontal" Margin="5">
+									<RadioButton Content="Light" MinWidth="80"/>
+									<RadioButton Content="Dark" MinWidth="80"/>
+									<RadioButton Content="System" MinWidth="80"/>
+								</StackPanel>
+								<TextBlock Text="* This change will be applied after &#10;restarting the application" Visibility="Collapsed" d:Visibility="Visible" TextAlignment="Left" Margin="10,0,0,0"/>
+							</StackPanel>
+
+
+							<cc:ContentToggleSwitch SwitchContent="Show Debug Panel"/>
 
 						</StackPanel>
 					</cc:SettingCardControl>
