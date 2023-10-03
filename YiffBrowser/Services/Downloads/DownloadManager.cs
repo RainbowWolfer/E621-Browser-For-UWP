@@ -19,6 +19,7 @@ namespace YiffBrowser.Services.Downloads {
 
 		public static readonly BackgroundDownloader downloader;
 
+		public static readonly ObservableCollection<DownloadPreparation> preparingPool = new();
 		public static readonly ObservableCollection<DownloadInstance> waitPool = new();
 		public static readonly ObservableCollection<DownloadInstance> downloadingPool = new();
 		public static readonly ObservableCollection<DownloadInstance> completedPool = new();
@@ -30,12 +31,35 @@ namespace YiffBrowser.Services.Downloads {
 			downloader = new BackgroundDownloader();
 			downloader.SetRequestHeader("User-Agent", NetCode.USERAGENT);
 
-			timer.Interval = TimeSpan.FromSeconds(1);
-			timer.Tick += DispatcherTimer_Tick;
+			timer.Interval = TimeSpan.FromSeconds(2);
+			timer.Tick += PendingToDownloading_Tick;
+			timer.Tick += PreparingToPending_Tick;
 			timer.Start();
 		}
 
-		private static void DispatcherTimer_Tick(object sender, object e) {
+		private static bool doingPreparation = false;
+		private static async void PreparingToPending_Tick(object sender, object e) {
+			if (Pausing || doingPreparation || preparingPool.IsEmpty()) {
+				return;
+			}
+			doingPreparation = true;
+			List<DownloadPreparation> list = preparingPool.ToList();
+			foreach (DownloadPreparation item in list) {
+				if (item.HasRequestedCancel) {
+					continue;
+				}
+				await PrepareDownloadToPending(item);
+			}
+			doingPreparation = false;
+		}
+
+		private static async Task PrepareDownloadToPending(DownloadPreparation downloadPreparation) {
+			downloadPreparation.DoingTask = true;
+			await PrepareDownload(downloadPreparation);
+			preparingPool.Remove(downloadPreparation);
+		}
+
+		private static void PendingToDownloading_Tick(object sender, object e) {
 			if (Pausing) {
 				return;
 			}
@@ -90,30 +114,46 @@ namespace YiffBrowser.Services.Downloads {
 			}
 		}
 
-		public static async Task RegisterDownload(E621Post post, string folderName = null) {
+		public static void RegisterDownload(E621Post post, string folderName = null) {
+			preparingPool.Add(new DownloadPreparation(post, folderName));
+		}
+
+		public static async Task PrepareDownload(DownloadPreparation preparation) {
+			E621Post post = preparation.Post;
+			string folderName = preparation.FolderName;
 			try {
 				string filename = $"{post.ID}.{post.File.Ext}";
 
 				StorageFolder folder = await GetFolder(folderName);
+				if (preparation.HasRequestedCancel) {
+					return;
+				}
 				StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.OpenIfExists);
+				if (preparation.HasRequestedCancel) {
+					return;
+				}
 
 				DownloadOperation download = downloader.CreateDownload(new Uri(post.File.URL), file);
+				if (preparation.HasRequestedCancel) {
+					return;
+				}
 
 				DownloadInstance instance = new(post, download,
 					new DownloadInstanceInformation(folder, folder == Local.DownloadFolder, file)
 				);
+				if (preparation.HasRequestedCancel) {
+					return;
+				}
 
 				waitPool.Add(instance);
 				instance.OnCancel += Item_OnCancel;
 
 			} catch (Exception ex) {
 				Debug.WriteLine(ex.ToString());
+			} finally {
+
 			}
 		}
-
-		//public static void RegisterDownloads(string folderName = null, params E621Post[] posts) {
-
-		//}
 
 		private static async ValueTask<StorageFolder> GetFolder(string folder = null) {
 			if (folder.IsBlank()) {

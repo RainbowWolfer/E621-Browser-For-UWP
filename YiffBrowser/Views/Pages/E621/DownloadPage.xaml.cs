@@ -35,11 +35,13 @@ namespace YiffBrowser.Views.Pages.E621 {
 		private bool pausing;
 		private double totalProgress;
 
+		public ObservableCollection<DownloadPreparation> PreparingPool { get; }
 		public ObservableCollection<DownloadInstance> WaitPool { get; }
 		public ObservableCollection<DownloadInstance> DownloadingPool { get; }
 		public ObservableCollection<DownloadInstance> CompletedPool { get; }
 
 		public DownloadPageViewModel() {
+			PreparingPool = DownloadManager.preparingPool;
 			WaitPool = DownloadManager.waitPool;
 			DownloadingPool = DownloadManager.downloadingPool;
 			CompletedPool = DownloadManager.completedPool;
@@ -116,6 +118,11 @@ namespace YiffBrowser.Views.Pages.E621 {
 			}).ShowAsyncSafe() != ContentDialogResult.Primary) {
 				return;
 			}
+
+			foreach (DownloadPreparation item in PreparingPool) {
+				item.Cancel();
+			}
+			PreparingPool.Clear();
 
 			while (WaitPool.IsNotEmpty()) {
 				DownloadInstance first = WaitPool.First();

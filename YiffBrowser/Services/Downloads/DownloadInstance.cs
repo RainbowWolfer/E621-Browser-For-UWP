@@ -1,7 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -14,7 +13,6 @@ using Windows.System;
 using Windows.UI.ViewManagement;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
-using YiffBrowser.Services.Locals;
 
 namespace YiffBrowser.Services.Downloads {
 	public class DownloadInstance(E621Post post, DownloadOperation download, DownloadInstanceInformation info) : BindableBase {

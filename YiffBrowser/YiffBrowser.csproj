@@ -174,6 +174,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Downloads\DownloadInstance.cs" />
     <Compile Include="Services\Downloads\DownloadManager.cs" />
+    <Compile Include="Services\Downloads\DownloadPreparation.cs" />
     <Compile Include="Services\HelloInLanguages.cs" />
     <Compile Include="Services\Locals\Listing.cs" />
     <Compile Include="Services\Locals\Local.cs" />

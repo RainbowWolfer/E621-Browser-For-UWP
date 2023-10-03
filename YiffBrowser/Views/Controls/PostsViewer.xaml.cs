@@ -551,7 +551,7 @@ namespace YiffBrowser.Views.Controls {
 			}
 			string folderName = result.FolderName;
 
-			await DownloadManager.RegisterDownload(post, folderName);
+			DownloadManager.RegisterDownload(post, folderName);
 
 		}
 
@@ -623,13 +623,13 @@ namespace YiffBrowser.Views.Controls {
 				}
 
 				foreach (E621Post post in list) {
-					await DownloadManager.RegisterDownload(post, folderName);
+					DownloadManager.RegisterDownload(post, folderName);
 				}
 
 			} else {
 
 				foreach (E621Post post in posts) {
-					await DownloadManager.RegisterDownload(post, folderName);
+					DownloadManager.RegisterDownload(post, folderName);
 				}
 
 			}

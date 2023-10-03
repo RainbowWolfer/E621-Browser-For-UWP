@@ -59,7 +59,8 @@
 						</Grid>
 					</Button>
 
-					<Button Margin="5" Command="{Binding CancelAllCommand}" IsEnabled="{Binding TotalUnfinishedDownloadCount,Converter={StaticResource CountToBool}}">
+					<!-- IsEnabled="{Binding TotalUnfinishedDownloadCount,Converter={StaticResource CountToBool}}"-->
+					<Button Margin="5" Command="{Binding CancelAllCommand}">
 						<StackPanel Orientation="Horizontal">
 							<FontIcon Glyph="&#xE106;" VerticalAlignment="Center"/>
 							<TextBlock Text="Cancel All" VerticalAlignment="Center" Margin="10,0,0,0"/>
@@ -184,7 +185,49 @@
 				<PivotItem>
 
 					<PivotItem.Header>
-						<TextBlock>
+						<TextBlock ToolTipService.ToolTip="Wait system to create the download file">
+							<Run Text="Preparing"/>
+							<Run Text="{Binding PreparingPool.Count}"/>
+						</TextBlock>
+					</PivotItem.Header>
+
+					<ListView ItemsSource="{Binding PreparingPool}" d:ItemsSource="1 2 3">
+						<ListView.ItemTemplate>
+							<DataTemplate x:DataType="downloads:DownloadPreparation">
+								<Grid>
+									<StackPanel Orientation="Horizontal">
+										<muxc:ProgressRing Height="20" Width="20" IsActive="{Binding DoingTask}"/>
+										<Border VerticalAlignment="Center" Padding="8,4" Background="#44ffffff" CornerRadius="4" Margin="10,0,0,0" Grid.Column="1" MinWidth="85" ToolTipService.ToolTip="File Type">
+											<StackPanel Orientation="Horizontal">
+												<FontIcon Glyph="&#xE8B7;"/>
+												<TextBlock Text="{Binding FolderName}" d:Text="Folder Name" Margin="5,0,0,0"/>
+											</StackPanel>
+										</Border>
+										<Border VerticalAlignment="Center" Padding="8,4" Background="#44ffffff" CornerRadius="4" Margin="10,0,0,0" Grid.Column="1" MinWidth="85" ToolTipService.ToolTip="File Type">
+											<StackPanel Orientation="Horizontal">
+												<cc:FileTypeFontIcon FileType="{Binding FileType}" d:Glyph="&#xE91B;"/>
+												<TextBlock Text="{Binding FileTypeString}" d:Text="GIF" Margin="5,0,0,0"/>
+											</StackPanel>
+										</Border>
+										<Border VerticalAlignment="Center" Padding="8,4" Background="#44ffffff" CornerRadius="4" Margin="10,0,0,0" Grid.Column="1" MinWidth="85" ToolTipService.ToolTip="Post ID">
+											<TextBlock VerticalAlignment="Center">
+												<Run Text="#"/>
+												<Run Text="{Binding Post.ID}" d:Text="123321"/>
+											</TextBlock>
+										</Border>
+									</StackPanel>
+								</Grid>
+							</DataTemplate>
+						</ListView.ItemTemplate>
+					</ListView>
+
+
+				</PivotItem>
+
+				<PivotItem>
+
+					<PivotItem.Header>
+						<TextBlock ToolTipService.ToolTip="Wait for download to start">
 							<Run Text="Pending"/>
 							<Run Text="{Binding WaitPool.Count}"/>
 						</TextBlock>
@@ -251,7 +294,7 @@
 				<PivotItem>
 
 					<PivotItem.Header>
-						<TextBlock>
+						<TextBlock ToolTipService.ToolTip="Downloads that are already completed">
 							<Run Text="Completed"/>
 							<Run Text="{Binding CompletedPool.Count}"/>
 						</TextBlock>
