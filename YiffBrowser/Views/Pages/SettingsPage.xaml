@@ -8,16 +8,20 @@
     xmlns:cc="using:YiffBrowser.Views.Controls.CustomControls"
     xmlns:local="using:YiffBrowser.Views.Pages"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+	xmlns:locals="using:YiffBrowser.Services.Locals"
 	xmlns:ui="using:CommunityToolkit.WinUI"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core" xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core" 
+	xmlns:controls="using:CommunityToolkit.WinUI.Controls" 
+	xmlns:common="using:YiffBrowser.Views.Controls.Common"
+	xmlns:ex="using:YiffBrowser.Extensions"
 	mc:Ignorable="d"
     d:RequestedTheme="Dark"
     NavigationCacheMode="Required"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    d:Height="600" d:Width="3000">
+    d:Height="800" d:Width="3000">
 
 	<Page.DataContext>
-		<local:SettingsPageViewModel/>
+		<local:SettingsPageViewModel x:Name="ViewModel"/>
 	</Page.DataContext>
 
 	<Page.Resources>
@@ -82,8 +86,8 @@
 			<StackPanel Orientation="Horizontal">
 				<Grid>
 					<Grid.RowDefinitions>
-						<RowDefinition Height="2*"/>
-						<RowDefinition Height="3*"/>
+						<RowDefinition Height="240"/>
+						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
 					<cc:SettingCardControl Title="LISTING">
 						<StackPanel>
@@ -143,7 +147,7 @@
 							</Button>
 
 							<!-- BorderThickness="1" BorderBrush="{StaticResource SystemControlBackgroundAccentRevealBorderBrush}"-->
-							<HyperlinkButton Visibility="{Binding HasDownloadFolder,Converter={StaticResource BoolToVisibility}}" d:Visibility="Visible" Command="{Binding OpenDownloadFolderInExplorerCommand}" HorizontalAlignment="Stretch" Margin="5">
+							<HyperlinkButton Visibility="{Binding HasDownloadFolder,Converter={StaticResource BoolToVisibility}}" d:Visibility="Visible" Command="{Binding OpenDownloadFolderInExplorerCommand}" HorizontalAlignment="Stretch" Margin="5" ToolTipService.ToolTip="Download Folder Path">
 								<TextBlock Text="{Binding DownloadFolderPath}" d:Text="D:/E621" TextAlignment="Center" TextWrapping="Wrap" MaxWidth="300" HorizontalAlignment="Center"/>
 							</HyperlinkButton>
 
@@ -151,29 +155,91 @@
 
 							<ContentControl HorizontalContentAlignment="Stretch" IsEnabled="{Binding HasDownloadFolder}">
 								<StackPanel Margin="5,0">
-									<TextBlock Text="Request Download Action" Margin="10,0,10,5" FontSize="16"/>
-									<ComboBox HorizontalAlignment="Stretch">
-										<ComboBoxItem Content="Mannualy Select Folder"/>
-										<ComboBoxItem Content="Auto Download To Tags Related Folder"/>
-										<ComboBoxItem Content="Auto Download To Specified Sub Folder"/>
-									</ComboBox>
+									<TextBlock Text="Request Download Action" Margin="5,0,0,5" FontSize="16"/>
 
-									<Button Margin="0,5" Command="{Binding SelectAutoDownloadFolderCommand}">
-										<cc:IconTextHorizontal Glyph="&#xE178;" Text="Select Auto Download Folder" TextWidth="180"/>
-									</Button>
-									<HyperlinkButton HorizontalAlignment="Stretch">
-										<TextBlock Text="{Binding AutoDownloadFolderPath}" d:Text="D:/E621" TextAlignment="Center" TextWrapping="Wrap" MaxWidth="300" HorizontalAlignment="Center"/>
-									</HyperlinkButton>
+									<StackPanel Margin="10,0,0,0">
+										<common:EnumRadioButtons SelectedEnum="{Binding RequestDownloadAction,Mode=TwoWay}" EnumType="{ex:Type Type=locals:RequestDownloadAction}"/>
+
+										<ContentControl>
+											<i:Interaction.Behaviors>
+												<core:DataTriggerBehavior Binding="{Binding RequestDownloadAction,Converter={StaticResource ToString}}" Value="TagsRelated" ComparisonCondition="Equal">
+													<core:ChangePropertyAction PropertyName="Visibility" Value="Visible"/>
+												</core:DataTriggerBehavior>
+												<core:DataTriggerBehavior Binding="{Binding RequestDownloadAction,Converter={StaticResource ToString}}" Value="TagsRelated" ComparisonCondition="NotEqual">
+													<core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed"/>
+												</core:DataTriggerBehavior>
+											</i:Interaction.Behaviors>
+
+											<Grid Margin="5,0,5,5">
+												<StackPanel>
+													<cc:ContentToggleSwitch SwitchContent="Insert Space Between Tags" IsOn="{Binding InsertSpaceBetweenTagsInAutoFolder,Mode=TwoWay}"/>
+													<StackPanel Orientation="Horizontal">
+														<FontIcon Glyph="&#xE783;" Margin="0,0,10,0" ToolTipService.ToolTip="Demonstration"/>
+														<StackPanel Width="270">
+															<TextBlock Text="Page Tags: canid, order:score, white_fur" TextWrapping="Wrap"/>
+															<TextBlock TextWrapping="Wrap" d:Text="Folder Name: canid, order.score, white_fur">
+																<i:Interaction.Behaviors>
+																	<core:DataTriggerBehavior Binding="{Binding InsertSpaceBetweenTagsInAutoFolder}" Value="True">
+																		<core:ChangePropertyAction PropertyName="Text" Value="Folder Name: canid, order.score, white_fur"/>
+																	</core:DataTriggerBehavior>
+																	<core:DataTriggerBehavior Binding="{Binding InsertSpaceBetweenTagsInAutoFolder}" Value="False">
+																		<core:ChangePropertyAction PropertyName="Text" Value="Folder Name: canid,order.score,white_fur"/>
+																	</core:DataTriggerBehavior>
+																</i:Interaction.Behaviors>
+															</TextBlock>
+														</StackPanel>
+													</StackPanel>
+												</StackPanel>
+											</Grid>
+
+										</ContentControl>
+
+										<ContentControl HorizontalContentAlignment="Stretch">
+
+											<i:Interaction.Behaviors>
+												<core:DataTriggerBehavior Binding="{Binding RequestDownloadAction,Converter={StaticResource ToString}}" Value="Specify" ComparisonCondition="Equal">
+													<core:ChangePropertyAction PropertyName="Visibility" Value="Visible"/>
+												</core:DataTriggerBehavior>
+												<core:DataTriggerBehavior Binding="{Binding RequestDownloadAction,Converter={StaticResource ToString}}" Value="Specify" ComparisonCondition="NotEqual">
+													<core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed"/>
+												</core:DataTriggerBehavior>
+											</i:Interaction.Behaviors>
+
+											<StackPanel>
+												<Button Margin="0,5" Command="{Binding SelectAutoDownloadFolderCommand}">
+													<cc:IconTextHorizontal Glyph="&#xE178;" Text="Select Auto Download Folder" TextWidth="180"/>
+												</Button>
+												<HyperlinkButton HorizontalAlignment="Stretch" Command="{Binding OpenAutoDownloadFolderInExplorerCommand}">
+													<StackPanel Orientation="Horizontal">
+														<FontIcon d:Glyph="&#xE10F;" Margin="0,0,5,0" ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self},Path=Tag}" VerticalAlignment="Top">
+															<i:Interaction.Behaviors>
+																<core:DataTriggerBehavior Binding="{Binding IsAutoDownloadFolderPathRoot}" Value="True">
+																	<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE10F;"/>
+																	<core:ChangePropertyAction PropertyName="Tag" Value="Root Folder"/>
+																</core:DataTriggerBehavior>
+																<core:DataTriggerBehavior Binding="{Binding IsAutoDownloadFolderPathRoot}" Value="False">
+																	<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE8B7;"/>
+																	<core:ChangePropertyAction PropertyName="Tag" Value="Sub Folder"/>
+																</core:DataTriggerBehavior>
+															</i:Interaction.Behaviors>
+														</FontIcon>
+														<TextBlock Text="{Binding AutoDownloadFolderPath}" d:Text="D:/E621" TextAlignment="Center" TextWrapping="Wrap" MaxWidth="300" HorizontalAlignment="Center"/>
+													</StackPanel>
+												</HyperlinkButton>
+											</StackPanel>
+										</ContentControl>
+
+									</StackPanel>
 								</StackPanel>
 							</ContentControl>
 
 							<StackPanel Margin="5,0">
-								<TextBlock Text="Download File Conflict Action" Margin="10,0,10,5" FontSize="16"/>
-								<ComboBox HorizontalAlignment="Stretch">
-									<ComboBoxItem Content="Generate New Name"/>
-									<ComboBoxItem Content="Skip Files With Same Name"/>
-									<ComboBoxItem Content="Replace Files With Same Name"/>
-								</ComboBox>
+								<TextBlock Text="Download File Conflict Action" Margin="5,0,0,5" FontSize="16"/>
+
+								<StackPanel Margin="10,0,0,0">
+									<common:EnumRadioButtons SelectedEnum="{Binding DownloadFileConflictAction,Mode=TwoWay}" EnumType="{ex:Type Type=locals:DownloadFileConflictAction}"/>
+								</StackPanel>
+
 							</StackPanel>
 
 						</StackPanel>
@@ -190,8 +256,33 @@
 						<StackPanel Margin="10,0">
 
 							<StackPanel Margin="0,0,0,5">
-								<cc:ContentToggleSwitch SwitchContent="Startup Tags" IsOn="{Binding EnableStartupTags,Mode=TwoWay}"/>
-								<ContentControl IsEnabled="{Binding EnableStartupTags}" HorizontalContentAlignment="Stretch">
+								<controls:Segmented HorizontalAlignment="Stretch" SelectionMode="Single" SelectedIndex="{Binding StartupTagsType,Mode=TwoWay,Converter={StaticResource EnumValueToIndex}}" d:SelectedIndex="0">
+									<controls:SegmentedItem Content="Startup Tags" Icon="{ui:FontIcon Glyph=&#xE7E8;}"/>
+									<controls:SegmentedItem Content="Restore Tags" Icon="{ui:FontIcon Glyph=&#xE81B;}"/>
+								</controls:Segmented>
+								<StackPanel Margin="5" Orientation="Horizontal">
+									<FontIcon Glyph="&#xE946;" Margin="0,0,10,0"/>
+									<TextBlock d:Text="Open tags from previous session" TextWrapping="Wrap" Width="300">
+										<i:Interaction.Behaviors>
+											<core:DataTriggerBehavior Binding="{Binding StartupTagsType,Converter={StaticResource ToString}}" Value="StartupTags">
+												<core:ChangePropertyAction PropertyName="Text" Value="Startup tags will be automatically opened when app starts"/>
+											</core:DataTriggerBehavior>
+											<core:DataTriggerBehavior Binding="{Binding StartupTagsType,Converter={StaticResource ToString}}" Value="RestoreTags">
+												<core:ChangePropertyAction PropertyName="Text" Value="Open tags from previous session when app starts"/>
+											</core:DataTriggerBehavior>
+										</i:Interaction.Behaviors>
+									</TextBlock>
+								</StackPanel>
+								<!--<cc:ContentToggleSwitch SwitchContent="Startup Tags" IsOn="{Binding EnableStartupTags,Mode=TwoWay}"/>-->
+								<ContentControl HorizontalContentAlignment="Stretch">
+									<i:Interaction.Behaviors>
+										<core:DataTriggerBehavior Binding="{Binding StartupTagsType,Converter={StaticResource ToString}}" Value="StartupTags">
+											<core:ChangePropertyAction PropertyName="Visibility" Value="Visible"/>
+										</core:DataTriggerBehavior>
+										<core:DataTriggerBehavior Binding="{Binding StartupTagsType,Converter={StaticResource ToString}}" Value="RestoreTags">
+											<core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed"/>
+										</core:DataTriggerBehavior>
+									</i:Interaction.Behaviors>
 									<Grid>
 										<Grid.ColumnDefinitions>
 											<ColumnDefinition Width="*"/>
@@ -206,43 +297,76 @@
 							</StackPanel>
 
 							<StackPanel Margin="0,5">
-								<TextBlock Text="Host Type" Margin="5,0,0,5"/>
-								<controls:Segmented HorizontalAlignment="Stretch" SelectedIndex="2" SelectionMode="Single">
-									<controls:SegmentedItem Content="E926" Icon="{ui:FontIcon Glyph=&#xE821;}"/>
-									<controls:SegmentedItem Content="E621" Icon="{ui:FontIcon Glyph=&#xE18B;}"/>
-									<controls:SegmentedItem Content="E6AI" Icon="{ui:FontIcon Glyph=&#xF159;}"/>
-								</controls:Segmented>
+								<StackPanel Orientation="Horizontal">
+									<TextBlock Text="Host Type" Margin="0,0,0,5"/>
+									<TextBlock Margin="5,0">
+										<Hyperlink NavigateUri="https://www.e621.net" Click="Hyperlink_Click">e621.net</Hyperlink>
+									</TextBlock>
+								</StackPanel>
+								<Grid>
+									<controls:Segmented HorizontalAlignment="Stretch" SelectionMode="Single" SelectedIndex="{Binding HostType,Mode=TwoWay,Converter={StaticResource EnumValueToIndex}}" d:SelectedIndex="2">
+										<controls:SegmentedItem Content="E926" Icon="{ui:FontIcon Glyph=&#xE821;}"/>
+										<controls:SegmentedItem Content="E621" Icon="{ui:FontIcon Glyph=&#xE18B;}"/>
+										<controls:SegmentedItem Content="E6AI" Icon="{ui:FontIcon Glyph=&#xF159;}"/>
+									</controls:Segmented>
+								</Grid>
 							</StackPanel>
 
 							<StackPanel Margin="0,5,0,0">
-								<TextBlock Text="Posts Per Page" Margin="5,0,0,0"/>
-								<Grid>
+								<TextBlock Text="Posts Per Page" Margin="0,0,0,0"/>
+								<Grid Margin="5,0,0,0">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="*"/>
 										<ColumnDefinition Width="auto"/>
 									</Grid.ColumnDefinitions>
-									<Slider Minimum="25" Maximum="125" Value="75" StepFrequency="5" TickFrequency="5" SmallChange="5" LargeChange="25" IsThumbToolTipEnabled="False"/>
-									<TextBlock Text="75" Grid.Column="1" VerticalAlignment="Center" FontSize="18" Margin="10,0"/>
+									<Slider Minimum="25" Maximum="125" Value="{Binding PostPerPage,Mode=TwoWay}" d:Value="75" StepFrequency="5" TickFrequency="5" SmallChange="5" LargeChange="25" IsThumbToolTipEnabled="False"/>
+									<TextBlock Text="{Binding PostPerPage}" d:Text="75" Grid.Column="1" VerticalAlignment="Center" FontSize="18" Margin="10,0"/>
 								</Grid>
 							</StackPanel>
 
 							<StackPanel Margin="0,5">
-								<TextBlock Text="Theme" FontSize="16"/>
-								<StackPanel Orientation="Horizontal" Margin="5">
-									<RadioButton Content="Light" MinWidth="80"/>
-									<RadioButton Content="Dark" MinWidth="80"/>
-									<RadioButton Content="System" MinWidth="80"/>
-								</StackPanel>
+								<TextBlock Text="Theme"/>
+								<Grid Margin="5,0,0,0">
+									<common:EnumRadioButtons SelectedEnum="{Binding AppTheme,Mode=TwoWay}" EnumType="{ex:Type Type=locals:AppTheme}" Orientation="Horizontal" ItemWidth="80"/>
+								</Grid>
 								<TextBlock Text="* This change will be applied after &#10;restarting the application" Visibility="Collapsed" d:Visibility="Visible" TextAlignment="Left" Margin="10,0,0,0"/>
 							</StackPanel>
 
-
-							<cc:ContentToggleSwitch SwitchContent="Show Debug Panel"/>
+							<cc:ContentToggleSwitch SwitchContent="Show Debug Panel" IsOn="{Binding ShowDebugPanel,Mode=TwoWay}"/>
 
 						</StackPanel>
 					</cc:SettingCardControl>
 
-					<cc:SettingCardControl Title="DEBUG" Grid.Row="1"/>
+					<cc:SettingCardControl Title="DEBUG" Grid.Row="1" Visibility="{Binding ShowDebugPanel,Converter={StaticResource BoolToVisibility}}">
+						<StackPanel Margin="10,0">
+							<StackPanel Orientation="Horizontal" Margin="0,0,0,5" Background="Transparent" ToolTipService.ToolTip="Current Windows Version">
+								<Border Background="{StaticResource ControlFillColorDefaultBrush}" CornerRadius="5" Padding="5">
+									<FontIcon Glyph="&#xEC4E;"/>
+								</Border>
+								<Border Margin="10,0,0,0">
+									<TextBlock Text="{Binding WindowsVersion}" d:Text="Windows 12.0 (12345.1234)" VerticalAlignment="Center"/>
+								</Border>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" Margin="0,5" Background="Transparent" ToolTipService.ToolTip="Current Processor Architecture">
+								<Border Background="{StaticResource ControlFillColorDefaultBrush}" CornerRadius="5" Padding="5">
+									<FontIcon Glyph="&#xE950;"/>
+								</Border>
+								<Border Margin="10,0,0,0">
+									<TextBlock Text="{Binding ProcessorArchitecture}" d:Text="ARM64" VerticalAlignment="Center"/>
+								</Border>
+							</StackPanel>
+							<Button HorizontalAlignment="Stretch" Margin="0,5">
+								<cc:IconTextHorizontal Text="Unhandled Exceptions" Glyph="&#xEA39;" TextWidth="140"/>
+							</Button>
+							<Button HorizontalAlignment="Stretch" Margin="0,5">
+								<cc:IconTextHorizontal Text="HTTP Request History" Glyph="&#xEADF;" TextWidth="140"/>
+							</Button>
+							<Button HorizontalAlignment="Stretch" Margin="0,5">
+								<cc:IconTextHorizontal Text="Crash Log" Glyph="&#xEBE8;" TextWidth="140"/>
+							</Button>
+						</StackPanel>
+					</cc:SettingCardControl>
+
 				</Grid>
 
 				<cc:SettingCardControl Title="VIEW"/>

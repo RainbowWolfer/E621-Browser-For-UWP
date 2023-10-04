@@ -122,6 +122,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="Attributes\ToolTipAttribute.cs" />
     <Compile Include="Converters\AbsConverter.cs" />
     <Compile Include="Converters\ArrayEmptyToBoolConverter.cs" />
     <Compile Include="Converters\ArrayEmptyToVisibilityConverter.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Converters\DurationConverter.cs" />
     <Compile Include="Converters\E621RatingToBrushConverter.cs" />
     <Compile Include="Converters\E621RatingToIconConverter.cs" />
+    <Compile Include="Converters\EnumValueToIndexConverter.cs" />
     <Compile Include="Converters\FrameworkElementToSizeRectConverter.cs" />
     <Compile Include="Converters\JoinStringConverter.cs" />
     <Compile Include="Converters\NotNullToBoolConverter.cs" />
@@ -152,12 +154,16 @@
     <Compile Include="Converters\ObjectToVisibilityConverter.cs" />
     <Compile Include="Converters\ObjectToVisibilityReConverter.cs" />
     <Compile Include="Converters\SubStringConverter.cs" />
+    <Compile Include="Converters\ToStringConverter.cs" />
     <Compile Include="Converters\UnifyArrayConverter.cs" />
     <Compile Include="Exceptions\CustomException.cs" />
+    <Compile Include="Extensions\TypeExtension.cs" />
     <Compile Include="Helpers\AncestorSource.cs" />
+    <Compile Include="Helpers\AttributeHelper.cs" />
     <Compile Include="Helpers\CommonHelpers.cs" />
     <Compile Include="Helpers\ContentDialogHelper.cs" />
     <Compile Include="Helpers\E621Helpers.cs" />
+    <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\FocusHelper.cs" />
     <Compile Include="Interfaces\IContentDialogView.cs" />
     <Compile Include="IsExternalInit.cs" />
@@ -183,6 +189,9 @@
     <Compile Include="Services\Networks\NetCode.cs" />
     <Compile Include="Views\Controls\AddButtonInput.xaml.cs">
       <DependentUpon>AddButtonInput.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Common\EnumRadioButtons.xaml.cs">
+      <DependentUpon>EnumRadioButtons.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\Common\TypeHintView.xaml.cs">
       <DependentUpon>TypeHintView.xaml</DependentUpon>
@@ -348,6 +357,10 @@
     <Page Include="Views\Controls\AddButtonInput.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Common\EnumRadioButtons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\Common\TypeHintView.xaml">
       <SubType>Designer</SubType>

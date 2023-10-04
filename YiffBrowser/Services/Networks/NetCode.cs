@@ -12,7 +12,7 @@ using YiffBrowser.Services.Locals;
 
 namespace YiffBrowser.Services.Networks {
 	public static class NetCode {
-		public const string USERAGENT = "E621BrowserUWP/0.1.0.0 by (RainbowWolfer)";
+		public const string USERAGENT = "E621BrowserUWP/2.0.0.0-PreAlpha by (RainbowWolfer)";
 
 		public static async Task<HttpResult<string>> ReadURLAsync(string url, CancellationToken? token = null, string username = "", string api = "") {
 			Debug.WriteLine("Reading: " + url);

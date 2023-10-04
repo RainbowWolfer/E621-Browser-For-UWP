@@ -45,8 +45,9 @@ namespace YiffBrowser.Services.Downloads {
 
 				StartTime = DateTime.Now;
 
-				await Download.StartAsync().AsTask(CancellationTokenSource.Token, new Progress<DownloadOperation>(HandleDownloadProgress));
+				Debug.WriteLine($"Downloading {Post.File.URL}");
 
+				await Download.StartAsync().AsTask(CancellationTokenSource.Token, new Progress<DownloadOperation>(HandleDownloadProgress));
 			} catch (TaskCanceledException) {
 
 			} catch (FileNotFoundException ex) {
