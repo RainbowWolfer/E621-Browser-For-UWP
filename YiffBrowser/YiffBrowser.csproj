@@ -145,6 +145,7 @@
     <Compile Include="Converters\EnumValueToIndexConverter.cs" />
     <Compile Include="Converters\FrameworkElementToSizeRectConverter.cs" />
     <Compile Include="Converters\JoinStringConverter.cs" />
+    <Compile Include="Converters\MatchEnumToVisibilityConverter.cs" />
     <Compile Include="Converters\NotNullToBoolConverter.cs" />
     <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
     <Compile Include="Converters\NullToBoolConverter.cs" />

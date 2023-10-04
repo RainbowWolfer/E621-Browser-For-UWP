@@ -299,15 +299,23 @@
 							<StackPanel Margin="0,5">
 								<StackPanel Orientation="Horizontal">
 									<TextBlock Text="Host Type" Margin="0,0,0,5"/>
-									<TextBlock Margin="5,0">
-										<Hyperlink NavigateUri="https://www.e621.net" Click="Hyperlink_Click">e621.net</Hyperlink>
-									</TextBlock>
+									<Grid Margin="5,0">
+										<TextBlock Visibility="{Binding HostType,ConverterParameter=E926,Converter={StaticResource MatchEnumToVisibility}}">
+											<Hyperlink NavigateUri="https://www.e926.net">e926.net</Hyperlink>
+										</TextBlock>
+										<TextBlock Visibility="{Binding HostType,ConverterParameter=E621,Converter={StaticResource MatchEnumToVisibility}}">
+											<Hyperlink NavigateUri="https://www.e621.net">e621.net</Hyperlink>
+										</TextBlock>
+										<TextBlock Visibility="{Binding HostType,ConverterParameter=E6AI,Converter={StaticResource MatchEnumToVisibility}}">
+											<Hyperlink NavigateUri="https://www.e6ai.net">e6ai.net</Hyperlink>
+										</TextBlock>
+									</Grid>
 								</StackPanel>
 								<Grid>
 									<controls:Segmented HorizontalAlignment="Stretch" SelectionMode="Single" SelectedIndex="{Binding HostType,Mode=TwoWay,Converter={StaticResource EnumValueToIndex}}" d:SelectedIndex="2">
-										<controls:SegmentedItem Content="E926" Icon="{ui:FontIcon Glyph=&#xE821;}"/>
-										<controls:SegmentedItem Content="E621" Icon="{ui:FontIcon Glyph=&#xE18B;}"/>
-										<controls:SegmentedItem Content="E6AI" Icon="{ui:FontIcon Glyph=&#xF159;}"/>
+										<controls:SegmentedItem Content="E926" Icon="{ui:FontIcon Glyph=&#xE821;}" ToolTipService.ToolTip="SFW"/>
+										<controls:SegmentedItem Content="E621" Icon="{ui:FontIcon Glyph=&#xE18B;}" ToolTipService.ToolTip="NSFW"/>
+										<controls:SegmentedItem Content="E6AI" Icon="{ui:FontIcon Glyph=&#xF159;}" ToolTipService.ToolTip="Experimental Feature"/>
 									</controls:Segmented>
 								</Grid>
 							</StackPanel>
