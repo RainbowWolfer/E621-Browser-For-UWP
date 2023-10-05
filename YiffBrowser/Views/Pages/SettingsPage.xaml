@@ -11,14 +11,15 @@
 	xmlns:locals="using:YiffBrowser.Services.Locals"
 	xmlns:ui="using:CommunityToolkit.WinUI"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core" 
-	xmlns:controls="using:CommunityToolkit.WinUI.Controls" 
+	xmlns:c="using:CommunityToolkit.WinUI.Controls" 
 	xmlns:common="using:YiffBrowser.Views.Controls.Common"
 	xmlns:ex="using:YiffBrowser.Extensions"
 	mc:Ignorable="d"
     d:RequestedTheme="Dark"
     NavigationCacheMode="Required"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    d:Height="800" d:Width="3000">
+    d:Height="800" 
+	d:Width="3000">
 
 	<Page.DataContext>
 		<local:SettingsPageViewModel x:Name="ViewModel"/>
@@ -256,10 +257,10 @@
 						<StackPanel Margin="10,0">
 
 							<StackPanel Margin="0,0,0,5">
-								<controls:Segmented HorizontalAlignment="Stretch" SelectionMode="Single" SelectedIndex="{Binding StartupTagsType,Mode=TwoWay,Converter={StaticResource EnumValueToIndex}}" d:SelectedIndex="0">
-									<controls:SegmentedItem Content="Startup Tags" Icon="{ui:FontIcon Glyph=&#xE7E8;}"/>
-									<controls:SegmentedItem Content="Restore Tags" Icon="{ui:FontIcon Glyph=&#xE81B;}"/>
-								</controls:Segmented>
+								<c:Segmented HorizontalAlignment="Stretch" SelectionMode="Single" SelectedIndex="{Binding StartupTagsType,Mode=TwoWay,Converter={StaticResource EnumValueToIndex}}" d:SelectedIndex="0">
+									<c:SegmentedItem Content="Startup Tags" Icon="{ui:FontIcon Glyph=&#xE7E8;}"/>
+									<c:SegmentedItem Content="Restore Tags" Icon="{ui:FontIcon Glyph=&#xE81B;}"/>
+								</c:Segmented>
 								<StackPanel Margin="5" Orientation="Horizontal">
 									<FontIcon Glyph="&#xE946;" Margin="0,0,10,0"/>
 									<TextBlock d:Text="Open tags from previous session" TextWrapping="Wrap" Width="300">
@@ -312,11 +313,11 @@
 									</Grid>
 								</StackPanel>
 								<Grid>
-									<controls:Segmented HorizontalAlignment="Stretch" SelectionMode="Single" SelectedIndex="{Binding HostType,Mode=TwoWay,Converter={StaticResource EnumValueToIndex}}" d:SelectedIndex="2">
-										<controls:SegmentedItem Content="E926" Icon="{ui:FontIcon Glyph=&#xE821;}" ToolTipService.ToolTip="SFW"/>
-										<controls:SegmentedItem Content="E621" Icon="{ui:FontIcon Glyph=&#xE18B;}" ToolTipService.ToolTip="NSFW"/>
-										<controls:SegmentedItem Content="E6AI" Icon="{ui:FontIcon Glyph=&#xF159;}" ToolTipService.ToolTip="Experimental Feature"/>
-									</controls:Segmented>
+									<c:Segmented HorizontalAlignment="Stretch" SelectionMode="Single" SelectedIndex="{Binding HostType,Mode=TwoWay,Converter={StaticResource EnumValueToIndex}}" d:SelectedIndex="2">
+										<c:SegmentedItem Content="E926" Icon="{ui:FontIcon Glyph=&#xE821;}" ToolTipService.ToolTip="SFW"/>
+										<c:SegmentedItem Content="E621" Icon="{ui:FontIcon Glyph=&#xE18B;}" ToolTipService.ToolTip="NSFW"/>
+										<c:SegmentedItem Content="E6AI" Icon="{ui:FontIcon Glyph=&#xF159;}" ToolTipService.ToolTip="Experimental Feature"/>
+									</c:Segmented>
 								</Grid>
 							</StackPanel>
 
@@ -328,7 +329,9 @@
 										<ColumnDefinition Width="auto"/>
 									</Grid.ColumnDefinitions>
 									<Slider Minimum="25" Maximum="125" Value="{Binding PostPerPage,Mode=TwoWay}" d:Value="75" StepFrequency="5" TickFrequency="5" SmallChange="5" LargeChange="25" IsThumbToolTipEnabled="False"/>
-									<TextBlock Text="{Binding PostPerPage}" d:Text="75" Grid.Column="1" VerticalAlignment="Center" FontSize="18" Margin="10,0"/>
+									<Grid Grid.Column="1" Width="40" Margin="0,0,10,0">
+										<TextBlock Text="{Binding PostPerPage}" d:Text="75" VerticalAlignment="Center" FontSize="18" TextAlignment="Right"/>
+									</Grid>
 								</Grid>
 							</StackPanel>
 
@@ -377,9 +380,88 @@
 
 				</Grid>
 
-				<cc:SettingCardControl Title="VIEW"/>
-				<cc:SettingCardControl Title="ABOUT"/>
-				<cc:SettingCardControl Title="RELEASE NOTES" Width="500"/>
+				<cc:SettingCardControl Title="VIEW" Width="560">
+					<StackPanel Margin="5,0">
+						<c:SettingsExpander Header="Home" HeaderIcon="{ui:FontIcon Glyph=&#xE10F;}" d:IsExpanded="True">
+							<Button>
+								<cc:IconTextHorizontal Text="Reset" Glyph="&#xE777;"/>
+							</Button>
+
+							<c:SettingsExpander.Items>
+
+								<c:SettingsCard ContentAlignment="Left">
+									<cc:ContentToggleSwitch SwitchContent="Remember Selection"/>
+								</c:SettingsCard>
+
+								<c:SettingsCard Description="SettingsCard within an Expander can be made clickable too!"
+                                               Header="This item can be clicked">
+									<StackPanel>
+										<Button Content="Button" />
+									</StackPanel>
+								</c:SettingsCard>
+
+							</c:SettingsExpander.Items>
+						</c:SettingsExpander>
+
+					</StackPanel>
+				</cc:SettingCardControl>
+
+				<cc:SettingCardControl Title="ABOUT">
+					<StackPanel Margin="10,0">
+						<common:HeaderIconTextButton Glyph="&#xEC7A;" Title="Developer" Text="RainbowWolfer" NavigateURL="https://rainbowwolfer.github.io/" TitleWidth="140" Margin="0,5"/>
+						<common:HeaderIconTextButton Glyph="&#xF156;" Title="Version" Text="{Binding VersionString}" d:Text="1.0.0.0" TitleWidth="140" Margin="0,5"/>
+						<common:HeaderIconTextButton Glyph="&#xE753;" Title="Project Source" Text="Github" TitleWidth="140" Margin="0,5" NavigateURL="https://github.com/RainbowWolfer/E621-Browser-For-UWP"/>
+
+						<Border Style="{StaticResource HorizontalBorderSeparator}" Margin="0,10"/>
+
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+
+							<StackPanel Margin="0,0,10,0" VerticalAlignment="Center">
+								<TextBlock Text="Found Bugs?" TextAlignment="Right"/>
+								<TextBlock Text="Want New Features?" TextAlignment="Right"/>
+								<TextBlock Text="Contact Me!" TextAlignment="Right"/>
+							</StackPanel>
+
+
+							<StackPanel Grid.Column="1">
+								<Button Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Stretch" Command="{Binding EmailCommand}">
+									<cc:IconTextHorizontal Text="Email" Glyph="&#xE119;"/>
+								</Button>
+
+								<Button HorizontalAlignment="Stretch" Margin="0,5,0,0" FontSize="12" Padding="7,5,7,6">
+									<TextBlock Text="RainbowWolfer@outlook.com"/>
+									<Button.Flyout>
+										<MenuFlyout>
+											<MenuFlyoutItem Text="Copy" Icon="Copy" Command="{Binding CopyEmailCommand}"/>
+										</MenuFlyout>
+									</Button.Flyout>
+								</Button>
+							</StackPanel>
+						</Grid>
+
+						<Border Style="{StaticResource HorizontalBorderSeparator}" Margin="0,10"/>
+
+						<TextBlock Text="App Settings Folder" Margin="0,0,0,5"/>
+						<HyperlinkButton Command="{Binding OpenLocalFolderCommand}">
+							<TextBlock Text="{Binding LocalFolderPath}" d:Text="{StaticResource DefaultTextShort}" TextWrapping="Wrap" Width="300"/>
+						</HyperlinkButton>
+
+					</StackPanel>
+				</cc:SettingCardControl>
+
+				<cc:SettingCardControl Title="RELEASE NOTES" Width="500">
+					<StackPanel Margin="5,0">
+						<TextBlock Text="What's new in this version" TextAlignment="Center" Margin="0,-5,0,10"/>
+						<muxc:Expander Header="2023-10-05 (V1.0.0.0)" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+							<TextBlock Text="- Debug "/>
+						</muxc:Expander>
+					</StackPanel>
+				</cc:SettingCardControl>
+
 			</StackPanel>
 		</ScrollViewer>
 	</Grid>

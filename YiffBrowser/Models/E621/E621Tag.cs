@@ -50,7 +50,7 @@ namespace YiffBrowser.Models.E621 {
 		}
 
 		public static Color GetCategoryColor(E621TagCategory category) {
-			bool isDarkTheme = App.IsDarkTheme();
+			bool isDarkTheme = YiffApp.IsDarkTheme();
 			return category switch {
 				E621TagCategory.Artists => (isDarkTheme ? "#F2AC08" : "#E39B00").ToColor(),
 				E621TagCategory.Copyrights => (isDarkTheme ? "#DD00DD" : "#DD00DD").ToColor(),

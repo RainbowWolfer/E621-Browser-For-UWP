@@ -12,7 +12,7 @@ namespace YiffBrowser.Helpers {
 			}
 
 			ContentDialog dialog = new() {
-				Style = App.DialogStyle,
+				Style = YiffApp.DialogStyle,
 				Content = target,
 				Title = parameters.Title,
 				PrimaryButtonText = parameters.PrimaryText,

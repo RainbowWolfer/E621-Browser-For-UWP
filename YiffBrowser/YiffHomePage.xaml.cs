@@ -44,7 +44,7 @@ namespace YiffBrowser {
 			set {
 				userAvatarURL = value;
 				if (value.IsBlank()) {
-					UserAvatarPicture.ProfilePicture = new BitmapImage(new Uri(App.GetResourcesString("E621/e612-Bigger.png")));
+					UserAvatarPicture.ProfilePicture = new BitmapImage(new Uri(YiffApp.GetResourcesString("E621/e612-Bigger.png")));
 				} else {
 					UserAvatarPicture.ProfilePicture = new BitmapImage(new Uri(value));
 				}
@@ -125,7 +125,7 @@ namespace YiffBrowser {
 			if (Local.Settings.CheckLocalUser()) {
 
 				E621User user = await E621API.GetUserAsync(Local.Settings.Username);
-				App.User = user;
+				YiffApp.User = user;
 				if (user != null) {
 					UsernameText = user.name;
 				} else {
@@ -135,7 +135,7 @@ namespace YiffBrowser {
 				}
 
 				E621Post avatarPost = await E621API.GetPostAsync(user.avatar_id);
-				App.AvatarPost = avatarPost;
+				YiffApp.AvatarPost = avatarPost;
 
 				if (avatarPost != null && !avatarPost.HasNoValidURLs()) {
 					UserAvatarURL = avatarPost.Sample.URL;
@@ -190,11 +190,11 @@ namespace YiffBrowser {
 
 		private async void UserButton_Click(object sender, RoutedEventArgs e) {
 			if (Local.Settings.CheckLocalUser()) {
-				if (App.User == null) {
+				if (YiffApp.User == null) {
 					return;
 				}
 
-				UserInfoView view = new(App.User, App.AvatarPost);
+				UserInfoView view = new(YiffApp.User, YiffApp.AvatarPost);
 				view.OnAvatarRefreshed += (s, e) => {
 					UserAvatarURL = e;
 				};
@@ -239,9 +239,9 @@ namespace YiffBrowser {
 
 				if (Local.Settings.CheckLocalUser()) {
 					(E621User user, E621Post avatarPost) = view.GetUserResult();
-					App.User = user;
+					YiffApp.User = user;
 					UsernameText = user.name;
-					App.AvatarPost = avatarPost;
+					YiffApp.AvatarPost = avatarPost;
 					if (avatarPost != null && !avatarPost.HasNoValidURLs()) {
 						UserAvatarURL = avatarPost.Sample.URL;
 					} else {

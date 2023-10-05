@@ -60,7 +60,7 @@ namespace YiffBrowser.Views.Pages.E621 {
 
 		private async void Search() {
 			ContentDialog dialog = new() {
-				Style = App.DialogStyle,
+				Style = YiffApp.DialogStyle,
 				Title = "Search",
 			};
 

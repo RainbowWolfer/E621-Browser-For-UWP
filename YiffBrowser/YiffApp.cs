@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using YiffBrowser.Models.E621;
@@ -11,7 +7,7 @@ namespace YiffBrowser {
 	/// <summary>
 	/// YiffBrowser
 	/// </summary>
-	public static class App {
+	public static class YiffApp {
 		public static Application Current => Application.Current;
 
 		#region Style
@@ -38,5 +34,12 @@ namespace YiffBrowser {
 			return $"ms-appx:///YiffBrowser/Resources/{uri.TrimStart('/')}";
 		}
 
+		public static string GetAppVersion() {
+			Package package = Package.Current;
+			PackageId packageId = package.Id;
+			PackageVersion version = packageId.Version;
+
+			return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+		}
 	}
 }

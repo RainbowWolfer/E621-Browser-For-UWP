@@ -64,7 +64,7 @@ namespace YiffBrowser.Views.Controls {
 				HintText = string.Empty;
 			}
 
-			TextBoxBorderBrush = HintText.IsBlank() ? App.TextBoxDefaultBorderBrush : new SolidColorBrush(Colors.Red);
+			TextBoxBorderBrush = HintText.IsBlank() ? YiffApp.TextBoxDefaultBorderBrush : new SolidColorBrush(Colors.Red);
 		}
 
 
@@ -77,7 +77,7 @@ namespace YiffBrowser.Views.Controls {
 			nameof(TextBoxBorderBrush),
 			typeof(Brush),
 			typeof(TextSubmitInput),
-			new PropertyMetadata(App.TextBoxDefaultBorderBrush)
+			new PropertyMetadata(YiffApp.TextBoxDefaultBorderBrush)
 		);
 
 

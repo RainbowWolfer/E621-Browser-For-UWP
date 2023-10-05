@@ -289,5 +289,28 @@ namespace YiffBrowser.Views.Pages {
 
 	}
 
+	//About
+	public partial class SettingsPageViewModel {
+		public const string EMAIL = "RainbowWolfer@outlook.com";
+		public string VersionString => YiffApp.GetAppVersion();
+		public string LocalFolderPath => Local.LocalFolder.Path;
 
+		public ICommand EmailCommand => new DelegateCommand(Email);
+		public ICommand CopyEmailCommand => new DelegateCommand(CopyEmail);
+
+		public ICommand OpenLocalFolderCommand => new DelegateCommand(OpenLocalFolder);
+
+		private async void Email() {
+			await CommonHelpers.ComposeEmail(EMAIL, "RainbowWolfer", $"[E621 Browser For UWP] Version {VersionString}" + "Subject Here", "Body Here");
+		}
+
+		private void CopyEmail() {
+			EMAIL.CopyToClipboard();
+		}
+
+		private void OpenLocalFolder() {
+			Local.LocalFolder.OpenFolderInExplorer();
+		}
+
+	}
 }

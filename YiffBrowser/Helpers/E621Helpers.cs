@@ -6,7 +6,7 @@ namespace YiffBrowser.Helpers {
 	public static class E621Helpers {
 
 		public static Color GetRatingColor(this E621Rating rating) {
-			bool isDark = App.IsDarkTheme();
+			bool isDark = YiffApp.IsDarkTheme();
 			return rating switch {
 				E621Rating.Safe => (isDark ? "#008000" : "#36973E").ToColor(),
 				E621Rating.Questionable => (isDark ? "#FFFF00" : "#EFC50C").ToColor(),

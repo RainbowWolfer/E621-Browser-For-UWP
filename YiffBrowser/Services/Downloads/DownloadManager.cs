@@ -84,7 +84,11 @@ namespace YiffBrowser.Services.Downloads {
 			} else if (waitPool.Contains(sender)) {
 				waitPool.Remove(sender);
 			}
-			await sender.Download.ResultFile.DeleteAsync();
+			try {
+				await sender.Download.ResultFile.DeleteAsync();
+			} catch (Exception ex) {
+				Debug.WriteLine(ex);
+			}
 		}
 
 		private static void Item_OnProgressed(DownloadInstance sender, DownloadProgress args) {

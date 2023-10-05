@@ -121,7 +121,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="App.cs" />
+    <Compile Include="YiffApp.cs" />
     <Compile Include="Attributes\ToolTipAttribute.cs" />
     <Compile Include="Converters\AbsConverter.cs" />
     <Compile Include="Converters\ArrayEmptyToBoolConverter.cs" />
@@ -193,6 +193,9 @@
     </Compile>
     <Compile Include="Views\Controls\Common\EnumRadioButtons.xaml.cs">
       <DependentUpon>EnumRadioButtons.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Common\HeaderIconTextButton.xaml.cs">
+      <DependentUpon>HeaderIconTextButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\Common\TypeHintView.xaml.cs">
       <DependentUpon>TypeHintView.xaml</DependentUpon>
@@ -317,6 +320,9 @@
     <PackageReference Include="CommunityToolkit.Uwp.Controls.Segmented">
       <Version>8.0.230907</Version>
     </PackageReference>
+    <PackageReference Include="CommunityToolkit.Uwp.Controls.SettingsControls">
+      <Version>8.0.230907</Version>
+    </PackageReference>
     <PackageReference Include="CommunityToolkit.Uwp.Extensions">
       <Version>8.0.230907</Version>
     </PackageReference>
@@ -360,6 +366,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Controls\Common\EnumRadioButtons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Common\HeaderIconTextButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -515,6 +525,8 @@
     <Content Include="Resources\E621\E612_Light.png" />
     <Content Include="Resources\E621\Helper_Step1.png" />
     <Content Include="Resources\E621\Helper_Step2.png" />
+    <Content Include="Resources\Github.png" />
+    <Content Include="Resources\Github.svg" />
     <Content Include="Resources\Icons\DeviantArt-icon.png" />
     <Content Include="Resources\Icons\Furaffinity-icon.png" />
     <Content Include="Resources\Icons\FurryNetwork-icon.png" />

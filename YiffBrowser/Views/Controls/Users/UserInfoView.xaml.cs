@@ -29,7 +29,7 @@ namespace YiffBrowser.Views.Controls.Users {
 			ViewModel.RequestCloseDialog += () => Dialog?.Hide();
 			ViewModel.OnAvatarRefreshed += (s) => OnAvatarRefreshed?.Invoke(this, s);
 
-			string yellow = App.IsDarkTheme() ? "#FFD700" : "#F7B000";
+			string yellow = YiffApp.IsDarkTheme() ? "#FFD700" : "#F7B000";
 
 			Hello1Text.Foreground = new SolidColorBrush(yellow.ToColor());
 			Hello2Text.Foreground = new SolidColorBrush(yellow.ToColor());

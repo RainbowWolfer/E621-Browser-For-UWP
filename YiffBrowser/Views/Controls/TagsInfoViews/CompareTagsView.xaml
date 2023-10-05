@@ -48,7 +48,7 @@
 		</Grid>
 
 		<Grid Grid.Row="1">
-			<controls:PostTagsListView Tags="{x:Bind Tags,Mode=OneWay}" ShowAddMinusButton="False" ShowDialogTagInfo="False"/>
+			<controls:PostTagsListView Tags="{x:Bind Tags}" ShowAddMinusButton="False" ShowDialogTagInfo="False"/>
 		</Grid>
 	</Grid>
 </UserControl>

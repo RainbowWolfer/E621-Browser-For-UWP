@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.ApplicationModel.Email;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Xaml;
@@ -165,6 +167,15 @@ namespace YiffBrowser.Helpers {
 			var x = Math.Pow(a.X - b.X, 2);
 			var y = Math.Pow(a.Y - b.Y, 2);
 			return Math.Sqrt(x + y);
+		}
+
+		public static async Task ComposeEmail(string email, string name, string subject, string messageBody) {
+			EmailMessage emailMessage = new() {
+				Subject = subject,
+				Body = messageBody,
+			};
+			emailMessage.To.Add(new EmailRecipient(email, name));
+			await EmailManager.ShowComposeNewEmailAsync(emailMessage);
 		}
 	}
 }

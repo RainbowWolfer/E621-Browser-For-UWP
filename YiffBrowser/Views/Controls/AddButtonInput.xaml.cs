@@ -91,7 +91,7 @@ namespace YiffBrowser.Views.Controls {
 
 		private string placeholderText = string.Empty;
 		private string text = string.Empty;
-		private Brush textBoxBrush = App.TextBoxDefaultBorderBrush;
+		private Brush textBoxBrush = YiffApp.TextBoxDefaultBorderBrush;
 		private bool isErrorTipOpen;
 		private string errorTip;
 
@@ -127,7 +127,7 @@ namespace YiffBrowser.Views.Controls {
 			if (Text.IsBlank() || (Exists?.Contains(Text) ?? false)) {
 				TextBoxBrush = new SolidColorBrush(Colors.Red);
 			} else {
-				TextBoxBrush = App.TextBoxDefaultBorderBrush;
+				TextBoxBrush = YiffApp.TextBoxDefaultBorderBrush;
 			}
 		}
 
@@ -157,7 +157,7 @@ namespace YiffBrowser.Views.Controls {
 			OnSubmit?.Invoke(this, new OnSubmitEventArgs(Text));
 
 			Text = string.Empty;
-			TextBoxBrush = App.TextBoxDefaultBorderBrush;
+			TextBoxBrush = YiffApp.TextBoxDefaultBorderBrush;
 		}
 	}
 }
