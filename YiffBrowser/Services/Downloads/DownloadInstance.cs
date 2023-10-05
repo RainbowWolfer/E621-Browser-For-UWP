@@ -47,6 +47,10 @@ namespace YiffBrowser.Services.Downloads {
 
 				Debug.WriteLine($"Downloading {Post.File.URL}");
 
+				Download.IsRandomAccessRequired = true;
+				Download.Priority = BackgroundTransferPriority.High;
+				Download.CostPolicy = BackgroundTransferCostPolicy.Always;
+
 				await Download.StartAsync().AsTask(CancellationTokenSource.Token, new Progress<DownloadOperation>(HandleDownloadProgress));
 			} catch (TaskCanceledException) {
 

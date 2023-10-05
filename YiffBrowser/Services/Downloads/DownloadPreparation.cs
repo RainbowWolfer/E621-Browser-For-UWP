@@ -3,7 +3,7 @@ using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
 
 namespace YiffBrowser.Services.Downloads {
-	public class DownloadPreparation(E621Post post, string folderName) : BindableBase {
+	public class DownloadPreparation(E621Post post, string folderName, string rootFolderName) : BindableBase {
 		private bool doingTask = false;
 		private bool hasRequestedCancel = false;
 
@@ -14,6 +14,8 @@ namespace YiffBrowser.Services.Downloads {
 
 		public E621Post Post { get; } = post;
 		public string FolderName { get; } = folderName;
+		public string RootFolderName { get; } = rootFolderName;
+		public string DisplayFolderName => FolderName ?? RootFolderName;
 
 		public FileType FileType => Post.GetFileType();
 		public string FileTypeString => FileType.ToString();

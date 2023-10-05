@@ -30,6 +30,7 @@ namespace YiffBrowser.Services.Downloads {
 		static DownloadManager() {
 			downloader = new BackgroundDownloader();
 			downloader.SetRequestHeader("User-Agent", NetCode.USERAGENT);
+			downloader.CostPolicy = BackgroundTransferCostPolicy.Always;
 
 			timer.Interval = TimeSpan.FromSeconds(2);
 			timer.Tick += PendingToDownloading_Tick;
@@ -115,7 +116,7 @@ namespace YiffBrowser.Services.Downloads {
 		}
 
 		public static void RegisterDownload(E621Post post, string folderName = null) {
-			preparingPool.Add(new DownloadPreparation(post, folderName));
+			preparingPool.Add(new DownloadPreparation(post, folderName, Local.DownloadFolder.DisplayName));
 		}
 
 		public static async Task PrepareDownload(DownloadPreparation preparation) {
@@ -129,6 +130,7 @@ namespace YiffBrowser.Services.Downloads {
 					if (preparation.HasRequestedCancel) {
 						return;
 					}
+
 					StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.OpenIfExists);
 					if (preparation.HasRequestedCancel) {
 						return;

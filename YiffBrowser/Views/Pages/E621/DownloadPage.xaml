@@ -200,7 +200,7 @@
 										<Border VerticalAlignment="Center" Padding="8,4" Background="#44ffffff" CornerRadius="4" Margin="10,0,0,0" Grid.Column="1" MinWidth="85" ToolTipService.ToolTip="File Type">
 											<StackPanel Orientation="Horizontal">
 												<FontIcon Glyph="&#xE8B7;"/>
-												<TextBlock Text="{Binding FolderName}" d:Text="Folder Name" Margin="5,0,0,0"/>
+												<TextBlock Text="{Binding DisplayFolderName}" d:Text="Folder Name" Margin="5,0,0,0"/>
 											</StackPanel>
 										</Border>
 										<Border VerticalAlignment="Center" Padding="8,4" Background="#44ffffff" CornerRadius="4" Margin="10,0,0,0" Grid.Column="1" MinWidth="85" ToolTipService.ToolTip="File Type">
