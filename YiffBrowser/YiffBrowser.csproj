@@ -121,7 +121,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Database\DataAccess.cs" />
+    <Compile Include="Database\E621DownloadDataAccess.cs" />
     <Compile Include="Views\Shared\NewVersionDialogView.xaml.cs">
       <DependentUpon>NewVersionDialogView.xaml</DependentUpon>
     </Compile>

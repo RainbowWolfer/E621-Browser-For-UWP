@@ -242,7 +242,7 @@ namespace YiffBrowser.Views.Controls.Users {
 				return;
 			}
 
-			$"https://e621.net/posts/{AvatarPost.ID}".CopyToClipboard();
+			$"https://{E621API.GetHost()}/posts/{AvatarPost.ID}".CopyToClipboard();
 		}
 	}
 }

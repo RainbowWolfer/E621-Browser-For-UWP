@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using YiffBrowser.Database;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
+using YiffBrowser.Services.Networks;
 
 namespace YiffBrowser.Views.Controls {
 	public sealed partial class ImageViewItem : UserControl {
@@ -106,9 +107,6 @@ namespace YiffBrowser.Views.Controls {
 			if (d is ImageViewItem view) {
 				view.ViewModel.IsSelected = (bool)e.NewValue;
 			}
-			DataAccess.AddData(Guid.NewGuid().ToString());
-			List<string> list = DataAccess.GetData();
-			Debug.WriteLine(string.Join(", ", list));
 		}
 
 		public ImageViewItem() {
@@ -325,7 +323,7 @@ namespace YiffBrowser.Views.Controls {
 		}
 
 		private void OpenInBrowser() {
-			@$"https://e621.net/posts/{Post.ID}".OpenInBrowser();
+			@$"https://{E621API.GetHost()}/{Post.ID}".OpenInBrowser();
 		}
 
 		public ImageViewItemViewModel() {

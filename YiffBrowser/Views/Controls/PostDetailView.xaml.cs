@@ -560,7 +560,7 @@ namespace YiffBrowser.Views.Controls {
 		public ICommand OpenInBrowserCommand => new DelegateCommand(OpenInBrowser);
 
 		private void OpenInBrowser() {
-			@$"https://e621.net/posts/{E621Post.ID}".OpenInBrowser();
+			@$"https:/{E621API.GetHost()}/posts/{E621Post.ID}".OpenInBrowser();
 		}
 
 		public ICommand CopyImageCommand => new DelegateCommand(CopyImage);

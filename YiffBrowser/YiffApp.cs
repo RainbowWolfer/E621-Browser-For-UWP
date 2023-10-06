@@ -27,7 +27,7 @@ namespace YiffBrowser {
 		#endregion
 
 		public static void Initialize() {
-			DataAccess.InitializeDatabase();
+			
 		}
 
 		//todo

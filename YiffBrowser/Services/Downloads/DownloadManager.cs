@@ -9,6 +9,7 @@ using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using YiffBrowser.Database;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Locals;
@@ -146,8 +147,10 @@ namespace YiffBrowser.Services.Downloads {
 					}
 
 					instance = new DownloadInstance(post, download,
-					   new DownloadInstanceInformation(folder, folder == Local.DownloadFolder, file)
-				   );
+						new DownloadInstanceInformation(folder, folder == Local.DownloadFolder, file)
+					);
+
+					await E621DownloadDataAccess.AddOrUpdatePost(post);
 				});
 
 				if (preparation.HasRequestedCancel || instance == null) {

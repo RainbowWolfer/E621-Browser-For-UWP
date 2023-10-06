@@ -386,7 +386,7 @@ namespace YiffBrowser.Views.Controls.PictureViews {
 		public ICommand OpenInNewTabCommand => new DelegateCommand(OpenInNewTab);
 
 		private void Copy() {
-			$"https://www.e621.net/posts/{E621User.avatar_id}".CopyToClipboard();
+			$"https://{E621API.GetHost()}/posts/{E621User.avatar_id}".CopyToClipboard();
 		}
 
 		private void OpenInNewTab() {
@@ -458,7 +458,7 @@ namespace YiffBrowser.Views.Controls.PictureViews {
 		public ICommand InfoCommand => new DelegateCommand(Info);
 
 		private void Copy() {
-			$"https://e621.net/pools/{PoolID}".CopyToClipboard();
+			$"https://{E621API.GetHost()}/pools/{PoolID}".CopyToClipboard();
 		}
 
 		private async void Info() {

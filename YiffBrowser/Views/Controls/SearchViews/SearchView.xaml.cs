@@ -255,10 +255,8 @@ namespace YiffBrowser.Views.Controls.SearchViews {
 				if (item.Length >= 2 && item.OnlyContainDigits()) {
 					resultPostID = item;
 					return PostSearch.PostID;
-				} else if (item.StartsWith("https://e621.net/posts/") ||
-					item.StartsWith("https://e926.net/posts/") ||
-					item.StartsWith("e621.net/posts/") ||
-					item.StartsWith("926.net/posts/")
+				} else if (item.StartsWith($"https://{E621API.GetHost()}/posts/") ||
+					item.StartsWith($"{E621API.GetHost()}/posts/")
 				) {
 					string endPostID = "";
 					int startIndex = item.LastIndexOf('/');
