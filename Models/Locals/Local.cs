@@ -37,6 +37,9 @@ namespace E621Downloader.Models.Locals {
 
 		//public static StorageFile LocalSettingsFile { get; private set; }
 
+		public static StorageFile NewVersionFile { get; private set; }
+		public static NewVersionModel NewVersionModel { get; private set; }
+
 		public static StorageFile HistoryFile { get; private set; }
 
 		public static Listing Listing { get; private set; }
@@ -69,7 +72,29 @@ namespace E621Downloader.Models.Locals {
 
 			WallpapersFolder = await LocalFolder.CreateFolderAsync(WALLPAPERS_FOLDER_NAME, CreationCollisionOption.OpenIfExists);
 
+			NewVersionFile = await LocalFolder.CreateFileAsync("NewVersion", CreationCollisionOption.OpenIfExists);
+			await ReadNewVersionModel();
+
 			await Reload();
+		}
+
+		public static async Task ReadNewVersionModel() {
+			try {
+				string json = await FileIO.ReadTextAsync(NewVersionFile);
+				NewVersionModel = JsonConvert.DeserializeObject<NewVersionModel>(json);
+			} catch (Exception ex) {
+				Debug.WriteLine(ex);
+				NewVersionModel = new NewVersionModel();
+			}
+		}
+
+		public static async Task WriteNewVersionModel() {
+			try {
+				string model = JsonConvert.SerializeObject(NewVersionModel);
+				await FileIO.WriteTextAsync(NewVersionFile, model);
+			} catch (Exception ex) {
+				Debug.WriteLine(ex);
+			}
 		}
 
 		public static async Task WriteTokenToFile(string token) {
@@ -188,6 +213,7 @@ namespace E621Downloader.Models.Locals {
 		public static async Task<StorageFolder[]> GetDownloadsFolders() {
 			return DownloadFolder == null ? null : (await DownloadFolder.GetFoldersAsync()).ToArray();
 		}
+
 		private class Pair {
 			public MetaFile meta;
 			public BitmapImage source;

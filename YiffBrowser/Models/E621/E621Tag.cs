@@ -34,19 +34,12 @@ namespace YiffBrowser.Models.E621 {
 			return $"E621Tags:({ID})({Name})({RelatedTags})({PostCount})({Category})";
 		}
 
+		public static string GetCategory(E621TagCategory category) {
+			return category.ToString();
+		}
+
 		public static string GetCategory(int category) {
-			return category switch {
-				0 => "General",
-				1 => "Artists",
-				2 => "Not Found",
-				3 => "Copyrights",
-				4 => "Characters",
-				5 => "Species",
-				6 => "Invalid",
-				7 => "Meta",
-				8 => "Lore",
-				_ => "UnKnown",
-			};
+			return GetCategory((E621TagCategory)category);
 		}
 
 		public static Color GetCategoryColor(E621TagCategory category) {
@@ -55,6 +48,7 @@ namespace YiffBrowser.Models.E621 {
 				E621TagCategory.Artists => (isDarkTheme ? "#F2AC08" : "#E39B00").ToColor(),
 				E621TagCategory.Copyrights => (isDarkTheme ? "#DD00DD" : "#DD00DD").ToColor(),
 				E621TagCategory.Species => (isDarkTheme ? "#ED5D1F" : "#ED5D1F").ToColor(),
+				E621TagCategory.Director => (isDarkTheme ? "#00AA00" : "#00AA00").ToColor(),
 				E621TagCategory.Characters => (isDarkTheme ? "#00AA00" : "#00AA00").ToColor(),
 				E621TagCategory.General => (isDarkTheme ? "#B4C7D9" : "#0B7EE2").ToColor(),
 				E621TagCategory.Meta => (isDarkTheme ? "#FFFFFF" : "#000000").ToColor(),
@@ -72,15 +66,16 @@ namespace YiffBrowser.Models.E621 {
 	}
 
 	public enum E621TagCategory {
-		General = 0,
-		Artists = 1,
-		NotFound = 2,
-		Characters = 3,
-		Copyrights = 4,
-		Species = 5,
-		Invalid = 6,
-		Meta = 7,
-		Lore = 8,
-		UnKnown = 9,
+		NotFound = -1,
+		UnKnown = 0,
+		General = 1,
+		Artists = 2,
+		Director = 3,
+		Characters = 4,
+		Copyrights = 5,
+		Species = 6,
+		Invalid = 7,
+		Meta = 8,
+		Lore = 9,
 	}
 }

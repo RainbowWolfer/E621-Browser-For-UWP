@@ -301,7 +301,7 @@ namespace YiffBrowser.Views.Pages {
 		public ICommand OpenLocalFolderCommand => new DelegateCommand(OpenLocalFolder);
 
 		private async void Email() {
-			await CommonHelpers.ComposeEmail(EMAIL, "RainbowWolfer", $"[E621 Browser For UWP] Version {VersionString}" + "Subject Here", "Body Here");
+			await CommonHelpers.ComposeEmail(EMAIL, "RainbowWolfer", $"[E621 Browser For UWP (Version {VersionString})] Subject Here", "Body Here");
 		}
 
 		private void CopyEmail() {

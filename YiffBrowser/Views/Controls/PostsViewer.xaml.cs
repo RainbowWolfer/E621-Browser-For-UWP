@@ -491,7 +491,7 @@ namespace YiffBrowser.Views.Controls {
 			if (PaginatorViewModel == null || refresh) {
 				await LoadPaginator();
 			}
-			if (PaginatorViewModel == null) {
+			if (PaginatorViewModel == null || PaginatorViewModel.Paginator == null) {
 				return;
 			}
 			PaginatorViewModel.Paginator.CurrentPage = Page;

@@ -574,5 +574,9 @@ namespace E621Downloader.Pages {
 			await dialog.ShowAsync();
 			PoolButton.IsEnabled = true;
 		}
+
+		private void NewVersionButton_Click(object sender, RoutedEventArgs e) {
+			
+		}
 	}
 }

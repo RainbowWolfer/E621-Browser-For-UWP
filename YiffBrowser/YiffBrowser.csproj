@@ -121,6 +121,10 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Database\DataAccess.cs" />
+    <Compile Include="Views\Shared\NewVersionDialogView.xaml.cs">
+      <DependentUpon>NewVersionDialogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="YiffApp.cs" />
     <Compile Include="Attributes\ToolTipAttribute.cs" />
     <Compile Include="Converters\AbsConverter.cs" />
@@ -329,6 +333,9 @@
     <PackageReference Include="Microsoft.AppCenter.Crashes">
       <Version>5.0.3</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Data.Sqlite.Core">
+      <Version>7.0.11</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
     </PackageReference>
@@ -512,6 +519,10 @@
     <Page Include="Views\Pages\SettingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Shared\NewVersionDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="YiffHomePage.xaml">
       <SubType>Designer</SubType>

@@ -42,6 +42,8 @@ namespace E621Downloader {
 			this.InitializeComponent();
 			this.Suspending += OnSuspending;
 
+			YiffApp.Initialize();
+
 			InitializeTheme();
 
 			switch (GetStoredTheme()) {

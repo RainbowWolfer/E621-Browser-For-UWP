@@ -19,6 +19,7 @@ namespace YiffBrowser.Views.Controls.TagsInfoViews {
 			Tags = new Tags() {
 				General = GetCommonTags(x => x.General),
 				Species = GetCommonTags(x => x.Species),
+				Director = GetCommonTags(x => x.Director),
 				Character = GetCommonTags(x => x.Character),
 				Copyright = GetCommonTags(x => x.Copyright),
 				Artist = GetCommonTags(x => x.Artist),

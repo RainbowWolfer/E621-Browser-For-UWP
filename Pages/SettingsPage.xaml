@@ -109,6 +109,14 @@
 					<ScrollViewer HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Grid.Row="1">
 						<StackPanel>
 							<StackPanel HorizontalAlignment="Center">
+								<StackPanel Margin="0,0,0,10">
+									<Button x:Name="NewVersionButton" HorizontalAlignment="Stretch" Style="{StaticResource AccentButtonStyle}" Click="NewVersionButton_Click">
+										<StackPanel Orientation="Horizontal">
+											<FontIcon Glyph="&#xEC24;" Margin="0,0,10,0"/>
+											<TextBlock Text="Try The Overhaul New Version"/>
+										</StackPanel>
+									</Button>
+								</StackPanel>
 								<Grid Width="250" Margin="5">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="auto"/>

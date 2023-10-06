@@ -13,7 +13,7 @@ namespace E621Downloader.Models.E621 {
 		public static int GetPostsPerPage() => LocalSettings.Current?.postsPerPage ?? 75;
 
 		public static async Task<List<E621Post>> GetPostsByTagsAsync(CancellationToken? token, int page, params string[] tags) {
-			if(page <= 0) {
+			if (page <= 0) {
 				page = 1;
 			}
 			string url = $"https://{Data.GetHost()}/posts.json?limit={GetPostsPerPage()}&page={page}&tags=";
@@ -21,9 +21,9 @@ namespace E621Downloader.Models.E621 {
 			//CheckSafe(ref url);
 
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
-			if(result.Result == HttpResultType.Success) {
+			if (result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<PostsRoot>(result.Content)?.posts ?? new List<E621Post>();
-			} else if(result.Result == HttpResultType.Canceled) {
+			} else if (result.Result == HttpResultType.Canceled) {
 				return null;
 			} else {
 				return new List<E621Post>();
@@ -31,7 +31,7 @@ namespace E621Downloader.Models.E621 {
 		}
 
 		public static async Task<List<E621Post>> GetPostsByTagsAsync(CancellationToken? token, bool combine, int page, params string[] tags) {
-			if(page <= 0) {
+			if (page <= 0) {
 				throw new Exception("Page not valid");
 			}
 			string url = $"https://{Data.GetHost()}/posts.json?limit={GetPostsPerPage()}&page={page}&tags=";
@@ -39,7 +39,7 @@ namespace E621Downloader.Models.E621 {
 			//CheckSafe(ref url);
 
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
-			if(result.Result == HttpResultType.Success) {
+			if (result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<PostsRoot>(result.Content).posts;
 			} else {
 				return null;
@@ -52,7 +52,7 @@ namespace E621Downloader.Models.E621 {
 			Debug.WriteLine($"THIS: {url}");
 			//CheckSafe(ref url);
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
-			if(result.Result == HttpResultType.Success) {
+			if (result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<PostsRoot>(result.Content).posts;
 			} else {
 				return null;
@@ -62,7 +62,7 @@ namespace E621Downloader.Models.E621 {
 		public static async Task<E621Post> GetPostByIDAsync(string id, CancellationToken? token = null) {
 			string url = $"https://{Data.GetHost()}/posts/{id}.json";
 			HttpResult<string> result = await Data.ReadURLAsync(url, token);
-			if(result.Result == HttpResultType.Success) {
+			if (result.Result == HttpResultType.Success) {
 				return JsonConvert.DeserializeObject<PostRoot>(result.Content).post;
 			} else {
 				return null;
@@ -71,7 +71,7 @@ namespace E621Downloader.Models.E621 {
 
 		public static async Task<List<E621Post>> GetPostsByIDsAsync(CancellationToken? token, IEnumerable<string> ids) {
 			List<E621Post> posts = new();
-			foreach(string id in ids) {
+			foreach (string id in ids) {
 				posts.Add(await GetPostByIDAsync(id, token));
 			}
 			return posts;
@@ -155,15 +155,15 @@ namespace E621Downloader.Models.E621 {
 		public List<string> meta;
 
 		public List<string> GetAllTags() {
-			var result = new List<string>();
-			general.ForEach(s => result.Add(s));
-			species.ForEach(s => result.Add(s));
-			character.ForEach(s => result.Add(s));
-			copyright.ForEach(s => result.Add(s));
-			artist.ForEach(s => result.Add(s));
-			invalid.ForEach(s => result.Add(s));
-			lore.ForEach(s => result.Add(s));
-			meta.ForEach(s => result.Add(s));
+			List<string> result = new();
+			general?.ForEach(result.Add);
+			species?.ForEach(result.Add);
+			character?.ForEach(result.Add);
+			copyright?.ForEach(result.Add);
+			artist?.ForEach(result.Add);
+			invalid?.ForEach(result.Add);
+			lore?.ForEach(result.Add);
+			meta?.ForEach(result.Add);
 			return result;
 		}
 

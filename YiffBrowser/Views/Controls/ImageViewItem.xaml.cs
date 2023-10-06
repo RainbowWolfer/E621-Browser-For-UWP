@@ -1,6 +1,8 @@
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -11,6 +13,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using YiffBrowser.Database;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
 
@@ -103,6 +106,9 @@ namespace YiffBrowser.Views.Controls {
 			if (d is ImageViewItem view) {
 				view.ViewModel.IsSelected = (bool)e.NewValue;
 			}
+			DataAccess.AddData(Guid.NewGuid().ToString());
+			List<string> list = DataAccess.GetData();
+			Debug.WriteLine(string.Join(", ", list));
 		}
 
 		public ImageViewItem() {

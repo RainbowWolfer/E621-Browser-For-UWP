@@ -256,6 +256,12 @@
 					<cc:SettingCardControl Title="GENERAL">
 						<StackPanel Margin="10,0">
 
+							<StackPanel Margin="0,0,0,10">
+								<Button HorizontalAlignment="Stretch">
+									<cc:IconTextHorizontal Text="Switch Back To Old Version" Glyph="&#xEC24;"/>
+								</Button>
+							</StackPanel>
+
 							<StackPanel Margin="0,0,0,5">
 								<c:Segmented HorizontalAlignment="Stretch" SelectionMode="Single" SelectedIndex="{Binding StartupTagsType,Mode=TwoWay,Converter={StaticResource EnumValueToIndex}}" d:SelectedIndex="0">
 									<c:SegmentedItem Content="Startup Tags" Icon="{ui:FontIcon Glyph=&#xE7E8;}"/>

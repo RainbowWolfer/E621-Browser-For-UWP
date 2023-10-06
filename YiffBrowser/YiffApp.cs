@@ -1,6 +1,7 @@
 ﻿using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
+using YiffBrowser.Database;
 using YiffBrowser.Models.E621;
 
 namespace YiffBrowser {
@@ -24,6 +25,10 @@ namespace YiffBrowser {
 		public static E621Post AvatarPost { get; set; }
 
 		#endregion
+
+		public static void Initialize() {
+			DataAccess.InitializeDatabase();
+		}
 
 		//todo
 		public static bool IsDarkTheme() {

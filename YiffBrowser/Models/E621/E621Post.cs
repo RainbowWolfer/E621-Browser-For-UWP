@@ -178,6 +178,9 @@ namespace YiffBrowser.Models.E621 {
 		[JsonProperty("species")]
 		public List<string> Species { get; set; }
 
+		[JsonProperty("director")]
+		public List<string> Director { get; set; }
+
 		[JsonProperty("character")]
 		public List<string> Character { get; set; }
 
@@ -198,14 +201,15 @@ namespace YiffBrowser.Models.E621 {
 
 		public List<string> GetAllTags() {
 			List<string> result = new();
-			General.ForEach(s => result.Add(s));
-			Species.ForEach(s => result.Add(s));
-			Character.ForEach(s => result.Add(s));
-			Copyright.ForEach(s => result.Add(s));
-			Artist.ForEach(s => result.Add(s));
-			Invalid.ForEach(s => result.Add(s));
-			Lore.ForEach(s => result.Add(s));
-			Meta.ForEach(s => result.Add(s));
+			General?.ForEach(result.Add);
+			Species?.ForEach(result.Add);
+			Director?.ForEach(result.Add);
+			Character?.ForEach(result.Add);
+			Copyright?.ForEach(result.Add);
+			Artist?.ForEach(result.Add);
+			Invalid?.ForEach(result.Add);
+			Lore?.ForEach(result.Add);
+			Meta?.ForEach(result.Add);
 			return result;
 		}
 
@@ -217,6 +221,7 @@ namespace YiffBrowser.Models.E621 {
 			Tags clone = new() {
 				General = General.Where(x => x.SearchFor(searchKey)).ToList(),
 				Species = Species.Where(x => x.SearchFor(searchKey)).ToList(),
+				Director = Director.Where(x => x.SearchFor(searchKey)).ToList(),
 				Character = Character.Where(x => x.SearchFor(searchKey)).ToList(),
 				Copyright = Copyright.Where(x => x.SearchFor(searchKey)).ToList(),
 				Artist = Artist.Where(x => x.SearchFor(searchKey)).ToList(),

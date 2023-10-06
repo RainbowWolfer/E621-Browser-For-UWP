@@ -76,20 +76,21 @@ namespace YiffBrowser.Views.Controls {
 			}
 			RemoveGroup();
 
-			AddNewGroup($"Artist ({tags.Artist.Count})", ToGroupTag(tags.Artist), E621Tag.GetCategoryColor(E621TagCategory.Artists));
-			AddNewGroup($"Copyright ({tags.Copyright.Count})", ToGroupTag(tags.Copyright), E621Tag.GetCategoryColor(E621TagCategory.Copyrights));
-			AddNewGroup($"Species ({tags.Species.Count})", ToGroupTag(tags.Species), E621Tag.GetCategoryColor(E621TagCategory.Species));
-			AddNewGroup($"Character ({tags.Character.Count})", ToGroupTag(tags.Character), E621Tag.GetCategoryColor(E621TagCategory.Characters));
-			AddNewGroup($"General ({tags.General.Count})", ToGroupTag(tags.General), E621Tag.GetCategoryColor(E621TagCategory.General));
-			AddNewGroup($"Meta ({tags.Meta.Count})", ToGroupTag(tags.Meta), E621Tag.GetCategoryColor(E621TagCategory.Meta));
-			AddNewGroup($"Invalid ({tags.Invalid.Count})", ToGroupTag(tags.Invalid), E621Tag.GetCategoryColor(E621TagCategory.Invalid));
-			AddNewGroup($"Lore ({tags.Lore.Count})", ToGroupTag(tags.Lore), E621Tag.GetCategoryColor(E621TagCategory.Lore));
+			AddNewGroup($"Artist ({tags.Artist?.Count})", ToGroupTag(tags.Artist), E621Tag.GetCategoryColor(E621TagCategory.Artists));
+			AddNewGroup($"Copyright ({tags.Copyright?.Count})", ToGroupTag(tags.Copyright), E621Tag.GetCategoryColor(E621TagCategory.Copyrights));
+			AddNewGroup($"Species ({tags.Species?.Count})", ToGroupTag(tags.Species), E621Tag.GetCategoryColor(E621TagCategory.Species));
+			AddNewGroup($"Director ({tags.Director?.Count})", ToGroupTag(tags.Director), E621Tag.GetCategoryColor(E621TagCategory.Director));
+			AddNewGroup($"Character ({tags.Character?.Count})", ToGroupTag(tags.Character), E621Tag.GetCategoryColor(E621TagCategory.Characters));
+			AddNewGroup($"General ({tags.General?.Count})", ToGroupTag(tags.General), E621Tag.GetCategoryColor(E621TagCategory.General));
+			AddNewGroup($"Meta ({tags.Meta?.Count})", ToGroupTag(tags.Meta), E621Tag.GetCategoryColor(E621TagCategory.Meta));
+			AddNewGroup($"Invalid ({tags.Invalid?.Count})", ToGroupTag(tags.Invalid), E621Tag.GetCategoryColor(E621TagCategory.Invalid));
+			AddNewGroup($"Lore ({tags.Lore?.Count})", ToGroupTag(tags.Lore), E621Tag.GetCategoryColor(E621TagCategory.Lore));
 
 		}
 
 		public List<GroupTag> ToGroupTag(List<string> tags) {
 			List<GroupTag> result = new();
-			foreach (string tag in tags) {
+			foreach (string tag in tags ?? new List<string>()) {
 				GroupTag item = new(tag) {
 					ShowAddMinusButton = ShowAddMinusButton
 				};
