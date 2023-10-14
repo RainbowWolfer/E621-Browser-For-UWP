@@ -1,15 +1,17 @@
 <UserControl
     x:Class="YiffBrowser.Views.Controls.PostDetailView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:YiffBrowser.Views.Controls"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-	xmlns:pictureviews="using:YiffBrowser.Views.Controls.PictureViews" 
-	xmlns:converters="using:YiffBrowser.Converters" 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
 	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-	mc:Ignorable="d" d:RequestedTheme="Dark"
+	xmlns:converters="using:YiffBrowser.Converters"
+	xmlns:local="using:YiffBrowser.Views.Controls"
+	xmlns:common="using:YiffBrowser.Views.Controls.Common"
+	xmlns:pictureviews="using:YiffBrowser.Views.Controls.PictureViews"
+	mc:Ignorable="d" 
+	d:RequestedTheme="Dark"
 	KeyboardAcceleratorPlacementMode="Hidden">
 
 	<UserControl.KeyboardAccelerators>
@@ -26,7 +28,7 @@
 			<Setter Property="RadiusX" Value="5"/>
 			<Setter Property="RadiusY" Value="2"/>
 			<Setter Property="RelativePanel.AlignVerticalCenterWithPanel" Value="True"/>
-			<Setter Property="Fill" Value="{x:Bind DownloadButton.Foreground}"/>
+			<Setter Property="Fill" Value="{StaticResource TextFillColorPrimaryBrush}"/>
 		</Style>
 
 		<Style x:Key="IDFlyoutInfoBorderStyle" TargetType="Border">
@@ -75,97 +77,7 @@
 		<Grid Grid.Column="1" Background="{StaticResource SystemColorBackgroundBrush}" CornerRadius="10" Margin="10" Padding="5,3,5,3">
 			<StackPanel Orientation="Horizontal">
 
-				<FontIcon Glyph="{Binding FileTypeIcon}" Height="33" Width="40" FontSize="24" ToolTipService.Placement="Bottom" ToolTipService.ToolTip="{Binding FileTypeToolTip}"/>
-
-				<TextBlock Text="{Binding Duration,Converter={StaticResource Duration}}" FontSize="18" VerticalAlignment="Center" Margin="0,0,5,0" ToolTipService.ToolTip="{Binding Duration}" Visibility="{Binding Duration,Converter={StaticResource ArrayNotEmptyToVisibility}}"/>
-
-				<Button Margin="5,0,0,0" Height="33" Padding="11,0,11,0" ToolTipService.Placement="Bottom" ToolTipService.ToolTip="{Binding RatingToolTip}">
-					<TextBlock Text="{Binding IDTitle}" VerticalAlignment="Center" FontFamily="Cascadia Mono" FontSize="24" Foreground="{Binding RatingColor,Converter={StaticResource ColorToBrush}}"/>
-					<Button.Flyout>
-						<Flyout Placement="Bottom">
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="auto"/>
-									<ColumnDefinition Width="*"/>
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="auto"/>
-									<RowDefinition Height="auto"/>
-									<RowDefinition Height="auto"/>
-									<RowDefinition Height="auto"/>
-									<RowDefinition Height="auto"/>
-									<RowDefinition Height="auto"/>
-								</Grid.RowDefinitions>
-
-								<Border Grid.Row="0" Style="{StaticResource IDFlyoutInfoBorderStyle}">
-									<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-										<TextBlock Text="Created Date"/>
-										<FontIcon Glyph="&#xEE93;" Margin="10,0,0,0"/>
-									</StackPanel>
-								</Border>
-								<TextBlock Text="{Binding E621Post.CreatedAt}" Grid.Row="0" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
-
-								<Border Grid.Row="1" Style="{StaticResource IDFlyoutInfoBorderStyle}">
-									<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-										<TextBlock Text="Updated Date"/>
-										<FontIcon Glyph="&#xE163;" Margin="10,0,0,0"/>
-									</StackPanel>
-								</Border>
-								<TextBlock Text="{Binding E621Post.UpdatedAt}" Grid.Row="1" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
-
-								<Border Grid.Row="2" Style="{StaticResource IDFlyoutInfoBorderStyle}">
-									<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-										<TextBlock Text="Size"/>
-										<FontIcon Glyph="&#xEE93;" Margin="10,0,0,0"/>
-									</StackPanel>
-								</Border>
-								<TextBlock Text="{Binding E621Post.File.SizeInfo}" Grid.Row="2" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
-
-								<Border Grid.Row="3" Style="{StaticResource IDFlyoutInfoBorderStyle}">
-									<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-										<TextBlock Text="Approver ID"/>
-										<FontIcon Glyph="&#xE2AF;" Margin="10,0,0,0"/>
-									</StackPanel>
-								</Border>
-								<TextBlock Text="{Binding E621Post.ApproverId}" Grid.Row="3" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
-
-								<Border Grid.Row="4" Style="{StaticResource IDFlyoutInfoBorderStyle}">
-									<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-										<TextBlock Text="Uploader ID"/>
-										<FontIcon Glyph="&#xE898;" Margin="10,0,0,0"/>
-									</StackPanel>
-								</Border>
-								<TextBlock Text="{Binding E621Post.UploaderId}" Grid.Row="4" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
-
-								<Grid Grid.Row="5" Grid.ColumnSpan="2">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="*"/>
-									</Grid.ColumnDefinitions>
-
-									<Button HorizontalAlignment="Stretch" Margin="0,5,5,0" Command="{Binding CopyIDCommand}">
-										<StackPanel Orientation="Horizontal">
-											<FontIcon Glyph="&#xE16F;"/>
-											<TextBlock Text="Copy ID" Margin="10,0,0,0"/>
-										</StackPanel>
-									</Button>
-
-									<Button Grid.Column="1" HorizontalAlignment="Stretch" Margin="5,5,0,0" Command="{Binding OpenInBrowserCommand}">
-										<StackPanel Orientation="Horizontal">
-											<FontIcon Glyph="&#xE12B;"/>
-											<TextBlock Text="Open In Browser" Margin="10,0,0,0"/>
-										</StackPanel>
-									</Button>
-
-								</Grid>
-
-
-							</Grid>
-						</Flyout>
-					</Button.Flyout>
-				</Button>
-
-				<FontIcon Glyph="&#xE7BA;" Height="33" Width="40" FontSize="24" Margin="5,0,0,0" Foreground="{Binding SoundWarningColor,Converter={StaticResource ColorToBrush}}" ToolTipService.Placement="Bottom" ToolTipService.ToolTip="{Binding SoundWarningToolTip}" Visibility="{Binding ShowSoundWarning,Converter={StaticResource BoolToVisibility}}"/>
+				<common:PostHeaderSimpleInfoView Post="{Binding E621Post}"/>
 
 				<Rectangle Style="{StaticResource RectangleSeparator}"/>
 
@@ -178,47 +90,7 @@
 					</Grid>
 				</ToggleButton>
 
-				<Button Margin="10,0,10,0" Height="33" Padding="11,0,11,0">
-					<TextBlock Text="{Binding VoteTotal}" FontSize="18" MinWidth="35" TextAlignment="Center"/>
-					<Button.Flyout>
-						<Flyout Placement="Bottom">
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="auto"/>
-									<ColumnDefinition Width="*"/>
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="auto"/>
-									<RowDefinition Height="auto"/>
-								</Grid.RowDefinitions>
-
-								<Border Grid.Row="0" Style="{StaticResource IDFlyoutInfoBorderStyle}">
-									<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-										<FontIcon Glyph="&#xE70E;"/>
-									</StackPanel>
-								</Border>
-								<TextBlock Text="{Binding VoteUp,Converter={StaticResource Abs}}" Grid.Row="0" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
-
-								<Border Grid.Row="1" Style="{StaticResource IDFlyoutInfoBorderStyle}">
-									<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-										<FontIcon Glyph="&#xE70D;"/>
-									</StackPanel>
-								</Border>
-								<TextBlock Text="{Binding VoteDown,Converter={StaticResource Abs}}" Grid.Row="1" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
-							</Grid>
-							<!--<StackPanel>
-								<StackPanel Orientation="Horizontal" Background="#3f808080" CornerRadius="4" Padding="4">
-									<FontIcon Glyph="&#xE70E;" FontSize="20" VerticalAlignment="Center" Margin="0,0,10,0"/>
-									<TextBlock Text="{Binding VoteUp,Converter={StaticResource Abs}}" FontSize="16" VerticalAlignment="Center"/>
-								</StackPanel>
-								<StackPanel Orientation="Horizontal" Background="#3f808080" CornerRadius="4" Padding="4" Margin="0,5,0,0">
-									<FontIcon Glyph="&#xE70D;" FontSize="20" VerticalAlignment="Center" Margin="0,0,10,0"/>
-									<TextBlock Text="{Binding VoteDown,Converter={StaticResource Abs}}" FontSize="16" VerticalAlignment="Center"/>
-								</StackPanel>
-							</StackPanel>-->
-						</Flyout>
-					</Button.Flyout>
-				</Button>
+				<common:PostHeaderSimpleScoreView Post="{Binding E621Post}" Margin="10,0,10,0" Height="33" Padding="11,0,11,0"/>
 
 				<ToggleButton IsChecked="{Binding HasVotedDown,Mode=TwoWay}" IsEnabled="{Binding IsVoteLoading,Converter={StaticResource BoolToBoolRe}}" Height="33" Width="38" Padding="0" CornerRadius="4" BorderThickness="0" ToolTipService.ToolTip="Vote Down">
 					<Grid>

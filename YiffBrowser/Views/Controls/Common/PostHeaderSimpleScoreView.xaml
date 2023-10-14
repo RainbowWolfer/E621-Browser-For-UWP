@@ -1,0 +1,101 @@
+﻿<UserControl
+    x:Class="YiffBrowser.Views.Controls.Common.PostHeaderSimpleScoreView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YiffBrowser.Views.Controls.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="50"
+    d:DesignWidth="100"
+	d:RequestedTheme="Dark">
+
+	<UserControl.Resources>
+		<Style x:Key="IDFlyoutInfoBorderStyle" TargetType="Border">
+			<Setter Property="Margin" Value="0,0,0,5"/>
+			<Setter Property="Background" Value="{StaticResource ControlFillColorDefaultBrush}"/>
+			<Setter Property="Padding" Value="10,5,10,5"/>
+			<Setter Property="CornerRadius" Value="5"/>
+		</Style>
+
+		<Style x:Key="IDFlyoutInfoTextStyle" TargetType="TextBlock">
+			<Setter Property="Margin" Value="10,0,0,5"/>
+			<Setter Property="VerticalAlignment" Value="Center"/>
+			<Setter Property="Grid.Column" Value="1"/>
+			<Setter Property="MinWidth" Value="50"/>
+		</Style>
+	</UserControl.Resources>
+
+	<Button>
+		<Button.DataContext>
+			<local:PostHeaderSimpleScoreViewModel x:Name="ViewModel" Post="{x:Bind Post,Mode=OneWay}"/>
+		</Button.DataContext>
+
+		<TextBlock Text="{Binding Post.Score.Total}" d:Text="123412" FontSize="18" MinWidth="35" TextAlignment="Center"/>
+
+		<Button.Flyout>
+			<Flyout Placement="Bottom">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="auto"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+					</Grid.RowDefinitions>
+
+					<Border Grid.Row="0" Style="{StaticResource IDFlyoutInfoBorderStyle}">
+						<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+							<TextBlock Text="Total Votes"/>
+							<FontIcon Glyph="&#xE915;" Margin="10,0,0,0"/>
+						</StackPanel>
+					</Border>
+					<TextBlock Text="{Binding Post.Score.Total}" Grid.Row="0" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
+
+					<Border Grid.Row="1" Style="{StaticResource IDFlyoutInfoBorderStyle}">
+						<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+							<TextBlock Text="Up Votes"/>
+							<FontIcon Glyph="&#xE70E;" Margin="10,0,0,0"/>
+						</StackPanel>
+					</Border>
+					<TextBlock Text="{Binding Post.Score.Up}" Grid.Row="1" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
+
+					<Border Grid.Row="2" Style="{StaticResource IDFlyoutInfoBorderStyle}">
+						<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+							<TextBlock Text="Down Votes"/>
+							<FontIcon Glyph="&#xE70D;" Margin="10,0,0,0"/>
+						</StackPanel>
+					</Border>
+					<TextBlock Text="{Binding Post.Score.Down}" Grid.Row="2" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
+
+					<Border Grid.Row="3" Style="{StaticResource IDFlyoutInfoBorderStyle}">
+						<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+							<TextBlock Text="Favoirtes"/>
+							<FontIcon Glyph="&#xE006;" Margin="10,0,0,0"/>
+						</StackPanel>
+					</Border>
+					<TextBlock Text="{Binding Post.FavCount}" Grid.Row="3" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
+
+					<!--<Border Grid.Row="1" Style="{StaticResource IDFlyoutInfoBorderStyle}">
+						<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+							<FontIcon Glyph="&#xE70E;"/>
+						</StackPanel>
+					</Border>
+					<TextBlock Text="{Binding Post.Score.Up,Converter={StaticResource Abs}}" Grid.Row="0" Style="{StaticResource IDFlyoutInfoTextStyle}"/>
+
+					<Border Grid.Row="2" Style="{StaticResource IDFlyoutInfoBorderStyle}">
+						<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+							<FontIcon Glyph="&#xE70D;"/>
+						</StackPanel>
+					</Border>
+					<TextBlock Text="{Binding Post.Score.Down,Converter={StaticResource Abs}}" Grid.Row="1" Style="{StaticResource IDFlyoutInfoTextStyle}"/>-->
+				</Grid>
+			</Flyout>
+		</Button.Flyout>
+	</Button>
+
+</UserControl>

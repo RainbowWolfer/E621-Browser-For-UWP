@@ -123,6 +123,15 @@
   <ItemGroup>
     <Compile Include="Converters\ThumbnailToImageConverter.cs" />
     <Compile Include="Database\E621DownloadDataAccess.cs" />
+    <Compile Include="Views\Controls\Common\PostHeaderSimpleInfoView.xaml.cs">
+      <DependentUpon>PostHeaderSimpleInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Common\PostHeaderSimpleScoreView.xaml.cs">
+      <DependentUpon>PostHeaderSimpleScoreView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\LocalViews\FileItemDetailView.xaml.cs">
+      <DependentUpon>FileItemDetailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\LocalViews\FileItemImageView.xaml.cs">
       <DependentUpon>FileItemImageView.xaml</DependentUpon>
     </Compile>
@@ -387,6 +396,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Controls\Common\PostHeaderSimpleInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Common\PostHeaderSimpleScoreView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\Common\TypeHintView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -418,6 +435,10 @@
     <Page Include="Views\Controls\LoadingViews\LoadingRingWithTextBelow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\LocalViews\FileItemDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\LocalViews\FileItemImageView.xaml">
       <SubType>Designer</SubType>

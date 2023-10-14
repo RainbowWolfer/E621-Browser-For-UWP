@@ -208,14 +208,7 @@ namespace YiffBrowser.Views.Controls {
 		private bool showBackgroundImage = true;
 		private string mediaURL;
 		private bool showMoreInfoSplitView;
-		private string fileTypeIcon;
-		private string fileTypeToolTip;
-		private string ratingToolTip;
-		private string idTitle;
-		private Color ratingColor;
-		private bool showSoundWarning;
-		private Color soundWarningColor;
-		private string soundWarningToolTip;
+
 		private bool isFavoriteLoading;
 		private bool hasFavorited;
 		private bool ableToCopyImage;
@@ -229,7 +222,6 @@ namespace YiffBrowser.Views.Controls {
 		private int voteUp;
 		private int voteDown;
 		private int voteTotal;
-		private string duration;
 
 		public bool IsSidePaneOverlay {
 			get => isSidePaneOverlay;
@@ -276,48 +268,6 @@ namespace YiffBrowser.Views.Controls {
 			set => SetProperty(ref showMoreInfoSplitView, value);
 		}
 
-		public string FileTypeIcon {
-			get => fileTypeIcon;
-			set => SetProperty(ref fileTypeIcon, value);
-		}
-
-		public string Duration {
-			get => duration;
-			set => SetProperty(ref duration, value);
-		}
-
-		public string FileTypeToolTip {
-			get => fileTypeToolTip;
-			set => SetProperty(ref fileTypeToolTip, value);
-		}
-
-		public string RatingToolTip {
-			get => ratingToolTip;
-			set => SetProperty(ref ratingToolTip, value);
-		}
-
-		public string IDTitle {
-			get => idTitle;
-			set => SetProperty(ref idTitle, value);
-		}
-		public Color RatingColor {
-			get => ratingColor;
-			set => SetProperty(ref ratingColor, value);
-		}
-
-		public bool ShowSoundWarning {
-			get => showSoundWarning;
-			set => SetProperty(ref showSoundWarning, value);
-		}
-		public Color SoundWarningColor {
-			get => soundWarningColor;
-			set => SetProperty(ref soundWarningColor, value);
-		}
-		public string SoundWarningToolTip {
-			get => soundWarningToolTip;
-			set => SetProperty(ref soundWarningToolTip, value);
-		}
-
 		public bool InputByPosts {
 			get => inputByPosts;
 			set => SetProperty(ref inputByPosts, value);
@@ -330,9 +280,6 @@ namespace YiffBrowser.Views.Controls {
 
 		private void OnPostChanged() {
 			ShowBackgroundImage = true;
-
-			IDTitle = $"{E621Post.ID} ({E621Post.Rating.ToString().Substring(0, 1)})";
-			RatingColor = E621Post.Rating.GetRatingColor();
 
 			VoteUp = E621Post.Score.Up;
 			VoteDown = E621Post.Score.Down;
@@ -348,35 +295,9 @@ namespace YiffBrowser.Views.Controls {
 			IsVoteLoading = false;
 			IsFavoriteLoading = false;
 
-			FileSize = E621Post.File.Size;
-			Duration = E621Post.Duration;
-
-			FileType type = E621Post.GetFileType();
-			FileTypeIcon = type switch {
-				FileType.Png or FileType.Jpg => "\uEB9F",
-				FileType.Gif => "\uF4A9",
-				FileType.Webm => "\uE714",
-				_ => "\uE9CE",
-			};
-			FileTypeToolTip = $"Type: {type}";
-
-			RatingToolTip = $"Rating: {E621Post.Rating}";
-
-			List<string> tags = E621Post.Tags.GetAllTags();
-			if (tags.Contains("sound_warning")) {
-				ShowSoundWarning = true;
-				SoundWarningColor = E621Rating.Explicit.GetRatingColor();
-				SoundWarningToolTip = "This Video Has 'sound_warning' Tag";
-			} else if (tags.Contains("sound")) {
-				ShowSoundWarning = true;
-				SoundWarningColor = E621Rating.Questionable.GetRatingColor();
-				SoundWarningToolTip = "This Video Has 'sound' Tag";
-			} else {
-				ShowSoundWarning = false;
-			}
-
 			AbleToCopyImage = false;
 
+			FileType type = E621Post.GetFileType();
 			switch (type) {
 				case FileType.Png:
 				case FileType.Jpg:
@@ -549,18 +470,6 @@ namespace YiffBrowser.Views.Controls {
 
 		private void OpenMoreInfo() {
 			ShowMoreInfoSplitView = !ShowMoreInfoSplitView;
-		}
-
-		public ICommand CopyIDCommand => new DelegateCommand(CopyID);
-
-		private void CopyID() {
-			E621Post.ID.ToString().CopyToClipboard();
-		}
-
-		public ICommand OpenInBrowserCommand => new DelegateCommand(OpenInBrowser);
-
-		private void OpenInBrowser() {
-			@$"https:/{E621API.GetHost()}/posts/{E621Post.ID}".OpenInBrowser();
 		}
 
 		public ICommand CopyImageCommand => new DelegateCommand(CopyImage);

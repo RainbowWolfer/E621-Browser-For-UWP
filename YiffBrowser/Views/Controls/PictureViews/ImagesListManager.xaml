@@ -8,7 +8,10 @@
 	xmlns:i="using:Microsoft.Xaml.Interactivity"
 	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
 	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    mc:Ignorable="d" d:RequestedTheme="Dark">
+    mc:Ignorable="d" 
+	d:RequestedTheme="Dark"
+	d:Height="150"
+	d:Width="600">
 
 	<UserControl.Resources>
 		<Storyboard x:Name="GridExpandStoryboard">
@@ -33,7 +36,7 @@
 
 		<ScrollViewer x:Name="ListScroll" Grid.Row="0" VerticalScrollMode="Disabled" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Visible" Padding="4,0,4,8">
 
-			<ItemsControl x:Name="ListControl" ItemsSource="{x:Bind Items}" Margin="3">
+			<ItemsControl x:Name="ListControl" ItemsSource="{x:Bind Items}" Margin="3" d:ItemsSource=" 1 2 3 ">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
 						<StackPanel Background="Transparent" Orientation="Horizontal"/>
@@ -43,7 +46,7 @@
 				<ItemsControl.ItemTemplate>
 					<DataTemplate x:DataType="local:ImagesListManagerItem">
 						<Button Padding="0" BorderBrush="{Binding BorderBrush}" BorderThickness="1.5" CornerRadius="10" Margin="3" Command="{Binding ClickCommand}" ToolTipService.ToolTip="{Binding Post}">
-							
+
 							<Grid>
 
 								<i:Interaction.Behaviors>
@@ -91,7 +94,7 @@
 
 		</ScrollViewer>
 
-		<Grid x:Name="TopGrid" Height="0" Grid.Row="1">
+		<Grid x:Name="TopGrid" Height="0" Grid.Row="1" d:Height="34">
 			<StackPanel Orientation="Horizontal" Margin="10,0,0,3">
 				<FontIcon Glyph="&#xE158;"/>
 				<TextBlock x:Name="CountText" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="16">

@@ -51,25 +51,25 @@
 
 				<Grid Visibility="Visible">
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="2*"/>
 						<ColumnDefinition Width="*"/>
 						<ColumnDefinition Width="*"/>
 						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
 
-					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0">
+					<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+						<FontIcon Glyph="&#xE160;" FontSize="15" Margin="0,0,5,0"/>
+						<TextBlock Text="{Binding File.Name}"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
 						<TextBlock Text="{Binding Post.Score.Total}"/>
 						<FontIcon Glyph="&#xE878;" FontSize="15" Margin="5,0,0,0"/>
 					</StackPanel>
 
-					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2">
 						<TextBlock Text="{Binding Post.FavCount}"/>
 						<FontIcon Glyph="&#xEB52;" FontSize="15" Margin="5,0,0,0"/>
-					</StackPanel>
-
-					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2">
-						<TextBlock Text="{Binding Post.CommentCount}"/>
-						<FontIcon Glyph="&#xE90A;" FontSize="15" Margin="5,0,0,0"/>
 					</StackPanel>
 
 					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="3">

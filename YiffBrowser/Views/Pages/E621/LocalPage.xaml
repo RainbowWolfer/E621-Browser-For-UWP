@@ -7,7 +7,7 @@
 	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
 	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
 	xmlns:i="using:Microsoft.Xaml.Interactivity"
-	xmlns:local="using:YiffBrowser.Views.Pages.E621"
+	xmlns:local="using:YiffBrowser.Views.Pages.E621" xmlns:localviews="using:YiffBrowser.Views.Controls.LocalViews"
 	mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     NavigationCacheMode="Disabled" 
@@ -17,67 +17,98 @@
 		<local:LocalPageViewModel x:Name="ViewModel"/>
 	</Page.DataContext>
 
+	<Page.Resources>
+
+	</Page.Resources>
+
 	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="auto"/>
-			<ColumnDefinition Width="*"/>
-		</Grid.ColumnDefinitions>
+		<Grid x:Name="RootView">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition x:Name="LeftColumnDefinition" Width="250"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
 
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="auto"/>
-				<RowDefinition Height="*"/>
-			</Grid.RowDefinitions>
+			<Grid Visibility="{Binding ShowFolderSideDock,Converter={StaticResource BoolToVisibility}}">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
 
-			<AutoSuggestBox Margin="5" QueryIcon="Find" PlaceholderText="Search Folder Name"/>
+				<Border Background="Black" Margin="5" CornerRadius="4" Padding="5">
+					<StackPanel Orientation="Horizontal">
+						<Button>
+							<FontIcon Glyph="&#xE895;"/>
+						</Button>
+					</StackPanel>
+				</Border>
 
-			<ListView ItemsSource="{Binding Folders}" Margin="5" Grid.Row="1" SelectedItem="{Binding SelectedFolder,Mode=TwoWay}" d:ItemsSource="1 2 3 ">
-				<ListView.ItemTemplate>
-					<DataTemplate x:DataType="local:FolderItem">
-						<Grid>
-							<StackPanel Orientation="Horizontal">
-								<FontIcon Glyph="&#xE8B7;" Foreground="Yellow">
+				<AutoSuggestBox Grid.Row="1" Margin="5" QueryIcon="Find" PlaceholderText="Search Folder Name"/>
+
+				<ListView ItemsSource="{Binding Folders}" Margin="5" Grid.Row="2" SelectedItem="{Binding SelectedFolder,Mode=TwoWay}" d:ItemsSource="1 2 3 ">
+					<ListView.ItemTemplate>
+						<DataTemplate x:DataType="local:FolderItem">
+							<Grid>
+								<StackPanel Orientation="Horizontal">
+									<FontIcon Glyph="&#xE8B7;" Foreground="Yellow">
+										<i:Interaction.Behaviors>
+											<core:DataTriggerBehavior Binding="{Binding IsRoot}" Value="False">
+												<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE8B7;"/>
+											</core:DataTriggerBehavior>
+											<core:DataTriggerBehavior Binding="{Binding IsRoot}" Value="True">
+												<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE10F;"/>
+											</core:DataTriggerBehavior>
+										</i:Interaction.Behaviors>
+									</FontIcon>
+									<!--<Image Source="{Binding Thumbnail,Converter={StaticResource ThumbnailToImageConverter}}"/>-->
+									<TextBlock Text="{Binding Folder.Name}" Margin="5,0,0,0"/>
+								</StackPanel>
+							</Grid>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+			</Grid>
+
+			<Grid Grid.Column="1">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+
+				<Grid>
+					<Border Background="Black" Margin="5" CornerRadius="4" Padding="5">
+						<StackPanel Orientation="Horizontal">
+							<Button Command="{Binding ToggleFolderSideDockCommand}">
+								<FontIcon Glyph="&#xE8A0;">
 									<i:Interaction.Behaviors>
-										<core:DataTriggerBehavior Binding="{Binding IsRoot}" Value="False">
-											<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE8B7;"/>
+										<core:DataTriggerBehavior Binding="{Binding ShowFolderSideDock}" Value="False">
+											<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE89F;"/>
 										</core:DataTriggerBehavior>
-										<core:DataTriggerBehavior Binding="{Binding IsRoot}" Value="True">
-											<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE10F;"/>
+										<core:DataTriggerBehavior Binding="{Binding ShowFolderSideDock}" Value="True">
+											<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE8A0;"/>
 										</core:DataTriggerBehavior>
 									</i:Interaction.Behaviors>
 								</FontIcon>
-								<!--<Image Source="{Binding Thumbnail,Converter={StaticResource ThumbnailToImageConverter}}"/>-->
-								<TextBlock Text="{Binding Folder.Name}" Margin="5,0,0,0"/>
-							</StackPanel>
-						</Grid>
-					</DataTemplate>
-				</ListView.ItemTemplate>
-			</ListView>
-		</Grid>
+							</Button>
+						</StackPanel>
+					</Border>
+				</Grid>
 
-		<Grid Grid.Column="1">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="auto"/>
-				<RowDefinition Height="*"/>
-			</Grid.RowDefinitions>
+				<Grid Grid.Row="1">
+					<ScrollViewer x:Name="MainScrollViewer" VerticalScrollMode="Auto" Padding="0,0,10,0" Margin="5">
+						<VariableSizedWrapGrid x:Name="MainGrid" Orientation="Horizontal" ItemHeight="{Binding ItemHeight}" ItemWidth="{Binding ItemWidth}"/>
+					</ScrollViewer>
+				</Grid>
 
-			<Grid>
-				<Border Background="Black" Margin="5" CornerRadius="4" Padding="5">
-					<StackPanel Orientation="Horizontal">
-						<Button Content="HELLO"/>
-					</StackPanel>
-				</Border>
 			</Grid>
 
-			<Grid Grid.Row="1">
-				<ScrollViewer x:Name="MainScrollViewer" VerticalScrollMode="Auto" Padding="0,0,10,0" Margin="5">
-					<VariableSizedWrapGrid x:Name="MainGrid" Orientation="Horizontal" ItemHeight="{Binding ItemHeight}" ItemWidth="{Binding ItemWidth}"/>
-				</ScrollViewer>
-			</Grid>
-
+			<controls:GridSplitter Grid.RowSpan="2" HorizontalAlignment="Right" Width="8" MinWidth="0" Background="#14000000" Margin="0,5,-4,5"/>
 		</Grid>
 
-		<controls:GridSplitter Grid.RowSpan="2" HorizontalAlignment="Right" Width="8" MinWidth="0" Background="#14000000" Margin="0,5,-4,5"/>
+		<Grid x:Name="DetailView">
+			<localviews:FileItemDetailView/>
+		</Grid>
+
 	</Grid>
 
 </Page>

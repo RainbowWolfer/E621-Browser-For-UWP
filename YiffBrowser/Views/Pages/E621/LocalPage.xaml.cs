@@ -13,6 +13,7 @@ using System.Windows.Input;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Search;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 using YiffBrowser.Database;
@@ -27,17 +28,20 @@ namespace YiffBrowser.Views.Pages.E621 {
 		public LocalPage() {
 			InitializeComponent();
 			ViewModel.MainGrid = MainGrid;
+			ViewModel.LeftColumnDefinition = LeftColumnDefinition;
 		}
 
 	}
 
 	internal class LocalPageViewModel : BindableBase {
 		public VariableSizedWrapGrid MainGrid { get; set; }
+		public ColumnDefinition LeftColumnDefinition { get; set; }
 
 		public int ItemWidth { get; } = 380;
 		public int ItemHeight { get; } = 50;
 
-		private FolderItem selectedFolder;
+		private FolderItem selectedFolder = null;
+		private bool showFolderSideDock = true;
 
 		public ObservableCollection<FolderItem> Folders { get; } = [];
 		public ObservableCollection<FileItem> Files { get; } = [];
@@ -48,6 +52,26 @@ namespace YiffBrowser.Views.Pages.E621 {
 				LoadFolder(value);
 			});
 		}
+
+		public bool ShowFolderSideDock {
+			get => showFolderSideDock;
+			set => SetProperty(ref showFolderSideDock, value, OnShowFolderSideDockChanged);
+		}
+
+		public ICommand ToggleFolderSideDockCommand => new DelegateCommand(() => {
+			ShowFolderSideDock = !ShowFolderSideDock;
+		});
+
+		private double DockLastWidth { set; get; }
+		private void OnShowFolderSideDockChanged() {
+			if (ShowFolderSideDock) {
+				LeftColumnDefinition.Width = new GridLength(DockLastWidth, GridUnitType.Pixel);
+			} else {
+				DockLastWidth = LeftColumnDefinition.Width.Value;
+				LeftColumnDefinition.Width = new GridLength(0);
+			}
+		}
+
 
 		public LocalPageViewModel() {
 			Initialize();

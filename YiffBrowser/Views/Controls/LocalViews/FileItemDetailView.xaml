@@ -1,0 +1,81 @@
+﻿<UserControl
+    x:Class="YiffBrowser.Views.Controls.LocalViews.FileItemDetailView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+	xmlns:controls="using:YiffBrowser.Views.Controls"
+	xmlns:common="using:YiffBrowser.Views.Controls.Common"
+	xmlns:local="using:YiffBrowser.Views.Controls.LocalViews"
+	mc:Ignorable="d"
+	d:Width="1200"
+	d:Height="800"
+	d:RequestedTheme="Dark">
+
+	<UserControl.Resources>
+
+		<Style x:Key="RectangleSeparator" TargetType="Rectangle">
+			<Setter Property="Width" Value="4"/>
+			<Setter Property="Height" Value="20"/>
+			<Setter Property="Margin" Value="10,0,10,0"/>
+			<Setter Property="RadiusX" Value="5"/>
+			<Setter Property="RadiusY" Value="2"/>
+			<Setter Property="RelativePanel.AlignVerticalCenterWithPanel" Value="True"/>
+			<Setter Property="Fill" Value="{StaticResource TextFillColorPrimaryBrush}"/>
+		</Style>
+
+	</UserControl.Resources>
+
+	<Grid>
+		<Grid.DataContext>
+			<local:FileItemDetailViewModel x:Name="ViewModel" FileItem="{x:Bind FileItem,Mode=OneWay}"/>
+		</Grid.DataContext>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<Grid Margin="0,0,10,0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+				<StackPanel Orientation="Horizontal">
+					<FontIcon Glyph="&#xE76B;" FontSize="18"/>
+					<TextBlock Text="Back" FontSize="18" Margin="15,0,0,0"/>
+				</StackPanel>
+			</Button>
+
+			<controls:PostTagsListView Grid.Row="2" Tags="{Binding FileItem.Post.Tags}" ShowAddMinusButton="False" ShowDialogTagInfo="False" d:Width="300"/>
+		</Grid>
+
+		<Grid Grid.Column="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<Grid Grid.Column="1" Background="{StaticResource SystemColorBackgroundBrush}" CornerRadius="10" Margin="10" Padding="5,3,5,3">
+				<StackPanel Orientation="Horizontal">
+
+					<common:PostHeaderSimpleInfoView Post="{Binding FileItem.Post}"/>
+
+					<Rectangle Style="{StaticResource RectangleSeparator}"/>
+
+					<common:PostHeaderSimpleScoreView Post="{Binding FileItem.Post}" Margin="10,0,10,0" Height="33" Padding="11,0,11,0"/>
+
+				</StackPanel>
+			</Grid>
+
+
+		</Grid>
+
+		<controls1:GridSplitter HorizontalAlignment="Right" Width="8" MinWidth="0" Background="#14000000"/>
+
+	</Grid>
+</UserControl>

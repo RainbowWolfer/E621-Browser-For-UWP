@@ -83,7 +83,7 @@ namespace YiffBrowser.Views.Controls.PictureViews {
 			set => SetValue(IsLockedProperty, value);
 		}
 
-		public static readonly DependencyProperty IsLockedProperty =DependencyProperty.Register(
+		public static readonly DependencyProperty IsLockedProperty = DependencyProperty.Register(
 			nameof(IsLocked),
 			typeof(bool),
 			typeof(ImagesListManager),
@@ -92,7 +92,7 @@ namespace YiffBrowser.Views.Controls.PictureViews {
 
 
 
-		public ObservableCollection<ImagesListManagerItem> Items { get; } = new ObservableCollection<ImagesListManagerItem>();
+		public ObservableCollection<ImagesListManagerItem> Items { get; } = [];
 
 		public ImagesListManager() {
 			this.InitializeComponent();
