@@ -21,10 +21,13 @@ namespace YiffBrowser.Database {
 			try {
 				StorageFile file = await folder.GetFileAsync(DatabaseFileName);
 				file ??= await CreateDatabase(folder);
+				//await CheckColumns(file);
 				return file;
 			} catch (Exception ex) {
 				Debug.WriteLine(ex);
-				return await CreateDatabase(folder);
+				StorageFile file = await CreateDatabase(folder);
+				//await CheckColumns(file);
+				return file;
 			}
 		}
 
@@ -37,14 +40,37 @@ namespace YiffBrowser.Database {
 				"CREATE TABLE IF NOT EXISTS " +
 				"PostsInfo(" +
 					"PostID INTEGER PRIMARY KEY, " +
-					"PostJson TEXT NULL" +
+					"PostJson TEXT NULL," + //full info
+					"Tags TEXT NULL," + //partial info for quick search
+					"Rating INT NULL" +
+					"Score INT NULL" +
 				")";
 
 			SqliteCommand createTable = new(tableCommand, connection);
 
-			createTable.ExecuteReader();
+			await createTable.ExecuteReaderAsync();
 
 			return file;
+		}
+
+		public static async Task CheckColumns(StorageFile file) {
+			using SqliteConnection connection = await OpenConnection(file.Path);
+
+			string[] sqls = [
+				"ALTER TABLE PostsInfo ADD PostJson TEXT;",
+				"ALTER TABLE PostsInfo ADD Tags TEXT;",
+				"ALTER TABLE PostsInfo ADD Rating INT;",
+				"ALTER TABLE PostsInfo ADD Score INT;",
+			];
+
+			foreach (string item in sqls) {
+				try {
+					using SqliteCommand command = new(item, connection);
+					await command.ExecuteNonQueryAsync();
+				} catch { }
+			}
+
+
 		}
 
 		public static async Task AddOrUpdatePost(E621Post post) {
@@ -54,18 +80,24 @@ namespace YiffBrowser.Database {
 			}
 
 			string json = JsonConvert.SerializeObject(post);
+			string tags = string.Join(",", post.Tags.GetAllTags());
+			int rating = (int)post.Rating;
+			int score = post.Score.Total;
 
 			using SqliteConnection connection = await OpenConnection(file.Path);
 
 			SqliteCommand insertCommand = new() {
 				Connection = connection,
-				CommandText = "INSERT OR REPLACE INTO PostsInfo VALUES (@ID, @JSON);"
+				CommandText = "INSERT OR REPLACE INTO PostsInfo VALUES (@ID, @JSON, @TAGS, @RATING, @SCORE);"
 			};
 
 			insertCommand.Parameters.AddWithValue("@ID", post.ID);
 			insertCommand.Parameters.AddWithValue("@JSON", json);
+			insertCommand.Parameters.AddWithValue("@TAGS", tags);
+			insertCommand.Parameters.AddWithValue("@RATING", rating);
+			insertCommand.Parameters.AddWithValue("@SCORE", score);
 
-			insertCommand.ExecuteReader();
+			await insertCommand.ExecuteReaderAsync();
 		}
 
 		public static async ValueTask<E621Post> GetPostInfo(int postID) {

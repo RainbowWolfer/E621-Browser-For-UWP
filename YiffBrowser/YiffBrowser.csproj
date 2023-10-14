@@ -121,7 +121,11 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Converters\ThumbnailToImageConverter.cs" />
     <Compile Include="Database\E621DownloadDataAccess.cs" />
+    <Compile Include="Views\Pages\E621\LocalPage.xaml.cs">
+      <DependentUpon>LocalPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Shared\NewVersionDialogView.xaml.cs">
       <DependentUpon>NewVersionDialogView.xaml</DependentUpon>
     </Compile>
@@ -511,6 +515,10 @@
     <Page Include="Views\Pages\E621\E621HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Pages\E621\LocalPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Pages\E621\TestPage.xaml">
       <Generator>MSBuild:Compile</Generator>

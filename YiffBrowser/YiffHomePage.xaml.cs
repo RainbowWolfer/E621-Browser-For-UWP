@@ -164,6 +164,8 @@ namespace YiffBrowser {
 					targetType = typeof(E621HomePage);
 				} else if (tag == TAG_DOWNLOADS) {
 					targetType = typeof(DownloadPage);
+				} else if (tag == TAG_LOCAL) {
+					targetType = typeof(LocalPage);
 				} else {
 					targetType = typeof(TestPage);
 					//throw new NotSupportedException($"{tag}");
