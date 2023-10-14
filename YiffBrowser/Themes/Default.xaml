@@ -2,6 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+	<Style x:Key="EmptyButtonStyle" TargetType="Button"/>
+
 	<!--<ResourceDictionary.ThemeDictionaries>
 		<ResourceDictionary x:Key="Default">
             <StaticResource x:Key="AccentButtonBackground" ResourceKey="SystemControlBackgroundAccentBrush" />

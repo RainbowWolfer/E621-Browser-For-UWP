@@ -1,13 +1,16 @@
 ﻿<Page
     x:Class="YiffBrowser.Views.Pages.E621.LocalPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:YiffBrowser.Views.Pages.E621"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+	xmlns:i="using:Microsoft.Xaml.Interactivity"
+	xmlns:local="using:YiffBrowser.Views.Pages.E621"
+	mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    NavigationCacheMode="Required" 
+    NavigationCacheMode="Disabled" 
     d:RequestedTheme="Dark">
 
 	<Page.DataContext>
@@ -15,48 +18,66 @@
 	</Page.DataContext>
 
 	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="auto"/>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
 
-		<Grid Margin="5">
-			<StackPanel Orientation="Horizontal">
-				<Button Command="{Binding RefreshCommand}">
-					<FontIcon Glyph="&#xE149;"/>
-				</Button>
-			</StackPanel>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<AutoSuggestBox Margin="5" QueryIcon="Find" PlaceholderText="Search Folder Name"/>
+
+			<ListView ItemsSource="{Binding Folders}" Margin="5" Grid.Row="1" SelectedItem="{Binding SelectedFolder,Mode=TwoWay}" d:ItemsSource="1 2 3 ">
+				<ListView.ItemTemplate>
+					<DataTemplate x:DataType="local:FolderItem">
+						<Grid>
+							<StackPanel Orientation="Horizontal">
+								<FontIcon Glyph="&#xE8B7;" Foreground="Yellow">
+									<i:Interaction.Behaviors>
+										<core:DataTriggerBehavior Binding="{Binding IsRoot}" Value="False">
+											<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE8B7;"/>
+										</core:DataTriggerBehavior>
+										<core:DataTriggerBehavior Binding="{Binding IsRoot}" Value="True">
+											<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE10F;"/>
+										</core:DataTriggerBehavior>
+									</i:Interaction.Behaviors>
+								</FontIcon>
+								<!--<Image Source="{Binding Thumbnail,Converter={StaticResource ThumbnailToImageConverter}}"/>-->
+								<TextBlock Text="{Binding Folder.Name}" Margin="5,0,0,0"/>
+							</StackPanel>
+						</Grid>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
 		</Grid>
 
-		<GridView ItemsSource="{Binding Folders}" Grid.Row="1" Margin="5" SelectedItem="{Binding SelectedFolder,Mode=TwoWay}">
-			<GridView.ItemTemplate>
-				<DataTemplate x:DataType="local:FolderItem">
-					<Grid Height="200" Width="200">
-						<StackPanel>
-							<Image Source="{Binding Thumbnail,Converter={StaticResource ThumbnailToImageConverter}}"/>
-							<FontIcon Glyph="&#xE838;"/>
-							<TextBlock Text="{Binding FilePath}"/>
-						</StackPanel>
-					</Grid>
-				</DataTemplate>
-			</GridView.ItemTemplate>
-		</GridView>
+		<Grid Grid.Column="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
 
-		<GridView ItemsSource="{Binding Files}" Grid.Row="2" Margin="5">
-			<GridView.ItemTemplate>
-				<DataTemplate x:DataType="local:FileItem">
-					<Grid Height="200" Width="200">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="*"/>
-							<RowDefinition Height="auto"/>
-						</Grid.RowDefinitions>
-						<Image Source="{Binding Thumbnail,Converter={StaticResource ThumbnailToImageConverter}}"/>
-						<TextBlock Text="{Binding File.Name}" Grid.Row="1" TextAlignment="Center"/>
-					</Grid>
-				</DataTemplate>
-			</GridView.ItemTemplate>
-		</GridView>
+			<Grid>
+				<Border Background="Black" Margin="5" CornerRadius="4" Padding="5">
+					<StackPanel Orientation="Horizontal">
+						<Button Content="HELLO"/>
+					</StackPanel>
+				</Border>
+			</Grid>
 
+			<Grid Grid.Row="1">
+				<ScrollViewer x:Name="MainScrollViewer" VerticalScrollMode="Auto" Padding="0,0,10,0" Margin="5">
+					<VariableSizedWrapGrid x:Name="MainGrid" Orientation="Horizontal" ItemHeight="{Binding ItemHeight}" ItemWidth="{Binding ItemWidth}"/>
+				</ScrollViewer>
+			</Grid>
+
+		</Grid>
+
+		<controls:GridSplitter Grid.RowSpan="2" HorizontalAlignment="Right" Width="8" MinWidth="0" Background="#14000000" Margin="0,5,-4,5"/>
 	</Grid>
+
 </Page>

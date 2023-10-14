@@ -1,32 +1,24 @@
-﻿using Prism.Commands;
+﻿using Newtonsoft.Json.Linq;
+using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Search;
-using Windows.Storage.Streams;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 using YiffBrowser.Database;
-using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Locals;
+using YiffBrowser.Views.Controls.LocalViews;
 
 namespace YiffBrowser.Views.Pages.E621 {
 	public sealed partial class LocalPage : Page {
@@ -34,11 +26,17 @@ namespace YiffBrowser.Views.Pages.E621 {
 
 		public LocalPage() {
 			InitializeComponent();
+			ViewModel.MainGrid = MainGrid;
 		}
 
 	}
 
 	internal class LocalPageViewModel : BindableBase {
+		public VariableSizedWrapGrid MainGrid { get; set; }
+
+		public int ItemWidth { get; } = 380;
+		public int ItemHeight { get; } = 50;
+
 		private FolderItem selectedFolder;
 
 		public ObservableCollection<FolderItem> Folders { get; } = [];
@@ -53,6 +51,26 @@ namespace YiffBrowser.Views.Pages.E621 {
 
 		public LocalPageViewModel() {
 			Initialize();
+			if (Files != null) {
+				Files.CollectionChanged += Files_CollectionChanged;
+			}
+		}
+
+		private void Files_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
+			if (e.NewItems != null) {
+				foreach (FileItem item in e.NewItems.OfType<FileItem>()) {
+					FileItemImageView image = new() {
+						FileItem = item,
+					};
+					item.ViewItem = image;
+					MainGrid.Children.Add(image);
+				}
+			}
+			if (e.OldItems != null) {
+				foreach (FileItem item in e.OldItems.OfType<FileItem>()) {
+
+				}
+			}
 		}
 
 		public ICommand RefreshCommand => new DelegateCommand(Initialize);
@@ -63,20 +81,29 @@ namespace YiffBrowser.Views.Pages.E621 {
 			}
 
 			Folders.Clear();
-
+			Folders.Add(new FolderItem(Local.DownloadFolder));
 			IReadOnlyList<StorageFolder> folders = await Local.DownloadFolder.GetFoldersAsync(CommonFolderQuery.DefaultQuery);
 			foreach (StorageFolder folder in folders) {
-				FolderItem item = new(folder);
-				Folders.Add(item);
-				await item.Load();
+				Folders.Add(new FolderItem(folder));
 			}
 		}
 
 		public async void LoadFolder(FolderItem folder) {
+			MainGrid.Children.Clear();
 			IReadOnlyList<StorageFile> files = await folder.Folder.GetFilesAsync(CommonFileQuery.DefaultQuery);
 
 			Files.Clear();
 			foreach (StorageFile file in files) {
+				switch (file.FileType) {
+					case ".mp4":
+					case ".webm":
+					case ".png":
+					case ".jpg":
+					case ".gif":
+						break;
+					default:
+						continue;
+				}
 				FileItem item = new(file);
 				Files.Add(item);
 				await item.Load();
@@ -87,12 +114,39 @@ namespace YiffBrowser.Views.Pages.E621 {
 
 	public class FileItem : BindableBase {
 		private StorageItemThumbnail thumbnail;
+		private FileItemImageView viewItem;
+		private E621Post post;
+		private bool isLoadingPost;
+		private string typeHint;
 
 		public StorageFile File { get; }
+		public FileItemImageView ViewItem {
+			get => viewItem;
+			set => SetProperty(ref viewItem, value, OnImageChanged);
+		}
+
+		private void OnImageChanged() {
+			LoadImage();
+		}
 
 		public StorageItemThumbnail Thumbnail {
 			get => thumbnail;
 			private set => SetProperty(ref thumbnail, value);
+		}
+
+		public E621Post Post {
+			get => post;
+			set => SetProperty(ref post, value);
+		}
+
+		public bool IsLoadingPost {
+			get => isLoadingPost;
+			set => SetProperty(ref isLoadingPost, value);
+		}
+
+		public string TypeHint {
+			get => typeHint;
+			set => SetProperty(ref typeHint, value);
 		}
 
 		//private BitmapImage image;
@@ -103,27 +157,38 @@ namespace YiffBrowser.Views.Pages.E621 {
 
 		public FileItem(StorageFile file) {
 			File = file;
+			TypeHint = file.FileType switch {
+				".gif" => "GIF",
+				".webm" => "WEBM",
+				".mp4" => "MP4",
+				_ => null,
+			};
 			DateTimeOffset date = file.DateCreated;
 			FileInfo info = new(file.Path);
-			//Debug.WriteLine(info.LastWriteTime);
+		}
+
+		private void LoadImage() {
+			if (ViewItem == null || Thumbnail == null) {
+				return;
+			}
+
+			double ratio = Thumbnail.OriginalWidth / (double)Thumbnail.OriginalHeight;
+			double h = (380 / ratio) / 50;
+			int h2 = (int)Math.Ceiling(h);
+
+			VariableSizedWrapGrid.SetRowSpan(ViewItem, h2);
+			VariableSizedWrapGrid.SetColumnSpan(ViewItem, 1);
+
 		}
 
 		public async Task Load() {
-			Stopwatch stopwatch = Stopwatch.StartNew();
 			if (int.TryParse(File.DisplayName, out int id)) {
-				E621Post post = await E621DownloadDataAccess.GetPostInfo(id);
+				IsLoadingPost = true;
+				Post = await E621DownloadDataAccess.GetPostInfo(id);
+				IsLoadingPost = false;
 			}
-			stopwatch.Stop();
-
-			Debug.WriteLine($"DB {stopwatch.ElapsedMilliseconds}ms");
-
-			stopwatch.Restart();
 			Thumbnail = await File.GetThumbnailAsync(ThumbnailMode.SingleItem);
-			stopwatch.Stop();
 
-			Debug.WriteLine($"THUMB {stopwatch.ElapsedMilliseconds}ms");
-
-			Debug.WriteLine($"{Thumbnail.OriginalHeight} - {Thumbnail.OriginalWidth}");
 			//try {
 			//	using IRandomAccessStream fileStream = await File.OpenAsync(FileAccessMode.Read);
 			//	BitmapImage bitmapImage = new() {
@@ -136,6 +201,7 @@ namespace YiffBrowser.Views.Pages.E621 {
 			//} catch (Exception ex) {
 			//	Debug.WriteLine(ex);
 			//}
+			LoadImage();
 		}
 	}
 
@@ -144,10 +210,8 @@ namespace YiffBrowser.Views.Pages.E621 {
 
 		public string FilePath { get; }
 		public StorageFolder Folder { get; }
-		public StorageItemThumbnail Thumbnail {
-			get => thumbnail;
-			private set => SetProperty(ref thumbnail, value);
-		}
+
+		public bool IsRoot => Folder == Local.DownloadFolder;
 
 		public FolderItem(StorageFolder folder) {
 			Folder = folder;
@@ -155,9 +219,6 @@ namespace YiffBrowser.Views.Pages.E621 {
 			FileSystemWatcher watcher = new(folder.Path);
 		}
 
-		public async Task Load() {
-			Thumbnail = await Folder.GetThumbnailAsync(ThumbnailMode.PicturesView);
-		}
 	}
 
 }
