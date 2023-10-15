@@ -7,11 +7,10 @@
 	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
 	xmlns:i="using:Microsoft.Xaml.Interactivity"
 	xmlns:local="using:YiffBrowser.Views.Controls"
-	xmlns:customcontrols="using:YiffBrowser.Views.Controls.CustomControls" xmlns:tagsinfoviews="using:YiffBrowser.Views.Controls.TagsInfoViews"
+	xmlns:customcontrols="using:YiffBrowser.Views.Controls.CustomControls"
+	xmlns:tagsinfoviews="using:YiffBrowser.Views.Controls.TagsInfoViews"
 	mc:Ignorable="d" 
-	d:RequestedTheme="Dark"
-	d:Height="500"
-	d:Width="250">
+	d:RequestedTheme="Dark">
 
 	<UserControl.Resources>
 		<CollectionViewSource x:Name="Collection" Source="{x:Bind tags,Mode=OneWay}" IsSourceGrouped="True"/>

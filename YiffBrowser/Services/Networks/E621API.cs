@@ -49,11 +49,11 @@ namespace YiffBrowser.Services.Networks {
 			}
 		}
 
-		public static async ValueTask<E621Post> GetPostAsync(string postID, CancellationToken? token = null) {
-			if (postID.IsBlank()) {
+		public static async ValueTask<E621Post> GetPostAsync(int? postID, CancellationToken? token = null) {
+			if (postID == null) {
 				return null;
 			}
-			string url = $"https://{GetHost()}/posts/{postID}.json";
+			string url = $"https://{GetHost()}/posts/{postID.Value}.json";
 			HttpResult<string> result = await NetCode.ReadURLAsync(url, token);
 			if (result.Result == HttpResultType.Success) {
 				E621Post post = JsonConvert.DeserializeObject<E621PostsRoot>(result.Content).Post;

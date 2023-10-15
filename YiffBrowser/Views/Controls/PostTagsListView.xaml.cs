@@ -1,17 +1,13 @@
-using Microsoft.Toolkit.Uwp.UI;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using YiffBrowser.Helpers;
-using YiffBrowser.Models;
 using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Locals;
 using YiffBrowser.Views.Controls.TagsInfoViews;

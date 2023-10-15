@@ -369,6 +369,9 @@ namespace YiffBrowser.Views.Controls {
 			SampleLoadingIsIndeterminate = false;
 			IsSampleLoading = true;
 			SampleLoadingProgress = e.Progress;
+			if (e.Progress == 100) {
+				IsSampleLoading = false;
+			}
 		}
 
 		public bool IsSampleLoading {

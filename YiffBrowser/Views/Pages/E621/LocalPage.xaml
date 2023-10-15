@@ -105,8 +105,8 @@
 			<controls:GridSplitter Grid.RowSpan="2" HorizontalAlignment="Right" Width="8" MinWidth="0" Background="#14000000" Margin="0,5,-4,5"/>
 		</Grid>
 
-		<Grid x:Name="DetailView">
-			<localviews:FileItemDetailView/>
+		<Grid x:Name="DetailView" Visibility="Collapsed">
+			<localviews:FileItemDetailView FileItem="{Binding SelectedFile}"/>
 		</Grid>
 
 	</Grid>

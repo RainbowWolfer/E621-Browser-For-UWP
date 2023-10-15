@@ -84,7 +84,7 @@ namespace YiffBrowser.Views.Controls.PictureViews {
 			set => SetProperty(ref e621Post, value, OnPostChanged);
 		}
 
-		public ObservableCollection<CommentItem> CommentItems { get; } = new();
+		public ObservableCollection<CommentItem> CommentItems { get; } = [];
 
 		public PostPoolItem[] PoolItems {
 			get => poolItems;
@@ -147,6 +147,9 @@ namespace YiffBrowser.Views.Controls.PictureViews {
 		}
 
 		private void OnPostChanged() {
+			if (E621Post == null) {
+				return;
+			}
 			Description = E621Post.Description.NotBlankCheck() ?? "No Description";
 			SourceURLs = E621Post.Sources.ToArray();
 			if (SourceURLs.IsEmpty()) {
@@ -179,10 +182,10 @@ namespace YiffBrowser.Views.Controls.PictureViews {
 			cts2?.Cancel();
 			cts2 = new CancellationTokenSource();
 
-			string parentID = E621Post.Relationships.ParentId;
-			List<string> childrenIDs = E621Post.Relationships.Children;
+			int? parentID = E621Post.Relationships.ParentId;
+			List<int?> childrenIDs = E621Post.Relationships.Children;
 
-			if (parentID.IsNotBlank()) {
+			if (parentID.HasValue) {
 				E621Post parent = await E621API.GetPostAsync(parentID, cts2.Token);
 				if (cts2.IsCancellationRequested) {
 					return;
@@ -193,8 +196,8 @@ namespace YiffBrowser.Views.Controls.PictureViews {
 			IsLoadingParent = false;
 
 			if (childrenIDs.IsNotEmpty()) {
-				List<E621Post> list = new();
-				foreach (string id in childrenIDs) {
+				List<E621Post> list = [];
+				foreach (int? id in childrenIDs) {
 					if (cts2.IsCancellationRequested) {
 						IsLoadingChildren = false;
 						return;
@@ -220,7 +223,7 @@ namespace YiffBrowser.Views.Controls.PictureViews {
 			CommentItems.Clear();
 
 			E621Comment[] comments = await E621API.GetCommentsAsync(E621Post.ID, cts1.Token);
-			foreach (E621Comment comment in comments ?? Array.Empty<E621Comment>()) {
+			foreach (E621Comment comment in comments ?? []) {
 				CommentItem item = new() {
 					E621Comment = comment,
 					cts = cts1,

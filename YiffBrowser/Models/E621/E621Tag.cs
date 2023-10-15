@@ -16,7 +16,7 @@ namespace YiffBrowser.Models.E621 {
 		[JsonProperty("related_tags")]
 		public string RelatedTags { get; set; }
 		[JsonProperty("related_tags_updated_at")]
-		public DateTime RelatedTagsUpdatedAt { get; set; }
+		public DateTime? RelatedTagsUpdatedAt { get; set; }
 		[JsonProperty("category")]
 		public int Category { get; set; }
 		[JsonProperty("is_locked")]

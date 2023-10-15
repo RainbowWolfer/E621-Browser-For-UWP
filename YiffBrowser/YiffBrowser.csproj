@@ -123,6 +123,9 @@
   <ItemGroup>
     <Compile Include="Converters\ThumbnailToImageConverter.cs" />
     <Compile Include="Database\E621DownloadDataAccess.cs" />
+    <Compile Include="Views\Controls\Common\PostDetailControlView.xaml.cs">
+      <DependentUpon>PostDetailControlView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\Common\PostHeaderSimpleInfoView.xaml.cs">
       <DependentUpon>PostHeaderSimpleInfoView.xaml</DependentUpon>
     </Compile>
@@ -393,6 +396,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\Common\HeaderIconTextButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Common\PostDetailControlView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

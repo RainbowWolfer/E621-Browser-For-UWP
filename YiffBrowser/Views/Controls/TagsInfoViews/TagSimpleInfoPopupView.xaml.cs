@@ -5,6 +5,7 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Networks;
 
@@ -41,6 +42,7 @@ namespace YiffBrowser.Views.Controls.TagsInfoViews {
 		private E621Wiki wiki = null;
 		private Brush categoryBrush = "#6f6f6f".GetSolidColorBrush();
 		private string tagName;
+		private string body;
 
 		public E621Tag Tag {
 			get => tag;
@@ -67,12 +69,18 @@ namespace YiffBrowser.Views.Controls.TagsInfoViews {
 			set => SetProperty(ref tagName, value);
 		}
 
+		public string Body {
+			get => body;
+			set => SetProperty(ref body, value);
+		}
+
 		public async Task Load(string tagName) {
 			TagName = tagName;
 			IsLoading = true;
 			Tag = await E621API.GetE621TagAsync(tagName);
 			CategoryBrush = new SolidColorBrush(E621Tag.GetCategoryColor(Tag.Category));
 			Wiki = await E621API.GetE621WikiAsync(tagName);
+			Body = Wiki?.Body.NotBlankCheck() ?? "No Wiki Found";
 			IsLoading = false;
 		}
 	}

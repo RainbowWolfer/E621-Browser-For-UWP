@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -160,7 +161,11 @@ namespace YiffBrowser.Helpers {
 			if (url.IsBlank()) {
 				return;
 			}
-			await Launcher.LaunchUriAsync(new Uri(url));
+			try {
+				await Launcher.LaunchUriAsync(new Uri(url));
+			} catch (Exception ex) {
+				Debug.WriteLine(ex);
+			}
 		}
 
 		public static double Distance(this Point a, Point b) {

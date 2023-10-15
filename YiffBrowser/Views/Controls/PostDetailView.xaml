@@ -168,49 +168,12 @@
 		<Grid Margin="0,0,10,0" Grid.RowSpan="2">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="auto"/>
-				<RowDefinition Height="auto"/>
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 
-			<Button Click="BackButton_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
-				<StackPanel Orientation="Horizontal">
-					<FontIcon Glyph="&#xE76B;" FontSize="18"/>
-					<TextBlock Text="Back" FontSize="18" Margin="15,0,0,0"/>
-				</StackPanel>
-			</Button>
+			<common:PostDetailControlView ViewModel="{x:Bind ControlViewModel,Mode=OneWay}" BackClick="PostDetailControlView_BackClick"/>
 
-			<Grid Margin="10,0,10,10" Grid.Row="1">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="auto"/>
-				</Grid.ColumnDefinitions>
-
-
-				<Button Grid.Column="0" HorizontalAlignment="Stretch" Margin="0,0,5,0" Height="34" Command="{Binding PreviousCommand}">
-					<StackPanel Orientation="Horizontal">
-						<FontIcon Glyph="&#xE72B;" FontSize="16"/>
-						<TextBlock Text="Previous" FontSize="14" Margin="10,0,0,0"/>
-					</StackPanel>
-				</Button>
-
-
-				<Button Grid.Column="1" HorizontalAlignment="Stretch" Margin="5,0,5,0" Height="34" Command="{Binding NextCommand}">
-					<StackPanel Orientation="Horizontal">
-						<FontIcon Glyph="&#xE72A;" FontSize="16"/>
-						<TextBlock Text="Next" FontSize="14" Margin="10,0,0,0"/>
-					</StackPanel>
-				</Button>
-
-				<ToggleButton IsChecked="{x:Bind IsShowingImagesListManager,Mode=TwoWay}" Grid.Column="2" HorizontalAlignment="Stretch" Margin="5,0,0,0" Height="34" IsEnabled="{Binding IsImagesListManagerLocked,Converter={StaticResource BoolToBoolRe}}" ToolTipService.ToolTip="Toggle Images List View">
-					<StackPanel Orientation="Horizontal">
-						<FontIcon Glyph="&#xE158;" FontSize="16"/>
-					</StackPanel>
-				</ToggleButton>
-
-			</Grid>
-
-			<local:PostTagsListView Grid.Row="2" Tags="{Binding E621Post.Tags}" ShowAddMinusButton="{Binding InputByPosts,Converter={StaticResource BoolToBoolRe}}" ShowDialogTagInfo="True"/>
+			<local:PostTagsListView Grid.Row="1" Tags="{Binding E621Post.Tags}" ShowAddMinusButton="{Binding InputByPosts,Converter={StaticResource BoolToBoolRe}}" ShowDialogTagInfo="True"/>
 		</Grid>
 
 		<Grid Grid.Row="1" Grid.Column="1">
@@ -233,7 +196,7 @@
 					</Grid>
 
 					<ScrollViewer x:Name="ImagesListManagerScroll" VerticalAlignment="Top" Canvas.ZIndex="999" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" HorizontalScrollMode="Disabled" IsHitTestVisible="False" Margin="160,0,160,0">
-						<pictureviews:ImagesListManager PostsList="{x:Bind PostsList,Mode=OneWay}" CurrentPost="{Binding E621Post}" ItemClickCommand="{Binding ImagesListManagerItemClickCommand}" IsLocked="{Binding IsImagesListManagerLocked,Mode=TwoWay}" Margin="0,0,0,10">
+						<pictureviews:ImagesListManager PostsList="{x:Bind PostsList,Mode=OneWay}" CurrentPost="{Binding E621Post}" ItemClickCommand="{Binding ImagesListManagerItemClickCommand}" IsLocked="{x:Bind ControlViewModel.IsImageListLocked,Mode=TwoWay}" Margin="0,0,0,10">
 							<pictureviews:ImagesListManager.RenderTransform>
 								<TranslateTransform x:Name="ImagesListManagerTransform" Y="-150"/>
 							</pictureviews:ImagesListManager.RenderTransform>

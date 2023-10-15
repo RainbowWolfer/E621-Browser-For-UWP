@@ -5,15 +5,20 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+	xmlns:converters="using:YiffBrowser.Converters"
 	xmlns:controls="using:YiffBrowser.Views.Controls"
 	xmlns:common="using:YiffBrowser.Views.Controls.Common"
 	xmlns:local="using:YiffBrowser.Views.Controls.LocalViews"
+	xmlns:pictureviews="using:YiffBrowser.Views.Controls.PictureViews"
 	mc:Ignorable="d"
 	d:Width="1200"
 	d:Height="800"
 	d:RequestedTheme="Dark">
 
 	<UserControl.Resources>
+
+		<converters:BoolToSplitViewDisplayModeConverter x:Key="IsOverlay" TrueValue="Overlay" FalseValue="Inline"/>
 
 		<Style x:Key="RectangleSeparator" TargetType="Rectangle">
 			<Setter Property="Width" Value="4"/>
@@ -33,7 +38,7 @@
 		</Grid.DataContext>
 
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition Width="300"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 
@@ -44,14 +49,9 @@
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 
-			<Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
-				<StackPanel Orientation="Horizontal">
-					<FontIcon Glyph="&#xE76B;" FontSize="18"/>
-					<TextBlock Text="Back" FontSize="18" Margin="15,0,0,0"/>
-				</StackPanel>
-			</Button>
+			<common:PostDetailControlView/>
 
-			<controls:PostTagsListView Grid.Row="2" Tags="{Binding FileItem.Post.Tags}" ShowAddMinusButton="False" ShowDialogTagInfo="False" d:Width="300"/>
+			<controls:PostTagsListView Grid.Row="2" Tags="{Binding FileItem.Post.Tags}" ShowAddMinusButton="False" ShowDialogTagInfo="False"/>
 		</Grid>
 
 		<Grid Grid.Column="1">
@@ -60,7 +60,7 @@
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 
-			<Grid Grid.Column="1" Background="{StaticResource SystemColorBackgroundBrush}" CornerRadius="10" Margin="10" Padding="5,3,5,3">
+			<Grid Background="{StaticResource SystemColorBackgroundBrush}" CornerRadius="10" Margin="10" Padding="5,3,5,3">
 				<StackPanel Orientation="Horizontal">
 
 					<common:PostHeaderSimpleInfoView Post="{Binding FileItem.Post}"/>
@@ -70,8 +70,88 @@
 					<common:PostHeaderSimpleScoreView Post="{Binding FileItem.Post}" Margin="10,0,10,0" Height="33" Padding="11,0,11,0"/>
 
 				</StackPanel>
+
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+					<muxc:DropDownButton FontSize="18" Content="Action" Height="33" CornerRadius="5" BorderThickness="0" Background="Transparent" Margin="0,0,10,0">
+						<muxc:DropDownButton.Flyout>
+							<MenuFlyout Placement="Bottom">
+								<MenuFlyoutItem Text="Copy Image" Visibility="{Binding IsMedia,Converter={StaticResource BoolToVisibilityRe}}" IsEnabled="{Binding AbleToCopyImage}" Command="{Binding CopyImageCommand}">
+									<MenuFlyoutItem.Icon>
+										<FontIcon Glyph="&#xE91B;"/>
+									</MenuFlyoutItem.Icon>
+								</MenuFlyoutItem>
+								<MenuFlyoutSubItem Text="Set As">
+									<MenuFlyoutSubItem.Icon>
+										<FontIcon Glyph="&#xEE71;"/>
+									</MenuFlyoutSubItem.Icon>
+									<MenuFlyoutItem Text="Set As Wallpaper">
+										<MenuFlyoutItem.Icon>
+											<FontIcon Glyph="&#xE620;"/>
+										</MenuFlyoutItem.Icon>
+									</MenuFlyoutItem>
+									<MenuFlyoutItem Text="Set As Lock-screen">
+										<MenuFlyoutItem.Icon>
+											<FontIcon Glyph="&#xEE3F;"/>
+										</MenuFlyoutItem.Icon>
+									</MenuFlyoutItem>
+									<MenuFlyoutItem Text="Set As Avatar" IsEnabled="False">
+										<MenuFlyoutItem.Icon>
+											<FontIcon Glyph="&#xE156;"/>
+										</MenuFlyoutItem.Icon>
+									</MenuFlyoutItem>
+								</MenuFlyoutSubItem>
+								<MenuFlyoutItem Text="Open In Photos">
+									<MenuFlyoutItem.Icon>
+										<FontIcon Glyph="&#xE155;"/>
+									</MenuFlyoutItem.Icon>
+								</MenuFlyoutItem>
+								<MenuFlyoutItem Text="Slideshow">
+									<MenuFlyoutItem.Icon>
+										<FontIcon Glyph="&#xE173;"/>
+									</MenuFlyoutItem.Icon>
+								</MenuFlyoutItem>
+							</MenuFlyout>
+						</muxc:DropDownButton.Flyout>
+					</muxc:DropDownButton>
+					<Button FontSize="18" Background="Transparent" BorderThickness="0" Height="33" Padding="7,0,7,0" Command="{Binding OpenMoreInfoCommand}">
+						<Button.Content>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="More Info" Margin="5"/>
+								<FontIcon Glyph="&#xE169;" Margin="5"/>
+							</StackPanel>
+						</Button.Content>
+					</Button>
+				</StackPanel>
 			</Grid>
 
+			<Grid Grid.Row="1">
+				<SplitView IsPaneOpen="{Binding ShowMoreInfoSplitView,Mode=TwoWay}" DisplayMode="{Binding IsSidePaneOverlay,Converter={StaticResource IsOverlay}}" PanePlacement="Right" OpenPaneLength="550">
+
+					<SplitView.Pane>
+						<pictureviews:PostImageSideView E621Post="{Binding FileItem.Post}" IsOverlayCheck="{Binding IsSidePaneOverlay,Mode=TwoWay}"/>
+					</SplitView.Pane>
+
+					<Grid x:Name="MainGrid" Tapped="MainGrid_Tapped" PointerReleased="MainGrid_PointerReleased" PointerPressed="MainGrid_PointerPressed">
+
+						<Grid Visibility="{Binding IsMedia,Converter={StaticResource BoolToVisibilityRe}}">
+							<Image x:Name="MainImage"/>
+						</Grid>
+
+						<Grid Visibility="{Binding IsMedia,Converter={StaticResource BoolToVisibility}}">
+
+						</Grid>
+
+						<!--<ScrollViewer x:Name="ImagesListManagerScroll" VerticalAlignment="Top" Canvas.ZIndex="999" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" HorizontalScrollMode="Disabled" IsHitTestVisible="False" Margin="160,0,160,0">
+							<pictureviews:ImagesListManager PostsList="{x:Bind PostsList,Mode=OneWay}" CurrentPost="{Binding E621Post}" ItemClickCommand="{Binding ImagesListManagerItemClickCommand}" IsLocked="{x:Bind ControlViewModel.IsImageListLocked,Mode=TwoWay}" Margin="0,0,0,10">
+								<pictureviews:ImagesListManager.RenderTransform>
+									<TranslateTransform x:Name="ImagesListManagerTransform" Y="-150"/>
+								</pictureviews:ImagesListManager.RenderTransform>
+							</pictureviews:ImagesListManager>
+						</ScrollViewer>-->
+
+					</Grid>
+				</SplitView>
+			</Grid>
 
 		</Grid>
 

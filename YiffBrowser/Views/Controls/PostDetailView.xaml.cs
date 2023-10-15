@@ -1,14 +1,11 @@
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Storage.Streams;
-using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -17,6 +14,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Networks;
+using YiffBrowser.Views.Controls.Common;
 
 namespace YiffBrowser.Views.Controls {
 	public sealed partial class PostDetailView : UserControl {
@@ -97,6 +95,14 @@ namespace YiffBrowser.Views.Controls {
 			this.InitializeComponent();
 			ViewModel.OnImagesListManagerItemClick += ViewModel_OnImagesListManagerItemClick;
 			IsShowingImagesListManager = false;
+
+			ControlViewModel.GoNextCommand = new DelegateCommand(ViewModel.Next);
+			ControlViewModel.GoPreviousCommand = new DelegateCommand(ViewModel.Previous);
+			ControlViewModel.ShowImageListChanged += ControlViewModel_ShowImageListChanged;
+		}
+
+		private void ControlViewModel_ShowImageListChanged(PostDetailControlViewModel sender, bool args) {
+			IsShowingImagesListManager = args;
 		}
 
 		private void ViewModel_OnImagesListManagerItemClick(E621Post post) {
@@ -113,7 +119,7 @@ namespace YiffBrowser.Views.Controls {
 			}
 		}
 
-		private void BackButton_Click(object sender, RoutedEventArgs e) {
+		private void PostDetailControlView_BackClick(PostDetailControlView sender, RoutedEventArgs args) {
 			IsShowingImagesListManager = false;
 			PauseVideo();
 			RequestBack?.Invoke();
@@ -127,10 +133,12 @@ namespace YiffBrowser.Views.Controls {
 			MediaDisplayView.Play();
 		}
 
+		public PostDetailControlViewModel ControlViewModel { get; } = new PostDetailControlViewModel();
+
 		public bool IsShowingImagesListManager {
 			get => (bool)GetValue(IsShowingImagesListManagerProperty);
 			set {
-				if (ViewModel.IsImagesListManagerLocked) {
+				if (ControlViewModel.IsImageListLocked) {
 					return;
 				}
 				SetValue(IsShowingImagesListManagerProperty, value);
@@ -159,6 +167,7 @@ namespace YiffBrowser.Views.Controls {
 				view.ImagesListManagerTransformAnimation.To = -150;
 			}
 			view.ImagesListManagerTransformStoryboard.Begin();
+
 		}
 
 		private void MainGrid_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -214,7 +223,6 @@ namespace YiffBrowser.Views.Controls {
 		private bool ableToCopyImage;
 		private bool isSidePaneOverlay = true;
 		private bool inputByPosts;
-		private bool isImagesListManagerLocked;
 		private E621Post[] allPosts;
 		private bool hasVotedUp;
 		private bool hasVotedDown;
@@ -273,11 +281,6 @@ namespace YiffBrowser.Views.Controls {
 			set => SetProperty(ref inputByPosts, value);
 		}
 
-		public bool IsImagesListManagerLocked {
-			get => isImagesListManagerLocked;
-			set => SetProperty(ref isImagesListManagerLocked, value);
-		}
-
 		private void OnPostChanged() {
 			ShowBackgroundImage = true;
 
@@ -296,6 +299,8 @@ namespace YiffBrowser.Views.Controls {
 			IsFavoriteLoading = false;
 
 			AbleToCopyImage = false;
+
+			FileSize = E621Post.File.Size;
 
 			FileType type = E621Post.GetFileType();
 			switch (type) {
@@ -497,9 +502,6 @@ namespace YiffBrowser.Views.Controls {
 		private void ImagesListManagerItemClick(E621Post post) {
 			OnImagesListManagerItemClick?.Invoke(post);
 		}
-
-		public ICommand NextCommand => new DelegateCommand(Next);
-		public ICommand PreviousCommand => new DelegateCommand(Previous);
 
 		public void Next() {
 			int index = Array.IndexOf(AllPosts, E621Post);

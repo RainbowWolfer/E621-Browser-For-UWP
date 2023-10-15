@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Search;
@@ -19,6 +20,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using YiffBrowser.Database;
 using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Locals;
+using YiffBrowser.Services.Networks;
 using YiffBrowser.Views.Controls.LocalViews;
 
 namespace YiffBrowser.Views.Pages.E621 {
@@ -29,6 +31,8 @@ namespace YiffBrowser.Views.Pages.E621 {
 			InitializeComponent();
 			ViewModel.MainGrid = MainGrid;
 			ViewModel.LeftColumnDefinition = LeftColumnDefinition;
+			ViewModel.RootView = RootView;
+			ViewModel.DetailView = DetailView;
 		}
 
 	}
@@ -36,12 +40,15 @@ namespace YiffBrowser.Views.Pages.E621 {
 	internal class LocalPageViewModel : BindableBase {
 		public VariableSizedWrapGrid MainGrid { get; set; }
 		public ColumnDefinition LeftColumnDefinition { get; set; }
+		public Grid RootView { get; set; }
+		public Grid DetailView { get; set; }
 
 		public int ItemWidth { get; } = 380;
 		public int ItemHeight { get; } = 50;
 
 		private FolderItem selectedFolder = null;
 		private bool showFolderSideDock = true;
+		private FileItem selectedFile;
 
 		public ObservableCollection<FolderItem> Folders { get; } = [];
 		public ObservableCollection<FileItem> Files { get; } = [];
@@ -51,6 +58,11 @@ namespace YiffBrowser.Views.Pages.E621 {
 			set => SetProperty(ref selectedFolder, value, () => {
 				LoadFolder(value);
 			});
+		}
+
+		public FileItem SelectedFile {
+			get => selectedFile;
+			set => SetProperty(ref selectedFile, value);
 		}
 
 		public bool ShowFolderSideDock {
@@ -87,6 +99,7 @@ namespace YiffBrowser.Views.Pages.E621 {
 						FileItem = item,
 					};
 					item.ViewItem = image;
+					item.ClickCommand = new DelegateCommand<FileItem>(ItemClick);
 					MainGrid.Children.Add(image);
 				}
 			}
@@ -95,6 +108,12 @@ namespace YiffBrowser.Views.Pages.E621 {
 
 				}
 			}
+		}
+
+		private void ItemClick(FileItem item) {
+			RootView.Visibility = Visibility.Collapsed;
+			DetailView.Visibility = Visibility.Visible;
+			SelectedFile = item;
 		}
 
 		public ICommand RefreshCommand => new DelegateCommand(Initialize);
@@ -137,11 +156,14 @@ namespace YiffBrowser.Views.Pages.E621 {
 	}
 
 	public class FileItem : BindableBase {
+		public event TypedEventHandler<FileItem, E621Post> PostChanged;
+
 		private StorageItemThumbnail thumbnail;
 		private FileItemImageView viewItem;
 		private E621Post post;
 		private bool isLoadingPost;
 		private string typeHint;
+		private ICommand clickCommand;
 
 		public StorageFile File { get; }
 		public FileItemImageView ViewItem {
@@ -160,7 +182,9 @@ namespace YiffBrowser.Views.Pages.E621 {
 
 		public E621Post Post {
 			get => post;
-			set => SetProperty(ref post, value);
+			set => SetProperty(ref post, value, () => {
+				PostChanged?.Invoke(this, value);
+			});
 		}
 
 		public bool IsLoadingPost {
@@ -171,6 +195,11 @@ namespace YiffBrowser.Views.Pages.E621 {
 		public string TypeHint {
 			get => typeHint;
 			set => SetProperty(ref typeHint, value);
+		}
+
+		public ICommand ClickCommand {
+			get => clickCommand;
+			set => SetProperty(ref clickCommand, value);
 		}
 
 		//private BitmapImage image;
@@ -209,22 +238,14 @@ namespace YiffBrowser.Views.Pages.E621 {
 			if (int.TryParse(File.DisplayName, out int id)) {
 				IsLoadingPost = true;
 				Post = await E621DownloadDataAccess.GetPostInfo(id);
+				if (Post == null) {
+					Post = await E621API.GetPostAsync(id);
+					//write to database
+				}
 				IsLoadingPost = false;
 			}
 			Thumbnail = await File.GetThumbnailAsync(ThumbnailMode.SingleItem);
 
-			//try {
-			//	using IRandomAccessStream fileStream = await File.OpenAsync(FileAccessMode.Read);
-			//	BitmapImage bitmapImage = new() {
-			//		DecodePixelHeight = 200,
-			//		DecodePixelWidth = 200,
-			//	};
-
-			//	await bitmapImage.SetSourceAsync(fileStream);
-			//	Image = bitmapImage;
-			//} catch (Exception ex) {
-			//	Debug.WriteLine(ex);
-			//}
 			LoadImage();
 		}
 	}

@@ -29,7 +29,7 @@ namespace YiffBrowser.Models.E621 {
 		public bool can_approve_posts;
 		public bool can_upload_free;
 		public string level_string;
-		public string avatar_id;
+		public int? avatar_id;
 		public bool show_avatars;
 		public bool blacklist_avatars;
 		public bool blacklist_users;

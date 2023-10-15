@@ -145,11 +145,11 @@ namespace YiffBrowser.Views.Controls.Common {
 		public ICommand OpenInBrowserCommand => new DelegateCommand(OpenInBrowser);
 
 		private void CopyURL() {
-			@$"https:/{E621API.GetHost()}/posts/{Post.ID}".CopyToClipboard();
+			@$"https://{E621API.GetHost()}/posts/{Post.ID}".CopyToClipboard();
 		}
 
 		private void OpenInBrowser() {
-			@$"https:/{E621API.GetHost()}/posts/{Post.ID}".OpenInBrowser();
+			@$"https://{E621API.GetHost()}/posts/{Post.ID}".OpenInBrowser();
 		}
 
 	}

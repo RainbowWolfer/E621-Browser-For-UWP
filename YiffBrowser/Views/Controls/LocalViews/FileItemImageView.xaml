@@ -11,7 +11,7 @@
     d:DesignWidth="250"
     Margin="5">
 
-	<Button DataContext="{x:Bind FileItem,Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" CornerRadius="10" Style="{StaticResource EmptyButtonStyle}">
+	<Button DataContext="{x:Bind FileItem,Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" CornerRadius="10" Style="{StaticResource EmptyButtonStyle}" Command="{Binding ClickCommand}" CommandParameter="{x:Bind FileItem,Mode=OneWay}">
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="*"/>

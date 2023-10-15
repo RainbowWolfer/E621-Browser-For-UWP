@@ -250,7 +250,7 @@ namespace YiffBrowser.Models.E621 {
 
 	public class Relationships {
 		[JsonProperty("parent_id")]
-		public string ParentId { get; set; }
+		public int? ParentId { get; set; }
 
 		[JsonProperty("has_children")]
 		public bool HasChildren { get; set; }
@@ -259,7 +259,7 @@ namespace YiffBrowser.Models.E621 {
 		public bool HasActiveChildren { get; set; }
 
 		[JsonProperty("children")]
-		public List<string> Children { get; set; }
+		public List<int?> Children { get; set; }
 	}
 
 	public enum E621Rating {

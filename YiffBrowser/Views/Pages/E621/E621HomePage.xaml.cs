@@ -72,7 +72,7 @@ namespace YiffBrowser.Views.Pages.E621 {
 			SearchView searchView = new(dialog, pretext);
 			dialog.Content = searchView;
 
-			await dialog.ShowAsync();
+			await dialog.ShowAsyncSafe();
 
 			if (!searchView.IsConfirmDialog()) {
 				return;
