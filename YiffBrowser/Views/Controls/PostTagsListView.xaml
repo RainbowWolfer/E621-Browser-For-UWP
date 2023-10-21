@@ -109,6 +109,11 @@
 							<GroupStyle.HeaderTemplate>
 								<DataTemplate>
 									<Border Background="Transparent" CornerRadius="5" Margin="10,0" Padding="7,0,7,2">
+										<Border.ContextFlyout>
+											<MenuFlyout>
+												<MenuFlyoutItem Icon="Copy" Text="Copy All Tags" Command="{Binding}" Click="CopyAllTagsItem_Click"/>
+											</MenuFlyout>
+										</Border.ContextFlyout>
 
 										<i:Interaction.Behaviors>
 											<core:EventTriggerBehavior EventName="PointerEntered">
@@ -123,7 +128,7 @@
 											</core:EventTriggerBehavior>
 										</i:Interaction.Behaviors>
 
-										<TextBlock Text="{Binding Key}" FontWeight="Bold"/>
+										<TextBlock Text="{Binding}" FontWeight="Bold"/>
 									</Border>
 								</DataTemplate>
 							</GroupStyle.HeaderTemplate>

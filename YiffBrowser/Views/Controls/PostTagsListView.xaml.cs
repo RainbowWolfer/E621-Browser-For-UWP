@@ -15,7 +15,7 @@ using YiffBrowser.Views.Pages.E621;
 
 namespace YiffBrowser.Views.Controls {
 	public sealed partial class PostTagsListView : UserControl {
-		public readonly ObservableCollection<GroupTagListWithColor> tags = new();
+		public readonly ObservableCollection<GroupTagListWithColor> tags = [];
 
 		public Tags Tags {
 			get => (Tags)GetValue(TagsProperty);
@@ -26,7 +26,7 @@ namespace YiffBrowser.Views.Controls {
 			nameof(Tags),
 			typeof(Tags),
 			typeof(PostTagsListView),
-			new PropertyMetadata(Array.Empty<string>(), OnTagsChanged)
+			new PropertyMetadata(new Tags(), OnTagsChanged)
 		);
 
 		private static void OnTagsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -85,8 +85,8 @@ namespace YiffBrowser.Views.Controls {
 		}
 
 		public List<GroupTag> ToGroupTag(List<string> tags) {
-			List<GroupTag> result = new();
-			foreach (string tag in tags ?? new List<string>()) {
+			List<GroupTag> result = [];
+			foreach (string tag in tags ?? []) {
 				GroupTag item = new(tag) {
 					ShowAddMinusButton = ShowAddMinusButton
 				};
@@ -109,7 +109,7 @@ namespace YiffBrowser.Views.Controls {
 		private async void Item_InfoAction(string tag) {
 			if (ShowDialogTagInfo) {
 				await new TagsInfoView() {
-					Tags = new string[] { tag },
+					Tags = [tag],
 				}.CreateContentDialog(new ContentDialogParameters() {
 					CloseText = "Back",
 				}).ShowAsyncSafe();
@@ -171,6 +171,11 @@ namespace YiffBrowser.Views.Controls {
 			UpdateTagsGroup(tags);
 		}
 
+		private void CopyAllTagsItem_Click(object sender, RoutedEventArgs e) {
+			List<string> tags = Tags.GetAllTags();
+			string content = string.Join(", ", tags);
+			content.CopyToClipboard();
+		}
 	}
 
 	public class GroupTag : BindableBase {

@@ -78,9 +78,13 @@ namespace YiffBrowser.Views.Controls.TagsInfoViews {
 			TagName = tagName;
 			IsLoading = true;
 			Tag = await E621API.GetE621TagAsync(tagName);
-			CategoryBrush = new SolidColorBrush(E621Tag.GetCategoryColor(Tag.Category));
-			Wiki = await E621API.GetE621WikiAsync(tagName);
-			Body = Wiki?.Body.NotBlankCheck() ?? "No Wiki Found";
+			if (Tag == null) {
+				Body = "Unknown Tag";
+			} else {
+				CategoryBrush = new SolidColorBrush(E621Tag.GetCategoryColor(Tag.Category));
+				Wiki = await E621API.GetE621WikiAsync(tagName);
+				Body = Wiki?.Body.NotBlankCheck() ?? "No Wiki Found";
+			}
 			IsLoading = false;
 		}
 	}

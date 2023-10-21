@@ -50,6 +50,8 @@ namespace YiffBrowser.Views.Pages.E621 {
 		private bool showFolderSideDock = true;
 		private FileItem selectedFile;
 
+		public FileItemDetailViewModel DetailViewModel { get; } = new FileItemDetailViewModel();
+
 		public ObservableCollection<FolderItem> Folders { get; } = [];
 		public ObservableCollection<FileItem> Files { get; } = [];
 
@@ -62,7 +64,9 @@ namespace YiffBrowser.Views.Pages.E621 {
 
 		public FileItem SelectedFile {
 			get => selectedFile;
-			set => SetProperty(ref selectedFile, value);
+			set => SetProperty(ref selectedFile, value, () => {
+				DetailViewModel.FileItem = value;
+			});
 		}
 
 		public bool ShowFolderSideDock {
@@ -90,6 +94,14 @@ namespace YiffBrowser.Views.Pages.E621 {
 			if (Files != null) {
 				Files.CollectionChanged += Files_CollectionChanged;
 			}
+
+			DetailViewModel.ControlViewModel.BackCommand = new DelegateCommand(DetailBack);
+		}
+
+		private void DetailBack() {
+			RootView.Visibility = Visibility.Visible;
+			DetailView.Visibility = Visibility.Collapsed;
+			SelectedFile = null;
 		}
 
 		private void Files_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {

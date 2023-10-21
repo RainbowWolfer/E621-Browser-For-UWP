@@ -106,7 +106,7 @@
 		</Grid>
 
 		<Grid x:Name="DetailView" Visibility="Collapsed">
-			<localviews:FileItemDetailView FileItem="{Binding SelectedFile}"/>
+			<localviews:FileItemDetailView ViewModel="{Binding DetailViewModel}"/>
 		</Grid>
 
 	</Grid>

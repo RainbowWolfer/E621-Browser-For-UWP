@@ -200,7 +200,7 @@ namespace YiffBrowser.Models.E621 {
 		public List<string> Meta { get; set; }
 
 		public List<string> GetAllTags() {
-			List<string> result = new();
+			List<string> result = [];
 			General?.ForEach(result.Add);
 			Species?.ForEach(result.Add);
 			Director?.ForEach(result.Add);
@@ -219,15 +219,15 @@ namespace YiffBrowser.Models.E621 {
 			}
 
 			Tags clone = new() {
-				General = General.Where(x => x.SearchFor(searchKey)).ToList(),
-				Species = Species.Where(x => x.SearchFor(searchKey)).ToList(),
-				Director = Director.Where(x => x.SearchFor(searchKey)).ToList(),
-				Character = Character.Where(x => x.SearchFor(searchKey)).ToList(),
-				Copyright = Copyright.Where(x => x.SearchFor(searchKey)).ToList(),
-				Artist = Artist.Where(x => x.SearchFor(searchKey)).ToList(),
-				Invalid = Invalid.Where(x => x.SearchFor(searchKey)).ToList(),
-				Lore = Lore.Where(x => x.SearchFor(searchKey)).ToList(),
-				Meta = Meta.Where(x => x.SearchFor(searchKey)).ToList(),
+				General = General?.Where(x => x.SearchFor(searchKey)).ToList(),
+				Species = Species?.Where(x => x.SearchFor(searchKey)).ToList(),
+				Director = Director?.Where(x => x.SearchFor(searchKey)).ToList(),
+				Character = Character?.Where(x => x.SearchFor(searchKey)).ToList(),
+				Copyright = Copyright?.Where(x => x.SearchFor(searchKey)).ToList(),
+				Artist = Artist?.Where(x => x.SearchFor(searchKey)).ToList(),
+				Invalid = Invalid?.Where(x => x.SearchFor(searchKey)).ToList(),
+				Lore = Lore?.Where(x => x.SearchFor(searchKey)).ToList(),
+				Meta = Meta?.Where(x => x.SearchFor(searchKey)).ToList(),
 			};
 
 			return clone;

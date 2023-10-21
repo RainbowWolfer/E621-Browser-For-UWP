@@ -21,30 +21,33 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
+using YiffBrowser.Views.Controls.Common;
 using YiffBrowser.Views.Pages.E621;
 
 namespace YiffBrowser.Views.Controls.LocalViews {
 	public sealed partial class FileItemDetailView : UserControl {
 
-
-
-		public FileItem FileItem {
-			get => (FileItem)GetValue(FileItemProperty);
-			set => SetValue(FileItemProperty, value);
+		public FileItemDetailViewModel ViewModel {
+			get => (FileItemDetailViewModel)GetValue(ViewModelProperty);
+			set => SetValue(ViewModelProperty, value);
 		}
 
-		public static readonly DependencyProperty FileItemProperty = DependencyProperty.Register(
-			nameof(FileItem),
-			typeof(FileItem),
+		public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
+			nameof(ViewModel),
+			typeof(FileItemDetailViewModel),
 			typeof(FileItemDetailView),
-			new PropertyMetadata(null)
+			new PropertyMetadata(new FileItemDetailViewModel(), OnViewModelChanged)
 		);
 
-
+		private static void OnViewModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+			if (d is not FileItemDetailView view) {
+				return;
+			}
+			view.ViewModel.MainImage = view.MainImage;
+		}
 
 		public FileItemDetailView() {
 			InitializeComponent();
-			ViewModel.MainImage = MainImage;
 		}
 
 		private Point startPosition;
@@ -66,7 +69,7 @@ namespace YiffBrowser.Views.Controls.LocalViews {
 		}
 	}
 
-	internal class FileItemDetailViewModel : BindableBase {
+	public class FileItemDetailViewModel : BindableBase {
 		public Image MainImage { get; set; }
 
 		private FileItem fileItem;
@@ -86,6 +89,8 @@ namespace YiffBrowser.Views.Controls.LocalViews {
 				}
 			}
 		}
+
+		public PostDetailControlViewModel ControlViewModel { get; } = new PostDetailControlViewModel();
 
 		public bool IsMedia {
 			get => isMedia;
@@ -116,7 +121,6 @@ namespace YiffBrowser.Views.Controls.LocalViews {
 			}
 
 			IsMedia = FileItem.File.FileType == ".webm" || FileItem.File.FileType == ".mp4";
-
 
 			try {
 				using IRandomAccessStream fileStream = await FileItem.File.OpenAsync(FileAccessMode.Read);

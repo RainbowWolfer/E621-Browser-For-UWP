@@ -10,7 +10,7 @@ using YiffBrowser.Helpers;
 
 namespace YiffBrowser.Services.Locals {
 	public class LocalSettings {
-		public HostType HostType { get; set; } = HostType.E6AI;
+		public HostType HostType { get; set; } = HostType.E621;
 		public int E621PageLimitCount { get; set; } = 75;
 
 

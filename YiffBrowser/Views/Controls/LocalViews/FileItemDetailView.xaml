@@ -32,10 +32,7 @@
 
 	</UserControl.Resources>
 
-	<Grid>
-		<Grid.DataContext>
-			<local:FileItemDetailViewModel x:Name="ViewModel" FileItem="{x:Bind FileItem,Mode=OneWay}"/>
-		</Grid.DataContext>
+	<Grid DataContext="{x:Bind ViewModel,Mode=TwoWay}">
 
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="300"/>
@@ -49,7 +46,7 @@
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 
-			<common:PostDetailControlView/>
+			<common:PostDetailControlView ViewModel="{Binding ControlViewModel}"/>
 
 			<controls:PostTagsListView Grid.Row="2" Tags="{Binding FileItem.Post.Tags}" ShowAddMinusButton="False" ShowDialogTagInfo="False"/>
 		</Grid>
