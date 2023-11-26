@@ -1,7 +1,6 @@
 ﻿using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
-using YiffBrowser.Database;
 using YiffBrowser.Models.E621;
 
 namespace YiffBrowser {
@@ -27,7 +26,7 @@ namespace YiffBrowser {
 		#endregion
 
 		public static void Initialize() {
-			
+
 		}
 
 		//todo

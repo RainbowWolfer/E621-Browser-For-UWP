@@ -1,7 +1,6 @@
-﻿using Microsoft.UI.Xaml;
-using Windows.UI.Xaml.Data;
-using System;
+﻿using System;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Data;
 
 namespace YiffBrowser.Converters {
 	public class BoolToVisibilityReConverter : IValueConverter {

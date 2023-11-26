@@ -1,13 +1,8 @@
-﻿using Microsoft.UI.Xaml;
-using Windows.UI.Xaml.Data;
-using System;
+﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using YiffBrowser.Helpers;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Data;
+using YiffBrowser.Helpers;
 
 namespace YiffBrowser.Converters {
 	public class ArrayEmptyToBoolConverter : IValueConverter {

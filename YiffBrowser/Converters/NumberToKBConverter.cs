@@ -1,9 +1,5 @@
-﻿using Windows.UI.Xaml.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Windows.UI.Xaml.Data;
 using YiffBrowser.Helpers;
 
 namespace YiffBrowser.Converters {

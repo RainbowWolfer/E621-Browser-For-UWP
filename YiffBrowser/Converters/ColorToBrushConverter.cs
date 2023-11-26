@@ -1,6 +1,6 @@
-﻿using Windows.UI.Xaml.Data;
-using System;
+﻿using System;
 using Windows.UI;
+using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 
 namespace YiffBrowser.Converters {

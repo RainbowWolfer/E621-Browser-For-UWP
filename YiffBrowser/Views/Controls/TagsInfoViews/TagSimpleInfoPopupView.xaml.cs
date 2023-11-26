@@ -1,7 +1,6 @@
 ﻿using ColorCode.UWP.Common;
 using Prism.Mvvm;
 using System.Threading.Tasks;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;

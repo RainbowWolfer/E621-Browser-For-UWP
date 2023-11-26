@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;

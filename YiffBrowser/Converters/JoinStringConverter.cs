@@ -1,6 +1,6 @@
-﻿using Windows.UI.Xaml.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Windows.UI.Xaml.Data;
 
 namespace YiffBrowser.Converters {
 	public class JoinStringConverter : IValueConverter {

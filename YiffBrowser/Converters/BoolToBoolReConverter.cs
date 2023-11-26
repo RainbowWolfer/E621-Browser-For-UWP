@@ -1,5 +1,5 @@
-﻿using Windows.UI.Xaml.Data;
-using System;
+﻿using System;
+using Windows.UI.Xaml.Data;
 
 namespace YiffBrowser.Converters {
 	public class BoolToBoolReConverter : IValueConverter {

@@ -1,12 +1,9 @@
 ﻿using Prism.Mvvm;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Input;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using YiffBrowser.Helpers;
 using YiffBrowser.Interfaces;
 using YiffBrowser.Models.E621;
 

@@ -1,9 +1,8 @@
-﻿using Microsoft.UI.Xaml;
-using Windows.UI.Xaml.Data;
-using System;
+﻿using System;
 using System.Collections;
-using YiffBrowser.Helpers;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Data;
+using YiffBrowser.Helpers;
 
 namespace YiffBrowser.Converters {
 	public class ArrayEmptyToVisibilityConverter : IValueConverter {

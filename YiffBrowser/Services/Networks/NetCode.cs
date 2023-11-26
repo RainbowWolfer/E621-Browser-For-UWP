@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -209,7 +208,7 @@ namespace YiffBrowser.Services.Networks {
 				}
 			}
 			string encoded = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(username + ":" + api));
-			//client.DefaultRequestHeaders.Add("Authorization", "Basic " + encoded);
+			client.DefaultRequestHeaders.Add("Authorization", "Basic " + encoded);
 		}
 	}
 	public class HttpResult<T> {

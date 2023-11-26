@@ -1,8 +1,8 @@
-﻿using Windows.UI.Xaml.Data;
-using System;
+﻿using System;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Media;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
-using Windows.UI.Xaml.Media;
 
 namespace YiffBrowser.Converters {
 	public class E621RatingToBrushConverter : IValueConverter {

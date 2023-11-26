@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
 using System;
 using System.Linq;
 using System.Numerics;

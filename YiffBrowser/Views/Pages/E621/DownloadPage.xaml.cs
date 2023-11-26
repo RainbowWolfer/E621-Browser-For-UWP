@@ -1,6 +1,5 @@
 using Prism.Commands;
 using Prism.Mvvm;
-using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;

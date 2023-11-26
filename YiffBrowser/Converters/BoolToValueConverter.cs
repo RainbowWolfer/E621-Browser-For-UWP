@@ -1,11 +1,8 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Media;
-using System;
-using Windows.UI.Xaml.Media;
+﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Media;
 
 namespace YiffBrowser.Converters {
 	public abstract class BoolToValueConverter<T> : IValueConverter {

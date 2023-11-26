@@ -256,8 +256,8 @@ namespace YiffBrowser.Views.Controls.SearchViews {
 					resultPostID = item;
 					return PostSearch.PostID;
 				} else if (item.StartsWith($"https://{E621API.GetHost()}/posts/") ||
-					item.StartsWith($"{E621API.GetHost()}/posts/")
-				) {
+					  item.StartsWith($"{E621API.GetHost()}/posts/")
+				  ) {
 					string endPostID = "";
 					int startIndex = item.LastIndexOf('/');
 					int endIndex = item.LastIndexOf('?');

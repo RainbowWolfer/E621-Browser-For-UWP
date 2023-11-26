@@ -1,7 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using System;
 using Windows.UI.Xaml.Data;
-using System;
-using System.Globalization;
 
 namespace YiffBrowser.Converters {
 	public class DurationConverter : IValueConverter {

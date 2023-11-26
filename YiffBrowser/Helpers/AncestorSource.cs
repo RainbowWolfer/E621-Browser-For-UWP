@@ -20,10 +20,11 @@ namespace YiffBrowser.Helpers {
 
 		private static void OnAncestorTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
 			FrameworkElement target = (FrameworkElement)d;
-			if (target.IsLoaded)
+			if (target.IsLoaded) {
 				SetDataContext(target);
-			else
+			} else {
 				target.Loaded += OnTargetLoaded;
+			}
 		}
 
 		private static void OnTargetLoaded(object sender, RoutedEventArgs e) {
@@ -34,17 +35,20 @@ namespace YiffBrowser.Helpers {
 
 		private static void SetDataContext(FrameworkElement target) {
 			Type ancestorType = GetAncestorType(target);
-			if (ancestorType != null)
+			if (ancestorType != null) {
 				target.DataContext = FindParent(target, ancestorType);
+			}
 		}
 
 		private static object FindParent(DependencyObject dependencyObject, Type ancestorType) {
 			DependencyObject parent = VisualTreeHelper.GetParent(dependencyObject);
-			if (parent == null)
+			if (parent == null) {
 				return null;
+			}
 
-			if (ancestorType.IsAssignableFrom(parent.GetType()))
+			if (ancestorType.IsAssignableFrom(parent.GetType())) {
 				return parent;
+			}
 
 			return FindParent(parent, ancestorType);
 		}

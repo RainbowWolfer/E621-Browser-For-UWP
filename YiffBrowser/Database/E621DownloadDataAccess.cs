@@ -31,7 +31,7 @@ namespace YiffBrowser.Database {
 			}
 		}
 
-		public async static ValueTask<StorageFile> CreateDatabase(IStorageFolder folder) {
+		public static async ValueTask<StorageFile> CreateDatabase(IStorageFolder folder) {
 			StorageFile file = await folder.CreateFileAsync(DatabaseFileName, CreationCollisionOption.OpenIfExists);
 
 			using SqliteConnection connection = await OpenConnection(file.Path);
@@ -40,9 +40,9 @@ namespace YiffBrowser.Database {
 				"CREATE TABLE IF NOT EXISTS " +
 				"PostsInfo(" +
 					"PostID INTEGER PRIMARY KEY, " +
-					"PostJson TEXT NULL," + //full info
-					"Tags TEXT NULL," + //partial info for quick search
-					"Rating INT NULL" +
+					"PostJson TEXT NULL, " + //full info
+					"Tags TEXT NULL, " + //partial info for quick search
+					"Rating INT NULL, " +
 					"Score INT NULL" +
 				")";
 
@@ -98,6 +98,8 @@ namespace YiffBrowser.Database {
 			insertCommand.Parameters.AddWithValue("@SCORE", score);
 
 			await insertCommand.ExecuteReaderAsync();
+
+			Debug.WriteLine(post);
 		}
 
 		public static async ValueTask<E621Post> GetPostInfo(int postID) {

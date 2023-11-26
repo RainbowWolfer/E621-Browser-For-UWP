@@ -1,8 +1,6 @@
 using Prism.Mvvm;
 using System;
 using System.Windows.Input;
-using Windows.System;
-using Windows.UI.Core;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
