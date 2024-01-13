@@ -7,7 +7,9 @@
 	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
 	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
 	xmlns:i="using:Microsoft.Xaml.Interactivity"
-	xmlns:local="using:YiffBrowser.Views.Pages.E621" xmlns:localviews="using:YiffBrowser.Views.Controls.LocalViews"
+	xmlns:local="using:YiffBrowser.Views.Pages.E621"
+	xmlns:localviews="using:YiffBrowser.Views.Controls.LocalViews"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
 	mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     NavigationCacheMode="Disabled" 
@@ -43,30 +45,38 @@
 					</StackPanel>
 				</Border>
 
-				<AutoSuggestBox Grid.Row="1" Margin="5" QueryIcon="Find" PlaceholderText="Search Folder Name"/>
+				<Grid Grid.Row="1" Margin="5">
+					<AutoSuggestBox QueryIcon="Find" PlaceholderText="Search Folder Name"/>
+				</Grid>
 
-				<ListView ItemsSource="{Binding Folders}" Margin="5" Grid.Row="2" SelectedItem="{Binding SelectedFolder,Mode=TwoWay}" d:ItemsSource="1 2 3 ">
-					<ListView.ItemTemplate>
-						<DataTemplate x:DataType="local:FolderItem">
-							<Grid>
-								<StackPanel Orientation="Horizontal">
-									<FontIcon Glyph="&#xE8B7;" Foreground="Yellow">
-										<i:Interaction.Behaviors>
-											<core:DataTriggerBehavior Binding="{Binding IsRoot}" Value="False">
-												<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE8B7;"/>
-											</core:DataTriggerBehavior>
-											<core:DataTriggerBehavior Binding="{Binding IsRoot}" Value="True">
-												<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE10F;"/>
-											</core:DataTriggerBehavior>
-										</i:Interaction.Behaviors>
-									</FontIcon>
-									<!--<Image Source="{Binding Thumbnail,Converter={StaticResource ThumbnailToImageConverter}}"/>-->
-									<TextBlock Text="{Binding Folder.Name}" Margin="5,0,0,0"/>
-								</StackPanel>
-							</Grid>
-						</DataTemplate>
-					</ListView.ItemTemplate>
-				</ListView>
+				<Grid Grid.Row="2" Margin="5" Visibility="{Binding IsLoadingFolders,Converter={StaticResource BoolToVisibility}}">
+					<muxc:ProgressBar IsIndeterminate="True" VerticalAlignment="Top"/>
+				</Grid>
+
+				<Grid Margin="5" Grid.Row="2" Visibility="{Binding IsLoadingFolders,Converter={StaticResource BoolToVisibilityRe}}">
+					<ListView ItemsSource="{Binding Folders}" SelectedItem="{Binding SelectedFolder,Mode=TwoWay}" d:ItemsSource="1 2 3 ">
+						<ListView.ItemTemplate>
+							<DataTemplate x:DataType="local:FolderItem">
+								<Grid>
+									<StackPanel Orientation="Horizontal">
+										<FontIcon Glyph="&#xE8B7;" Foreground="Yellow">
+											<i:Interaction.Behaviors>
+												<core:DataTriggerBehavior Binding="{Binding IsRoot}" Value="False">
+													<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE8B7;"/>
+												</core:DataTriggerBehavior>
+												<core:DataTriggerBehavior Binding="{Binding IsRoot}" Value="True">
+													<core:ChangePropertyAction PropertyName="Glyph" Value="&#xE10F;"/>
+												</core:DataTriggerBehavior>
+											</i:Interaction.Behaviors>
+										</FontIcon>
+										<!--<Image Source="{Binding Thumbnail,Converter={StaticResource ThumbnailToImageConverter}}"/>-->
+										<TextBlock Text="{Binding Folder.Name}" Margin="5,0,0,0"/>
+									</StackPanel>
+								</Grid>
+							</DataTemplate>
+						</ListView.ItemTemplate>
+					</ListView>
+				</Grid>
 			</Grid>
 
 			<Grid Grid.Column="1">
@@ -95,7 +105,7 @@
 				</Grid>
 
 				<Grid Grid.Row="1">
-					<ScrollViewer x:Name="MainScrollViewer" VerticalScrollMode="Auto" Padding="0,0,10,0" Margin="5">
+					<ScrollViewer x:Name="MainScrollViewer" VerticalScrollMode="Auto" Padding="0,0,10,0" Margin="5" ViewChanged="MainScrollViewer_ViewChanged">
 						<VariableSizedWrapGrid x:Name="MainGrid" Orientation="Horizontal" ItemHeight="{Binding ItemHeight}" ItemWidth="{Binding ItemWidth}"/>
 					</ScrollViewer>
 				</Grid>

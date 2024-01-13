@@ -9,9 +9,10 @@
     mc:Ignorable="d"
     d:DesignHeight="200"
     d:DesignWidth="250"
-    Margin="5">
+    Margin="5"
+	x:Name="Root">
 
-	<Button DataContext="{x:Bind FileItem,Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" CornerRadius="10" Style="{StaticResource EmptyButtonStyle}" Command="{Binding ClickCommand}" CommandParameter="{x:Bind FileItem,Mode=OneWay}">
+	<Button DataContext="{Binding ElementName=Root,Path=FileItem}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" CornerRadius="10" Style="{StaticResource EmptyButtonStyle}" Command="{Binding ClickCommand}" CommandParameter="{x:Bind FileItem,Mode=OneWay}">
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="*"/>

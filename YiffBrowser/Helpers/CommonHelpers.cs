@@ -18,6 +18,12 @@ namespace YiffBrowser.Helpers {
 			return source.ToLower().Trim().Contains(target.ToLower().Trim());
 		}
 
+		public static void RemoveAll(this IList list) {
+			while (list.Count > 0) {
+				list.RemoveAt(list.Count - 1);
+			}
+		}
+
 		public static int Count(this IEnumerable ie) {
 			if (ie == null) {
 				return 0;

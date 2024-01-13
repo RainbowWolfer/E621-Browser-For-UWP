@@ -13,8 +13,10 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
 using YiffBrowser.Helpers;
 using YiffBrowser.Models.E621;
+using YiffBrowser.Services.Downloads;
 using YiffBrowser.Services.Networks;
 using YiffBrowser.Views.Controls.Common;
+using YiffBrowser.Views.Controls.PostsView;
 
 namespace YiffBrowser.Views.Controls {
 	public sealed partial class PostDetailView : UserControl {
@@ -535,8 +537,25 @@ namespace YiffBrowser.Views.Controls {
 
 		public ICommand DownloadCommand => new DelegateCommand(Download);
 
-		private void Download() {
+		private async void Download() {
+			if (!await PostsViewerViewModel.CheckDownloadFolder()) {
+				return;
+			}
 
+			DownloadView view = new(E621Post);
+			ContentDialogResult dialogResult = await view.CreateContentDialog(DownloadView.parametersForDownloadDialog).ShowAsyncSafe();
+
+			if (dialogResult != ContentDialogResult.Primary) {
+				return;
+			}
+
+			DownloadViewResult result = view.GetResult();
+			if (result == null) {
+				return;
+			}
+			string folderName = result.FolderName;
+
+			DownloadManager.RegisterDownload(E621Post, folderName);
 		}
 	}
 }

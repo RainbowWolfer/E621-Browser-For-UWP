@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,6 +33,9 @@ namespace YiffBrowser.Views.Pages.E621 {
 			ViewModel.DetailView = DetailView;
 		}
 
+		private void MainScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e) {
+			Debug.WriteLine($"{MainScrollViewer.VerticalOffset} / {MainScrollViewer.ScrollableHeight}");
+		}
 	}
 
 	internal class LocalPageViewModel : BindableBase {
@@ -46,6 +50,7 @@ namespace YiffBrowser.Views.Pages.E621 {
 		private FolderItem selectedFolder = null;
 		private bool showFolderSideDock = true;
 		private FileItem selectedFile;
+		private bool isLoadingFolders;
 
 		public FileItemDetailViewModel DetailViewModel { get; } = new FileItemDetailViewModel();
 
@@ -64,6 +69,11 @@ namespace YiffBrowser.Views.Pages.E621 {
 			set => SetProperty(ref selectedFile, value, () => {
 				DetailViewModel.FileItem = value;
 			});
+		}
+
+		public bool IsLoadingFolders {
+			get => isLoadingFolders;
+			set => SetProperty(ref isLoadingFolders, value);
 		}
 
 		public bool ShowFolderSideDock {
@@ -119,6 +129,14 @@ namespace YiffBrowser.Views.Pages.E621 {
 			}
 		}
 
+		private void ClearAllFiles() {
+			foreach (FileItem item in Files) {
+
+			}
+			MainGrid.Children.Clear();
+			Files.Clear();
+		}
+
 		private void ItemClick(FileItem item) {
 			RootView.Visibility = Visibility.Collapsed;
 			DetailView.Visibility = Visibility.Visible;
@@ -132,19 +150,24 @@ namespace YiffBrowser.Views.Pages.E621 {
 				return;
 			}
 
+			IsLoadingFolders = true;
+
 			Folders.Clear();
 			Folders.Add(new FolderItem(Local.DownloadFolder));
 			IReadOnlyList<StorageFolder> folders = await Local.DownloadFolder.GetFoldersAsync(CommonFolderQuery.DefaultQuery);
 			foreach (StorageFolder folder in folders) {
 				Folders.Add(new FolderItem(folder));
 			}
+
+			IsLoadingFolders = false;
 		}
 
 		public async void LoadFolder(FolderItem folder) {
-			MainGrid.Children.Clear();
+			ClearAllFiles();
+
 			IReadOnlyList<StorageFile> files = await folder.Folder.GetFilesAsync(CommonFileQuery.DefaultQuery);
 
-			Files.Clear();
+			int index = 0;
 			foreach (StorageFile file in files) {
 				switch (file.FileType) {
 					case ".mp4":
@@ -159,6 +182,9 @@ namespace YiffBrowser.Views.Pages.E621 {
 				FileItem item = new(file);
 				Files.Add(item);
 				await item.Load();
+				if (index++ < 100) {
+					break;
+				}
 			}
 		}
 

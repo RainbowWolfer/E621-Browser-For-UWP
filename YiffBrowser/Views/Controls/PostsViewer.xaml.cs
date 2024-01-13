@@ -636,7 +636,7 @@ namespace YiffBrowser.Views.Controls {
 
 		}
 
-		private async Task<bool> CheckDownloadFolder() {
+		public static async Task<bool> CheckDownloadFolder() {
 			if (Local.DownloadFolder == null) {
 				ContentDialogResult result = await "No download folder selected. Please go to Settings Page to select a folder for download.".CreateContentDialog(new ContentDialogParameters() {
 					Title = "Unable to download now",
