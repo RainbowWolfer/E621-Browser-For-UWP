@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.E621;
+﻿using BaseFramework;
+using E621Downloader.Models.E621;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Utilities;
 using E621Downloader.Pages;
@@ -142,16 +143,19 @@ namespace E621Downloader {
 			}
 
 			if (e.PrelaunchActivated == false) {
+
+				await NewVersionService.ReadNewVersionModel();
+
 				if (rootFrame.Content == null) {
 					bool didAppCrash = await Crashes.HasCrashedInLastSessionAsync();
 					if (didAppCrash) {
 						rootFrame.Navigate(typeof(DefaultPage), e.Arguments);
 					} else {
-#if Release
-#else
-#endif
-						rootFrame.Navigate(typeof(YiffHomePage), e.Arguments);
-						//rootFrame.Navigate(typeof(MainPage), e.Arguments);
+						if (NewVersionService.IsCurrentInNewVersion()) {
+							rootFrame.Navigate(typeof(YiffHomePage), e.Arguments);
+						} else {
+							rootFrame.Navigate(typeof(MainPage), e.Arguments);
+						}
 					}
 				}
 

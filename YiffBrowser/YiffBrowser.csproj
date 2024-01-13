@@ -132,6 +132,9 @@
     <Compile Include="Views\Controls\Common\PostHeaderSimpleScoreView.xaml.cs">
       <DependentUpon>PostHeaderSimpleScoreView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\FirstTimeNotificationView.xaml.cs">
+      <DependentUpon>FirstTimeNotificationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\LocalViews\FileItemDetailView.xaml.cs">
       <DependentUpon>FileItemDetailView.xaml</DependentUpon>
     </Compile>
@@ -427,6 +430,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Controls\FirstTimeNotificationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\ImagesSlideShowView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -572,7 +579,12 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Frameworks\BaseFramework\BaseFramework.csproj">
+      <Project>{791db8eb-df87-4c5b-87dd-7a4f5fb8b9a6}</Project>
+      <Name>BaseFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\E621\e612-Bigger.png" />
     <Content Include="Resources\E621\e612.png" />

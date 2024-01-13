@@ -154,7 +154,6 @@
     <Compile Include="Models\Debugging\ErrorHistories.cs" />
     <Compile Include="Models\Debugging\HttpRequestHistories.cs" />
     <Compile Include="Models\Inerfaces\IPage.cs" />
-    <Compile Include="Models\Locals\NewVersionModel.cs" />
     <Compile Include="Models\Utilities\KeyListener.cs" />
     <Compile Include="Models\Utilities\LoadPool.cs" />
     <Compile Include="Models\Locals\FavoritesList.cs" />
@@ -857,6 +856,10 @@
     <XliffResource Include="MultilingualResources\E621Downloader.zh-Hans.xlf" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Frameworks\BaseFramework\BaseFramework.csproj">
+      <Project>{791db8eb-df87-4c5b-87dd-7a4f5fb8b9a6}</Project>
+      <Name>BaseFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="YiffBrowser\YiffBrowser.csproj">
       <Project>{e07f9868-7ac7-4454-8c4a-430cf608e7fa}</Project>
       <Name>YiffBrowser</Name>

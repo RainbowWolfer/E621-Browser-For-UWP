@@ -257,8 +257,8 @@
 						<StackPanel Margin="10,0">
 
 							<StackPanel Margin="0,0,0,10">
-								<Button HorizontalAlignment="Stretch">
-									<cc:IconTextHorizontal Text="Switch Back To Old Version" Glyph="&#xEC24;"/>
+								<Button HorizontalAlignment="Stretch" Command="{Binding SwitchBackToOldVersionCommand}">
+									<cc:IconTextHorizontal Text="Switch Back To Old Version" Glyph="&#xEA63;"/>
 								</Button>
 							</StackPanel>
 

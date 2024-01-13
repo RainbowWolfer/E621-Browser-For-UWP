@@ -1,4 +1,5 @@
-﻿using E621Downloader.Models.Download;
+﻿using BaseFramework;
+using E621Downloader.Models.Download;
 using E621Downloader.Models.Inerfaces;
 using E621Downloader.Models.Locals;
 using E621Downloader.Models.Networks;
@@ -25,9 +26,11 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
+using YiffBrowser.Helpers;
+using YiffBrowser.Views.Shared;
 
 namespace E621Downloader.Pages {
-	public sealed partial class SettingsPage: Page, IPage {
+	public sealed partial class SettingsPage : Page, IPage {
 		public static bool isDownloadPathChangingHandled = true;
 		public string Version => $"{App.GetAppVersion()}";
 
@@ -63,7 +66,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void Help_PointerEntered(bool enter) {
-			if(enter) {
+			if (enter) {
 				cursorBeforePointerEntered = Window.Current.CoreWindow.PointerCursor;
 				Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Help, 0);
 			} else {
@@ -99,7 +102,7 @@ namespace E621Downloader.Pages {
 				_ => 0,
 			};
 
-			switch(App.GetStoredTheme()) {
+			switch (App.GetStoredTheme()) {
 				case ElementTheme.Default:
 					SystemThemeButton.IsChecked = true;
 					break;
@@ -146,7 +149,7 @@ namespace E621Downloader.Pages {
 				string newName;
 				do {
 					newName = "Paste List".Language() + $" - {count++}";
-				} while(listings.Any(i => i.Name == newName));
+				} while (listings.Any(i => i.Name == newName));
 				var list = new SingleListing(newName) {
 					Tags = array.ToList(),
 					IsDefault = false,
@@ -164,7 +167,7 @@ namespace E621Downloader.Pages {
 				content.FocusListingsLastItem();
 			};
 			content.OnListingSetAsDefault += async listing => {
-				foreach(SingleListing item in listings) {
+				foreach (SingleListing item in listings) {
 					item.IsDefault = item == listing.Listing;
 				}
 				await Local.WriteListing();
@@ -197,14 +200,14 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void DownloadPathButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(Local.DownloadFolder == null) {
+			if (Local.DownloadFolder == null) {
 				Debug.WriteLine("no download path");
 			} else {
 				Debug.WriteLine(Local.DownloadFolder.Path);
 			}
 			FolderPicker pick = new() { FileTypeFilter = { "*" } };
 			StorageFolder result = await pick.PickSingleFolderAsync();
-			if(result != null) {
+			if (result != null) {
 				string token = StorageApplicationPermissions.FutureAccessList.Add(result);
 				Debug.WriteLine(token);
 				await Local.WriteTokenToFile(token);
@@ -216,11 +219,11 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void ClearDownloadPathButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(DownloadsManager.HasDownloading()) {
+			if (DownloadsManager.HasDownloading()) {
 				await MainPage.CreatePopupDialog("Warning".Language(), "There is something downloading cannot clear download path".Language());
 				return;
 			}
-			if(await new ContentDialog() {
+			if (await new ContentDialog() {
 				Title = "Confirm".Language(),
 				Content = "Are you sure to clear download path(your downloaded files will not be deleted)".Language(),
 				PrimaryButtonText = "Yes".Language(),
@@ -230,7 +233,7 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			Local.ClearToken(Local.GetToken());
-			if(Local.GetToken() == null) {
+			if (Local.GetToken() == null) {
 				ClearDownloadPathButton.IsEnabled = false;
 			}
 			DownloadPathTextBlock.Text = "No Path Selected".Language();
@@ -238,7 +241,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void UpdateDownloadPathButtonStyle() {
-			if(Local.DownloadFolder == null) {
+			if (Local.DownloadFolder == null) {
 				DownloadPathButton.BorderThickness = new Thickness(2);
 			} else {
 				DownloadPathButton.BorderThickness = new Thickness(0);
@@ -246,11 +249,11 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void CustomHostToggle_Toggled(object sender, RoutedEventArgs e) {
-			if(internalChanges) {
+			if (internalChanges) {
 				return;
 			}
 			bool isOn = (sender as ToggleSwitch).IsOn;
-			if(!isOn) {
+			if (!isOn) {
 				LocalSettings.Current.customHostEnable = false;
 				LocalSettings.Current.customHost = "";
 				LocalSettings.Save();
@@ -259,7 +262,7 @@ namespace E621Downloader.Pages {
 				return;
 			}
 			await PopupCustomHostDialog(result => {
-				if(result.Confirm) {
+				if (result.Confirm) {
 					LocalSettings.Current.customHostEnable = isOn;
 					LocalSettings.Save();
 					CustomHostButton.IsEnabled = isOn;
@@ -273,7 +276,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void CycleListToggle_Toggled(object sender, RoutedEventArgs e) {
-			if(internalChanges) {
+			if (internalChanges) {
 				return;
 			}
 			LocalSettings.Current.cycleList = (sender as ToggleSwitch).IsOn;
@@ -281,7 +284,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void GifAutoPlayToggle_Toggled(object sender, RoutedEventArgs e) {
-			if(internalChanges) {
+			if (internalChanges) {
 				return;
 			}
 			LocalSettings.Current.enableGifAutoPlay = (sender as ToggleSwitch).IsOn;
@@ -289,7 +292,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void ConcatTagToggle_Toggled(object sender, RoutedEventArgs e) {
-			if(internalChanges) {
+			if (internalChanges) {
 				return;
 			}
 			LocalSettings.Current.concatTags = (sender as ToggleSwitch).IsOn;
@@ -297,14 +300,14 @@ namespace E621Downloader.Pages {
 		}
 
 		private void MediaPlayToggle_Toggled(object sender, RoutedEventArgs e) {
-			if(internalChanges) {
+			if (internalChanges) {
 				return;
 			}
 			LocalSettings.Current.mediaBackgroundPlay = (sender as ToggleSwitch).IsOn;
 			LocalSettings.Save();
 		}
 		private void MediaAutoPlayToggle_Toggled(object sender, RoutedEventArgs e) {
-			if(internalChanges) {
+			if (internalChanges) {
 				return;
 			}
 			LocalSettings.Current.mediaAutoPlay = (sender as ToggleSwitch).IsOn;
@@ -312,7 +315,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void MediaAutoMuteToggle_Toggled(object sender, RoutedEventArgs e) {
-			if(internalChanges) {
+			if (internalChanges) {
 				return;
 			}
 			LocalSettings.Current.mediaAutoMute = (sender as ToggleSwitch).IsOn;
@@ -330,7 +333,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void HotKeysToggle_Toggled(object sender, RoutedEventArgs e) {
-			if(internalChanges) {
+			if (internalChanges) {
 				return;
 			}
 			LocalSettings.Current.enableHotKeys = (sender as ToggleSwitch).IsOn;
@@ -349,7 +352,7 @@ namespace E621Downloader.Pages {
 			dialog.Closing += (s, e) => OnClosing?.Invoke(content);
 			dialog.Content = content;
 			await dialog.ShowAsync();
-			if(content.Confirm) {
+			if (content.Confirm) {
 				CustomHostButton.Content = content.InputText;
 				LocalSettings.Current.customHost = content.InputText;
 				LocalSettings.Save();
@@ -374,11 +377,11 @@ namespace E621Downloader.Pages {
 		}
 
 		private void LightThemeButton_Click(object sender, RoutedEventArgs e) {
-			if(internalChanges) {
+			if (internalChanges) {
 				return;
 			}
 			App.SetStoredTheme(ElementTheme.Light);
-			if(initialTheme == ElementTheme.Light) {
+			if (initialTheme == ElementTheme.Light) {
 				ThemeChangedHintText.Visibility = Visibility.Collapsed;
 			} else {
 				ThemeChangedHintText.Visibility = Visibility.Visible;
@@ -386,11 +389,11 @@ namespace E621Downloader.Pages {
 		}
 
 		private void DarkThemeButton_Click(object sender, RoutedEventArgs e) {
-			if(internalChanges) {
+			if (internalChanges) {
 				return;
 			}
 			App.SetStoredTheme(ElementTheme.Dark);
-			if(initialTheme == ElementTheme.Dark) {
+			if (initialTheme == ElementTheme.Dark) {
 				ThemeChangedHintText.Visibility = Visibility.Collapsed;
 			} else {
 				ThemeChangedHintText.Visibility = Visibility.Visible;
@@ -398,11 +401,11 @@ namespace E621Downloader.Pages {
 		}
 
 		private void SystemThemeButton_Click(object sender, RoutedEventArgs e) {
-			if(internalChanges) {
+			if (internalChanges) {
 				return;
 			}
 			App.SetStoredTheme(ElementTheme.Default);
-			if(initialTheme == ElementTheme.Default) {
+			if (initialTheme == ElementTheme.Default) {
 				ThemeChangedHintText.Visibility = Visibility.Collapsed;
 			} else {
 				ThemeChangedHintText.Visibility = Visibility.Visible;
@@ -410,7 +413,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void RandomTagMaxSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
-			if(internalChanges) {
+			if (internalChanges) {
 				return;
 			}
 			int value = (int)e.NewValue;
@@ -421,7 +424,7 @@ namespace E621Downloader.Pages {
 
 		private CancellationTokenSource cts;
 		private async void DelayedSaveSetting() {
-			if(cts != null) {
+			if (cts != null) {
 				cts.Cancel();
 				cts.Dispose();
 				cts = null;
@@ -429,7 +432,7 @@ namespace E621Downloader.Pages {
 			cts = new CancellationTokenSource();
 			try {
 				await Task.Delay(500, cts.Token);
-			} catch(TaskCanceledException) {
+			} catch (TaskCanceledException) {
 				return;
 			}
 			LocalSettings.Save();
@@ -457,13 +460,13 @@ namespace E621Downloader.Pages {
 				CloseButtonText = "No".Language(),
 				DefaultButton = ContentDialogButton.Close,
 			}.ShowAsync();
-			if(result == ContentDialogResult.Primary) {
+			if (result == ContentDialogResult.Primary) {
 				MainPage.CreateInstantDialog("Please Wait".Language(), "Cleaning".Language());
-				foreach(StorageFile item in await Local.WallpapersFolder.GetFilesAsync()) {
+				foreach (StorageFile item in await Local.WallpapersFolder.GetFilesAsync()) {
 					await item.DeleteAsync();
 				}
 				MainPage.HideInstantDialog();
-			} else if(result == ContentDialogResult.Secondary) {
+			} else if (result == ContentDialogResult.Secondary) {
 				await Launcher.LaunchFolderAsync(Local.WallpapersFolder, new FolderLauncherOptions() {
 					DesiredRemainingView = ViewSizePreference.UseMore
 				});
@@ -478,30 +481,30 @@ namespace E621Downloader.Pages {
 		void IPage.FocusMode(bool enabled) { }
 
 		private async void PinButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			if(!ApiInformation.IsTypePresent("Windows.UI.Shell.TaskbarManager")) {
+			if (!ApiInformation.IsTypePresent("Windows.UI.Shell.TaskbarManager")) {
 				return;
 			}
 			TaskbarManager bar = TaskbarManager.GetDefault();
-			if(!bar.IsSupported) {
+			if (!bar.IsSupported) {
 				return;
 			}
-			if(!bar.IsPinningAllowed) {
+			if (!bar.IsPinningAllowed) {
 				return;
 			}
-			if(await bar.IsCurrentAppPinnedAsync()) {
+			if (await bar.IsCurrentAppPinnedAsync()) {
 				return;
 			}
 			await bar.RequestPinCurrentAppAsync();
 		}
 
 		private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			if(internalChanges) {
+			if (internalChanges) {
 				return;
 			}
-			if(LanguageComboBox.SelectedIndex == 0) {
+			if (LanguageComboBox.SelectedIndex == 0) {
 				LocalLanguage.Current.language = Models.Locals.Language.English;
 				LocalLanguage.Save();
-			} else if(LanguageComboBox.SelectedIndex == 1) {
+			} else if (LanguageComboBox.SelectedIndex == 1) {
 				LocalLanguage.Current.language = Models.Locals.Language.Chinese;
 				LocalLanguage.Save();
 			}
@@ -513,7 +516,7 @@ namespace E621Downloader.Pages {
 			get => LocalSettings.Current.enableDebugPanel;
 			set {
 				DebugPanel.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-				if(internalChanges) {
+				if (internalChanges) {
 					return;
 				}
 				LocalSettings.Current.enableDebugPanel = value;
@@ -521,14 +524,14 @@ namespace E621Downloader.Pages {
 			}
 		}
 		private void DebugToggle_Toggled(object sender, RoutedEventArgs e) {
-			if(internalChanges) {
+			if (internalChanges) {
 				return;
 			}
 			EnableDebugPanel = DebugToggle.IsOn;
 		}
 
 		private async void HttpRequestHistoriesButton_Click(object sender, RoutedEventArgs e) {
-			if(!LocalSettings.Current?.enableDebugPanel ?? true) {
+			if (!LocalSettings.Current?.enableDebugPanel ?? true) {
 				return;
 			}
 
@@ -542,7 +545,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private async void HandledExceptionsButton_Click(object sender, RoutedEventArgs e) {
-			if(!LocalSettings.Current?.enableDebugPanel ?? true) {
+			if (!LocalSettings.Current?.enableDebugPanel ?? true) {
 				return;
 			}
 			ContentDialog dialog = new() {
@@ -556,7 +559,7 @@ namespace E621Downloader.Pages {
 		}
 
 		private void PostsPerPageSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
-			if(!hasInitialized) {
+			if (!hasInitialized) {
 				return;
 			}
 			PostsPerPageValueText.Text = $"{e.NewValue}";
@@ -566,7 +569,7 @@ namespace E621Downloader.Pages {
 
 		private async void PoolButton_Click(object sender, RoutedEventArgs e) {
 			PoolButton.IsEnabled = false;
-			var dialog = new ContentDialog() {
+			ContentDialog dialog = new() {
 				Title = "Following Pools".Language(),
 				CloseButtonText = "Close".Language(),
 			};
@@ -575,8 +578,23 @@ namespace E621Downloader.Pages {
 			PoolButton.IsEnabled = true;
 		}
 
-		private void NewVersionButton_Click(object sender, RoutedEventArgs e) {
-			
+		private async void NewVersionButton_Click(object sender, RoutedEventArgs e) {
+			NewVersionDialogView view = new();
+			if (await view.CreateContentDialog(new ContentDialogParameters() {
+				PrimaryText = "Enable New Version",
+				CloseText = "Back",
+				DefaultButton = ContentDialogButton.Primary,
+			}).ShowAsyncSafe() != ContentDialogResult.Primary) {
+				return;
+			}
+
+			await NewVersionService.UseNewVersion(true);
+
+			await "New version enabled. Please restart the application to apply.".CreateContentDialog(new ContentDialogParameters() {
+				Title = "New Version Enabled",
+				PrimaryText = "Confirm",
+				DefaultButton = ContentDialogButton.Primary,
+			}).ShowAsyncSafe();
 		}
 	}
 }

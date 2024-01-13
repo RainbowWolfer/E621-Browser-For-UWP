@@ -1,3 +1,4 @@
+using BaseFramework;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
@@ -287,6 +288,37 @@ namespace YiffBrowser.Views.Pages {
 		}
 
 
+		public ICommand SwitchBackToOldVersionCommand => new DelegateCommand(SwitchBackToOldVersion);
+
+		private async void SwitchBackToOldVersion() {
+			ContentDialogResult result = await "Are you sure to Switch back to old version?".CreateContentDialog(new ContentDialogParameters() {
+				Title = "Switch Back",
+				PrimaryText = "Switch back to old version",
+				CloseText = "Stay on new version",
+				DefaultButton = ContentDialogButton.Close,
+			}).ShowAsyncSafe();
+
+			switch (result) {
+				case ContentDialogResult.None: {
+					await NewVersionService.UseNewVersion(true);
+					break;
+				}
+				case ContentDialogResult.Primary: {
+					await NewVersionService.UseNewVersion(false);
+					await "Old version enabled. Please restart the application to apply.".CreateContentDialog(new ContentDialogParameters() {
+						Title = "Old Version Enabled",
+						PrimaryText = "Confirm",
+						DefaultButton = ContentDialogButton.Primary,
+					}).ShowAsyncSafe();
+					break;
+				}
+				case ContentDialogResult.Secondary:
+				default:
+					throw new NotImplementedException();
+			}
+
+
+		}
 	}
 
 	//About

@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using BaseFramework;
+using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Downloads;
 using YiffBrowser.Services.Locals;
 using YiffBrowser.Services.Networks;
+using YiffBrowser.Views.Controls;
 using YiffBrowser.Views.Controls.LoadingViews;
 using YiffBrowser.Views.Controls.Users;
 using YiffBrowser.Views.Pages;
@@ -116,6 +118,15 @@ namespace YiffBrowser {
 			NavigateHome();
 
 			LoadLocalUser();
+
+			if (NewVersionService.IsFirstTime()) {
+				await NewVersionService.DisableFirstTime();
+				await new FirstTimeNotificationView().CreateContentDialog(new ContentDialogParameters() {
+					Title = "Welcome to new version of E621 Browser UWP",
+					PrimaryText = "Continue",
+					DefaultButton = ContentDialogButton.Primary,
+				}).ShowAsyncSafe();
+			}
 		}
 
 		private async void LoadLocalUser() {

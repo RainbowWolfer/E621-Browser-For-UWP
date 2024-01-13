@@ -12,6 +12,10 @@
     d:DesignHeight="300"
     d:DesignWidth="550">
 
+	<UserControl.DataContext>
+		<local:NewVersionDialogViewModel x:Name="ViewModel"/>
+	</UserControl.DataContext>
+
 	<Grid>
 
 		<Grid.RowDefinitions>
@@ -27,14 +31,6 @@
 				</StackPanel>
 			</Border>
 
-			<ToggleButton IsChecked="True">
-				<TextBlock Text="Old Version"/>
-			</ToggleButton>
-
-			<ToggleButton>
-				<TextBlock Text="New version"/>
-			</ToggleButton>
-
 		</StackPanel>
 
 		<Grid Grid.Row="1">
@@ -42,28 +38,33 @@
 				<RowDefinition Height="auto"/>
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
+
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="*"/>
+				<!--<ColumnDefinition Width="*"/>-->
 			</Grid.ColumnDefinitions>
 
-			<c:Segmented HorizontalAlignment="Center" SelectionMode="Single" SelectedIndex="0" d:SelectedIndex="0" Grid.ColumnSpan="2">
-				<c:SegmentedItem Icon="{ui:FontIcon Glyph=&#xF146;}"/>
-				<c:SegmentedItem Icon="{ui:FontIcon Glyph=&#xF147;}"/>
-				<c:SegmentedItem Icon="{ui:FontIcon Glyph=&#xF148;}"/>
-				<c:SegmentedItem Icon="{ui:FontIcon Glyph=&#xF149;}"/>
-				<c:SegmentedItem Icon="{ui:FontIcon Glyph=&#xF14A;}"/>
-				<c:SegmentedItem Icon="{ui:FontIcon Glyph=&#xF14B;}"/>
-				<c:SegmentedItem Icon="{ui:FontIcon Glyph=&#xF14C;}"/>
-			</c:Segmented>
+			<Grid HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="10">
+				<c:Segmented SelectionMode="Single" SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}" d:SelectedIndex="0">
+					<c:SegmentedItem Icon="{ui:FontIcon Glyph=&#xF146;}"/>
+					<c:SegmentedItem Icon="{ui:FontIcon Glyph=&#xF147;}"/>
+					<c:SegmentedItem Icon="{ui:FontIcon Glyph=&#xF148;}"/>
+					<c:SegmentedItem Icon="{ui:FontIcon Glyph=&#xF149;}"/>
+					<c:SegmentedItem Icon="{ui:FontIcon Glyph=&#xF14A;}"/>
+					<c:SegmentedItem Icon="{ui:FontIcon Glyph=&#xF14B;}"/>
+					<c:SegmentedItem Icon="{ui:FontIcon Glyph=&#xF14C;}"/>
+				</c:Segmented>
+			</Grid>
 
-			<Grid Grid.Row="1" Grid.Column="0">
-				<FlipView>
+			<Grid Grid.Row="1" Grid.Column="0" MaxHeight="250">
+				<FlipView SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}">
 					<FlipView.ItemsPanel>
 						<ItemsPanelTemplate>
-							<VirtualizingStackPanel Orientation="Vertical"/>
+							<VirtualizingStackPanel Orientation="Horizontal"/>
 						</ItemsPanelTemplate>
 					</FlipView.ItemsPanel>
+					<Image Source="/YiffBrowser/Resources/E621/e612-Bigger.png" />
+					<Image Source="/YiffBrowser/Resources/E621/e612-Bigger.png" />
 					<Image Source="/YiffBrowser/Resources/E621/e612-Bigger.png" />
 					<Image Source="/YiffBrowser/Resources/E621/e612-Bigger.png" />
 					<Image Source="/YiffBrowser/Resources/E621/e612-Bigger.png" />

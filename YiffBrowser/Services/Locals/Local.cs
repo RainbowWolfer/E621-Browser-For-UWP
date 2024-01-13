@@ -12,6 +12,7 @@ namespace YiffBrowser.Services.Locals {
 
 
 		public static StorageFolder LocalFolder => ApplicationData.Current.LocalFolder;
+		public static StorageFolder YiffFolder { get; private set; }
 
 
 		public static StorageFile ListingFile { get; private set; }
@@ -22,8 +23,10 @@ namespace YiffBrowser.Services.Locals {
 			Debug.WriteLine(LocalFolder.Path);
 
 			await Task.Run(async () => {
-				ListingFile = await LocalFolder.CreateFileAsync("Listings.json", CreationCollisionOption.OpenIfExists);
-				SettingsFile = await LocalFolder.CreateFileAsync("Settings.json", CreationCollisionOption.OpenIfExists);
+				YiffFolder = await LocalFolder.CreateFolderAsync("Yiff", CreationCollisionOption.OpenIfExists);
+
+				ListingFile = await YiffFolder.CreateFileAsync("Listings.json", CreationCollisionOption.OpenIfExists);
+				SettingsFile = await YiffFolder.CreateFileAsync("Settings.json", CreationCollisionOption.OpenIfExists);
 
 				await Listing.Read();
 				await LocalSettings.Read();

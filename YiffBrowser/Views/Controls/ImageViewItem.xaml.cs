@@ -171,7 +171,7 @@ namespace YiffBrowser.Views.Controls {
 
 		private void Image_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
 			if (ViewModel.IsInSelectionMode) {
-				ButtonBorder.BorderThickness = new Thickness(!IsSelected ? 2 : 0);
+				//ButtonBorder.BorderThickness = new Thickness(!IsSelected ? 2 : 0);
 				ImageScaleXAnimation.To = 1.05;
 				ImageScaleYAnimation.To = 1.05;
 				ImageScaleStoryboard.Begin();
@@ -186,7 +186,7 @@ namespace YiffBrowser.Views.Controls {
 			ImageScaleXAnimation.To = 1;
 			ImageScaleYAnimation.To = 1;
 			ImageScaleStoryboard.Begin();
-			ButtonBorder.BorderThickness = new Thickness(0);
+			//ButtonBorder.BorderThickness = new Thickness(0);
 		}
 
 		private void UserControl_Loaded(object sender, RoutedEventArgs e) {

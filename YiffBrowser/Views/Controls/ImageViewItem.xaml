@@ -57,7 +57,7 @@
 						</Grid.Clip>
 						<Border x:Name="PreviewImage" CornerRadius="{x:Bind IsSelected,Mode=OneWay,Converter={StaticResource IsSelectedCornerRadius}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding HidePreviewImage,Converter={StaticResource BoolToVisibilityRe}}" RenderTransformOrigin="0.5,0.5" PointerEntered="Image_PointerEntered" PointerExited="Image_PointerExited">
 							<Border.Background>
-								<ImageBrush x:Name="PreviewImageBrush" ImageSource="{Binding PreviewImageURL}" Stretch="UniformToFill" ImageOpened="PreviewImageBrush_ImageOpened" Transform="{StaticResource ImageScale}">
+								<ImageBrush x:Name="PreviewImageBrush" ImageSource="{Binding PreviewImageURL}" Stretch="UniformToFill" ImageOpened="PreviewImageBrush_ImageOpened" Transform="{StaticResource ImageScale}" d:ImageSource="/YiffBrowser/Resources/E621/e612-Bigger.png">
 									<i:Interaction.Behaviors>
 										<core:EventTriggerBehavior EventName="ImageOpened">
 											<core:InvokeCommandAction Command="{Binding OnPreviewLoadedCommand}"/>
@@ -69,7 +69,7 @@
 
 						<Border x:Name="SampleImage" CornerRadius="{x:Bind IsSelected,Mode=OneWay,Converter={StaticResource IsSelectedCornerRadius}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" PointerEntered="Image_PointerEntered" PointerExited="Image_PointerExited">
 							<Border.Background>
-								<ImageBrush x:Name="SampleImageBrush" ImageSource="{Binding SampleImageURL}" Stretch="UniformToFill" ImageOpened="SampleImageBrush_ImageOpened" Transform="{StaticResource ImageScale}">
+								<ImageBrush x:Name="SampleImageBrush" ImageSource="{Binding SampleImageURL}" Stretch="UniformToFill" ImageOpened="SampleImageBrush_ImageOpened" Transform="{StaticResource ImageScale}" d:ImageSource="/YiffBrowser/Resources/E621/e612-Bigger.png">
 									<i:Interaction.Behaviors>
 										<core:EventTriggerBehavior EventName="ImageOpened">
 											<core:InvokeCommandAction Command="{Binding OnSampleLoadedCommand}"/>
