@@ -20,6 +20,7 @@ using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Locals;
 using YiffBrowser.Services.Networks;
 using YiffBrowser.Views.Controls.LocalViews;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace YiffBrowser.Views.Pages.E621 {
 	public sealed partial class LocalPage : Page {
@@ -31,14 +32,16 @@ namespace YiffBrowser.Views.Pages.E621 {
 			ViewModel.LeftColumnDefinition = LeftColumnDefinition;
 			ViewModel.RootView = RootView;
 			ViewModel.DetailView = DetailView;
+			ViewModel.MainScrollViewer = MainScrollViewer;
 		}
 
 		private void MainScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e) {
-			Debug.WriteLine($"{MainScrollViewer.VerticalOffset} / {MainScrollViewer.ScrollableHeight}");
+			ViewModel.ScrollHandler(MainScrollViewer.VerticalOffset, MainScrollViewer.ScrollableHeight);
 		}
 	}
 
 	internal class LocalPageViewModel : BindableBase {
+		public ScrollViewer MainScrollViewer { get; set; }
 		public VariableSizedWrapGrid MainGrid { get; set; }
 		public ColumnDefinition LeftColumnDefinition { get; set; }
 		public Grid RootView { get; set; }
@@ -95,6 +98,9 @@ namespace YiffBrowser.Views.Pages.E621 {
 			}
 		}
 
+		public int LastLoadedIndex { get; private set; }
+		public int IncrementLoadCount => 30;
+
 
 		public LocalPageViewModel() {
 			Initialize();
@@ -119,19 +125,25 @@ namespace YiffBrowser.Views.Pages.E621 {
 					};
 					item.ViewItem = image;
 					item.ClickCommand = new DelegateCommand<FileItem>(ItemClick);
-					MainGrid.Children.Add(image);
+					item.Loaded += Item_Loaded;
 				}
 			}
 			if (e.OldItems != null) {
 				foreach (FileItem item in e.OldItems.OfType<FileItem>()) {
-
+					MainGrid.Children.Remove(item.ViewItem);
+					item.Loaded -= Item_Loaded;
+					item.Dispose();
 				}
 			}
 		}
 
+		private void Item_Loaded(FileItem sender, E621Post args) {
+			MainGrid.Children.Add(sender.ViewItem);
+		}
+
 		private void ClearAllFiles() {
 			foreach (FileItem item in Files) {
-
+				item.Dispose();
 			}
 			MainGrid.Children.Clear();
 			Files.Clear();
@@ -163,11 +175,12 @@ namespace YiffBrowser.Views.Pages.E621 {
 		}
 
 		public async void LoadFolder(FolderItem folder) {
+			LastLoadedIndex = 0;
 			ClearAllFiles();
 
 			IReadOnlyList<StorageFile> files = await folder.Folder.GetFilesAsync(CommonFileQuery.DefaultQuery);
 
-			int index = 0;
+			//int index = 0;
 			foreach (StorageFile file in files) {
 				switch (file.FileType) {
 					case ".mp4":
@@ -181,17 +194,43 @@ namespace YiffBrowser.Views.Pages.E621 {
 				}
 				FileItem item = new(file);
 				Files.Add(item);
-				await item.Load();
-				if (index++ < 100) {
-					break;
+				//await item.Load();
+				//if (index++ < 100) {
+				//	break;
+				//}
+			}
+
+			LoadNextSegment();
+		}
+
+		private async void LoadNextSegment() {
+			LastLoadedIndex += IncrementLoadCount;
+
+			for (int i = 0; i < Math.Min(LastLoadedIndex, Files.Count); i++) {
+				FileItem item = Files[i];
+				if (item.HasLoaded) {
+					continue;
 				}
+				await item.LoadAsync();
+			}
+		}
+
+		private DateTime ScrollLoadCoolDown { get; set; }
+		public void ScrollHandler(double currentScroll, double wholeScroll) {
+			if (wholeScroll - currentScroll < 100) {
+				if ((DateTime.Now - ScrollLoadCoolDown).TotalSeconds <= 2) {
+					return;
+				}
+				ScrollLoadCoolDown = DateTime.Now;
+				LoadNextSegment();
 			}
 		}
 
 	}
 
-	public class FileItem : BindableBase {
+	public class FileItem : BindableBase, IDisposable {
 		public event TypedEventHandler<FileItem, E621Post> PostChanged;
+		public event TypedEventHandler<FileItem, E621Post> Loaded;
 
 		private StorageItemThumbnail thumbnail;
 		private FileItemImageView viewItem;
@@ -199,6 +238,7 @@ namespace YiffBrowser.Views.Pages.E621 {
 		private bool isLoadingPost;
 		private string typeHint;
 		private ICommand clickCommand;
+		private bool hasLoaded;
 
 		public StorageFile File { get; }
 		public FileItemImageView ViewItem {
@@ -207,6 +247,7 @@ namespace YiffBrowser.Views.Pages.E621 {
 		}
 
 		private void OnImageChanged() {
+			Initialize();
 			LoadImage();
 		}
 
@@ -237,6 +278,11 @@ namespace YiffBrowser.Views.Pages.E621 {
 			set => SetProperty(ref clickCommand, value);
 		}
 
+		public bool HasLoaded {
+			get => hasLoaded;
+			private set => SetProperty(ref hasLoaded, value);
+		}
+
 		//private BitmapImage image;
 		//public BitmapImage Image {
 		//	get => image;
@@ -255,6 +301,11 @@ namespace YiffBrowser.Views.Pages.E621 {
 			FileInfo info = new(file.Path);
 		}
 
+		private void Initialize() {
+			VariableSizedWrapGrid.SetRowSpan(ViewItem, 2);
+			VariableSizedWrapGrid.SetColumnSpan(ViewItem, 1);
+		}
+
 		private void LoadImage() {
 			if (ViewItem == null || Thumbnail == null) {
 				return;
@@ -264,24 +315,32 @@ namespace YiffBrowser.Views.Pages.E621 {
 			double h = (380 / ratio) / 50;
 			int h2 = (int)Math.Ceiling(h);
 
-			VariableSizedWrapGrid.SetRowSpan(ViewItem, h2);
+			VariableSizedWrapGrid.SetRowSpan(ViewItem, Math.Max(h2, 1));
 			VariableSizedWrapGrid.SetColumnSpan(ViewItem, 1);
 
 		}
 
-		public async Task Load() {
+		public async Task LoadAsync() {
+			HasLoaded = true;
 			if (int.TryParse(File.DisplayName, out int id)) {
 				IsLoadingPost = true;
 				Post = await E621DownloadDataAccess.GetPostInfo(id);
 				if (Post == null) {
 					Post = await E621API.GetPostAsync(id);
 					//write to database
+					await E621DownloadDataAccess.AddOrUpdatePost(Post);
 				}
 				IsLoadingPost = false;
 			}
 			Thumbnail = await File.GetThumbnailAsync(ThumbnailMode.SingleItem);
 
 			LoadImage();
+
+			Loaded?.Invoke(this, Post);
+		}
+
+		public void Dispose() {
+
 		}
 	}
 

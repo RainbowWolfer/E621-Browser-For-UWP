@@ -9,6 +9,8 @@ using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Locals;
 
 namespace YiffBrowser.Database {
+
+	//TODO: dont using the connection. just keep it open
 	public static class E621DownloadDataAccess {
 
 		public const string DatabaseFileName = "PostsInfo.db";
