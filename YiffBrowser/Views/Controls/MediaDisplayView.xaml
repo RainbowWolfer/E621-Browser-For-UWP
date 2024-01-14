@@ -5,7 +5,10 @@
     xmlns:local="using:YiffBrowser.Views.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:RequestedTheme="Dark">
+    mc:Ignorable="d" 
+	d:RequestedTheme="Dark"
+	x:Name="Root"
+	Loaded="Root_Loaded">
 
 	<Grid>
 		<Grid.DataContext>
@@ -28,13 +31,43 @@
 			<MediaPlayerElement.TransportControls>
 				<MediaTransportControls x:Name="MediaControl"
 					IsCompact="False"
+					ShowAndHideAutomatically="False"
+
+					IsFullWindowButtonVisible="False"
+
+					IsZoomButtonVisible="True"
+					IsZoomEnabled="True"
+
+					IsStopButtonVisible="True"
+					IsStopEnabled="True"
+
 					IsSeekBarVisible="True"
+
+					IsSkipBackwardButtonVisible="True"
+					IsSkipBackwardEnabled="True"
+
+					IsSkipForwardButtonVisible="True"
+					IsSkipForwardEnabled="True"
+
 					IsPlaybackRateButtonVisible="True"
 					IsPlaybackRateEnabled="True"
-					IsFastForwardEnabled="True"
-					IsFastRewindEnabled="True"
-					IsFastForwardButtonVisible="True"
-					IsFastRewindButtonVisible="True">
+
+					IsCompactOverlayButtonVisible="True"
+					IsCompactOverlayEnabled="True"
+
+					IsPreviousTrackButtonVisible="False"
+					IsNextTrackButtonVisible="False"
+
+					IsFastForwardEnabled="False"
+					IsFastRewindEnabled="False"
+
+					IsFastForwardButtonVisible="False"
+					IsFastRewindButtonVisible="False"
+					
+					IsRepeatButtonVisible="True"
+					IsRepeatEnabled="True"
+
+					IsVolumeButtonVisible="True">
 				
 				</MediaTransportControls>
 			</MediaPlayerElement.TransportControls>

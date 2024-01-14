@@ -30,7 +30,8 @@
 
 	</UserControl.Resources>
 
-	<Grid ToolTipService.ToolTip="{x:Bind Post}">
+	<!-- ToolTipService.ToolTip="{x:Bind Post}"-->
+	<Grid>
 
 		<Grid.DataContext>
 			<local:ImageViewItemViewModel x:Name="ViewModel"/>

@@ -180,13 +180,21 @@ namespace YiffBrowser.Views.Controls {
 				ImageScaleYAnimation.To = 1.05;
 				ImageScaleStoryboard.Begin();
 			}
+
+			BitmapImage bitmap = (SampleImageBrush.ImageSource as BitmapImage);
+			bitmap?.Play();
 		}
 
 		private void Image_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
+
 			ImageScaleXAnimation.To = 1;
 			ImageScaleYAnimation.To = 1;
 			ImageScaleStoryboard.Begin();
 			//ButtonBorder.BorderThickness = new Thickness(0);
+
+
+			BitmapImage bitmap = (SampleImageBrush.ImageSource as BitmapImage);
+			bitmap?.Stop();
 		}
 
 		private void UserControl_Loaded(object sender, RoutedEventArgs e) {

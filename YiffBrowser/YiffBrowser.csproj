@@ -132,6 +132,9 @@
     <Compile Include="Views\Controls\Common\PostHeaderSimpleScoreView.xaml.cs">
       <DependentUpon>PostHeaderSimpleScoreView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\Common\SimpleMediaControl.xaml.cs">
+      <DependentUpon>SimpleMediaControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\FirstTimeNotificationView.xaml.cs">
       <DependentUpon>FirstTimeNotificationView.xaml</DependentUpon>
     </Compile>
@@ -411,6 +414,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\Common\PostHeaderSimpleScoreView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Common\SimpleMediaControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

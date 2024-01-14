@@ -105,6 +105,13 @@ namespace YiffBrowser.Views.Controls {
 			MediaPlayer.MediaPlayer.StepForwardOneFrame();
 			//MediaControl.Show();
 		}
+
+		private void Root_Loaded(object sender, RoutedEventArgs e) {
+			MediaControl.Hide();
+			MediaPlayer.AreTransportControlsEnabled = true;
+			//MediaPlayer.SetMediaPlayer(new MediaPlayer() { });
+		}
+
 	}
 
 	public class MediaDisplayViewModel : BindableBase {

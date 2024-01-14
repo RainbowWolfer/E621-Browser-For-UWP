@@ -409,6 +409,30 @@
 							</c:SettingsExpander.Items>
 						</c:SettingsExpander>
 
+						<c:SettingsExpander Header="Media" Description="Configure style for media player" HeaderIcon="{ui:FontIcon Glyph=&#xE714;}" d:IsExpanded="True">
+							<Button>
+								<cc:IconTextHorizontal Text="Reset" Glyph="&#xE777;"/>
+							</Button>
+
+							<c:SettingsExpander.Items>
+
+								<c:SettingsCard ContentAlignment="Left">
+									<StackPanel>
+										<cc:ContentToggleSwitch SwitchContent="Alternative media control" IsOn="False"/>
+
+									</StackPanel>
+								</c:SettingsCard>
+
+								<c:SettingsCard Description="SettingsCard within an Expander can be made clickable too!"
+                                               Header="This item can be clicked">
+									<StackPanel>
+										<Button Content="Button" />
+									</StackPanel>
+								</c:SettingsCard>
+
+							</c:SettingsExpander.Items>
+						</c:SettingsExpander>
+
 					</StackPanel>
 				</cc:SettingCardControl>
 
