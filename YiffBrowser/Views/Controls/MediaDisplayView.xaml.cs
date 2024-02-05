@@ -2,12 +2,15 @@ using Prism.Mvvm;
 using System;
 using System.Diagnostics;
 using System.Windows.Input;
+using Windows.Devices.Input;
 using Windows.Media.Core;
 using Windows.Media.Playback;
+using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using YiffBrowser.Helpers;
+using YiffBrowser.Services.Locals;
 
 namespace YiffBrowser.Views.Controls {
 	public sealed partial class MediaDisplayView : UserControl {
@@ -39,6 +42,7 @@ namespace YiffBrowser.Views.Controls {
 			typeof(MediaDisplayView),
 			new PropertyMetadata(string.Empty, OnURLChanged)
 		);
+		private bool showingControl = true;
 
 		private static void OnURLChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
 			if (d is MediaDisplayView view) {
@@ -84,11 +88,11 @@ namespace YiffBrowser.Views.Controls {
 		}
 
 		private void Left_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
-			Step(-1);
+			Step(-0.5);
 		}
 
 		private void Right_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
-			Step(1);
+			Step(0.5);
 		}
 
 		private void Step(double seconds) {
@@ -98,18 +102,46 @@ namespace YiffBrowser.Views.Controls {
 		}
 
 		private void CtrlLeft_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
-			MediaPlayer.MediaPlayer.StepBackwardOneFrame();
+			//MediaPlayer.MediaPlayer.StepBackwardOneFrame();
+			ShowingControl = !ShowingControl;
 		}
 
 		private void CtrlRight_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
-			MediaPlayer.MediaPlayer.StepForwardOneFrame();
-			//MediaControl.Show();
+			//MediaPlayer.MediaPlayer.StepForwardOneFrame();
+			ShowingControl = !ShowingControl;
 		}
 
 		private void Root_Loaded(object sender, RoutedEventArgs e) {
-			MediaControl.Hide();
 			MediaPlayer.AreTransportControlsEnabled = true;
-			//MediaPlayer.SetMediaPlayer(new MediaPlayer() { });
+		}
+
+		public bool ShowingControl {
+			get => showingControl;
+			set {
+				showingControl = value;
+				if (value) {
+					MediaControl.Show();
+				} else {
+					MediaControl.Hide();
+				}
+			}
+		}
+
+		private void MediaPlayer_PointerPressed(object sender, PointerRoutedEventArgs e) {
+			if (e.Pointer.PointerDeviceType == PointerDeviceType.Mouse) {
+				PointerPointProperties properties = e.GetCurrentPoint(this).Properties;
+				if (!properties.IsLeftButtonPressed) {
+					// Left button pressed
+					return;
+				}
+			}
+			//MediaControl.Focus(FocusState.Keyboard);
+			ShowingControl = !ShowingControl;
+			e.Handled = true;
+		}
+
+		private void MediaControl_Loaded(object sender, RoutedEventArgs e) {
+			ShowingControl = true;
 		}
 
 	}
@@ -122,6 +154,8 @@ namespace YiffBrowser.Views.Controls {
 			set => SetProperty(ref mediaSource, value);
 		}
 
+		public LocalSettings Settings { get; } = Local.Settings;
+
 		public void Initialize(string url) {
 			MediaSource = null;
 			if (!url.IsBlank()) {
@@ -129,7 +163,6 @@ namespace YiffBrowser.Views.Controls {
 
 				MediaSource.OpenOperationCompleted += MediaSource_OpenOperationCompleted;
 				MediaSource.StateChanged += MediaSource_StateChanged;
-
 			}
 		}
 
@@ -141,4 +174,15 @@ namespace YiffBrowser.Views.Controls {
 			Debug.WriteLine(args.Error);
 		}
 	}
+
+
+	//public class CustomMediaTransportControls : MediaTransportControls {
+	//	protected override void OnApplyTemplate() {
+	//		AppBarButton CastButton = GetTemplateChild("CastButton") as AppBarButton;
+
+	//		CommandBar MediaControlsCommandBar = GetTemplateChild("MediaControlsCommandBar") as CommandBar;
+	//		MediaControlsCommandBar.PrimaryCommands.Remove(CastButton);
+	//		base.OnApplyTemplate();
+	//	}
+	//}
 }

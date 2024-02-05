@@ -18,7 +18,8 @@
 		<!-- PosterSource=""-->
 		<MediaPlayerElement x:Name="MediaPlayer" Source="{Binding MediaSource}"
 			AutoPlay="True" 
-			AreTransportControlsEnabled="True">
+			AreTransportControlsEnabled="True"
+			PointerPressed="MediaPlayer_PointerPressed">
 
 			<MediaPlayerElement.KeyboardAccelerators>
 				<KeyboardAccelerator Key="Space" Invoked="Space_Invoked"/>
@@ -30,13 +31,14 @@
 
 			<MediaPlayerElement.TransportControls>
 				<MediaTransportControls x:Name="MediaControl"
-					IsCompact="False"
+					Loaded="MediaControl_Loaded"
+					IsCompact="{Binding Settings.UseCompactMediaPlayer}"
 					ShowAndHideAutomatically="False"
 
 					IsFullWindowButtonVisible="False"
 
-					IsZoomButtonVisible="True"
-					IsZoomEnabled="True"
+					IsZoomButtonVisible="False"
+					IsZoomEnabled="False"
 
 					IsStopButtonVisible="True"
 					IsStopEnabled="True"
@@ -68,7 +70,7 @@
 					IsRepeatEnabled="True"
 
 					IsVolumeButtonVisible="True">
-				
+
 				</MediaTransportControls>
 			</MediaPlayerElement.TransportControls>
 

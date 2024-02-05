@@ -9,7 +9,8 @@ using YiffBrowser.Attributes;
 using YiffBrowser.Helpers;
 
 namespace YiffBrowser.Services.Locals {
-	public class LocalSettings : BindableBase {
+	//General
+	public partial class LocalSettings : BindableBase {
 		public static HostType StartHostType { get; set; } = HostType.E926;//write after initial read. don't change it during app running
 
 		private HostType hostType = HostType.E621;
@@ -23,9 +24,6 @@ namespace YiffBrowser.Services.Locals {
 		private bool showDebugPanel = false;
 		private int imageAdaptWidth = 380;
 		private int imageAdaptHeight = 50;
-		private string downloadFolderToken = null;
-		private UserModel user = default;
-		private UserModel userE6AI;
 
 		public HostType HostType {
 			get => hostType;
@@ -83,10 +81,52 @@ namespace YiffBrowser.Services.Locals {
 			set => SetProperty(ref imageAdaptHeight, value);
 		}
 
+	}
+
+	//Media
+	public partial class LocalSettings {
+		private bool useCompactMediaPlayer = false;
+
+		public bool UseCompactMediaPlayer {
+			get => useCompactMediaPlayer;
+			set => SetProperty(ref useCompactMediaPlayer, value);
+		}
+
+
+
+	}
+
+	//Download
+	public partial class LocalSettings {
+		private string downloadFolderToken = null;
+
 		public string DownloadFolderToken {
 			get => downloadFolderToken;
 			set => SetProperty(ref downloadFolderToken, value);
 		}
+
+		public bool HasDownloadFolderToken() => DownloadFolderToken.IsNotBlank() && Local.DownloadFolder != null;
+
+		public void SetDownloadFolder(StorageFolder folder) {
+			if (folder == null) {
+				return;
+			}
+			Local.DownloadFolder = folder;
+			string token = StorageApplicationPermissions.FutureAccessList.Add(folder);
+			DownloadFolderToken = token;
+		}
+
+		public void ClearDownloadFolder() {
+			Local.DownloadFolder = null;
+			DownloadFolderToken = null;
+		}
+
+	}
+
+	//User
+	public partial class LocalSettings {
+		private UserModel user = default;
+		private UserModel userE6AI;
 
 		public UserModel User {
 			get => user;
@@ -97,8 +137,6 @@ namespace YiffBrowser.Services.Locals {
 			get => userE6AI;
 			set => SetProperty(ref userE6AI, value);
 		}
-
-		#region User
 
 		public bool CheckLocalUser() {
 			UserModel user = GetCurrentUser();
@@ -147,37 +185,12 @@ namespace YiffBrowser.Services.Locals {
 			};
 		}
 
-		#endregion
+	}
 
-		#region FolderToken
+	public readonly record struct UserModel(string Username, string UserAPI);
 
-		public bool HasDownloadFolderToken() => DownloadFolderToken.IsNotBlank() && Local.DownloadFolder != null;
-
-		public void SetDownloadFolder(StorageFolder folder) {
-			if (folder == null) {
-				return;
-			}
-			Local.DownloadFolder = folder;
-			string token = StorageApplicationPermissions.FutureAccessList.Add(folder);
-			DownloadFolderToken = token;
-		}
-
-		public void ClearDownloadFolder() {
-			Local.DownloadFolder = null;
-			DownloadFolderToken = null;
-		}
-
-		protected override void OnPropertyChanged(PropertyChangedEventArgs args) {
-			base.OnPropertyChanged(args);
-			if (InitializingLock) {
-				return;
-			}
-			Write();
-		}
-
-		#endregion
-
-		#region Local
+	//Local
+	public partial class LocalSettings {
 
 		private static bool InitializingLock { get; set; }
 
@@ -194,12 +207,15 @@ namespace YiffBrowser.Services.Locals {
 			await Local.WriteFile(Local.SettingsFile, json);
 		}
 
-		#endregion
+		protected override void OnPropertyChanged(PropertyChangedEventArgs args) {
+			base.OnPropertyChanged(args);
+			if (InitializingLock) {
+				return;
+			}
+			Write();
+		}
 
 	}
-
-	public readonly record struct UserModel(string Username, string UserAPI);
-
 
 	public enum RequestDownloadAction {
 		[Description("Manually Select Folder")]

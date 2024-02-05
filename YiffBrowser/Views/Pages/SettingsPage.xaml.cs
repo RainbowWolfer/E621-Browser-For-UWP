@@ -27,10 +27,9 @@ namespace YiffBrowser.Views.Pages {
 	//Initialize
 	public partial class SettingsPageViewModel : BindableBase {
 
-		public LocalSettings Settings { get; }
+		public LocalSettings Settings { get; } = Local.Settings;
 
 		public SettingsPageViewModel() {
-			Settings = Local.Settings;
 			UpdateDownloadFolderPath();
 			InitializeGeneral();
 		}

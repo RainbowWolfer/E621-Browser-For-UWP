@@ -169,7 +169,6 @@ namespace YiffBrowser.Views.Controls {
 				view.ImagesListManagerTransformAnimation.To = -150;
 			}
 			view.ImagesListManagerTransformStoryboard.Begin();
-
 		}
 
 		private void MainGrid_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -191,6 +190,7 @@ namespace YiffBrowser.Views.Controls {
 				return;
 			}
 			IsShowingImagesListManager = !IsShowingImagesListManager;
+			e.Handled = true;
 		}
 
 		private void LeftKey_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
