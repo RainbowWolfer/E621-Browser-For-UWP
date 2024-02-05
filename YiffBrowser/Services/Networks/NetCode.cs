@@ -201,8 +201,9 @@ namespace YiffBrowser.Services.Networks {
 		private static void AddAuthorizationHeader(HttpClient client, string username, string api) {
 			if (username.IsBlank() && api.IsBlank()) {
 				if (Local.Settings.CheckLocalUser()) {
-					username = Local.Settings.Username;
-					api = Local.Settings.UserAPI;
+					UserModel user = Local.Settings.GetCurrentUser();
+					username = user.Username;
+					api = user.UserAPI;
 				} else {
 					return;
 				}

@@ -539,7 +539,7 @@ namespace YiffBrowser.Views.Controls {
 			if (!Local.Settings.CheckLocalUser()) {
 				return;
 			}
-			E621User user = await E621API.GetUserAsync(Local.Settings.Username);
+			E621User user = await E621API.GetUserAsync(Local.Settings.GetCurrentUser().Username);
 			string[] tags = user.blacklisted_tags.Split('\n');
 
 			foreach (string tag in tags) {
@@ -571,7 +571,7 @@ namespace YiffBrowser.Views.Controls {
 
 				item.IsLoading = true;
 
-				bool result = await E621API.UploadBlacklistTags(Local.Settings.Username, item.Item.Tags.ToArray());
+				bool result = await E621API.UploadBlacklistTags(Local.Settings.GetCurrentUser().Username, item.Item.Tags.ToArray());
 
 				item.IsLoading = false;
 

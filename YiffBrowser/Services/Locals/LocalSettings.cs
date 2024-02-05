@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Prism.Mvvm;
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -7,40 +9,142 @@ using YiffBrowser.Attributes;
 using YiffBrowser.Helpers;
 
 namespace YiffBrowser.Services.Locals {
-	public class LocalSettings {
-		public HostType HostType { get; set; } = HostType.E621;
-		public int E621PageLimitCount { get; set; } = 75;
+	public class LocalSettings : BindableBase {
+		public static HostType StartHostType { get; set; } = HostType.E926;//write after initial read. don't change it during app running
 
+		private HostType hostType = HostType.E621;
+		private int e621PageLimitCount = 75;
+		private bool enableStartupTags = true;
+		private string[] startupTags = ["order:rank"];
+		private bool enableTransitionAnimation = true;
+		private int postsPerPage = 75;
+		private AppTheme appTheme = AppTheme.System;
+		private StartupTagsType startupTagsType = StartupTagsType.StartupTags;
+		private bool showDebugPanel = false;
+		private int imageAdaptWidth = 380;
+		private int imageAdaptHeight = 50;
+		private string downloadFolderToken = null;
+		private UserModel user = default;
+		private UserModel userE6AI;
 
-		public bool EnableStartupTags { get; set; } = true;
+		public HostType HostType {
+			get => hostType;
+			set => SetProperty(ref hostType, value);
+		}
+
+		public int E621PageLimitCount {
+			get => e621PageLimitCount;
+			set => SetProperty(ref e621PageLimitCount, value);
+		}
+
+		public bool EnableStartupTags {
+			get => enableStartupTags;
+			set => SetProperty(ref enableStartupTags, value);
+		}
+
 		//"brazhnik"
-		public string[] StartupTags { get; set; } = { "order:rank" };
+		public string[] StartupTags {
+			get => startupTags;
+			set => SetProperty(ref startupTags, value);
+		}
 
-		public bool EnableTransitionAnimation { get; set; } = true;
+		public int PostsPerPage {
+			get => postsPerPage;
+			set => SetProperty(ref postsPerPage, value);
+		}
 
-		public int ImageAdaptWidth { get; set; } = 380;
-		public int ImageAdaptHeight { get; set; } = 50;
+		public AppTheme AppTheme {
+			get => appTheme;
+			set => SetProperty(ref appTheme, value);
+		}
 
-		public string Username { get; set; } = "";
-		public string UserAPI { get; set; } = "";
+		public bool ShowDebugPanel {
+			get => showDebugPanel;
+			set => SetProperty(ref showDebugPanel, value);
+		}
 
+		public StartupTagsType StartupTagsType {
+			get => startupTagsType;
+			set => SetProperty(ref startupTagsType, value);
+		}
 
-		public string DownloadFolderToken { get; set; }
+		public bool EnableTransitionAnimation {
+			get => enableTransitionAnimation;
+			set => SetProperty(ref enableTransitionAnimation, value);
+		}
+
+		public int ImageAdaptWidth {
+			get => imageAdaptWidth;
+			set => SetProperty(ref imageAdaptWidth, value);
+		}
+
+		public int ImageAdaptHeight {
+			get => imageAdaptHeight;
+			set => SetProperty(ref imageAdaptHeight, value);
+		}
+
+		public string DownloadFolderToken {
+			get => downloadFolderToken;
+			set => SetProperty(ref downloadFolderToken, value);
+		}
+
+		public UserModel User {
+			get => user;
+			set => SetProperty(ref user, value);
+		}
+
+		public UserModel UserE6AI {
+			get => userE6AI;
+			set => SetProperty(ref userE6AI, value);
+		}
 
 		#region User
 
-		public bool CheckLocalUser() => Username.IsNotBlank() && UserAPI.IsNotBlank();
+		public bool CheckLocalUser() {
+			UserModel user = GetCurrentUser();
+			return user.Username.IsNotBlank() && user.UserAPI.IsNotBlank();
+		}
 
 		public void SetLocalUser(string username, string api) {
-			Username = username;
-			UserAPI = api;
-			Write();
+			UserModel model = new(username, api);
+			switch (StartHostType) {
+				case HostType.E926:
+					User = model;
+					break;
+				case HostType.E621:
+					User = model;
+					break;
+				case HostType.E6AI:
+					UserE6AI = model;
+					break;
+				default:
+					throw new NotImplementedException();
+			}
 		}
 
 		public void ClearLocalUser() {
-			Username = string.Empty;
-			UserAPI = string.Empty;
-			Write();
+			switch (StartHostType) {
+				case HostType.E926:
+					User = default;
+					break;
+				case HostType.E621:
+					User = default;
+					break;
+				case HostType.E6AI:
+					UserE6AI = default;
+					break;
+				default:
+					throw new NotImplementedException();
+			}
+		}
+
+		public UserModel GetCurrentUser() {
+			return StartHostType switch {
+				HostType.E926 => User,
+				HostType.E621 => User,
+				HostType.E6AI => UserE6AI,
+				_ => throw new NotImplementedException(),
+			};
 		}
 
 		#endregion
@@ -56,12 +160,18 @@ namespace YiffBrowser.Services.Locals {
 			Local.DownloadFolder = folder;
 			string token = StorageApplicationPermissions.FutureAccessList.Add(folder);
 			DownloadFolderToken = token;
-			Write();
 		}
 
 		public void ClearDownloadFolder() {
 			Local.DownloadFolder = null;
 			DownloadFolderToken = null;
+		}
+
+		protected override void OnPropertyChanged(PropertyChangedEventArgs args) {
+			base.OnPropertyChanged(args);
+			if (InitializingLock) {
+				return;
+			}
 			Write();
 		}
 
@@ -69,9 +179,14 @@ namespace YiffBrowser.Services.Locals {
 
 		#region Local
 
+		private static bool InitializingLock { get; set; }
+
 		public static async Task Read() {
+			InitializingLock = true;
 			string json = await Local.ReadFile(Local.SettingsFile);
 			Local.Settings = JsonConvert.DeserializeObject<LocalSettings>(json) ?? new LocalSettings();
+			StartHostType = Local.Settings.HostType;
+			InitializingLock = false;
 		}
 
 		public static async void Write() {
@@ -82,6 +197,8 @@ namespace YiffBrowser.Services.Locals {
 		#endregion
 
 	}
+
+	public readonly record struct UserModel(string Username, string UserAPI);
 
 
 	public enum RequestDownloadAction {

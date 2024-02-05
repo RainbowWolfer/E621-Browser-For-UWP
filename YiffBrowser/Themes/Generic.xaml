@@ -44,5 +44,9 @@
 		</Setter>
 	</Style>
 
+	<x:String x:Key="ApplySettingsText1">
+		* This change will be applied after restarting the application
+	</x:String>
+
 
 </ResourceDictionary>

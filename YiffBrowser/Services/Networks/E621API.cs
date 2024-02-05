@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,14 +15,11 @@ namespace YiffBrowser.Services.Networks {
 	public static class E621API {
 		//public static string GetHost() => Local.Settings?.HostType ?? false ? "e621.net" : "e926.net";
 		public static string GetHost() {
-			return Local.Settings switch {
-				null => "e926.net",
-				_ => Local.Settings.HostType switch {
-					HostType.E926 => "e926.net",
-					HostType.E621 => "e621.net",
-					HostType.E6AI => "e6ai.net",
-					_ => "e926.net",
-				}
+			return LocalSettings.StartHostType switch {
+				HostType.E926 => "e926.net",
+				HostType.E621 => "e621.net",
+				HostType.E6AI => "e6ai.net",
+				_ => "e926.net",
 			};
 		}
 
@@ -43,7 +41,7 @@ namespace YiffBrowser.Services.Networks {
 			HttpResult<string> result = await NetCode.ReadURLAsync(url, token);
 
 			if (result.Result == HttpResultType.Success) {
-				return JsonConvert.DeserializeObject<E621PostsRoot>(result.Content)?.Posts.ToArray() ?? Array.Empty<E621Post>();
+				return JsonDeserialize<E621PostsRoot>(result.Content)?.Posts.ToArray() ?? [];
 			} else {
 				return null;
 			}
@@ -56,7 +54,7 @@ namespace YiffBrowser.Services.Networks {
 			string url = $"https://{GetHost()}/posts/{postID.Value}.json";
 			HttpResult<string> result = await NetCode.ReadURLAsync(url, token);
 			if (result.Result == HttpResultType.Success) {
-				E621Post post = JsonConvert.DeserializeObject<E621PostsRoot>(result.Content).Post;
+				E621Post post = JsonDeserialize<E621PostsRoot>(result.Content).Post;
 				return post;
 			} else {
 				return null;
@@ -70,7 +68,7 @@ namespace YiffBrowser.Services.Networks {
 		public static async ValueTask<E621AutoComplete[]> GetE621AutoCompleteAsync(string tag, CancellationToken? token = null) {
 			HttpResult<string> result = await NetCode.ReadURLAsync($"https://{GetHost()}/tags/autocomplete.json?search[name_matches]={tag}", token);
 			if (result.Result == HttpResultType.Success) {
-				return JsonConvert.DeserializeObject<E621AutoComplete[]>(result.Content);
+				return JsonDeserialize<E621AutoComplete[]>(result.Content);
 			} else {
 				return null;
 			}
@@ -89,7 +87,7 @@ namespace YiffBrowser.Services.Networks {
 			string url = $"https://{GetHost()}/tags.json?search[name_matches]={tag}";
 			HttpResult<string> result = await NetCode.ReadURLAsync(url, token);
 			if (result.Result == HttpResultType.Success && result.Content != "{\"tags\":[]}") {
-				E621Tag t = JsonConvert.DeserializeObject<E621Tag[]>(result.Content)?.FirstOrDefault();
+				E621Tag t = JsonDeserialize<E621Tag[]>(result.Content)?.FirstOrDefault();
 				if (t != null) {
 					E621Tag.Pool.TryAdd(tag, t);
 				}
@@ -122,7 +120,7 @@ namespace YiffBrowser.Services.Networks {
 				if (result.Content == "[]") {
 					return new E621Wiki();
 				}
-				return JsonConvert.DeserializeObject<E621Wiki[]>(result.Content).FirstOrDefault();
+				return JsonDeserialize<E621Wiki[]>(result.Content).FirstOrDefault();
 			} else {
 				return null;
 			}
@@ -143,10 +141,10 @@ namespace YiffBrowser.Services.Networks {
 			string url = $"https://{GetHost()}/comments.json?group_by=comment&search[post_id]={postID}";
 			HttpResult<string> result = await NetCode.ReadURLAsync(url, token);
 			if (result?.Content == "{\"comments\":[]}") {
-				return Array.Empty<E621Comment>();
+				return [];
 			}
 			if (result.Result == HttpResultType.Success) {
-				return JsonConvert.DeserializeObject<E621Comment[]>(result.Content);
+				return JsonDeserialize<E621Comment[]>(result.Content);
 			} else {
 				return null;
 			}
@@ -160,7 +158,7 @@ namespace YiffBrowser.Services.Networks {
 		public static async ValueTask<E621Pool> GetPoolAsync(string id, CancellationToken? token = null) {
 			HttpResult<string> result = await NetCode.ReadURLAsync($"https://{GetHost()}/pools/{id}.json", token);
 			if (result.Result == HttpResultType.Success) {
-				return JsonConvert.DeserializeObject<E621Pool>(result.Content);
+				return JsonDeserialize<E621Pool>(result.Content);
 			} else {
 				return null;
 			}
@@ -174,7 +172,7 @@ namespace YiffBrowser.Services.Networks {
 			string url = $"https://{GetHost()}/users.json?search[name_matches]={username}";
 			HttpResult<string> result = await NetCode.ReadURLAsync(url, token);
 			if (result.Result == HttpResultType.Success) {
-				return JsonConvert.DeserializeObject<E621User[]>(result.Content).FirstOrDefault();
+				return JsonDeserialize<E621User[]>(result.Content).FirstOrDefault();
 			} else {
 				return null;
 			}
@@ -184,7 +182,7 @@ namespace YiffBrowser.Services.Networks {
 			string url = $"https://{GetHost()}/users.json?search[id]={id}";
 			HttpResult<string> result = await NetCode.ReadURLAsync(url, token);
 			if (result.Result == HttpResultType.Success) {
-				return JsonConvert.DeserializeObject<E621User[]>(result.Content).FirstOrDefault();
+				return JsonDeserialize<E621User[]>(result.Content).FirstOrDefault();
 			} else {
 				return null;
 			}
@@ -192,9 +190,9 @@ namespace YiffBrowser.Services.Networks {
 
 		public static async ValueTask<HttpResult<string>> PostAddFavoriteAsync(int postID, CancellationToken? token = null) {
 			string url = $"https://{GetHost()}/favorites.json";
-			return await NetCode.PostRequestAsync(url, new List<KeyValuePair<string, string>>() {
+			return await NetCode.PostRequestAsync(url, [
 				new KeyValuePair<string, string>("post_id", postID.ToString())
-			}, token);
+			], token);
 		}
 
 		public static async ValueTask<HttpResult<string>> PostDeleteFavoriteAsync(int postID, CancellationToken? token = null) {
@@ -203,20 +201,20 @@ namespace YiffBrowser.Services.Networks {
 		}
 
 		public static async ValueTask<DataResult<E621Vote>> VotePost(int postID, int score, bool no_unvote, CancellationToken? token = null) {
-			HttpResult<string> result = await NetCode.PostRequestAsync($"https://{GetHost()}/posts/{postID}/votes.json", new List<KeyValuePair<string, string>> {
+			HttpResult<string> result = await NetCode.PostRequestAsync($"https://{GetHost()}/posts/{postID}/votes.json", [
 				new KeyValuePair<string, string>("score", $"{score}"),
 				new KeyValuePair<string, string>("no_unvote", $"{no_unvote}"),
-			}, token);
-			return new DataResult<E621Vote>(result.Result, JsonConvert.DeserializeObject<E621Vote>(result.Content));
+			], token);
+			return new DataResult<E621Vote>(result.Result, JsonDeserialize<E621Vote>(result.Content));
 		}
 
 		// no up and down
 		public static async ValueTask<DataResult<E621Vote>> VoteComment(int commentID, int score, bool no_unvote, CancellationToken? token = null) {
-			HttpResult<string> result = await NetCode.PostRequestAsync($"https://{GetHost()}/comments/{commentID}/votes.json", new List<KeyValuePair<string, string>> {
+			HttpResult<string> result = await NetCode.PostRequestAsync($"https://{GetHost()}/comments/{commentID}/votes.json", [
 				new KeyValuePair<string, string>("score", $"{score}"),
 				new KeyValuePair<string, string>("no_unvote", $"{no_unvote}"),
-			}, token);
-			return new DataResult<E621Vote>(result.Result, JsonConvert.DeserializeObject<E621Vote>(result.Content));
+			], token);
+			return new DataResult<E621Vote>(result.Result, JsonDeserialize<E621Vote>(result.Content));
 		}
 
 		#endregion
@@ -254,10 +252,10 @@ namespace YiffBrowser.Services.Networks {
 					}
 				}
 
-				List<string> pagesString = new();
+				List<string> pagesString = [];
 				int i = data.IndexOf("numbered-page", startIndex);
 				while (i != -1) {
-					StringBuilder pageString = new StringBuilder();
+					StringBuilder pageString = new();
 					for (int j = i + 1; j < data.IndexOf("</li>", i); j++) {
 						if (char.IsDigit(data[j])) {
 							pageString.Append(data[j]);
@@ -276,26 +274,38 @@ namespace YiffBrowser.Services.Networks {
 				}
 
 				int currentPage = int.Parse(currentPageString.ToString());
-				List<int> pages = new() { currentPage };
+				List<int> pages = [currentPage];
 				foreach (string s in pagesString) {
 					pages.Add(int.Parse(s));
 				}
 				return new DataResult<E621Paginator>(HttpResultType.Success, new E621Paginator() {
 					CurrentPage = currentPage,
-					Pages = pages.ToArray(),
+					Pages = [.. pages],
 				});
 			} catch (Exception ex) {
 				Debug.WriteLine(ex);
 				//return 0 length paginator
 				return new DataResult<E621Paginator>(HttpResultType.Success, new E621Paginator() {
 					CurrentPage = 1,
-					Pages = new int[] { 0 }
+					Pages = [0],
 				});
 			}
 		}
 
 		#endregion
 
+
+		private static T JsonDeserialize<T>(string json) {
+			T t = JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings() {
+				NullValueHandling = NullValueHandling.Ignore,
+				Error = JsonDeserializeErrorHandler,
+			});
+			return t;
+		}
+
+		private static void JsonDeserializeErrorHandler(object sender, ErrorEventArgs e) {
+			
+		}
 	}
 
 	public class E621PostParameters {

@@ -133,7 +133,7 @@ namespace YiffBrowser {
 
 			if (Local.Settings.CheckLocalUser()) {
 
-				E621User user = await E621API.GetUserAsync(Local.Settings.Username);
+				E621User user = await E621API.GetUserAsync(Local.Settings.GetCurrentUser().Username);
 				YiffApp.User = user;
 				if (user != null) {
 					UsernameText = user.name;

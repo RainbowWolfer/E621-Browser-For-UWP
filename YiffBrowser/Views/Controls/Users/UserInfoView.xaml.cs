@@ -72,7 +72,7 @@ namespace YiffBrowser.Views.Controls.Users {
 		private string levelString;
 		private DateTime createdAt;
 
-		private string avatarURL = "/Resources/E621/e612-Bigger.png";
+		private string avatarURL = "/YiffBrowser/Resources/E621/e612-Bigger.png";
 		private string email;
 		private string userID;
 
@@ -81,12 +81,18 @@ namespace YiffBrowser.Views.Controls.Users {
 
 		public E621User User {
 			get => user;
-			set => SetProperty(ref user, value, OnUserChanged);
+			set {
+				SetProperty(ref user, value);
+				OnUserChanged();
+			}
 		}
 
 		public E621Post AvatarPost {
 			get => avatarPost;
-			set => SetProperty(ref avatarPost, value, OnAvatarPostChanged);
+			set {
+				SetProperty(ref avatarPost, value);
+				OnAvatarPostChanged();
+			}
 		}
 
 		public string Username {
@@ -149,8 +155,8 @@ namespace YiffBrowser.Views.Controls.Users {
 		}
 
 		private void OnAvatarPostChanged() {
-			if (AvatarPost.HasNoValidURLs()) {
-				AvatarURL = "/Resources/E621/e612-Bigger.png";
+			if (AvatarPost == null || AvatarPost.HasNoValidURLs()) {
+				AvatarURL = "/YiffBrowser/Resources/E621/e612-Bigger.png";
 			} else {
 				AvatarURL = AvatarPost.Sample.URL;
 			}
@@ -198,13 +204,11 @@ namespace YiffBrowser.Views.Controls.Users {
 			User = user;
 
 			E621Post avatarPost = await E621API.GetPostAsync(User.avatar_id);
-			if (avatarPost == null || avatarPost.HasNoValidURLs()) {
-				IsRefreshing = false;
-				return;
-			}
 			AvatarPost = avatarPost;
 
-			OnAvatarRefreshed?.Invoke(AvatarPost.Sample.URL);
+			if (AvatarPost != null) {
+				OnAvatarRefreshed?.Invoke(AvatarPost.Sample.URL);
+			}
 
 			IsRefreshing = false;
 		}

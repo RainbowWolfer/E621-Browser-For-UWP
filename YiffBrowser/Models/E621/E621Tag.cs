@@ -16,7 +16,7 @@ namespace YiffBrowser.Models.E621 {
 		[JsonProperty("related_tags")]
 		public string RelatedTags { get; set; }
 		[JsonProperty("related_tags_updated_at")]
-		public DateTime? RelatedTagsUpdatedAt { get; set; }
+		public DateTime RelatedTagsUpdatedAt { get; set; }
 		[JsonProperty("category")]
 		public int Category { get; set; }
 		[JsonProperty("is_locked")]
@@ -28,7 +28,7 @@ namespace YiffBrowser.Models.E621 {
 
 		public string PostCountInK => PostCount.NumberToK();
 
-		public static Dictionary<string, E621Tag> Pool { get; } = new();
+		public static Dictionary<string, E621Tag> Pool { get; } = [];
 
 		public override string ToString() {
 			return $"E621Tags:({ID})({Name})({RelatedTags})({PostCount})({Category})";

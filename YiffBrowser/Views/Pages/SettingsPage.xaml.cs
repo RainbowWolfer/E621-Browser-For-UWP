@@ -10,6 +10,7 @@ using Windows.Storage.Pickers;
 using Windows.System;
 using Windows.System.Profile;
 using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using YiffBrowser.Helpers;
 using YiffBrowser.Services.Locals;
@@ -26,7 +27,10 @@ namespace YiffBrowser.Views.Pages {
 	//Initialize
 	public partial class SettingsPageViewModel : BindableBase {
 
+		public LocalSettings Settings { get; }
+
 		public SettingsPageViewModel() {
+			Settings = Local.Settings;
 			UpdateDownloadFolderPath();
 			InitializeGeneral();
 		}
@@ -156,7 +160,7 @@ namespace YiffBrowser.Views.Pages {
 			}).ShowAsyncSafe() != ContentDialogResult.Primary) {
 				return;
 			}
-			Local.Settings.ClearDownloadFolder();
+			Settings.ClearDownloadFolder();
 			UpdateDownloadFolderPath();
 		}
 
@@ -166,7 +170,7 @@ namespace YiffBrowser.Views.Pages {
 			};
 			StorageFolder folder = await pick.PickSingleFolderAsync();
 			if (folder != null) {
-				Local.Settings.SetDownloadFolder(folder);
+				Settings.SetDownloadFolder(folder);
 			}
 			UpdateDownloadFolderPath();
 		}
@@ -230,17 +234,14 @@ namespace YiffBrowser.Views.Pages {
 	public partial class SettingsPageViewModel {
 
 		public void InitializeGeneral() {
-			StartupTags = string.Join(" ", Local.Settings.StartupTags).Trim();
+			HostType = Settings.HostType;
+			StartupTags = string.Join(" ", Settings.StartupTags).Trim();
 			StartupTagsChanged = false;
 		}
 
 		private bool startupTagsChanged;
 		private string startupTags;
-		private HostType hostType = HostType.E926;
-		private int postPerPage = 75;
-		private AppTheme appTheme;
-		private bool showDebugPanel;
-		private StartupTagsType startupTagsType = StartupTagsType.StartupTags;
+		private HostType hostType;
 
 		public string StartupTags {
 			get => startupTags;
@@ -249,44 +250,27 @@ namespace YiffBrowser.Views.Pages {
 			});
 		}
 
-		public StartupTagsType StartupTagsType {
-			get => startupTagsType;
-			set => SetProperty(ref startupTagsType, value);
-		}
-
 		public bool StartupTagsChanged {
 			get => startupTagsChanged;
 			set => SetProperty(ref startupTagsChanged, value);
 		}
 
+		public HostType HostType {
+			get => hostType;
+			set => SetProperty(ref hostType, value, () => {
+				Settings.HostType = value;
+				RaisePropertyChanged(nameof(HostTypeChanged));
+			});
+		}
+
+		public bool HostTypeChanged => HostType != LocalSettings.StartHostType;
+
 		public ICommand AcceptStartupTagsCommand => new DelegateCommand(AcceptStartupTags);
 
 		private void AcceptStartupTags() {
-			Local.Settings.StartupTags = StartupTags.Trim().Split(' ');
-			LocalSettings.Write();
+			Settings.StartupTags = StartupTags.Trim().Split(' ');
 			StartupTagsChanged = false;
 		}
-
-		public HostType HostType {
-			get => hostType;
-			set => SetProperty(ref hostType, value);
-		}
-
-		public int PostPerPage {
-			get => postPerPage;
-			set => SetProperty(ref postPerPage, value);
-		}
-
-		public AppTheme AppTheme {
-			get => appTheme;
-			set => SetProperty(ref appTheme, value);
-		}
-
-		public bool ShowDebugPanel {
-			get => showDebugPanel;
-			set => SetProperty(ref showDebugPanel, value);
-		}
-
 
 		public ICommand SwitchBackToOldVersionCommand => new DelegateCommand(SwitchBackToOldVersion);
 

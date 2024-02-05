@@ -263,7 +263,7 @@
 							</StackPanel>
 
 							<StackPanel Margin="0,0,0,5">
-								<c:Segmented HorizontalAlignment="Stretch" SelectionMode="Single" SelectedIndex="{Binding StartupTagsType,Mode=TwoWay,Converter={StaticResource EnumValueToIndex}}" d:SelectedIndex="0">
+								<c:Segmented HorizontalAlignment="Stretch" SelectionMode="Single" SelectedIndex="{Binding Settings.StartupTagsType,Mode=TwoWay,Converter={StaticResource EnumValueToIndex}}" d:SelectedIndex="0">
 									<c:SegmentedItem Content="Startup Tags" Icon="{ui:FontIcon Glyph=&#xE7E8;}"/>
 									<c:SegmentedItem Content="Restore Tags" Icon="{ui:FontIcon Glyph=&#xE81B;}"/>
 								</c:Segmented>
@@ -271,10 +271,10 @@
 									<FontIcon Glyph="&#xE946;" Margin="0,0,10,0"/>
 									<TextBlock d:Text="Open tags from previous session" TextWrapping="Wrap" Width="300">
 										<i:Interaction.Behaviors>
-											<core:DataTriggerBehavior Binding="{Binding StartupTagsType,Converter={StaticResource ToString}}" Value="StartupTags">
+											<core:DataTriggerBehavior Binding="{Binding Settings.StartupTagsType,Converter={StaticResource ToString}}" Value="StartupTags">
 												<core:ChangePropertyAction PropertyName="Text" Value="Startup tags will be automatically opened when app starts"/>
 											</core:DataTriggerBehavior>
-											<core:DataTriggerBehavior Binding="{Binding StartupTagsType,Converter={StaticResource ToString}}" Value="RestoreTags">
+											<core:DataTriggerBehavior Binding="{Binding Settings.StartupTagsType,Converter={StaticResource ToString}}" Value="RestoreTags">
 												<core:ChangePropertyAction PropertyName="Text" Value="Open tags from previous session when app starts"/>
 											</core:DataTriggerBehavior>
 										</i:Interaction.Behaviors>
@@ -283,10 +283,10 @@
 								<!--<cc:ContentToggleSwitch SwitchContent="Startup Tags" IsOn="{Binding EnableStartupTags,Mode=TwoWay}"/>-->
 								<ContentControl HorizontalContentAlignment="Stretch">
 									<i:Interaction.Behaviors>
-										<core:DataTriggerBehavior Binding="{Binding StartupTagsType,Converter={StaticResource ToString}}" Value="StartupTags">
+										<core:DataTriggerBehavior Binding="{Binding Settings.StartupTagsType,Converter={StaticResource ToString}}" Value="StartupTags">
 											<core:ChangePropertyAction PropertyName="Visibility" Value="Visible"/>
 										</core:DataTriggerBehavior>
-										<core:DataTriggerBehavior Binding="{Binding StartupTagsType,Converter={StaticResource ToString}}" Value="RestoreTags">
+										<core:DataTriggerBehavior Binding="{Binding Settings.StartupTagsType,Converter={StaticResource ToString}}" Value="RestoreTags">
 											<core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed"/>
 										</core:DataTriggerBehavior>
 									</i:Interaction.Behaviors>
@@ -319,11 +319,14 @@
 									</Grid>
 								</StackPanel>
 								<Grid>
-									<c:Segmented HorizontalAlignment="Stretch" SelectionMode="Single" SelectedIndex="{Binding HostType,Mode=TwoWay,Converter={StaticResource EnumValueToIndex}}" d:SelectedIndex="2">
-										<c:SegmentedItem Content="E926" Icon="{ui:FontIcon Glyph=&#xE821;}" ToolTipService.ToolTip="SFW"/>
-										<c:SegmentedItem Content="E621" Icon="{ui:FontIcon Glyph=&#xE18B;}" ToolTipService.ToolTip="NSFW"/>
-										<c:SegmentedItem Content="E6AI" Icon="{ui:FontIcon Glyph=&#xF159;}" ToolTipService.ToolTip="Experimental Feature"/>
-									</c:Segmented>
+									<StackPanel>
+										<c:Segmented HorizontalAlignment="Stretch" SelectionMode="Single" SelectedIndex="{Binding HostType,Mode=TwoWay,Converter={StaticResource EnumValueToIndex}}" d:SelectedIndex="2">
+											<c:SegmentedItem Content="E926" Icon="{ui:FontIcon Glyph=&#xE821;}" ToolTipService.ToolTip="SFW"/>
+											<c:SegmentedItem Content="E621" Icon="{ui:FontIcon Glyph=&#xE18B;}" ToolTipService.ToolTip="NSFW"/>
+											<c:SegmentedItem Content="E6AI" Icon="{ui:FontIcon Glyph=&#xF159;}" ToolTipService.ToolTip="Experimental Feature"/>
+										</c:Segmented>
+										<TextBlock Text="{StaticResource ApplySettingsText1}" TextAlignment="Left" Margin="10,5,0,0" Visibility="{Binding HostTypeChanged,Converter={StaticResource BoolToVisibility}}" Width="250" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+									</StackPanel>
 								</Grid>
 							</StackPanel>
 
@@ -334,9 +337,9 @@
 										<ColumnDefinition Width="*"/>
 										<ColumnDefinition Width="auto"/>
 									</Grid.ColumnDefinitions>
-									<Slider Minimum="25" Maximum="125" Value="{Binding PostPerPage,Mode=TwoWay}" d:Value="75" StepFrequency="5" TickFrequency="5" SmallChange="5" LargeChange="25" IsThumbToolTipEnabled="False"/>
+									<Slider Minimum="25" Maximum="125" Value="{Binding Settings.PostPerPage,Mode=TwoWay}" d:Value="75" StepFrequency="5" TickFrequency="5" SmallChange="5" LargeChange="25" IsThumbToolTipEnabled="False"/>
 									<Grid Grid.Column="1" Width="40" Margin="0,0,10,0">
-										<TextBlock Text="{Binding PostPerPage}" d:Text="75" VerticalAlignment="Center" FontSize="18" TextAlignment="Right"/>
+										<TextBlock Text="{Binding Settings.PostPerPage}" d:Text="75" VerticalAlignment="Center" FontSize="18" TextAlignment="Right"/>
 									</Grid>
 								</Grid>
 							</StackPanel>
@@ -344,17 +347,17 @@
 							<StackPanel Margin="0,5">
 								<TextBlock Text="Theme"/>
 								<Grid Margin="5,0,0,0">
-									<common:EnumRadioButtons SelectedEnum="{Binding AppTheme,Mode=TwoWay}" EnumType="{ex:Type Type=locals:AppTheme}" Orientation="Horizontal" ItemWidth="80"/>
+									<common:EnumRadioButtons SelectedEnum="{Binding Settings.AppTheme,Mode=TwoWay}" EnumType="{ex:Type Type=locals:AppTheme}" Orientation="Horizontal" ItemWidth="80"/>
 								</Grid>
-								<TextBlock Text="* This change will be applied after &#10;restarting the application" Visibility="Collapsed" d:Visibility="Visible" TextAlignment="Left" Margin="10,0,0,0"/>
+								<TextBlock Text="{StaticResource ApplySettingsText1}" TextAlignment="Left" Margin="10,5,0,0" Visibility="{Binding HostTypeChanged,Converter={StaticResource BoolToVisibility}}" Width="250" TextWrapping="Wrap" HorizontalAlignment="Left"/>
 							</StackPanel>
 
-							<cc:ContentToggleSwitch SwitchContent="Show Debug Panel" IsOn="{Binding ShowDebugPanel,Mode=TwoWay}"/>
+							<cc:ContentToggleSwitch SwitchContent="Show Debug Panel" IsOn="{Binding Settings.ShowDebugPanel,Mode=TwoWay}"/>
 
 						</StackPanel>
 					</cc:SettingCardControl>
 
-					<cc:SettingCardControl Title="DEBUG" Grid.Row="1" Visibility="{Binding ShowDebugPanel,Converter={StaticResource BoolToVisibility}}">
+					<cc:SettingCardControl Title="DEBUG" Grid.Row="1" Visibility="{Binding Settings.ShowDebugPanel,Converter={StaticResource BoolToVisibility}}">
 						<StackPanel Margin="10,0">
 							<StackPanel Orientation="Horizontal" Margin="0,0,0,5" Background="Transparent" ToolTipService.ToolTip="Current Windows Version">
 								<Border Background="{StaticResource ControlFillColorDefaultBrush}" CornerRadius="5" Padding="5">
