@@ -9,6 +9,7 @@ using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
 using YiffBrowser.Helpers;
@@ -101,6 +102,12 @@ namespace YiffBrowser.Views.Controls {
 			ControlViewModel.GoNextCommand = new DelegateCommand(ViewModel.Next);
 			ControlViewModel.GoPreviousCommand = new DelegateCommand(ViewModel.Previous);
 			ControlViewModel.ShowImageListChanged += ControlViewModel_ShowImageListChanged;
+
+			SetBinding(IsShowingImagesListManagerProperty, new Binding() {
+				Source = ControlViewModel,
+				Path = new PropertyPath("ShowImageList"),
+				Mode = BindingMode.TwoWay,
+			});
 		}
 
 		private void ControlViewModel_ShowImageListChanged(PostDetailControlViewModel sender, bool args) {
