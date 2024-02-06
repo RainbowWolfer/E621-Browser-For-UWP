@@ -72,7 +72,7 @@
 				<muxc:ProgressRing IsActive="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="20" Visibility="{Binding IsAvatarLoading,Converter={StaticResource BoolToVisibility}}"/>
 				<Border CornerRadius="10">
 					<Border.Background>
-						<ImageBrush ImageSource="/YiffBrowser/Resources/E621/e612-Bigger.png" Stretch="UniformToFill">
+						<ImageBrush ImageSource="{Binding AvatarURL}" Stretch="UniformToFill">
 							<i:Interaction.Behaviors>
 								<core:EventTriggerBehavior EventName="ImageOpened">
 									<core:InvokeCommandAction Command="{Binding ImageOpenedCommand}"/>

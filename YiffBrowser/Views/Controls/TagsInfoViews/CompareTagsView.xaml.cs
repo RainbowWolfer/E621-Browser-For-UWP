@@ -32,9 +32,9 @@ namespace YiffBrowser.Views.Controls.TagsInfoViews {
 		}
 
 		private List<string> GetCommonTags(Func<Tags, IList<string>> getTags) {
-			Dictionary<string, int> all = new();
+			Dictionary<string, int> all = [];
 			IList<string>[] listPerPost = posts.Select(x => getTags(x.Tags)).ToArray();
-			string[] array = listPerPost.SelectMany(x => x).ToArray();
+			string[] array = listPerPost.Where(x => x != null).SelectMany(x => x).ToArray();
 			foreach (string item in array) {
 				if (all.ContainsKey(item)) {
 					all[item]++;

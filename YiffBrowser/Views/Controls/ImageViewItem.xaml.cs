@@ -18,6 +18,7 @@ using YiffBrowser.Services.Networks;
 namespace YiffBrowser.Views.Controls {
 	public sealed partial class ImageViewItem : UserControl {
 		public event TypedEventHandler<ImageViewItem, ImageViewItemViewModel> ImageClick;
+		public event TypedEventHandler<ImageViewItem, ImageViewItemViewModel> ImageOpen;
 		public event TypedEventHandler<ImageViewItem, ImageViewItemViewModel> SelectThis;
 		public event TypedEventHandler<ImageViewItem, ImageViewItemViewModel> CompareTags;
 		public event TypedEventHandler<ImageViewItem, ImageViewItemViewModel> DownloadThis;
@@ -119,6 +120,15 @@ namespace YiffBrowser.Views.Controls {
 			}
 			ImageClick?.Invoke(this, ViewModel);
 			Command?.Execute(e);
+		}
+
+		private void OpenItem_Click(object sender, RoutedEventArgs e) {
+			if (Post.Flags.deleted == true) {
+				return;
+			} else if (Post.HasNoValidURLs()) {
+				return;
+			}
+			ImageOpen?.Invoke(this, ViewModel);
 		}
 
 		public FrameworkElement GetSampleImage() => SampleImage;

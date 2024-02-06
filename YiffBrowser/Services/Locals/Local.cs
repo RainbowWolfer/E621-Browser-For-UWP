@@ -7,8 +7,8 @@ using YiffBrowser.Helpers;
 
 namespace YiffBrowser.Services.Locals {
 	public static class Local {
-		public static LocalSettings Settings { get; set; }
-		public static Listing Listing { get; set; }
+		public static LocalSettings Settings { get; private set; }
+		public static Listing Listing { get; private set; }
 
 
 		public static StorageFolder LocalFolder => ApplicationData.Current.LocalFolder;
@@ -28,8 +28,8 @@ namespace YiffBrowser.Services.Locals {
 				ListingFile = await YiffFolder.CreateFileAsync("Listings.json", CreationCollisionOption.OpenIfExists);
 				SettingsFile = await YiffFolder.CreateFileAsync("Settings.json", CreationCollisionOption.OpenIfExists);
 
-				await Listing.Read();
-				await LocalSettings.Read();
+				Listing = await Listing.Read();
+				Settings = await LocalSettings.Read();
 
 				try {
 					string token = Settings.DownloadFolderToken;

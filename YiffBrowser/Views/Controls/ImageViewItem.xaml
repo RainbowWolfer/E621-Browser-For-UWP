@@ -8,6 +8,7 @@
 	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
 	xmlns:i="using:Microsoft.Xaml.Interactivity"
 	xmlns:converters="using:YiffBrowser.Converters"
+	xmlns:ui="using:CommunityToolkit.WinUI"
 	xmlns:local="using:YiffBrowser.Views.Controls"
 	d:Height="300"
 	d:Width="300"
@@ -149,12 +150,13 @@
 
 			<Button.ContextFlyout>
 				<MenuFlyout>
+					<MenuFlyoutItem x:Name="OpenItem" Icon="{ui:FontIcon Glyph=&#xE8A7;}" Text="Open" Click="OpenItem_Click"/>
 					<MenuFlyoutItem x:Name="SelectThisItem" Text="Select this" Icon="ViewAll" Click="SelectThisItem_Click">
 						<i:Interaction.Behaviors>
-							<core:DataTriggerBehavior Binding="{x:Bind IsSelected,Mode=OneWay}" Value="True">
+							<core:DataTriggerBehavior Binding="{Binding IsSelected,Mode=OneWay}" Value="True">
 								<core:ChangePropertyAction PropertyName="Text" Value="Unselect this"/>
 							</core:DataTriggerBehavior>
-							<core:DataTriggerBehavior Binding="{x:Bind IsSelected,Mode=OneWay}" Value="False">
+							<core:DataTriggerBehavior Binding="{Binding IsSelected,Mode=OneWay}" Value="False">
 								<core:ChangePropertyAction PropertyName="Text" Value="Select this"/>
 							</core:DataTriggerBehavior>
 						</i:Interaction.Behaviors>

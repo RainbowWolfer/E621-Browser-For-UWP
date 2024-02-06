@@ -26,9 +26,7 @@ namespace YiffBrowser.Views.Controls {
 		public E621Post E621Post {
 			get => (E621Post)GetValue(E621PostProperty);
 			set {
-				if (E621Post == value) {
-					MediaDisplayView.Play();
-				}
+				MediaDisplayView.Initialize();
 				SetValue(E621PostProperty, value);
 			}
 		}

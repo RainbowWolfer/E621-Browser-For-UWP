@@ -135,9 +135,9 @@ namespace YiffBrowser.Services.Locals {
 
 		#region Local
 
-		public static async Task Read() {
+		public static async Task<Listing> Read() {
 			string json = await Local.ReadFile(Local.ListingFile);
-			Local.Listing = JsonConvert.DeserializeObject<Listing>(json) ?? new Listing();
+			return JsonConvert.DeserializeObject<Listing>(json) ?? new Listing();
 		}
 
 		public static async void Write() {

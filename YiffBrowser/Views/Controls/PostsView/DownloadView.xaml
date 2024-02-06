@@ -209,7 +209,7 @@
 						<ColumnDefinition Width="auto"/>
 					</Grid.ColumnDefinitions>
 
-					<Border x:Name="SinlgePostBorder" CornerRadius="4" BorderBrush="Gray" ToolTipService.Placement="Right" d:BorderThickness="2">
+					<Border x:Name="SinlgePostBorder" CornerRadius="4" BorderBrush="Gray" ToolTipService.Placement="Left" d:BorderThickness="2">
 
 						<i:Interaction.Behaviors>
 							<core:DataTriggerBehavior Binding="{Binding SamplePreviewLoading}" Value="True">

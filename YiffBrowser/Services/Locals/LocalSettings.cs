@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using YiffBrowser.Attributes;
@@ -85,15 +86,28 @@ namespace YiffBrowser.Services.Locals {
 
 	//Media
 	public partial class LocalSettings {
-		private bool useCompactMediaPlayer = false;
+		public event TypedEventHandler<LocalSettings, MediaControlType> MediaControlTypeChanged;
 
-		public bool UseCompactMediaPlayer {
-			get => useCompactMediaPlayer;
-			set => SetProperty(ref useCompactMediaPlayer, value);
+		private MediaControlType mediaControlType = MediaControlType.Full;
+		private bool autoLooping = true;
+
+		public MediaControlType MediaControlType {
+			get => mediaControlType;
+			set {
+				SetProperty(ref mediaControlType, value);
+				MediaControlTypeChanged?.Invoke(this, value);
+			}
 		}
 
+		public bool AutoLooping {
+			get => autoLooping;
+			set => SetProperty(ref autoLooping, value);
+		}
 
+	}
 
+	public enum MediaControlType {
+		Full, Compact, Simple
 	}
 
 	//Download
@@ -194,12 +208,13 @@ namespace YiffBrowser.Services.Locals {
 
 		private static bool InitializingLock { get; set; }
 
-		public static async Task Read() {
+		public static async Task<LocalSettings> Read() {
 			InitializingLock = true;
 			string json = await Local.ReadFile(Local.SettingsFile);
-			Local.Settings = JsonConvert.DeserializeObject<LocalSettings>(json) ?? new LocalSettings();
-			StartHostType = Local.Settings.HostType;
+			LocalSettings settings = JsonConvert.DeserializeObject<LocalSettings>(json) ?? new LocalSettings();
+			StartHostType = settings.HostType;
 			InitializingLock = false;
+			return settings;
 		}
 
 		public static async void Write() {

@@ -419,17 +419,29 @@
 
 							<c:SettingsExpander.Items>
 
-								<c:SettingsCard ContentAlignment="Left">
+								<c:SettingsCard HorizontalContentAlignment="Left" ContentAlignment="Vertical" Header="Media Control Style">
 									<StackPanel>
-										<cc:ContentToggleSwitch SwitchContent="Alternative media control" IsOn="False"/>
+
+										<c:Segmented Margin="5" SelectedIndex="{Binding Settings.MediaControlType,Mode=TwoWay,Converter={StaticResource EnumValueToIndex}}">
+											<c:SegmentedItem Content="Full"/>
+											<c:SegmentedItem Content="Compact"/>
+											<c:SegmentedItem Content="Simple"/>
+										</c:Segmented>
+
+										<Grid Width="400" Height="100" Margin="5">
+											<Border CornerRadius="4">
+												<Border.Background>
+													<ImageBrush ImageSource="/YiffBrowser/Resources/E621/Helper_Step2.png" Stretch="UniformToFill"/>
+												</Border.Background>
+											</Border>
+										</Grid>
 
 									</StackPanel>
 								</c:SettingsCard>
 
-								<c:SettingsCard Description="SettingsCard within an Expander can be made clickable too!"
-                                               Header="This item can be clicked">
+								<c:SettingsCard Description="" Header="Default Action" ContentAlignment="Vertical" HorizontalContentAlignment="Left">
 									<StackPanel>
-										<Button Content="Button" />
+										<cc:ContentToggleSwitch SwitchContent="Loop One"/>
 									</StackPanel>
 								</c:SettingsCard>
 

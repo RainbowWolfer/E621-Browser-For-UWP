@@ -136,6 +136,7 @@ namespace YiffBrowser.Views.Controls {
 				}
 				foreach (ImageViewItem view in toRemoves) {
 					view.ImageClick -= View_ImageClick;
+					view.ImageOpen -= View_ImageOpen;
 					view.SelectThis -= View_SelectThis;
 					view.CompareTags -= View_CompareTags;
 					view.DownloadThis -= View_DownloadThis;
@@ -155,6 +156,7 @@ namespace YiffBrowser.Views.Controls {
 				ViewModel.Posts.Remove(post);
 			};
 			view.ImageClick += View_ImageClick;
+			view.ImageOpen += View_ImageOpen;
 			view.SelectThis += View_SelectThis;
 			view.CompareTags += View_CompareTags;
 			view.DownloadThis += View_DownloadThis;
@@ -185,35 +187,37 @@ namespace YiffBrowser.Views.Controls {
 		}
 
 		private ImageViewItem openedImageItem;
+
+		private void View_ImageOpen(ImageViewItem view, ImageViewItemViewModel viewModel) {
+			if (openedImageItem != null) {
+				return;
+			}
+
+			openedImageItem = view;
+			PostDetailView.Visibility = Visibility.Visible;
+
+			PostDetailView.E621Post = view.Post;
+			PostDetailView.InitialImageURL = viewModel.ImageLoadStage switch {
+				LoadStage.None or LoadStage.Preview => view.Post.Preview.URL,
+				LoadStage.Sample => view.Post.Sample.URL,
+				_ => throw new NotSupportedException(),
+			};
+
+			if (Local.Settings.EnableTransitionAnimation) {
+				ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("image_in", view.GetCurrentImage());
+				ConnectedAnimation imageAnimation = ConnectedAnimationService.GetForCurrentView().GetAnimation("image_in");
+				imageAnimation.Configuration = new DirectConnectedAnimationConfiguration();
+				imageAnimation?.TryStart(PostDetailView.GetCurrentImage());
+			}
+
+		}
+
 		private void View_ImageClick(ImageViewItem view, ImageViewItemViewModel viewModel) {
 			if (ViewModel.IsInSelectionMode) {
-
 				view.IsSelected = !view.IsSelected;
 				ViewModel.CountSelectedItems();
-
 			} else {
-
-				if (openedImageItem != null) {
-					return;
-				}
-
-				openedImageItem = view;
-				PostDetailView.Visibility = Visibility.Visible;
-
-				PostDetailView.E621Post = view.Post;
-				PostDetailView.InitialImageURL = viewModel.ImageLoadStage switch {
-					LoadStage.None or LoadStage.Preview => view.Post.Preview.URL,
-					LoadStage.Sample => view.Post.Sample.URL,
-					_ => throw new NotSupportedException(),
-				};
-
-				if (Local.Settings.EnableTransitionAnimation) {
-					ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("image_in", view.GetCurrentImage());
-					ConnectedAnimation imageAnimation = ConnectedAnimationService.GetForCurrentView().GetAnimation("image_in");
-					imageAnimation.Configuration = new DirectConnectedAnimationConfiguration();
-					imageAnimation?.TryStart(PostDetailView.GetCurrentImage());
-				}
-
+				View_ImageOpen(view, viewModel);
 			}
 
 		}

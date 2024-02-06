@@ -174,7 +174,9 @@
 
 			<common:PostDetailControlView ViewModel="{x:Bind ControlViewModel,Mode=OneWay}" BackClick="PostDetailControlView_BackClick"/>
 
-			<common:SimpleMediaControl x:Name="SimpleMediaControl" Grid.Row="1"/>
+			<Grid Visibility="{Binding IsMedia,Converter={StaticResource BoolToVisibility}}" d:Visibility="Visible" Grid.Row="1" Margin="10,0,10,10">
+				<common:SimpleMediaControl x:Name="SimpleMediaControl" MediaDisplayView="{Binding ElementName=MediaDisplayView}"/>
+			</Grid>
 
 			<local:PostTagsListView Grid.Row="2" Tags="{Binding E621Post.Tags}" ShowAddMinusButton="{Binding InputByPosts,Converter={StaticResource BoolToBoolRe}}" ShowDialogTagInfo="True"/>
 		</Grid>
@@ -195,7 +197,7 @@
 					</Grid>
 
 					<Grid Visibility="{Binding IsMedia,Converter={StaticResource BoolToVisibility}}">
-						<local:MediaDisplayView x:Name="MediaDisplayView" URL="{Binding MediaURL}"/>
+						<local:MediaDisplayView x:Name="MediaDisplayView" URL="{Binding MediaURL}" SimpleMediaControl="{Binding ElementName=SimpleMediaControl}"/>
 					</Grid>
 
 					<ScrollViewer x:Name="ImagesListManagerScroll" VerticalAlignment="Top" Canvas.ZIndex="999" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" HorizontalScrollMode="Disabled" IsHitTestVisible="False" Margin="160,0,160,0">

@@ -5,18 +5,16 @@
     xmlns:local="using:YiffBrowser.Views.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d" 
 	d:RequestedTheme="Dark"
 	x:Name="Root"
-	Loaded="Root_Loaded">
+	Loaded="Root_Loaded"
+	Unloaded="Root_Unloaded">
 
 	<Grid>
-		<Grid.DataContext>
-			<local:MediaDisplayViewModel x:Name="ViewModel"/>
-		</Grid.DataContext>
-
 		<!-- PosterSource=""-->
-		<MediaPlayerElement x:Name="MediaPlayer" Source="{Binding MediaSource}"
+		<MediaPlayerElement x:Name="MediaPlayer"
 			AutoPlay="True" 
 			AreTransportControlsEnabled="True"
 			PointerPressed="MediaPlayer_PointerPressed">
@@ -31,8 +29,6 @@
 
 			<MediaPlayerElement.TransportControls>
 				<MediaTransportControls x:Name="MediaControl"
-					Loaded="MediaControl_Loaded"
-					IsCompact="{Binding Settings.UseCompactMediaPlayer}"
 					ShowAndHideAutomatically="False"
 
 					IsFullWindowButtonVisible="False"
@@ -54,8 +50,8 @@
 					IsPlaybackRateButtonVisible="True"
 					IsPlaybackRateEnabled="True"
 
-					IsCompactOverlayButtonVisible="True"
-					IsCompactOverlayEnabled="True"
+					IsCompactOverlayButtonVisible="False"
+					IsCompactOverlayEnabled="False"
 
 					IsPreviousTrackButtonVisible="False"
 					IsNextTrackButtonVisible="False"
@@ -75,5 +71,18 @@
 			</MediaPlayerElement.TransportControls>
 
 		</MediaPlayerElement>
+
+		<!--<Grid x:Name="BufferingGrid" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20">
+			<muxc:ProgressRing IsIndeterminate="True"/>
+		</Grid>-->
+
+		<Grid x:Name="ErrorTipTarget" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="30"/>
+
+		<muxc:TeachingTip x:Name="ErrorTip" Target="{Binding ElementName=ErrorTipTarget}" PreferredPlacement="BottomRight" IsLightDismissEnabled="True" Title="Media Error" CloseButtonContent="Got it" >
+			<muxc:TeachingTip.IconSource>
+				<muxc:FontIconSource Glyph="&#xEA39;"/>
+			</muxc:TeachingTip.IconSource>
+		</muxc:TeachingTip>
+
 	</Grid>
 </UserControl>

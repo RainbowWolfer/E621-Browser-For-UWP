@@ -1,6 +1,7 @@
 using Prism.Mvvm;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Devices.Input;
 using Windows.Media.Core;
@@ -11,25 +12,32 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using YiffBrowser.Helpers;
 using YiffBrowser.Services.Locals;
+using YiffBrowser.Views.Controls.Common;
 
 namespace YiffBrowser.Views.Controls {
 	public sealed partial class MediaDisplayView : UserControl {
 
+		private bool showingControl = true;
+		private MediaSource mediaSource = null;
 
 
-		public ICommand MediaLoadedCommand {
-			get => (ICommand)GetValue(MediaLoadedCommandProperty);
-			set => SetValue(MediaLoadedCommandProperty, value);
+
+
+		public SimpleMediaControl SimpleMediaControl {
+			get => (SimpleMediaControl)GetValue(SimpleMediaControlProperty);
+			set => SetValue(SimpleMediaControlProperty, value);
 		}
 
-		public static readonly DependencyProperty MediaLoadedCommandProperty = DependencyProperty.Register(
-			nameof(MediaLoadedCommand),
-			typeof(ICommand),
+		public static readonly DependencyProperty SimpleMediaControlProperty = DependencyProperty.Register(
+			nameof(SimpleMediaControl),
+			typeof(SimpleMediaControl),
 			typeof(MediaDisplayView),
-			new PropertyMetadata(null)
+			new PropertyMetadata(null, OnSimpleMediaControlChanged)
 		);
 
-
+		private static void OnSimpleMediaControlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+			((MediaDisplayView)d).UpdateMediaControl();
+		}
 
 		public string URL {
 			get => (string)GetValue(URLProperty);
@@ -42,31 +50,123 @@ namespace YiffBrowser.Views.Controls {
 			typeof(MediaDisplayView),
 			new PropertyMetadata(string.Empty, OnURLChanged)
 		);
-		private bool showingControl = true;
 
-		private static void OnURLChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-			if (d is MediaDisplayView view) {
-				view.ViewModel.Initialize((string)e.NewValue);
+		public MediaSource MediaSource {
+			get => mediaSource;
+			set {
+				mediaSource = value;
+				MediaPlayer.Source = value;
 			}
 		}
 
+		private static void OnURLChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+			if (d is MediaDisplayView view) {
+				view.UpdateURL((string)e.NewValue);
+			}
+		}
+
+		public MediaPlayerElement GetMediaPlayer() => MediaPlayer;
+
+		public LocalSettings Settings { get; } = Local.Settings;
+
 		public MediaDisplayView() {
 			this.InitializeComponent();
-			MediaPlayer.MediaPlayer.IsLoopingEnabled = true;
+			MediaPlayer.MediaPlayer.IsLoopingEnabled = Settings.AutoLooping;
 			MediaPlayer.MediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
 			MediaPlayer.MediaPlayer.MediaFailed += MediaPlayer_MediaFailed;
+
+			MediaPlayer.MediaPlayer.PlaybackSession.BufferingStarted += PlaybackSession_BufferingStarted;
+			MediaPlayer.MediaPlayer.PlaybackSession.BufferingProgressChanged += PlaybackSession_BufferingProgressChanged;
+			MediaPlayer.MediaPlayer.PlaybackSession.BufferingEnded += PlaybackSession_BufferingEnded;
+
+			Settings.MediaControlTypeChanged += Settings_MediaControlTypeChanged;
 		}
 
-		private void MediaPlayer_MediaFailed(MediaPlayer sender, MediaPlayerFailedEventArgs args) {
+		private void PlaybackSession_BufferingStarted(MediaPlaybackSession sender, object args) {
+			//BufferingGrid.Visibility = Visibility.Visible;
+		}
+
+		private void PlaybackSession_BufferingEnded(MediaPlaybackSession sender, object args) {
+			//BufferingGrid.Visibility = Visibility.Collapsed;
+		}
+
+		private void PlaybackSession_BufferingProgressChanged(MediaPlaybackSession sender, object args) {
 
 		}
 
-		private void MediaPlayer_MediaOpened(MediaPlayer sender, object args) {
+		private void Settings_MediaControlTypeChanged(LocalSettings sender, MediaControlType args) {
+			UpdateMediaControl(args);
+		}
 
+		private void UpdateMediaControl(MediaControlType? type = null) {
+			if (SimpleMediaControl == null) {
+				return;
+			}
+			type ??= Settings.MediaControlType;
+			switch (type) {
+				case MediaControlType.Full:
+					MediaPlayer.AreTransportControlsEnabled = true;
+					MediaControl.IsCompact = false;
+					SimpleMediaControl.Visibility = Visibility.Collapsed;
+					break;
+				case MediaControlType.Compact:
+					MediaPlayer.AreTransportControlsEnabled = true;
+					MediaControl.IsCompact = true;
+					SimpleMediaControl.Visibility = Visibility.Collapsed;
+					break;
+				case MediaControlType.Simple:
+					MediaPlayer.AreTransportControlsEnabled = false;
+					SimpleMediaControl.Visibility = Visibility.Visible;
+					break;
+				default:
+					throw new NotImplementedException();
+			}
+		}
+
+		private void UpdateURL(string url) {
+			MediaSource = null;
+			if (!url.IsBlank()) {
+				MediaSource = MediaSource.CreateFromUri(new Uri(url));
+
+				MediaSource.OpenOperationCompleted += MediaSource_OpenOperationCompleted;
+				MediaSource.StateChanged += MediaSource_StateChanged;
+			}
+		}
+
+		private async void MediaSource_StateChanged(MediaSource sender, MediaSourceStateChangedEventArgs args) {
+			await Task.Delay(500);
+			//await Dispatcher.RunIdleAsync(e => {
+			//	ShowingControl = false;
+			//});
+		}
+
+		private void MediaSource_OpenOperationCompleted(MediaSource sender, MediaSourceOpenOperationCompletedEventArgs args) {
+			//ShowingControl = false;
+		}
+
+		private async void MediaPlayer_MediaFailed(MediaPlayer sender, MediaPlayerFailedEventArgs args) {
+			Debug.WriteLine($"{args.Error} - {args.ErrorMessage}");
+			await Dispatcher.RunIdleAsync(e => {
+				ShowingControl = false;
+				ErrorTip.IsOpen = true;
+				ErrorTip.Subtitle = args.ErrorMessage;
+			});
+		}
+
+		private async void MediaPlayer_MediaOpened(MediaPlayer sender, object args) {
+			await Dispatcher.RunIdleAsync(e => {
+				ShowingControl = false;
+			});
 		}
 
 		public void GetAudio() {
 
+		}
+
+		public void Initialize() {
+			UpdateMediaControl();
+			Play();
+			ShowingControl = false;
 		}
 
 		public void Play() {
@@ -102,17 +202,19 @@ namespace YiffBrowser.Views.Controls {
 		}
 
 		private void CtrlLeft_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
-			//MediaPlayer.MediaPlayer.StepBackwardOneFrame();
 			ShowingControl = !ShowingControl;
 		}
 
 		private void CtrlRight_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args) {
-			//MediaPlayer.MediaPlayer.StepForwardOneFrame();
 			ShowingControl = !ShowingControl;
 		}
 
 		private void Root_Loaded(object sender, RoutedEventArgs e) {
-			MediaPlayer.AreTransportControlsEnabled = true;
+			UpdateMediaControl();
+		}
+
+		private void Root_Unloaded(object sender, RoutedEventArgs e) {
+
 		}
 
 		public bool ShowingControl {
@@ -135,44 +237,17 @@ namespace YiffBrowser.Views.Controls {
 					return;
 				}
 			}
-			//MediaControl.Focus(FocusState.Keyboard);
+
+			if (Settings.MediaControlType == MediaControlType.Simple) {
+				SimpleMediaControl.Focus(FocusState.Programmatic);
+			} else {
+				MediaControl.Focus(FocusState.Programmatic);
+			}
+
 			ShowingControl = !ShowingControl;
 			e.Handled = true;
 		}
 
-		private void MediaControl_Loaded(object sender, RoutedEventArgs e) {
-			ShowingControl = true;
-		}
-
-	}
-
-	public class MediaDisplayViewModel : BindableBase {
-		private MediaSource mediaSource;
-
-		public MediaSource MediaSource {
-			get => mediaSource;
-			set => SetProperty(ref mediaSource, value);
-		}
-
-		public LocalSettings Settings { get; } = Local.Settings;
-
-		public void Initialize(string url) {
-			MediaSource = null;
-			if (!url.IsBlank()) {
-				MediaSource = MediaSource.CreateFromUri(new Uri(url));
-
-				MediaSource.OpenOperationCompleted += MediaSource_OpenOperationCompleted;
-				MediaSource.StateChanged += MediaSource_StateChanged;
-			}
-		}
-
-		private void MediaSource_StateChanged(MediaSource sender, MediaSourceStateChangedEventArgs args) {
-			Debug.WriteLine(args.NewState);
-		}
-
-		private void MediaSource_OpenOperationCompleted(MediaSource sender, MediaSourceOpenOperationCompletedEventArgs args) {
-			Debug.WriteLine(args.Error);
-		}
 	}
 
 
