@@ -107,6 +107,22 @@ namespace YiffBrowser.Views.Controls {
 			}
 		}
 
+
+
+		public bool InRelationView {
+			get => (bool)GetValue(InRelationViewProperty);
+			set => SetValue(InRelationViewProperty, value);
+		}
+
+		public static readonly DependencyProperty InRelationViewProperty =DependencyProperty.Register(
+			nameof(InRelationView),
+			typeof(bool),
+			typeof(ImageViewItem),
+			new PropertyMetadata(false)
+		);
+
+
+
 		public ImageViewItem() {
 			this.InitializeComponent();
 			TypeHintBorder.Translation += new Vector3(0, 0, 32);
@@ -338,7 +354,7 @@ namespace YiffBrowser.Views.Controls {
 		}
 
 		private void OpenInBrowser() {
-			@$"https://{E621API.GetHost()}/{Post.ID}".OpenInBrowser();
+			@$"https://{E621API.GetHost()}/posts/{Post.ID}".OpenInBrowser();
 		}
 
 		public ImageViewItemViewModel() {

@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Windows.Devices.Input;
 using Windows.Media.Core;
 using Windows.Media.Playback;
+using Windows.Storage;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -39,6 +40,8 @@ namespace YiffBrowser.Views.Controls {
 			((MediaDisplayView)d).UpdateMediaControl();
 		}
 
+
+
 		public string URL {
 			get => (string)GetValue(URLProperty);
 			set => SetValue(URLProperty, value);
@@ -51,17 +54,54 @@ namespace YiffBrowser.Views.Controls {
 			new PropertyMetadata(string.Empty, OnURLChanged)
 		);
 
-		public MediaSource MediaSource {
-			get => mediaSource;
-			set {
-				mediaSource = value;
-				MediaPlayer.Source = value;
+
+		private static void OnURLChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+			((MediaDisplayView)d).UpdateURL((string)e.NewValue);
+		}
+
+		private void UpdateURL(string url) {
+			MediaSource = null;
+			if (!url.IsBlank()) {
+				MediaSource = MediaSource.CreateFromUri(new Uri(url));
 			}
 		}
 
-		private static void OnURLChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-			if (d is MediaDisplayView view) {
-				view.UpdateURL((string)e.NewValue);
+		public IStorageFile File {
+			get => (IStorageFile)GetValue(FileProperty);
+			set => SetValue(FileProperty, value);
+		}
+
+		public static readonly DependencyProperty FileProperty = DependencyProperty.Register(
+			nameof(File),
+			typeof(IStorageFile),
+			typeof(MediaDisplayView),
+			new PropertyMetadata(null, OnFileChanged)
+		);
+
+		private static void OnFileChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+			((MediaDisplayView)d).UpdateFile((IStorageFile)e.NewValue);
+		}
+
+		private void UpdateFile(IStorageFile file) {
+			MediaSource = null;
+			if (file != null) {
+				MediaSource = MediaSource.CreateFromStorageFile(file);
+			}
+		}
+
+		public MediaSource MediaSource {
+			get => mediaSource;
+			set {
+				if (mediaSource != null) {
+					mediaSource.OpenOperationCompleted -= MediaSource_OpenOperationCompleted;
+					mediaSource.StateChanged -= MediaSource_StateChanged;
+				}
+				mediaSource = value;
+				if (mediaSource != null) {
+					mediaSource.OpenOperationCompleted += MediaSource_OpenOperationCompleted;
+					mediaSource.StateChanged += MediaSource_StateChanged;
+				}
+				MediaPlayer.Source = value;
 			}
 		}
 
@@ -120,16 +160,6 @@ namespace YiffBrowser.Views.Controls {
 					break;
 				default:
 					throw new NotImplementedException();
-			}
-		}
-
-		private void UpdateURL(string url) {
-			MediaSource = null;
-			if (!url.IsBlank()) {
-				MediaSource = MediaSource.CreateFromUri(new Uri(url));
-
-				MediaSource.OpenOperationCompleted += MediaSource_OpenOperationCompleted;
-				MediaSource.StateChanged += MediaSource_StateChanged;
 			}
 		}
 
@@ -239,7 +269,7 @@ namespace YiffBrowser.Views.Controls {
 			}
 
 			if (Settings.MediaControlType == MediaControlType.Simple) {
-				SimpleMediaControl.Focus(FocusState.Programmatic);
+				SimpleMediaControl?.Focus(FocusState.Programmatic);
 			} else {
 				MediaControl.Focus(FocusState.Programmatic);
 			}

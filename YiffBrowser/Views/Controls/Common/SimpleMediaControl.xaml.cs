@@ -77,11 +77,15 @@ namespace YiffBrowser.Views.Controls.Common {
 			});
 		}
 
+		public bool Lock { get; private set; }
+
 		private async void Session_PositionChanged(MediaPlaybackSession sender, object args) {
 			await Dispatcher.RunIdleAsync(e => {
 				double percentage = sender.Position / sender.NaturalDuration;
 				if (!double.IsNaN(percentage)) {
+					Lock = true;
 					PositionSlider.Value = percentage * PositionSlider.Maximum;
+					Lock = false;
 				}
 			});
 		}
@@ -94,7 +98,7 @@ namespace YiffBrowser.Views.Controls.Common {
 		}
 
 		private void PositionSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e) {
-			if (Session == null) {
+			if (Session == null || Lock) {
 				return;
 			}
 

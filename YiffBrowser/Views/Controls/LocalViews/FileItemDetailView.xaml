@@ -48,6 +48,10 @@
 
 			<common:PostDetailControlView ViewModel="{Binding ControlViewModel}"/>
 
+			<Grid Visibility="{Binding IsMedia,Converter={StaticResource BoolToVisibility}}" d:Visibility="Visible" Grid.Row="1" Margin="10,0,10,10">
+				<common:SimpleMediaControl x:Name="SimpleMediaControl" MediaDisplayView="{Binding ElementName=MediaDisplayView}"/>
+			</Grid>
+
 			<controls:PostTagsListView Grid.Row="2" Tags="{Binding FileItem.Post.Tags}" ShowAddMinusButton="False" ShowDialogTagInfo="False"/>
 		</Grid>
 
@@ -135,7 +139,7 @@
 						</Grid>
 
 						<Grid Visibility="{Binding IsMedia,Converter={StaticResource BoolToVisibility}}">
-
+							<controls:MediaDisplayView x:Name="MediaDisplayView" SimpleMediaControl="{Binding ElementName=SimpleMediaControl}"/>
 						</Grid>
 
 						<!--<ScrollViewer x:Name="ImagesListManagerScroll" VerticalAlignment="Top" Canvas.ZIndex="999" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" HorizontalScrollMode="Disabled" IsHitTestVisible="False" Margin="160,0,160,0">

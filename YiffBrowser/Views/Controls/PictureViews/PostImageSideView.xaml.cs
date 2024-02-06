@@ -60,8 +60,9 @@ namespace YiffBrowser.Views.Controls.PictureViews {
 			ImageBrush image = sender as ImageBrush;
 			BitmapImage bitmap = image.ImageSource as BitmapImage;
 			bitmap.DecodePixelType = DecodePixelType.Logical;
-			bitmap.DecodePixelHeight = 120;
-			bitmap.DecodePixelWidth = 120;
+			//it will cause Stretch not working
+			//bitmap.DecodePixelHeight = 120;
+			//bitmap.DecodePixelWidth = 120;
 		}
 	}
 

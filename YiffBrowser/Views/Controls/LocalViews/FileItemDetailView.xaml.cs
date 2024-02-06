@@ -35,6 +35,7 @@ namespace YiffBrowser.Views.Controls.LocalViews {
 				return;
 			}
 			view.ViewModel.MainImage = view.MainImage;
+			view.ViewModel.MediaDisplayView = view.MediaDisplayView;
 		}
 
 		public FileItemDetailView() {
@@ -62,6 +63,7 @@ namespace YiffBrowser.Views.Controls.LocalViews {
 
 	public class FileItemDetailViewModel : BindableBase {
 		public Image MainImage { get; set; }
+		public MediaDisplayView MediaDisplayView { get; set; }
 
 		private FileItem fileItem;
 		private bool isMedia;
@@ -114,10 +116,14 @@ namespace YiffBrowser.Views.Controls.LocalViews {
 			IsMedia = FileItem.File.FileType == ".webm" || FileItem.File.FileType == ".mp4";
 
 			try {
-				using IRandomAccessStream fileStream = await FileItem.File.OpenAsync(FileAccessMode.Read);
-				BitmapImage bitmapImage = new();
-				await bitmapImage.SetSourceAsync(fileStream);
-				MainImage.Source = bitmapImage;
+				if (IsMedia) {
+					MediaDisplayView.File = FileItem.File;
+				} else {
+					using IRandomAccessStream fileStream = await FileItem.File.OpenAsync(FileAccessMode.Read);
+					BitmapImage bitmapImage = new();
+					await bitmapImage.SetSourceAsync(fileStream);
+					MainImage.Source = bitmapImage;
+				}
 			} catch (Exception ex) {
 				Debug.WriteLine(ex);
 			}

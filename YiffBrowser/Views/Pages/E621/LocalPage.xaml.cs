@@ -104,9 +104,7 @@ namespace YiffBrowser.Views.Pages.E621 {
 
 		public LocalPageViewModel() {
 			Initialize();
-			if (Files != null) {
-				Files.CollectionChanged += Files_CollectionChanged;
-			}
+			Files.CollectionChanged += Files_CollectionChanged;
 
 			DetailViewModel.ControlViewModel.BackCommand = new DelegateCommand(DetailBack);
 		}
