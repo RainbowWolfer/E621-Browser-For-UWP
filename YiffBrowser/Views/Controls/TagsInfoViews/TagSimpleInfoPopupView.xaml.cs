@@ -74,7 +74,7 @@ namespace YiffBrowser.Views.Controls.TagsInfoViews {
 			set => SetProperty(ref body, value);
 		}
 
-		public async Task Load(string tagName) {
+		public async Task Load(string tagName) { 
 			TagName = tagName;
 			IsLoading = true;
 			Tag = await E621API.GetE621TagAsync(tagName);

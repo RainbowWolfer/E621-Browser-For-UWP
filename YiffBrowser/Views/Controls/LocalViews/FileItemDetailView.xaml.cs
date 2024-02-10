@@ -43,7 +43,7 @@ namespace YiffBrowser.Views.Controls.LocalViews {
 			if (d is not FileItemDetailView view) {
 				return;
 			}
-			view.ViewModel.MainImage = view.MainImage;
+
 		}
 
 		public FileItemDetailView() {
@@ -70,12 +70,16 @@ namespace YiffBrowser.Views.Controls.LocalViews {
 	}
 
 	public class FileItemDetailViewModel : BindableBase {
-		public Image MainImage { get; set; }
-
 		private FileItem fileItem;
 		private bool isMedia;
 		private bool showMoreInfoSplitView;
 		private bool isSidePaneOverlay;
+		private BitmapImage bitmap;
+
+		public BitmapImage Bitmap {
+			get => bitmap;
+			set => SetProperty(ref bitmap, value);
+		}
 
 		public FileItem FileItem {
 			get => fileItem;
@@ -112,7 +116,6 @@ namespace YiffBrowser.Views.Controls.LocalViews {
 				return;
 			}
 
-
 		}
 
 		private async void OnFileItemChanged() {
@@ -126,7 +129,7 @@ namespace YiffBrowser.Views.Controls.LocalViews {
 				using IRandomAccessStream fileStream = await FileItem.File.OpenAsync(FileAccessMode.Read);
 				BitmapImage bitmapImage = new();
 				await bitmapImage.SetSourceAsync(fileStream);
-				MainImage.Source = bitmapImage;
+				Bitmap = bitmapImage;
 			} catch (Exception ex) {
 				Debug.WriteLine(ex);
 			}

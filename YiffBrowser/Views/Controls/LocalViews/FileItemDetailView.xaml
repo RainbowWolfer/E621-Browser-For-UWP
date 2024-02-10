@@ -131,7 +131,7 @@
 					<Grid x:Name="MainGrid" Tapped="MainGrid_Tapped" PointerReleased="MainGrid_PointerReleased" PointerPressed="MainGrid_PointerPressed">
 
 						<Grid Visibility="{Binding IsMedia,Converter={StaticResource BoolToVisibilityRe}}">
-							<Image x:Name="MainImage"/>
+							<common:ImageControlView x:Name="ImageControl" Bitmap="{Binding Bitmap}"/>
 						</Grid>
 
 						<Grid Visibility="{Binding IsMedia,Converter={StaticResource BoolToVisibility}}">

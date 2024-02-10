@@ -12,17 +12,20 @@ using YiffBrowser.Services.Locals;
 
 namespace YiffBrowser.Services.Networks {
 	public static class E621API {
-		//public static string GetHost() => Local.Settings?.HostType ?? false ? "e621.net" : "e926.net";
-		public static string GetHost() {
-			return Local.Settings switch {
-				null => "e926.net",
-				_ => Local.Settings.HostType switch {
-					HostType.E926 => "e926.net",
-					HostType.E621 => "e621.net",
-					HostType.E6AI => "e6ai.net",
-					_ => "e926.net",
-				}
+		public static string GetHost(out HostType result, HostType? hostType = null) {
+			hostType ??= Local.Settings?.HostType ?? HostType.E926;
+			result = hostType.Value;
+
+			return hostType switch {
+				HostType.E926 => "e926.net",
+				HostType.E621 => "e621.net",
+				HostType.E6AI => "e6ai.net",
+				_ => "e926.net",
 			};
+		}
+
+		public static string GetHost(HostType? hostType = null) {
+			return GetHost(out _, hostType);
 		}
 
 		public static int GetPostsPerPageCount() => Local.Settings?.E621PageLimitCount ?? 75;

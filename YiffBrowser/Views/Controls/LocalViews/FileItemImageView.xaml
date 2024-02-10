@@ -7,78 +7,92 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
+	x:Name="Root"
     d:DesignHeight="200"
     d:DesignWidth="250"
     Margin="5">
 
-	<Button DataContext="{x:Bind FileItem,Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" CornerRadius="10" Style="{StaticResource EmptyButtonStyle}" Command="{Binding ClickCommand}" CommandParameter="{x:Bind FileItem,Mode=OneWay}">
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="*"/>
-				<RowDefinition Height="auto"/>
-			</Grid.RowDefinitions>
+	<Grid DataContext="{Binding FileItem,ElementName=Root}">
+		<Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" CornerRadius="10" Style="{StaticResource EmptyButtonStyle}" Command="{Binding ClickCommand}" CommandParameter="{Binding}">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="auto"/>
+				</Grid.RowDefinitions>
 
-			<Border CornerRadius="10">
-				<Border.Background>
-					<ImageBrush ImageSource="{Binding Thumbnail,Converter={StaticResource ThumbnailToImageConverter}}" Stretch="UniformToFill"/>
-				</Border.Background>
-			</Border>
+				<Border CornerRadius="10">
+					<Border.Background>
+						<ImageBrush ImageSource="{Binding Thumbnail,Converter={StaticResource ThumbnailToImageConverter}}" Stretch="UniformToFill"/>
+					</Border.Background>
+				</Border>
 
-			<Border x:Name="TypeHintBorder" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="4" Margin="5" Padding="6,3,6,3" Visibility="{Binding TypeHint,Converter={StaticResource ArrayNotEmptyToVisibility}}">
-				<Border.Background>
-					<SolidColorBrush Color="Gray" Opacity="0.5"/>
-				</Border.Background>
-				<Border.Shadow>
-					<ThemeShadow/>
-				</Border.Shadow>
-
-				<TextBlock Text="{Binding TypeHint}" FontSize="16">
-					<TextBlock.Shadow>
+				<Border x:Name="TypeHintBorder" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="4" Margin="5" Padding="6,3,6,3" Visibility="{Binding TypeHint,Converter={StaticResource ArrayNotEmptyToVisibility}}">
+					<Border.Background>
+						<SolidColorBrush Color="Gray" Opacity="0.5"/>
+					</Border.Background>
+					<Border.Shadow>
 						<ThemeShadow/>
-					</TextBlock.Shadow>
-				</TextBlock>
-			</Border>
+					</Border.Shadow>
 
-			<Grid VerticalAlignment="Bottom" Height="25" Grid.Row="1" Padding="20,0,20,0">
+					<TextBlock Text="{Binding TypeHint}" FontSize="16">
+						<TextBlock.Shadow>
+							<ThemeShadow/>
+						</TextBlock.Shadow>
+					</TextBlock>
+				</Border>
 
-				<Grid Visibility="Collapsed">
-					<TextBlock Text="123321321.jpg" TextAlignment="Center"/>
-				</Grid>
+				<Grid VerticalAlignment="Bottom" Height="25" Grid.Row="1" Padding="20,0,20,0">
 
-				<Grid Visibility="Collapsed">
-					<muxc:ProgressBar IsIndeterminate="True"/>
-				</Grid>
+					<Grid Visibility="Collapsed">
+						<TextBlock Text="123321321.jpg" TextAlignment="Center"/>
+					</Grid>
 
-				<Grid Visibility="Visible">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="2*"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
+					<Grid Visibility="Collapsed">
+						<muxc:ProgressBar IsIndeterminate="True"/>
+					</Grid>
 
-					<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-						<FontIcon Glyph="&#xE160;" FontSize="15" Margin="0,0,5,0"/>
-						<TextBlock Text="{Binding File.Name}"/>
-					</StackPanel>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="2*"/>
+							<ColumnDefinition Width="3*"/>
+						</Grid.ColumnDefinitions>
 
-					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
-						<TextBlock Text="{Binding Post.Score.Total}"/>
-						<FontIcon Glyph="&#xE878;" FontSize="15" Margin="5,0,0,0"/>
-					</StackPanel>
+						<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+							<FontIcon Glyph="&#xE160;" FontSize="15" Margin="0,0,5,0"/>
+							<TextBlock Text="{Binding File.Name}"/>
+						</StackPanel>
 
-					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2">
-						<TextBlock Text="{Binding Post.FavCount}"/>
-						<FontIcon Glyph="&#xEB52;" FontSize="15" Margin="5,0,0,0"/>
-					</StackPanel>
+						<Grid Grid.Column="1" Visibility="{Binding IsLoadingPost,Converter={StaticResource BoolToVisibilityRe}}">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
 
-					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="3">
-						<TextBlock Text="{Binding Post.Rating,Converter={StaticResource RatingHeader}}"/>
-						<FontIcon Glyph="{Binding Post.Rating,Converter={StaticResource E621RatingToIcon}}" FontSize="15" Margin="5,0,0,0" Foreground="{Binding Post.Rating,Converter={StaticResource E621RatingToBrush}}"/>
-					</StackPanel>
+							<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0">
+								<TextBlock Text="{Binding Post.Score.Total}"/>
+								<FontIcon Glyph="&#xE878;" FontSize="15" Margin="5,0,0,0"/>
+							</StackPanel>
 
+							<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
+								<TextBlock Text="{Binding Post.FavCount}"/>
+								<FontIcon Glyph="&#xEB52;" FontSize="15" Margin="5,0,0,0"/>
+							</StackPanel>
+
+							<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2">
+								<TextBlock Text="{Binding Post.Rating,Converter={StaticResource RatingHeader}}"/>
+								<FontIcon Glyph="{Binding Post.Rating,Converter={StaticResource E621RatingToIcon}}" FontSize="15" Margin="5,0,0,0" Foreground="{Binding Post.Rating,Converter={StaticResource E621RatingToBrush}}"/>
+							</StackPanel>
+
+						</Grid>
+
+						<Grid Grid.Column="1" Visibility="{Binding IsLoadingPost,Converter={StaticResource BoolToVisibility}}">
+							<muxc:ProgressBar IsIndeterminate="True"/>
+						</Grid>
+
+					</Grid>
 				</Grid>
 			</Grid>
-		</Grid>
-	</Button>
+		</Button>
+	</Grid>
 </UserControl>

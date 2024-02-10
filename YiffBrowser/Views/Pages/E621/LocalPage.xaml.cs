@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using ColorCode.Compilation.Languages;
+using Newtonsoft.Json.Linq;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
@@ -8,6 +9,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Foundation;
@@ -49,6 +51,8 @@ namespace YiffBrowser.Views.Pages.E621 {
 		private FolderItem selectedFolder = null;
 		private bool showFolderSideDock = true;
 		private FileItem selectedFile;
+
+		private CancellationTokenSource cts;
 
 		public FileItemDetailViewModel DetailViewModel { get; } = new FileItemDetailViewModel();
 
@@ -144,6 +148,10 @@ namespace YiffBrowser.Views.Pages.E621 {
 		}
 
 		public async void LoadFolder(FolderItem folder) {
+			cts?.Cancel();
+			cts = new CancellationTokenSource();
+			CancellationTokenSource _cts = cts;
+
 			MainGrid.Children.Clear();
 			IReadOnlyList<StorageFile> files = await folder.Folder.GetFilesAsync(CommonFileQuery.DefaultQuery);
 
@@ -160,8 +168,14 @@ namespace YiffBrowser.Views.Pages.E621 {
 						continue;
 				}
 				FileItem item = new(file);
+				if (item.IsEmptyFile) {
+					continue;
+				}
+				if (_cts.IsCancellationRequested) {
+					return;
+				}
 				Files.Add(item);
-				await item.Load();
+				item.Load(_cts.Token);
 			}
 		}
 
@@ -184,7 +198,7 @@ namespace YiffBrowser.Views.Pages.E621 {
 		}
 
 		private void OnImageChanged() {
-			LoadImage();
+			SetImageSize();
 		}
 
 		public StorageItemThumbnail Thumbnail {
@@ -214,6 +228,9 @@ namespace YiffBrowser.Views.Pages.E621 {
 			set => SetProperty(ref clickCommand, value);
 		}
 
+		public FileInfo FileInfo { get; }
+		public bool IsEmptyFile => FileInfo.Length == 0;
+
 		//private BitmapImage image;
 		//public BitmapImage Image {
 		//	get => image;
@@ -228,11 +245,12 @@ namespace YiffBrowser.Views.Pages.E621 {
 				".mp4" => "MP4",
 				_ => null,
 			};
-			DateTimeOffset date = file.DateCreated;
-			FileInfo info = new(file.Path);
+			FileInfo = new(file.Path);
+
+			//DateTimeOffset date = file.DateCreated;
 		}
 
-		private void LoadImage() {
+		private void SetImageSize() {
 			if (ViewItem == null || Thumbnail == null) {
 				return;
 			}
@@ -243,28 +261,29 @@ namespace YiffBrowser.Views.Pages.E621 {
 
 			VariableSizedWrapGrid.SetRowSpan(ViewItem, h2);
 			VariableSizedWrapGrid.SetColumnSpan(ViewItem, 1);
-
 		}
 
-		public async Task Load() {
-			if (int.TryParse(File.DisplayName, out int id)) {
-				IsLoadingPost = true;
-				Post = await E621DownloadDataAccess.GetPostInfo(id);
-				if (Post == null) {
-					Post = await E621API.GetPostAsync(id);
-					//write to database
-				}
-				IsLoadingPost = false;
-			}
-			Thumbnail = await File.GetThumbnailAsync(ThumbnailMode.SingleItem);
+		public async void Load(CancellationToken token) {
+			try {
+				Thumbnail = await File.GetThumbnailAsync(ThumbnailMode.SingleItem);
+				token.ThrowIfCancellationRequested();
 
-			LoadImage();
+				SetImageSize();
+
+				if (int.TryParse(File.DisplayName, out int id)) {
+					IsLoadingPost = true;
+					Post = await E621DownloadDataAccess.GetPostInfo(id, token);
+					if (Post == null) {
+						Post = await E621API.GetPostAsync(id, token);
+						await E621DownloadDataAccess.AddOrUpdatePost(Post, token);
+					}
+					IsLoadingPost = false;
+				}
+			} catch (OperationCanceledException) { }
 		}
 	}
 
 	public class FolderItem : BindableBase {
-		private StorageItemThumbnail thumbnail;
-
 		public string FilePath { get; }
 		public StorageFolder Folder { get; }
 

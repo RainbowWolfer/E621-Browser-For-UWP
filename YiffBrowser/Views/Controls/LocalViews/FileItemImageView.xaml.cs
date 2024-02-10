@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using YiffBrowser.Views.Pages.E621;
@@ -16,8 +17,13 @@ namespace YiffBrowser.Views.Controls.LocalViews {
 			nameof(FileItem),
 			typeof(FileItem),
 			typeof(FileItemImageView),
-			new PropertyMetadata(null)
+			new PropertyMetadata(null, OnFileItemChanged)
 		);
+
+		private static void OnFileItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+			//FileItem item = e.NewValue as FileItem;
+			//item.Load();
+		}
 
 		public FileItemImageView() {
 			this.InitializeComponent();

@@ -5,10 +5,10 @@
     xmlns:local="using:YiffBrowser.Views.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    mc:Ignorable="d" d:RequestedTheme="Dark">
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:common="using:YiffBrowser.Views.Controls.Common"
+	mc:Ignorable="d" d:RequestedTheme="Dark">
 
-    <Grid>
+	<Grid>
 		<Grid.DataContext>
 			<local:PictureDisplayViewModel x:Name="ViewModel"/>
 		</Grid.DataContext>
@@ -32,19 +32,7 @@
 
 		</Border>
 
-		<ScrollViewer x:Name="MyScrollViewer" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
-			<Image x:Name="MainImage" Source="{Binding Bitmap}"
-				DoubleTapped="MainImage_DoubleTapped" 
-				PointerWheelChanged="MainImage_PointerWheelChanged" 
-				ManipulationMode="TranslateX,TranslateY,Scale" 
-				ManipulationDelta="MainImage_ManipulationDelta" 
-				ImageOpened="MainImage_ImageOpened" 
-				ImageFailed="MainImage_ImageFailed">
-				<Image.RenderTransform>
-					<CompositeTransform x:Name="ImageTransform"/>
-				</Image.RenderTransform>
-			</Image>
-		</ScrollViewer>
+		<common:ImageControlView x:Name="ImageControl" ImageOpened="ImageControl_ImageOpened" ImageFailed="ImageControl_ImageFailed" Bitmap="{Binding Bitmap}"/>
 
 	</Grid>
 </UserControl>

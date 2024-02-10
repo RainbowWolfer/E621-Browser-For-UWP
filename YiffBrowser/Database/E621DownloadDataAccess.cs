@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Data;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
 using YiffBrowser.Models.E621;
@@ -13,28 +14,28 @@ namespace YiffBrowser.Database {
 
 		public const string DatabaseFileName = "PostsInfo.db";
 
-		public static async ValueTask<StorageFile> CheckDatabase() {
+		public static async ValueTask<StorageFile> CheckDatabase(CancellationToken token = default) {
 			StorageFolder folder = Local.DownloadFolder;
 			if (folder == null) {
 				return null;
 			}
 			try {
 				StorageFile file = await folder.GetFileAsync(DatabaseFileName);
-				file ??= await CreateDatabase(folder);
+				file ??= await CreateDatabase(folder, token);
 				//await CheckColumns(file);
 				return file;
 			} catch (Exception ex) {
 				Debug.WriteLine(ex);
-				StorageFile file = await CreateDatabase(folder);
+				StorageFile file = await CreateDatabase(folder, token);
 				//await CheckColumns(file);
 				return file;
 			}
 		}
 
-		public async static ValueTask<StorageFile> CreateDatabase(IStorageFolder folder) {
+		public async static ValueTask<StorageFile> CreateDatabase(IStorageFolder folder, CancellationToken token = default) {
 			StorageFile file = await folder.CreateFileAsync(DatabaseFileName, CreationCollisionOption.OpenIfExists);
 
-			using SqliteConnection connection = await OpenConnection(file.Path);
+			using SqliteConnection connection = await OpenConnection(file.Path, token);
 
 			string tableCommand =
 				"CREATE TABLE IF NOT EXISTS " +
@@ -48,7 +49,7 @@ namespace YiffBrowser.Database {
 
 			SqliteCommand createTable = new(tableCommand, connection);
 
-			await createTable.ExecuteReaderAsync();
+			await createTable.ExecuteReaderAsync(token);
 
 			return file;
 		}
@@ -73,9 +74,12 @@ namespace YiffBrowser.Database {
 
 		}
 
-		public static async Task AddOrUpdatePost(E621Post post) {
-			StorageFile file = await CheckDatabase();
+		public static async Task AddOrUpdatePost(E621Post post, CancellationToken token = default) {
+			StorageFile file = await CheckDatabase(token);
 			if (file == null) {
+				return;
+			}
+			if (post == null) {
 				return;
 			}
 
@@ -84,7 +88,7 @@ namespace YiffBrowser.Database {
 			int rating = (int)post.Rating;
 			int score = post.Score.Total;
 
-			using SqliteConnection connection = await OpenConnection(file.Path);
+			using SqliteConnection connection = await OpenConnection(file.Path, token);
 
 			SqliteCommand insertCommand = new() {
 				Connection = connection,
@@ -97,22 +101,22 @@ namespace YiffBrowser.Database {
 			insertCommand.Parameters.AddWithValue("@RATING", rating);
 			insertCommand.Parameters.AddWithValue("@SCORE", score);
 
-			await insertCommand.ExecuteReaderAsync();
+			await insertCommand.ExecuteReaderAsync(token);
 		}
 
-		public static async ValueTask<E621Post> GetPostInfo(int postID) {
-			StorageFile file = await CheckDatabase();
+		public static async ValueTask<E621Post> GetPostInfo(int postID, CancellationToken token = default) {
+			StorageFile file = await CheckDatabase(token);
 			if (file == null) {
 				return null;
 			}
 
-			using SqliteConnection connection = await OpenConnection(file.Path);
+			using SqliteConnection connection = await OpenConnection(file.Path, token);
 
 			SqliteCommand selectCommand = new($"SELECT PostID, PostJson FROM PostsInfo WHERE PostID = {postID};", connection);
 
-			SqliteDataReader query = await selectCommand.ExecuteReaderAsync(CommandBehavior.SingleResult);
+			SqliteDataReader query = await selectCommand.ExecuteReaderAsync(CommandBehavior.SingleResult, token);
 
-			if (await query.ReadAsync()) {
+			if (await query.ReadAsync(token)) {
 				int id = query.GetInt32(0);
 				string json = query.GetString(1);
 				E621Post post = JsonConvert.DeserializeObject<E621Post>(json);
@@ -123,9 +127,9 @@ namespace YiffBrowser.Database {
 		}
 
 
-		public static async ValueTask<SqliteConnection> OpenConnection(string filePath) {
+		public static async ValueTask<SqliteConnection> OpenConnection(string filePath, CancellationToken token = default) {
 			SqliteConnection db = new($"Filename={filePath}");
-			await db.OpenAsync();
+			await db.OpenAsync(token);
 			return db;
 		}
 

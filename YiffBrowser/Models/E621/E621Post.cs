@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using YiffBrowser.Helpers;
+using YiffBrowser.Services.Locals;
 
 namespace YiffBrowser.Models.E621 {
 	public class E621Post {
@@ -76,6 +77,8 @@ namespace YiffBrowser.Models.E621 {
 
 		[JsonProperty("duration")]
 		public string Duration { get; set; }
+
+		public HostType HostType { get; set; }
 
 		#region Additional
 
