@@ -36,7 +36,7 @@ namespace YiffBrowser.Database {
 		public static async ValueTask<StorageFile> CreateDatabase(IStorageFolder folder) {
 			StorageFile file = await folder.CreateFileAsync(DatabaseFileName, CreationCollisionOption.OpenIfExists);
 
-			using SqliteConnection connection = await OpenConnection(file.Path);
+			SqliteConnection connection = await OpenConnection(file.Path);
 
 			string tableCommand =
 				"CREATE TABLE IF NOT EXISTS " +
@@ -56,7 +56,7 @@ namespace YiffBrowser.Database {
 		}
 
 		public static async Task CheckColumns(StorageFile file) {
-			using SqliteConnection connection = await OpenConnection(file.Path);
+			SqliteConnection connection = await OpenConnection(file.Path);
 
 			string[] sqls = [
 				"ALTER TABLE PostsInfo ADD PostJson TEXT;",
@@ -86,7 +86,7 @@ namespace YiffBrowser.Database {
 			int rating = (int)post.Rating;
 			int score = post.Score.Total;
 
-			using SqliteConnection connection = await OpenConnection(file.Path);
+			SqliteConnection connection = await OpenConnection(file.Path);
 
 			SqliteCommand insertCommand = new() {
 				Connection = connection,
@@ -110,7 +110,7 @@ namespace YiffBrowser.Database {
 				return null;
 			}
 
-			using SqliteConnection connection = await OpenConnection(file.Path);
+			SqliteConnection connection = await OpenConnection(file.Path);
 
 			SqliteCommand selectCommand = new($"SELECT PostID, PostJson FROM PostsInfo WHERE PostID = {postID};", connection);
 

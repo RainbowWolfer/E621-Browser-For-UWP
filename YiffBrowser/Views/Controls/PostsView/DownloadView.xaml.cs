@@ -215,7 +215,7 @@ namespace YiffBrowser.Views.Controls.PostsView {
 			try {
 				StorageFolder folder = await Local.DownloadFolder.CreateFolderAsync(name, CreationCollisionOption.FailIfExists);
 
-				Folders.Add(new DownloadFolderInfo(folder.Path));
+				Folders.Add(new DownloadFolderInfo(folder));
 				Filter.Refresh();
 
 			} catch (Exception ex) {
@@ -268,8 +268,6 @@ namespace YiffBrowser.Views.Controls.PostsView {
 			);
 		}
 
-		public string RootPath { get; private set; }
-
 		public DownloadViewModel() {
 
 		}
@@ -283,16 +281,15 @@ namespace YiffBrowser.Views.Controls.PostsView {
 		private async void Loaded() {
 			IsLoading = true;
 
-			RootPath = Local.DownloadFolder.Path;
+			IReadOnlyList<StorageFolder> allSubs = await Local.DownloadFolder.GetFoldersAsync();
+			Folders.Add(new DownloadFolderInfo(Local.DownloadFolder, true));
+			foreach (StorageFolder folder in allSubs) {
+				Folders.Add(new DownloadFolderInfo(folder));
+			}
+			//await Task.Factory.StartNew(async () => {
+			//	//string[] allPaths = Directory.GetDirectories(RootPath);
 
-			await Task.Factory.StartNew(() => {
-				string[] allPaths = Directory.GetDirectories(RootPath);
-
-				Folders.Add(new DownloadFolderInfo(RootPath, true));
-				foreach (string path in allPaths) {
-					Folders.Add(new DownloadFolderInfo(path));
-				}
-			});
+			//});
 
 			Filter = new CollectionSearchFilter<DownloadFolderInfo>(Folders, x => x.FolderName);
 
@@ -354,12 +351,12 @@ namespace YiffBrowser.Views.Controls.PostsView {
 				return null;
 			}
 
-			string folderPath = SelectedItem.IsRoot ? null : SelectedItem.FolderPath;
+			StorageFolder folder = SelectedItem.IsRoot ? null : SelectedItem.Folder;
 			DownloadViewResult result;
 			if (ChooseMultiPages) {
-				result = new DownloadViewResult(folderPath, PageStart, PageEnd);
+				result = new DownloadViewResult(folder?.DisplayName, PageStart, PageEnd);
 			} else {
-				result = new DownloadViewResult(folderPath);
+				result = new DownloadViewResult(folder?.DisplayName);
 			}
 
 			return result;
@@ -419,16 +416,16 @@ namespace YiffBrowser.Views.Controls.PostsView {
 
 	public class DownloadFolderInfo : BindableBase {
 		private bool isRoot;
-		private string folderPath;
+		private StorageFolder folder;
 		private string toolTip;
 
-		public string FolderName => Path.GetFileName(FolderPath);
+		public string FolderName => Folder.DisplayName;
 		public DateTime CreatedDate { get; private set; }
 		public DateTime ModifiedDate { get; private set; }
 
-		public string FolderPath {
-			get => folderPath;
-			private set => SetProperty(ref folderPath, value, OnFolderPathChanged);
+		public StorageFolder Folder {
+			get => folder;
+			private set => SetProperty(ref folder, value, OnFolderPathChanged);
 		}
 
 		public bool IsRoot {
@@ -441,22 +438,22 @@ namespace YiffBrowser.Views.Controls.PostsView {
 			private set => SetProperty(ref toolTip, value);
 		}
 
-		public DownloadFolderInfo(string folderPath, bool isRoot = false) {
-			FolderPath = folderPath;
+		public DownloadFolderInfo(StorageFolder folder, bool isRoot = false) {
+			Folder = folder;
 			IsRoot = isRoot;
 		}
 
 		private void OnFolderPathChanged() {
-			DirectoryInfo folderInfo = new(FolderPath);
-			string[] files = Directory.GetFiles(FolderPath, "*", SearchOption.TopDirectoryOnly);
+			//DirectoryInfo folderInfo = new(Folder);
+			//string[] files = Directory.GetFiles(Folder, "*", SearchOption.TopDirectoryOnly);
 
-			CreatedDate = folderInfo.CreationTime;
-			ModifiedDate = folderInfo.LastWriteTime;
+			//CreatedDate = folderInfo.CreationTime;
+			//ModifiedDate = folderInfo.LastWriteTime;
 
-			ToolTip = $"{FolderPath}\n" +
-				$"Flies Count: {files.Length}\n" +
-				$"Created Date: {folderInfo.CreationTime}\n" +
-				$"Modified Date: {folderInfo.LastWriteTime}";
+			//ToolTip = $"{Folder}\n" +
+			//	$"Flies Count: {files.Length}\n" +
+			//	$"Created Date: {folderInfo.CreationTime}\n" +
+			//	$"Modified Date: {folderInfo.LastWriteTime}";
 		}
 
 	}
