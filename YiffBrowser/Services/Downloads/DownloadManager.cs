@@ -134,6 +134,10 @@ namespace YiffBrowser.Services.Downloads {
 						return;
 					}
 
+					if (await folder.GetFileOrNullAsync(filename) is StorageFile _file && (await _file.GetBasicPropertiesAsync()).Size != 0) {
+						return;
+					}
+
 					StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.OpenIfExists);
 					if (preparation.HasRequestedCancel) {
 						return;

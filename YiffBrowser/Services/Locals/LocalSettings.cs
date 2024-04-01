@@ -12,7 +12,7 @@ using YiffBrowser.Helpers;
 namespace YiffBrowser.Services.Locals {
 	//General
 	public partial class LocalSettings : BindableBase {
-		public static HostType StartHostType { get; set; } = HostType.E926;//write after initial read. don't change it during app running
+		public static HostType StartHostType { get; private set; } = HostType.E926;//write after initial read. don't change it during app running
 
 		private HostType hostType = HostType.E621;
 		private int e621PageLimitCount = 75;

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
+using YiffBrowser.Database;
 using YiffBrowser.Helpers;
 
 namespace YiffBrowser.Services.Locals {
@@ -17,7 +18,10 @@ namespace YiffBrowser.Services.Locals {
 
 		public static StorageFile ListingFile { get; private set; }
 		public static StorageFile SettingsFile { get; private set; }
+
 		public static StorageFolder DownloadFolder { get; set; }
+
+		public static StorageFile DatabaseFile { get; private set; }
 
 		public static async Task Initialize() {
 			Debug.WriteLine(LocalFolder.Path);
@@ -27,6 +31,8 @@ namespace YiffBrowser.Services.Locals {
 
 				ListingFile = await YiffFolder.CreateFileAsync("Listings.json", CreationCollisionOption.OpenIfExists);
 				SettingsFile = await YiffFolder.CreateFileAsync("Settings.json", CreationCollisionOption.OpenIfExists);
+
+				DatabaseFile = await YiffFolder.CreateFileAsync(E621DownloadDataAccess.DatabaseFileName, CreationCollisionOption.OpenIfExists);
 
 				Listing = await Listing.Read();
 				Settings = await LocalSettings.Read();
@@ -38,6 +44,8 @@ namespace YiffBrowser.Services.Locals {
 					}
 				} catch { }
 			});
+
+			await E621DownloadDataAccess.UpdateConnection();
 		}
 
 

@@ -4,43 +4,47 @@ using System;
 using System.Data;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Windows.Storage;
 using YiffBrowser.Models.E621;
 using YiffBrowser.Services.Locals;
 
 namespace YiffBrowser.Database {
 
-	//TODO: dont using the connection. just keep it open
 	public static class E621DownloadDataAccess {
 
 		public const string DatabaseFileName = "PostsInfo.db";
 
-		public static async ValueTask<StorageFile> CheckDatabase() {
-			StorageFolder folder = Local.DownloadFolder;
-			if (folder == null) {
-				return null;
-			}
-			try {
-				StorageFile file = await folder.GetFileAsync(DatabaseFileName);
-				file ??= await CreateDatabase(folder);
-				//await CheckColumns(file);
-				return file;
-			} catch (Exception ex) {
-				Debug.WriteLine(ex);
-				StorageFile file = await CreateDatabase(folder);
-				//await CheckColumns(file);
-				return file;
-			}
+		public static SqliteConnection Connection { get; private set; }
+
+		public static async ValueTask<SqliteConnection> OpenConnection(string filePath) {
+			SqliteConnection db = new($"Filename={filePath}");
+			await db.OpenAsync();
+			return db;
 		}
 
-		public static async ValueTask<StorageFile> CreateDatabase(IStorageFolder folder) {
-			StorageFile file = await folder.CreateFileAsync(DatabaseFileName, CreationCollisionOption.OpenIfExists);
+		public static async Task UpdateConnection() {
+			if (Connection != null) {
+				Connection.Close();
+				Connection.Dispose();
+			}
 
-			SqliteConnection connection = await OpenConnection(file.Path);
+			Connection = await OpenConnection(Local.DatabaseFile.Path);
+			await ValidateTables();
+		}
 
+		public static async Task ValidateTables() {
+			if (Connection == null) {
+				return;
+			}
+			await CreatePostsInfoTable(HostType.E621);
+			await CreatePostsInfoTable(HostType.E926);
+			await CreatePostsInfoTable(HostType.E6AI);
+		}
+
+		private static async Task CreatePostsInfoTable(HostType hostType) {
+			string tableName = GetTableNameByType(hostType);
 			string tableCommand =
 				"CREATE TABLE IF NOT EXISTS " +
-				"PostsInfo(" +
+				$"{tableName}(" +
 					"PostID INTEGER PRIMARY KEY, " +
 					"PostJson TEXT NULL, " + //full info
 					"Tags TEXT NULL, " + //partial info for quick search
@@ -48,49 +52,31 @@ namespace YiffBrowser.Database {
 					"Score INT NULL" +
 				")";
 
-			SqliteCommand createTable = new(tableCommand, connection);
-
+			SqliteCommand createTable = new(tableCommand, Connection);
 			await createTable.ExecuteReaderAsync();
-
-			return file;
 		}
 
-		public static async Task CheckColumns(StorageFile file) {
-			SqliteConnection connection = await OpenConnection(file.Path);
-
-			string[] sqls = [
-				"ALTER TABLE PostsInfo ADD PostJson TEXT;",
-				"ALTER TABLE PostsInfo ADD Tags TEXT;",
-				"ALTER TABLE PostsInfo ADD Rating INT;",
-				"ALTER TABLE PostsInfo ADD Score INT;",
-			];
-
-			foreach (string item in sqls) {
-				try {
-					using SqliteCommand command = new(item, connection);
-					await command.ExecuteNonQueryAsync();
-				} catch { }
-			}
-
-
+		private static string GetTableNameByType(HostType hostType) {
+			return hostType switch {
+				HostType.E926 => "E926",
+				HostType.E621 => "E621",
+				HostType.E6AI => "E6AI",
+				_ => throw new NotImplementedException(),
+			};
 		}
 
 		public static async Task AddOrUpdatePost(E621Post post) {
-			StorageFile file = await CheckDatabase();
-			if (file == null) {
-				return;
-			}
-
+			HostType hostType = LocalSettings.StartHostType;
 			string json = JsonConvert.SerializeObject(post);
 			string tags = string.Join(",", post.Tags.GetAllTags());
 			int rating = (int)post.Rating;
 			int score = post.Score.Total;
 
-			SqliteConnection connection = await OpenConnection(file.Path);
+			string tableName = GetTableNameByType(hostType);
 
 			SqliteCommand insertCommand = new() {
-				Connection = connection,
-				CommandText = "INSERT OR REPLACE INTO PostsInfo VALUES (@ID, @JSON, @TAGS, @RATING, @SCORE);"
+				Connection = Connection,
+				CommandText = $"INSERT OR REPLACE INTO {tableName} VALUES (@ID, @JSON, @TAGS, @RATING, @SCORE);"
 			};
 
 			insertCommand.Parameters.AddWithValue("@ID", post.ID);
@@ -105,19 +91,14 @@ namespace YiffBrowser.Database {
 		}
 
 		public static async ValueTask<E621Post> GetPostInfo(int postID) {
-			StorageFile file = await CheckDatabase();
-			if (file == null) {
-				return null;
-			}
-
-			SqliteConnection connection = await OpenConnection(file.Path);
-
-			SqliteCommand selectCommand = new($"SELECT PostID, PostJson FROM PostsInfo WHERE PostID = {postID};", connection);
+			HostType hostType = LocalSettings.StartHostType;
+			string tableName = GetTableNameByType(hostType);
+			SqliteCommand selectCommand = new($"SELECT PostID, PostJson FROM {tableName} WHERE PostID = {postID};", Connection);
 
 			SqliteDataReader query = await selectCommand.ExecuteReaderAsync(CommandBehavior.SingleResult);
 
 			if (await query.ReadAsync()) {
-				int id = query.GetInt32(0);
+				//int id = query.GetInt32(0);
 				string json = query.GetString(1);
 				E621Post post = JsonConvert.DeserializeObject<E621Post>(json);
 				return post;
@@ -126,12 +107,6 @@ namespace YiffBrowser.Database {
 			return null;
 		}
 
-
-		public static async ValueTask<SqliteConnection> OpenConnection(string filePath) {
-			SqliteConnection db = new($"Filename={filePath}");
-			await db.OpenAsync();
-			return db;
-		}
 
 	}
 }
