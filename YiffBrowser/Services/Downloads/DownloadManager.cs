@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
+using Windows.Storage.FileProperties;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using YiffBrowser.Database;
 using YiffBrowser.Helpers;
@@ -99,6 +102,34 @@ namespace YiffBrowser.Services.Downloads {
 				sender.RequestRemoveFromComplete += (s, e) => {
 					completedPool.Remove(sender);
 				};
+				UpdateFileTime(sender);
+			}
+		}
+
+		//uwp cant update file creation time or modified time
+		//the file that DownloadManager created has the wrong time (it is the server file time, not the actual file downloaded time)
+		//so here i delete the original file then write its content to a new file
+		private static async void UpdateFileTime(DownloadInstance instance) {
+			try {
+				StorageFolder folder = instance.Information.DestinationFolder;
+				StorageFile file = instance.Information.TargetFile;
+
+				IBuffer buffer = await FileIO.ReadBufferAsync(file);
+
+				byte[] byteArray = new byte[buffer.Length];
+				using (DataReader dataReader = DataReader.FromBuffer(buffer)) {
+					dataReader.ReadBytes(byteArray);
+				}
+
+				await file.DeleteAsync();
+
+				StorageFile newFile = await folder.CreateFileAsync(file.Name, CreationCollisionOption.ReplaceExisting);
+
+				await FileIO.WriteBytesAsync(newFile, byteArray);
+
+			} catch (Exception ex) {
+				Debug.WriteLine(ex);
+				Debugger.Break();
 			}
 		}
 

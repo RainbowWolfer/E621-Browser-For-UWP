@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Email;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
+using Windows.Networking.NetworkOperators;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI;
@@ -23,7 +24,7 @@ namespace E621Downloader.Models.Utilities {
 	public static class Methods {
 		public static void PrintIEnumerable(IEnumerable<object> i) {
 			string line = "";
-			foreach(object item in i) {
+			foreach (object item in i) {
 				line += item.ToString() + " ";
 			}
 			Debug.WriteLine(line);
@@ -35,12 +36,12 @@ namespace E621Downloader.Models.Utilities {
 
 		public static string ToCamelCase(this string s) {
 			List<char> list = s.ToList();
-			for(int i = 0; i < list.Count; i++) {
+			for (int i = 0; i < list.Count; i++) {
 				char c = list[i];
-				if(i == 0) {
+				if (i == 0) {
 					list[i] = char.ToUpper(list[i]);
 				}
-				if(c == ' ' && i < list.Count - 1) {
+				if (c == ' ' && i < list.Count - 1) {
 					list[i + 1] = char.ToUpper(list[i + 1]);
 				}
 			}
@@ -49,20 +50,20 @@ namespace E621Downloader.Models.Utilities {
 
 		public static List<GroupTag> ToGroupTag(this List<string> tags, Color color) {
 			List<GroupTag> result = new();
-			foreach(string tag in tags) {
+			foreach (string tag in tags) {
 				result.Add(new GroupTag(tag, color));
 			}
 			return result;
 		}
 
 		public static string NumberToK(int number) {
-			if(number > 1000) {
+			if (number > 1000) {
 				int a = number / 1000;
 				int length = $"{number}".Length;
 				int pow = (int)Math.Pow(10, length - 1);
 				int head = int.Parse($"{number}".First().ToString());
 				int b = (number - pow * head) / (pow / 10);
-				if(b == 0) {
+				if (b == 0) {
 					return $"{a}K";
 				} else {
 					return $"{a}.{b}K";
@@ -73,9 +74,9 @@ namespace E621Downloader.Models.Utilities {
 		}
 
 		public static string ToDuo(this int number) {
-			if(number <= 0) {
+			if (number <= 0) {
 				return number.ToString();
-			} else if(number < 10) {
+			} else if (number < 10) {
 				return $"0{number}";
 			} else {
 				return number.ToString();
@@ -103,35 +104,35 @@ namespace E621Downloader.Models.Utilities {
 
 		public static void Print<T, W>(this Dictionary<T, W> dic, Func<T, object> key = null, Func<W, object> value = null) {
 			Debug.WriteLine($"Print Dictionary: {dic}");
-			if(key == null) {
+			if (key == null) {
 				key = i => i;
 			}
-			if(value == null) {
+			if (value == null) {
 				value = i => i;
 			}
 			int index = 0;
-			foreach(KeyValuePair<T, W> item in dic) {
+			foreach (KeyValuePair<T, W> item in dic) {
 				Debug.WriteLine($"{index++} -> {key.Invoke(item.Key)} : {value.Invoke(item.Value)}");
 			}
 		}
 
 
 		public static string Language(this string str, params object[] args) {
-			if(string.IsNullOrWhiteSpace(str)) {
+			if (string.IsNullOrWhiteSpace(str)) {
 				return str;
 			}
-			if(CoreWindow.GetForCurrentThread() != null) {
+			if (CoreWindow.GetForCurrentThread() != null) {
 				try {
 					string result = ResourceLoader.GetForCurrentView().GetString(str);
 					try {
-						for(int i = 0; i < args.Length; i++) {
+						for (int i = 0; i < args.Length; i++) {
 							result = result.Replace("{{" + i + "}}", args[i].ToString());
 						}
-					} catch(Exception ex) {
+					} catch (Exception ex) {
 						ErrorHistories.Add(ex);
 					}
 					return result;
-				} catch(Exception ex) {
+				} catch (Exception ex) {
 					ErrorHistories.Add(ex);
 					Debug.WriteLine(ex.Message);
 					return "String Not Found";
@@ -142,7 +143,7 @@ namespace E621Downloader.Models.Utilities {
 		}
 
 		public static async Task OpenBrowser(string uri) {
-			if(!await Launcher.LaunchUriAsync(new Uri(uri))) {
+			if (!await Launcher.LaunchUriAsync(new Uri(uri))) {
 				await MainPage.CreatePopupDialog("Error".Language(), "Could not Open Default Browser".Language());
 			}
 		}
@@ -151,18 +152,18 @@ namespace E621Downloader.Models.Utilities {
 			string previewURL = post.preview.url;
 			string sampleURL = post.sample.url;
 			LoadPoolItem loader = LoadPool.SetNew(post);
-			if(string.IsNullOrWhiteSpace(previewURL) && string.IsNullOrWhiteSpace(sampleURL)) {
+			if (string.IsNullOrWhiteSpace(previewURL) && string.IsNullOrWhiteSpace(sampleURL)) {
 				actions?.OnUrlsEmpty?.Invoke();
 			} else {
 				bool previewLoaded = false;
-				if(!string.IsNullOrWhiteSpace(previewURL)) {
+				if (!string.IsNullOrWhiteSpace(previewURL)) {
 					LoadPreview();
 				} else {
 					LoadSample();
 				}
 
 				void LoadPreview() {
-					if(string.IsNullOrWhiteSpace(previewURL)) {
+					if (string.IsNullOrWhiteSpace(previewURL)) {
 						return;
 					}
 					actions?.OnPreviewStart?.Invoke();
@@ -178,7 +179,7 @@ namespace E621Downloader.Models.Utilities {
 						loader.Preview = bitmap;
 						LoadSample();
 					};
-					if(loader.Preview != null) {
+					if (loader.Preview != null) {
 						previewImage.Source = loader.Preview;
 						previewLoaded = true;
 						actions?.OnPreviewExists?.Invoke();
@@ -191,13 +192,13 @@ namespace E621Downloader.Models.Utilities {
 					};
 				}
 				void LoadSample() {
-					if(string.IsNullOrWhiteSpace(sampleURL)) {
+					if (string.IsNullOrWhiteSpace(sampleURL)) {
 						actions?.OnSampleUrlEmpty?.Invoke();
 						return;
 					}
 					previewImage.Visibility = Visibility.Visible;
 					actions?.OnSampleStart?.Invoke(previewLoaded);
-					if(loader.Sample != null) {
+					if (loader.Sample != null) {
 						sampleImage.Source = loader.Sample;
 						sampleImage.Visibility = Visibility.Visible;
 						previewImage.Visibility = Visibility.Collapsed;
@@ -217,7 +218,7 @@ namespace E621Downloader.Models.Utilities {
 						previewImage.Visibility = Visibility.Collapsed;
 					};
 					(sampleImage.Source as BitmapImage).DownloadProgress += (s, e) => {
-						if(PicturePage.GetFileType(post) == FileType.Gif) {
+						if (PicturePage.GetFileType(post) == FileType.Gif) {
 							actions?.OnSampleProgress?.Invoke(e.Progress);
 						} else {
 							actions?.OnSampleProgress?.Invoke(previewLoaded ? null : e.Progress);
@@ -230,7 +231,7 @@ namespace E621Downloader.Models.Utilities {
 		public static async Task LaunchFile(StorageFile file) {
 			try {
 				await Launcher.LaunchFileAsync(file);
-			} catch(Exception ex) {
+			} catch (Exception ex) {
 				ErrorHistories.Add(ex);
 				await new ContentDialog() {
 					Title = "Error".Language(),
@@ -246,13 +247,13 @@ namespace E621Downloader.Models.Utilities {
 		}
 
 		public static bool CompareItemsEqual(this IEnumerable<object> a, IEnumerable<object> b) {
-			if(a.Count() != b.Count()) {
+			if (a.Count() != b.Count()) {
 				return false;
 			}
 			var la = a.ToArray();
 			var lb = b.ToArray();
-			for(int i = 0; i < la.Length; i++) {
-				if(la[i] != lb[i]) {
+			for (int i = 0; i < la.Length; i++) {
+				if (la[i] != lb[i]) {
 					return false;
 				}
 			}
@@ -264,8 +265,8 @@ namespace E621Downloader.Models.Utilities {
 		}
 
 		public static bool OnlyContainDigits(this string text) {
-			foreach(char item in text) {
-				if(!char.IsDigit(item)) {
+			foreach (char item in text) {
+				if (!char.IsDigit(item)) {
 					return false;
 				}
 			}
@@ -273,11 +274,11 @@ namespace E621Downloader.Models.Utilities {
 		}
 
 		public static void AddToPostsPool(this Dictionary<string, E621Post> dic, IEnumerable<E621Post> posts) {
-			if(posts == null || posts.Count() == 0) {
+			if (posts == null || posts.Count() == 0) {
 				return;
 			}
-			foreach(E621Post item in posts) {
-				if(dic.ContainsKey(item.id)) {
+			foreach (E621Post item in posts) {
+				if (dic.ContainsKey(item.id)) {
 					dic[item.id] = item;
 				} else {
 					dic.Add(item.id, item);
@@ -322,14 +323,14 @@ namespace E621Downloader.Models.Utilities {
 		public static DependencyObject MyFindListViewChildByName(DependencyObject parant, string ControlName) {
 			int count = VisualTreeHelper.GetChildrenCount(parant);
 
-			for(int i = 0; i < count; i++) {
+			for (int i = 0; i < count; i++) {
 				DependencyObject MyChild = VisualTreeHelper.GetChild(parant, i);
-				if(MyChild is FrameworkElement element && element.Name == ControlName) {
+				if (MyChild is FrameworkElement element && element.Name == ControlName) {
 					return MyChild;
 				}
 
 				DependencyObject FindResult = MyFindListViewChildByName(MyChild, ControlName);
-				if(FindResult != null) {
+				if (FindResult != null) {
 					return FindResult;
 				}
 			}
@@ -340,9 +341,9 @@ namespace E621Downloader.Models.Utilities {
 		public static bool ContainMeta(this IEnumerable<string> array, string meta, out string value) {
 			value = null;
 			meta = meta.Trim().ToLower();
-			foreach(string item in array) {
+			foreach (string item in array) {
 				string str = item.Trim().ToLower();
-				if(str.StartsWith(meta)) {
+				if (str.StartsWith(meta)) {
 					value = str.Substring(meta.Length);
 					return true;
 				}

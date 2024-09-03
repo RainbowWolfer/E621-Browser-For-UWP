@@ -353,7 +353,7 @@ namespace YiffBrowser.Views.Pages.E621 {
 		public FolderItem(StorageFolder folder) {
 			Folder = folder;
 			FilePath = folder.Path;
-			FileSystemWatcher watcher = new(folder.Path);
+			//FileSystemWatcher watcher = new(folder.Path);
 		}
 
 	}
